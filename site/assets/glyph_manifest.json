@@ -1,0 +1,213 @@
+{
+  "p": {
+    "file": "p.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "b": {
+    "file": "b.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "t": {
+    "file": "t.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "d": {
+    "file": "d.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "k": {
+    "file": "k.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "g": {
+    "file": "g.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "m": {
+    "file": "m.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "n": {
+    "file": "n.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "ŋ": {
+    "file": "ng.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "tʃ": {
+    "file": "ch.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "dʒ": {
+    "file": "j_dz.svg",
+    "status": "PLACEHOLDER",
+    "type": "consonant"
+  },
+  "f": {
+    "file": "f.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "v": {
+    "file": "v.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "θ": {
+    "file": "th.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "ð": {
+    "file": "dh.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "s": {
+    "file": "s.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "z": {
+    "file": "z.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "ʃ": {
+    "file": "sh.svg",
+    "status": "PLACEHOLDER",
+    "type": "consonant"
+  },
+  "ʒ": {
+    "file": "zh.svg",
+    "status": "PLACEHOLDER",
+    "type": "consonant"
+  },
+  "h": {
+    "file": "h.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "w": {
+    "file": "w.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "j": {
+    "file": "y.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "r": {
+    "file": "r.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "l": {
+    "file": "l.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "ʔ": {
+    "file": "glot.svg",
+    "status": "drawn",
+    "type": "consonant"
+  },
+  "x": {
+    "file": "kh.svg",
+    "status": "PLACEHOLDER",
+    "type": "consonant"
+  },
+  "i": {
+    "file": "i.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "ɪ": {
+    "file": "ih.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "e": {
+    "file": "ei.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "ɛ": {
+    "file": "eh.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "æ": {
+    "file": "ae.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "ʌ": {
+    "file": "uh.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "ə": {
+    "file": "schwa.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "u": {
+    "file": "uu.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "ʊ": {
+    "file": "oo.svg",
+    "status": "PLACEHOLDER",
+    "type": "vowel"
+  },
+  "oʊ": {
+    "file": "ow.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "ɔ": {
+    "file": "aw.svg",
+    "status": "PLACEHOLDER",
+    "type": "vowel"
+  },
+  "ɑ": {
+    "file": "ah.svg",
+    "status": "drawn",
+    "type": "vowel",
+    "note": "from source material outside the key chart"
+  },
+  "aɪ": {
+    "file": "ai.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "aʊ": {
+    "file": "au.svg",
+    "status": "drawn",
+    "type": "vowel"
+  },
+  "ɔɪ": {
+    "file": "oi.svg",
+    "status": "PLACEHOLDER",
+    "type": "vowel"
+  },
+  "ɜ": {
+    "file": "nurse.svg",
+    "status": "PLACEHOLDER",
+    "type": "vowel"
+  }
+}

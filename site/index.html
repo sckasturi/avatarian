@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Avatarian Translator</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<h1>Avatarian Translator</h1>
+<p class="subtitle">English ↔ Avatarian, with IPA shown throughout so you can double-check every sound.</p>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="toAvatarian">English → Avatarian</button>
+  <button class="tab-btn" data-tab="builder">Build / Decode Avatarian</button>
+  <button class="tab-btn" data-tab="about">Glyph key &amp; status</button>
+</div>
+
+<!-- TAB 1: English -> Avatarian -->
+<div class="panel active" id="toAvatarian">
+  <label for="englishInput"><strong>Type English:</strong></label>
+  <textarea id="englishInput" rows="2" placeholder="e.g. hello, Toph">hello toph</textarea>
+  <div>
+    <button class="primary" id="translateBtn">Translate</button>
+    <button class="icon-btn" id="speakEnglishBtn">🔊 Hear English</button>
+  </div>
+
+  <div class="ipa-line" id="ipaLine"></div>
+  <div class="avatarian-output" id="avatarianOutput"></div>
+  <p class="legend"><span class="dot"></span> dashed box = glyph not yet confirmed for this sound (placeholder)</p>
+</div>
+
+<!-- TAB 2: Builder / decoder -->
+<div class="panel" id="builder">
+  <p>Click sounds to build an Avatarian sequence, or to check what a sequence of sounds "spells."</p>
+  <div class="builder-seq" id="builderSeq"></div>
+  <div>
+    <button class="primary" id="clearBuilderBtn">Clear</button>
+    <button class="icon-btn" id="speakBuilderBtn">🔊 Hear this sequence</button>
+  </div>
+  <div class="avatarian-output" id="builderOutput"></div>
+  <div class="ipa-line" id="builderIpaLine"></div>
+  <div class="ipa-line" id="builderMatch"></div>
+
+  <div class="palette" id="consonantPalette">
+    <div class="palette-group-label">Consonants</div>
+  </div>
+  <div class="palette" id="vowelPalette">
+    <div class="palette-group-label">Vowels</div>
+  </div>
+</div>
+
+<!-- TAB 3: glyph key / status -->
+<div class="panel" id="about">
+  <p>These glyphs are <strong>drawn</strong> — each one is constructed from geometric primitives on a shared 100&times;100 grid with a single stroke weight, so the set reads as one coherent script rather than traced handwriting. They are clean interpretations of the reference key, not facsimiles of it. Eight sounds have no symbol anywhere in the reference material yet and show as a dashed "?" box throughout the tool.</p>
+  <p>Each cell below shows the <strong>drawn</strong> glyph the tool renders next to the shape traced straight out of the hand-lettered <strong>key</strong>, so the two can be compared. Where a cell is missing one side, that sound is drawn without a source, or sits in the key without a home in the set.</p>
+  <div class="key-controls">
+    <label><input type="checkbox" id="keyOverlay"> Overlay drawn on key</label>
+  </div>
+  <div id="keyGrid"></div>
+</div>
+
+<footer>
+  Avatarian Translator — static site, no server, no tracking. Glyphs are drawn from community reference material and are a work in progress.
+</footer>
+
+<script>const AVATARIAN_ASSET_BASE = "assets/glyphs/";</script>
+<script src="js/manifest.js"></script>
+<script src="js/g2p.js"></script>
+<script src="js/render.js"></script>
+<script>
+// ---------- Tabs ----------
+document.querySelectorAll(".tab-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
+
+// ---------- English -> Avatarian ----------
+async function translate() {
+  await loadManifest();
+  const text = document.getElementById("englishInput").value;
+  const words = sentenceToIPA(text);
+  const ipaLine = document.getElementById("ipaLine");
+  const output = document.getElementById("avatarianOutput");
+  ipaLine.innerHTML = words.map(w => `<span>/${w.ipa.join(" ")}/</span>`).join("  ");
+  output.innerHTML = "";
+  words.forEach((w) => {
+    const wordEl = document.createElement("span");
+    renderAvatarian(w.ipa, wordEl);
+    output.appendChild(wordEl);
+  });
+}
+document.getElementById("translateBtn").addEventListener("click", translate);
+document.getElementById("speakEnglishBtn").addEventListener("click", () => {
+  speak(document.getElementById("englishInput").value);
+});
+
+// ---------- Builder / decoder ----------
+let builderSeq = [];
+async function renderBuilder() {
+  await loadManifest();
+  const seqEl = document.getElementById("builderSeq");
+  seqEl.innerHTML = "";
+  builderSeq.forEach((sym, i) => {
+    const b = document.createElement("button");
+    b.textContent = sym;
+    b.title = "click to remove";
+    b.addEventListener("click", () => { builderSeq.splice(i, 1); renderBuilder(); });
+    seqEl.appendChild(b);
+  });
+  const out = document.getElementById("builderOutput");
+  out.innerHTML = "";
+  const wordEl = document.createElement("span");
+  renderAvatarian(builderSeq, wordEl);
+  out.appendChild(wordEl);
+  document.getElementById("builderIpaLine").textContent = "/" + builderSeq.join(" ") + "/";
+  document.getElementById("builderMatch").textContent = closestEnglishMatch(builderSeq);
+}
+
+function closestEnglishMatch(seq) {
+  const target = seq.join(" ");
+  for (const [word, ipa] of Object.entries(EXCEPTIONS)) {
+    if (ipa === target) return `Closest known English match: "${word}"`;
+  }
+  if (!seq.length) return "";
+  return "No exact match in the small built-in dictionary — shown as raw IPA above.";
+}
+
+function buildPalette(containerId, symbols) {
+  const el = document.getElementById(containerId);
+  symbols.forEach((sym) => {
+    const btn = document.createElement("button");
+    const g = window.AVATARIAN_GLYPHS[sym];
+    if (g) {
+      const art = document.createElement("span");
+      art.className = "pal-art";
+      art.innerHTML = g.svg;
+      btn.appendChild(art);
+    }
+    const lab = document.createElement("span");
+    lab.className = "pal-lab";
+    lab.textContent = sym;
+    btn.appendChild(lab);
+    btn.addEventListener("click", () => { builderSeq.push(sym); renderBuilder(); });
+    el.appendChild(btn);
+  });
+}
+buildPalette("consonantPalette", ["p","b","t","d","k","g","m","n","ŋ","tʃ","dʒ","f","v","θ","ð","s","z","ʃ","ʒ","h","w","j","r","l"]);
+buildPalette("vowelPalette", ["i","ɪ","e","ɛ","æ","ʌ","ə","u","ʊ","oʊ","ɔ","ɑ","aɪ","aʊ","ɔɪ","ɜ","x","ʔ"]);
+
+document.getElementById("clearBuilderBtn").addEventListener("click", () => { builderSeq = []; renderBuilder(); });
+document.getElementById("speakBuilderBtn").addEventListener("click", () => {
+  // Best-effort: speak the IPA symbols as separated sounds (browsers don't
+  // read raw IPA reliably, so this reads each symbol name as a fallback cue).
+  speak(builderSeq.join(" "));
+});
+
+// ---------- TTS ----------
+function speak(text) {
+  if (!text) return;
+  if (!("speechSynthesis" in window)) {
+    alert("Speech synthesis isn't supported in this browser.");
+    return;
+  }
+  const u = new SpeechSynthesisUtterance(text);
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+// ---------- Glyph key tab ----------
+// Every cell pairs the DRAWN glyph with the shape traced out of the
+// hand-lettered key (js/manifest.js -> AVATARIAN_REFERENCE), so drift
+// between the two is visible at a glance. The overlay toggle stacks
+// them for a closer read.
+const REFERENCE = window.AVATARIAN_REFERENCE || {};
+
+function refByIPA() {
+  const byIPA = {};
+  Object.entries(REFERENCE).forEach(([name, info]) => {
+    if (info.ipa) byIPA[info.ipa] = { name, ...info };
+  });
+  return byIPA;
+}
+
+function keyArt(svg, isRef) {
+  const art = document.createElement("div");
+  art.className = "key-art" + (isRef ? " is-ref" : "");
+  if (svg) art.innerHTML = svg;
+  else art.classList.add("is-empty");
+  return art;
+}
+
+function keySide(label, svg, isRef) {
+  const side = document.createElement("div");
+  side.className = "key-side";
+  const cap = document.createElement("div");
+  cap.className = "key-side-lab";
+  cap.textContent = label;
+  side.appendChild(cap);
+  side.appendChild(keyArt(svg, isRef));
+  return side;
+}
+
+function keyCell({ title, subtitle, drawn, ref, note, cls }) {
+  const cell = document.createElement("div");
+  cell.className = "key-cell" + (cls ? " " + cls : "");
+  const pair = document.createElement("div");
+  pair.className = "key-pair";
+  pair.appendChild(keySide("drawn", drawn, false));
+  pair.appendChild(keySide("key", ref, true));
+  cell.appendChild(pair);
+  const lab = document.createElement("div");
+  lab.className = "key-lab";
+  lab.textContent = title;
+  if (subtitle) {
+    const n = document.createElement("span");
+    n.className = "key-name";
+    n.textContent = subtitle;
+    lab.appendChild(n);
+  }
+  cell.appendChild(lab);
+  if (note) {
+    const n = document.createElement("div");
+    n.className = "key-note";
+    n.textContent = note;
+    cell.appendChild(n);
+  }
+  return cell;
+}
+
+function keySection(wrap, title, hint) {
+  const h = document.createElement("div");
+  h.className = "key-section";
+  h.textContent = title;
+  if (hint) {
+    const s = document.createElement("span");
+    s.textContent = " — " + hint;
+    h.appendChild(s);
+  }
+  wrap.appendChild(h);
+}
+
+async function buildKeyGrid() {
+  const grid = document.getElementById("keyGrid");
+  grid.innerHTML = "";
+
+  const wrap = document.createElement("div");
+  wrap.className = "key-grid";
+  const byIPA = refByIPA();
+  const used = new Set();
+
+  ["consonant", "vowel"].forEach((kind) => {
+    const entries = Object.entries(window.AVATARIAN_GLYPHS)
+      .filter(([, info]) => info.type === kind);
+    keySection(wrap, kind === "consonant" ? "Consonants" : "Vowels");
+    entries.forEach(([ipa, info]) => {
+      const ref = byIPA[ipa];
+      if (ref) used.add(ref.name);
+      wrap.appendChild(keyCell({
+        title: "/" + ipa + "/",
+        subtitle: info.name,
+        drawn: info.status === "PLACEHOLDER" ? null : info.svg,
+        ref: ref ? ref.svg : null,
+        note: ref ? null : (info.note || (info.status === "PLACEHOLDER"
+          ? "no glyph anywhere yet"
+          : "drawn, but not in the key")),
+        cls: ref ? (info.status === "PLACEHOLDER" ? "is-placeholder" : "")
+                 : "no-ref",
+      }));
+    });
+  });
+
+  const extras = Object.entries(REFERENCE).filter(([name]) => !used.has(name));
+  if (extras.length) {
+    keySection(wrap, "In the key, not in the set",
+               "marks we have traced but not assigned a sound");
+    extras.forEach(([name, info]) => {
+      wrap.appendChild(keyCell({
+        title: info.ipa ? "/" + info.ipa + "/" : "—",
+        subtitle: name,
+        drawn: null,
+        ref: info.svg,
+        cls: "no-ref",
+      }));
+    });
+  }
+
+  wrap.classList.toggle("overlay", document.getElementById("keyOverlay").checked);
+  grid.appendChild(wrap);
+}
+
+document.getElementById("keyOverlay").addEventListener("change", (e) => {
+  const wrap = document.querySelector("#keyGrid .key-grid");
+  if (wrap) wrap.classList.toggle("overlay", e.target.checked);
+});
+
+translate();
+renderBuilder();
+buildKeyGrid();
+</script>
+</body>
+</html>

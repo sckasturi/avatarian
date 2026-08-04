@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -)",
+      "Bash(python3 -c \"import svgelements\")",
+      "Bash(python3 -c \"import svgpathtools\")",
+      "Bash(python3 -V)",
+      "Bash(python3 tools/extract_reference.py)",
+      "Bash(qlmanage -t -s 1100 -o . sheet.svg)",
+      "Bash(python3 tools/build_manifest.py)",
+      "Bash(python3 tools/build_glyphs.py)",
+      "Bash(python3 -c ' *)",
+      "Bash(rm -f big.svg.png)",
+      "Bash(qlmanage -t -s 1500 -o . big.svg)",
+      "Bash(rm -f fix.svg.png)",
+      "Bash(qlmanage -t -s 1500 -o . fix.svg)",
+      "Bash(grep -o '\"ə\": {[^}]*\"svg\": \"[^\"]\\\\{0,150\\\\}' site/js/manifest.js)",
+      "Bash(grep -v '^\\\\.$\\\\|^\\\\.\\\\.$')",
+      "Bash(rm -f ah.svg.png)",
+      "Bash(qlmanage -t -s 620 -o . ah.svg)"
+    ]
+  }
+}

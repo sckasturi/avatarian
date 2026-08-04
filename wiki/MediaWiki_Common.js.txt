@@ -1,0 +1,64 @@
+/*
+ * Avatarian renderer gadget for Fandom / MediaWiki:Common.js
+ *
+ * SETUP (one-time):
+ *   1. Deploy the /site folder to GitHub Pages or Cloudflare Pages
+ *      (see project README).
+ *   2. Replace AVATARIAN_SITE_BASE below with that site's public URL
+ *      (must end in a slash), e.g. "https://yourname.github.io/avatarian/"
+ *   3. Paste this whole file into [[MediaWiki:Common.js]].
+ *   4. Paste MediaWiki_Common.css.txt into [[MediaWiki:Common.css]].
+ *   5. Create Template:Avatarian, then use {{avatarian|word}} in articles.
+ *
+ * The glyphs are inline SVG embedded in manifest.js, so this loads
+ * three small scripts and no images at all — nothing to upload to the
+ * wiki, and glyphs inherit the surrounding text colour and size.
+ * If the scripts fail to load, the original English text stays
+ * visible, so this always degrades gracefully.
+ */
+(function () {
+  var AVATARIAN_SITE_BASE = "https://REPLACE-ME.github.io/avatarian/"; // <-- set this
+
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement("script");
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  function init() {
+    loadScript(AVATARIAN_SITE_BASE + "js/manifest.js")
+      .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/g2p.js"); })
+      .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/render.js"); })
+      .then(renderAllSpans)
+      .catch(function (e) { console.warn("Avatarian gadget failed to load:", e); });
+  }
+
+  function renderAllSpans() {
+    var spans = document.querySelectorAll("span.avatarian-word");
+    Array.prototype.forEach.call(spans, function (span) {
+      var explicitIpa = span.getAttribute("data-avatarian-ipa");
+      var text = span.getAttribute("data-avatarian-text") || span.textContent;
+      var ipaSeq;
+      if (explicitIpa && explicitIpa.trim()) {
+        ipaSeq = explicitIpa.trim().split(/\s+/);
+      } else {
+        ipaSeq = [];
+        sentenceToIPA(text).forEach(function (w) {
+          ipaSeq = ipaSeq.concat(w.ipa);
+        });
+      }
+      renderAvatarian(ipaSeq, span);
+      span.title = text + "  /" + ipaSeq.join(" ") + "/";
+    });
+  }
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    init();
+  } else {
+    document.addEventListener("DOMContentLoaded", init);
+  }
+})();

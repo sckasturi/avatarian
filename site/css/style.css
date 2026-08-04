@@ -1,0 +1,126 @@
+:root {
+  --ink: #3a2a20;
+  --paper: #f2e2c4;
+  --accent: #8a3b2a;
+  --line: #c9b083;
+}
+
+body {
+  font-family: "Georgia", serif;
+  background: var(--paper);
+  color: var(--ink);
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+h1 { font-size: 1.6rem; margin-bottom: 4px; }
+.subtitle { color: #6b5a45; margin-top: 0; font-size: 0.95rem; }
+
+.tabs { display: flex; gap: 8px; margin: 20px 0 12px; }
+.tab-btn {
+  padding: 8px 14px; border: 1px solid var(--line); background: #fff8ea;
+  border-radius: 6px 6px 0 0; cursor: pointer; font-family: inherit;
+}
+.tab-btn.active { background: var(--paper); border-bottom: 2px solid var(--accent); font-weight: bold; }
+.panel { display: none; border: 1px solid var(--line); border-radius: 0 8px 8px 8px; padding: 18px; background: #fffaf0; }
+.panel.active { display: block; }
+
+textarea, input[type=text] {
+  width: 100%; box-sizing: border-box; font-size: 1rem; padding: 10px;
+  border: 1px solid var(--line); border-radius: 6px; font-family: inherit;
+}
+
+button.primary {
+  margin-top: 10px; padding: 9px 16px; background: var(--accent); color: #fff;
+  border: none; border-radius: 6px; cursor: pointer; font-size: 0.95rem;
+}
+button.primary:hover { opacity: 0.9; }
+button.icon-btn {
+  margin-top: 10px; margin-left: 8px; padding: 9px 14px; background: #fff;
+  border: 1px solid var(--accent); color: var(--accent); border-radius: 6px; cursor: pointer;
+}
+
+.ipa-line { font-size: 1.1rem; margin-top: 14px; color: #555; }
+.ipa-line span { margin-right: 4px; }
+
+.avatarian-output {
+  margin-top: 16px; padding: 18px; background: #fff; border: 1px solid var(--line);
+  border-radius: 8px; min-height: 90px; display: flex; flex-wrap: wrap; align-items: flex-end;
+}
+/* Syllable block layout — mirrors canon reference art: the vowel sits
+   UNDERNEATH the consonant, blocks pack tight with no borders, and word
+   spacing (not per-block borders) is what separates words.
+
+   Both rows render at the same size. The key chart's note says vowels
+   take 1/4 the height, but the glyphs are drawn on one 100x100 grid, so
+   scaling the lower row down shrinks the whole mark rather than just its
+   band — vowels came out too faint to read beside their consonant. */
+.avatarian-word {
+  display: inline-flex; align-items: flex-start;
+  margin: 6px 30px 10px 0;
+}
+.avatarian-syllable {
+  display: inline-flex; flex-direction: column; align-items: center;
+  margin-right: 3px;
+}
+.avatarian-onset { display: flex; align-items: flex-end; gap: 1px; }
+.avatarian-nucleus {
+  display: flex; justify-content: center; align-items: flex-start;
+  height: 52px; margin-top: -1px;
+}
+.avatarian-glyph { display: inline-block; line-height: 0; color: var(--ink); }
+.avatarian-glyph svg { display: block; width: 100%; height: 100%; }
+.avatarian-glyph.avatarian-consonant { width: 52px; height: 52px; }
+.avatarian-glyph.avatarian-vowel { width: 52px; height: 52px; }
+.avatarian-placeholder { opacity: 0.5; }
+.avatarian-missing { font-size: 13px; color: #b03; line-height: 1; }
+
+.legend { font-size: 0.8rem; color: #7a6a55; margin-top: 10px; }
+.legend .dot { display: inline-block; width: 10px; height: 10px; border: 1px dashed var(--accent); margin-right: 4px; }
+
+.palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap: 6px; margin-top: 12px; }
+.palette button {
+  padding: 6px 2px; background: #fff; border: 1px solid var(--line); border-radius: 6px; cursor: pointer;
+  font-family: inherit; font-size: 0.95rem;
+}
+.palette button:hover { background: #fff0d8; }
+.palette-group-label { grid-column: 1 / -1; font-weight: bold; margin-top: 6px; font-size: 0.85rem; color: #6b5a45; }
+
+.builder-seq { min-height: 40px; padding: 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; margin-top: 10px; }
+.builder-seq button { margin: 0 3px 3px 0; padding: 3px 8px; border-radius: 10px; border: 1px solid var(--accent); background: #fff2df; cursor: pointer; }
+
+footer { margin-top: 40px; font-size: 0.8rem; color: #8a7a63; text-align: center; }
+
+/* Glyph key grid — each cell pairs the drawn glyph with the traced
+   shape from the hand-lettered key, so the two can be compared. */
+.key-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(126px, 1fr)); gap: 8px; }
+.key-cell { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px 6px; text-align: center; }
+.key-cell.is-placeholder { background: #fdf4ec; }
+.key-cell.no-ref { background: #fdf1f1; }
+.key-pair { display: flex; justify-content: center; align-items: flex-start; gap: 4px; }
+.key-side { flex: 1; min-width: 0; }
+.key-side-lab { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: #9a8a72; }
+.key-art { color: var(--accent); width: 52px; height: 52px; margin: 0 auto; }
+.key-art.is-ref { color: var(--ink); }
+.key-art svg { width: 100%; height: 100%; display: block; }
+.key-art.is-empty { border: 1px dashed var(--line); border-radius: 6px; box-sizing: border-box; }
+.key-lab { font-size: 13px; color: var(--ink); margin-top: 6px; }
+.key-lab .key-name { display: block; font-size: 11px; color: #9a8a72; }
+.key-note { font-size: 11px; color: var(--accent); margin-top: 3px; }
+.key-section { grid-column: 1 / -1; font-weight: bold; font-size: 0.9rem; color: #6b5a45; margin-top: 10px; }
+.key-section span { font-weight: normal; font-size: 0.82rem; color: #8a7a63; }
+
+/* Overlay mode — reference behind, drawn on top, to spot drift. */
+.key-grid.overlay .key-pair { position: relative; display: block; height: 52px; }
+.key-grid.overlay .key-side { position: absolute; inset: 0; }
+.key-grid.overlay .key-side-lab { display: none; }
+.key-grid.overlay .key-art { width: 52px; height: 52px; }
+.key-grid.overlay .key-art.is-ref { opacity: 0.28; }
+.key-grid.overlay .key-art.is-empty { border: none; }
+
+.key-controls { margin-bottom: 12px; font-size: 0.88rem; color: #6b5a45; }
+.key-controls label { margin-right: 14px; cursor: pointer; }
+.pal-art { display: block; width: 30px; height: 30px; margin: 0 auto; color: var(--accent); }
+.pal-art svg { width: 100%; height: 100%; display: block; }
+.pal-lab { display: block; font-size: 12px; margin-top: 3px; color: var(--ink); }

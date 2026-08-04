@@ -1,0 +1,20 @@
+<noinclude>
+== Usage ==
+<pre>
+{{avatarian|hello}}
+{{avatarian|hello|ipa=h ɛ l oʊ}}
+</pre>
+* First parameter: English text to auto-convert (uses the same
+  approximate G2P as the standalone translator — good for common words,
+  rougher on names/loanwords).
+* Optional <code>ipa=</code> parameter: give the exact IPA yourself
+  (space-separated symbols) to bypass the English guesser entirely —
+  use this whenever you already know the right pronunciation.
+
+This template does not draw anything by itself. It just marks the
+text; a script loaded from [[MediaWiki:Common.js]] finds every
+<code>.avatarian-word</code> span on the page after it loads and
+replaces it with the real glyphs, using the exact same rendering code
+as the standalone translator site. If JavaScript is disabled, the
+raw English text is shown instead (never a blank space).
+</noinclude><includeonly><span class="avatarian-word" data-avatarian-text="{{{1|}}}" data-avatarian-ipa="{{{ipa|}}}">{{{1}}}</span></includeonly>

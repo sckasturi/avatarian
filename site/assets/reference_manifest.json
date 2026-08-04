@@ -1,0 +1,138 @@
+{
+  "ae": {
+    "file": "ae.svg",
+    "ipa": "æ"
+  },
+  "ae_alt": {
+    "file": "ae_alt.svg",
+    "ipa": null
+  },
+  "ai": {
+    "file": "ai.svg",
+    "ipa": "aɪ"
+  },
+  "au": {
+    "file": "au.svg",
+    "ipa": "aʊ"
+  },
+  "b": {
+    "file": "b.svg",
+    "ipa": "b"
+  },
+  "d": {
+    "file": "d.svg",
+    "ipa": "d"
+  },
+  "dh": {
+    "file": "dh.svg",
+    "ipa": "ð"
+  },
+  "eh": {
+    "file": "eh.svg",
+    "ipa": "ɛ"
+  },
+  "ei": {
+    "file": "ei.svg",
+    "ipa": "e"
+  },
+  "f": {
+    "file": "f.svg",
+    "ipa": "f"
+  },
+  "g": {
+    "file": "g.svg",
+    "ipa": "g"
+  },
+  "glot": {
+    "file": "glot.svg",
+    "ipa": "ʔ"
+  },
+  "glot_v": {
+    "file": "glot_v.svg",
+    "ipa": null
+  },
+  "h": {
+    "file": "h.svg",
+    "ipa": "h"
+  },
+  "i": {
+    "file": "i.svg",
+    "ipa": "i"
+  },
+  "ih": {
+    "file": "ih.svg",
+    "ipa": "ɪ"
+  },
+  "k": {
+    "file": "k.svg",
+    "ipa": "k"
+  },
+  "l": {
+    "file": "l.svg",
+    "ipa": "l"
+  },
+  "m": {
+    "file": "m.svg",
+    "ipa": "m"
+  },
+  "n": {
+    "file": "n.svg",
+    "ipa": "n"
+  },
+  "ng": {
+    "file": "ng.svg",
+    "ipa": "ŋ"
+  },
+  "ow": {
+    "file": "ow.svg",
+    "ipa": "oʊ"
+  },
+  "p": {
+    "file": "p.svg",
+    "ipa": "p"
+  },
+  "r": {
+    "file": "r.svg",
+    "ipa": "r"
+  },
+  "s": {
+    "file": "s.svg",
+    "ipa": "s"
+  },
+  "schwa": {
+    "file": "schwa.svg",
+    "ipa": "ə"
+  },
+  "t": {
+    "file": "t.svg",
+    "ipa": "t"
+  },
+  "th": {
+    "file": "th.svg",
+    "ipa": "θ"
+  },
+  "uh": {
+    "file": "uh.svg",
+    "ipa": "ʌ"
+  },
+  "uu": {
+    "file": "uu.svg",
+    "ipa": "u"
+  },
+  "v": {
+    "file": "v.svg",
+    "ipa": "v"
+  },
+  "w": {
+    "file": "w.svg",
+    "ipa": "w"
+  },
+  "y": {
+    "file": "y.svg",
+    "ipa": "j"
+  },
+  "z": {
+    "file": "z.svg",
+    "ipa": "z"
+  }
+}
