@@ -46,7 +46,7 @@
   },
   "tʃ": {
     "file": "ch.svg",
-    "status": "drawn",
+    "status": "PLACEHOLDER",
     "type": "consonant"
   },
   "dʒ": {
@@ -117,7 +117,8 @@
   "l": {
     "file": "l.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "flips": true
   },
   "ʔ": {
     "file": "glot.svg",
@@ -132,42 +133,53 @@
   "i": {
     "file": "i.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "i_flat.svg"
   },
   "ɪ": {
     "file": "ih.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "ih_flat.svg",
+    "flips": true
   },
   "e": {
     "file": "ei.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "ei_flat.svg",
+    "flips": true
   },
   "ɛ": {
     "file": "eh.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "eh_flat.svg"
   },
   "æ": {
     "file": "ae.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "ae_flat.svg",
+    "flips": true
   },
   "ʌ": {
     "file": "uh.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "uh_flat.svg"
   },
   "ə": {
     "file": "schwa.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "schwa_flat.svg"
   },
   "u": {
     "file": "uu.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "uu_flat.svg"
   },
   "ʊ": {
     "file": "oo.svg",
@@ -177,28 +189,35 @@
   "oʊ": {
     "file": "ow.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "ow_flat.svg"
   },
   "ɔ": {
     "file": "aw.svg",
-    "status": "PLACEHOLDER",
-    "type": "vowel"
+    "status": "drawn",
+    "type": "vowel",
+    "note": "from source material outside the key chart",
+    "flat": "aw_flat.svg"
   },
   "ɑ": {
     "file": "ah.svg",
     "status": "drawn",
     "type": "vowel",
-    "note": "from source material outside the key chart"
+    "note": "from source material outside the key chart",
+    "flat": "ah_flat.svg",
+    "flips": true
   },
   "aɪ": {
     "file": "ai.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "ai_flat.svg"
   },
   "aʊ": {
     "file": "au.svg",
     "status": "drawn",
-    "type": "vowel"
+    "type": "vowel",
+    "flat": "au_flat.svg"
   },
   "ɔɪ": {
     "file": "oi.svg",
@@ -207,7 +226,14 @@
   },
   "ɜ": {
     "file": "nurse.svg",
-    "status": "PLACEHOLDER",
-    "type": "vowel"
+    "status": "drawn",
+    "type": "vowel",
+    "flat": "nurse_flat.svg"
+  },
+  "∅": {
+    "file": "glot_v.svg",
+    "status": "drawn",
+    "type": "null",
+    "flat": "glot_v_flat.svg"
   }
 }

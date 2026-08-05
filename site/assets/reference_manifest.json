@@ -3,9 +3,9 @@
     "file": "ae.svg",
     "ipa": "æ"
   },
-  "ae_alt": {
-    "file": "ae_alt.svg",
-    "ipa": null
+  "ae_b": {
+    "file": "ae_b.svg",
+    "ipa": "æ"
   },
   "ai": {
     "file": "ai.svg",
@@ -69,6 +69,10 @@
   },
   "l": {
     "file": "l.svg",
+    "ipa": "l"
+  },
+  "l_b": {
+    "file": "l_b.svg",
     "ipa": "l"
   },
   "m": {

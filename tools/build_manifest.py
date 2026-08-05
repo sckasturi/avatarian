@@ -57,6 +57,37 @@ def main():
         }
         if info.get("note"):
             out[ipa]["note"] = info["note"]
+        if info.get("flips"):
+            out[ipa]["flips"] = True
+        # The flattened copy used by proportional-height mode.
+        if info.get("flat"):
+            fpath = GLYPHS / info["flat"]
+            if fpath.exists():
+                out[ipa]["flat"] = fpath.read_text(encoding="utf-8").strip()
+            else:
+                missing.append(info["flat"])
+        # Positional variants ride along inline too, so render.js can pick
+        # a form by slot without a second fetch. See VARIANTS in
+        # tools/build_glyphs.py for what decides which.
+        if info.get("variants"):
+            variants = {}
+            for slot, fname in info["variants"].items():
+                vpath = GLYPHS / fname
+                if not vpath.exists():
+                    missing.append(fname)
+                    continue
+                variants[slot] = {
+                    "name": vpath.stem,
+                    "svg": vpath.read_text(encoding="utf-8").strip(),
+                }
+                fname = (info.get("variantsFlat") or {}).get(slot)
+                fpath = GLYPHS / fname if fname else None
+                if fpath and fpath.exists():
+                    variants[slot]["flat"] = fpath.read_text(encoding="utf-8").strip()
+            if variants:
+                out[ipa]["variants"] = variants
+                if info.get("variantsManual"):
+                    out[ipa]["variantsManual"] = True
 
     ref = {}
     if REF_SRC.exists():

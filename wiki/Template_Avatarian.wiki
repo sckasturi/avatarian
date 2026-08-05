@@ -1,3 +1,4 @@
+<!-- Avatarian reference material and decipherment by [[User:BokerBigBanana]], u/DepressionDokkebi (reddit.com/r/TheLastAirbender/comments/1v4yalr) and u/arienzio (reddit.com/r/neography/comments/1slqce2). Tool designed by [[User:TechFilmer]]. -->
 <noinclude>
 == Usage ==
 <pre>

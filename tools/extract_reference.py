@@ -47,15 +47,18 @@ CELLS = {
     (72, -5): "f",      (104, -5): "th",   (136, -6): "s",      (201, -5): "h",
     (71, 11): "v",      (104, 10): "dh",   (136, 11): "z",
     (72, 27): "w",      (137, 28): "r",    (169, 27): "y",
-    # /l/ is a stacked pair of hooks, drawn as two separate marks
-    (104, 19): "l",     (104, 29): "l",
+    # The chart draws /l/ in both orientations, stacked inside one cell —
+    # which is why they were once extracted under a single name and
+    # merged into one two-hook figure. `l` is the top orientation, `l_b`
+    # the bottom one; the renderer derives the latter by mirroring.
+    (104, 19): "l_b",   (104, 29): "l",
     # --- vowels -----------------------------------------------------
     (104, 49): None,    # unlabelled mark, one row above the vowel block
     (71, 60): "i",      (104, 60): "glot_v",  (136, 60): "uu",
     (71, 75): "ih",
     (71, 92): "ei",     (104, 92): "schwa",   (135, 93): "ow",
     (71, 109): "eh",    (104, 109): "uh",
-    (71, 125): "ae",    (84, 125): "ae_alt",
+    (71, 125): "ae",    (84, 125): "ae_b",
     (71, 141): "ai",                          (137, 141): "au",
 }
 
@@ -64,10 +67,12 @@ CELLS = {
 NAME_TO_IPA = {
     "m": "m", "n": "n", "ŋ": "ŋ", "ng": "ŋ", "b": "b", "d": "d", "g": "g",
     "p": "p", "t": "t", "k": "k", "f": "f", "th": "θ", "s": "s", "h": "h",
-    "v": "v", "dh": "ð", "z": "z", "w": "w", "l": "l", "r": "r", "y": "j",
+    "v": "v", "dh": "ð", "z": "z", "w": "w", "r": "r", "y": "j",
     "glot": "ʔ",
     "i": "i", "uu": "u", "ih": "ɪ", "ei": "e", "schwa": "ə", "ow": "oʊ",
-    "eh": "ɛ", "uh": "ʌ", "ae": "æ", "ai": "aɪ", "au": "aʊ",
+    "eh": "ɛ", "uh": "ʌ", "ai": "aɪ", "au": "aʊ",
+    # Both orientations of a glyph belong to the same sound.
+    "l": "l", "l_b": "l", "ae": "æ", "ae_b": "æ",
 }
 
 NUM = re.compile(r"[-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?")

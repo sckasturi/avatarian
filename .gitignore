@@ -1,0 +1,8 @@
+# macOS Finder metadata — noise, and it churns on every commit
+.DS_Store
+
+# Quick Look thumbnails generated while checking glyph renders
+*.qlgenerator
+
+# Local tool permissions — per-machine, not project config
+.claude/settings.local.json

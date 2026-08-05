@@ -8,176 +8,301 @@
 </head>
 <body>
 
-<h1>Avatarian Translator</h1>
-<p class="subtitle">English ↔ Avatarian, with IPA shown throughout so you can double-check every sound.</p>
-
-<div class="tabs">
-  <button class="tab-btn active" data-tab="toAvatarian">English → Avatarian</button>
-  <button class="tab-btn" data-tab="builder">Build / Decode Avatarian</button>
-  <button class="tab-btn" data-tab="about">Glyph key &amp; status</button>
+<div class="page-head">
+  <h1>Avatarian Translator</h1>
+  <button class="theme-toggle" id="themeToggle" type="button"></button>
 </div>
+<p class="subtitle">Type English, or type the sounds directly. Everything is
+editable, so you can correct anything the converter gets wrong.</p>
 
-<!-- TAB 1: English -> Avatarian -->
-<div class="panel active" id="toAvatarian">
-  <label for="englishInput"><strong>Type English:</strong></label>
-  <textarea id="englishInput" rows="2" placeholder="e.g. katar">katara</textarea>
-  <div>
-    <button class="primary" id="translateBtn">Translate</button>
-    <button class="icon-btn" id="speakEnglishBtn">🔊 Hear English</button>
+<div class="layout">
+<div class="col-work">
+<section class="card">
+  <label for="englishInput"><strong>English</strong></label>
+  <textarea id="englishInput" rows="2" placeholder="e.g. katara">katara</textarea>
+  <div class="row">
+    <button class="primary" id="translateBtn">Insert sounds ↓</button>
   </div>
 
-  <div class="ipa-line" id="ipaLine"></div>
+  <label for="soundsInput"><strong>Sounds</strong> — this is what actually
+    gets drawn. Converting appends here rather than replacing, so you can
+    build a line up a piece at a time. Edit it freely.</label>
+  <textarea id="soundsInput" rows="2" spellcheck="false"
+    placeholder="K AH T AA R AH   /   P L IY Z"></textarea>
+  <p class="syntax-help">
+    Type <strong>ARPAbet codes</strong> — plain QWERTY, no special characters:
+    <code>K AH T AA R AH</code>. IPA works too if you prefer. Separate sounds
+    with spaces and words with <code>/</code>. The drawing updates as you
+    type.
+    <br>
+    Anything in <code>(parentheses)</code> captions that word instead of
+    being read as a sound — <code>M EH T AX L 0 B EH N D IH NG
+    (metalbending)</code>.
+    <br>
+    <code>0</code> is the empty-slot filler (the ∪ cup).
+    Add <code>$</code> or <code>%</code> after a sound to force its top or
+    bottom form, e.g. <code>S$</code> — needed where the rule isn't known yet.
+  </p>
+  <div class="row">
+    <button id="clearBtn">Clear</button>
+    <span class="ipa-hint" id="soundsHint"></span>
+  </div>
+
   <div class="avatarian-output" id="avatarianOutput"></div>
-  <p class="legend"><span class="dot"></span> dashed box = glyph not yet confirmed for this sound (placeholder)</p>
+  <p class="legend"><span class="dot"></span> dashed box = no confirmed glyph
+    for that sound yet</p>
+
+  <div class="render-opts">
+    <label><input type="checkbox" id="proportionalHeights">
+      Proportional heights (vowels 3/5 of a consonant)</label>
+  </div>
+</section>
 </div>
 
-<!-- TAB 2: Builder / decoder -->
-<div class="panel" id="builder">
-  <p>Click sounds to build an Avatarian sequence, or to check what a sequence of sounds "spells."</p>
-  <div class="builder-seq" id="builderSeq"></div>
-  <div>
-    <button class="primary" id="clearBuilderBtn">Clear</button>
-    <button class="icon-btn" id="speakBuilderBtn">🔊 Hear this sequence</button>
-  </div>
-  <div class="avatarian-output" id="builderOutput"></div>
-  <div class="ipa-line" id="builderIpaLine"></div>
-  <div class="ipa-line" id="builderMatch"></div>
-
-  <div class="palette" id="consonantPalette">
-    <div class="palette-group-label">Consonants</div>
-  </div>
-  <div class="palette" id="vowelPalette">
-    <div class="palette-group-label">Vowels</div>
-  </div>
-</div>
-
-<!-- TAB 3: glyph key / status -->
-<div class="panel" id="about">
-  <p>These glyphs are <strong>drawn</strong> — each one is constructed from geometric primitives on a shared 100&times;100 grid with a single stroke weight, so the set reads as one coherent script rather than traced handwriting. They are clean interpretations of the reference key, not facsimiles of it. Eight sounds have no symbol anywhere in the reference material yet and show as a dashed "?" box throughout the tool.</p>
-  <p>Each cell below shows the <strong>drawn</strong> glyph the tool renders next to the shape traced straight out of the hand-lettered <strong>key</strong>, so the two can be compared. Where a cell is missing one side, that sound is drawn without a source, or sits in the key without a home in the set.</p>
-  <div class="key-controls">
-    <label><input type="checkbox" id="keyOverlay"> Overlay drawn on key</label>
+<div class="col-ref">
+<section class="card">
+  <h2>Glyph reference</h2>
+  <p class="subtitle">Click any glyph to add it to the sounds box. The code
+    under each one is what you type.</p>
+  <div class="render-opts">
+    <label><input type="checkbox" id="showKeyTracings">
+      Show the hand-lettered key beside each glyph</label>
   </div>
   <div id="keyGrid"></div>
+</section>
+</div>
 </div>
 
 <footer>
-  Avatarian Translator — static site, no server, no tracking. Glyphs are drawn from community reference material and are a work in progress.
+  Avatarian Translator — static site, no server, no tracking. Glyphs are a
+  work in progress.
+  <br>
+  Reference material and decipherment work by
+  <a href="https://avatar.fandom.com/wiki/User:BokerBigBanana"
+     target="_blank" rel="noopener">BokerBigBanana</a> on Avatar Wiki,
+  <a href="https://www.reddit.com/r/TheLastAirbender/comments/1v4yalr/avatarian_decipherment_so_far/"
+     target="_blank" rel="noopener">u/DepressionDokkebi</a>, and
+  <a href="https://www.reddit.com/r/neography/comments/1slqce2/new_avatar_the_last_airbender_conscript/"
+     target="_blank" rel="noopener">u/arienzio</a>.
+  <br>
+  Tool designed by
+  <a href="https://avatar.fandom.com/wiki/User:TechFilmer"
+     target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
 </footer>
 
-<script>const AVATARIAN_ASSET_BASE = "assets/glyphs/";</script>
 <script src="js/manifest.js"></script>
 <script src="js/g2p.js"></script>
 <script src="js/render.js"></script>
 <script>
-// ---------- Tabs ----------
-document.querySelectorAll(".tab-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-    document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.tab).classList.add("active");
-  });
-});
+const REFERENCE = window.AVATARIAN_REFERENCE || {};
+const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
 
-// ---------- English -> Avatarian ----------
-async function translate() {
+// ---------------------------------------------------------------------
+// Sound syntax
+// ---------------------------------------------------------------------
+// The input is ASCII-first so the whole script is typeable on a plain
+// QWERTY keyboard. ARPAbet is the primary spelling (it is already the
+// table g2p.js converts through), IPA is accepted as-is for anyone who
+// prefers it, and a few punctuation stand-ins cover symbols that have no
+// key at all.
+
+/**
+ * Codes for sounds g2p's ARPAbet table has no entry for, so every glyph
+ * has something typeable. AX is standard ARPAbet for schwa; the table in
+ * g2p.js only carries AH (which is ʌ), so ə would otherwise fall back to
+ * showing a character you cannot type.
+ */
+const EXTRA_CODES = { "AX": "ə", "Q": "ʔ", "NUL": "∅" };
+
+/** Spellings accepted for symbols that are awkward to type. */
+const SOUND_ALIASES = {
+  "0": "∅", "_": "∅", "-": "∅",   // the empty-slot filler
+  "eɪ": "e", "ej": "e",           // key chart labels this vowel e/eɪ
+  "ɝ": "ɜ", "ɜr": "ɜ",            // r-coloured spellings of the nurse vowel
+  "ɑː": "ɑ", "iː": "i", "uː": "u",
+};
+
+/** IPA -> the ARPAbet code to display, so the UI teaches the syntax. */
+const IPA_TO_CODE = (() => {
+  const map = { "∅": "0" };
+  Object.entries(ARPABET_TO_IPA).forEach(([code, ipa]) => {
+    if (!map[ipa]) map[ipa] = code;
+  });
+  Object.entries(EXTRA_CODES).forEach(([code, ipa]) => {
+    if (!map[ipa]) map[ipa] = code;
+  });
+  return map;
+})();
+
+/** Split a token into its sound and any $/% variant override. */
+function splitOverride(token) {
+  const last = token.slice(-1);
+  return (last === "$" || last === "%")
+    ? { body: token.slice(0, -1), suffix: last }
+    : { body: token, suffix: "" };
+}
+
+/** One typed token -> the manifest's symbol, override suffix preserved. */
+function normaliseSound(token) {
+  const { body, suffix } = splitOverride(token);
+  if (SOUND_ALIASES[body]) return SOUND_ALIASES[body] + suffix;
+  const upper = body.toUpperCase();
+  if (ARPABET_TO_IPA[upper]) return ARPABET_TO_IPA[upper] + suffix;
+  if (EXTRA_CODES[upper]) return EXTRA_CODES[upper] + suffix;
+  return body + suffix;
+}
+
+/**
+ * Serialise words back into the ASCII syntax shown in the box, carrying
+ * each word's English along in parentheses so the caption survives any
+ * later hand-editing.
+ */
+function wordsToSoundText(words) {
+  return words
+    .map((w) => {
+      const codes = w.ipa.map(sym => IPA_TO_CODE[sym] || sym).join(" ");
+      return w.word ? codes + " (" + w.word + ")" : codes;
+    })
+    .join("  /  ");
+}
+
+/**
+ * Parse the sounds box into words. Tolerant on purpose — this is a
+ * correction surface, so stray slashes and runs of spaces shouldn't cost
+ * you the render.
+ */
+function soundTextToWords(text) {
+  return text.split("/")
+    .map((chunk) => {
+      // (anything in parentheses) is a caption for this word, not a
+      // sound. Pulled out before tokenising so a multi-word label like
+      // (mount baihu) survives intact.
+      let word = "";
+      const body = chunk.replace(/\(([^)]*)\)/g, (_, inner) => {
+        word = inner.trim();
+        return " ";
+      });
+      const ipa = body.trim().split(/\s+/).filter(Boolean).map(normaliseSound);
+      return { word, ipa };
+    })
+    .filter(w => w.ipa.length);
+}
+
+// ---------------------------------------------------------------------
+// Rendering
+// ---------------------------------------------------------------------
+
+async function renderWords(words) {
   await loadManifest();
-  const text = document.getElementById("englishInput").value;
-  const words = sentenceToIPA(text);
-  const ipaLine = document.getElementById("ipaLine");
   const output = document.getElementById("avatarianOutput");
-  ipaLine.innerHTML = words.map(w => `<span>/${w.ipa.join(" ")}/</span>`).join("  ");
   output.innerHTML = "";
   words.forEach((w) => {
+    // Each word carries its own caption, so a long sentence stays
+    // checkable word by word.
+    const unit = document.createElement("span");
+    unit.className = "avatarian-unit";
+
     const wordEl = document.createElement("span");
     renderAvatarian(w.ipa, wordEl);
-    output.appendChild(wordEl);
-  });
-}
-document.getElementById("translateBtn").addEventListener("click", translate);
-document.getElementById("speakEnglishBtn").addEventListener("click", () => {
-  speak(document.getElementById("englishInput").value);
-});
+    unit.appendChild(wordEl);
 
-// ---------- Builder / decoder ----------
-let builderSeq = [];
-async function renderBuilder() {
-  await loadManifest();
-  const seqEl = document.getElementById("builderSeq");
-  seqEl.innerHTML = "";
-  builderSeq.forEach((sym, i) => {
-    const b = document.createElement("button");
-    b.textContent = sym;
-    b.title = "click to remove";
-    b.addEventListener("click", () => { builderSeq.splice(i, 1); renderBuilder(); });
-    seqEl.appendChild(b);
-  });
-  const out = document.getElementById("builderOutput");
-  out.innerHTML = "";
-  const wordEl = document.createElement("span");
-  renderAvatarian(builderSeq, wordEl);
-  out.appendChild(wordEl);
-  document.getElementById("builderIpaLine").textContent = "/" + builderSeq.join(" ") + "/";
-  document.getElementById("builderMatch").textContent = closestEnglishMatch(builderSeq);
-}
-
-function closestEnglishMatch(seq) {
-  const target = seq.join(" ");
-  for (const [word, ipa] of Object.entries(EXCEPTIONS)) {
-    if (ipa === target) return `Closest known English match: "${word}"`;
-  }
-  if (!seq.length) return "";
-  return "No exact match in the small built-in dictionary — shown as raw IPA above.";
-}
-
-function buildPalette(containerId, symbols) {
-  const el = document.getElementById(containerId);
-  symbols.forEach((sym) => {
-    const btn = document.createElement("button");
-    const g = window.AVATARIAN_GLYPHS[sym];
-    if (g) {
-      const art = document.createElement("span");
-      art.className = "pal-art";
-      art.innerHTML = g.svg;
-      btn.appendChild(art);
+    const cap = document.createElement("span");
+    cap.className = "avatarian-caption";
+    if (w.word) {
+      const en = document.createElement("span");
+      en.className = "cap-en";
+      en.textContent = w.word;
+      cap.appendChild(en);
     }
-    const lab = document.createElement("span");
-    lab.className = "pal-lab";
-    lab.textContent = sym;
-    btn.appendChild(lab);
-    btn.addEventListener("click", () => { builderSeq.push(sym); renderBuilder(); });
-    el.appendChild(btn);
+    const ipa = document.createElement("span");
+    ipa.className = "cap-ipa";
+    ipa.textContent = "/" + w.ipa.map(t => splitOverride(t).body).join(" ") + "/";
+    cap.appendChild(ipa);
+    unit.appendChild(cap);
+
+    output.appendChild(unit);
   });
 }
-buildPalette("consonantPalette", ["p","b","t","d","k","g","m","n","ŋ","tʃ","dʒ","f","v","θ","ð","s","z","ʃ","ʒ","h","w","j","r","l"]);
-buildPalette("vowelPalette", ["i","ɪ","e","ɛ","æ","ʌ","ə","u","ʊ","oʊ","ɔ","ɑ","aɪ","aʊ","ɔɪ","ɜ","x","ʔ"]);
 
-document.getElementById("clearBuilderBtn").addEventListener("click", () => { builderSeq = []; renderBuilder(); });
-document.getElementById("speakBuilderBtn").addEventListener("click", () => {
-  // Best-effort: speak the IPA symbols as separated sounds (browsers don't
-  // read raw IPA reliably, so this reads each symbol name as a fallback cue).
-  speak(builderSeq.join(" "));
-});
-
-// ---------- TTS ----------
-function speak(text) {
-  if (!text) return;
-  if (!("speechSynthesis" in window)) {
-    alert("Speech synthesis isn't supported in this browser.");
-    return;
-  }
-  const u = new SpeechSynthesisUtterance(text);
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(u);
+/** Warn about anything typed that maps to no glyph, rather than dropping it. */
+function reportUnknown(words) {
+  const unknown = [...new Set(
+    words.flatMap(w => w.ipa)
+      .map(t => splitOverride(t).body)
+      .filter(sym => !GLYPH_SET[sym])
+  )];
+  document.getElementById("soundsHint").textContent = unknown.length
+    ? "not a known sound: " + unknown.join(" ")
+    : "";
 }
 
-// ---------- Glyph key tab ----------
-// Every cell pairs the DRAWN glyph with the shape traced out of the
-// hand-lettered key (js/manifest.js -> AVATARIAN_REFERENCE), so drift
-// between the two is visible at a glance. The overlay toggle stacks
-// them for a closer read.
-const REFERENCE = window.AVATARIAN_REFERENCE || {};
+/** Draw whatever is in the sounds box. */
+async function draw() {
+  const words = soundTextToWords(document.getElementById("soundsInput").value);
+  reportUnknown(words);
+  await renderWords(words);
+}
+
+/**
+ * English -> sounds, APPENDED to the sounds box. Appending rather than
+ * replacing lets a line be assembled a piece at a time, and matters
+ * because g2p is rule-based and gets words wrong ("wake" comes out
+ * /w æ k/) — you convert what it handles, then fix or type the rest.
+ */
+async function translate() {
+  const words = sentenceToIPA(document.getElementById("englishInput").value);
+  if (!words.length) return;
+  const box = document.getElementById("soundsInput");
+  const existing = box.value.trim();
+  box.value = (existing ? existing + "  /  " : "") + wordsToSoundText(words);
+  await draw();
+}
+
+/** Append a sound to the box and redraw — the reference doubles as a palette. */
+function appendSound(code) {
+  const box = document.getElementById("soundsInput");
+  box.value = (box.value.trim() + " " + code).trim();
+  draw();
+}
+
+document.getElementById("translateBtn").addEventListener("click", translate);
+document.getElementById("clearBtn").addEventListener("click", () => {
+  document.getElementById("soundsInput").value = "";
+  draw();
+});
+// Live redraw. Debounced so a fast typist doesn't re-render on every
+// keystroke — 120ms is below the threshold where it stops feeling
+// immediate, but long enough to coalesce a burst of typing.
+let drawTimer = null;
+document.getElementById("soundsInput").addEventListener("input", () => {
+  clearTimeout(drawTimer);
+  drawTimer = setTimeout(draw, 120);
+});
+// The sounds box redraws as you type, so Enter only needs to not insert
+// a stray newline. Enter in the English box runs the insert.
+document.getElementById("soundsInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); clearTimeout(drawTimer); draw(); }
+});
+document.getElementById("englishInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); translate(); }
+});
+
+// Height mode. Default OFF — equal heights — because the proportional
+// rule still has unresolved nuance.
+const heightsBox = document.getElementById("proportionalHeights");
+function applyHeightMode() {
+  document.body.classList.toggle("avatarian-proportional", heightsBox.checked);
+}
+heightsBox.addEventListener("change", applyHeightMode);
+applyHeightMode();
+
+// ---------------------------------------------------------------------
+// Glyph reference — also the input palette
+// ---------------------------------------------------------------------
+// Each cell pairs the DRAWN glyph with the shape traced out of the
+// hand-lettered key (manifest.js -> AVATARIAN_REFERENCE). The tracings
+// are hidden by default and revealed by a checkbox, so the reference
+// reads as a plain chart until you want to compare against the source.
 
 function refByIPA() {
   const byIPA = {};
@@ -197,7 +322,7 @@ function keyArt(svg, isRef) {
 
 function keySide(label, svg, isRef) {
   const side = document.createElement("div");
-  side.className = "key-side";
+  side.className = "key-side" + (isRef ? " key-side-ref" : "");
   const cap = document.createElement("div");
   cap.className = "key-side-lab";
   cap.textContent = label;
@@ -206,17 +331,35 @@ function keySide(label, svg, isRef) {
   return side;
 }
 
-function keyCell({ title, subtitle, drawn, ref, note, cls }) {
-  const cell = document.createElement("div");
-  cell.className = "key-cell" + (cls ? " " + cls : "");
+function keyCell({ code, title, subtitle, drawn, ref, note, cls }) {
+  // Clickable when it stands for something typeable; the leftover marks
+  // from the key have no code and stay inert.
+  const cell = document.createElement(code ? "button" : "div");
+  cell.className = "key-cell" + (cls ? " " + cls : "") + (code ? " is-clickable" : "");
+  if (code) {
+    cell.type = "button";
+    cell.title = "add " + code + " to the sounds box";
+    cell.addEventListener("click", () => appendSound(code));
+  }
+
   const pair = document.createElement("div");
   pair.className = "key-pair";
   pair.appendChild(keySide("drawn", drawn, false));
   pair.appendChild(keySide("key", ref, true));
   cell.appendChild(pair);
+
   const lab = document.createElement("div");
   lab.className = "key-lab";
-  lab.textContent = title;
+  if (code) {
+    const c = document.createElement("span");
+    c.className = "key-code";
+    c.textContent = code;
+    lab.appendChild(c);
+  }
+  const t = document.createElement("span");
+  t.className = "key-ipa";
+  t.textContent = title;
+  lab.appendChild(t);
   if (subtitle) {
     const n = document.createElement("span");
     n.className = "key-name";
@@ -224,6 +367,7 @@ function keyCell({ title, subtitle, drawn, ref, note, cls }) {
     lab.appendChild(n);
   }
   cell.appendChild(lab);
+
   if (note) {
     const n = document.createElement("div");
     n.className = "key-note";
@@ -245,7 +389,7 @@ function keySection(wrap, title, hint) {
   wrap.appendChild(h);
 }
 
-async function buildKeyGrid() {
+function buildKeyGrid() {
   const grid = document.getElementById("keyGrid");
   grid.innerHTML = "";
 
@@ -254,21 +398,30 @@ async function buildKeyGrid() {
   const byIPA = refByIPA();
   const used = new Set();
 
-  ["consonant", "vowel"].forEach((kind) => {
-    const entries = Object.entries(window.AVATARIAN_GLYPHS)
-      .filter(([, info]) => info.type === kind);
-    keySection(wrap, kind === "consonant" ? "Consonants" : "Vowels");
+  const SECTIONS = {
+    consonant: ["Consonants", null],
+    vowel: ["Vowels", null],
+    null: ["Slot filler", "written into an empty bottom slot, not a sound"],
+  };
+
+  ["consonant", "vowel", "null"].forEach((kind) => {
+    const entries = Object.entries(GLYPH_SET).filter(([, i]) => i.type === kind);
+    if (!entries.length) return;
+    keySection(wrap, SECTIONS[kind][0], SECTIONS[kind][1]);
+
     entries.forEach(([ipa, info]) => {
-      const ref = byIPA[ipa];
-      if (ref) used.add(ref.name);
+      const code = IPA_TO_CODE[ipa] || ipa;
+      // Pair by sound, falling back to the stem name — the ∅ filler has
+      // a tracing but no IPA to match on.
+      const ref = byIPA[ipa] || REFERENCE[info.name];
+      if (ref) used.add(ref.name || info.name);
       wrap.appendChild(keyCell({
+        code,
         title: "/" + ipa + "/",
         subtitle: info.name,
         drawn: info.status === "PLACEHOLDER" ? null : info.svg,
         ref: ref ? ref.svg : null,
-        note: ref ? null : (info.note || (info.status === "PLACEHOLDER"
-          ? "no glyph anywhere yet"
-          : "drawn, but not in the key")),
+        note: info.status === "PLACEHOLDER" ? "no glyph anywhere yet" : null,
         cls: ref ? (info.status === "PLACEHOLDER" ? "is-placeholder" : "")
                  : "no-ref",
       }));
@@ -278,9 +431,10 @@ async function buildKeyGrid() {
   const extras = Object.entries(REFERENCE).filter(([name]) => !used.has(name));
   if (extras.length) {
     keySection(wrap, "In the key, not in the set",
-               "marks we have traced but not assigned a sound");
+               "marks traced from the chart but not yet assigned a sound");
     extras.forEach(([name, info]) => {
       wrap.appendChild(keyCell({
+        code: null,
         title: info.ipa ? "/" + info.ipa + "/" : "—",
         subtitle: name,
         drawn: null,
@@ -290,18 +444,44 @@ async function buildKeyGrid() {
     });
   }
 
-  wrap.classList.toggle("overlay", document.getElementById("keyOverlay").checked);
   grid.appendChild(wrap);
 }
 
-document.getElementById("keyOverlay").addEventListener("change", (e) => {
-  const wrap = document.querySelector("#keyGrid .key-grid");
-  if (wrap) wrap.classList.toggle("overlay", e.target.checked);
+// ---------- Theme ----------
+// Three states: follow the OS, or an explicit light/dark that overrides
+// it. Only an explicit choice is stored, so leaving it on "auto" keeps
+// tracking the system setting.
+const themeBtn = document.getElementById("themeToggle");
+const THEME_LABELS = { auto: "◐ Theme: auto", light: "☀ Theme: light", dark: "☾ Theme: dark" };
+const THEME_ORDER = ["auto", "light", "dark"];
+
+function applyTheme(mode) {
+  if (mode === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", mode);
+  themeBtn.textContent = THEME_LABELS[mode];
+  themeBtn.setAttribute("aria-label", "Colour theme: " + mode + ". Click to change.");
+}
+
+let themeMode = localStorage.getItem("avatarian-theme") || "auto";
+if (!THEME_ORDER.includes(themeMode)) themeMode = "auto";
+applyTheme(themeMode);
+
+themeBtn.addEventListener("click", () => {
+  themeMode = THEME_ORDER[(THEME_ORDER.indexOf(themeMode) + 1) % THEME_ORDER.length];
+  if (themeMode === "auto") localStorage.removeItem("avatarian-theme");
+  else localStorage.setItem("avatarian-theme", themeMode);
+  applyTheme(themeMode);
 });
 
-translate();
-renderBuilder();
+const keyBox = document.getElementById("showKeyTracings");
+function applyKeyTracings() {
+  document.body.classList.toggle("show-key-tracings", keyBox.checked);
+}
+keyBox.addEventListener("change", applyKeyTracings);
+applyKeyTracings();
+
 buildKeyGrid();
+translate();
 </script>
 </body>
 </html>

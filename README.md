@@ -1,14 +1,34 @@
 # Avatarian Translator — project scaffold (v1)
 
+## Credit
+
+Avatarian is a community decipherment. The reference material this tool
+encodes — the key chart, the writing samples, and the structural readings —
+comes from:
+
+* **BokerBigBanana** on Avatar Wiki —
+  <https://avatar.fandom.com/wiki/User:BokerBigBanana>
+* **u/DepressionDokkebi**, "Avatarian decipherment so far" —
+  <https://www.reddit.com/r/TheLastAirbender/comments/1v4yalr/avatarian_decipherment_so_far/>
+* **u/arienzio**, "New Avatar: The Last Airbender conscript" —
+  <https://www.reddit.com/r/neography/comments/1slqce2/new_avatar_the_last_airbender_conscript/>
+
+**Tool designed by TechFilmer** on Avatar Wiki —
+<https://avatar.fandom.com/wiki/User:TechFilmer>.
+
+The code here renders that decipherment work; the script itself is not this
+project's research. Keep the credit in the site footer, the `wiki/` files,
+and here.
+
 A static, no-server toolkit for the Avatarian conscript: English → Avatarian,
 a click-to-build/decode tool, glyph key, MediaWiki integration for Avatar
-Wiki (Fandom), and TTS for pronunciation checking.
+Wiki (Fandom).
 
 ## What's in here
 
 ```
 site/            <- deploy this folder to GitHub Pages / Cloudflare Pages
-  index.html       English↔Avatarian app, builder/decoder, glyph key, TTS
+  index.html       the whole app: English↔Avatarian, glyph reference
   js/g2p.js        English -> IPA (rule-based, no server/dictionary needed)
   js/render.js     IPA -> Avatarian glyphs (shared by site AND the wiki)
   js/manifest.js   generated — every glyph's SVG inlined (the whole "font")
@@ -68,27 +88,65 @@ JavaScript off, they see the plain English text instead of nothing.
 
 ## Why this isn't a literal font
 
-Canon reference art (the "Katara, please do not be mad" note) shows
-syllables composing into compact blocks, closer to Hangul than to an
-alphabet. No font format does that kind of dynamic composition well, so
-composition happens in the DOM instead.
+Canon reference art shows sounds composing into compact blocks, closer to
+Hangul than to an alphabet. No font format does that kind of dynamic
+composition well, so composition happens in the DOM instead.
 
-Layout is derived from that reference art:
+### Blocks are pairs, not syllables
 
-- each syllable is one block;
-- **the vowel sits underneath the consonant** — verified against the first
-  block of "Katara", where the /ə/ squiggle-and-dots mark sits directly
-  below the /k/ glyph;
-- both rows render at the same size;
-- blocks pack tight with no borders; word spacing separates words.
+Phonemes are written **in strict order, two to a block**, top slot then
+bottom slot, with blocks running left to right. Nothing about the layout
+depends on a sound being a consonant or a vowel — a block is just the next
+two sounds in the word.
 
-The key chart notes "Consonants take up 3/4 height, Vowels take 1/4
-height", which describes bands within a hand-lettered block rather than a
-scale factor. Every glyph is drawn on one 100×100 grid, so shrinking the
-lower row shrinks the whole mark instead of just its band, and vowels came
-out too faint to read against their consonant. Sizing lives in the CSS —
-`site/css/style.css` and `wiki/MediaWiki_Common.css.txt`, which have to
-stay in step because both drive the same `render.js`.
+```
+please  /p l i z/    (p,l) (i,z)
+at      /æ t/        (æ,t)          <- vowel on TOP
+up      /ʌ p/        (ʌ,p)          <- vowel on TOP
+not     /n ɑ t/      (n,ɑ) (t,∅)
+mad     /m æ d/      (m,æ) (d,∅)
+```
+
+This was read off a labelled writing sample — "please do not be mad at me
+when you wake up, but" — and holds for all twelve of its words. It replaced
+an earlier syllable model (consonants clustered on top, vowel beneath),
+which happened to agree on CV words like "katara" and disagreed on
+everything else. It also explains why /ɑ/ looked inverted between "katara"
+and "appa": it was in different slots.
+
+An odd number of phonemes leaves the final bottom slot empty, and the **∅
+filler** — the ∪ cup, `glot_v` in the key — is written there. It is part of
+the spelling, not padding. Five of the sample's words need it.
+
+Blocks pack tight with no borders; word spacing separates words.
+
+### Heights are an option, currently off
+
+Every slot renders 52×52 by default. The **Proportional heights** checkbox
+turns on the script's native units — consonants 5 tall, vowels 3, so 52px
+against 31px — by adding `avatarian-proportional` to `<body>`. It ships off
+because the rule still has unresolved nuance.
+
+In that mode the ratio applies to **height only**: vowels keep the full
+block width, because canon draws them wide and flat, spanning their
+partner. Vowel SVGs are written with `preserveAspectRatio="none"` so they
+stretch rather than letterbox into a small centred square, and the CSS
+bumps their `stroke-width`, since stretching scales weight
+anisotropically — verticals follow the x-scale, horizontals thin out with
+the y-scale. That compensation is in the CSS rather than the authored SVG
+so the weight stays correct in the default mode, where nothing stretches.
+
+Sizing follows the **sound**, not the slot, so a vowel in the top slot is
+still short — which happens whenever a word starts with one.
+
+The key chart's own note, "Consonants take up 3/4 height, Vowels take 1/4
+height", describes bands within a hand-lettered block rather than a scale
+factor; rendering it literally left vowels unreadable. Every glyph is drawn
+on one 100×100 grid, so shrinking a mark shrinks the whole thing instead of
+just its band — keep the ratio and the base size legible
+together. Sizing lives in the CSS — `site/css/style.css` and
+`wiki/MediaWiki_Common.css.txt`, which have to stay in step because both
+drive the same `render.js`.
 
 **What still differs from canon:** in the reference, adjacent glyphs are
 hand-lettered so their strokes interlock and share edges, and blocks are
@@ -145,42 +203,98 @@ drifted, fix them in `build_glyphs.py`, re-run, look again.
 
 ### Still unresolved
 
-Eight sounds have no symbol anywhere in the reference material and render as
-a dashed "?" box throughout: **dʒ, ʃ, ʒ, x, ʊ, ɔ, ɔɪ, ɜ**. To fill one
+Seven sounds have no symbol anywhere in the reference material and render as
+a dashed "?" box throughout: **tʃ, dʒ, ʃ, ʒ, x, ʊ, ɔɪ**. To fill one
 in, add its path to `build_glyphs.py`, move its name out of the
 `PLACEHOLDERS` dict, and re-run both scripts.
 
-Not every glyph comes from `reference/avatarian_key.svg` — /ɑ/ was supplied
-separately, so it has no tracing to sit beside. Add such a glyph to
-`SOURCE_NOTES` in `build_glyphs.py` and the key tab will say where it came
-from instead of flagging it the way it flags /tʃ/, which has no known
-source at all.
+Not every glyph comes from `reference/avatarian_key.svg` — /ɑ/ and /ɔ/ were
+supplied separately, so they have no tracing to sit beside. Add such a glyph
+to `SOURCE_NOTES` in `build_glyphs.py` and the key tab will say where it came
+from.
 
-`ɜ`'s file stem is `nurse`, not `er`. The rest of the stems are ARPAbet
-codes, and ARPAbet's ER is the r-coloured ɝ — but `g2p.js` emits ɜ with
-/r/ as a separate segment ("bird" → `ɜ r`), so the vowel carries no
-r-colouring. It is named for its lexical set, the way ə is named `schwa`.
+`ɜ` and `ə` are **mirror images, and separate glyphs**. `ə` (`schwa`) has its
+recurve ascending left to right with the dot above on the left; `ɜ` (`nurse`)
+descends with the dot below on the left. They were briefly merged onto one
+file because a reference screenshot labelled a single mark `ə/ɜ` — that was
+wrong. The stem is `nurse`, never `er`: the rest of the stems are ARPAbet
+codes and ARPAbet's ER is the r-coloured ɝ, but `g2p.js` emits ɜ with /r/ as
+a separate segment, "bird" → `ɜ r`, so the vowel carries no r-colouring.
 
-### Known open questions
+### Orientation
 
-The key chart shows several vowels (ɪ, e, æ, aɪ) with *two* positional
-forms — the notes say "top/bottom", and æ appears as both a cup and a cap.
-This renders one form per vowel. If the rule is that the form flips
-depending on where the vowel sits in the block, that is a real feature
-still to be implemented. The second æ form is extracted as `ae_alt` and
-shows in the key tab under "in the key, not in the set".
+Each glyph is drawn once, in its **top-slot form**. Some glyphs mirror
+top-to-bottom when they land in a bottom slot; most don't. The ones that do
+are listed in `FLIPS` in `tools/build_glyphs.py`:
+
+| sound | evidence |
+| --- | --- |
+| æ | "at" (top, cup ∪) vs "mad" (bottom, cap ∩) |
+| ɑ | "appa" (top, proper Y) vs "katara" (bottom, stem up) |
+| l | "please" (bottom); the key chart draws both orientations |
+| ɪ | "metalbending" |
+| e | "Aang" (top) vs "wake" (bottom) |
+
+This replaced a table of hand-drawn variant pairs — every pair in it was an
+exact vertical mirror, so one drawing plus a flip does the same job with
+half the assets. It is deliberately a list rather than a blanket rule: most
+glyphs keep one orientation, so only add a sound here against a word that
+actually shows it flipped.
+
+**/s/ is the exception**: "students" writes both of its /s/ in top slots and
+uses a different orientation for each, so no slot rule can select them. Use
+the `$` / `%` override there.
+
+### The sounds syntax
+
+The app is one page: type English and convert, or type sounds directly.
+The **sounds box** is what actually gets drawn, and it is always editable —
+`g2p.js` is rule-based and gets words wrong ("wake" comes out `/w æ k/`), so
+rather than misspelling the English to trick it ("waike") you fix the sounds.
+
+It is **ASCII-first, typeable on a plain QWERTY keyboard**. Sounds are
+separated by spaces, words by `/`:
+
+```
+S$ T UW 0 D AX N T S 0   /   M EH T AX L 0 B EH N D IH NG
+students                     metalbending
+```
+
+* **ARPAbet codes** are the primary spelling — the table `g2p.js` already
+  converts through, extended with `AX` (schwa), `Q` (/ʔ/) and `NUL`, which
+  ARPAbet has no codes for. Case-insensitive.
+* **IPA is accepted too**, plus aliases: `eɪ` for `e`, `ɝ`/`ɜr` for `ɜ`.
+* **`0`** (or `_`, `-`) is the `∅` empty-slot filler.
+* **`$` / `%`** suffixes force a glyph's top or bottom orientation — `S$`.
+  Needed where the slot doesn't decide it, currently only /s/.
+* **`(parentheses)`** caption a word rather than being read as sounds, so
+  `M EH T AX L 0 B EH N D IH NG (metalbending)` draws captioned. Converting
+  from English emits these automatically, and since the label is part of the
+  text it survives any later editing.
+
+The drawing updates as you type — there is no draw button. **Insert sounds**
+appends to the box rather than replacing it, so a line can be built a piece
+at a time (convert what `g2p` handles, then fix or type the rest). Anything
+that maps to no glyph is named in a warning rather than silently dropped. The glyph reference below the output doubles as a palette: clicking
+a glyph appends its code to the box, and each cell shows the code you type.
+The traced key shapes are hidden behind a checkbox, so the chart reads as a
+plain reference until you want to compare against the source.
 
 Two more loose ends surfaced by the extraction:
 
-* **/tʃ/ is drawn but has no source.** There is no tʃ anywhere in the key
-  chart, yet `build_glyphs.py` has a shape for it. Either it came from
-  material not in `reference/`, or it is an invention that should be
-  demoted to a placeholder.
-* **Two unassigned marks in the key.** The chart labels a "null" in the
-  vowel block (extracted as `glot_v`, the cup) and carries an unlabelled
-  wedge directly above it, which `CELLS` maps to `None` so it is skipped.
-  Whether those are two forms of one null-vowel mark, or two different
-  things, needs source material rather than a guess.
+* **/tʃ/ was drawn from nothing.** There is no tʃ anywhere in the key
+  chart, yet `build_glyphs.py` carried a shape for it — an invention that
+  looked exactly as authoritative as the sourced glyphs. It is now a
+  placeholder. Restore it only against real source material.
+* **One unassigned mark in the key.** An unlabelled wedge sits directly
+  above the vowel-block null; `CELLS` maps it to `None` so it is skipped.
+  It needs source material rather than a guess.
+
+  The vowel-block null itself is settled: it is `glot_v`, the ∪ cup, and
+  it fills an empty bottom slot. That was the open "two nulls" question —
+  the ⊓ gate (`glot`) is /ʔ/, a real sound; the ∪ cup is not a sound at
+  all. The writing sample shows it under "not", "mad", "when", "wake" and
+  "but", every one of which has an odd phoneme count.
 
 ## The English → IPA converter (g2p.js)
 
@@ -198,15 +312,6 @@ a few MB and worth deciding on deliberately rather than shipping by default.
 The template also accepts an explicit `ipa=` parameter for exactly this
 reason — use it whenever you already know the correct pronunciation and
 don't want to rely on the guesser.
-
-## TTS
-
-Uses the browser's built-in Web Speech API (`speechSynthesis`) — no server,
-no API key. "Hear English" speaks your input text normally, for checking
-that the IPA/Avatarian actually matches what you meant. There's no reliable
-cross-browser way to have TTS engines read raw IPA aloud, so this checks
-pronunciation by round-tripping through the English word rather than by
-literally vocalizing IPA symbols.
 
 ## Known limitations (v1)
 

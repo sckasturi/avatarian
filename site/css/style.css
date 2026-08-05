@@ -1,30 +1,121 @@
+/* Every colour goes through a variable so the dark theme below can swap
+   the whole palette. Glyph SVGs use currentColor and inherit --ink, so
+   they follow the theme without touching the generated manifest. */
 :root {
   --ink: #3a2a20;
   --paper: #f2e2c4;
   --accent: #8a3b2a;
   --line: #c9b083;
+  --card: #fffaf0;
+  --surface: #ffffff;
+  --muted: #6b5a45;
+  --muted-2: #7a6a55;
+  --faint: #9a8a72;
+  --hover: #fff0d8;
+  --code-bg: #f3e7d2;
+  --warn: #bb3322;
+  --tint-placeholder: #fdf4ec;
+  --tint-noref: #fdf1f1;
+  color-scheme: light;
+}
+
+/* Dark theme. Follows the OS by default; the toggle stamps data-theme on
+   <html> and must win in both directions, hence the explicit light block. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #ece0cc;
+    --paper: #161210;
+    --accent: #d98e6d;
+    --line: #4a3d2e;
+    --card: #211b15;
+    --surface: #29221a;
+    --muted: #bcab90;
+    --muted-2: #a8967c;
+    --faint: #8a7a63;
+    --hover: #372c20;
+    --code-bg: #2f2619;
+    --warn: #ff9080;
+    --tint-placeholder: #251e15;
+    --tint-noref: #2b1d1a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ink: #ece0cc;
+  --paper: #161210;
+  --accent: #d98e6d;
+  --line: #4a3d2e;
+  --card: #211b15;
+  --surface: #29221a;
+  --muted: #bcab90;
+  --muted-2: #a8967c;
+  --faint: #8a7a63;
+  --hover: #372c20;
+  --code-bg: #2f2619;
+  --warn: #ff9080;
+  --tint-placeholder: #251e15;
+  --tint-noref: #2b1d1a;
+  color-scheme: dark;
 }
 
 body {
   font-family: "Georgia", serif;
   background: var(--paper);
   color: var(--ink);
-  max-width: 880px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 24px 16px 80px;
+  padding: 24px 20px 60px;
 }
+
+/* Two columns: the working surface on the left, the (long) glyph
+   reference on the right. The left column is sticky so the sounds box
+   and the drawing stay on screen while the reference scrolls — the whole
+   point being that you can see what you're doing while you pick glyphs. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+  gap: 22px;
+  align-items: start;
+}
+.col-work {
+  position: sticky;
+  top: 18px;
+  max-height: calc(100vh - 36px);
+  overflow-y: auto;
+}
+.col-ref { min-width: 0; }
+
+/* Stacked below the breakpoint, where sticky would eat the whole screen. */
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .col-work { position: static; max-height: none; overflow-y: visible; }
+}
+
+.page-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.page-head h1 { margin-bottom: 0; }
+.theme-toggle {
+  margin-left: auto; padding: 6px 12px; font-family: inherit;
+  font-size: 0.82rem; cursor: pointer; color: var(--muted);
+  background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+}
+.theme-toggle:hover { background: var(--hover); color: var(--ink); }
 
 h1 { font-size: 1.6rem; margin-bottom: 4px; }
-.subtitle { color: #6b5a45; margin-top: 0; font-size: 0.95rem; }
+.subtitle { color: var(--muted); margin-top: 0; font-size: 0.95rem; }
 
-.tabs { display: flex; gap: 8px; margin: 20px 0 12px; }
-.tab-btn {
-  padding: 8px 14px; border: 1px solid var(--line); background: #fff8ea;
-  border-radius: 6px 6px 0 0; cursor: pointer; font-family: inherit;
+.card {
+  border: 1px solid var(--line); border-radius: 8px; padding: 18px;
+  background: var(--card); margin: 20px 0;
 }
-.tab-btn.active { background: var(--paper); border-bottom: 2px solid var(--accent); font-weight: bold; }
-.panel { display: none; border: 1px solid var(--line); border-radius: 0 8px 8px 8px; padding: 18px; background: #fffaf0; }
-.panel.active { display: block; }
+.card h2 { margin: 0 0 4px; font-size: 1.15rem; }
+.row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+.syntax-help {
+  font-size: 0.82rem; color: var(--muted-2); line-height: 1.55; margin: 6px 0 2px;
+}
+.syntax-help code {
+  background: var(--code-bg); padding: 1px 5px; border-radius: 4px;
+  font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95em;
+}
 
 textarea, input[type=text] {
   width: 100%; box-sizing: border-box; font-size: 1rem; padding: 10px;
@@ -32,95 +123,183 @@ textarea, input[type=text] {
 }
 
 button.primary {
-  margin-top: 10px; padding: 9px 16px; background: var(--accent); color: #fff;
+  margin-top: 10px; padding: 9px 16px; background: var(--accent); color: var(--paper);
   border: none; border-radius: 6px; cursor: pointer; font-size: 0.95rem;
 }
 button.primary:hover { opacity: 0.9; }
-button.icon-btn {
-  margin-top: 10px; margin-left: 8px; padding: 9px 14px; background: #fff;
-  border: 1px solid var(--accent); color: var(--accent); border-radius: 6px; cursor: pointer;
-}
-
-.ipa-line { font-size: 1.1rem; margin-top: 14px; color: #555; }
-.ipa-line span { margin-right: 4px; }
 
 .avatarian-output {
-  margin-top: 16px; padding: 18px; background: #fff; border: 1px solid var(--line);
-  border-radius: 8px; min-height: 90px; display: flex; flex-wrap: wrap; align-items: flex-end;
+  margin-top: 16px; padding: 18px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; min-height: 90px; display: flex; flex-wrap: wrap; align-items: stretch;
 }
-/* Syllable block layout — mirrors canon reference art: the vowel sits
-   UNDERNEATH the consonant, blocks pack tight with no borders, and word
-   spacing (not per-block borders) is what separates words.
+/* One rendered word plus its English/IPA caption. Captioning per word
+   keeps a long sentence checkable without counting along the combined
+   IPA line above the output. */
+.avatarian-unit {
+  display: inline-flex; flex-direction: column; align-items: center;
+  margin: 6px 22px 12px 0;
+}
+.avatarian-unit .avatarian-word { margin: 0; }
+/* margin-top:auto pushes every caption to the bottom of the row, so they
+   line up even though words differ in height (a block with two
+   consonants is taller than one with a vowel). */
+.avatarian-caption {
+  display: flex; flex-direction: column; align-items: center;
+  margin-top: auto; padding-top: 7px; line-height: 1.3; text-align: center;
+}
+.avatarian-caption .cap-en { font-size: 0.85rem; color: var(--ink); }
+.avatarian-caption .cap-ipa { font-size: 0.72rem; color: var(--muted-2); }
+/* Block layout — a block is a PAIR of phonemes, written top slot then
+   bottom slot (see the header of js/render.js). Blocks pack tight with
+   no borders; word spacing, not per-block borders, separates words.
 
-   Both rows render at the same size. The key chart's note says vowels
-   take 1/4 the height, but the glyphs are drawn on one 100x100 grid, so
-   scaling the lower row down shrinks the whole mark rather than just its
-   band — vowels came out too faint to read beside their consonant. */
+   Sizing follows the SOUND, not the slot: consonants are 5 units tall,
+   vowels 3. At 52px per consonant that puts a unit at 10.4px, so a
+   vowel is 31px — including a vowel sitting in the top slot, which
+   happens whenever a word starts with one ("at", "up").
+
+   A vowel keeps the FULL block width and loses only height — canon
+   draws vowel marks wide and flat, spanning their partner. That is why
+   vowel SVGs carry preserveAspectRatio="none" (set in build_glyphs.py):
+   the default would letterbox them into a small centred square, which
+   is the bug that made 1:4 unreadable. Height alone is the ratio;
+   width is not.
+
+   Change wiki/MediaWiki_Common.css.txt in step — both stylesheets drive
+   the same render.js. */
 .avatarian-word {
   display: inline-flex; align-items: flex-start;
   margin: 6px 30px 10px 0;
 }
-.avatarian-syllable {
+.avatarian-block {
   display: inline-flex; flex-direction: column; align-items: center;
   margin-right: 3px;
 }
-.avatarian-onset { display: flex; align-items: flex-end; gap: 1px; }
-.avatarian-nucleus {
-  display: flex; justify-content: center; align-items: flex-start;
-  height: 52px; margin-top: -1px;
+.avatarian-slot { display: flex; justify-content: center; }
+.avatarian-slot-bottom { margin-top: -1px; }
+
+.render-opts { margin-top: 10px; font-size: 0.85rem; color: var(--muted-2); }
+.render-opts label { display: inline-flex; align-items: center; gap: 6px; }
+.ipa-hint { margin-left: 10px; font-size: 0.8rem; color: var(--warn); }
+#soundsInput {
+  font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95rem;
 }
 .avatarian-glyph { display: inline-block; line-height: 0; color: var(--ink); }
 .avatarian-glyph svg { display: block; width: 100%; height: 100%; }
-.avatarian-glyph.avatarian-consonant { width: 52px; height: 52px; }
-.avatarian-glyph.avatarian-vowel { width: 52px; height: 52px; }
-.avatarian-placeholder { opacity: 0.5; }
-.avatarian-missing { font-size: 13px; color: #b03; line-height: 1; }
+/* DEFAULT: every slot the same size. The proportional rule below is
+   opt-in because it still has unresolved nuance. */
+.avatarian-glyph.avatarian-consonant,
+.avatarian-glyph.avatarian-vowel,
+.avatarian-glyph.avatarian-null { width: 52px; height: 52px; }
 
-.legend { font-size: 0.8rem; color: #7a6a55; margin-top: 10px; }
+/* Proportional mode.
+
+   The block is a FIXED height and its two slots divide it, so every
+   block in a word is the same height regardless of what's in it — two
+   consonants stack to exactly the same total as a vowel over a
+   consonant. A consonant is therefore 5/8 of the block beside a vowel
+   but 1/2 beside another consonant, which is why these are flex ratios
+   rather than fixed pixel heights.
+
+   Consonant 5 : vowel 3. 83.2px makes a unit 10.4px, so a consonant
+   beside a vowel lands on exactly 52px — the same size it renders at in
+   the default mode.
+
+   EVERY glyph is scaled UNIFORMLY here: the slot sets the height and the
+   width follows from the SVG's own viewBox aspect. Nothing is stretched,
+   so stroke weight is identical to the default mode and dots stay round.
+   Vowels manage the wide-flat shape by swapping to a 100x60 drawing
+   (generated in build_glyphs.py) rather than by being squashed. */
+/* Sizes are explicit rather than flex-derived. An SVG sized height:100%
+   / width:auto inside an auto-width parent is circular and resolves to
+   zero width, which silently collapses every block onto the same x.
+
+   A unit is 10.4px. Consonant 5 units, vowel 3, so a mixed block is
+   52 + 31.2 = 83.2px. Two consonants split the same total, 4 units each
+   at 41.6px — that is the rule that a C+C block matches a V+C block in
+   height, expressed directly.
+
+   Every box matches its drawing's viewBox aspect (square for consonants,
+   100x60 for the flat vowels), so the scale stays uniform. */
+body.avatarian-proportional .avatarian-glyph.avatarian-consonant {
+  width: 52px; height: 52px;
+}
+body.avatarian-proportional .avatarian-glyph.avatarian-vowel,
+body.avatarian-proportional .avatarian-glyph.avatarian-null {
+  width: 52px; height: 31.2px;
+}
+/* A block of two consonants: 4 units each instead of 5. */
+body.avatarian-proportional
+  .avatarian-block:not(:has(.avatarian-vowel)):not(:has(.avatarian-null))
+  .avatarian-glyph.avatarian-consonant {
+  width: 41.6px; height: 41.6px;
+}
+body.avatarian-proportional .avatarian-slot-bottom { margin-top: 0; }
+
+/* Bottom-slot glyphs are the same drawing mirrored top-to-bottom. A
+   transform rather than a second asset: it is exact, costs nothing, and
+   keeps stroke weight and dot roundness identical to the top form. */
+.avatarian-glyph.avatarian-flipped svg { transform: scaleY(-1); }
+
+/* One of the two drawings shows at a time. Only glyphs that HAVE a flat
+   form get their square one hidden — consonants ship a single drawing
+   and must keep showing it in both modes, hence :only-of-type. */
+.avatarian-glyph svg.g-flat { display: none; }
+body.avatarian-proportional .avatarian-glyph svg.g-square:not(:only-of-type) {
+  display: none;
+}
+body.avatarian-proportional .avatarian-glyph svg.g-flat { display: block; }
+
+.avatarian-placeholder { opacity: 0.5; }
+.avatarian-missing { font-size: 13px; color: var(--warn); line-height: 1; }
+
+.legend { font-size: 0.8rem; color: var(--muted-2); margin-top: 10px; }
 .legend .dot { display: inline-block; width: 10px; height: 10px; border: 1px dashed var(--accent); margin-right: 4px; }
 
-.palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap: 6px; margin-top: 12px; }
-.palette button {
-  padding: 6px 2px; background: #fff; border: 1px solid var(--line); border-radius: 6px; cursor: pointer;
-  font-family: inherit; font-size: 0.95rem;
-}
-.palette button:hover { background: #fff0d8; }
-.palette-group-label { grid-column: 1 / -1; font-weight: bold; margin-top: 6px; font-size: 0.85rem; color: #6b5a45; }
-
-.builder-seq { min-height: 40px; padding: 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; margin-top: 10px; }
-.builder-seq button { margin: 0 3px 3px 0; padding: 3px 8px; border-radius: 10px; border: 1px solid var(--accent); background: #fff2df; cursor: pointer; }
-
-footer { margin-top: 40px; font-size: 0.8rem; color: #8a7a63; text-align: center; }
+footer { margin-top: 40px; font-size: 0.8rem; color: var(--faint); text-align: center; }
 
 /* Glyph key grid — each cell pairs the drawn glyph with the traced
    shape from the hand-lettered key, so the two can be compared. */
-.key-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(126px, 1fr)); gap: 8px; }
-.key-cell { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px 6px; text-align: center; }
-.key-cell.is-placeholder { background: #fdf4ec; }
-.key-cell.no-ref { background: #fdf1f1; }
+.key-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); gap: 7px; }
+.key-cell {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  padding: 8px 6px; text-align: center; font: inherit; color: inherit;
+  display: block; width: 100%;
+}
+.key-cell.is-clickable { cursor: pointer; }
+.key-cell.is-clickable:hover { background: var(--hover); border-color: var(--accent); }
+.key-cell.is-clickable:active { transform: translateY(1px); }
+.key-cell.is-clickable:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.key-cell.is-placeholder { background: var(--tint-placeholder); }
+/* "no tracing to compare against" is only meaningful while the tracings
+   are on screen, so the tint is scoped to that mode rather than colouring
+   cells in what is otherwise just a palette. */
+body.show-key-tracings .key-cell.no-ref { background: var(--tint-noref); }
 .key-pair { display: flex; justify-content: center; align-items: flex-start; gap: 4px; }
 .key-side { flex: 1; min-width: 0; }
-.key-side-lab { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: #9a8a72; }
+.key-side-lab { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--faint); }
 .key-art { color: var(--accent); width: 52px; height: 52px; margin: 0 auto; }
 .key-art.is-ref { color: var(--ink); }
 .key-art svg { width: 100%; height: 100%; display: block; }
 .key-art.is-empty { border: 1px dashed var(--line); border-radius: 6px; box-sizing: border-box; }
 .key-lab { font-size: 13px; color: var(--ink); margin-top: 6px; }
-.key-lab .key-name { display: block; font-size: 11px; color: #9a8a72; }
+.key-lab .key-code {
+  display: block; font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-weight: bold; font-size: 13px; color: var(--accent);
+}
+.key-lab .key-ipa { display: block; font-size: 11px; color: var(--muted); }
+.key-lab .key-name { display: block; font-size: 11px; color: var(--faint); }
 .key-note { font-size: 11px; color: var(--accent); margin-top: 3px; }
-.key-section { grid-column: 1 / -1; font-weight: bold; font-size: 0.9rem; color: #6b5a45; margin-top: 10px; }
-.key-section span { font-weight: normal; font-size: 0.82rem; color: #8a7a63; }
+.key-section { grid-column: 1 / -1; font-weight: bold; font-size: 0.9rem; color: var(--muted); margin-top: 10px; }
+.key-section span { font-weight: normal; font-size: 0.82rem; color: var(--faint); }
 
 /* Overlay mode — reference behind, drawn on top, to spot drift. */
-.key-grid.overlay .key-pair { position: relative; display: block; height: 52px; }
-.key-grid.overlay .key-side { position: absolute; inset: 0; }
-.key-grid.overlay .key-side-lab { display: none; }
-.key-grid.overlay .key-art { width: 52px; height: 52px; }
-.key-grid.overlay .key-art.is-ref { opacity: 0.28; }
+/* The traced key shapes are a comparison aid, not the point of the
+   chart, so they stay hidden until the checkbox asks for them. Both
+   sides' labels are pointless when only one side is showing. */
+.key-side-ref { display: none; }
+.key-side-lab { display: none; }
+body.show-key-tracings .key-side-ref { display: block; }
+body.show-key-tracings .key-side-lab { display: block; }
 .key-grid.overlay .key-art.is-empty { border: none; }
 
-.key-controls { margin-bottom: 12px; font-size: 0.88rem; color: #6b5a45; }
-.key-controls label { margin-right: 14px; cursor: pointer; }
-.pal-art { display: block; width: 30px; height: 30px; margin: 0 auto; color: var(--accent); }
-.pal-art svg { width: 100%; height: 100%; display: block; }
-.pal-lab { display: block; font-size: 12px; margin-top: 3px; color: var(--ink); }
