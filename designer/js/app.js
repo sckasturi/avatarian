@@ -232,8 +232,8 @@ const App = {
    * to the glyph set should be something you agree to after seeing the
    * list, not something one click does — several designs have drifted
    * from their shipped glyph and nobody has decided which direction is
-   * right. Placeholders are excluded either way; ship those one at a
-   * time, deliberately.
+   * right. Placeholders are excluded either way; those ADD a glyph, so
+   * ship them one at a time.
    */
   async shipAll(confirmed) {
     const bar = $("#ship-all-bar");
@@ -283,11 +283,9 @@ const App = {
   /**
    * Write this design into build_glyphs.py and rebuild the set.
    *
-   * A sound that is still a PLACEHOLDER has no symbol in any reference
-   * material, so a drawing of one is an invention — the server refuses
-   * it until asked twice, and the second press is what says "I have a
-   * source for this". /tʃ/ shipped for a long time on nothing, which is
-   * the whole reason for the speed bump.
+   * A sound that is still a PLACEHOLDER has no glyph in the set at all,
+   * so shipping one ADDS a glyph rather than changing one. That is a
+   * bigger step, so it takes a second press.
    */
   async ship(allowInvented) {
     const name = (Store.current || {}).name;
@@ -315,7 +313,7 @@ const App = {
     } catch (e) {
       const msg = String(e.message || e);
       note.className = "fine bad";
-      if (/no symbol in any reference material/.test(msg)) {
+      if (/no glyph in the set yet/.test(msg)) {
         note.textContent = msg + " ";
         const again = document.createElement("button");
         again.className = "tiny";

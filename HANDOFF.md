@@ -9,10 +9,12 @@ what to do next.
 
 ## Session 6 — the designer/site bridge (implemented)
 
-**Read this first.** Session 5's backlog items 1 and 2 are done. Nothing
-in this session touched the decoding model — the 9-row block model, the
-null-selection correction and the V-C open tension are all still open,
-exactly as session 5 left them.
+**Read this first.** Session 5's backlog items 1 and 2 are done, and
+three of its open decoding items closed along the way: **null selection
+by pairing partner** and the **V-C layout tension** are now implemented,
+and the **4-row vowel set** is applied per-glyph. What remains open from
+the 9-row model is **C-C** — whether two consonants overlap by a shared
+row — which the user will come back to.
 
 ### What changed
 
@@ -102,6 +104,25 @@ exactly as session 5 left them.
     Both added, along with the new row shift and `.avatarian-missing`.
     `site/css/blocks.css` is the file to diff it against.
 
+11. **Null selection by pairing partner** (session-5 correction, was
+    still only a doc note). `render.js` wrote the vowel-height cup into
+    every empty slot regardless; it now picks by the partner —
+    `nullFor()` returns the tall `∅c` beside a vowel and the short `∅`
+    beside a consonant. That is also what keeps a block nine rows tall
+    whatever is in it: a vowel+null block was 8 rows before, now 4+5.
+    It applies to a null you TYPE as well as one the renderer inserts,
+    so `0` means "a null" and the sound beside it decides which —
+    including mid-word, where canon puts nulls the renderer can't derive.
+
+12. **The 3-row/4-row set is applied, not just plumbed.** Every vowel
+    design carries an explicit `rows`, set from the session-5 list read
+    as **ARPAbet** — AA AW EY IH OY UH UW are 4-row. The stem names do
+    NOT track the codes, and reading the list as stems gets two wrong in
+    both directions: stem `uh` is /ʌ/ (ARPAbet AH, 3-row) while ARPAbet
+    UH is /ʊ/ (stem `oo`, 4-row); stem `aw` is /ɔ/ (ARPAbet AO, 3-row)
+    while ARPAbet AW is /aʊ/ (stem `au`, 4-row). `VOWEL_4ROW_BASE` was
+    updated to match, as the fallback for anything undrawn.
+
 ### What this surfaced, and hasn't been acted on
 
 - **A number of designs differ from the glyph they ship** — the design
@@ -113,33 +134,34 @@ exactly as session 5 left them.
   rather than trusting a number written here. **Deciding which direction
   is right is still a per-glyph judgement**, which is why `ship all…`
   shows the list before it does anything.
-- **Six of the seven placeholders were shipped during this session** —
-  `sh`, `zh`, `ch`, `j_dz`, `oi`, `oo` (ʃ, ʒ, tʃ, dʒ, ɔɪ, ʊ). Only `kh`
-  (/x/) is still a placeholder. **Confirmed by the user: all six come
-  from source material outside the key chart — nothing is invented, and
-  /x/ has no glyph precisely because no source for it exists.** They are
-  now in `SOURCE_NOTES` alongside `ah` and `aw`, so the key tab explains
-  why they have no tracing to compare against. The older passages
-  calling `tʃ` "an invention drawn from nothing" are superseded.
+- **Provenance is closed — stop raising it.** Six of the seven
+  placeholders were shipped this session (`sh`, `zh`, `ch`, `j_dz`,
+  `oi`, `oo`), leaving `kh` (/x/) as the only one. Every glyph in the
+  set is sourced; nothing is invented, and /x/ has no glyph precisely
+  because no source for it exists. `SOURCE_NOTES` and the reference
+  tracings stay as **archive**, but provenance is not an open question
+  and should not be surfaced in reports or treated as a reason to
+  hesitate. The older passages calling `tʃ` "an invention drawn from
+  nothing" are superseded.
 - **`null_c` is a squared ∪, not a ⊓ gate** — confirmed by the user in
   session 6. Both nulls are cups; `null_c` is squared off and 5 rows
   tall, `null_v` rounded and 3. Docs that called it a "⊓ gate" were
   wrong and are corrected.
-- **Two vowel DRAWINGS disagree with the confirmed row list**, and both
-  are flagged in the designer's problems panel:
-  - **`au` (/aʊ/, ARPAbet AW)** is declared 4-row per the list, but its
-    ink spans y 1.0–3.0 — half a row short at *both* ends, so it doesn't
-    reach into the top row. A 4-row vowel spans 0.5–3.5, so this needs
-    **extending**, not shifting.
-  - **`uh` (/ʌ/, ARPAbet AH)** is declared 3-row, since AH is not on the
-    list, but its ink spans y 0.5–2.5 — it reaches into the top row and
-    stops a row short at the bottom. Shifting it down one row would make
-    it exactly the 3-row convention (1.5–3.5). Alternatively AH belongs
-    on the 4-row list, which would make it eight entries; the drawing and
-    the list genuinely disagree and it needs a decision.
+- ~~Two vowel drawings disagree with the confirmed row list.~~
+  **Both resolved.**
+  - **`uh` (/ʌ/, ARPAbet AH)** was drawn a full row high, y 0.5–2.5 —
+    neither convention. Once top-slot 3-row vowels started being pulled
+    up a row, that pushed its ink *above* the block (−0.2 rows, visible
+    in "of"). **Moved down one row to 1.5–3.5**, exactly the 3-row
+    convention, and re-shipped. AH stays off the 4-row list.
+  - **`au` (/aʊ/, ARPAbet AW)** sits at y=1.0 and **cannot come down to
+    1.5 without its curves leaving the grid**, so it is declared 4-row
+    and left as drawn. `glyphspec.validate` deliberately tolerates a
+    centre-line exactly on y=1: the stroke is 9 wide, so half of it lies
+    inside the top row even though the path does not. (An earlier,
+    stricter `>= 1` check was reverted for this reason.)
 
-  Both are drawing decisions, so neither was changed. Everything else —
-  14 of 16 vowels — agrees across drawing, declaration and manifest.
+  All 16 vowels now agree across drawing, declaration and manifest.
 
 ---
 

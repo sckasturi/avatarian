@@ -592,14 +592,16 @@ def validate(design):
     # consonant above it; a 3-row vowel leaves that row empty, which is
     # the gap. Declaring one and drawing the other is silent otherwise —
     # the flag rides through the manifest and the ink doesn't match it.
-    # The top row spans y=0 to y=1, so ink sitting exactly ON y=1 is at
-    # the boundary and has not entered the row — a 4-row vowel has to
-    # reach above it. The shipped convention puts 4-row ink at y=0.5 and
-    # 3-row ink at y=1.5, half a row either side of that line.
+    # The convention puts 4-row ink at y=0.5 and 3-row ink at y=1.5, half
+    # a row either side of the y=1 line. A centre-line sitting exactly ON
+    # y=1 is genuinely ambiguous and is left alone: the stroke is 9 units
+    # wide, so half of it lies inside the top row even though the path
+    # does not. `au` is the live case — it sits at y=1 and cannot be
+    # brought down to 1.5 without its curves leaving the grid.
     rows = design.get("rows")
     if rows in (3, 4) and tops and not is_tall(kind):
         highest = min(tops)
-        if rows == 4 and highest >= 1:
+        if rows == 4 and highest > 1:
             problems.append(
                 f"says 4-row, but nothing is drawn above y={num(highest)} — "
                 f"the top row is empty, so it won't reach the consonant above")

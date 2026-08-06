@@ -146,12 +146,12 @@ sample's words need it. Which null goes in depends on what it's paired
 with: **a vowel paired with a null takes the 5-height null; a consonant
 paired with a null takes the 3-height null.** Neither null is a sound.
 
-**Session 5 correction:** the rule above is confirmed from a reference
-sample and is the opposite of what's currently shipped. The code's
-`null_c`/`null_v` are sized by their *own* height class (`null_c` =
-consonant-height/5-row, `null_v` = vowel-height/4-row) and get selected
-that way — backwards from the confirmed rule. This is open work; see
-`HANDOFF.md`, Session 5.
+This is what `render.js` does: `nullFor(partner)` picks the tall `∅c`
+beside a vowel and the short `∅` beside a consonant, which is also what
+keeps a block nine rows tall whatever is in it (4+5 or 5+4). It applies
+to a null you type as well as one the renderer inserts, so `0` means "a
+null" and the sound beside it decides which — including mid-word, where
+canon puts nulls the renderer can't yet derive.
 
 Blocks pack tight with no borders; word spacing separates words.
 
@@ -343,13 +343,10 @@ against the running source and the build runs once at the end, so it
 can't leave the tree half-built. Placeholders are skipped; ship those one
 at a time, deliberately.
 
-Shipping a sound that is still a **placeholder** takes saying so twice.
-Those are the seven with no symbol in any reference material, so a
-drawing of one is an invention that will then look exactly as
-authoritative as the sourced glyphs — which is how /tʃ/ shipped on
-nothing for a long time. The first press explains; a **ship anyway**
-button appears for when you do have a source. `--all` skips them
-entirely.
+Shipping a sound that is still a **placeholder** takes saying so twice —
+that ADDS a glyph the set doesn't have, rather than adjusting one it
+does, which is a bigger step. The first press says so; a **ship anyway**
+button appears for going ahead. `--all` skips them entirely.
 
 The designer's canvas uses a JavaScript port of the geometry so dragging
 redraws at pointer speed, but everything it hands back — the SVG, the

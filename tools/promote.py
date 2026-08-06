@@ -196,10 +196,9 @@ def rebuild():
 def shippable():
     """Every design that could be shipped, in a stable order.
 
-    Placeholders are NOT here. Several of them do have a design drawn,
-    and those sounds have no symbol in any reference material — bulk
-    shipping is exactly how an invented glyph gets into the set without
-    anyone deciding to put it there. Name one explicitly to ship it.
+    Placeholders are NOT here: adding a glyph the set doesn't have is a
+    bigger step than adjusting one it does, and shouldn't ride along in
+    a bulk run. Name one explicitly to ship it.
     """
     return [p.stem for p in sorted(DESIGNS.glob("*.json"))
             if p.stem in bg.NAME_TO_IPA
@@ -243,17 +242,15 @@ def promote_all(names=None, dry_run=False):
 
 def promote(name, design=None, dry_run=False, allow_invented=False):
     """Ship one design. `allow_invented` is the gate on a sound that is
-    currently a PLACEHOLDER: those are the sounds with no symbol in any
-    reference material, so a drawing of one is an invention that will
-    then look exactly as authoritative as the sourced glyphs. That has
-    happened before — /tʃ/ shipped for a long time on nothing — so it
-    takes saying so out loud."""
+    still a PLACEHOLDER, i.e. one the set has no glyph for at all.
+    Adding a glyph is a bigger step than adjusting one, and bulk runs
+    skip these entirely, so naming it takes a second press."""
     design = design or load(name)
     if name in bg.PLACEHOLDERS and not allow_invented:
         raise PromoteError(
-            f"{name} ({bg.PLACEHOLDERS[name]}) has no symbol in any reference "
-            f"material, so this drawing is an invention. Ship it only against "
-            f"a real source — pass --force / allowInvented if you have one.")
+            f"{name} ({bg.PLACEHOLDERS[name]}) has no glyph in the set yet — "
+            f"shipping this adds one rather than changing one. Press again, "
+            f"or pass --force, to go ahead.")
     src = SOURCE.read_text(encoding="utf-8")
     new_src, what = edit_source(src, design)
     what["name"] = name
@@ -278,7 +275,7 @@ def main():
                     help="print the entry that would be written, change nothing")
     ap.add_argument("--force", action="store_true",
                     help="ship a sound that is still a PLACEHOLDER, i.e. one "
-                         "with no symbol in any reference material")
+                         "the set has no glyph for yet")
     args = ap.parse_args()
 
     if not args.name and not args.all:

@@ -79,7 +79,8 @@
   "s": {
     "file": "s.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "flips": true
   },
   "z": {
     "file": "z.svg",
