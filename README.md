@@ -24,6 +24,11 @@ A static, no-server toolkit for the Avatarian conscript: English → Avatarian,
 a click-to-build/decode tool, glyph key, MediaWiki integration for Avatar
 Wiki (Fandom).
 
+> **New here?** `AVATARIAN.md` is the single reference for the *script itself* —
+> the writing model, the full glyph inventory, and every open decoding
+> question, gathered in one place. This README covers the *tool*: how it's
+> built and deployed.
+
 ## What's in here
 
 ```
@@ -131,11 +136,18 @@ which happened to agree on CV words like "katara" and disagreed on
 everything else. It also explains why /ɑ/ looked inverted between "katara"
 and "appa": it was in different slots.
 
-An odd number of phonemes leaves the final bottom slot empty, and the **∅
-filler** — the ∪ cup, `null_v` — is written there. It is part of the
-spelling, not padding. Five of the sample's words need it. (A taller
-consonant-height null, `null_c`, the ⊓ gate, fills an empty consonant-height
-slot. Neither null is a sound.)
+An odd number of phonemes leaves the final bottom slot empty, and a **null**
+filler is written there — part of the spelling, not padding. Five of the
+sample's words need it. Which null goes in depends on what it's paired
+with: **a vowel paired with a null takes the 5-height null; a consonant
+paired with a null takes the 3-height null.** Neither null is a sound.
+
+**Session 5 correction:** the rule above is confirmed from a reference
+sample and is the opposite of what's currently shipped. The code's
+`null_c`/`null_v` are sized by their *own* height class (`null_c` =
+consonant-height/5-row, `null_v` = vowel-height/4-row) and get selected
+that way — backwards from the confirmed rule. This is open work; see
+`HANDOFF.md`, Session 5.
 
 Blocks pack tight with no borders; word spacing separates words.
 
@@ -165,9 +177,12 @@ the two SVGs' clearance margins, or the lattices wouldn't meet. A residual
 one-row gap for 4-row vowels (e.g. T+ɑ) is a design-convention question, not
 a rendering one — see `HANDOFF.md` and `CONTEXT.md`.
 
-**4-row vs 3-row vowels:** ɑ, e, ɪ, u fill the top lattice row and connect
-upward (`VOWEL_4ROW` → `rows: 4` → `avatarian-4row` class); every other
-vowel leaves the top row empty, so it sits with a gap below the consonant.
+**4-row vs 3-row vowels:** as of session 5, the confirmed 4-row set is
+**AA, AW, EY, IH, OY, UH, UW** — not the `ɑ, e, ɪ, u` currently coded as
+`VOWEL_4ROW`. Every other vowel is 3-row. The code needs updating to match
+(see `HANDOFF.md`, Session 5); note OY/ɔɪ also currently has no glyph at
+all in the shipped set, which needs verifying before this list is treated
+as final.
 
 The key chart's own note, "Consonants take up 3/4 height, Vowels take 1/4
 height", describes bands within a hand-lettered block rather than a scale
@@ -377,13 +392,15 @@ Two more loose ends surfaced by the extraction:
   above the vowel-block null; `CELLS` maps it to `None` so it is skipped.
   It needs source material rather than a guess.
 
-  The vowel-block null itself is settled: it is `null_v`, the ∪ cup, and
-  it fills an empty vowel-height slot. That resolved the old "two nulls"
-  question — **neither** null is a sound. The ⊓ gate (`null_c`) is just the
-  consonant-height filler for an empty consonant-height slot; it was briefly
-  mis-labelled `glot` /ʔ/, which it never was. The writing sample shows the
-  ∪ cup under "not", "mad", "when", "wake" and "but", every one of which has
-  an odd phoneme count.
+  The vowel-block null itself is settled as a concept: `null_v` (the ∪ cup)
+  and `null_c` (the ⊓ gate) are the two null fillers, and **neither is a
+  sound** — that resolved the old "two nulls" question, and `null_c` was
+  briefly mis-labelled `glot` /ʔ/, which it never was. Which one is used
+  where is corrected in session 5, above — the shipped code currently picks
+  by the null's own height class; the confirmed rule instead picks by what
+  the null is paired with. The writing sample shows a null under "not",
+  "mad", "when", "wake" and "but", every one of which has an odd phoneme
+  count.
 
 ## The English → IPA converter (g2p.js)
 

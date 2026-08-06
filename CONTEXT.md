@@ -214,13 +214,21 @@ survived so long, and disagreed on everything else. It is also what made
 /ɑ/ look inverted between "katara" and "appa" — different slots, and /ɑ/
 is one of the glyphs that takes a different form in each.
 
-An odd phoneme count leaves the last bottom slot empty and the **∅ filler**
-(`null_v`, the ∪ cup, vowel-height) is written into it. It is part of the
-spelling — five of the sample's words carry it. There is also a
-consonant-height null, `null_c` (the ⊓ gate, type `null_consonant`), for an
-empty *consonant-height* slot. **Neither is a sound.** (Session 4 rename:
+An odd phoneme count leaves the last bottom slot empty and a **null filler**
+is written into it. It is part of the spelling — five of the sample's words
+carry it. There are two nulls, `null_v` (the ∪ cup) and `null_c` (the ⊓
+gate, type `null_consonant`). **Neither is a sound.** (Session 4 rename:
 these were `glot_v`/`glot`, and `glot` was mistakenly documented as /ʔ/, a
-glottal stop — it never was. The ⊓ is just the taller null filler.)
+glottal stop — it never was.)
+
+**Session 5 correction:** which null is used is picked by what it's paired
+with, not by the null's own height class. Confirmed rule: **a vowel paired
+with a null takes the 5-height null; a consonant paired with a null takes
+the 3-height null.** The shipped code currently does the opposite — it
+picks `null_c` (consonant-height/5-row) for an empty consonant-height slot
+and `null_v` (vowel-height/4-row) for an empty vowel-height slot. That's
+backwards from the confirmed rule and needs fixing; see `HANDOFF.md`,
+Session 5.
 
 **Orientation: SOME glyphs mirror top-to-bottom.** A glyph is drawn once,
 in its TOP-slot form. Those listed in `FLIPS` (`build_glyphs.py`) are
@@ -289,6 +297,12 @@ nudging both design conventions to touch. See HANDOFF.md "THE OPEN ISSUE."
 every other vowel starts at y=1.5, leaving the top row empty. This is the
 "four-line vowels use the top row, three-line vowels don't" distinction.
 
+**Session 5 correction:** the confirmed 4-row set is **AA, AW, EY, IH, OY,
+UH, UW** — not `{ɑ, e, ɪ, u}` above. `VOWEL_4ROW` needs updating to match.
+OY/ɔɪ currently has no glyph at all in the shipped set (see "Still
+unresolved" in README's glyph section), which is a direct conflict to
+verify before treating this list as final. See `HANDOFF.md`, Session 5.
+
 The ratio has moved four times now (1:4 → 1:1 → 3:5 → 4:5), so don't
 "fix" it back by accident. 4:5 is the current reading and it is what
 `FLAT` in `build_glyphs.py`, `VOWEL_GRID` in `glyphspec.py`, the
@@ -324,6 +338,12 @@ C+C block must total the same height as a V+C block.
 It is a design question, not a bug.
 
 ## Open work, roughly in priority order
+
+**See `HANDOFF.md`, Session 5, for the newest structural findings (a more
+detailed 9-row block model — row math per block type, null-height rule,
+flip/orientation reframing) and the current feature/task backlog. Not yet
+reflected in the layout rule above beyond the two corrections already
+noted inline.**
 
 1. **Seven sounds have no glyph** and render as dashed "?" boxes:
    tʃ, dʒ, ʃ, ʒ, x, ʊ, ɔɪ. The reference key has visible blanks next

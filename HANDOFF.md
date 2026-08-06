@@ -2,8 +2,146 @@
 
 Read `README.md` for architecture and `CONTEXT.md` for the decoding rules
 and open questions. Both are current. This file covers what changed across
-the sessions that built the designer, plus session 4 below, and what to do
-next.
+the sessions that built the designer, plus sessions 4 and 5 below, and what
+to do next.
+
+---
+
+## Session 5 — 9-row block model (design discussion; not yet implemented)
+
+**Read this first if you're picking the project back up.** This session was
+verbal design discussion with the user only — no code was touched. It
+produced a more detailed structural model than what session 4 shipped, two
+confirmed corrections to session-4 behavior, an open tension that isn't
+resolved yet, and a feature/task backlog. Confidence varies per item and is
+marked below — don't treat the unconfirmed parts as settled.
+
+### Two confirmed corrections to the session-4 code (already applied to README.md and CONTEXT.md)
+
+1. **Null height is picked by pairing partner, not by the null's own height
+   class.** Confirmed from a reference sample: a vowel paired with a null
+   takes the **5-height** null; a consonant paired with a null takes the
+   **3-height** null. The shipped `null_c`/`null_v` currently do the
+   opposite — `null_c` (consonant-height/5-row) is used for an empty
+   consonant-height slot, `null_v` (vowel-height/4-row) for an empty
+   vowel-height slot. **Code fix still needed** — this session only
+   corrected the docs.
+2. **The 4-row vowel set is AA, AW, EY, IH, OY, UH, UW** — not the code's
+   `VOWEL_4ROW = {ɑ, e, ɪ, u}`. Every other vowel is 3-row. **Unresolved
+   conflict:** OY/ɔɪ currently has no glyph anywhere in the shipped set
+   (README's "Still unresolved" list) — either it's been drawn since that
+   was written, or this list needs revisiting. Verify before coding it in.
+   **Code fix still needed.**
+
+### The 9-row block model, as described this session
+
+- Every block is a fixed **9-row grid**. This matches what session 4
+  already ships (9-row blocks via the 5:4 consonant:vowel ratio), but the
+  rules below go further than what's currently coded.
+- Consonants are always **5 rows**. Vowels are **3 or 4 rows** depending on
+  the specific vowel (see the corrected list above).
+- Only three block types occur: **V-C, C-V, C-C**. V-V never happens — a
+  null substitutes for the missing second vowel.
+- **V-C blocks** (vowel on top): rows 1–4 = vowel, rows 5–9 = consonant, no
+  gap — they abut directly, stated as applying regardless of whether the
+  vowel is 3- or 4-row. *(See "Open tension" below — this may not be fully
+  settled.)*
+- **C-V blocks** (vowel on bottom):
+  - 3-row vowel: rows 1–5 consonant, row 6 empty (gap), rows 7–9 vowel —
+    consonant and vowel do **not** touch.
+  - 4-row vowel: rows 1–5 consonant, rows 6–9 vowel — they **touch**, and
+    should visually merge into one glyph rather than render as two
+    separate touching shapes.
+- **C-C blocks**: working guess is the two consonants **overlap by one
+  shared row** (10 rows of content packed into 9). **Unconfirmed** — needs
+  reference examples before treating as fact.
+- **Null height**: see correction #1 above — confirmed from a reference
+  sample.
+- **Mid-word null placement is still unsolved.** Same open problem as the
+  session-4/CONTEXT item ("students"/"metalbending" split rule unknown).
+  Working plan for now: manually specify/include mid-word nulls rather than
+  deriving a placement rule algorithmically.
+
+### Open tension — not yet resolved
+
+The V-C rule above ("rows 1–4 vowel, no gap, no special-casing by vowel
+height") sits awkwardly next to an earlier concern raised in the same
+session: the user didn't want an empty top row when a 3-row vowel sits in
+the block's **top** slot, because unifying all vowels to a 4-row shape with
+an empty top row (to make them interchangeable) would put that empty row
+at the very top edge of the whole block — visible dead space, not a gap
+between two glyphs. Whether that's been accepted as fine, or whether V-C
+blocks actually need the same 3-row/4-row gap-vs-touch split that C-V
+blocks get, is **open**. Ask before implementing V-C layout.
+
+### Flip/orientation reframing
+
+The existing `FLIPS` table (`build_glyphs.py`, README, CONTEXT) records
+*which* glyphs flip, with word evidence. This session offered an
+explanation for *why*, at least for one glyph: a flipping glyph's
+connecting stem should point toward whatever it's touching. Example —
+**IH**: in a V-C block (vowel on top) the stem connects toward the bottom,
+toward the consonant below; in a C-V block (vowel on bottom) it connects
+toward the top, toward the consonant above. Whether "stem points at
+neighbor" generalizes to every entry in `FLIPS`, or is specific to IH, is
+**unconfirmed** — worth checking each entry against it before assuming it's
+a general rule.
+
+### Feature / task backlog (not started)
+
+1. **Glyph editor needs to work a lot better with the current website in
+   general** — this is broader than just the build loop. Specific piece
+   confirmed so far:
+   - **Live product bridge.** See fixed glyphs render live in the actual
+     output immediately, instead of the current manual `build_glyphs.py` →
+     `build_manifest.py` → reload loop.
+   - Rest of what "work a lot better together" means is still open — flag
+     more specifics as they come up rather than assuming this is fully
+     scoped by the live-preview piece alone.
+2. **Designer UI additions:**
+   - **"This is a flipping glyph" flag.** `FLIPS` is currently a hardcoded
+     list in `build_glyphs.py`; needs to be settable from the designer UI
+     (e.g. a checkbox) instead.
+   - **3-row vs 4-row toggle button for vowels.** Right now switching a
+     vowel design between its 3-row and 4-row forms isn't a direct UI
+     action. A toggle would make it easier to try both and compare,
+     especially useful now that the confirmed 4-row set (session 5, above)
+     differs from what's coded and several vowels' row-count will need
+     re-checking.
+3. **Implement the 9-row block model** above, once the open tension
+   (V-C empty-top-row) and the C-C overlap question are resolved. Touches
+   both `glyphspec.py` (Python, authority) and `designer/js/geom.js` (JS
+   port) — run `check_geom.py` after. Likely also requires reworking the
+   designer's lattice, which today treats each glyph's grid independently
+   with no shared coordinate space with its block partner — needed for the
+   "vowel+consonant merge into one glyph" case in 4-row C-V blocks.
+4. **Fuzzy reverse-decode.** Given an Avatarian sequence, suggest likely
+   English word(s) ("pretty sure this is X") instead of the current
+   exact-match-only lookup against the hardcoded exception dictionary.
+5. **Fix mobile/vertical layout.** On narrow viewports, scrolling the
+   glyph picker loses sight of the output being built. Needs a
+   persistent/sticky view of the output while scrolling the picker.
+   (Related to the existing sub-900px stacking behavior in CONTEXT.md item
+   5 — that was intentional there; this flags it as a problem needing a
+   different fix.)
+6. **Consolidate credits.** Move all "thank you"/credit content (README,
+   CONTEXT, wiki footer) into one dedicated section; user will supply more
+   links — contributors plus source material read/transcribed.
+7. **Reference material catalog page.** An index of all reference material
+   (writing samples, key chart, etc.) and what words/content each source
+   contains, for future lookup.
+8. **Final article/paper/thesis** synthesizing the full Avatarian
+   decipherment — structural rules, open questions — as one coherent
+   write-up, separate from these working dev docs.
+
+### Also flagged, not yet a task
+
+- README/CONTEXT will need a fuller rewrite once the 9-row model above is
+  implemented and settled — right now they carry inline corrections
+  pointing back here, not the full model.
+- No test suite exists; worth reconsidering given the scope of this
+  rewrite (echoes the existing "worth formalising if you keep iterating"
+  note under Testing).
 
 ---
 
