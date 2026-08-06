@@ -1,7 +1,7 @@
 {
-  "name": "glot",
-  "ipa": "ʔ",
-  "type": "consonant",
+  "name": "null_c",
+  "ipa": null,
+  "type": "mark_consonant",
   "grid": [
     5,
     5

@@ -140,18 +140,59 @@ stretched one and is derived, so there is no second drawing to keep in
 step. Ink sits at 16 units a cell inside a 10-unit margin, so a stroke on
 the outermost row isn't clipped by the viewBox.
 
-Promotion into the shipped set is a **deliberate copy-paste**, not an
-automatic rebuild:
+**The live preview is the product, not a copy of it.** The designer
+links `site/css/blocks.css` and loads `site/js/render.js`, `g2p.js` and
+`sounds.js` over a read-only `/site/` route on its own server, then
+swaps the glyph being edited into `window.AVATARIAN_GLYPHS` and calls
+`renderAvatarian()` exactly as `index.html` and the wiki gadget do. So
+"in a block" and "in a word" are laid out by the code that lays out the
+real thing. The SVG swapped in is the one `POST /api/render` returns,
+i.e. `glyphspec.py`'s, not the canvas port's.
+
+That is why `blocks.css` and `sounds.js` exist as separate files at all:
+three surfaces have to agree on block layout and on what `AX` or `S$`
+means, and three copies would drift. Don't fold them back into
+`style.css` / `index.html`.
+
+Promotion into the shipped set is still **deliberate**, but it is a
+button rather than a copy-paste:
 
 ```bash
 python3 tools/designs_to_svg.py --report      # what's drawn, what isn't
 python3 tools/designs_to_svg.py m --python    # a build_glyphs.py entry
+python3 tools/promote.py m --dry-run          # what shipping would change
+python3 tools/promote.py m                    # write it in and rebuild
+python3 tools/promote.py --all --dry-run      # which glyphs differ at all
+python3 tools/promote.py --all                # ship every one that does
 ```
 
-`build_glyphs.py` stays the single definition of what ships. The design
-is the drawing as it came off the grid; turning it into a glyph usually
-means smoothing something the lattice couldn't say precisely, and that
-is a decision, not a build step.
+`tools/promote.py` writes the entry into the right dict in
+`build_glyphs.py` (in the layout a human would use — `glyphspec.to_python`
+already emits it that way), drops the name from `PLACEHOLDERS` if it was
+there, and runs both build scripts. `build_glyphs.py` stays the single
+definition of what ships; what changed is who types it.
+
+Two guards worth keeping:
+
+* **Placeholders take two presses.** A sound with no symbol in any
+  reference material is refused unless `--force` / `allowInvented`.
+  A drawing of one is an invention that then looks exactly as
+  authoritative as the sourced glyphs — which is how /tʃ/ shipped on
+  nothing. `--all` skips them entirely, and several of them *do* have a
+  design drawn, so this is not hypothetical.
+* **A design with no matching sound is refused**, so a stray file can't
+  ship as a dead entry.
+* **`ship all…` takes two presses**, and the first is the useful one: it
+  lists which glyphs would change and writes nothing. A good number of
+  designs have drifted from the glyph they ship, and which direction is
+  right is a decision. `promote_all` edits every entry against the
+  running source and rebuilds once at the end, so a failure part-way
+  can't leave the tree half-built.
+
+Comment lines above an entry are regenerated from the design's `notes`
+when it has any and left alone when it doesn't — so a note written in
+the designer lands beside its shape, and a comment hand-written in
+`build_glyphs.py` isn't eaten by a design with nothing to say.
 
 **Two implementations of the same geometry.** `designer/js/geom.js` is a
 port of `tools/glyphspec.py`, because round-tripping every pointermove
@@ -160,6 +201,15 @@ designer hands back — the SVG, the Python snippet — comes from the
 server, so the Python is always the authority. `python3
 tools/check_geom.py` renders ~200 generated designs through both and
 diffs them; run it after touching either file. Don't let them drift.
+
+**`type` is a HEIGHT CLASS, not a part of speech.** `glyphspec.TALL_KINDS`
+= `{consonant, mark_consonant}` take the 5×5 lattice, the 100×100 box and
+no flat form; `vowel` and `mark` take 5×4 and ship flat as well. The two
+nulls differ on exactly this — the ∪ cup is vowel-height (`mark`), the ⊓
+gate consonant-height (`mark_consonant`) — and before the split every
+mark was routed through the vowel frame, so designing `null_c` drew it on
+the wrong lattice and gave it a flat form it should not have. The sound
+list files by a separate `group` field, so both still read as "marks".
 
 ## Non-obvious decisions (don't undo these by accident)
 
@@ -292,16 +342,33 @@ reaches only y=0.5 — half a row each. Closing it means deciding where a
 consonant's bottom edge and a 4-row vowel's connecting edge sit, then
 nudging both design conventions to touch. See HANDOFF.md "THE OPEN ISSUE."
 
-**4-row vs 3-row vowels.** `VOWEL_4ROW = {ɑ, e, ɪ, u}` fill lattice rows
-0–3 (content from y=0.5) and carry `rows: 4` → `avatarian-4row` in the DOM;
-every other vowel starts at y=1.5, leaving the top row empty. This is the
-"four-line vowels use the top row, three-line vowels don't" distinction.
+**4-row vs 3-row vowels.** `VOWEL_4ROW_BASE = {ɑ, e, ɪ, u}` fill lattice
+rows 0–3 (content from y=0.5) and carry `rows: 4` → `avatarian-4row` in
+the DOM; every other vowel starts at y=1.5, leaving the top row empty.
+This is the "four-line vowels use the top row, three-line vowels don't"
+distinction.
 
 **Session 5 correction:** the confirmed 4-row set is **AA, AW, EY, IH, OY,
-UH, UW** — not `{ɑ, e, ɪ, u}` above. `VOWEL_4ROW` needs updating to match.
-OY/ɔɪ currently has no glyph at all in the shipped set (see "Still
-unresolved" in README's glyph section), which is a direct conflict to
-verify before treating this list as final. See `HANDOFF.md`, Session 5.
+UH, UW** — not `{ɑ, e, ɪ, u}` above. OY/ɔɪ currently has no glyph at all
+in the shipped set (see "Still unresolved" in README's glyph section),
+which is a direct conflict to verify before treating this list as final.
+See `HANDOFF.md`, Session 5.
+
+**`flips` and `rows` are per-design now.** Both are set from the designer
+(checkbox and row toggle) into `designs/<name>.json`, and
+`build_glyphs.py` overlays them onto `FLIPS_BASE` / `VOWEL_4ROW_BASE` at
+build time via `design_overrides()`. Absence means "use the base"; an
+explicit `false` / `3` turns a base entry off, so the two are not the
+same. `bg.refresh()` re-reads them, which the server calls after every
+save so `/api/catalog` doesn't serve values from startup.
+
+A 4-row vowel is **taller** than a 3-row one (0.5–3.5 against 1.5–3.5),
+not the same shape shifted up, so the toggle deliberately does NOT move
+ink — which form a drawing is is a drawing decision. `glyphspec.validate`
+cross-checks the two instead: declaring 4-row with nothing above y=1, or
+3-row with ink inside the top row, is reported in the problems panel.
+Running that check over the current designs says `oi` and `oo` disagree
+with what the build assumes (both placeholders).
 
 The ratio has moved four times now (1:4 → 1:1 → 3:5 → 4:5), so don't
 "fix" it back by accident. 4:5 is the current reading and it is what
@@ -345,10 +412,13 @@ flip/orientation reframing) and the current feature/task backlog. Not yet
 reflected in the layout rule above beyond the two corrections already
 noted inline.**
 
-1. **Seven sounds have no glyph** and render as dashed "?" boxes:
-   tʃ, dʒ, ʃ, ʒ, x, ʊ, ɔɪ. The reference key has visible blanks next
-   to "good" and "toy". Needs source material, not guessing — a wrong
-   glyph propagates everywhere. /ɑ/ and /ɔ/ were filled in from material
+1. **/x/ has no glyph** and renders as a dashed "?" box. The other six
+   former placeholders (tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ) were drawn in the
+   designer and shipped, but none carries a recorded source — the
+   reference key has visible blanks next to "good" and "toy", which is
+   why they were placeholders. Record where they came from in
+   `SOURCE_NOTES`, or they are guesses wearing the same clothes as the
+   sourced glyphs. A wrong glyph propagates everywhere. /ɑ/ and /ɔ/ were filled in from material
    supplied outside the key chart; such glyphs go in `SOURCE_NOTES` so the
    key tab explains why they have no tracing to compare against.
 2. **The remaining positional variants.** æ, /l/ and /e/ are done (see the

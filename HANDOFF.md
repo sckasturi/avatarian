@@ -2,8 +2,117 @@
 
 Read `README.md` for architecture and `CONTEXT.md` for the decoding rules
 and open questions. Both are current. This file covers what changed across
-the sessions that built the designer, plus sessions 4 and 5 below, and what
-to do next.
+the sessions that built the designer, plus sessions 4, 5 and 6 below, and
+what to do next.
+
+---
+
+## Session 6 — the designer/site bridge (implemented)
+
+**Read this first.** Session 5's backlog items 1 and 2 are done. Nothing
+in this session touched the decoding model — the 9-row block model, the
+null-selection correction and the V-C open tension are all still open,
+exactly as session 5 left them.
+
+### What changed
+
+1. **The designer shows the glyph in the real product.** A new **in a
+   block** strip renders it in actual blocks at product size (V-C, C-V,
+   C-C and against the null, or against any partner you pick), and **in
+   a word** takes the same ASCII sounds syntax the app does, opening on
+   the sound's example word. Both are drawn by `site/js/render.js`
+   against `site/css/blocks.css` — the designer links the real files
+   over a read-only `/site/` route on its own server rather than
+   restating them, so the preview cannot drift from the product. The
+   glyph being edited is swapped into `window.AVATARIAN_GLYPHS`, and the
+   SVG it is swapped in from is the one `POST /api/render` returns, i.e.
+   `glyphspec.py`'s. New file: `designer/js/live.js`.
+
+   This makes the open issues visible where they actually live. The
+   T+ɑ gap measures **8.32px in the designer's own preview** — one
+   lattice row, the same number the section below reports.
+
+2. **Two files split out of the site so three surfaces can share them:**
+   `site/css/blocks.css` (block layout, out of `style.css`) and
+   `site/js/sounds.js` (the sounds syntax, out of `index.html`). The
+   site, the wiki gadget and the designer all have to agree on both.
+   Site cache-buster bumped to `?v=4`.
+
+3. **`flips` and `rows` moved into the design.** They are set from a
+   checkbox and a row toggle beside the previews, saved into
+   `designs/<name>.json`, and read back by `build_glyphs.py` at build
+   time. `FLIPS` / `VOWEL_4ROW` are now `FLIPS_BASE` / `VOWEL_4ROW_BASE`
+   and act as the fallback for anything undrawn; the effective sets are
+   still exported under the old names, so nothing downstream changed.
+   Overriding is explicit both ways.
+
+4. **"ship it" and "ship all…"** — `tools/promote.py`, also a CLI
+   (`promote.py m`, `--dry-run`, `--all`, `--force`). Writes the entry
+   into the right dict in `build_glyphs.py` in the layout a human would
+   use, drops the name from `PLACEHOLDERS` if it was there, and runs
+   both build scripts. `build_glyphs.py` is still the single definition
+   of what ships — what changed is who types it.
+
+   **ship all…** is in the header (whole-set action, so not beside the
+   per-glyph button) and reports into a strip below it. Two presses: the
+   first lists which glyphs differ and writes nothing, the second ships
+   them. It edits every entry against the running source and rebuilds
+   once at the end.
+
+5. **Marks got a height class.** `glyphspec.TALL_KINDS =
+   {consonant, mark_consonant}`. Previously every `mark` went through
+   the vowel frame, so designing `null_c` drew it on a 5×4 lattice and
+   gave it a flat form it should not have; it only appeared to work
+   because `designs/glot.json` still carried the pre-rename
+   `type: "consonant"`. The sound list files by a new `group` field so
+   both nulls still read as marks.
+
+6. **The `glot` designs renamed** — `designs/glot.json` → `null_c.json`
+   (type `mark_consonant`, 5×5), `glot_v.json` → `null_v.json` (type
+   `mark`, 5×4), with `ipa` nulled on both since neither is a sound.
+   That closes the session-4 loose end; `--report` no longer lists
+   orphans.
+
+7. **A row-count check** in `glyphspec.validate`: declaring 4-row with
+   nothing drawn above `y=1`, or 3-row with ink inside the top row, is
+   now reported. The toggle deliberately does **not** move ink — a
+   4-row vowel is *taller* than a 3-row one (0.5–3.5 against 1.5–3.5),
+   not the same shape shifted, so which form a drawing is stays a
+   drawing decision.
+
+8. **`glyphspec.to_python` indent fix.** Continuations were hardcoded to
+   9 spaces, which only lined up for one-character names, so promoting
+   an unchanged design produced a spurious diff. Now aligned to the
+   head. This is why 20 designs round-trip byte-identical.
+
+### What this surfaced, and hasn't been acted on
+
+- **A number of designs differ from the glyph they ship** — the design
+  and `build_glyphs.py` had drifted apart, on 14 glyphs when the session
+  started. Some were deliberate later work in the designer (`nurse` and
+  `schwa` carry notes and a different construction), some were trivial
+  (`z` was only line-packing). Several were shipped during the session;
+  run `python3 tools/promote.py --all --dry-run` for the current list
+  rather than trusting a number written here. **Deciding which direction
+  is right is still a per-glyph judgement**, which is why `ship all…`
+  shows the list before it does anything.
+- **⚠️ Six of the seven placeholders were shipped during this session** —
+  `sh`, `zh`, `ch`, `j_dz`, `oi`, `oo` (ʃ, ʒ, tʃ, dʒ, ɔɪ, ʊ). Only `kh`
+  (/x/) is still a placeholder. **None of the six carries a recorded
+  source.** They were placeholders precisely because they appear nowhere
+  in `reference/avatarian_key.svg`, so unless the drawings came from
+  material outside the chart, the set now contains six shapes that look
+  exactly as authoritative as the sourced glyphs with nothing behind
+  them — the /tʃ/ failure, six times over. **Put their provenance in
+  `SOURCE_NOTES`** the way `ah` and `aw` are handled, or demote them
+  again. This is the highest-value follow-up in this list.
+- **`designs/null_c.json` is stale** — it still holds the old `glot`
+  drawing (a ∪ cup at consonant height) rather than the shipped ⊓ gate.
+  The rename fixed its metadata, not its shape.
+- **`oi` and `oo` fail the new row check** against the row count the
+  build assumes for them: both draw into the top lattice row while
+  `VOWEL_4ROW_BASE` treats them as 3-row. Now that they render, this is
+  visible — set the row toggle on each, or fix the drawing.
 
 ---
 
@@ -89,25 +198,17 @@ a general rule.
 
 ### Feature / task backlog (not started)
 
-1. **Glyph editor needs to work a lot better with the current website in
-   general** — this is broader than just the build loop. Specific piece
-   confirmed so far:
-   - **Live product bridge.** See fixed glyphs render live in the actual
-     output immediately, instead of the current manual `build_glyphs.py` →
-     `build_manifest.py` → reload loop.
-   - Rest of what "work a lot better together" means is still open — flag
-     more specifics as they come up rather than assuming this is fully
-     scoped by the live-preview piece alone.
-2. **Designer UI additions:**
-   - **"This is a flipping glyph" flag.** `FLIPS` is currently a hardcoded
-     list in `build_glyphs.py`; needs to be settable from the designer UI
-     (e.g. a checkbox) instead.
-   - **3-row vs 4-row toggle button for vowels.** Right now switching a
-     vowel design between its 3-row and 4-row forms isn't a direct UI
-     action. A toggle would make it easier to try both and compare,
-     especially useful now that the confirmed 4-row set (session 5, above)
-     differs from what's coded and several vowels' row-count will need
-     re-checking.
+1. ~~**Glyph editor needs to work a lot better with the current website
+   in general.**~~ **Done in session 6** — live block/word preview drawn
+   by the site's own `render.js` + `blocks.css`, and a "ship it" button
+   replacing the manual `build_glyphs.py` → `build_manifest.py` → reload
+   loop. The rest of what "work a lot better together" means is still
+   open; flag more specifics as they come up rather than treating this
+   as closed by the live-preview piece alone.
+2. ~~**Designer UI additions**~~ — **done in session 6.** `flips` is a
+   checkbox and `rows` a 3/4 toggle, both saved into the design and read
+   back by the build. Note the row toggle declares the form rather than
+   moving ink, and why: see session 6, item 7.
 3. **Implement the 9-row block model** above, once the open tension
    (V-C empty-top-row) and the C-C overlap question are resolved. Touches
    both `glyphspec.py` (Python, authority) and `designer/js/geom.js` (JS
@@ -133,6 +234,16 @@ a general rule.
 8. **Final article/paper/thesis** synthesizing the full Avatarian
    decipherment — structural rules, open questions — as one coherent
    write-up, separate from these working dev docs.
+9. **Add a public-facing spec section to the very end of `AVATARIAN.md`.**
+   A clean description of the language *as it currently stands* — no
+   "session 5 correction," "the shipped code disagrees," or other process/
+   history language, no talk of what was discussed or decided along the
+   way. Present tense, states-the-facts only, written for someone reading
+   about the script for the first time. The rest of AVATARIAN.md can keep
+   its working-notes voice; this is a distinct section, appended at the
+   end, not a replacement for it. (Related to item 8 but not the same
+   thing — that's a separate write-up; this lives inside AVATARIAN.md
+   itself.)
 
 ### Also flagged, not yet a task
 
@@ -247,13 +358,14 @@ actually sit, then nudge both conventions so they touch. Do that in
 
 ### Loose ends left open
 
-- `designs/glot.json` and `designs/glot_v.json` still carry the old names;
-  `designs_to_svg.py --report` lists them as "designs with no matching sound"
-  and `null_c`/`null_v` as "not yet designed". Rename the files (and their
-  `name`/`ipa`/`type` fields) when convenient. `null_c` type is
-  `null_consonant`, grid 5×5; `null_v` type is `null` (mark), grid 5×4.
+- ~~`designs/glot.json` and `designs/glot_v.json` still carry the old
+  names.~~ **Renamed in session 6** to `null_c.json` (type
+  `mark_consonant`) and `null_v.json` (type `mark`). Note `null_c.json`
+  still holds the old `glot` *drawing*, which is not the shipped ⊓ gate.
 - Wiki CSS was brought in step with the site (null_consonant sizing + the
   gap-collapse margin), but the wiki JS/template weren't touched this session.
+  Still true after session 6 — and note the site's block rules now live in
+  `site/css/blocks.css`, so that is the file to diff the wiki CSS against.
 
 ---
 
@@ -415,7 +527,8 @@ These are the live decoding problems. `CONTEXT.md` has fuller notes.
 3. **/s/ doesn't follow the slot.** "students" uses different orientations
    for both /s/ in top slots. No slot rule can select them; use `S$`/`S%`.
 
-4. **Seven sounds have no glyph**: tʃ, dʒ, ʃ, ʒ, x, ʊ, ɔɪ.
+4. **/x/ has no glyph.** The other six (tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ) were
+   shipped from designer drawings with no recorded source.
 
 5. **One unassigned mark** in the key.
 

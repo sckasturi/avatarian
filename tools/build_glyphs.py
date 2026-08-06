@@ -181,7 +181,7 @@ CONSONANTS = {
     "n": path("M 18 82 L 58 82 A 27.09 27.09 0 0 0 82 58 L 82 18 L 42 18 "
               "A 28.28 28.28 0 0 0 18 50")
          + dot(50, 50),
-    "ng": path("M 34 82 A 34.67 34.67 0 0 1 50 18 A 34.67 34.67 0 0 1 66 82"),
+    "ng": path("M 34 82 A 34 34 0 1 1 66 82"),
     "f": path("M 18 18 A 51.6 51.6 0 0 1 50 34 A 61.38 61.38 0 0 1 82 82")
          + path("M 82 18 A 51.6 51.6 0 0 0 50 34 A 61.38 61.38 0 0 0 18 82"),
     "v": path("M 18 18 L 82 18 A 36.22 36.22 0 0 1 50 58 A 52 52 0 0 0 18 82")
@@ -193,18 +193,22 @@ CONSONANTS = {
     "s": path("M 18 18 L 50 82 L 82 18") + dot(50, 34),
     "z": path("M 50 18 L 50 50")
          + path("M 18 82 A 32 32 0 0 1 82 82")
-         + dot(26, 26) + dot(74, 26),
+         + dot(26, 26)
+         + dot(74, 26),
     "h": path("M 18 18 L 82 18")
          + path("M 18 82 L 82 82")
          + path("M 50 26 A 24 24 0 0 1 74 50 A 24 24 0 0 1 50 74 "
                 "A 24 24 0 0 1 26 50 A 24 24 0 0 1 50 26 Z"),
     "w": path("M 50 42 A 52 52 0 0 0 18 18 L 18 82 L 82 82")
          + path("M 82 58 A 42 42 0 0 1 50 42"),
-    "l": path("M 18 82 L 18 18 L 82 18")
-         + path("M 34 82 A 60.01 60.01 0 0 0 82 18"),
-    "r": path("M 50 82 A 50.6 50.6 0 0 1 18 18 L 82 18 L 82 82"),
+    "l": path("M 18 82 L 18 18 L 82 18") + path("M 82 18 A 84 84 0 0 1 50 82"),
+    "r": path("M 82 82 L 82 18 L 18 18") + path("M 18 18 A 84 84 0 0 0 50 82"),
     "y": path("M 50 34 A 42 42 0 0 1 82 18 L 82 82 L 18 82")
          + path("M 18 58 A 36.46 36.46 0 0 0 50 34"),
+    "sh": path("M 18 50 L 50 18 L 82 50") + path("M 18 82 L 50 50 L 82 82"),
+    "ch": path("M 50 50 L 18 50 L 18 18 L 82 18 L 82 82 L 18 82"),
+    "j_dz": path("M 82 18 L 82 82 L 18 82 L 18 18 L 50 18 L 50 58"),
+    "zh": path("M 18 82 L 18 50 A 32 32 0 0 1 82 50 L 82 82"),
 }
 
 # ---------------------------------------------------------------------------
@@ -212,40 +216,47 @@ CONSONANTS = {
 # ---------------------------------------------------------------------------
 
 VOWELS = {
-    "i": path("M 18 40 L 82 40") + path("M 18 70 L 82 70"),
-    "ih": path("M 50 10 L 50 40") + path("M 18 40 L 82 40 L 82 80 L 18 80"),
+    "i": path("M 18 40 L 82 40") + path("M 18 80 L 82 80"),
+    "ih": path("M 50 80 L 50 60") + path("M 18 60 L 82 60 L 82 20 L 18 20"),
     "ei": path("M 50 80 L 50 20")
           + path("M 18 60 L 82 60")
           + path("M 18 20 L 82 20"),
-    "eh": path("M 18 20 A 42 52.5 0 0 1 50 40 A 42 52.5 0 0 0 82 60")
-          + path("M 82 20 A 42 52.5 0 0 0 50 40 A 42 52.5 0 0 1 18 60"),
-    "ae": path("M 26 30 L 26 60 A 28.36 35.44 0 0 0 74 60 L 74 30")
-          + dot(50, 40),
-    "ai": dot(26, 60) + path("M 74 30 L 26 30") + dot(74, 60),
-    "uh": path("M 18 40 L 34 40")
-          + path("M 18 80 L 34 80")
-          + path("M 66 80 L 82 80")
-          + path("M 66 40 L 82 40"),
-    "schwa": path("M 26 60 A 24.54 30.67 0 0 0 50 40 "
-                  "A 24.54 30.67 0 0 1 74 20")
-             + dot(18, 20)
-             + dot(82, 60)
-             + path("M 18 60 L 26 60")
-             + path("M 82 20 L 74 20"),
-    "nurse": path("M 18 30 L 34 30 L 58 70 C 62.8 78 74 70 82 70")
-             + dot(18, 70)
-             + dot(82, 30),
+    "eh": path("M 18 40 A 42 52.5 0 0 1 50 60 A 42 52.5 0 0 0 82 80")
+          + path("M 82 40 A 42 52.5 0 0 0 50 60 A 42 52.5 0 0 1 18 80"),
+    "ae": path("M 26 40 L 26 70 A 33.94 42.43 0 0 0 74 70 L 74 40")
+          + dot(50, 50),
+    "ai": dot(26, 70) + path("M 74 40 L 26 40") + dot(74, 70),
+    "uh": path("M 18 60 L 34 60")
+          + path("M 18 20 L 34 20")
+          + path("M 66 20 L 82 20")
+          + path("M 66 60 L 82 60"),
+    "schwa": dot(18, 40)
+             + dot(82, 80)
+             + path("M 18 80 A 29.77 37.21 0 0 0 50 60 "
+                    "A 29.77 37.21 0 0 1 82 40"),
+    "nurse": path("M 82 80 A 25.3 31.62 0 0 1 50 60 A 25.3 31.62 0 0 0 18 40")
+             + dot(82, 40)
+             + dot(18, 80),
     "uu": path("M 18 40 L 18 80")
           + path("M 50 20 L 50 80")
           + path("M 82 40 L 82 80"),
-    "ow": path("M 18 30 L 18 70 L 50 70 L 50 30 L 18 30 Z")
-          + dot(74, 40) + dot(74, 60),
+    "ow": path("M 18 40 L 18 80 L 50 80 L 50 40 L 18 40 Z")
+          + dot(74, 40)
+          + dot(74, 80),
     "au": path("M 82 30 A 25.33 31.67 0 0 0 42 50 A 25.33 31.67 0 0 0 82 70")
-          + dot(26, 40) + dot(26, 60),
+          + dot(26, 30)
+          + dot(26, 70),
     "aw": path("M 82 40 A 32 40 0 0 1 50 80 L 18 80") + dot(18, 40, 3.78),
     "ah": path("M 50 80 L 50 50")
           + path("M 18 20 L 50 50")
           + path("M 82 20 L 50 50"),
+    "oi": path("M 18 60 L 18 20 L 82 20 L 82 60 L 18 60 Z")
+          + path("M 50 80 L 50 60"),
+    "oo": path("M 50 20 L 50 80")
+          + dot(18, 40)
+          + dot(18, 80)
+          + dot(82, 80)
+          + dot(82, 40),
 }
 
 # ---------------------------------------------------------------------------
@@ -254,10 +265,24 @@ VOWELS = {
 
 MARKS_CONSONANT = {
     # 5-row null filler (consonant height) — the ⊓ gate shape.
-    "null_c": path("M 26 80 L 26 26 L 74 26 L 74 80"),
+    # 5-row null filler (consonant height) — the ⊓ gate shape.
+    # 5-row null filler (consonant height) — the ⊓ gate shape.
+    # 5-row null filler (consonant height) — the ⊓ gate shape.
+    # 5-row null filler (consonant height) — the ⊓ gate shape.
+    # 5-row null filler (consonant height) — the ⊓ gate shape.
+    # 5-row null filler (consonant height) — the ⊓ gate shape.
+    # 5-row null filler (consonant height) — the ⊓ gate shape.
+    "null_c": path("M 18 18 L 18 82 L 82 82 L 82 18"),
 }
 
 MARKS_VOWEL = {
+    # 3-row null filler (vowel height) — the ∪ cup shape.
+    # 3-row null filler (vowel height) — the ∪ cup shape.
+    # 3-row null filler (vowel height) — the ∪ cup shape.
+    # 3-row null filler (vowel height) — the ∪ cup shape.
+    # 3-row null filler (vowel height) — the ∪ cup shape.
+    # 3-row null filler (vowel height) — the ∪ cup shape.
+    # 3-row null filler (vowel height) — the ∪ cup shape.
     # 3-row null filler (vowel height) — the ∪ cup shape.
     "null_v": path("M 18 40 L 18 60 A 42 52.5 0 0 0 50 80 "
                    "A 42 52.5 0 0 0 82 60 L 82 40"),
@@ -300,12 +325,12 @@ SOURCE_NOTES = {
 # /s/ is deliberately absent: "students" writes both of its /s/ in TOP
 # slots with a different orientation for each, so the slot cannot decide
 # it. Spell those with the $/% override instead.
-FLIPS = {"æ", "ɑ", "l", "ɪ", "e", "aɪ"}
+FLIPS_BASE = {"æ", "ɑ", "l", "ɪ", "e", "aɪ"}
 
 # Vowels whose design spans all 4 rows of the vowel grid. These bridge
 # the gap between consonant and vowel in the 9-row block model.
 # All other vowels use only 3 rows, leaving a 1-row gap.
-VOWEL_4ROW = {"ɑ", "e", "ɪ", "u"}
+VOWEL_4ROW_BASE = {"ɑ", "e", "ɪ", "u"}
 
 # Sounds with no symbol anywhere in the reference material yet.
 #
@@ -314,8 +339,7 @@ VOWEL_4ROW = {"ɑ", "e", "ɪ", "u"}
 # an invention wearing the same clothes as the sourced glyphs. Demoted
 # rather than left shipping: a wrong glyph propagates everywhere.
 PLACEHOLDERS = {
-    "sh": "ʃ", "zh": "ʒ", "j_dz": "dʒ",
-    "oi": "ɔɪ", "kh": "x", "oo": "ʊ", "ch": "tʃ",
+    "kh": "x",
 }
 
 PLACEHOLDER_SVG = (
@@ -356,7 +380,79 @@ def glyph_type(ipa):
     return "vowel" if ipa in VOWEL_IPA else "consonant"
 
 
+def design_type(ipa):
+    """The `type` a design carries for this sound — a height class, not a
+    part of speech. See "Height classes" in tools/glyphspec.py."""
+    return {"null": "mark", "null_consonant": "mark_consonant"}.get(
+        glyph_type(ipa), glyph_type(ipa))
+
+
+# ---------------------------------------------------------------------------
+# FLIPS / VOWEL_4ROW: the two facts about a glyph that aren't its shape
+# ---------------------------------------------------------------------------
+# Both used to be hand-edited sets here, which meant the designer — the
+# place you actually find out that a glyph flips, or that it wants its
+# top row — couldn't record it. A design may now carry `flips` (bool) and
+# `rows` (3 or 4), and those win for that sound.
+#
+# The sets above stay as the baseline, so a sound with no design, or a
+# design that says nothing about either, keeps the value it always had.
+# Overriding is explicit in both directions: `"flips": false` turns a
+# base entry OFF, which is why absence and false are not the same thing.
+
+DESIGNS = ROOT / "designs"
+
+NAME_TO_IPA = {name: ipa for ipa, name in IPA_TO_NAME.items()}
+
+
+def design_overrides():
+    """(flips, rows) read out of designs/*.json, keyed by IPA. Missing or
+    unreadable designs are simply not overrides — this is a build script
+    for a drawing tool, and half a JSON file shouldn't stop the build."""
+    flips, rows = {}, {}
+    if not DESIGNS.is_dir():
+        return flips, rows
+    for p in sorted(DESIGNS.glob("*.json")):
+        ipa = NAME_TO_IPA.get(p.stem)
+        if ipa is None:
+            continue                      # a design with no matching sound
+        try:
+            d = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if isinstance(d.get("flips"), bool):
+            flips[ipa] = d["flips"]
+        if d.get("rows") in (3, 4):
+            rows[ipa] = d["rows"]
+    return flips, rows
+
+
+def effective_flags():
+    """The sets the build actually uses, base overlaid with designs/."""
+    flip_over, row_over = design_overrides()
+    flips = {ipa for ipa in IPA_TO_NAME
+             if flip_over.get(ipa, ipa in FLIPS_BASE)}
+    four = {ipa for ipa in IPA_TO_NAME
+            if glyph_type(ipa) == "vowel"
+            and row_over.get(ipa, 4 if ipa in VOWEL_4ROW_BASE else 3) == 4}
+    return flips, four
+
+
+# Applied at import so designer_server.py and designs_to_svg.py, which
+# read bg.FLIPS / bg.VOWEL_4ROW, see the same values the build does.
+# Call refresh() after writing a design to pick the change up in a
+# long-running process.
+FLIPS, VOWEL_4ROW = effective_flags()
+
+
+def refresh():
+    global FLIPS, VOWEL_4ROW
+    FLIPS, VOWEL_4ROW = effective_flags()
+    return FLIPS, VOWEL_4ROW
+
+
 def main():
+    refresh()
     OUT.mkdir(parents=True, exist_ok=True)
 
     # remove the old raster set so nothing stale is served

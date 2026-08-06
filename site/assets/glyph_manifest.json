@@ -46,12 +46,12 @@
   },
   "tʃ": {
     "file": "ch.svg",
-    "status": "PLACEHOLDER",
+    "status": "drawn",
     "type": "consonant"
   },
   "dʒ": {
     "file": "j_dz.svg",
-    "status": "PLACEHOLDER",
+    "status": "drawn",
     "type": "consonant"
   },
   "f": {
@@ -86,12 +86,12 @@
   },
   "ʃ": {
     "file": "sh.svg",
-    "status": "PLACEHOLDER",
+    "status": "drawn",
     "type": "consonant"
   },
   "ʒ": {
     "file": "zh.svg",
-    "status": "PLACEHOLDER",
+    "status": "drawn",
     "type": "consonant"
   },
   "h": {
@@ -164,7 +164,8 @@
     "file": "uh.svg",
     "status": "drawn",
     "type": "vowel",
-    "flat": "uh_flat.svg"
+    "flat": "uh_flat.svg",
+    "flips": true
   },
   "ə": {
     "file": "schwa.svg",
@@ -181,8 +182,9 @@
   },
   "ʊ": {
     "file": "oo.svg",
-    "status": "PLACEHOLDER",
-    "type": "vowel"
+    "status": "drawn",
+    "type": "vowel",
+    "flat": "oo_flat.svg"
   },
   "oʊ": {
     "file": "ow.svg",
@@ -221,8 +223,10 @@
   },
   "ɔɪ": {
     "file": "oi.svg",
-    "status": "PLACEHOLDER",
-    "type": "vowel"
+    "status": "drawn",
+    "type": "vowel",
+    "flat": "oi_flat.svg",
+    "flips": true
   },
   "ɜ": {
     "file": "nurse.svg",

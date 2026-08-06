@@ -17,6 +17,16 @@ const API = {
   },
   async remove(name) { return send("DELETE", `/api/designs/${name}`); },
   async render(design) { return send("POST", "/api/render", design); },
+  /** Ship a design into build_glyphs.py and rebuild. `allowInvented`
+   *  is the second press on a sound that has no reference material. */
+  async promote(name, allowInvented) {
+    return send("POST", `/api/promote/${name}`, { allowInvented: !!allowInvented });
+  },
+  /** Every design that differs from what ships. `dryRun` reports the
+   *  list without touching anything. */
+  async promoteAll(dryRun) {
+    return send("POST", "/api/promote-all", { dryRun: !!dryRun });
+  },
 };
 
 async function get(url) {

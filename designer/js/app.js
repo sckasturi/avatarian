@@ -26,6 +26,8 @@ const App = {
     this.bindToolbar();
     this.bindUnderlays();
     this.bindOutput();
+    this.bindAttrs();
+    this.bindShip();
     this.bindKeys();
     Store.on((what) => this.onStore(what));
 
@@ -38,6 +40,12 @@ const App = {
       $("#save-state").className = "save-state error";
       return;
     }
+    // The live preview needs the catalog, so it comes up after boot.
+    // If the site's scripts didn't load it just stays absent — the rest
+    // of the designer doesn't depend on it.
+    this.live = Live.boot();
+    if (!this.live) $("#live-note").textContent =
+      "live preview unavailable — site/js/render.js didn't load";
     this.renderList();
     const first = location.hash.slice(1) || Store.catalog[0].name;
     this.openSound(Store.sound(first) ? first : Store.catalog[0].name);
@@ -73,12 +81,15 @@ const App = {
   renderList() {
     const filter = ($("#filter").value || "").trim().toLowerCase();
     const groups = { consonant: "consonants", vowel: "vowels", mark: "marks" };
+    // `group` is the heading; `type` is the height class, and the two
+    // nulls differ on it — both are marks, at different heights.
+    const groupOf = (s) => s.group || s.type;
     const list = $("#sound-list");
     list.innerHTML = "";
 
     Object.entries(groups).forEach(([kind, label]) => {
       const rows = Store.catalog.filter(
-        (s) => s.type === kind && matches(s, filter));
+        (s) => groupOf(s) === kind && matches(s, filter));
       if (!rows.length) return;
       const head = document.createElement("div");
       head.className = "group-head";
@@ -144,23 +155,195 @@ const App = {
     Editor.underlays = { ref: s.reference, cur: s.current, curFlat: s.currentFlat };
     Editor.select(null);
     location.hash = name;
-    document.body.classList.toggle("has-flat", s.type !== "consonant");
+    document.body.classList.toggle("has-flat", !GEOM.isTall(s.type));
+    // Only a real vowel has a 3-row/4-row form. The nulls are marks:
+    // each is written at one height and there is nothing to choose.
+    document.body.classList.toggle("has-rows", s.type === "vowel");
 
     $("#now").innerHTML =
       `<b class="ipa">${s.ipa || "∅"}</b> ${s.name}` +
       `<span class="fine"> · ${s.type} · ${s.grid[0]}×${s.grid[1]} grid` +
       (s.arpabet ? ` · ${s.arpabet}` : "") +
-      (s.flips ? " · flips by slot" : "") +
       (s.placeholder ? " · no glyph in the set yet" : "") + "</span>";
-    $("#pv-bot-cap").textContent = s.flips ? "bottom slot (flipped)" : "bottom slot";
-    $("#pv-bot").classList.toggle("flip", !!s.flips);
     $("#notes").value = Store.design.notes || "";
     $("#out-note").textContent = s.note ? `Source: ${s.note}.` : "";
+    this.syncAttrs();
+    $("#ship-note").textContent = "";
 
     this.markCurrent();
     this.setSaveState(Store.design.updated ? "on disk" : "not saved yet", "");
     this.showProblems([]);
     Editor.hint();
+  },
+
+  // ── flips / rows ────────────────────────────────────────────────
+  //
+  // These live in the design, not in build_glyphs.py: the designer is
+  // where you find out that a glyph flips, or that it wants its top
+  // row, so it is where you should be able to say so. build_glyphs.py
+  // reads them back out of designs/ at build time and its own FLIPS /
+  // VOWEL_4ROW sets stay the fallback for anything undrawn.
+
+  bindAttrs() {
+    $("#a-flips").addEventListener("change", (e) => {
+      Store.commit((d) => { d.flips = e.target.checked; });
+      this.syncAttrs();
+    });
+    $$(".rowbtn").forEach((b) => b.addEventListener("click", () => {
+      Store.commit((d) => { d.rows = Number(b.dataset.rows); });
+      this.syncAttrs();
+    }));
+  },
+
+  /** The design wins where it says something; the build's current value
+   *  is what shows until it does. */
+  flipsNow() {
+    const d = Store.design || {};
+    return typeof d.flips === "boolean" ? d.flips : !!(Store.current || {}).flips;
+  },
+
+  rowsNow() {
+    const d = Store.design || {};
+    return d.rows || (Store.current || {}).rows || 3;
+  },
+
+  syncAttrs() {
+    const flips = this.flipsNow();
+    const rows = this.rowsNow();
+    $("#a-flips").checked = flips;
+    $$(".rowbtn").forEach((b) =>
+      b.classList.toggle("on", Number(b.dataset.rows) === rows));
+    $("#pv-bot-cap").textContent = flips ? "bottom slot (flipped)" : "bottom slot";
+    $("#pv-bot").classList.toggle("flip", flips);
+  },
+
+  // ── ship it ─────────────────────────────────────────────────────
+
+  bindShip() {
+    $("#ship").addEventListener("click", () => this.ship(false));
+    $("#ship-all").addEventListener("click", () => this.shipAll(false));
+  },
+
+  /**
+   * Ship everything that differs from what the set currently draws.
+   *
+   * Two presses, and the first one is the useful half: it lists which
+   * glyphs would actually change without touching anything. A bulk edit
+   * to the glyph set should be something you agree to after seeing the
+   * list, not something one click does — several designs have drifted
+   * from their shipped glyph and nobody has decided which direction is
+   * right. Placeholders are excluded either way; ship those one at a
+   * time, deliberately.
+   */
+  async shipAll(confirmed) {
+    const bar = $("#ship-all-bar");
+    const say = (text, cls) => {
+      bar.hidden = false;
+      bar.className = "ship-bar " + (cls || "");
+      bar.textContent = text;
+      return bar;
+    };
+    $("#ship-all").disabled = true;
+    say(confirmed ? "shipping…" : "checking what differs…");
+    try {
+      const res = await API.promoteAll(!confirmed);
+      const names = res.changed || [];
+      if (!names.length) {
+        say(`nothing to do — all ${res.considered} designs match what ships.`, "ok");
+      } else if (confirmed) {
+        say(`shipped ${names.length} — reload the site to see them.`, "ok");
+        await this.reloadShipped((Store.current || {}).name);
+      } else {
+        say(`${names.length} of ${res.considered} designs differ from the `
+          + `glyph they ship: ${names.join(", ")}. `);
+        const go = document.createElement("button");
+        go.textContent = `ship all ${names.length}`;
+        go.addEventListener("click", () => this.shipAll(true));
+        bar.appendChild(go);
+      }
+      (res.failed || []).forEach((f) => {
+        const li = document.createElement("span");
+        li.className = "ship-bar-fail";
+        li.textContent = `${f.name}: ${f.error}`;
+        bar.appendChild(li);
+      });
+    } catch (e) {
+      say(String(e.message || e), "bad");
+    } finally {
+      $("#ship-all").disabled = false;
+      const x = document.createElement("button");
+      x.className = "ship-bar-close";
+      x.textContent = "×";
+      x.title = "dismiss";
+      x.addEventListener("click", () => { bar.hidden = true; });
+      bar.appendChild(x);
+    }
+  },
+
+  /**
+   * Write this design into build_glyphs.py and rebuild the set.
+   *
+   * A sound that is still a PLACEHOLDER has no symbol in any reference
+   * material, so a drawing of one is an invention — the server refuses
+   * it until asked twice, and the second press is what says "I have a
+   * source for this". /tʃ/ shipped for a long time on nothing, which is
+   * the whole reason for the speed bump.
+   */
+  async ship(allowInvented) {
+    const name = (Store.current || {}).name;
+    if (!name) return;
+    const note = $("#ship-note");
+    if (!Store.hasDesign(name)) {
+      note.className = "fine bad";
+      note.textContent = "nothing drawn here yet";
+      return;
+    }
+    // Flush any pending autosave: the server ships what is ON DISK.
+    await Store.save(Store.design);
+    $("#ship").disabled = true;
+    note.className = "fine";
+    note.textContent = "shipping…";
+    try {
+      const res = await API.promote(name, allowInvented);
+      note.className = "fine ok";
+      note.textContent = res.changed
+        ? `${res.action} in ${res.dict}`
+          + (res.placeholder ? ", out of PLACEHOLDERS" : "")
+          + " · rebuilt — reload the site to see it"
+        : "already identical to what ships";
+      await this.reloadShipped(name);
+    } catch (e) {
+      const msg = String(e.message || e);
+      note.className = "fine bad";
+      if (/no symbol in any reference material/.test(msg)) {
+        note.textContent = msg + " ";
+        const again = document.createElement("button");
+        again.className = "tiny";
+        again.textContent = "ship anyway";
+        again.addEventListener("click", () => this.ship(true));
+        note.appendChild(again);
+      } else {
+        note.textContent = msg;
+      }
+    } finally {
+      $("#ship").disabled = false;
+    }
+  },
+
+  /** Re-read the catalog after a build so the underlays, the flip flag
+   *  and the placeholder state are the ones that just got written. */
+  async reloadShipped(name) {
+    await Store.boot();
+    const s = Store.sound(name);
+    if (s) {
+      // Store.current still points at the row from before the build.
+      Store.current = s;
+      Editor.underlays = { ref: s.reference, cur: s.current, curFlat: s.currentFlat };
+      if (this.live) Live.adopt(s.key);
+    }
+    this.renderList();
+    this.syncAttrs();
+    Editor.render();
   },
 
   step(delta) {
@@ -177,7 +360,7 @@ const App = {
     const square = GEOM.toSVG(d, "square");
     $("#pv-top").innerHTML = square;
     $("#pv-bot").innerHTML = square;
-    if (d.type !== "consonant") $("#pv-flat").innerHTML = GEOM.toSVG(d, "flat");
+    if (!GEOM.isTall(d.type)) $("#pv-flat").innerHTML = GEOM.toSVG(d, "flat");
   },
 
   showProblems(problems) {
@@ -290,6 +473,9 @@ const App = {
         this.rendered = { error: String(e.message || e) };
       }
       this.paintCode();
+      // The preview draws from the SERVER's SVG, not the canvas port,
+      // so what it shows is what the build would draw.
+      if (this.live) Live.sync(Store.current, Store.design, this.rendered);
     }, 220);
   },
 

@@ -297,10 +297,10 @@ not just one.
 
 Two fillers, distinguished by height. **Neither is a sound.**
 
-| name | shape | height | type | manifest key |
-| --- | --- | --- | --- | --- |
-| `null_v` | ∪ cup | vowel-height (3-row) | `null` | `∅` (code `0`) |
-| `null_c` | ⊓ gate | consonant-height (5-row) | `null_consonant` | `∅c` |
+| name | shape | height | manifest type | design type | manifest key |
+| --- | --- | --- | --- | --- | --- |
+| `null_v` | ∪ cup | vowel-height (3-row) | `null` | `mark` | `∅` (code `0`) |
+| `null_c` | ⊓ gate | consonant-height (5-row) | `null_consonant` | `mark_consonant` | `∅c` |
 
 **Which null is used is decided by the pairing PARTNER, not the empty slot's
 own height** (confirmed, Session 5):
@@ -313,15 +313,18 @@ consonant-height slot and `null_v` for an empty vowel-height slot. That is
 backwards from the confirmed rule and still needs fixing (`render.js` /
 `build_glyphs.py`); this is a documented correction, not yet code.
 
+The two differ by **height class**, which is what `type` means in a design:
+`mark_consonant` takes a consonant's 5×5 lattice, `mark` a vowel's 5×4 (see
+§3). Routing both through the vowel frame — which is what happened before
+the split — draws the ⊓ gate on the wrong lattice.
+
 > **History / correction:** these were called `glot_v` and `glot`, and `glot`
 > (the ⊓ gate) was mistakenly documented as **/ʔ/, a glottal stop**. It never
 > was — the ⊓ is just the taller null filler. The `Q` code for /ʔ/ was removed
 > from the input syntax. If you find "glot", "⊓ = /ʔ/", or "Q → ʔ" anywhere,
-> it is stale.
->
-> Loose end: `designs/glot.json` and `designs/glot_v.json` still carry the old
-> file names and should be renamed to `null_c` / `null_v` (with matching
-> `name`/`ipa`/`type` fields).
+> it is stale. The design files were renamed to `null_c.json` / `null_v.json`
+> with matching fields; `null_c.json`'s *drawing* is still the old `glot`
+> shape, not the ⊓ gate the set ships.
 
 ---
 
@@ -400,10 +403,15 @@ Notes worth holding onto:
 
 ### Placeholders (no glyph anywhere yet)
 
-Seven sounds render as a dashed "?" box: **tʃ, dʒ, ʃ, ʒ, x, ʊ, ɔɪ**. To fill
-one in: add its path to `build_glyphs.py`, remove its name from the
-`PLACEHOLDERS` dict, and re-run both build scripts. A wrong glyph propagates
-everywhere, so fill these only against real source material.
+**/x/** is the only sound still rendering as a dashed "?" box. Draw it in the
+designer and press **ship it** to fill it in.
+
+The other six — tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ — have since been drawn and
+shipped. ⚠️ **None of them carries a recorded source.** They were placeholders
+precisely because they appear nowhere in the key chart, so unless the drawings
+came from material outside it (which belongs in `SOURCE_NOTES`, as `/ɑ/` and
+`/ɔ/` are), they are inventions indistinguishable from the sourced glyphs. A
+wrong glyph propagates everywhere.
 
 ---
 
@@ -440,7 +448,8 @@ palette — click a cell to append its code.
 These are the live unknowns about the *script*, roughly by priority. Fuller
 notes in `CONTEXT.md`.
 
-1. **Seven sounds have no glyph** (§8) — need source material, not guesses.
+1. **/x/ has no glyph** (§8), and six sounds that had none were drawn and
+   shipped without a recorded source — provenance needed, not guesses.
 
 2. **Mid-word nulls.** Nulls appear inside words, not only at odd ends, and
    the renderer can't currently produce these. Two confirmed spellings:

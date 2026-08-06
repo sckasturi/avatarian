@@ -32,10 +32,19 @@ GEO.MARGIN_X = (100 - GEO.CONS_GRID[0] * GEO.UNIT) / 2;              // 10
 GEO.MARGIN_Y_SQUARE = (100 - GEO.CONS_GRID[1] * GEO.UNIT) / 2;       // 10
 GEO.MARGIN_Y_FLAT = (100 * GEO.FLAT - GEO.VOWEL_GRID[1] * GEO.UNIT) / 2;  // 8
 
+// Which `type` values are written at a consonant's height; everything
+// else takes the vowel's shorter lattice and its flat form. A mark
+// stands for no sound but is still written at one of the two heights —
+// the ∪ cup null is vowel-height, the ⊓ gate null consonant-height.
+// Mirrors TALL_KINDS in glyphspec.py.
+GEO.TALL_KINDS = ["consonant", "mark_consonant"];
+
+const isTall = (kind) => GEO.TALL_KINDS.includes(kind);
+
 /** How lattice coordinates land in a viewBox. sx !== sy only for the
  *  stretched square form of a vowel. */
 function frameFor(kind, form) {
-  if (kind === "consonant") {
+  if (isTall(kind)) {
     return { sx: GEO.UNIT, sy: GEO.UNIT, ox: GEO.MARGIN_X, oy: GEO.MARGIN_Y_SQUARE, h: 100 };
   }
   if (form === "flat") {
@@ -51,7 +60,7 @@ function frameFor(kind, form) {
 }
 
 function gridFor(kind) {
-  return kind === "consonant" ? [...GEO.CONS_GRID] : [...GEO.VOWEL_GRID];
+  return isTall(kind) ? [...GEO.CONS_GRID] : [...GEO.VOWEL_GRID];
 }
 
 const fx = (f, gx) => f.ox + gx * f.sx;
@@ -247,7 +256,7 @@ function toSVG(design, form = "square") {
 }
 
 function formsFor(design) {
-  return design.type === "consonant" ? ["square"] : ["square", "flat"];
+  return isTall(design.type || "consonant") ? ["square"] : ["square", "flat"];
 }
 
 /** The lattice-space path for the editor's own overlay, at a given
@@ -258,6 +267,6 @@ function editorPath(shape, scale) {
 }
 
 window.GEOM = {
-  GEO, frameFor, gridFor, toSVG, body, pathD, dotSVG, formsFor,
+  GEO, isTall, frameFor, gridFor, toSVG, body, pathD, dotSVG, formsFor,
   editorPath, arcParams, segmentsOf, tangentAt, num,
 };

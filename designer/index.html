@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Avatarian glyph designer</title>
+<!-- The site's own block layout, served over /site/ by
+     tools/designer_server.py. Linking the real stylesheet rather than
+     restating it is the point: the live preview below is laid out by
+     exactly what lays out the product. -->
+<link rel="stylesheet" href="/site/css/blocks.css">
 <link rel="stylesheet" href="css/designer.css">
 </head>
 <body>
@@ -16,10 +21,19 @@
   </div>
   <div class="bar-right">
     <span id="save-state" class="save-state">ready</span>
+    <!-- Whole-set action, so it lives up here rather than beside the
+         per-glyph "ship it" down in the live panel. -->
+    <button id="ship-all" class="ghost"
+            title="Ship every design that differs from what the set draws. Shows you the list first.">ship all…</button>
     <button id="help-btn" class="ghost" title="Keyboard shortcuts">?</button>
     <button id="theme-btn" class="ghost" title="Theme">◐</button>
   </div>
 </header>
+
+<!-- Where "ship all" reports: a strip under the header, because the
+     list of what would change is the half worth reading and it doesn't
+     fit in a toolbar. -->
+<div id="ship-all-bar" class="ship-bar" hidden></div>
 
 <main class="cols">
 
@@ -116,6 +130,42 @@
       <figure><div id="pv-bot" class="pv"></div><figcaption id="pv-bot-cap">bottom slot</figcaption></figure>
       <figure class="flat-only"><div id="pv-flat" class="pv pv-flat"></div><figcaption>5×4 form</figcaption></figure>
     </div>
+
+    <!-- The two facts about a glyph that aren't its shape. Both are
+         saved into the design, and build_glyphs.py reads them back out
+         of designs/ — so setting them here is setting them for real. -->
+    <div class="attrs">
+      <label title="This glyph mirrors top-to-bottom when it lands in a bottom slot.
+Only tick it against a word that actually shows it flipped.">
+        <input type="checkbox" id="a-flips"> flips by slot</label>
+      <span class="rows-only">
+        <span class="lbl">rows</span>
+        <button class="rowbtn" data-rows="3"
+                title="3-row: leaves the top lattice row empty, so there is a gap under the consonant">3</button>
+        <button class="rowbtn" data-rows="4"
+                title="4-row: fills the top lattice row and bridges up to the consonant">4</button>
+      </span>
+    </div>
+
+    <!-- ── the glyph in the actual product ──────────────────────── -->
+    <section class="live">
+      <div class="live-head">
+        <strong>in a block</strong>
+        <select id="live-partner" title="What to pair it with"></select>
+        <span class="spacer"></span>
+        <button id="ship" title="Write this design into build_glyphs.py and rebuild the site">ship it</button>
+      </div>
+      <div id="live-blocks" class="live-blocks"></div>
+
+      <label class="field">
+        <span>in a word — the same syntax the app takes</span>
+        <input id="live-phrase" type="text" spellcheck="false"
+               placeholder="M EH T AX L 0 B EH N D IH NG (metalbending)">
+      </label>
+      <div id="live-word" class="live-word"></div>
+      <p id="live-note" class="fine bad"></p>
+      <p id="ship-note" class="fine"></p>
+    </section>
 
     <div id="problems" class="problems" hidden></div>
 
@@ -246,6 +296,17 @@
 <script src="js/import.js"></script>
 <script src="js/store.js"></script>
 <script src="js/editor.js"></script>
+
+<!-- The main site, unmodified, served over /site/. The live preview
+     calls renderAvatarian() the same way index.html and the wiki gadget
+     do, so what it draws is the product and not a lookalike. Load order
+     matches index.html: manifest, g2p, sounds, render. -->
+<script src="/site/js/manifest.js"></script>
+<script src="/site/js/g2p.js"></script>
+<script src="/site/js/sounds.js"></script>
+<script src="/site/js/render.js"></script>
+
+<script src="js/live.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

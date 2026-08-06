@@ -19,6 +19,9 @@ API
     PUT    /api/designs/<name>   save one (body: the design JSON)
     DELETE /api/designs/<name>   delete one
     POST   /api/render           design JSON in, SVG + python source out
+    POST   /api/promote/<name>   write it into build_glyphs.py and rebuild
+
+    GET    /site/...             the main site's own files, read-only
 
 /api/catalog carries the traced key shape and the currently-drawn glyph
 inline for every sound, so the designer gets its underlays in a single
@@ -28,6 +31,15 @@ request and works the same whether or not those files exist.
 with its own JavaScript port (designer/js/geom.js) because round-tripping
 a drag would feel terrible, but anything you copy out of the designer is
 rendered by tools/glyphspec.py, so the authority is always the Python.
+
+/site/ is why the designer can show a glyph in a real block: it serves
+the deployed site's render.js, blocks.css, g2p.js and sounds.js straight
+off disk, so the live preview is drawn by the code that draws the actual
+product rather than by a lookalike kept in the designer. Read-only, and
+only for the handful of files the preview needs.
+
+/api/promote is the "ship it" button — see tools/promote.py for what it
+edits and what it deliberately leaves alone.
 """
 
 import json
@@ -41,9 +53,11 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 import glyphspec                                        # noqa: E402
 import build_glyphs as bg                               # noqa: E402
+import promote as promote_mod                           # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WEB = ROOT / "designer"
+SITE = ROOT / "site"
 DESIGNS = ROOT / "designs"
 REF = ROOT / "site" / "assets" / "reference"
 GLYPHS = ROOT / "site" / "assets" / "glyphs"
@@ -52,6 +66,15 @@ G2P = ROOT / "site" / "js" / "g2p.js"
 PORT = 8792
 
 NAME_OK = re.compile(r"^[a-z0-9_]+$")
+
+# The only files under site/ the designer may read. An allow-list rather
+# than a path check: this server exists to write to designs/, and the
+# less of the tree it will hand out, the less there is to get wrong.
+SITE_FILES = {
+    "js/manifest.js", "js/render.js", "js/g2p.js", "js/sounds.js",
+    "css/blocks.css",
+}
+SITE_TYPES = {".js": "application/javascript", ".css": "text/css"}
 
 # A word that puts the sound somewhere obvious, for the picker. Canon
 # spellings where there is one, since those are the shapes being matched.
@@ -98,24 +121,28 @@ def catalog():
     arpa = arpabet_map()
     rows = []
     for ipa, name in bg.IPA_TO_NAME.items():
-        kind = bg.glyph_type(ipa)
-        grid_kind = kind
-        if kind == "null":
-            kind = "mark"
-            grid_kind = "vowel"
-        elif kind == "null_consonant":
-            kind = "mark"
-            grid_kind = "consonant"
+        # `type` is the design's HEIGHT CLASS (glyphspec's TALL_KINDS),
+        # `group` is the heading it is filed under in the sound list.
+        # They differ for the two nulls: both read as marks, but one is
+        # written at a consonant's height and one at a vowel's.
+        kind = bg.design_type(ipa)
         rows.append({
             "name": name,
             "ipa": None if ipa in (bg.NULL_IPA, bg.NULL_C_IPA) else ipa,
             "key": ipa,
             "type": kind,
-            "grid": glyphspec.grid_for(grid_kind),
+            "group": "mark" if kind.startswith("mark") else kind,
+            "grid": glyphspec.grid_for(kind),
             "arpabet": arpa.get(ipa),
             "example": EXAMPLES.get(name),
             "placeholder": name in bg.PLACEHOLDERS,
+            # Both as the BUILD currently sees them — base set overlaid
+            # with whatever designs/ says. The designer's checkbox and
+            # row toggle write back into the design, so these are what
+            # they show when a glyph is opened.
             "flips": ipa in bg.FLIPS,
+            "rows": (4 if ipa in bg.VOWEL_4ROW else 3)
+                    if kind == "vowel" else None,
             "note": bg.SOURCE_NOTES.get(name),
             # Underlays: the shape traced out of the hand-lettered key,
             # and whatever the glyph set currently draws. Both optional.
@@ -131,7 +158,7 @@ def catalog():
             else read(GLYPHS / f"{name}{bg.FLAT_SUFFIX}.svg"),
         })
     order = {"consonant": 0, "vowel": 1, "mark": 2}
-    rows.sort(key=lambda r: (order[r["type"]], r["name"]))
+    rows.sort(key=lambda r: (order[r["group"]], r["name"]))
 
     # Extra tracings the key has that aren't a sound of their own — the
     # second /l/ and /æ/ cells, which are the bottom-slot orientations.
@@ -211,9 +238,34 @@ class Handler(SimpleHTTPRequestHandler):
             return self.send_json(catalog())
         if self.path == "/api/designs":
             return self.send_json(load_designs())
+        if self.path.startswith("/site/"):
+            return self.send_site(self.path[len("/site/"):].split("?")[0])
         return super().do_GET()
 
+    def send_site(self, rel):
+        """One of the main site's own files, so the live preview is drawn
+        by the product's code rather than a copy of it."""
+        if rel not in SITE_FILES:
+            return self.send_error(404)
+        path = SITE / rel
+        try:
+            body = path.read_bytes()
+        except OSError:
+            return self.send_error(404)
+        self.send_response(200)
+        self.send_header("Content-Type", SITE_TYPES.get(path.suffix, "text/plain")
+                         + "; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_POST(self):
+        # Checked before the per-name route: "-all" is not a valid stem,
+        # so the order matters rather than being cosmetic.
+        if self.path == "/api/promote-all":
+            return self.promote_all()
+        if self.path.startswith("/api/promote/"):
+            return self.promote(self.stem("/api/promote"))
         if self.path != "/api/render":
             return self.send_error(404)
         try:
@@ -227,6 +279,45 @@ class Handler(SimpleHTTPRequestHandler):
             })
         except Exception as e:                       # noqa: BLE001
             return self.send_json({"error": f"{type(e).__name__}: {e}"}, 400)
+
+    def promote(self, name):
+        """Ship the design into the glyph set, then rebuild.
+
+        The design is read off DISK rather than taken from the request
+        body: the designer autosaves, and shipping something the files
+        don't agree with is the one way this could put a shape into the
+        set that nobody can find again.
+        """
+        if not name:
+            return self.send_json({"error": "bad name"}, 400)
+        body = self.read_json() or {}
+        try:
+            res = promote_mod.promote(
+                name, allow_invented=bool(body.get("allowInvented")))
+        except promote_mod.PromoteError as e:
+            return self.send_json({"error": str(e),
+                                   "placeholder": name in bg.PLACEHOLDERS}, 400)
+        except Exception as e:                       # noqa: BLE001
+            return self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
+        # promote() reloads build_glyphs in place, so `bg` here already
+        # sees the new PLACEHOLDERS and the rebuilt flag sets — the next
+        # /api/catalog reports the glyph as shipped without a restart.
+        return self.send_json(res)
+
+    def promote_all(self):
+        """Ship every design that differs from what ships.
+
+        `dryRun` is what the button's first press uses: it reports which
+        glyphs would change without touching anything, so a bulk edit to
+        the set is something you agree to after seeing the list rather
+        than something one click does.
+        """
+        body = self.read_json() or {}
+        try:
+            return self.send_json(
+                promote_mod.promote_all(dry_run=bool(body.get("dryRun"))))
+        except Exception as e:                       # noqa: BLE001
+            return self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
 
     def do_PUT(self):
         name = self.stem("/api/designs")
@@ -242,6 +333,10 @@ class Handler(SimpleHTTPRequestHandler):
             DESIGNS.mkdir(exist_ok=True)
             (DESIGNS / f"{name}.json").write_text(
                 glyphspec.dumps(design), encoding="utf-8")
+            # `flips` and `rows` live in the design now, so saving one
+            # can change what the build would do. Re-read them here or
+            # /api/catalog keeps reporting the values from startup.
+            bg.refresh()
             return self.send_json({
                 "saved": name,
                 "problems": glyphspec.validate(design),

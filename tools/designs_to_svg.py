@@ -64,16 +64,20 @@ def catalog():
     the two can't drift apart."""
     rows = []
     for ipa, name in bg.IPA_TO_NAME.items():
-        kind = bg.glyph_type(ipa)
+        kind = bg.design_type(ipa)
         rows.append({
             "name": name,
             "ipa": None if ipa in (bg.NULL_IPA, bg.NULL_C_IPA) else ipa,
-            "type": "mark" if kind in ("null", "null_consonant") else kind,
+            # The height class a design carries, and the heading it is
+            # filed under — the two nulls are different heights but both
+            # read as marks.
+            "type": kind,
+            "group": "mark" if kind.startswith("mark") else kind,
             "placeholder": name in bg.PLACEHOLDERS,
             "flips": ipa in bg.FLIPS,
         })
     order = {"consonant": 0, "vowel": 1, "mark": 2}
-    rows.sort(key=lambda r: (order[r["type"]], r["name"]))
+    rows.sort(key=lambda r: (order[r["group"]], r["name"]))
     return rows
 
 

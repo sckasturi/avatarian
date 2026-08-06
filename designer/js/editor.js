@@ -48,8 +48,8 @@ const Editor = {
   get design() { return Store.design; },
   get kind() { return (this.design && this.design.type) || "consonant"; },
   get grid() { return GEOM.gridFor(this.kind); },
-  /** Vowels are drawn natively, i.e. in the flat frame. */
-  get form() { return this.kind === "consonant" ? "square" : "flat"; },
+  /** Vowel-height glyphs are drawn natively, i.e. in the flat frame. */
+  get form() { return GEOM.isTall(this.kind) ? "square" : "flat"; },
   get frame() { return GEOM.frameFor(this.kind, this.form); },
 
   gx(x) { const f = this.frame; return f.ox + x * f.sx; },
@@ -247,7 +247,7 @@ const Editor = {
   fromCurrentGlyph() {
     // A vowel's flat copy is the one that matches the editor's frame;
     // fall back to the square drawing, read with the square frame.
-    const wantFlat = this.kind !== "consonant" && !!this.underlays.curFlat;
+    const wantFlat = !GEOM.isTall(this.kind) && !!this.underlays.curFlat;
     const src = wantFlat ? this.underlays.curFlat : this.underlays.cur;
     if (!src) return this.onHint("this sound has no drawn glyph to start from");
 
@@ -518,7 +518,7 @@ const Editor = {
   renderUnderlays() {
     const parts = [];
     const o = this.show.opacity;
-    const flatBox = this.kind !== "consonant";
+    const flatBox = !GEOM.isTall(this.kind);
     // The key is only ever traced square, so a vowel's tracing has to be
     // squashed in y to sit on a shorter lattice — the same squash
     // build_glyphs.py does. The drawn glyph needs no such thing when the

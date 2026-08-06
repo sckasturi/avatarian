@@ -35,9 +35,11 @@ Wiki (Fandom).
 site/            <- deploy this folder to GitHub Pages / Cloudflare Pages
   index.html       the whole app: English↔Avatarian, glyph reference
   js/g2p.js        English -> IPA (rule-based, no server/dictionary needed)
+  js/sounds.js     the ASCII sounds syntax, in and out (site + designer)
   js/render.js     IPA -> Avatarian glyphs (shared by site AND the wiki)
   js/manifest.js   generated — every glyph's SVG inlined (the whole "font")
-  css/style.css
+  css/blocks.css   block layout (site + wiki + the designer's live preview)
+  css/style.css    the page around it
   assets/glyphs/   one clean SVG per phoneme
   assets/glyph_manifest.json   generated index of glyph files + status
   assets/reference/            generated — traced shapes from the key
@@ -53,6 +55,7 @@ designer/        <- the glyph designer: a LOCAL-ONLY second site, not deployed
   js/geom.js       the design format's geometry, ported for the canvas
   js/editor.js     the lattice canvas: drawing, hit-testing, dragging
   js/store.js      state, undo, autosave to designs/
+  js/live.js       the glyph in real blocks, drawn by the site's render.js
   js/app.js        sound list, previews, output panel
 
 designs/         <- one JSON per character, as drawn on the lattice
@@ -66,6 +69,7 @@ tools/
   glyphspec.py          the design format + the one way to render it
   designer_server.py    serves designer/ and writes designs/ (port 8792)
   designs_to_svg.py     a design -> SVG, or -> a build_glyphs.py entry
+  promote.py            a design -> INTO build_glyphs.py, then rebuild
   check_geom.py         proves geom.js still matches glyphspec.py
 
 wiki/            <- paste these into the Fandom wiki, once
@@ -178,11 +182,17 @@ one-row gap for 4-row vowels (e.g. T+ɑ) is a design-convention question, not
 a rendering one — see `HANDOFF.md` and `CONTEXT.md`.
 
 **4-row vs 3-row vowels:** as of session 5, the confirmed 4-row set is
-**AA, AW, EY, IH, OY, UH, UW** — not the `ɑ, e, ɪ, u` currently coded as
-`VOWEL_4ROW`. Every other vowel is 3-row. The code needs updating to match
-(see `HANDOFF.md`, Session 5); note OY/ɔɪ also currently has no glyph at
-all in the shipped set, which needs verifying before this list is treated
-as final.
+**AA, AW, EY, IH, OY, UH, UW** — not the `ɑ, e, ɪ, u` still coded as
+`VOWEL_4ROW_BASE`. Every other vowel is 3-row. Note OY/ɔɪ also currently
+has no glyph at all in the shipped set, which needs verifying before this
+list is treated as final.
+
+Reconciling the two is now a per-glyph job rather than a code edit: the
+row count is set from the designer's **rows** toggle and saved into
+`designs/<name>.json`, which `build_glyphs.py` reads and lets override
+the base set. So a vowel gets re-checked against its drawing and its
+blocks, one at a time, instead of the list being swapped wholesale on a
+reading that OY already contradicts.
 
 The key chart's own note, "Consonants take up 3/4 height, Vowels take 1/4
 height", describes bands within a hand-lettered block rather than a scale
@@ -260,17 +270,87 @@ made. Node-by-node drawing is still there, in the **by hand** tray, for
 fixing something the fit read wrong. Each glyph autosaves to
 `designs/<name>.json`; `designs/README.md` documents the format.
 
-Getting a design into the shipped set is a deliberate copy-paste, not an
-automatic rebuild — `build_glyphs.py` stays the one place the set is
-defined:
+### Seeing it in the actual product
+
+The three small previews show a glyph on its own, which is the one place
+none of the interesting questions live. Whether a vowel's connecting
+stroke reaches the consonant above it, whether a 3-row vowel leaves the
+gap it should, whether a flipped glyph points its stem at its neighbour —
+all of that only shows up with the glyph's **partner** next to it.
+
+So **in a block** renders it in real blocks, at product size, and **in a
+word** takes the same ASCII sounds syntax the app does (it opens on the
+sound's example word). Both are drawn by `site/js/render.js` against
+`site/css/blocks.css` — the designer links the real files over `/site/`
+rather than restating them, so the preview can't drift from the product.
+The glyph being edited is swapped into the manifest first, and the SVG it
+is swapped in from comes back from `glyphspec.py`, so what you see is
+what the build would draw and not what the canvas thinks.
+
+### Flips, and 3-row vs 4-row
+
+Two facts about a glyph aren't its shape: whether it **flips by slot**,
+and whether a vowel is **3-row or 4-row**. Both used to be hand-edited
+sets in `build_glyphs.py`, which meant the designer — where you actually
+find these out — couldn't record them. They now live in the design:
+
+    designs/<name>.json   "flips": true,  "rows": 4
+
+set from the checkbox and the row toggle beside the previews, and read
+back by `build_glyphs.py` at build time. `FLIPS` and `VOWEL_4ROW` stay
+there as `FLIPS_BASE` / `VOWEL_4ROW_BASE`, the fallback for anything with
+no design. Overriding is explicit both ways — `"flips": false` turns a
+base entry off, so absence and false are not the same thing.
+
+Declaring `rows` doesn't move ink: a 4-row vowel is *taller* than a
+3-row one (0.5–3.5 against 1.5–3.5), not the same shape shifted, so
+which one a drawing is is a drawing decision. What the toggle does give
+you is a check — declare 4-row with nothing drawn above `y=1` and the
+problems panel says the top row is empty and it won't reach the
+consonant above.
+
+### Getting it into the set
+
+`build_glyphs.py` stays the one place the set is defined, and promotion
+stays a deliberate act — but it is one button now rather than a
+copy-paste:
 
     python3 tools/designs_to_svg.py --report      # what's drawn, what isn't
     python3 tools/designs_to_svg.py m --python    # a build_glyphs.py entry
+    python3 tools/promote.py m --dry-run          # what shipping would change
+    python3 tools/promote.py m                    # write it in and rebuild
+    python3 tools/promote.py --all --dry-run      # which glyphs differ at all
+    python3 tools/promote.py --all                # ship every one that does
+
+**ship it**, by the live preview, does the single-glyph one: it writes the
+entry into the right dict in `build_glyphs.py` in the layout a human would
+use, drops the name from `PLACEHOLDERS` if it was there, and runs both
+build scripts. Reload the site and the glyph is the one you just drew.
+
+**ship all…** in the header does the whole set — it is a whole-set
+action, which is why it sits up there rather than beside the per-glyph
+button. Two presses: the first reports, in a strip under the header,
+which glyphs actually differ from what ships and changes nothing; the
+second ships them. The list is the useful half — designs and the shipped
+set have drifted apart on a good number of glyphs, and which direction is
+right is a decision rather than a build step. Every entry is edited
+against the running source and the build runs once at the end, so it
+can't leave the tree half-built. Placeholders are skipped; ship those one
+at a time, deliberately.
+
+Shipping a sound that is still a **placeholder** takes saying so twice.
+Those are the seven with no symbol in any reference material, so a
+drawing of one is an invention that will then look exactly as
+authoritative as the sourced glyphs — which is how /tʃ/ shipped on
+nothing for a long time. The first press explains; a **ship anyway**
+button appears for when you do have a source. `--all` skips them
+entirely.
 
 The designer's canvas uses a JavaScript port of the geometry so dragging
 redraws at pointer speed, but everything it hands back — the SVG, the
-snippet above — is rendered by the Python, so what you paste is what the
-build will draw. `python3 tools/check_geom.py` proves the two still agree.
+snippet, the live preview, what `ship it` writes — is rendered by the
+Python, so what lands is what the build will draw. `python3
+tools/check_geom.py` proves the two still agree.
 
 Glyphs are inlined into `js/manifest.js` (~16 KB for the whole set) rather
 than loaded as image files. That is what lets the site work over `file://`,
@@ -304,10 +384,19 @@ drifted, fix them in `build_glyphs.py`, re-run, look again.
 
 ### Still unresolved
 
-Seven sounds have no symbol anywhere in the reference material and render as
-a dashed "?" box throughout: **tʃ, dʒ, ʃ, ʒ, x, ʊ, ɔɪ**. To fill one
-in, add its path to `build_glyphs.py`, move its name out of the
-`PLACEHOLDERS` dict, and re-run both scripts.
+**/x/ is the only sound left with no glyph**, and it renders as a dashed
+"?" box. To fill it in, draw it in the designer and press **ship it** —
+that writes the path into `build_glyphs.py`, moves the name out of the
+`PLACEHOLDERS` dict and re-runs both scripts in one go.
+
+The other six — tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ — were placeholders until they
+were drawn in the designer and shipped. **None of them has a recorded
+source.** They were not in `reference/avatarian_key.svg`, which is what
+made them placeholders in the first place, so if they came from material
+outside the chart that material should go in `SOURCE_NOTES` the way
+`/ɑ/` and `/ɔ/` are handled — otherwise the set once again contains
+shapes that look exactly as authoritative as the sourced ones with
+nothing behind them. That is the failure /tʃ/ already had once.
 
 Not every glyph comes from `reference/avatarian_key.svg` — /ɑ/ and /ɔ/ were
 supplied separately, so they have no tracing to sit beside. Add such a glyph
@@ -342,6 +431,12 @@ exact vertical mirror, so one drawing plus a flip does the same job with
 half the assets. It is deliberately a list rather than a blanket rule: most
 glyphs keep one orientation, so only add a sound here against a word that
 actually shows it flipped.
+
+The table above is `FLIPS_BASE`. A glyph is added or removed from the
+designer, with the **flips by slot** checkbox — it saves into that
+glyph's design and the build reads it back, so the evidence and the flag
+get recorded in the same sitting rather than one of them being forgotten
+in a Python set.
 
 **/s/ is the exception**: "students" writes both of its /s/ in top slots and
 uses a different orientation for each, so no slot rule can select them. Use
@@ -430,7 +525,8 @@ don't want to rely on the guesser.
 - Unstressed-vowel reduction isn't modelled, so some interior vowels come
   out as full vowels where canon would use a schwa
   (e.g. "metalbending" → /m ɛ t æ l .../ rather than /m ɛ t ə l .../).
-- Seven phonemes have no glyph yet (tʃ, dʒ, ʃ, ʒ, x, ʊ, ɔɪ — see above).
+- /x/ has no glyph yet; six others were drawn and shipped without a
+  recorded source (see above).
 - Positional vowel variants ("top/bottom" forms) are not implemented.
 - Punctuation (comma, question mark, apostrophe) is stripped, not rendered,
   though the key chart documents how each should behave.

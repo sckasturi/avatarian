@@ -1,0 +1,75 @@
+/* Avatarian BLOCK LAYOUT — how the glyphs stack, and nothing else.
+ *
+ * Split out of style.css because three surfaces have to agree on it:
+ * the standalone site, the wiki gadget (wiki/MediaWiki_Common.css.txt,
+ * which restates these rules in em so Avatarian scales with the article
+ * text), and the glyph designer's live preview, which links this very
+ * file so what it shows is the real layout rather than a copy that
+ * drifts. Page chrome — the output card, the per-word captions — stays
+ * in style.css; only what a block IS lives here.
+ *
+ * Everything here is driven by js/render.js. Colours come from the
+ * host page's variables (--ink, --warn), so this file is theme-agnostic
+ * and works in the site and the designer unchanged.
+ *
+ * A block is a PAIR of phonemes, written top slot then bottom slot (see
+ * the header of js/render.js). Blocks pack tight with no borders; word
+ * spacing, not per-block borders, separates words.
+ *
+ * Sizing follows the SOUND, not the slot: consonants are 5 units tall,
+ * vowels 4, and the two stack flush with nothing between them. At 52px
+ * per consonant that puts a unit at 10.4px, so a vowel is 41.6px —
+ * including a vowel sitting in the top slot, which happens whenever a
+ * word starts with one ("at", "up").
+ *
+ * A vowel keeps the FULL block width and loses only height — canon
+ * draws vowel marks wide and flat, spanning their partner. It gets that
+ * shape from a separately generated flat drawing, NOT by being squashed
+ * at render time. Height alone is the ratio; width is not.
+ */
+
+.avatarian-word {
+  display: inline-flex; align-items: flex-start;
+  margin: 6px 30px 10px 0;
+}
+.avatarian-block {
+  display: inline-flex; flex-direction: column; align-items: center;
+  margin-right: 3px;
+}
+.avatarian-slot { display: flex; justify-content: center; }
+/* The two glyphs in a block share a lattice edge — a consonant's bottom
+   row line IS the vowel's top row line (glyphspec.py: "stack flush, 5
+   units over 4"). But each SVG carries its own clearance margin outside
+   the lattice (10svg on a 100 box = 5.2px for a consonant, 8svg on an 80
+   box = 4.16px for a flat vowel). Stacking the boxes flush would leave
+   both margins as a gap, so pull the bottom slot up by their sum to make
+   the lattices meet. The 4.5-unit shrink on C+C blocks keeps this sum at
+   5.2+4.16 for every common pairing, so one constant covers them. */
+.avatarian-slot-bottom { margin-top: -9.36px; }
+
+.avatarian-glyph { display: inline-block; line-height: 0; color: var(--ink); }
+.avatarian-glyph svg { display: block; width: 100%; height: 100%; }
+/* Consonants: 5×5 grid = 52px. Vowels: 4×5 grid = 41.6px.
+   3-row vowels leave the top row of their 4-row viewBox empty (gap);
+   4-row vowels fill it (bridge to the consonant above). */
+.avatarian-glyph.avatarian-consonant,
+.avatarian-glyph.avatarian-null_consonant { width: 52px; height: 52px; }
+.avatarian-glyph.avatarian-vowel,
+.avatarian-glyph.avatarian-null { width: 52px; height: 41.6px; }
+/* A block of two consonants: 4.5 units each instead of 5. */
+.avatarian-block:not(:has(.avatarian-vowel)):not(:has(.avatarian-null)):not(:has(.avatarian-null_consonant))
+  .avatarian-glyph.avatarian-consonant {
+  width: 46.8px; height: 46.8px;
+}
+
+/* Bottom-slot glyphs are the same drawing mirrored top-to-bottom. A
+   transform rather than a second asset: it is exact, costs nothing, and
+   keeps stroke weight and dot roundness identical to the top form. */
+.avatarian-glyph.avatarian-flipped svg { transform: scaleY(-1); }
+
+/* Vowels carry both a square (100×100) and flat (100×80) SVG; always
+   use the flat form. Consonants have only the square one. */
+.avatarian-glyph svg.g-square:not(:only-of-type) { display: none; }
+
+.avatarian-placeholder { opacity: 0.5; }
+.avatarian-missing { font-size: 13px; color: var(--warn); line-height: 1; }

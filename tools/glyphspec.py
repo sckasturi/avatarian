@@ -24,8 +24,10 @@ The format
     {
       "name":  "m",              # file stem, matches IPA_TO_NAME
       "ipa":   "m",              # the sound, or null for a mark
-      "type":  "consonant",      # consonant | vowel | mark
+      "type":  "consonant",      # see "Height classes" below
       "grid":  [5, 5],           # [w, h] — 5x5 consonant, 5x4 vowel
+      "flips": false,            # mirrors top-to-bottom in a bottom slot
+      "rows":  4,                # vowels only: 3-row or 4-row form
       "notes": "ring, dot centred",
       "shapes": [ ... ],
       "updated": "2026-08-05T12:00:00Z"
@@ -71,6 +73,28 @@ Coordinates are lattice units with y running DOWN, matching SVG: (0,0)
 is top-left, (5,5) bottom-right of a consonant cell. Half-unit positions
 are allowed and expected — several canon glyphs centre a mark between
 lattice lines.
+
+`flips` and `rows` are the two facts about a glyph that aren't its
+shape, and they live here rather than in build_glyphs.py so the designer
+can set them: `flips` says the glyph mirrors top-to-bottom in a bottom
+slot (FLIPS), and `rows` says whether a vowel fills all 4 lattice rows
+or leaves the top one empty (VOWEL_4ROW). Both are optional; a design
+that omits them leaves build_glyphs.py's own sets alone.
+
+
+Height classes
+--------------
+
+`type` names a height class, not a part of speech. There are two:
+
+    consonant, mark_consonant   5x5 lattice, 100x100 box, no flat form
+    vowel, mark                 5x4 lattice, 100x80 flat + stretched square
+
+A *mark* stands for no sound but is still written at one of the two
+heights — the ∪ cup null is vowel-height (`mark`) and the ⊓ gate null is
+consonant-height (`mark_consonant`). Splitting them matters: a
+consonant-height mark on a vowel frame comes out drawn on the wrong
+lattice and carrying a flat form it should not have.
 
 
 Geometry
@@ -130,6 +154,16 @@ DEFAULT_DOT = "m"
 CONS_GRID = (5, 5)
 VOWEL_GRID = (5, 4)
 
+# Which `type` values are written at a consonant's height. Everything
+# else takes the vowel's shorter lattice and its flat form. See "Height
+# classes" in the module docstring: `mark` and `mark_consonant` are both
+# soundless fillers, and the only thing separating them is this.
+TALL_KINDS = {"consonant", "mark_consonant"}
+
+
+def is_tall(kind):
+    return kind in TALL_KINDS
+
 # Vowel height as a fraction of a consonant's. They stack flush in a
 # block, so a consonant over a vowel is 5 + 4 = 9 units tall.
 FLAT = VOWEL_GRID[1] / CONS_GRID[1]         # 4/5
@@ -170,11 +204,12 @@ class Frame:
 
 
 def frame_for(kind, form):
-    """kind: consonant | vowel | mark.  form: square | flat.
+    """kind: any of TALL_KINDS, else vowel-height.  form: square | flat.
 
-    Marks (the null cup) are written like vowels and share their frames.
+    The vowel-height null cup shares a vowel's frames; the
+    consonant-height gate shares a consonant's.
     """
-    if kind == "consonant":
+    if is_tall(kind):
         return Frame(UNIT, UNIT, MARGIN_X, MARGIN_Y_SQUARE, 100)
     if form == "flat":
         return Frame(UNIT, UNIT, MARGIN_X, MARGIN_Y_FLAT, 100 * FLAT)
@@ -183,7 +218,7 @@ def frame_for(kind, form):
 
 
 def grid_for(kind):
-    return list(CONS_GRID if kind == "consonant" else VOWEL_GRID)
+    return list(CONS_GRID if is_tall(kind) else VOWEL_GRID)
 
 
 # --- number formatting -----------------------------------------------------
@@ -422,8 +457,9 @@ def to_svg(design, form="square"):
 
 
 def forms_for(design):
-    """Which forms this design ships. Vowels and marks ride along flat."""
-    return ["square"] if design.get("type") == "consonant" \
+    """Which forms this design ships. Vowel-height glyphs ride along
+    flat as well; consonant-height ones have only the square box."""
+    return ["square"] if is_tall(design.get("type", "consonant")) \
         else ["square", "flat"]
 
 
@@ -472,9 +508,13 @@ def to_python(design):
         lines.append(head + flat + ",")
         return "\n".join(lines)
 
+    # Continuations align under the opening `path(`, i.e. one indent of
+    # the head itself — `    "th": path(...)` hangs its `+` at column 10,
+    # not at a fixed 9. Hardcoding 9 only ever lined up for one-character
+    # names, which made promoting an unchanged design produce a diff.
     body_lines = []
     for i, (kind, payload) in enumerate(calls):
-        lead = head if i == 0 else " " * 9 + "+ "
+        lead = head if i == 0 else " " * len(head) + "+ "
         if kind == "dot":
             body_lines.append(f"{lead}dot({payload})")
         else:
@@ -528,6 +568,7 @@ def validate(design):
     problems = []
     kind = design.get("type", "consonant")
     gw, gh = grid_for(kind)
+    tops = []
     for i, shape in enumerate(design.get("shapes", [])):
         where = f"shape {i + 1}"
         if shape.get("kind") == "dot":
@@ -543,6 +584,25 @@ def validate(design):
             elif not (0 <= x <= gw and 0 <= y <= gh):
                 problems.append(
                     f"{where}: ({num(x)},{num(y)}) is outside the {gw}x{gh} grid")
+            elif y is not None:
+                tops.append(y)
+
+    # Does the drawing agree with the form it claims to be? A 4-row vowel
+    # is the one that fills the top lattice row and so bridges up to the
+    # consonant above it; a 3-row vowel leaves that row empty, which is
+    # the gap. Declaring one and drawing the other is silent otherwise —
+    # the flag rides through the manifest and the ink doesn't match it.
+    rows = design.get("rows")
+    if rows in (3, 4) and tops and not is_tall(kind):
+        highest = min(tops)
+        if rows == 4 and highest > 1:
+            problems.append(
+                f"says 4-row, but nothing is drawn above y={num(highest)} — "
+                f"the top row is empty, so it won't reach the consonant above")
+        if rows == 3 and highest < 1:
+            problems.append(
+                f"says 3-row, but ink reaches y={num(highest)}, inside the top "
+                f"row — a 3-row vowel leaves that row empty")
     return problems
 
 
@@ -559,7 +619,8 @@ def blank(name, ipa, kind):
 
 def dumps(design):
     """Stable, diffable JSON — key order fixed, 2-space indent."""
-    order = ["name", "ipa", "type", "grid", "notes", "shapes", "updated"]
+    order = ["name", "ipa", "type", "grid", "flips", "rows",
+             "notes", "shapes", "updated"]
     ordered = {k: design[k] for k in order if k in design}
     for k in design:
         if k not in ordered:
