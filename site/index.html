@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=6" />
-<link rel="stylesheet" href="css/style.css?v=6" />
+<link rel="stylesheet" href="css/blocks.css?v=7" />
+<link rel="stylesheet" href="css/style.css?v=7" />
 </head>
 <body>
 
@@ -87,12 +87,16 @@ editable, so you can correct anything the converter gets wrong.</p>
      target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
 </footer>
 
-<script src="js/manifest.js?v=6"></script>
-<script src="js/g2p.js?v=6"></script>
+<script src="js/manifest.js?v=7"></script>
+<!-- The pronunciation dictionary. Read lazily by g2p.js on the first
+     lookup, so it costs nothing until someone converts a word; if it
+     is absent the rules take over and the page still works. -->
+<script src="js/lexicon.js?v=7"></script>
+<script src="js/g2p.js?v=7"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=6"></script>
-<script src="js/render.js?v=6"></script>
+<script src="js/sounds.js?v=7"></script>
+<script src="js/render.js?v=7"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
