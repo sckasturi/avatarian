@@ -14,7 +14,7 @@ comes from:
   <https://www.reddit.com/r/neography/comments/1slqce2/new_avatar_the_last_airbender_conscript/>
 
 **Tool designed by TechFilmer** on Avatar Wiki —
-<https://avatar.fandom.com/wiki/User:TechFilmer>.
+ <https://avatar.fandom.com/wiki/User:TechFilmer>.
 
 The code here renders that decipherment work; the script itself is not this
 project's research. Keep the credit in the site footer, the `wiki/` files,
