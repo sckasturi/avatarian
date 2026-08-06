@@ -336,32 +336,73 @@ the same underlay the workbench needs anyway.
 
 ---
 
-## 7. Immediate, cheap follow-ups
+## 7. The first confirmed entries
 
-Independent of the larger build:
+Five words are now checked against reference material. Until the corpus
+proper exists they live in `EXCEPTIONS` in `g2p.js`, under an `ATTESTED`
+heading that says not to "correct" them back toward the natural English
+reading — which is exactly how two of them were wrong.
 
-- **Fix `toph`.** `EXCEPTIONS` in `g2p.js` says `t oʊ f`; the reference
-  says `T AA F` (/t ɑ f/). One line, and it is currently wrong on the
-  live site.
-- **Audit the rest of `EXCEPTIONS` against reference material.** Every
-  in-world name in there is a guess unless checked — `aang`, `sokka`,
-  `katara`, `iroh`, `azula`, `beifong`, `momo`, `omashu`, and the ones I
-  added this session. Some are certainly wrong in the same way `toph`
-  was. These should migrate into the corpus as they are confirmed.
-- **Check whether `appa` shows mixed null heights** in the reference art,
-  which decides whether the sounds syntax needs a `0c` code (§2).
+| word | attested | had been | |
+| --- | --- | --- | --- |
+| aang | `EY NG` | `ɑ ŋ` | wrong |
+| toph | `T AA F` | `t oʊ f` | wrong |
+| zuko | `Z UW K OW` | `z u k oʊ` | already right |
+| momo | `M OW M OW` | `m oʊ m oʊ` | already right |
+| appa | `AA 0 P 0 AA 0` | `ɑ p ə` | vowels wrong, structure still unreachable |
+
+Two things fell out of these:
+
+**`aang` resolves an inconsistency that has been in the docs all along.**
+The `FLIPS` table cites "Aang" as the evidence that /e/ takes a top-slot
+form — but with the old reading `/ɑ ŋ/` the word contains no /e/ at all,
+so the evidence was incoherent. `EY NG` is `(e,ŋ)`, /e/ in a top slot,
+and the table makes sense again. Two independent records agreeing is
+worth more than either alone.
+
+**`appa` now makes a precise, checkable prediction.** Rendering the
+attested spelling gives:
+
+```
+attested  AA 0 P 0 AA 0  ->  (ɑ,∅c) (p,∅) (ɑ,∅c)     three blocks
+derived   AA P AA        ->  (ɑ,p)  (ɑ,∅c)           two blocks
+```
+
+The nulls come out **tall, short, tall** — which is exactly what the
+pairing-partner rule predicts, since ɑ is a vowel and p is a consonant.
+So §2's open question has an answer to check rather than a guess to make:
+**if the reference art shows tall-short-tall, the null-height rule is
+confirmed on a third word and no `0c` code is needed.** If it shows
+anything else, the rule is wrong and the syntax needs extending. Either
+way it is one look at the image.
+
+Only the vowels of `appa` could be fixed in `EXCEPTIONS` (both /ɑ/, not
+the /ə/ it used to guess). The three-block structure cannot be expressed
+as a phoneme list, because `pairUp()` would still make two blocks of it.
+That is the corpus's job, and `appa` is the reason the corpus has to
+store finished spellings rather than phonemes.
+
+### Still to audit
+
+Every other in-world name in `EXCEPTIONS` is a guess from English
+spelling until someone checks it: `katara`, `sokka`, `iroh`, `azula`,
+`beifong`, `korra`, `omashu`, `kyoshi`, `sozin`, `roku`, `ozai`, `suki`,
+`yue`, `haru`. Given two of the first four checked were wrong, expect
+more. They are grouped under a "not yet checked" heading so the split is
+visible in the file.
 
 ---
 
 ## 8. Open questions for the next session
 
-1. **What reference material exists, and where is it?** This document
+1. **Does `appa` show tall-short-tall nulls?** §7 — one look at the
+   image, and it either confirms the null-height rule on a third word or
+   breaks it.
+2. **What reference material exists, and where is it?** This document
    assumes a pile of images. The inventory needs writing down — it is
    also backlog item 7, the reference-material catalogue.
-2. **Squiggle or badge?** §3 argues for marking attested rather than
+3. **Squiggle or badge?** §3 argues for marking attested rather than
    unattested. Needs a look at real content before committing.
-3. **Does `appa` use two different nulls?** §2. Checkable, decides a
-   syntax question.
 4. **How are phrases keyed?** "Ba Sing Se" as one entry or three.
 5. **Where does the corpus live** — `corpus/*.json` plus a generated
    `site/js/corpus.js`, following the pattern `designs/` and

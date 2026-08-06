@@ -46,11 +46,35 @@ const EXCEPTIONS = {
   // -ough is famously irregular; the rule table can only pick one reading
   "through": "θ r u", "though": "ð oʊ", "thought": "θ ɔ t",
   "enough": "ɪ n ʌ f", "cough": "k ɔ f", "bought": "b ɔ t",
-  // Avatar-relevant
+  // --- ATTESTED --------------------------------------------------
+  // Checked against reference material showing the word actually
+  // written in Avatarian. These are FACTS, not readings — do not
+  // "correct" them toward the natural English pronunciation, which is
+  // how two of them were wrong in the first place. See CORPUS.md.
+  //
+  //   aang  EY NG   — not /ɑ ŋ/. The natural English reading was wrong,
+  //                   and it also made the FLIPS evidence incoherent:
+  //                   that table cites "Aang" as showing /e/ in a top
+  //                   slot, which needs the word to contain an /e/.
+  //   toph  T AA F  — rhymes with "off", not with "loaf".
+  //   zuko  Z UW K OW
+  //   momo  M OW M OW
+  "aang": "e ŋ", "toph": "t ɑ f", "zuko": "z u k oʊ",
+  "momo": "m oʊ m oʊ",
+
+  // Attested spelling is `AA 0 P 0 AA 0` — three blocks, every phoneme
+  // padded with its own null. Only the VOWELS can be fixed here: both
+  // are /ɑ/, not the /ə/ this used to guess. The block structure can't
+  // be expressed as a phoneme list, because pairUp() would still make
+  // two blocks out of it. That needs the corpus (CORPUS.md §2).
+  "appa": "ɑ p ɑ",
+
+  // --- not yet checked against any sample -------------------------
+  // Ordinary guesses, from English spelling. Treat every one as
+  // provisional and move it up as it gets confirmed.
   "world": "w ɜ r l d", "water": "w ɔ t ə r", "fire": "f aɪ ə r",
   "earth": "ɜ r θ", "air": "ɛ r", "avatar": "æ v ə t ɑ r",
-  "aang": "ɑ ŋ", "toph": "t oʊ f", "zuko": "z u k oʊ",
-  "katara": "k ə t ɑ r ə", "sokka": "s ɑ k ə", "appa": "ɑ p ə",
+  "katara": "k ə t ɑ r ə", "sokka": "s ɑ k ə",
   "korra": "k ɔ r ə", "iroh": "aɪ r oʊ", "azula": "ə z u l ə",
   "beifong": "b e f ɔ ŋ", "bending": "b ɛ n d ɪ ŋ",
   // Coined compounds, so no general dictionary has them. The -bending
@@ -63,7 +87,7 @@ const EXCEPTIONS = {
   "airbender": "ɛ r b ɛ n d ɜ r", "waterbender": "w ɔ t ə r b ɛ n d ɜ r",
   "earthbender": "ɜ r θ b ɛ n d ɜ r", "firebender": "f aɪ ə r b ɛ n d ɜ r",
   "bender": "b ɛ n d ɜ r", "benders": "b ɛ n d ɜ r z",
-  "momo": "m oʊ m oʊ", "kyoshi": "k i oʊ ʃ i", "omashu": "oʊ m ɑ ʃ u",
+  "kyoshi": "k i oʊ ʃ i", "omashu": "oʊ m ɑ ʃ u",
   "sozin": "s oʊ z ɪ n", "roku": "r oʊ k u", "ozai": "oʊ z aɪ",
   "suki": "s u k i", "yue": "j u e", "haru": "h ɑ r u",
   "unagi": "u n ɑ g i", "agni": "ɑ g n i", "sifu": "ʃ i f u",
