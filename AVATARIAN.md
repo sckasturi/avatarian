@@ -300,8 +300,8 @@ Two fillers, distinguished by height. **Neither is a sound.**
 
 | name | shape | height | manifest type | design type | manifest key |
 | --- | --- | --- | --- | --- | --- |
-| `null_v` | ∪ cup | vowel-height (3-row) | `null` | `mark` | `∅` (code `0`) |
-| `null_c` | ⊓ gate | consonant-height (5-row) | `null_consonant` | `mark_consonant` | `∅c` |
+| `null_v` | rounded ∪ | vowel-height (3-row) | `null` | `mark` | `∅` (code `0`) |
+| `null_c` | squared ∪ | consonant-height (5-row) | `null_consonant` | `mark_consonant` | `∅c` |
 
 **Which null is used is decided by the pairing PARTNER, not the empty slot's
 own height** (confirmed, Session 5):
@@ -319,15 +319,15 @@ a vowel-plus-null block eight rows tall.
 The two differ by **height class**, which is what `type` means in a design:
 `mark_consonant` takes a consonant's 5×5 lattice, `mark` a vowel's 5×4 (see
 §3). Routing both through the vowel frame — which is what happened before
-the split — draws the ⊓ gate on the wrong lattice.
+the split — draws the taller null on the wrong lattice.
 
 > **History / correction:** these were called `glot_v` and `glot`, and `glot`
-> (the ⊓ gate) was mistakenly documented as **/ʔ/, a glottal stop**. It never
-> was — the ⊓ is just the taller null filler. The `Q` code for /ʔ/ was removed
-> from the input syntax. If you find "glot", "⊓ = /ʔ/", or "Q → ʔ" anywhere,
-> it is stale. The design files were renamed to `null_c.json` / `null_v.json`
-> with matching fields; `null_c.json`'s *drawing* is still the old `glot`
-> shape, not the ⊓ gate the set ships.
+> was mistakenly documented as **/ʔ/, a glottal stop**. It never was — it is
+> just the taller null filler. The `Q` code for /ʔ/ was removed from the
+> input syntax. If you find "glot", "⊓ = /ʔ/", or "Q → ʔ" anywhere, it is
+> stale — including any description of `null_c` as a ⊓ gate, which it is not.
+> The design files were renamed to `null_c.json` / `null_v.json` with
+> matching fields.
 
 ---
 

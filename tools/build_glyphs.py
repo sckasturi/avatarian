@@ -264,7 +264,9 @@ VOWELS = {
 # ---------------------------------------------------------------------------
 
 MARKS_CONSONANT = {
-    # 5-row null filler (consonant height) — the ⊓ gate shape.
+    # 5-row null filler (consonant height) — a square-cornered ∪.
+    # Both nulls are cups; this one is squared off and stands 5 rows
+    # against null_v's rounded 3.
     "null_c": path("M 18 18 L 18 82 L 82 82 L 82 18"),
 }
 

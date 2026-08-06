@@ -104,9 +104,10 @@ exactly as session 5 left them.
   now in `SOURCE_NOTES` alongside `ah` and `aw`, so the key tab explains
   why they have no tracing to compare against. The older passages
   calling `tʃ` "an invention drawn from nothing" are superseded.
-- **`designs/null_c.json` is stale** — it still holds the old `glot`
-  drawing (a ∪ cup at consonant height) rather than the shipped ⊓ gate.
-  The rename fixed its metadata, not its shape.
+- **`null_c` is a squared ∪, not a ⊓ gate** — confirmed by the user in
+  session 6. Both nulls are cups; `null_c` is squared off and 5 rows
+  tall, `null_v` rounded and 3. Docs that called it a "⊓ gate" were
+  wrong and are corrected.
 - **`oi` and `oo` fail the new row check** against the row count the
   build assumes for them: both draw into the top lattice row while
   `VOWEL_4ROW_BASE` treats them as 3-row. Now that they render, this is
@@ -282,7 +283,7 @@ a general rule.
    flat vowel SVG. Cache-buster bumped to `?v=3`.
 
 2. **`glot`/`glot_v` renamed to `null_c`/`null_v`, and `glot` is no longer
-   /ʔ/.** The ⊓ gate is not a glottal stop — it's a *consonant-height* null
+   /ʔ/.** That glyph is not a glottal stop — it's a *consonant-height* null
    filler (`null_c`, type `null_consonant`). The ∪ cup is the *vowel-height*
    null filler (`null_v`, type `null`). Neither is a sound. `Q` was removed
    from `EXTRA_CODES`. `build_glyphs.py` splits these into `MARKS_CONSONANT`
@@ -373,7 +374,8 @@ actually sit, then nudge both conventions so they touch. Do that in
 - ~~`designs/glot.json` and `designs/glot_v.json` still carry the old
   names.~~ **Renamed in session 6** to `null_c.json` (type
   `mark_consonant`) and `null_v.json` (type `mark`). Note `null_c.json`
-  still holds the old `glot` *drawing*, which is not the shipped ⊓ gate.
+  carries the `glot` *drawing*, which is the correct squared ∪ (confirmed
+  in session 6) — the "⊓ gate" description in older docs was wrong.
 - Wiki CSS was brought in step with the site (null_consonant sizing + the
   gap-collapse margin), but the wiki JS/template weren't touched this session.
   Still true after session 6 — and note the site's block rules now live in

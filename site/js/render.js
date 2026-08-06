@@ -67,8 +67,8 @@ function glyphSVG(ipaSymbol) {
  * no phoneme in it, and they are part of the spelling rather than
  * padding.
  *
- *   ∅   the ∪ cup,  vowel-height     (3 rows)
- *   ∅c  the ⊓ gate, consonant-height (5 rows)
+ *   ∅   a rounded ∪, vowel-height    (3 rows)
+ *   ∅c  a squared ∪, consonant-height (5 rows)
  *
  * Which one is written is decided by the null's PAIRING PARTNER, not by
  * the slot it happens to fill:

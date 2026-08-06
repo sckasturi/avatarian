@@ -91,8 +91,8 @@ Height classes
     vowel, mark                 5x4 lattice, 100x80 flat + stretched square
 
 A *mark* stands for no sound but is still written at one of the two
-heights — the ∪ cup null is vowel-height (`mark`) and the ⊓ gate null is
-consonant-height (`mark_consonant`). Splitting them matters: a
+heights — the rounded ∪ null is vowel-height (`mark`) and the squared ∪
+is consonant-height (`mark_consonant`). Splitting them matters: a
 consonant-height mark on a vowel frame comes out drawn on the wrong
 lattice and carrying a flat form it should not have.
 
@@ -206,8 +206,8 @@ class Frame:
 def frame_for(kind, form):
     """kind: any of TALL_KINDS, else vowel-height.  form: square | flat.
 
-    The vowel-height null cup shares a vowel's frames; the
-    consonant-height gate shares a consonant's.
+    The vowel-height null shares a vowel's frames; the consonant-height
+    one shares a consonant's.
     """
     if is_tall(kind):
         return Frame(UNIT, UNIT, MARGIN_X, MARGIN_Y_SQUARE, 100)

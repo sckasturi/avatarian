@@ -487,7 +487,7 @@ Two more loose ends surfaced by the extraction:
   It needs source material rather than a guess.
 
   The vowel-block null itself is settled as a concept: `null_v` (the ∪ cup)
-  and `null_c` (the ⊓ gate) are the two null fillers, and **neither is a
+  and `null_c` (a squared ∪) are the two null fillers, and **neither is a
   sound** — that resolved the old "two nulls" question, and `null_c` was
   briefly mis-labelled `glot` /ʔ/, which it never was. Which one is used
   where is corrected in session 5, above — the shipped code currently picks

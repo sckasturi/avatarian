@@ -205,8 +205,8 @@ diffs them; run it after touching either file. Don't let them drift.
 **`type` is a HEIGHT CLASS, not a part of speech.** `glyphspec.TALL_KINDS`
 = `{consonant, mark_consonant}` take the 5×5 lattice, the 100×100 box and
 no flat form; `vowel` and `mark` take 5×4 and ship flat as well. The two
-nulls differ on exactly this — the ∪ cup is vowel-height (`mark`), the ⊓
-gate consonant-height (`mark_consonant`) — and before the split every
+nulls differ on exactly this — the rounded ∪ is vowel-height (`mark`), the
+squared ∪ consonant-height (`mark_consonant`) — and before the split every
 mark was routed through the vowel frame, so designing `null_c` drew it on
 the wrong lattice and gave it a flat form it should not have. The sound
 list files by a separate `group` field, so both still read as "marks".
@@ -266,8 +266,8 @@ is one of the glyphs that takes a different form in each.
 
 An odd phoneme count leaves the last bottom slot empty and a **null filler**
 is written into it. It is part of the spelling — five of the sample's words
-carry it. There are two nulls, `null_v` (the ∪ cup) and `null_c` (the ⊓
-gate, type `null_consonant`). **Neither is a sound.** (Session 4 rename:
+carry it. There are two nulls, `null_v` (a rounded ∪) and `null_c` (a
+squared ∪, type `null_consonant`). **Neither is a sound.** (Session 4 rename:
 these were `glot_v`/`glot`, and `glot` was mistakenly documented as /ʔ/, a
 glottal stop — it never was.)
 
@@ -477,7 +477,7 @@ noted inline.**
    so the whole script is typeable on QWERTY — `S$ T UW 0 D AX N T S 0` —
    with IPA accepted as an alternative. `EXTRA_CODES` in `index.html`
    covers sounds ARPAbet has no code for (`AX`, `NUL`). (`Q` for /ʔ/ was
-   removed in session 4 — the ⊓ glyph is a null filler, not a glottal stop.)
+   removed in session 4 — that glyph is a null filler, not a glottal stop.)
 
    `render.js` accepts a `$` (top form) or `%` (bottom form) suffix on any
    symbol. That is the escape hatch for glyphs whose variant rule isn't

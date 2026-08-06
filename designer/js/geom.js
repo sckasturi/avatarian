@@ -35,7 +35,7 @@ GEO.MARGIN_Y_FLAT = (100 * GEO.FLAT - GEO.VOWEL_GRID[1] * GEO.UNIT) / 2;  // 8
 // Which `type` values are written at a consonant's height; everything
 // else takes the vowel's shorter lattice and its flat form. A mark
 // stands for no sound but is still written at one of the two heights —
-// the ∪ cup null is vowel-height, the ⊓ gate null consonant-height.
+// the rounded ∪ null is vowel-height, the squared ∪ consonant-height.
 // Mirrors TALL_KINDS in glyphspec.py.
 GEO.TALL_KINDS = ["consonant", "mark_consonant"];
 
