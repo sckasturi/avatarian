@@ -45,21 +45,32 @@
    both margins as a gap, so pull the bottom slot up by their sum to make
    the lattices meet. The 4.5-unit shrink on C+C blocks keeps this sum at
    5.2+4.16 for every common pairing, so one constant covers them. */
-.avatarian-slot-bottom { margin-top: -9.36px; }
+.avatarian-slot-bottom { margin-top: calc(var(--av-size) * -0.18); }
+
+/* ONE knob: a consonant's box. Everything else is a ratio off it, so
+   the whole thing scales by setting --av-size on any ancestor — which is
+   what the output's size control does. The defaults are exactly the
+   values that used to be hardcoded (52, 41.6, 46.8, -9.36). */
+:root { --av-size: 52px; }
 
 .avatarian-glyph { display: inline-block; line-height: 0; color: var(--ink); }
 .avatarian-glyph svg { display: block; width: 100%; height: 100%; }
-/* Consonants: 5×5 grid = 52px. Vowels: 4×5 grid = 41.6px.
+/* Consonants: 5 units square. Vowels: 4 units tall, full width — 4/5.
    3-row vowels leave the top row of their 4-row viewBox empty (gap);
    4-row vowels fill it (bridge to the consonant above). */
 .avatarian-glyph.avatarian-consonant,
-.avatarian-glyph.avatarian-null_consonant { width: 52px; height: 52px; }
+.avatarian-glyph.avatarian-null_consonant {
+  width: var(--av-size); height: var(--av-size);
+}
 .avatarian-glyph.avatarian-vowel,
-.avatarian-glyph.avatarian-null { width: 52px; height: 41.6px; }
-/* A block of two consonants: 4.5 units each instead of 5. */
+.avatarian-glyph.avatarian-null {
+  width: var(--av-size); height: calc(var(--av-size) * 0.8);
+}
+/* A block of two consonants: 4.5 units each instead of 5, so it totals
+   the same 9 units as a vowel+consonant block. */
 .avatarian-block:not(:has(.avatarian-vowel)):not(:has(.avatarian-null)):not(:has(.avatarian-null_consonant))
   .avatarian-glyph.avatarian-consonant {
-  width: 46.8px; height: 46.8px;
+  width: calc(var(--av-size) * 0.9); height: calc(var(--av-size) * 0.9);
 }
 
 /* A 3-row vowel is drawn BOTTOM-ALIGNED in its 4-row box: ink in the

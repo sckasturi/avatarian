@@ -276,6 +276,10 @@ a general rule.
 
 ### Feature / task backlog (not started)
 
+> **Items 4 and 5 are done** — see Session 6. The pronunciation
+> dictionary closed the g2p-accuracy item too.
+
+
 1. ~~**Glyph editor needs to work a lot better with the current website
    in general.**~~ **Done in session 6** — live block/word preview drawn
    by the site's own `render.js` + `blocks.css`, and a "ship it" button
@@ -297,12 +301,12 @@ a general rule.
 4. **Fuzzy reverse-decode.** Given an Avatarian sequence, suggest likely
    English word(s) ("pretty sure this is X") instead of the current
    exact-match-only lookup against the hardcoded exception dictionary.
-5. **Fix mobile/vertical layout.** On narrow viewports, scrolling the
-   glyph picker loses sight of the output being built. Needs a
-   persistent/sticky view of the output while scrolling the picker.
-   (Related to the existing sub-900px stacking behavior in CONTEXT.md item
-   5 — that was intentional there; this flags it as a problem needing a
-   different fix.)
+5. ~~**Fix mobile/vertical layout.**~~ **Done in session 6.** Below
+   900px the output is `position: sticky` and pins to the top while the
+   reference scrolls under it. The fix that mattered was
+   `.col-work { display: contents }`: sticky can't escape its parent's
+   box, and the reference is a sibling of that column, so while the
+   column was a box the drawing scrolled away no matter what `top` said.
 6. **Consolidate credits.** Move all "thank you"/credit content (README,
    CONTEXT, wiki footer) into one dedicated section; user will supply more
    links — contributors plus source material read/transcribed.

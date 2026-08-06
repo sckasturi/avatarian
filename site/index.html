@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=7" />
-<link rel="stylesheet" href="css/style.css?v=7" />
+<link rel="stylesheet" href="css/blocks.css?v=9" />
+<link rel="stylesheet" href="css/style.css?v=9" />
 </head>
 <body>
 
@@ -13,57 +13,102 @@
   <h1>Avatarian Translator</h1>
   <button class="theme-toggle" id="themeToggle" type="button"></button>
 </div>
-<p class="subtitle">Type English, or type the sounds directly. Everything is
-editable, so you can correct anything the converter gets wrong.</p>
+<p class="subtitle">Write anything in <strong>Avatarian</strong>, the script
+from <em>Avatar: The Last Airbender</em>. Type below and the glyphs appear as
+you go — Avatarian spells <em>sounds</em>, not letters, so it works on names
+and made-up words too.</p>
 
 <div class="layout">
 <div class="col-work">
-<section class="card">
-  <label for="englishInput"><strong>English</strong></label>
-  <textarea id="englishInput" rows="2" placeholder="e.g. katara">katara</textarea>
-  <div class="row">
-    <button class="primary" id="translateBtn">Insert sounds ↓</button>
-  </div>
 
-  <label for="soundsInput"><strong>Sounds</strong> — this is what actually
-    gets drawn. Converting appends here rather than replacing, so you can
-    build a line up a piece at a time. Edit it freely.</label>
-  <textarea id="soundsInput" rows="2" spellcheck="false"
-    placeholder="K AH T AA R AH   /   P L IY Z"></textarea>
-  <p class="syntax-help">
-    Type <strong>ARPAbet codes</strong> — plain QWERTY, no special characters:
-    <code>K AH T AA R AH</code>. IPA works too if you prefer. Separate sounds
-    with spaces and words with <code>/</code>. The drawing updates as you
-    type.
-    <br>
-    Anything in <code>(parentheses)</code> captions that word instead of
-    being read as a sound — <code>M EH T AX L 0 B EH N D IH NG
-    (metalbending)</code>.
-    <br>
-    <code>0</code> is the empty-slot filler (the ∪ cup for vowel slots).
-    Add <code>$</code> or <code>%</code> after a sound to force its top or
-    bottom form, e.g. <code>S$</code> — needed where the rule isn't known yet.
+<section class="card">
+  <label for="englishInput" class="field-label">Your text</label>
+  <textarea id="englishInput" rows="2" autofocus
+    placeholder="type a word, a name, anything…"></textarea>
+  <p class="examples">Try:
+    <button type="button" class="chip" data-example="Katara">Katara</button>
+    <button type="button" class="chip" data-example="the Jasmine Dragon">the Jasmine Dragon</button>
+    <button type="button" class="chip" data-example="Toph Beifong">Toph Beifong</button>
+    <button type="button" class="chip" data-example="Iroh brewed hot jasmine tea at the Jasmine Dragon and Zuko turned his white lotus tile. The young Avatar thought of Kyoshi warriors and of koi fish circling the full moon in a spirit pool. Fire earth air and water shape each new age and a vision of blue flame brings power and peace.">every glyph at once</button>
   </p>
-  <div class="row">
-    <button id="clearBtn">Clear</button>
-    <span class="ipa-hint" id="soundsHint"></span>
+</section>
+
+<section class="card out-card">
+  <div class="out-bar">
+    <span class="out-title">Avatarian</span>
+    <span class="spacer"></span>
+    <label class="size-ctl" title="How big the glyphs are drawn">
+      <span aria-hidden="true">A</span>
+      <input type="range" id="outSize" min="28" max="120" step="2" value="52"
+             aria-label="Glyph size">
+    </label>
+    <button type="button" id="copyBtn" title="Copy the drawing as an image">Copy</button>
+    <button type="button" id="pngBtn" title="Download as a PNG image">PNG</button>
+    <button type="button" id="svgBtn" title="Download as an SVG, which stays sharp at any size">SVG</button>
   </div>
 
   <div class="avatarian-output" id="avatarianOutput"></div>
-  <p class="legend"><span class="dot"></span> dashed box = no confirmed glyph
-    for that sound yet</p>
 
+  <p class="out-foot">
+    <span class="hint" id="outHint"></span>
+    <span class="spacer"></span>
+    <span class="legend"><span class="dot"></span> dashed box = no glyph
+      for that sound yet</span>
+  </p>
 </section>
+
+<!-- The sounds box. It is what actually gets drawn, so it stays one
+     click away and never hidden outright — but it greets nobody. Most
+     people never need to open it now that the dictionary is doing the
+     pronouncing. -->
+<details class="card tune" id="tunePanel">
+  <summary>
+    <span class="tune-title">Sounds</span>
+    <span class="fine">— open this if a word came out sounding wrong</span>
+  </summary>
+
+  <p class="tune-note" id="tuneNote" hidden>
+    <span>You've edited these sounds by hand, so your text isn't changing them
+      any more.</span>
+    <button type="button" id="resyncBtn">Use my text again</button>
+  </p>
+
+  <label for="soundsInput" class="field-label">The sounds being drawn</label>
+  <textarea id="soundsInput" rows="3" spellcheck="false"
+    placeholder="K AH T AA R AH   /   P L IY Z"></textarea>
+  <div class="row">
+    <span class="ipa-hint" id="soundsHint"></span>
+  </div>
+
+  <details class="syntax-details">
+    <summary class="fine">How to write sounds</summary>
+    <div class="syntax-help">
+      <p>Each sound is written as a short code, sounds separated by spaces
+        and words by <code>/</code>. Click any glyph in the reference to add
+        its code here.</p>
+      <p><code>K AH T AA R AH</code> spells <em>Katara</em>. The codes are
+        the ones used in pronunciation dictionaries; real IPA works too if
+        you prefer it (<code>k ə t ɑ r ə</code>).</p>
+      <p>Anything in <code>(brackets)</code> is a label for that word, not a
+        sound — that is how the English caption under each word gets there.</p>
+      <p><code>0</code> fills an empty slot at the end of a word with an odd
+        number of sounds. Adding <code>$</code> or <code>%</code> after a
+        sound forces its top or bottom form, which is only needed for
+        <code>S</code>, where the rule still isn't known.</p>
+    </div>
+  </details>
+</details>
+
 </div>
 
 <div class="col-ref">
 <section class="card">
   <h2>Glyph reference</h2>
-  <p class="subtitle">Click any glyph to add it to the sounds box. The code
-    under each one is what you type.</p>
+  <p class="subtitle">Every sound in the script. Click one to add it to the
+    sounds box.</p>
   <div class="render-opts">
     <label><input type="checkbox" id="showKeyTracings">
-      Show the hand-lettered key beside each glyph</label>
+      Show the hand-lettered original beside each glyph</label>
   </div>
   <div id="keyGrid"></div>
 </section>
@@ -82,32 +127,62 @@ editable, so you can correct anything the converter gets wrong.</p>
   <a href="https://www.reddit.com/r/neography/comments/1slqce2/new_avatar_the_last_airbender_conscript/"
      target="_blank" rel="noopener">u/arienzio</a>.
   <br>
+  Pronunciations from the
+  <a href="https://github.com/cmusphinx/cmudict" target="_blank"
+     rel="noopener">CMU Pronouncing Dictionary</a>.
+  <br>
   Tool designed by
   <a href="https://avatar.fandom.com/wiki/User:TechFilmer"
      target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
 </footer>
 
-<script src="js/manifest.js?v=7"></script>
+<script src="js/manifest.js?v=9"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=7"></script>
-<script src="js/g2p.js?v=7"></script>
+<script src="js/lexicon.js?v=9"></script>
+<script src="js/g2p.js?v=9"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=7"></script>
-<script src="js/render.js?v=7"></script>
+<script src="js/sounds.js?v=9"></script>
+<script src="js/render.js?v=9"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
+
+const $ = (id) => document.getElementById(id);
+
+// ---------------------------------------------------------------------
+// Where the text comes from
+// ---------------------------------------------------------------------
+// English is the master. It converts live, straight into the drawing, so
+// the common case is "type, see glyphs" with nothing in between.
+//
+// The sounds box is still what actually gets DRAWN — that hasn't changed
+// and mustn't, because it is the only way to correct a pronunciation.
+// The two are reconciled with one flag: the moment someone edits the
+// sounds by hand, English stops overwriting them and says so. Without
+// that, fixing a word and then adding a comma to the English silently
+// throws the fix away.
+let soundsEdited = false;
+
+function setSoundsFromEnglish() {
+  const words = sentenceToIPA($("englishInput").value);
+  $("soundsInput").value = wordsToSoundText(words);
+}
+
+function markEdited(on) {
+  soundsEdited = on;
+  $("tuneNote").hidden = !on;
+  $("tunePanel").classList.toggle("is-edited", on);
+}
 
 // ---------------------------------------------------------------------
 // Rendering
 // ---------------------------------------------------------------------
 
-async function renderWords(words) {
-  await loadManifest();
-  const output = document.getElementById("avatarianOutput");
+function renderWords(words) {
+  const output = $("avatarianOutput");
   output.innerHTML = "";
   words.forEach((w) => {
     // Each word carries its own caption, so a long sentence stays
@@ -135,6 +210,7 @@ async function renderWords(words) {
 
     output.appendChild(unit);
   });
+  return words;
 }
 
 /** Warn about anything typed that maps to no glyph, rather than dropping it. */
@@ -144,61 +220,210 @@ function reportUnknown(words) {
       .map(t => splitOverride(t).body)
       .filter(sym => !GLYPH_SET[sym])
   )];
-  document.getElementById("soundsHint").textContent = unknown.length
+  $("soundsHint").textContent = unknown.length
     ? "not a known sound: " + unknown.join(" ")
     : "";
+  return unknown;
 }
 
-/** Draw whatever is in the sounds box. */
-async function draw() {
-  const words = soundTextToWords(document.getElementById("soundsInput").value);
-  reportUnknown(words);
-  await renderWords(words);
+/** Draw whatever is in the sounds box, and say what happened in plain terms. */
+function draw() {
+  const words = soundTextToWords($("soundsInput").value);
+  const unknown = reportUnknown(words);
+  renderWords(words);
+
+  const blocks = document.querySelectorAll("#avatarianOutput .avatarian-block").length;
+  const missing = document.querySelectorAll("#avatarianOutput .avatarian-placeholder").length;
+  let msg = "";
+  if (!words.length) msg = "";
+  else if (unknown.length) msg = "Some sounds aren't in the script yet.";
+  else if (missing) msg = "One sound here has no glyph drawn yet.";
+  else msg = words.length + (words.length === 1 ? " word" : " words") +
+             ", " + blocks + (blocks === 1 ? " block" : " blocks") + ".";
+  $("outHint").textContent = msg;
+  setExportEnabled(blocks > 0);
 }
 
-/**
- * English -> sounds, APPENDED to the sounds box. Appending rather than
- * replacing lets a line be assembled a piece at a time, and matters
- * because g2p is rule-based and gets words wrong ("wake" comes out
- * /w æ k/) — you convert what it handles, then fix or type the rest.
- */
-async function translate() {
-  const words = sentenceToIPA(document.getElementById("englishInput").value);
-  if (!words.length) return;
-  const box = document.getElementById("soundsInput");
-  const existing = box.value.trim();
-  box.value = (existing ? existing + "  /  " : "") + wordsToSoundText(words);
-  await draw();
-}
-
-/** Append a sound to the box and redraw — the reference doubles as a palette. */
-function appendSound(code) {
-  const box = document.getElementById("soundsInput");
-  box.value = (box.value.trim() + " " + code).trim();
+/** The whole chain, from the English box down. */
+function convert() {
+  if (!soundsEdited) setSoundsFromEnglish();
   draw();
 }
 
-document.getElementById("translateBtn").addEventListener("click", translate);
-document.getElementById("clearBtn").addEventListener("click", () => {
-  document.getElementById("soundsInput").value = "";
-  draw();
-});
-// Live redraw. Debounced so a fast typist doesn't re-render on every
-// keystroke — 120ms is below the threshold where it stops feeling
-// immediate, but long enough to coalesce a burst of typing.
+// ---------------------------------------------------------------------
+// Saving the drawing
+// ---------------------------------------------------------------------
+// Built from the LAID-OUT page rather than by re-deriving the layout:
+// every glyph's position and size is read back off the rendered DOM, so
+// the export can't drift from blocks.css the way a second implementation
+// of the block rules would. Flips are the one thing not in the geometry,
+// so they are re-applied from the class.
+
+function exportSVG() {
+  const out = $("avatarianOutput");
+  const glyphs = [...out.querySelectorAll(".avatarian-glyph")];
+  if (!glyphs.length) return null;
+
+  const boxes = glyphs.map((g) => ({ g, r: g.getBoundingClientRect() }));
+  const pad = 8;
+  const minX = Math.min(...boxes.map(b => b.r.left)) - pad;
+  const minY = Math.min(...boxes.map(b => b.r.top)) - pad;
+  const w = Math.max(...boxes.map(b => b.r.right)) - minX + pad;
+  const h = Math.max(...boxes.map(b => b.r.bottom)) - minY + pad;
+
+  // currentColor has to become a real colour once the drawing leaves the
+  // page and its stylesheet behind.
+  const ink = getComputedStyle(out).getPropertyValue("color").trim() || "#000";
+
+  const parts = [];
+  boxes.forEach(({ g, r }) => {
+    const src = g.querySelector("svg:not(.g-square)") || g.querySelector("svg");
+    if (!src) return;
+    const inner = src.innerHTML;
+    const vb = src.getAttribute("viewBox") || "0 0 100 100";
+    const x = r.left - minX, y = r.top - minY;
+    // A flipped glyph is the same drawing mirrored about its own centre.
+    const flip = g.classList.contains("avatarian-flipped")
+      ? ` transform="translate(0,${(y * 2 + r.height).toFixed(2)}) scale(1,-1)"`
+      : "";
+    parts.push(
+      `<svg x="${x.toFixed(2)}" y="${y.toFixed(2)}" ` +
+      `width="${r.width.toFixed(2)}" height="${r.height.toFixed(2)}" ` +
+      `viewBox="${vb}" overflow="visible"${flip}>${inner}</svg>`);
+  });
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w.toFixed(0)}" ` +
+    `height="${h.toFixed(0)}" viewBox="0 0 ${w.toFixed(2)} ${h.toFixed(2)}" ` +
+    `fill="none" stroke="${ink}" color="${ink}">${parts.join("")}</svg>`;
+}
+
+function svgToBlob(svg) {
+  return new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+}
+
+async function exportPNG(scale = 2) {
+  const svg = exportSVG();
+  if (!svg) return null;
+  const url = URL.createObjectURL(svgToBlob(svg));
+  try {
+    const img = new Image();
+    img.decoding = "sync";
+    await new Promise((ok, fail) => {
+      img.onload = ok; img.onerror = () => fail(new Error("could not draw"));
+      img.src = url;
+    });
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width * scale;
+    canvas.height = img.height * scale;
+    const ctx = canvas.getContext("2d");
+    ctx.scale(scale, scale);
+    ctx.drawImage(img, 0, 0);
+    return await new Promise((ok) => canvas.toBlob(ok, "image/png"));
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+function download(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/** A filename from the text, so downloads aren't all "avatarian.png". */
+function fileStem() {
+  const src = ($("englishInput").value || "avatarian").trim();
+  const stem = src.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "").slice(0, 40);
+  return stem || "avatarian";
+}
+
+function setExportEnabled(on) {
+  ["copyBtn", "pngBtn", "svgBtn"].forEach((id) => { $(id).disabled = !on; });
+}
+
+function flash(btn, text) {
+  const was = btn.textContent;
+  btn.textContent = text;
+  setTimeout(() => { btn.textContent = was; }, 1400);
+}
+
+// ---------------------------------------------------------------------
+// Wiring
+// ---------------------------------------------------------------------
+
 let drawTimer = null;
-document.getElementById("soundsInput").addEventListener("input", () => {
+$("englishInput").addEventListener("input", () => {
+  clearTimeout(drawTimer);
+  drawTimer = setTimeout(convert, 140);
+});
+$("soundsInput").addEventListener("input", () => {
+  markEdited(true);
   clearTimeout(drawTimer);
   drawTimer = setTimeout(draw, 120);
 });
-// The sounds box redraws as you type, so Enter only needs to not insert
-// a stray newline. Enter in the English box runs the insert.
-document.getElementById("soundsInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); clearTimeout(drawTimer); draw(); }
+$("resyncBtn").addEventListener("click", () => {
+  markEdited(false);
+  convert();
+  $("englishInput").focus();
 });
-document.getElementById("englishInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); translate(); }
+
+document.querySelectorAll(".chip").forEach((chip) => {
+  chip.addEventListener("click", () => {
+    $("englishInput").value = chip.dataset.example;
+    markEdited(false);
+    convert();
+  });
 });
+
+// Glyph size. One CSS variable drives every block rule (see blocks.css),
+// so this is the only thing the control has to touch — and the export
+// reads the laid-out page, so downloads follow it for free.
+const sizeCtl = $("outSize");
+function applySize(px) {
+  $("avatarianOutput").style.setProperty("--av-size", px + "px");
+  localStorage.setItem("avatarian-size", px);
+}
+sizeCtl.addEventListener("input", () => applySize(sizeCtl.value));
+const savedSize = Number(localStorage.getItem("avatarian-size"));
+if (savedSize >= 28 && savedSize <= 120) { sizeCtl.value = savedSize; }
+applySize(sizeCtl.value);
+
+$("svgBtn").addEventListener("click", () => {
+  const svg = exportSVG();
+  if (svg) download(svgToBlob(svg), fileStem() + ".svg");
+});
+$("pngBtn").addEventListener("click", async () => {
+  const blob = await exportPNG();
+  if (blob) download(blob, fileStem() + ".png");
+});
+$("copyBtn").addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  try {
+    const blob = await exportPNG();
+    if (!blob) return;
+    await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+    flash(btn, "Copied");
+  } catch {
+    // Clipboard image writing isn't available everywhere, and refusing
+    // silently would look broken. Fall back to the thing that always
+    // works.
+    const blob = await exportPNG();
+    if (blob) download(blob, fileStem() + ".png");
+    flash(btn, "Saved");
+  }
+});
+
+/** Append a sound to the box and redraw — the reference doubles as a palette. */
+function appendSound(code) {
+  const box = $("soundsInput");
+  box.value = (box.value.trim() + " " + code).trim();
+  markEdited(true);
+  $("tunePanel").open = true;
+  draw();
+}
 
 // ---------------------------------------------------------------------
 // Glyph reference — also the input palette
@@ -387,7 +612,11 @@ keyBox.addEventListener("change", applyKeyTracings);
 applyKeyTracings();
 
 buildKeyGrid();
-translate();
+
+// Start with something on screen. An empty output looks like a broken
+// page, and the first thing anyone should see is what the tool does.
+$("englishInput").value = $("englishInput").value || "Katara";
+convert();
 </script>
 </body>
 </html>

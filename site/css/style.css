@@ -88,7 +88,25 @@ body {
 /* Stacked below the breakpoint, where sticky would eat the whole screen. */
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
-  .col-work { position: static; max-height: none; overflow-y: visible; }
+  /* `display: contents` dissolves the column's own box so its children
+     become grid items of .layout directly. That matters for the sticky
+     below: a sticky element can never escape its parent's box, and the
+     glyph reference is a SIBLING of this column — so while it was still
+     a box, scrolling down into the reference left the output behind no
+     matter what `top` said. */
+  .col-work { display: contents; }
+  /* The reference is long, and scrolling it used to take the drawing off
+     screen entirely. On narrow viewports the output pins to the top
+     instead — it is the thing you are trying to look at while you scroll.
+     Capped and scrollable so a long passage can't grow to eat the whole
+     screen, which is what dropping the sticky originally avoided. */
+  .out-card {
+    position: sticky; top: 0; z-index: 5;
+    max-height: 50vh; overflow-y: auto;
+    box-shadow: 0 8px 14px -10px rgba(0,0,0,.6);
+  }
+  /* Grid items, now that the column box is gone. */
+  .layout > .card, .layout > .col-ref { margin: 10px 0; }
 }
 
 .page-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
@@ -152,6 +170,84 @@ button.primary:hover { opacity: 0.9; }
 /* Block layout lives in blocks.css — the site, the wiki gadget and the
    designer's live preview all have to agree on it, so it is one file
    rather than three copies. What stays here is page chrome. */
+
+/* ── the writing surface ─────────────────────────────────────────── */
+
+.field-label { display: block; font-weight: bold; margin-bottom: 6px; }
+#englishInput { font-size: 1.15rem; }
+
+.examples { font-size: 0.85rem; color: var(--muted-2); margin: 10px 0 0; }
+.chip {
+  font-family: inherit; font-size: 0.85rem; padding: 3px 10px; margin: 0 4px 4px 0;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--card); color: var(--muted); cursor: pointer;
+}
+.chip:hover { background: var(--hover); color: var(--ink); border-color: var(--accent); }
+
+/* ── the output, which is the point of the page ──────────────────── */
+
+.out-card { padding-top: 12px; }
+.out-bar {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.out-title { font-weight: bold; }
+.spacer { flex: 1 1 auto; }
+.out-bar button {
+  font-family: inherit; font-size: 0.82rem; padding: 4px 11px;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--card); color: var(--muted); cursor: pointer;
+}
+.out-bar button:hover:not(:disabled) {
+  background: var(--hover); color: var(--ink); border-color: var(--accent);
+}
+.out-bar button:disabled { opacity: 0.4; cursor: default; }
+.size-ctl { display: inline-flex; align-items: center; gap: 6px; color: var(--faint); }
+.size-ctl input { width: 92px; }
+
+.out-foot {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin: 8px 0 0; font-size: 0.8rem; color: var(--muted-2);
+}
+.out-foot .hint { color: var(--muted-2); }
+.out-foot .legend { margin: 0; }
+
+/* ── the sounds panel ────────────────────────────────────────────── */
+/* A <details>, so it is one click away and never actually hidden — the
+   sounds are still what gets drawn, and someone correcting a word has to
+   be able to find them. */
+
+.tune > summary {
+  cursor: pointer; list-style: none; display: flex; align-items: baseline;
+  gap: 8px; flex-wrap: wrap;
+}
+.tune > summary::-webkit-details-marker { display: none; }
+.tune > summary::before {
+  content: "▸"; color: var(--faint); font-size: 0.8em;
+  transition: transform .12s;
+}
+.tune[open] > summary::before { transform: rotate(90deg); }
+.tune-title { font-weight: bold; }
+.tune > summary:hover .tune-title { color: var(--accent); }
+.tune.is-edited > summary .tune-title::after {
+  content: " · edited"; font-weight: normal; color: var(--accent);
+  font-size: 0.85em;
+}
+.tune > *:not(summary) { margin-top: 12px; }
+.tune-note {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-size: 0.85rem; color: var(--muted);
+  background: var(--surface); border: 1px solid var(--line);
+  border-left: 3px solid var(--accent); border-radius: 6px; padding: 8px 10px;
+}
+.tune-note button {
+  font-family: inherit; font-size: 0.8rem; padding: 3px 10px;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--card); color: var(--muted); cursor: pointer;
+}
+.tune-note button:hover { background: var(--hover); color: var(--ink); }
+.syntax-details > summary { cursor: pointer; color: var(--muted-2); }
+.syntax-details .syntax-help p { margin: 8px 0; }
 
 .render-opts { margin-top: 10px; font-size: 0.85rem; color: var(--muted-2); }
 .render-opts label { display: inline-flex; align-items: center; gap: 6px; }

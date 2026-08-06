@@ -488,9 +488,35 @@ noted inline.**
    straight across the ben|ding boundary. Needs more multi-null words
    before implementing anything.
 
-5. **The UI is one page, and the input is ASCII.** No tabs: English box,
-   sounds box, output, then a glyph reference that doubles as the palette
-   (clicking a cell appends its code). The sounds box takes ARPAbet codes
+5. **The UI is one page, English first.** Type English and the drawing
+   updates live — no convert button, and something is on screen from the
+   first paint, because an empty output reads as a broken page. The
+   **sounds box still is what actually gets drawn** and that hasn't
+   changed; it now lives in a collapsed `<details>` because with the
+   dictionary in front of it most people never need to open it. It is
+   never hidden outright — correcting a pronunciation has to stay
+   reachable.
+
+   **English and sounds are reconciled with one flag.** English
+   overwrites the sounds box until the moment someone edits it by hand;
+   from then on it doesn't, the panel says so, and a button puts it back.
+   Without that, fixing a word and then touching the English silently
+   threw the fix away.
+
+   **The output can be saved** — Copy, PNG, SVG — and sized. The exporter
+   reads positions and sizes back off the LAID-OUT DOM rather than
+   re-deriving the block rules, so it cannot drift from `blocks.css` the
+   way a second implementation would; the only thing it re-applies is the
+   flip, which is a class rather than geometry. Sizing is one CSS
+   variable, `--av-size` in `blocks.css`, which every block rule is a
+   ratio off.
+
+   Below 900px `.col-work` becomes `display: contents` so the output can
+   be `position: sticky` against the whole layout. A sticky element can
+   never escape its parent's box, and the glyph reference is a sibling of
+   that column — while the column was still a box, scrolling into the
+   reference left the drawing behind whatever `top` said. That was the
+   old backlog item about losing sight of the output on mobile. The sounds box takes ARPAbet codes
    so the whole script is typeable on QWERTY — `S$ T UW 0 D AX N T S 0` —
    with IPA accepted as an alternative. `EXTRA_CODES` in `index.html`
    covers sounds ARPAbet has no code for (`AX`, `NUL`). (`Q` for /ʔ/ was
