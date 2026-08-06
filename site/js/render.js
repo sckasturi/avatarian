@@ -30,9 +30,9 @@
  * vowel beneath — which happened to agree on CV words like "katara" and
  * disagreed on everything else.
  *
- * An odd phoneme count leaves the final bottom slot empty, and the ∅
- * filler (the ∪ cup) is written there. Five of the sample's words need
- * it.
+ * An odd phoneme count leaves the final bottom slot empty, and a null
+ * filler is written there. Five of the sample's words need it. There are
+ * two nulls and the pairing partner picks which — see NULL_IPA below.
  *
  * Some glyphs change form with the slot they land in — see VARIANTS in
  * tools/build_glyphs.py. Consonants are 5×5 grid, vowels 4×5 grid.
@@ -62,8 +62,47 @@ function glyphSVG(ipaSymbol) {
   return entry ? entry.svg : null;
 }
 
-/** Fills an empty bottom slot; see the ∅ note in the header. */
+/**
+ * The two null fillers. NEITHER IS A SOUND — they fill a slot that has
+ * no phoneme in it, and they are part of the spelling rather than
+ * padding.
+ *
+ *   ∅   a rounded ∪, vowel-height    (3 rows)
+ *   ∅c  a squared ∪, consonant-height (5 rows)
+ *
+ * Which one is written is decided by the null's PAIRING PARTNER, not by
+ * the slot it happens to fill:
+ *
+ *   a VOWEL     paired with a null takes the 5-height (tall) null
+ *   a CONSONANT paired with a null takes the 3-height (short) null
+ *
+ * Confirmed from a reference sample. It is also what keeps a block nine
+ * rows tall whatever is in it — 4 + 5 for a vowel and its null, 5 + 4
+ * for a consonant and its null. The renderer used to write the cup into
+ * every empty slot regardless, which left a vowel-plus-null block eight
+ * rows tall and the wrong shape.
+ */
 const NULL_IPA = "∅";
+const NULL_C_IPA = "∅c";
+const NULLS = new Set([NULL_IPA, NULL_C_IPA]);
+
+function isVowelSymbol(token) {
+  if (token == null) return false;
+  // A $/% orientation override rides on the token, so strip it before
+  // asking what the sound is — "ɑ$" is still a vowel.
+  const sym = parseSymbol(token).sym;
+  const entry = GLYPHS[sym];
+  if (entry && entry.type) return entry.type === "vowel";
+  return VOWELS.has(sym);
+}
+
+/**
+ * The null to write beside `partner`. A null next to a null (or next to
+ * nothing) has no vowel to take its height from, so it stays short.
+ */
+function nullFor(partner) {
+  return isVowelSymbol(partner) ? NULL_C_IPA : NULL_IPA;
+}
 
 /**
  * ORIENTATION. SOME glyphs mirror top-to-bottom with the slot they land
@@ -161,15 +200,28 @@ function renderAvatarian(ipaSeq, container) {
   blocks.forEach((pair) => {
     const block = document.createElement("span");
     block.className = "avatarian-block";
-    block.appendChild(makeSlot(pair.top, "top"));
-    // An empty bottom slot is written, not skipped — the ∅ mark is part
-    // of the spelling, so dropping it would silently shorten the word.
-    block.appendChild(makeSlot(pair.bottom ?? NULL_IPA, "bottom"));
+    // An empty bottom slot is written, not skipped — the null is part of
+    // the spelling, so dropping it would silently shorten the word. Its
+    // height comes from the partner (see nullFor), which is also why a
+    // null already typed into the sounds box gets resolved here rather
+    // than taken literally: `0` means "a null", and the sound beside it
+    // is what says which one. That applies mid-word too, where canon
+    // puts nulls the renderer can't yet derive — (u,∅) takes the tall
+    // one, (s,∅) the short one.
+    const top = NULLS.has(pair.top) ? nullFor(pair.bottom) : pair.top;
+    const bottom = pair.bottom == null || NULLS.has(pair.bottom)
+      ? nullFor(top)
+      : pair.bottom;
+    block.appendChild(makeSlot(top, "top"));
+    block.appendChild(makeSlot(bottom, "bottom"));
     container.appendChild(block);
   });
   return container;
 }
 
 if (typeof module !== "undefined") {
-  module.exports = { renderAvatarian, pairUp, glyphSVG, VOWELS, NULL_IPA };
+  module.exports = {
+    renderAvatarian, pairUp, glyphSVG, VOWELS,
+    NULL_IPA, NULL_C_IPA, nullFor,
+  };
 }

@@ -28,7 +28,27 @@
 .avatarian-glyph.avatarian-null_consonant { width: 1.25em; height: 1.25em; }
 .avatarian-glyph.avatarian-vowel { width: 1.25em; height: 1em; }
 .avatarian-glyph.avatarian-null { width: 1.25em; height: 1em; }
+/* A block of two consonants: 4.5 units each instead of 5, so it totals
+   the same 9 units as a vowel+consonant block. */
+.avatarian-block:not(:has(.avatarian-vowel)):not(:has(.avatarian-null)):not(:has(.avatarian-null_consonant))
+  .avatarian-glyph.avatarian-consonant { width: 1.125em; height: 1.125em; }
+/* A 3-row vowel is drawn bottom-aligned in its 4-row box, which is right
+   in the bottom slot and wrong in the top: there the empty row lands at
+   the block's outer edge as dead space and the vowel sits flush against
+   the consonant. Pull it up one row (25% of a 4-row box) so the gap
+   falls between the two glyphs — rows 1-3 vowel, row 4 gap, rows 5-9
+   consonant. 4-row vowels fill their box and abut directly, so they are
+   excluded. */
+.avatarian-slot-top .avatarian-glyph.avatarian-vowel:not(.avatarian-4row),
+.avatarian-slot-top .avatarian-glyph.avatarian-null:not(.avatarian-4row) {
+  transform: translateY(-25%);
+}
+/* Bottom-slot glyphs listed in FLIPS are the same drawing mirrored
+   top-to-bottom. On the SVG, so it composes with the row shift above
+   rather than overwriting it. */
+.avatarian-glyph.avatarian-flipped svg { transform: scaleY(-1); }
 /* Vowels ship a square (100x100) and a flat (100x80) SVG; use the flat
    one. Consonants have only the square, so :not(:only-of-type) leaves it. */
 .avatarian-glyph svg.g-square:not(:only-of-type) { display: none; }
 .avatarian-placeholder { opacity: 0.5; }
+.avatarian-missing { font-size: 0.6em; color: #b32; line-height: 1; }

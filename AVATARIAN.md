@@ -187,9 +187,11 @@ vowels (**V-V**) never happens: a null substitutes for the missing second
 vowel (see §7). Within the 9-row grid (from the Session 5 design discussion;
 parts still unconfirmed, marked):
 
-- **V-C** (vowel on top): rows 1–4 vowel, rows 5–9 consonant, abutting
-  directly. *(Whether a 3-row vowel in the top slot should still leave an
-  empty top row here is an open tension — see below.)*
+- **V-C**, **3-row vowel**: rows 1–3 vowel, row 4 empty (**gap**), rows 5–9
+  consonant — the empty row sits between the two glyphs, not at the block's
+  top edge.
+- **V-C**, **4-row vowel**: rows 1–4 vowel, rows 5–9 consonant — they
+  **touch**. *(Symmetric completion of the rule above; inferred, not stated.)*
 - **C-V**, **3-row vowel**: rows 1–5 consonant, row 6 empty (**gap**), rows
   7–9 vowel — they do **not** touch.
 - **C-V**, **4-row vowel**: rows 1–5 consonant, rows 6–9 vowel — they
@@ -198,26 +200,38 @@ parts still unconfirmed, marked):
 - **C-C**: working guess is the two consonants **overlap by one shared row**
   (10 rows of content in 9). *Unconfirmed — needs reference examples.*
 
-**Open tension (ask before implementing V-C layout):** unifying every vowel to
-a 4-row shape with an empty top row (to make top/bottom slots interchangeable)
-would put that empty row at the very top edge of the whole block — visible
-dead space, not a between-glyph gap. Whether that's acceptable, or whether V-C
-blocks need the same 3-row/4-row split C-V blocks get, is unresolved.
+**Resolved, and implemented.** V-C blocks get the same 3-row/4-row split C-V
+blocks do. The vowel sits flush against the block's outer edge and the gap,
+when there is one, falls on its inner side — so a 3-row vowel on top never
+leaves dead space at the very top of the block. Since a 3-row vowel is drawn
+bottom-aligned in its box (correct for the bottom slot), `blocks.css` pulls it
+up one row in the top slot. **C-C remains open.**
 
 ### 4-row vs 3-row vowels
 
 A vowel is **4-row** (fills the top lattice row, connects upward) or **3-row**
 (leaves the top row empty, sits with a gap). The confirmed set:
 
-> **Confirmed 4-row set (Session 5): AA, AW, EY, IH, OY, UH, UW** (/ɑ, ɔ, e,
-> ɪ, ɔɪ, ʊ, u/). Every other vowel is 3-row.
+> **Confirmed 4-row set, in ARPAbet: AA, AW, EY, IH, OY, UH, UW** —
+> /ɑ, aʊ, e, ɪ, ɔɪ, ʊ, u/. Every other vowel is 3-row.
 
-⚠️ **The shipped code disagrees and needs updating.** `build_glyphs.py` has
-`VOWEL_4ROW = {ɑ, e, ɪ, u}` — only four, and a different set. 4-row vowels
-carry `rows: 4` through the manifest and get an `avatarian-4row` class in the
-DOM. Note also that **OY/ɔɪ has no glyph at all** in the shipped set (it's a
-placeholder, §8), so that entry in the confirmed list can't be rendered yet —
-verify before coding the list in.
+⚠️ **Read those as ARPAbet codes, not file stems.** The stems do not track the
+codes, and reading the list as stems flips two of the seven — in both
+directions:
+
+| ARPAbet | IPA | stem | rows |  | stem | IPA | is ARPAbet | rows |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **UH** | ʊ | `oo` | 4 | but | `uh` | ʌ | **AH** | 3 |
+| **AW** | aʊ | `au` | 4 | but | `aw` | ɔ | **AO** | 3 |
+
+Every vowel design carries an explicit `rows`, set from the designer's row
+toggle; `build_glyphs.py` reads it, and `VOWEL_4ROW_BASE` is only the fallback
+for a vowel with no design. 4-row vowels carry `rows: 4` through the manifest
+and get an `avatarian-4row` class in the DOM.
+
+A 4-row vowel's ink spans lattice y **0.5–3.5**; a 3-row vowel's spans
+**1.5–3.5**. `glyphspec.validate` checks the declaration against the drawing —
+the top row runs y=0 to y=1, so ink resting exactly on y=1 has not entered it.
 
 ### Known consequence: C+C blocks shrink
 
@@ -297,10 +311,10 @@ not just one.
 
 Two fillers, distinguished by height. **Neither is a sound.**
 
-| name | shape | height | type | manifest key |
-| --- | --- | --- | --- | --- |
-| `null_v` | ∪ cup | vowel-height (3-row) | `null` | `∅` (code `0`) |
-| `null_c` | ⊓ gate | consonant-height (5-row) | `null_consonant` | `∅c` |
+| name | shape | height | manifest type | design type | manifest key |
+| --- | --- | --- | --- | --- | --- |
+| `null_v` | rounded ∪ | vowel-height (3-row) | `null` | `mark` | `∅` (code `0`) |
+| `null_c` | squared ∪ | consonant-height (5-row) | `null_consonant` | `mark_consonant` | `∅c` |
 
 **Which null is used is decided by the pairing PARTNER, not the empty slot's
 own height** (confirmed, Session 5):
@@ -308,20 +322,25 @@ own height** (confirmed, Session 5):
 - a **vowel** paired with a null takes the **5-row** (consonant-height) null;
 - a **consonant** paired with a null takes the **3-row** (vowel-height) null.
 
-⚠️ **The shipped code does the opposite** — it picks `null_c` for an empty
-consonant-height slot and `null_v` for an empty vowel-height slot. That is
-backwards from the confirmed rule and still needs fixing (`render.js` /
-`build_glyphs.py`); this is a documented correction, not yet code.
+This is what `render.js` does (`nullFor`): any null, whether auto-inserted
+into a trailing empty slot or typed as `0` mid-word, takes its height from
+the sound beside it. It is also what keeps every block **nine rows** tall —
+4 + 5 for a vowel and its null, 5 + 4 for a consonant and its null. The
+renderer used to write the cup into every empty slot regardless, which left
+a vowel-plus-null block eight rows tall.
+
+The two differ by **height class**, which is what `type` means in a design:
+`mark_consonant` takes a consonant's 5×5 lattice, `mark` a vowel's 5×4 (see
+§3). Routing both through the vowel frame — which is what happened before
+the split — draws the taller null on the wrong lattice.
 
 > **History / correction:** these were called `glot_v` and `glot`, and `glot`
-> (the ⊓ gate) was mistakenly documented as **/ʔ/, a glottal stop**. It never
-> was — the ⊓ is just the taller null filler. The `Q` code for /ʔ/ was removed
-> from the input syntax. If you find "glot", "⊓ = /ʔ/", or "Q → ʔ" anywhere,
-> it is stale.
->
-> Loose end: `designs/glot.json` and `designs/glot_v.json` still carry the old
-> file names and should be renamed to `null_c` / `null_v` (with matching
-> `name`/`ipa`/`type` fields).
+> was mistakenly documented as **/ʔ/, a glottal stop**. It never was — it is
+> just the taller null filler. The `Q` code for /ʔ/ was removed from the
+> input syntax. If you find "glot", "⊓ = /ʔ/", or "Q → ʔ" anywhere, it is
+> stale — including any description of `null_c` as a ⊓ gate, which it is not.
+> The design files were renamed to `null_c.json` / `null_v.json` with
+> matching fields.
 
 ---
 
@@ -384,8 +403,10 @@ this table from the build script rather than trusting it blind.
 
 Notes worth holding onto:
 
-- **The "4-row" column above reflects the CODE** (`VOWEL_4ROW`), which §4
-  flags as stale — the confirmed set is AA, AW, EY, IH, OY, UH, UW.
+- **The "4-row" column above may lag the designs** — `rows` now lives in
+  `designs/<name>.json` and the build reads it from there. The confirmed set
+  is ARPAbet AA, AW, EY, IH, OY, UH, UW; see §4 on why that must not be read
+  as file stems.
 - **/ə/ vs /ʌ/ were once backwards.** /ə/ (schwa) is the recurve-with-two-dots
   and its recurve *descends* L→R; /ʌ/ is the four dots, two-by-two. The set had
   them swapped and /ʌ/ drawn as four short *rules* until the key was traced.
@@ -400,10 +421,15 @@ Notes worth holding onto:
 
 ### Placeholders (no glyph anywhere yet)
 
-Seven sounds render as a dashed "?" box: **tʃ, dʒ, ʃ, ʒ, x, ʊ, ɔɪ**. To fill
-one in: add its path to `build_glyphs.py`, remove its name from the
-`PLACEHOLDERS` dict, and re-run both build scripts. A wrong glyph propagates
-everywhere, so fill these only against real source material.
+**/x/** is the only sound still rendering as a dashed "?" box. Draw it in the
+designer and press **ship it** to fill it in.
+
+The other six — tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ — have since been drawn and shipped
+from **source material outside the key chart**. That is why they appear
+nowhere in the chart and have no tracing to compare against, and they are
+listed in `SOURCE_NOTES` alongside `/ɑ/` and `/ɔ/` so the key tab says so.
+Nothing in the set is invented: /x/ is still a placeholder precisely because
+no source for it has been found.
 
 ---
 
@@ -440,7 +466,8 @@ palette — click a cell to append its code.
 These are the live unknowns about the *script*, roughly by priority. Fuller
 notes in `CONTEXT.md`.
 
-1. **Seven sounds have no glyph** (§8) — need source material, not guesses.
+1. **/x/ has no glyph** (§8), and six sounds that had none were drawn and
+   shipped without a recorded source — provenance needed, not guesses.
 
 2. **Mid-word nulls.** Nulls appear inside words, not only at odd ends, and
    the renderer can't currently produce these. Two confirmed spellings:

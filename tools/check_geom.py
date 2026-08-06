@@ -55,7 +55,8 @@ def cases():
                 n["bulge"] = bulge
         return n
 
-    for kind, grid in (("consonant", [5, 5]), ("vowel", [5, 3]), ("mark", [5, 3])):
+    for kind, grid in (("consonant", [5, 5]), ("vowel", [5, 3]),
+                       ("mark", [5, 3]), ("mark_consonant", [5, 5])):
         for i in range(40):
             segs = ["line", "arc", "curve"]
             nodes = [node()]
