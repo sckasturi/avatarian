@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=10" />
-<link rel="stylesheet" href="css/style.css?v=10" />
+<link rel="stylesheet" href="css/blocks.css?v=11" />
+<link rel="stylesheet" href="css/style.css?v=11" />
 </head>
 <body>
 
@@ -21,59 +21,61 @@ and made-up words too.</p>
 <div class="layout">
 <div class="col-work">
 
-<section class="card">
+<!-- One card: your text, then the sounds it became. They were split
+     for a while and the sounds collapsed behind a summary; keeping them
+     together and always visible makes the relationship between the two
+     obvious, and the sounds box is what actually gets drawn. -->
+<section class="card write" id="tunePanel">
   <label for="englishInput" class="field-label">Your text</label>
   <textarea id="englishInput" rows="2" autofocus
     placeholder="type a word, a name, anything…"></textarea>
   <p class="examples">Try:
     <button type="button" class="chip" data-example="Katara">Katara</button>
     <button type="button" class="chip" data-example="the Jasmine Dragon">the Jasmine Dragon</button>
-    <button type="button" class="chip" data-example="Toph Beifong">Toph Beifong</button>
+    <button type="button" class="chip" data-example="fanny is missing">fanny is missing</button>
+    <!-- Renders every glyph in the set. Kept for checking the whole
+         inventory at once; not something a visitor wants. -->
+    <!--
     <button type="button" class="chip" data-example="Iroh brewed hot jasmine tea at the Jasmine Dragon and Zuko turned his white lotus tile. The young Avatar thought of Kyoshi warriors and of koi fish circling the full moon in a spirit pool. Fire earth air and water shape each new age and a vision of blue flame brings power and peace.">every glyph at once</button>
-  </p>
-</section>
-
-<!-- The sounds box. It is what actually gets drawn, so it stays one
-     click away and never hidden outright — but it greets nobody. Most
-     people never need to open it now that the dictionary is doing the
-     pronouncing. -->
-<details class="card tune" id="tunePanel">
-  <summary>
-    <span class="tune-title">Sounds</span>
-    <span class="fine">— open this if a word came out sounding wrong</span>
-  </summary>
-
-  <p class="tune-note" id="tuneNote" hidden>
-    <span>You've edited these sounds by hand, so your text isn't changing them
-      any more.</span>
-    <button type="button" id="resyncBtn">Use my text again</button>
+    -->
   </p>
 
-  <label for="soundsInput" class="field-label">The sounds being drawn</label>
-  <textarea id="soundsInput" rows="3" spellcheck="false"
-    placeholder="K AH T AA R AH   /   P L IY Z"></textarea>
-  <div class="row">
-    <span class="ipa-hint" id="soundsHint"></span>
-  </div>
+  <div class="sounds-part">
+    <label for="soundsInput" class="field-label">Sounds
+      <span class="fine">— this is what actually gets drawn. Edit it if a
+        word came out sounding wrong.</span></label>
 
-  <details class="syntax-details">
-    <summary class="fine">How to write sounds</summary>
-    <div class="syntax-help">
-      <p>Each sound is written as a short code, sounds separated by spaces
-        and words by <code>/</code>. Click any glyph in the reference to add
-        its code here.</p>
-      <p><code>K AH T AA R AH</code> spells <em>Katara</em>. The codes are
-        the ones used in pronunciation dictionaries; real IPA works too if
-        you prefer it (<code>k ə t ɑ r ə</code>).</p>
-      <p>Anything in <code>(brackets)</code> is a label for that word, not a
-        sound — that is how the English caption under each word gets there.</p>
-      <p><code>0</code> fills an empty slot at the end of a word with an odd
-        number of sounds. Adding <code>$</code> or <code>%</code> after a
-        sound forces its top or bottom form, which is only needed for
-        <code>S</code>, where the rule still isn't known.</p>
+    <p class="tune-note" id="tuneNote" hidden>
+      <span>You've edited these sounds by hand, so your text isn't changing
+        them any more.</span>
+      <button type="button" id="resyncBtn">Use my text again</button>
+    </p>
+
+    <textarea id="soundsInput" rows="3" spellcheck="false"
+      placeholder="K AH T AA R AH   /   P L IY Z"></textarea>
+    <div class="row">
+      <span class="ipa-hint" id="soundsHint"></span>
     </div>
-  </details>
-</details>
+
+    <details class="syntax-details">
+      <summary class="fine">How to write sounds</summary>
+      <div class="syntax-help">
+        <p>Each sound is written as a short code, sounds separated by spaces
+          and words by <code>/</code>. Click any glyph in the reference to add
+          its code here.</p>
+        <p><code>K AH T AA R AH</code> spells <em>Katara</em>. The codes are
+          the ones used in pronunciation dictionaries; real IPA works too if
+          you prefer it (<code>k ə t ɑ r ə</code>).</p>
+        <p>Anything in <code>(brackets)</code> is a label for that word, not a
+          sound — that is how the English caption under each word gets there.</p>
+        <p><code>0</code> fills an empty slot at the end of a word with an odd
+          number of sounds. Adding <code>$</code> or <code>%</code> after a
+          sound forces its top or bottom form, which is only needed for
+          <code>S</code>, where the rule still isn't known.</p>
+      </div>
+    </details>
+  </div>
+</section>
 
 <section class="card out-card">
   <div class="out-bar">
@@ -136,16 +138,16 @@ and made-up words too.</p>
      target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
 </footer>
 
-<script src="js/manifest.js?v=10"></script>
+<script src="js/manifest.js?v=11"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=10"></script>
-<script src="js/g2p.js?v=10"></script>
+<script src="js/lexicon.js?v=11"></script>
+<script src="js/g2p.js?v=11"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=10"></script>
-<script src="js/render.js?v=10"></script>
+<script src="js/sounds.js?v=11"></script>
+<script src="js/render.js?v=11"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
@@ -421,7 +423,6 @@ function appendSound(code) {
   const box = $("soundsInput");
   box.value = (box.value.trim() + " " + code).trim();
   markEdited(true);
-  $("tunePanel").open = true;
   draw();
 }
 

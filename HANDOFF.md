@@ -334,6 +334,23 @@ a general rule.
    thing — that's a separate write-up; this lives inside AVATARIAN.md
    itself.)
 
+10. **Better handling of parentheses.** `(brackets)` currently caption a
+    word, and the rule is crude — anything parenthesised is pulled out
+    before tokenising. Needs thinking about: nested or unclosed brackets,
+    a caption on a word that also has one from the converter, and what
+    should happen when someone types a bracket meaning it literally.
+
+11. **The sounds box should scroll vertically.** A long transcription
+    grows the box without limit. Partly done — it now has a `max-height`
+    and `resize: vertical` — but the behaviour when it overflows still
+    wants a look, especially next to the sticky output on mobile.
+
+12. **A space button.** Building a line by clicking glyphs has no way to
+    end a word; you have to go to the keyboard for the `/`. A word-break
+    button in the palette would make click-only transcription possible,
+    which is the mode the corpus work will live in. Consider a null
+    button (`0`) beside it for the same reason.
+
 ### Also flagged, not yet a task
 
 - README/CONTEXT will need a fuller rewrite once the 9-row model above is

@@ -382,11 +382,29 @@ as a phoneme list, because `pairUp()` would still make two blocks of it.
 That is the corpus's job, and `appa` is the reason the corpus has to
 store finished spellings rather than phonemes.
 
+### The first attested sentence
+
+```
+F AE N IY (fanny)  /  IH Z (is)  /  M IH S IH NG (missing)
+```
+
+From a poster (link to follow). It is the first attested **sentence**
+rather than an isolated name, and it is interesting for the opposite
+reason to the corrections above: **all three words already matched what
+the pipeline derives.** Nothing needed fixing.
+
+That is the first end-to-end confirmation the chain produces canon output
+on ordinary English — dictionary pronunciation, pairing, and the trailing
+null on `missing` (five phonemes, so `(m,ɪ)(s,ɪ)(ŋ,∅)`). Corrections tell
+you where the model is wrong; agreements tell you where it is right, and
+a corpus needs both. Worth recording that this one was checked and
+passed, so nobody re-derives it later wondering if it was ever verified.
+
 ### Still to audit
 
 Every other in-world name in `EXCEPTIONS` is a guess from English
 spelling until someone checks it: `katara`, `sokka`, `iroh`, `azula`,
-`beifong`, `korra`, `omashu`, `kyoshi`, `sozin`, `roku`, `ozai`, `suki`,
+`korra`, `omashu`, `kyoshi`, `sozin`, `roku`, `ozai`, `suki`,
 `yue`, `haru`. Given two of the first four checked were wrong, expect
 more. They are grouped under a "not yet checked" heading so the split is
 visible in the file.

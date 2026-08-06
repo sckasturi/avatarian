@@ -212,33 +212,33 @@ button.primary:hover { opacity: 0.9; }
 .out-foot .hint { color: var(--muted-2); }
 .out-foot .legend { margin: 0; }
 
-/* ── the sounds panel ────────────────────────────────────────────── */
-/* A <details>, so it is one click away and never actually hidden — the
-   sounds are still what gets drawn, and someone correcting a word has to
-   be able to find them. */
+/* ── the sounds half of the writing card ─────────────────────────── */
+/* Your text and the sounds it became live in ONE card, both always
+   visible. They were split for a while, with the sounds collapsed behind
+   a summary — but the sounds are what actually gets drawn, and seeing
+   them change as you type is how the relationship between the two
+   becomes obvious. A rule separates them without implying they are
+   different things. */
 
-.tune > summary {
-  cursor: pointer; list-style: none; display: flex; align-items: baseline;
-  gap: 8px; flex-wrap: wrap;
+.sounds-part {
+  margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid var(--line);
 }
-.tune > summary::-webkit-details-marker { display: none; }
-.tune > summary::before {
-  content: "▸"; color: var(--faint); font-size: 0.8em;
-  transition: transform .12s;
+.sounds-part .field-label { font-weight: bold; }
+.sounds-part .fine { font-weight: normal; color: var(--muted-2); }
+#soundsInput {
+  font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95rem;
+  /* Long transcriptions get long; scroll rather than grow without end. */
+  max-height: 34vh; overflow-y: auto; resize: vertical;
 }
-.tune[open] > summary::before { transform: rotate(90deg); }
-.tune-title { font-weight: bold; }
-.tune > summary:hover .tune-title { color: var(--accent); }
-.tune.is-edited > summary .tune-title::after {
-  content: " · edited"; font-weight: normal; color: var(--accent);
-  font-size: 0.85em;
-}
-.tune > *:not(summary) { margin-top: 12px; }
+.write.is-edited .sounds-part { border-top-color: var(--accent); }
+
 .tune-note {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
   font-size: 0.85rem; color: var(--muted);
   background: var(--surface); border: 1px solid var(--line);
-  border-left: 3px solid var(--accent); border-radius: 6px; padding: 8px 10px;
+  border-left: 3px solid var(--accent); border-radius: 6px;
+  padding: 8px 10px; margin: 0 0 10px;
 }
 .tune-note button {
   font-family: inherit; font-size: 0.8rem; padding: 3px 10px;
@@ -246,15 +246,13 @@ button.primary:hover { opacity: 0.9; }
   background: var(--card); color: var(--muted); cursor: pointer;
 }
 .tune-note button:hover { background: var(--hover); color: var(--ink); }
+.syntax-details { margin-top: 10px; }
 .syntax-details > summary { cursor: pointer; color: var(--muted-2); }
 .syntax-details .syntax-help p { margin: 8px 0; }
 
 .render-opts { margin-top: 10px; font-size: 0.85rem; color: var(--muted-2); }
 .render-opts label { display: inline-flex; align-items: center; gap: 6px; }
 .ipa-hint { margin-left: 10px; font-size: 0.8rem; color: var(--warn); }
-#soundsInput {
-  font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95rem;
-}
 
 .legend { font-size: 0.8rem; color: var(--muted-2); margin-top: 10px; }
 .legend .dot { display: inline-block; width: 10px; height: 10px; border: 1px dashed var(--accent); margin-right: 4px; }

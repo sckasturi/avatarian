@@ -59,8 +59,12 @@ const EXCEPTIONS = {
   //   toph  T AA F  — rhymes with "off", not with "loaf".
   //   zuko  Z UW K OW
   //   momo  M OW M OW
+  //   fanny is missing — a whole line off a poster, and the first
+  //                   attested SENTENCE. All three words already matched
+  //                   what the pipeline derives, so it confirms the
+  //                   chain end to end rather than correcting it.
   "aang": "e ŋ", "toph": "t ɑ f", "zuko": "z u k oʊ",
-  "momo": "m oʊ m oʊ",
+  "momo": "m oʊ m oʊ", "fanny": "f æ n i", "missing": "m ɪ s ɪ ŋ",
 
   // Attested spelling is `AA 0 P 0 AA 0` — three blocks, every phoneme
   // padded with its own null. Only the VOWELS can be fixed here: both
@@ -76,7 +80,7 @@ const EXCEPTIONS = {
   "earth": "ɜ r θ", "air": "ɛ r", "avatar": "æ v ə t ɑ r",
   "katara": "k ə t ɑ r ə", "sokka": "s ɑ k ə",
   "korra": "k ɔ r ə", "iroh": "aɪ r oʊ", "azula": "ə z u l ə",
-  "beifong": "b e f ɔ ŋ", "bending": "b ɛ n d ɪ ŋ",
+  "bending": "b ɛ n d ɪ ŋ",
   // Coined compounds, so no general dictionary has them. The -bending
   // ones all reduce the linking vowel to schwa, which is the reading
   // canon shows for "metalbending".
