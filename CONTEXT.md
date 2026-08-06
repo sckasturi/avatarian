@@ -360,6 +360,17 @@ starts, so a mismatch shows up in the designer's problems panel. Note the
 top row spans y=0 to y=1, so ink sitting exactly ON y=1 has not entered
 it — a 4-row vowel has to reach above y=1.
 
+**A 3-row vowel is pulled up one row when it sits in the TOP slot.** It
+is drawn bottom-aligned in its 4-row box, which is what the bottom slot
+wants — the empty row is the gap under the consonant. In the top slot
+that same drawing puts the empty row at the block's outer edge as dead
+space and leaves the vowel flush against the consonant with no gap. The
+V-C rule is rows 1-3 vowel, row 4 gap, rows 5-9 consonant, so
+`blocks.css` shifts it with `translateY(-25%)` — 25% of a 4-row box is
+exactly one row, so it holds at any size. Only the ink moves; the row it
+vacates was empty, so nothing overflows. 4-row vowels are excluded: they
+fill their box and abut directly, which is right in either slot.
+
 **`flips` and `rows` are per-design now.** Both are set from the designer
 (checkbox and row toggle) into `designs/<name>.json`, and
 `build_glyphs.py` overlays them onto `FLIPS_BASE` / `VOWEL_4ROW_BASE` at

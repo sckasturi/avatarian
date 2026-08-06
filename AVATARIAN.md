@@ -200,10 +200,12 @@ parts still unconfirmed, marked):
 - **C-C**: working guess is the two consonants **overlap by one shared row**
   (10 rows of content in 9). *Unconfirmed — needs reference examples.*
 
-**Resolved:** V-C blocks get the same 3-row/4-row split C-V blocks do. The
-vowel always sits flush against the block's outer edge and the gap, when there
-is one, falls on its inner side — so a 3-row vowel on top never leaves dead
-space at the very top of the block. **C-C remains open.**
+**Resolved, and implemented.** V-C blocks get the same 3-row/4-row split C-V
+blocks do. The vowel sits flush against the block's outer edge and the gap,
+when there is one, falls on its inner side — so a 3-row vowel on top never
+leaves dead space at the very top of the block. Since a 3-row vowel is drawn
+bottom-aligned in its box (correct for the bottom slot), `blocks.css` pulls it
+up one row in the top slot. **C-C remains open.**
 
 ### 4-row vs 3-row vowels
 

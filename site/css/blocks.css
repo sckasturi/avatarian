@@ -62,9 +62,35 @@
   width: 46.8px; height: 46.8px;
 }
 
+/* A 3-row vowel is drawn BOTTOM-ALIGNED in its 4-row box: ink in the
+   lower three rows, top row empty. That is correct in the bottom slot,
+   where the empty row is the gap between the consonant above and the
+   vowel — but in the TOP slot the same drawing puts that empty row at
+   the block's outer edge as dead space, and leaves the vowel sitting
+   flush against the consonant with no gap at all.
+
+   The rule is: rows 1-3 vowel, row 4 gap, rows 5-9 consonant. So the
+   vowel is pulled up one lattice row when it sits on top, which moves
+   the empty row to where it belongs — between the two glyphs. The
+   vowel's ink is the only thing that moves; the row it vacates was
+   empty, so nothing overflows the block.
+
+   25% of a vowel's box is exactly one row (4 rows to the box), so this
+   holds at any font size — which is why it is a percentage and not the
+   10.4px it happens to be at the default size.
+
+   4-row vowels are excluded: they fill their box and abut the
+   consonant directly, which is already right in either slot. */
+.avatarian-slot-top .avatarian-glyph.avatarian-vowel:not(.avatarian-4row),
+.avatarian-slot-top .avatarian-glyph.avatarian-null:not(.avatarian-4row) {
+  transform: translateY(-25%);
+}
+
 /* Bottom-slot glyphs are the same drawing mirrored top-to-bottom. A
    transform rather than a second asset: it is exact, costs nothing, and
-   keeps stroke weight and dot roundness identical to the top form. */
+   keeps stroke weight and dot roundness identical to the top form.
+   This sits on the SVG, the row shift above on the wrapping span, so
+   the two compose instead of overwriting each other. */
 .avatarian-glyph.avatarian-flipped svg { transform: scaleY(-1); }
 
 /* Vowels carry both a square (100×100) and flat (100×80) SVG; always

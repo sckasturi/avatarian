@@ -85,6 +85,23 @@ exactly as session 5 left them.
    an unchanged design produced a spurious diff. Now aligned to the
    head. This is why 20 designs round-trip byte-identical.
 
+9. **V-C layout implemented.** A 3-row vowel is drawn bottom-aligned in
+   its 4-row box — right for the bottom slot, where the empty row is the
+   gap under the consonant, but wrong on top, where it put the empty row
+   at the block's outer edge and left the vowel flush against its
+   partner. Measured on `AX T`: 1.2 rows of dead space above, 0.4 rows of
+   gap below. `blocks.css` now pulls a top-slot 3-row vowel up one row
+   (`translateY(-25%)`, one row of a 4-row box, so it holds at any size),
+   giving 0.2 above and 1.4 below. 4-row vowels are excluded — they fill
+   their box and abut directly.
+
+10. **The wiki CSS had drifted badly** and is brought back in step. It was
+    missing `.avatarian-flipped` entirely, so every glyph in `FLIPS`
+    rendered unmirrored in a bottom slot on the wiki, and missing the C+C
+    4.5-unit shrink, so consonant-pair blocks were 10 units instead of 9.
+    Both added, along with the new row shift and `.avatarian-missing`.
+    `site/css/blocks.css` is the file to diff it against.
+
 ### What this surfaced, and hasn't been acted on
 
 - **A number of designs differ from the glyph they ship** — the design
