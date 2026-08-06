@@ -1,0 +1,40 @@
+{
+  "name": "aw",
+  "ipa": "ɔ",
+  "type": "vowel",
+  "grid": [
+    5,
+    4
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 4.5,
+          "y": 1.5
+        },
+        {
+          "x": 2.5,
+          "y": 3.5,
+          "seg": "arc",
+          "bulge": 0.5858
+        },
+        {
+          "x": 0.5,
+          "y": 3.5,
+          "seg": "line"
+        }
+      ]
+    },
+    {
+      "kind": "dot",
+      "x": 0.5,
+      "y": 1.5,
+      "size": "s"
+    }
+  ],
+  "updated": "2026-08-06T00:25:46Z"
+}

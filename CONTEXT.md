@@ -68,6 +68,99 @@ there, fix the path in `build_glyphs.py`, re-run the two build scripts,
 reload. Hard-refresh — `file://` caches `manifest.js` aggressively and a
 stale one looks exactly like an edit that didn't take.
 
+## Designing a glyph (the lattice, and designs/)
+
+Editing path coordinates by hand is a bad way to work out what a shape
+*is*, which is why several glyphs stayed wrong for so long. `designer/`
+is a second, local-only site for that part:
+
+```bash
+python3 tools/designer_server.py     # http://localhost:8792/
+```
+
+A character is drawn on the script's **native lattice** — 5×5 cells for a
+consonant, 5×4 for a vowel — with the key tracing and the currently-drawn
+glyph as underlays. Each glyph autosaves to `designs/<name>.json`.
+
+**You brush it; the tool reads it.** The normal way in is the brush:
+draw the shape freehand in one drag and `designer/js/fit.js` works out
+what it was — corners snapped to lattice points, straight runs left
+straight, curves fitted as real circular arcs (snapped to exact quarter
+and half circles), a small scribble read as a dot, a gesture that returns
+to its start closed. Three tidiness levels (close / normal / clean) are
+re-readable on a selected stroke with `R`, always from the raw gesture.
+Node-by-node drawing still exists in the "by hand" tray for fixing
+something the fit read wrong, but it isn't the workflow.
+
+**"paste in…"**, by the output tabs, takes back any of the three things
+the panel hands out — a design JSON, an SVG, or a `build_glyphs.py`
+entry — so a letter that is nearly right can be the baseline for the
+next one. The **mirror** toggles (`↔` left–right, `↕` top–bottom) in the
+paste box reflect the incoming shape as it is loaded — the fastest way to
+start from a mirror pair (e.g. copy /ə/ → paste with ↕ → get /ɜ/'s
+shape). A design JSON is already lattice data and comes in untouched;
+an SVG or a Python entry is drawing coordinates, so it is sampled and
+fitted like a brush stroke. Nothing is rescaled across grids: a
+consonant shape on a vowel's shorter lattice hangs off the bottom and
+the problems panel says so, which beats squashing it silently.
+
+**In-place mirror** (`⇄` / `⇅` in the toolbar, or `Shift+H` /
+`Shift+V`) reflects the current design without reloading — undoable with
+`⌘Z`. Both mirror paths use `Importer.mirror()`, which negates arc bulge
+on single-axis reflections (handedness flip) but preserves it on
+dual-axis (180° rotation).
+
+**"use it"**, next to the *current glyph* underlay, starts a design from
+the glyph the set already ships rather than a blank lattice. It samples
+that SVG back into a gesture and puts it through the fitter, rather than
+transcribing it command by command — transcribing would carry the old
+drawing's off-lattice coordinates and hand-tuned cubics straight into
+the design, and those are exactly what the lattice exists to replace.
+
+The fitter is an **input method, not a second geometry system**. It
+writes ordinary `line`/`arc` segments in the format below, so the
+exporter, `glyphspec.py` and the parity check are all untouched by it
+and it has no Python counterpart. It also stores the raw gesture on the
+shape as `trace`, so a stroke can be re-read at a different tidiness
+(`R`) without compounding one fit on top of another; `glyphspec.py`
+ignores the key.
+
+**A design records intent, not geometry.** Which lattice points a stroke
+visits; whether each segment is straight, a circular arc, or part of a
+smooth run. Everything else — curve fitting, stroke weight, margins, the
+vowel's two heights — is applied by `tools/glyphspec.py` at render time,
+so the drawing system can be changed once and every glyph follows,
+instead of 40 paths needing re-authoring.
+
+The lattice maps onto the existing boxes exactly, which is why it fits:
+5×5 at 20 svg units a cell is the 100×100 consonant box, and 5×4 is the
+100×80 flat box vowels ship. **Vowels are drawn once, in their
+native 5×4 form**; the square form used by equal-height mode is the
+stretched one and is derived, so there is no second drawing to keep in
+step. Ink sits at 16 units a cell inside a 10-unit margin, so a stroke on
+the outermost row isn't clipped by the viewBox.
+
+Promotion into the shipped set is a **deliberate copy-paste**, not an
+automatic rebuild:
+
+```bash
+python3 tools/designs_to_svg.py --report      # what's drawn, what isn't
+python3 tools/designs_to_svg.py m --python    # a build_glyphs.py entry
+```
+
+`build_glyphs.py` stays the single definition of what ships. The design
+is the drawing as it came off the grid; turning it into a glyph usually
+means smoothing something the lattice couldn't say precisely, and that
+is a decision, not a build step.
+
+**Two implementations of the same geometry.** `designer/js/geom.js` is a
+port of `tools/glyphspec.py`, because round-tripping every pointermove
+through the server would make dragging a node feel awful. Anything the
+designer hands back — the SVG, the Python snippet — comes from the
+server, so the Python is always the authority. `python3
+tools/check_geom.py` renders ~200 generated designs through both and
+diffs them; run it after touching either file. Don't let them drift.
+
 ## Non-obvious decisions (don't undo these by accident)
 
 - **Glyphs are inlined into `js/manifest.js`, not loaded as image files.**
@@ -82,6 +175,14 @@ stale one looks exactly like an edit that didn't take.
 - **Glyphs are drawn, not traced.** All shapes are geometric primitives on
   a shared 100×100 grid, one stroke weight, round caps/joins. Keep new
   glyphs consistent with that system.
+- **A dot is the same weight as a stroke.** `DOT = SW / 2`, derived so
+  the two can't drift, and the designer's `m` size class is the same
+  thing. Confirmed against the reference: in the /aɪ/ photo the rule and
+  the dots either side of it are the same thickness to the pixel. Dots
+  used to be authored at 6.5, with several at 7 and 8, against a stroke
+  of 9 — up to nearly twice the weight, reading as beads sitting on the
+  writing rather than part of it. Don't reintroduce a per-glyph radius
+  without a source that actually shows a heavier dot.
 - **This is not a font file.** Canon composes sounds into blocks
   (closer to Hangul than an alphabet), which no font format handles well,
   so composition happens in the DOM.
@@ -114,9 +215,12 @@ survived so long, and disagreed on everything else. It is also what made
 is one of the glyphs that takes a different form in each.
 
 An odd phoneme count leaves the last bottom slot empty and the **∅ filler**
-(`glot_v`, the ∪ cup) is written into it. It is part of the spelling — five
-of the sample's words carry it. Distinct from `glot`, the ⊓ gate, which is
-/ʔ/ and a real sound.
+(`null_v`, the ∪ cup, vowel-height) is written into it. It is part of the
+spelling — five of the sample's words carry it. There is also a
+consonant-height null, `null_c` (the ⊓ gate, type `null_consonant`), for an
+empty *consonant-height* slot. **Neither is a sound.** (Session 4 rename:
+these were `glot_v`/`glot`, and `glot` was mistakenly documented as /ʔ/, a
+glottal stop — it never was. The ⊓ is just the taller null filler.)
 
 **Orientation: SOME glyphs mirror top-to-bottom.** A glyph is drawn once,
 in its TOP-slot form. Those listed in `FLIPS` (`build_glyphs.py`) are
@@ -131,6 +235,15 @@ orientation in both slots.
 | l | "please" (bottom); the key chart draws both orientations |
 | ɪ | "metalbending" |
 | e | "Aang" (top) vs "wake" (bottom) |
+| aɪ | key chart (rule above, dots below) vs "fire" (dots above the rule) |
+
+/aɪ/ is worth spelling out because it is the cleanest case in the set.
+"fire" is /f aɪ ə r/, so pairing puts aɪ at index 1 — a **bottom** slot —
+and canon writes it there as the vertical mirror of the chart's citation
+form. Measured off the tracing: the chart's bar sits at y 23–39 with the
+dots at y 53–76, and the photo of "fire" has that the other way up. Both
+forms attested, in known slots, which is the bar. The drawing itself was
+already right; only the flag was missing.
 
 Two things to hold on to:
 
@@ -146,20 +259,48 @@ Two things to hold on to:
 "students" writes both of its /s/ in TOP slots with a different
 orientation for each. Spell those `S$` and `S%`.
 
-**Heights are a toggle, currently OFF.** Every slot renders 52×52 by
-default. The "Proportional heights" checkbox adds `avatarian-proportional`
-to `<body>`, which takes vowels to 52×31 — the script's native units,
-consonants 5 tall against vowels 3. It is off because the rule still has
-unresolved nuance; don't make it the default without new evidence.
+**Heights are the script's native units — always on, no toggle** (as of
+session 4). Consonants render 52×52, vowels 52×41.6 — 5 units tall against
+4, **stacked flush**. The old "Proportional heights" checkbox and the
+`avatarian-proportional` body class are gone; the proportional values are
+now the base CSS rules and the flat vowel SVG is always shown. Vowels are
+4×5 and consonants 5×5 by design, so there is nothing left to toggle
+between.
 
-The ratio has moved three times now (1:4 → 1:1 → 3:5 → optional), so don't
-"fix" it back by accident. The key chart's "Consonants 3/4 height, Vowels
+**The two glyphs in a block share a lattice edge.** A consonant's bottom
+row line IS the vowel's top row line. But each SVG carries a clearance
+margin outside its lattice (10svg on a 100 box = 5.2px for a consonant,
+8svg on an 80 box = 4.16px for a flat vowel), so stacking the boxes flush
+would leave both margins as a visible gap. `.avatarian-slot-bottom {
+margin-top: -9.36px }` pulls the bottom slot up by the two margins' sum so
+the lattices actually meet (`-0.225em` in the wiki CSS — keep them in
+step). The 4.5-unit C+C shrink keeps that sum constant across the common
+pairings, so one constant covers them.
+
+**Residual gap for 4-row vowels is a DESIGN issue, not a rendering one.**
+After the margin fix, T+ɑ still shows ~8.3px (one lattice row) between the
+inks, because T's ink ends at lattice y=4.5 and ɑ's connecting stroke
+reaches only y=0.5 — half a row each. Closing it means deciding where a
+consonant's bottom edge and a 4-row vowel's connecting edge sit, then
+nudging both design conventions to touch. See HANDOFF.md "THE OPEN ISSUE."
+
+**4-row vs 3-row vowels.** `VOWEL_4ROW = {ɑ, e, ɪ, u}` fill lattice rows
+0–3 (content from y=0.5) and carry `rows: 4` → `avatarian-4row` in the DOM;
+every other vowel starts at y=1.5, leaving the top row empty. This is the
+"four-line vowels use the top row, three-line vowels don't" distinction.
+
+The ratio has moved four times now (1:4 → 1:1 → 3:5 → 4:5), so don't
+"fix" it back by accident. 4:5 is the current reading and it is what
+`FLAT` in `build_glyphs.py`, `VOWEL_GRID` in `glyphspec.py`, the
+proportional block in `style.css` and the wiki CSS all encode — change
+them together or the flat drawings stop matching the boxes they go in.
+The key chart's "Consonants 3/4 height, Vowels
 1/4 height" note describes bands inside a hand-lettered block, not a scale
 factor — every glyph is drawn on one 100×100 grid, so scaling a mark down
 shrinks the whole thing, and at 1:4 vowels went too faint to read.
 
 In proportional mode **nothing is stretched**. Vowels get the wide-flat
-shape by swapping to a separate 100x60 drawing, generated in
+shape by swapping to a separate 100x80 drawing, generated in
 `build_glyphs.py` by squashing the geometry only — path coordinates and arc
 radii scale in y, dots keep their radius and merely move, and stroke-width
 is untouched. Both drawings ship in the manifest (`svg` and `flat`) and CSS
@@ -172,14 +313,14 @@ and horizontal strokes thinned by the y-scale while verticals kept the
 x-scale. Don't reintroduce it. Two invariants worth keeping, both
 measurable in the browser: for every glyph `sx === sy`, and a vowel's
 rendered stroke is the same in either height mode (4.68px at the default
-size). The proportional block is 83.2px so a unit is exactly 10.4px, and
+size). The proportional block is 93.6px so a unit is exactly 10.4px, and
 the default mode's 1px slot overlap is zeroed there — handed to the flex
-algorithm it would skew the 5:3 split by ~1% and with it the scale.
+algorithm it would skew the 5:4 split and with it the scale.
 
 **Known consequence:** a consonant sharing a block with another consonant
-gets 4 units rather than 5, so it renders at 4/5 scale with a
-correspondingly lighter stroke (3.74px vs 4.68px). That follows directly
-from the rule that a C+C block must total the same height as a V+C block.
+gets 4.5 units rather than 5, so it renders at 9/10 scale with a
+correspondingly lighter stroke. That follows directly from the rule that a
+C+C block must total the same height as a V+C block.
 It is a design question, not a bug.
 
 ## Open work, roughly in priority order
@@ -243,7 +384,8 @@ It is a design question, not a bug.
    (clicking a cell appends its code). The sounds box takes ARPAbet codes
    so the whole script is typeable on QWERTY — `S$ T UW 0 D AX N T S 0` —
    with IPA accepted as an alternative. `EXTRA_CODES` in `index.html`
-   covers sounds ARPAbet has no code for (`AX`, `Q`, `NUL`).
+   covers sounds ARPAbet has no code for (`AX`, `NUL`). (`Q` for /ʔ/ was
+   removed in session 4 — the ⊓ glyph is a null filler, not a glottal stop.)
 
    `render.js` accepts a `$` (top form) or `%` (bottom form) suffix on any
    symbol. That is the escape hatch for glyphs whose variant rule isn't

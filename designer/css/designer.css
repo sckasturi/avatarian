@@ -1,0 +1,362 @@
+/* Avatarian glyph designer.
+   Palette lifted from site/css/style.css so the two tools look related,
+   with a few extras the editor needs (grid lines, handles, selection).
+   Every colour goes through a variable; the dark block below swaps the
+   lot. Glyph SVGs use currentColor and inherit --ink. */
+
+:root {
+  --ink: #3a2a20;
+  --paper: #f2e2c4;
+  --accent: #8a3b2a;
+  --line: #c9b083;
+  --card: #fffaf0;
+  --surface: #ffffff;
+  --muted: #6b5a45;
+  --faint: #9a8a72;
+  --hover: #fff0d8;
+  --code-bg: #f3e7d2;
+  --warn: #bb3322;
+  --ok: #3f7d4e;
+
+  --grid-minor: #ddc9a3;
+  --grid-major: #bfa477;
+  --grid-edge: #8a3b2a;
+  --node: #8a3b2a;
+  --handle: #2f6f8f;
+  --sel: #1c74c4;
+  --ghost-ink: #3a2a20;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { color-scheme: dark;
+    --ink: #ece0cc; --paper: #161210; --accent: #d98e6d; --line: #4a3d2e;
+    --card: #211b15; --surface: #29221a; --muted: #bcab90; --faint: #8a7a63;
+    --hover: #372c20; --code-bg: #2f2619; --warn: #ff9080; --ok: #79c78d;
+    --grid-minor: #3a3025; --grid-major: #574834; --grid-edge: #d98e6d;
+    --node: #e8a184; --handle: #7ec2e0; --sel: #6cb6ff; --ghost-ink: #ece0cc;
+  }
+}
+:root[data-theme="dark"] { color-scheme: dark;
+  --ink: #ece0cc; --paper: #161210; --accent: #d98e6d; --line: #4a3d2e;
+  --card: #211b15; --surface: #29221a; --muted: #bcab90; --faint: #8a7a63;
+  --hover: #372c20; --code-bg: #2f2619; --warn: #ff9080; --ok: #79c78d;
+  --grid-minor: #3a3025; --grid-major: #574834; --grid-edge: #d98e6d;
+  --node: #e8a184; --handle: #7ec2e0; --sel: #6cb6ff; --ghost-ink: #ece0cc;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 14px/1.45 ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── top bar ─────────────────────────────────────────────────────── */
+
+.bar {
+  flex: 0 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  padding: 8px 14px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+.bar-left, .bar-right { display: flex; align-items: center; gap: 10px; }
+.sep { width: 1px; height: 16px; background: var(--line); }
+.now { color: var(--muted); }
+.now b { color: var(--ink); }
+.now .ipa { font-size: 16px; }
+
+.save-state { color: var(--muted); font-size: 12px; min-width: 92px; text-align: right; }
+.save-state.dirty { color: var(--accent); }
+.save-state.saved { color: var(--ok); }
+.save-state.error { color: var(--warn); }
+
+/* ── columns ─────────────────────────────────────────────────────── */
+
+.cols {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr) 360px;
+  grid-template-areas: "sounds stage out";
+  gap: 0;
+}
+.panel { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+.sounds { grid-area: sounds; border-right: 1px solid var(--line); background: var(--card); }
+.stage { grid-area: stage; }
+.out { grid-area: out; border-left: 1px solid var(--line); background: var(--card);
+  padding: 12px; gap: 10px; overflow: auto; }
+
+/* ── sound list ──────────────────────────────────────────────────── */
+
+.panel-head { display: flex; gap: 8px; align-items: center; padding: 8px; border-bottom: 1px solid var(--line); }
+.panel-head input { flex: 1 1 auto; min-width: 0; }
+.pill {
+  font-size: 11px; color: var(--muted);
+  border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px;
+  white-space: nowrap;
+}
+
+.sound-list { overflow: auto; padding: 6px 0 20px; }
+.group-head {
+  position: sticky; top: 0; z-index: 1;
+  padding: 6px 10px 4px;
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--faint); background: var(--card);
+}
+.sound {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center; gap: 8px;
+  width: 100%; text-align: left;
+  padding: 4px 10px;
+  border: 0; border-left: 3px solid transparent;
+  background: none; color: inherit; cursor: pointer;
+  font: inherit;
+}
+.sound:hover { background: var(--hover); }
+.sound.on { background: var(--hover); border-left-color: var(--accent); }
+.sound .thumb {
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 5px;
+  background: var(--surface);
+  color: var(--ink);
+}
+.sound .thumb svg { width: 26px; height: 26px; display: block; }
+.sound .thumb.empty { color: var(--faint); font-size: 11px; }
+.sound .thumb.ghost svg { opacity: .3; }
+.sound .who { min-width: 0; }
+.sound .ipa { font-size: 15px; }
+.sound .meta { display: block; font-size: 11px; color: var(--faint);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sound .tick { font-size: 11px; color: var(--ok); }
+.sound.placeholder .ipa { color: var(--warn); }
+
+/* ── toolbar ─────────────────────────────────────────────────────── */
+
+.stage { background: var(--paper); }
+.toolbar {
+  flex: 0 0 auto;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+.group { display: flex; align-items: center; gap: 4px; }
+/* Node-level editing, folded away — the brush is the way in, and this
+   is only for nudging something the fit read wrong. */
+.by-hand { display: block; }
+.by-hand > summary {
+  cursor: pointer; list-style: none; user-select: none;
+  font-size: 11px; color: var(--faint);
+  text-transform: uppercase; letter-spacing: .06em;
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 9px;
+}
+.by-hand > summary::-webkit-details-marker { display: none; }
+.by-hand > summary:hover { background: var(--hover); }
+.by-hand[open] > summary { color: var(--ink); }
+.by-hand[open] > .group { margin-top: 6px; flex-wrap: wrap; }
+.lbl { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; }
+.spacer { flex: 1 1 auto; }
+
+button, select, input[type="search"], textarea {
+  font: inherit; color: inherit;
+  background: var(--surface);
+  border: 1px solid var(--line); border-radius: 6px;
+  padding: 4px 9px;
+}
+button { cursor: pointer; }
+button:hover { background: var(--hover); }
+button.on { background: var(--accent); border-color: var(--accent); color: var(--card); }
+button.ghost { background: none; }
+button.ghost:hover { background: var(--hover); }
+button.danger:hover { border-color: var(--warn); color: var(--warn); }
+button:disabled { opacity: .4; cursor: default; }
+textarea { width: 100%; resize: vertical; }
+
+/* ── canvas ──────────────────────────────────────────────────────── */
+
+.canvas-wrap {
+  flex: 1 1 auto; min-height: 0;
+  display: grid; place-items: center;
+  padding: 16px;
+  overflow: auto;
+}
+#canvas {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  touch-action: none;
+  max-width: 100%;
+  max-height: 100%;
+}
+#canvas.pen, #canvas.dot, #canvas.brush { cursor: crosshair; }
+
+/* The gesture. Live while the brush is down, then kept behind the
+   selected shape so the fit can be judged against what was drawn. */
+.brush-live { stroke: var(--accent); stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; opacity: .75; }
+.brush-trace { stroke: var(--handle); stroke-width: .8; fill: none;
+  stroke-dasharray: 2 2; opacity: .55; }
+
+/* grid */
+.g-minor { stroke: var(--grid-minor); stroke-width: .35; }
+.g-major { stroke: var(--grid-major); stroke-width: .7; }
+.g-edge  { stroke: var(--grid-edge); stroke-width: 1; opacity: .55; fill: none; }
+.g-box   { stroke: var(--line); stroke-width: .8; fill: none; stroke-dasharray: 3 3; }
+.g-lat   { fill: var(--grid-major); opacity: .55; }
+
+/* Underlays.
+
+   The key tracings are filled outlines of hand-lettered strokes, and
+   dropping one in solid buries the lattice under a blob — exactly the
+   thing you are trying to line up against. Drawn as a CONTOUR instead:
+   you get both edges of the original stroke and can lay a lattice line
+   down the middle of it, which is the whole job.
+
+   They also carry no colour of their own, so they need pushing onto
+   currentColor or they stay black and vanish in the dark theme. The
+   drawn glyphs already use currentColor and only need the wrapper. */
+.underlay { color: var(--ghost-ink); }
+.u-ref path, .u-ref polygon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.9;
+}
+
+/* the design itself */
+.ink { stroke: var(--ink); fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ink-dot { fill: var(--ink); stroke: none; }
+.skeleton { stroke: var(--node); fill: none; stroke-width: .9; opacity: .85; }
+.skeleton.closed-hint { stroke-dasharray: 2 2; }
+.rubber { stroke: var(--node); stroke-width: .8; stroke-dasharray: 2 2; opacity: .7; fill: none; }
+
+.node { fill: var(--surface); stroke: var(--node); stroke-width: 1.1; cursor: grab; }
+.node.first { fill: var(--node); }
+.node.sel { fill: var(--sel); stroke: var(--sel); }
+/* No outline: the handle is drawn at the ink's own radius so a dot on
+   the canvas reads at its true weight against a stroke. Selection is a
+   ring OUTSIDE it rather than a thicker edge, for the same reason. */
+.dotmark { fill: var(--ink); stroke: none; cursor: grab; }
+.dot-sel { fill: none; stroke: var(--sel); stroke-width: 1; opacity: .9; }
+.handle { fill: var(--surface); stroke: var(--handle); stroke-width: 1; cursor: ew-resize; opacity: .9; }
+.handle.curve { fill: var(--handle); }
+.hit { stroke: transparent; fill: none; stroke-width: 4; cursor: pointer; }
+.seg-sel { stroke: var(--sel); stroke-width: 1.6; fill: none; opacity: .9; }
+
+/* ── underlay controls ───────────────────────────────────────────── */
+
+.underlays {
+  flex: 0 0 auto;
+  display: flex; align-items: center; gap: 14px;
+  padding: 7px 12px;
+  border-top: 1px solid var(--line);
+  background: var(--card);
+  font-size: 12px; color: var(--muted);
+}
+.underlays label { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+.underlays .tiny { font-size: 11px; padding: 1px 7px; margin-left: -6px; }
+.underlays input[type="range"] { width: 110px; }
+.hint { color: var(--faint); font-size: 12px; }
+
+/* ── output column ───────────────────────────────────────────────── */
+
+.preview-row { display: flex; gap: 10px; }
+.preview-row figure { margin: 0; flex: 1 1 0; min-width: 0; text-align: center; }
+.preview-row figcaption { font-size: 11px; color: var(--faint); margin-top: 4px; }
+.pv {
+  height: 92px;
+  display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--surface);
+}
+.pv svg { height: 76px; width: auto; display: block; color: var(--ink); }
+.pv-flat svg { height: 46px; }
+.pv.flip svg { transform: scaleY(-1); }
+body:not(.has-flat) .flat-only { display: none; }
+
+.problems {
+  border: 1px solid var(--warn); border-left-width: 3px; border-radius: 6px;
+  padding: 7px 9px; font-size: 12px; color: var(--warn);
+  background: var(--surface);
+}
+.problems ul { margin: 4px 0 0; padding-left: 16px; }
+
+.field { display: block; }
+.field > span { display: block; font-size: 11px; color: var(--faint); margin-bottom: 3px; }
+
+.tabs { display: flex; gap: 4px; }
+.tab { font-size: 12px; padding: 3px 8px; }
+
+.load-box {
+  border: 1px solid var(--accent); border-radius: 6px;
+  padding: 9px; display: flex; flex-direction: column; gap: 7px;
+  background: var(--surface);
+}
+.load-box textarea {
+  font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre; overflow-wrap: normal; overflow-x: auto;
+}
+.load-row { display: flex; align-items: center; gap: 7px; }
+.load-row .fine { display: flex; align-items: center; gap: 5px; }
+
+.code-wrap { flex: 1 1 auto; min-height: 160px; display: flex; }
+pre {
+  flex: 1 1 auto; margin: 0; overflow: auto;
+  background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px;
+  padding: 9px 10px;
+  font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre; tab-size: 4;
+}
+.fine { font-size: 11px; color: var(--faint); margin: 0; }
+
+/* ── help ────────────────────────────────────────────────────────── */
+
+.modal {
+  position: fixed; inset: 0; z-index: 20;
+  background: rgba(0,0,0,.45);
+  display: grid; place-items: center; padding: 20px;
+}
+.modal[hidden] { display: none; }
+.modal-card {
+  background: var(--card); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 18px 22px; max-width: 620px; max-height: 84vh; overflow: auto;
+}
+.modal-card h2 { margin: 0 0 6px; font-size: 18px; }
+.modal-card h3 { margin: 16px 0 4px; font-size: 13px; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--faint); }
+.modal-card ul { margin: 4px 0; padding-left: 18px; }
+.modal-card li { margin: 3px 0; }
+.modal-card code { background: var(--code-bg); padding: 1px 4px; border-radius: 3px;
+  font: 12px ui-monospace, Menlo, monospace; }
+.keys td { padding: 2px 10px 2px 0; vertical-align: top; }
+kbd {
+  border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px;
+  padding: 0 5px; font: 11px ui-monospace, Menlo, monospace; background: var(--surface);
+}
+#help-close { margin-top: 16px; }
+
+/* Three columns need about 1150px before the drawing surface — the one
+   thing that wants the room — starts losing it to the panels. Below
+   that the output drops underneath, so the canvas keeps the full width
+   of the window rather than a third of it. */
+@media (max-width: 1150px) {
+  .cols {
+    grid-template-columns: 200px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(190px, 34vh);
+    grid-template-areas: "sounds stage" "sounds out";
+  }
+  .out { border-left: 0; border-top: 1px solid var(--line); }
+  .preview-row { max-width: 460px; }
+}

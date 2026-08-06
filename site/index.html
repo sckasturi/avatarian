@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style.css?v=3" />
 </head>
 <body>
 
@@ -39,7 +39,7 @@ editable, so you can correct anything the converter gets wrong.</p>
     being read as a sound — <code>M EH T AX L 0 B EH N D IH NG
     (metalbending)</code>.
     <br>
-    <code>0</code> is the empty-slot filler (the ∪ cup).
+    <code>0</code> is the empty-slot filler (the ∪ cup for vowel slots).
     Add <code>$</code> or <code>%</code> after a sound to force its top or
     bottom form, e.g. <code>S$</code> — needed where the rule isn't known yet.
   </p>
@@ -52,10 +52,6 @@ editable, so you can correct anything the converter gets wrong.</p>
   <p class="legend"><span class="dot"></span> dashed box = no confirmed glyph
     for that sound yet</p>
 
-  <div class="render-opts">
-    <label><input type="checkbox" id="proportionalHeights">
-      Proportional heights (vowels 3/5 of a consonant)</label>
-  </div>
 </section>
 </div>
 
@@ -90,9 +86,9 @@ editable, so you can correct anything the converter gets wrong.</p>
      target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
 </footer>
 
-<script src="js/manifest.js"></script>
-<script src="js/g2p.js"></script>
-<script src="js/render.js"></script>
+<script src="js/manifest.js?v=3"></script>
+<script src="js/g2p.js?v=3"></script>
+<script src="js/render.js?v=3"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
@@ -112,7 +108,7 @@ const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
  * g2p.js only carries AH (which is ʌ), so ə would otherwise fall back to
  * showing a character you cannot type.
  */
-const EXTRA_CODES = { "AX": "ə", "Q": "ʔ", "NUL": "∅" };
+const EXTRA_CODES = { "AX": "ə", "NUL": "∅" };
 
 /** Spellings accepted for symbols that are awkward to type. */
 const SOUND_ALIASES = {
@@ -287,15 +283,6 @@ document.getElementById("englishInput").addEventListener("keydown", (e) => {
   if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); translate(); }
 });
 
-// Height mode. Default OFF — equal heights — because the proportional
-// rule still has unresolved nuance.
-const heightsBox = document.getElementById("proportionalHeights");
-function applyHeightMode() {
-  document.body.classList.toggle("avatarian-proportional", heightsBox.checked);
-}
-heightsBox.addEventListener("change", applyHeightMode);
-applyHeightMode();
-
 // ---------------------------------------------------------------------
 // Glyph reference — also the input palette
 // ---------------------------------------------------------------------
@@ -401,11 +388,13 @@ function buildKeyGrid() {
   const SECTIONS = {
     consonant: ["Consonants", null],
     vowel: ["Vowels", null],
-    null: ["Slot filler", "written into an empty bottom slot, not a sound"],
+    null: ["Slot fillers", "written into empty slots, not a sound"],
   };
 
   ["consonant", "vowel", "null"].forEach((kind) => {
-    const entries = Object.entries(GLYPH_SET).filter(([, i]) => i.type === kind);
+    const entries = Object.entries(GLYPH_SET).filter(([, i]) =>
+      kind === "null" ? i.type === "null" || i.type === "null_consonant" : i.type === kind
+    );
     if (!entries.length) return;
     keySection(wrap, SECTIONS[kind][0], SECTIONS[kind][1]);
 

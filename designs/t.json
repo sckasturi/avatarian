@@ -1,0 +1,61 @@
+{
+  "name": "t",
+  "ipa": "t",
+  "type": "consonant",
+  "grid": [
+    5,
+    5
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 4.5,
+          "y": 0.5,
+          "seg": "line"
+        },
+        {
+          "x": 4.5,
+          "y": 4.5,
+          "seg": "line"
+        }
+      ]
+    },
+    {
+      "kind": "path",
+      "closed": true,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 2.5
+        },
+        {
+          "x": 0.5,
+          "y": 4.5,
+          "seg": "line"
+        },
+        {
+          "x": 2.5,
+          "y": 4.5,
+          "seg": "line"
+        },
+        {
+          "x": 2.5,
+          "y": 2.5,
+          "seg": "line"
+        }
+      ],
+      "closeSeg": {
+        "seg": "line"
+      }
+    }
+  ],
+  "updated": "2026-08-05T19:49:24Z"
+}

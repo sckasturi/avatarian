@@ -1,0 +1,57 @@
+{
+  "name": "f",
+  "ipa": "f",
+  "type": "consonant",
+  "grid": [
+    5,
+    5
+  ],
+  "notes": "bowed saltire, crossing high (about a third down): short shallow arms out to the top corners, long legs bowing outward and finishing near-vertical",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 2.5,
+          "y": 1.5,
+          "seg": "arc",
+          "bulge": 0.2
+        },
+        {
+          "x": 4.5,
+          "y": 4.5,
+          "seg": "arc",
+          "bulge": 0.45
+        }
+      ]
+    },
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 4.5,
+          "y": 0.5
+        },
+        {
+          "x": 2.5,
+          "y": 1.5,
+          "seg": "arc",
+          "bulge": -0.2
+        },
+        {
+          "x": 0.5,
+          "y": 4.5,
+          "seg": "arc",
+          "bulge": -0.45
+        }
+      ]
+    }
+  ],
+  "updated": "2026-08-05T19:31:19Z"
+}

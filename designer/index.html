@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avatarian glyph designer</title>
+<link rel="stylesheet" href="css/designer.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-left">
+    <strong>Glyph designer</strong>
+    <span class="sep"></span>
+    <span id="now" class="now">—</span>
+  </div>
+  <div class="bar-right">
+    <span id="save-state" class="save-state">ready</span>
+    <button id="help-btn" class="ghost" title="Keyboard shortcuts">?</button>
+    <button id="theme-btn" class="ghost" title="Theme">◐</button>
+  </div>
+</header>
+
+<main class="cols">
+
+  <!-- ── sounds ─────────────────────────────────────────────────── -->
+  <aside class="panel sounds">
+    <div class="panel-head">
+      <input id="filter" type="search" placeholder="filter sounds…" autocomplete="off">
+      <span id="progress" class="pill">0/0</span>
+    </div>
+    <div id="sound-list" class="sound-list"></div>
+  </aside>
+
+  <!-- ── canvas ─────────────────────────────────────────────────── -->
+  <section class="panel stage">
+    <div class="toolbar">
+      <div class="group" role="group" aria-label="Tool">
+        <button class="tool" data-tool="brush" title="Draw it freehand (B)">🖌 brush</button>
+        <button class="tool" data-tool="select" title="Select / move (V)">▚ select</button>
+        <button class="tool" data-tool="dot" title="Place a dot (D)">● dot</button>
+      </div>
+
+      <div class="group" role="group" aria-label="Tidiness">
+        <span class="lbl">tidy</span>
+        <select id="tidy" title="How hard a brushed stroke is regularised">
+          <option value="close">close</option>
+          <option value="normal" selected>normal</option>
+          <option value="clean">clean</option>
+        </select>
+        <button id="refit" class="ghost" title="Read the gesture again at these settings (R)">re-read</button>
+      </div>
+
+      <div class="group">
+        <span class="lbl">snap</span>
+        <select id="snap">
+          <option value="1">1</option>
+          <option value="0.5" selected>½</option>
+          <option value="0.25">¼</option>
+          <option value="0">off</option>
+        </select>
+      </div>
+
+      <div class="group">
+        <span class="lbl">dot</span>
+        <button class="dotsize" data-size="s">s</button>
+        <button class="dotsize" data-size="m">m</button>
+        <button class="dotsize" data-size="l">l</button>
+      </div>
+
+      <!-- By-hand editing. The brush covers the drawing; this is for
+           nudging one segment when the fit read something wrong. -->
+      <details class="group by-hand">
+        <summary>by hand</summary>
+        <div class="group">
+          <button class="tool" data-tool="pen" title="Place nodes one at a time (P)">✎ nodes</button>
+          <span class="lbl">segment</span>
+          <button class="seg" data-seg="line" title="Straight (1)">line</button>
+          <button class="seg" data-seg="arc" title="Arc (2) — or drag its handle">arc</button>
+          <button class="seg" data-seg="curve" title="Smooth run (3)">curve</button>
+          <button id="smooth" class="ghost" title="Make every segment of this stroke a smooth run (S)">smooth all</button>
+        </div>
+      </details>
+
+      <div class="spacer"></div>
+
+      <div class="group">
+        <button id="flip-x" class="ghost" title="Mirror this glyph left–right (⇧H)">⇄</button>
+        <button id="flip-y" class="ghost" title="Mirror this glyph top–bottom (⇧V)">⇅</button>
+        <button id="undo" class="ghost" title="Undo (⌘Z)">↶</button>
+        <button id="redo" class="ghost" title="Redo (⇧⌘Z)">↷</button>
+        <button id="clear" class="ghost danger" title="Delete everything in this glyph">clear</button>
+      </div>
+    </div>
+
+    <div class="canvas-wrap">
+      <svg id="canvas" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <div class="underlays">
+      <label><input type="checkbox" id="u-ref" checked> key tracing</label>
+      <label><input type="checkbox" id="u-cur"> current glyph</label>
+      <button id="use-current" class="ghost tiny"
+              title="Read the shipped glyph in as a design and edit that instead of starting blank">use it</button>
+      <label><input type="checkbox" id="u-ink" checked> ink preview</label>
+      <input type="range" id="u-opacity" min="5" max="100" value="60" title="Underlay opacity">
+      <span class="spacer"></span>
+      <span id="hint" class="hint"></span>
+    </div>
+  </section>
+
+  <!-- ── output ─────────────────────────────────────────────────── -->
+  <aside class="panel out">
+    <div class="preview-row">
+      <figure><div id="pv-top" class="pv"></div><figcaption>top slot</figcaption></figure>
+      <figure><div id="pv-bot" class="pv"></div><figcaption id="pv-bot-cap">bottom slot</figcaption></figure>
+      <figure class="flat-only"><div id="pv-flat" class="pv pv-flat"></div><figcaption>5×4 form</figcaption></figure>
+    </div>
+
+    <div id="problems" class="problems" hidden></div>
+
+    <label class="field">
+      <span>notes — what this shape is, and what it was drawn from</span>
+      <textarea id="notes" rows="3" placeholder="e.g. ring with a centred dot; traced off the key chart"></textarea>
+    </label>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" data-tab="python">for build_glyphs.py</button>
+      <button class="tab" data-tab="svg">svg</button>
+      <button class="tab" data-tab="json">design json</button>
+      <span class="spacer"></span>
+      <button id="copy" class="tab">copy</button>
+      <button id="load" class="tab">paste in…</button>
+    </div>
+
+    <!-- Paste any of the three formats above back in, to start from a
+         letter that's already close. -->
+    <div id="load-box" class="load-box" hidden>
+      <label class="field">
+        <span>paste a design json, an svg, or a build_glyphs.py entry</span>
+        <textarea id="load-text" rows="6" spellcheck="false"
+                  placeholder='"m": path("M 50 10 A 40 40 0 0 1 …") + dot(50, 50),'></textarea>
+      </label>
+      <div class="load-row">
+        <label class="fine">or copy from
+          <select id="load-from"><option value="">a glyph…</option></select>
+        </label>
+        <span class="fine">mirror</span>
+        <button id="mirror-x" class="tiny" title="Reflect left–right as it comes in">↔</button>
+        <button id="mirror-y" class="tiny" title="Reflect top–bottom as it comes in">↕</button>
+        <span class="spacer"></span>
+        <button id="load-cancel" class="ghost">cancel</button>
+        <button id="load-apply">replace with this</button>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <pre id="code"><code></code></pre>
+    </div>
+    <p class="fine" id="out-note"></p>
+  </aside>
+</main>
+
+<div id="help" class="modal" hidden>
+  <div class="modal-card">
+    <h2>How this works</h2>
+    <p><b>Draw the shape freehand and it gets tidied up.</b> Every character
+      sits on the script's own lattice — <b>5×5</b> for a consonant,
+      <b>5×4</b> for a vowel, the two stacking flush in a block — and a
+      brushed stroke is read against it: corners land on lattice points,
+      runs that were meant to be straight come out straight, and curves
+      come out as real circular arcs.</p>
+
+    <h3>Drawing</h3>
+    <ul>
+      <li><b>brush</b> — draw the whole shape in one drag. Wobble doesn't
+        matter; what's read off it is where you turned, where you went
+        straight, and how hard you curved. Finish near where you started and
+        the shape closes itself. A small scribble becomes a dot.</li>
+      <li><b>tidy</b> — how hard to regularise. <i>close</i> keeps more of the
+        gesture, <i>clean</i> forces it harder onto the lattice. Changing it
+        re-reads the selected stroke straight away, so you can see the
+        difference rather than guess it.</li>
+      <li><b>re-read</b> (<kbd>R</kbd>) — run the gesture through again. Every
+        brushed stroke keeps the raw gesture, so this always re-reads what you
+        actually drew; it never compounds one fit on top of another.</li>
+      <li>Draw one stroke at a time. Three separate strokes make three shapes,
+        which is what you want for something like /h/ or /z/.</li>
+      <li><b>use it</b>, by the <i>current glyph</i> underlay — starts you from
+        the glyph the set already ships instead of a blank lattice. It samples
+        that drawing back into a gesture and runs it through the same fitter,
+        so what lands is a proper lattice design you can nudge, not a copy of
+        the old path's coordinates.</li>
+    </ul>
+
+    <h3>When the fit reads something wrong</h3>
+    <p>Switch to <b>select</b> and drag a node — the fitted result is an
+      ordinary path, so everything is adjustable. Drag a segment's mid-handle
+      sideways to bow it, back onto the chord to straighten it. The
+      <b>by hand</b> tray has node-by-node drawing and the segment types if
+      you want them, but you shouldn't need it often.</p>
+
+    <h3>Keys</h3>
+    <table class="keys">
+      <tr><td><kbd>B</kbd> <kbd>V</kbd> <kbd>D</kbd></td><td>brush / select / dot</td></tr>
+      <tr><td><kbd>R</kbd></td><td>re-read the selected stroke</td></tr>
+      <tr><td><kbd>⌫</kbd></td><td>delete what's selected</td></tr>
+      <tr><td><kbd>⌘Z</kbd> <kbd>⇧⌘Z</kbd></td><td>undo / redo</td></tr>
+      <tr><td><kbd>⌘S</kbd></td><td>save now (it also autosaves)</td></tr>
+      <tr><td><kbd>⇧H</kbd> <kbd>⇧V</kbd></td><td>mirror left–right / top–bottom</td></tr>
+      <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>previous / next sound</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>clear the selection</td></tr>
+      <tr><td colspan="2" class="fine">by hand: <kbd>P</kbd> nodes ·
+        <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> line/arc/curve · <kbd>C</kbd>
+        close · <kbd>S</kbd> smooth · <kbd>⇧</kbd>+drag ignores snapping</td></tr>
+    </table>
+
+    <h3>Starting from another letter</h3>
+    <p><b>paste in…</b>, by the output tabs, takes back any of the three
+      things the panel hands out — a design JSON, an SVG, or a
+      <code>build_glyphs.py</code> entry. Copy a letter that's nearly what you
+      want, open the one you're drawing, paste, adjust. The <b>or copy from</b>
+      dropdown fills the box straight from another glyph's design, and anything
+      quoted at you elsewhere can go in the same way. The <b>↔</b> and <b>↕</b>
+      toggles mirror the incoming shape left–right or top–bottom — the fastest
+      way to start from a mirror pair (e.g. /ə/ → /ɜ/).</p>
+    <p>The <b>⇄</b> and <b>⇅</b> buttons in the toolbar (or <kbd>⇧H</kbd> /
+      <kbd>⇧V</kbd>) mirror what you've already drawn, in place. Undoable.</p>
+    <p>A design JSON is already lattice data, so it comes in untouched. An SVG
+      or a Python entry is drawing coordinates, so it gets sampled and fitted
+      the same way a brush stroke does. Nothing is rescaled to fit a different
+      grid — a consonant shape on a vowel's shorter lattice hangs over the
+      bottom and gets flagged, which is easier to fix than a silent squash.</p>
+
+    <h3>Where it goes</h3>
+    <p>Each glyph saves to <code>designs/&lt;name&gt;.json</code> as you draw.
+      The <b>for build_glyphs.py</b> tab is the handoff — that snippet is
+      rendered by the Python, not by the browser, so it is exactly what the
+      build will draw.</p>
+    <button id="help-close" class="ghost">close</button>
+  </div>
+</div>
+
+<script src="js/geom.js"></script>
+<script src="js/fit.js"></script>
+<script src="js/import.js"></script>
+<script src="js/store.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

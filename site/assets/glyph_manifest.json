@@ -120,11 +120,6 @@
     "type": "consonant",
     "flips": true
   },
-  "ʔ": {
-    "file": "glot.svg",
-    "status": "drawn",
-    "type": "consonant"
-  },
   "x": {
     "file": "kh.svg",
     "status": "PLACEHOLDER",
@@ -141,14 +136,16 @@
     "status": "drawn",
     "type": "vowel",
     "flat": "ih_flat.svg",
-    "flips": true
+    "flips": true,
+    "rows": 4
   },
   "e": {
     "file": "ei.svg",
     "status": "drawn",
     "type": "vowel",
     "flat": "ei_flat.svg",
-    "flips": true
+    "flips": true,
+    "rows": 4
   },
   "ɛ": {
     "file": "eh.svg",
@@ -179,7 +176,8 @@
     "file": "uu.svg",
     "status": "drawn",
     "type": "vowel",
-    "flat": "uu_flat.svg"
+    "flat": "uu_flat.svg",
+    "rows": 4
   },
   "ʊ": {
     "file": "oo.svg",
@@ -205,13 +203,15 @@
     "type": "vowel",
     "note": "from source material outside the key chart",
     "flat": "ah_flat.svg",
-    "flips": true
+    "flips": true,
+    "rows": 4
   },
   "aɪ": {
     "file": "ai.svg",
     "status": "drawn",
     "type": "vowel",
-    "flat": "ai_flat.svg"
+    "flat": "ai_flat.svg",
+    "flips": true
   },
   "aʊ": {
     "file": "au.svg",
@@ -231,9 +231,14 @@
     "flat": "nurse_flat.svg"
   },
   "∅": {
-    "file": "glot_v.svg",
+    "file": "null_v.svg",
     "status": "drawn",
     "type": "null",
-    "flat": "glot_v_flat.svg"
+    "flat": "null_v_flat.svg"
+  },
+  "∅c": {
+    "file": "null_c.svg",
+    "status": "drawn",
+    "type": "null_consonant"
   }
 }

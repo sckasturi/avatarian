@@ -8,55 +8,55 @@ window.AVATARIAN_GLYPHS = {
     "name": "p",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 50 18 L 82 50 L 50 82 L 18 50 Z\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 18 50 L 50 82 L 82 50 L 66 34 L 50 18 Z\"/></svg>"
   },
   "b": {
     "name": "b",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 13 80 L 13 56 A 43 43 0 0 1 56 13 L 87 12 L 85 88\"/><circle cx=\"50\" cy=\"60\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 82 A 54.67 54.67 0 0 1 82 18 L 82 82\"/><circle cx=\"50\" cy=\"58\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "t": {
     "name": "t",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 12 14 L 74 13 A 14 14 0 0 1 88 27 L 88 88\"/><path d=\"M 17 44 L 70 44 L 70 88 L 17 88 Z\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 82 18 L 82 82\"/><path d=\"M 18 50 L 18 82 L 50 82 L 50 50 L 18 50 Z\"/></svg>"
   },
   "d": {
     "name": "d",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 13 56 L 13 13 L 36 13 C 67 17, 88 45, 88 86 L 14 86\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 58 L 18 18 A 54.67 54.67 0 0 1 82 82 L 18 82\"/></svg>"
   },
   "k": {
     "name": "k",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 14 14 L 14 80 L 93 79\"/><path d=\"M 44 20 L 86 20 L 86 55 L 44 55 Z\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 18 82 L 82 82\"/><path d=\"M 50 18 L 50 50 L 82 50 L 82 18 L 50 18 Z\"/></svg>"
   },
   "g": {
     "name": "g",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 24 80 L 24 24 L 76 24 L 76 80\"/><circle cx=\"50\" cy=\"48\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 82 L 18 34 L 18 18\"/><path d=\"M 18 18 L 82 18\"/><path d=\"M 82 82 L 82 18\"/><circle cx=\"50\" cy=\"50\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "m": {
     "name": "m",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 50 20 A 30 30 0 1 1 49.9 20 Z\"/><circle cx=\"50\" cy=\"50\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 A 32 32 0 0 1 82 50 A 32 32 0 0 1 50 82 A 32 32 0 0 1 18 50 A 32 32 0 0 1 50 18 Z\"/><circle cx=\"50\" cy=\"50\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "n": {
     "name": "n",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 12 50 A 38 38 0 0 1 50 12 L 80 11 A 9 9 0 0 1 89 20 L 88 58 A 20 20 0 0 1 68 78 L 20 80\"/><circle cx=\"50\" cy=\"42\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 82 L 58 82 A 27.09 27.09 0 0 0 82 58 L 82 18 L 42 18 A 28.28 28.28 0 0 0 18 50\"/><circle cx=\"50\" cy=\"50\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "ŋ": {
     "name": "ng",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 34 78 A 32 32 0 1 1 66 78\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 34 82 A 34.67 34.67 0 0 1 50 18 A 34.67 34.67 0 0 1 66 82\"/></svg>"
   },
   "tʃ": {
     "name": "ch",
@@ -74,37 +74,37 @@ window.AVATARIAN_GLYPHS = {
     "name": "f",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 14 22 C 32 28, 44 32, 50 41 C 58 54, 68 70, 79 86\"/><path d=\"M 86 21 C 68 27, 56 32, 50 41 C 42 54, 30 70, 18 86\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 A 51.6 51.6 0 0 1 50 34 A 61.38 61.38 0 0 1 82 82\"/><path d=\"M 82 18 A 51.6 51.6 0 0 0 50 34 A 61.38 61.38 0 0 0 18 82\"/></svg>"
   },
   "v": {
     "name": "v",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 20 28 L 76 28 C 76 56 48 52 30 74\"/><circle cx=\"72\" cy=\"66\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 82 18 A 36.22 36.22 0 0 1 50 58 A 52 52 0 0 0 18 82\"/><circle cx=\"74\" cy=\"74\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "θ": {
     "name": "th",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 13 20 L 91 20\"/><path d=\"M 50 20 L 50 52\"/><path d=\"M 17 84 C 15 64, 32 55, 50 52 C 68 55, 85 64, 87 86\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 82 18\"/><path d=\"M 50 18 L 50 42\"/><path d=\"M 18 82 A 36.22 36.22 0 0 1 50 42 A 36.22 36.22 0 0 1 82 82\"/></svg>"
   },
   "ð": {
     "name": "dh",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 14 21 L 87 20 L 85 79 C 62 73, 36 47, 14 21 Z\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 82 18 L 82 82 A 64 64 0 0 1 18 18 Z\"/><circle cx=\"18\" cy=\"82\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "s": {
     "name": "s",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 20 24 L 50 74 L 80 24\"/><circle cx=\"50\" cy=\"38\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 50 82 L 82 18\"/><circle cx=\"50\" cy=\"34\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "z": {
     "name": "z",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 50 12 L 50 44\"/><path d=\"M 13 86 C 20 63, 34 50, 50 44 C 66 50, 76 65, 83 86\"/><circle cx=\"22\" cy=\"24\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"78\" cy=\"24\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 50 50\"/><path d=\"M 18 82 A 32 32 0 0 1 82 82\"/><circle cx=\"26\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "ʃ": {
     "name": "sh",
@@ -122,38 +122,32 @@ window.AVATARIAN_GLYPHS = {
     "name": "h",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 12 20 L 91 20\"/><path d=\"M 12 80 L 91 80\"/><path d=\"M 50 29 A 21 21 0 1 1 49.9 29 Z\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 82 18\"/><path d=\"M 18 82 L 82 82\"/><path d=\"M 50 26 A 24 24 0 0 1 74 50 A 24 24 0 0 1 50 74 A 24 24 0 0 1 26 50 A 24 24 0 0 1 50 26 Z\"/></svg>"
   },
   "w": {
     "name": "w",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 89 49 C 74 50, 62 48, 52 41 C 40 32, 30 18, 16 12 L 15 86 L 88 84\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 42 A 52 52 0 0 0 18 18 L 18 82 L 82 82\"/><path d=\"M 82 58 A 42 42 0 0 1 50 42\"/></svg>"
   },
   "j": {
     "name": "y",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 11 52 C 36 49, 62 32, 84 13 L 85 78 L 12 86\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 34 A 42 42 0 0 1 82 18 L 82 82 L 18 82\"/><path d=\"M 18 58 A 36.46 36.46 0 0 0 50 34\"/></svg>"
   },
   "r": {
     "name": "r",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 52 76 C 30 78, 15 68, 13 45 L 12 15 L 87 13 L 85 87\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 82 A 50.6 50.6 0 0 1 18 18 L 82 18 L 82 82\"/></svg>"
   },
   "l": {
     "name": "l",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 24 72 L 24 18 L 86 16 C 82 40, 62 66, 44 72\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 82 L 18 18 L 82 18\"/><path d=\"M 34 82 A 60.01 60.01 0 0 0 82 18\"/></svg>",
     "flips": true
-  },
-  "ʔ": {
-    "name": "glot",
-    "status": "drawn",
-    "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 26 80 L 26 26 L 74 26 L 74 80\"/></svg>"
   },
   "x": {
     "name": "kh",
@@ -165,60 +159,63 @@ window.AVATARIAN_GLYPHS = {
     "name": "i",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 16 38 L 84 38\"/><path d=\"M 16 62 L 84 62\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 16 22.8 L 84 22.8\"/><path d=\"M 16 37.2 L 84 37.2\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 82 40\"/><path d=\"M 18 70 L 82 70\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 82 32\"/><path d=\"M 18 56 L 82 56\"/></svg>"
   },
   "ɪ": {
     "name": "ih",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 50 13 L 50 45\"/><path d=\"M 12 48 L 86 46 L 86 82 L 12 84\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 10 L 50 40\"/><path d=\"M 18 40 L 82 40 L 82 80 L 18 80\"/></svg>",
     "flips": true,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 50 7.8 L 50 27\"/><path d=\"M 12 28.8 L 86 27.6 L 86 49.2 L 12 50.4\"/></svg>"
+    "rows": 4,
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 8 L 50 32\"/><path d=\"M 18 32 L 82 32 L 82 64 L 18 64\"/></svg>"
   },
   "e": {
     "name": "ei",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 50 86 L 50 20\"/><path d=\"M 22 60 L 78 60\"/><path d=\"M 14 20 L 86 20\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 20\"/><path d=\"M 18 60 L 82 60\"/><path d=\"M 18 20 L 82 20\"/></svg>",
     "flips": true,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 50 51.6 L 50 12\"/><path d=\"M 22 36 L 78 36\"/><path d=\"M 14 12 L 86 12\"/></svg>"
+    "rows": 4,
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 16\"/><path d=\"M 18 48 L 82 48\"/><path d=\"M 18 16 L 82 16\"/></svg>"
   },
   "ɛ": {
     "name": "eh",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 13 32 C 34 38, 43 45, 50 50 C 57 55, 66 62, 87 68\"/><path d=\"M 13 68 C 34 62, 43 55, 50 50 C 57 45, 66 38, 87 32\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 13 19.2 C 34 22.8 43 27 50 30 C 57 33 66 37.2 87 40.8\"/><path d=\"M 13 40.8 C 34 37.2 43 33 50 30 C 57 27 66 22.8 87 19.2\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 20 A 42 52.5 0 0 1 50 40 A 42 52.5 0 0 0 82 60\"/><path d=\"M 82 20 A 42 52.5 0 0 0 50 40 A 42 52.5 0 0 1 18 60\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 16 A 42 42 0 0 1 50 32 A 42 42 0 0 0 82 48\"/><path d=\"M 82 16 A 42 42 0 0 0 50 32 A 42 42 0 0 1 18 48\"/></svg>"
   },
   "æ": {
     "name": "ae",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 24 30 L 24 50 A 26 26 0 0 0 76 50 L 76 30\"/><circle cx=\"50\" cy=\"44\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 26 30 L 26 60 A 28.36 35.44 0 0 0 74 60 L 74 30\"/><circle cx=\"50\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "flips": true,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 24 18 L 24 30 A 26 15.6 0 0 0 76 30 L 76 18\"/><circle cx=\"50\" cy=\"26.4\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 26 24 L 26 48 A 28.36 28.35 0 0 0 74 48 L 74 24\"/><circle cx=\"50\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "ʌ": {
     "name": "uh",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"28\" cy=\"34\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"72\" cy=\"34\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"28\" cy=\"66\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"72\" cy=\"66\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"28\" cy=\"20.4\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"72\" cy=\"20.4\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"28\" cy=\"39.6\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"72\" cy=\"39.6\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 34 40\"/><path d=\"M 18 80 L 34 80\"/><path d=\"M 66 80 L 82 80\"/><path d=\"M 66 40 L 82 40\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 34 32\"/><path d=\"M 18 64 L 34 64\"/><path d=\"M 66 64 L 82 64\"/><path d=\"M 66 32 L 82 32\"/></svg>"
   },
   "ə": {
     "name": "schwa",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 14 72 C 32 72, 40 60, 50 48 C 60 36, 68 25, 87 25\"/><circle cx=\"33\" cy=\"36\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"77\" cy=\"62\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 14 43.2 C 32 43.2 40 36 50 28.8 C 60 21.6 68 15 87 15\"/><circle cx=\"33\" cy=\"21.6\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"77\" cy=\"37.2\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 26 60 A 24.54 30.67 0 0 0 50 40 A 24.54 30.67 0 0 1 74 20\"/><circle cx=\"18\" cy=\"20\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"60\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 18 60 L 26 60\"/><path d=\"M 82 20 L 74 20\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 26 48 A 24.54 24.54 0 0 0 50 32 A 24.54 24.54 0 0 1 74 16\"/><circle cx=\"18\" cy=\"16\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"48\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 18 48 L 26 48\"/><path d=\"M 82 16 L 74 16\"/></svg>"
   },
   "u": {
     "name": "uu",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 26 26 L 26 74\"/><path d=\"M 50 26 L 50 74\"/><path d=\"M 74 26 L 74 74\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 26 15.6 L 26 44.4\"/><path d=\"M 50 15.6 L 50 44.4\"/><path d=\"M 74 15.6 L 74 44.4\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 18 80\"/><path d=\"M 50 20 L 50 80\"/><path d=\"M 82 40 L 82 80\"/></svg>",
+    "rows": 4,
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 18 64\"/><path d=\"M 50 16 L 50 64\"/><path d=\"M 82 32 L 82 64\"/></svg>"
   },
   "ʊ": {
     "name": "oo",
@@ -230,39 +227,41 @@ window.AVATARIAN_GLYPHS = {
     "name": "ow",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 18 32 L 18 68 L 54 68 L 54 32 Z\"/><circle cx=\"74\" cy=\"38\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"62\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 18 19.2 L 18 40.8 L 54 40.8 L 54 19.2 Z\"/><circle cx=\"74\" cy=\"22.8\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"37.2\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 30 L 18 70 L 50 70 L 50 30 L 18 30 Z\"/><circle cx=\"74\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"60\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 24 L 18 56 L 50 56 L 50 24 L 18 24 Z\"/><circle cx=\"74\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"48\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "ɔ": {
     "name": "aw",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 86 26 L 86 50 A 24 24 0 0 1 62 74 L 12 76\"/><circle cx=\"29\" cy=\"36\" r=\"7\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 40 A 32 40 0 0 1 50 80 L 18 80\"/><circle cx=\"18\" cy=\"40\" r=\"3.78\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "note": "from source material outside the key chart",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 86 15.6 L 86 30 A 24 14.4 0 0 1 62 44.4 L 12 45.6\"/><circle cx=\"29\" cy=\"21.6\" r=\"7\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 32 A 32 32 0 0 1 50 64 L 18 64\"/><circle cx=\"18\" cy=\"32\" r=\"3.78\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "ɑ": {
     "name": "ah",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 50 83 L 50 39\"/><path d=\"M 12 17 L 50 39 L 88 17\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 50\"/><path d=\"M 18 20 L 50 50\"/><path d=\"M 82 20 L 50 50\"/></svg>",
     "note": "from source material outside the key chart",
     "flips": true,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 50 49.8 L 50 23.4\"/><path d=\"M 12 10.2 L 50 23.4 L 88 10.2\"/></svg>"
+    "rows": 4,
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 40\"/><path d=\"M 18 16 L 50 40\"/><path d=\"M 82 16 L 50 40\"/></svg>"
   },
   "aɪ": {
     "name": "ai",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 26 34 L 74 34\"/><circle cx=\"34\" cy=\"62\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"66\" cy=\"62\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 26 20.4 L 74 20.4\"/><circle cx=\"34\" cy=\"37.2\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"66\" cy=\"37.2\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"26\" cy=\"60\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 74 30 L 26 30\"/><circle cx=\"74\" cy=\"60\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "flips": true,
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"26\" cy=\"48\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 74 24 L 26 24\"/><circle cx=\"74\" cy=\"48\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "aʊ": {
     "name": "au",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 84 30 A 26 26 0 1 0 84 70\"/><circle cx=\"20\" cy=\"36\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"20\" cy=\"64\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 84 18 A 26 15.6 0 1 0 84 42\"/><circle cx=\"20\" cy=\"21.6\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"20\" cy=\"38.4\" r=\"6.5\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 30 A 25.33 31.67 0 0 0 42 50 A 25.33 31.67 0 0 0 82 70\"/><circle cx=\"26\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"26\" cy=\"60\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 24 A 25.33 25.34 0 0 0 42 40 A 25.33 25.34 0 0 0 82 56\"/><circle cx=\"26\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"26\" cy=\"48\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "ɔɪ": {
     "name": "oi",
@@ -274,15 +273,21 @@ window.AVATARIAN_GLYPHS = {
     "name": "nurse",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 14 25 C 32 25, 40 37, 50 49 C 60 61, 68 72, 87 72\"/><circle cx=\"33\" cy=\"61\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"77\" cy=\"35\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 14 15 C 32 15 40 22.2 50 29.4 C 60 36.6 68 43.2 87 43.2\"/><circle cx=\"33\" cy=\"36.6\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"77\" cy=\"21\" r=\"8\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 30 L 34 30 L 58 70 C 62.8 78 74 70 82 70\"/><circle cx=\"18\" cy=\"70\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"30\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 24 L 34 24 L 58 56 C 62.8 62.4 74 56 82 56\"/><circle cx=\"18\" cy=\"56\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"24\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "∅": {
-    "name": "glot_v",
+    "name": "null_v",
     "status": "drawn",
     "type": "null",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 22 26 L 22 52 A 28 28 0 0 0 78 52 L 78 26\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 60.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M 22 15.6 L 22 31.2 A 28 16.8 0 0 0 78 31.2 L 78 15.6\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 18 60 A 42 52.5 0 0 0 50 80 A 42 52.5 0 0 0 82 60 L 82 40\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 18 48 A 42 42 0 0 0 50 64 A 42 42 0 0 0 82 48 L 82 32\"/></svg>"
+  },
+  "∅c": {
+    "name": "null_c",
+    "status": "drawn",
+    "type": "null_consonant",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 26 80 L 26 26 L 74 26 L 74 80\"/></svg>"
   }
 };
 
@@ -334,11 +339,11 @@ window.AVATARIAN_REFERENCE = {
     "ipa": "g",
     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"M 35.670 10.019 C 20.268 10.081 8.765 10.808 7.717 11.944 C 6.320 13.457 6.000 30.902 7.012 50.710 C 8.389 77.655 10.048 86.728 13.590 86.728 C 20.577 86.728 23.082 71.907 20.373 46.613 L 17.975 24.224 L 48.959 22.762 C 66.001 21.959 80.733 21.926 81.699 22.691 C 82.665 23.455 82.985 37.415 82.409 53.711 C 81.833 70.007 82.379 84.976 83.614 86.976 C 84.850 88.976 87.690 90.002 89.929 89.256 C 92.682 88.338 94.000 75.486 94.000 49.542 L 94.000 11.182 L 52.130 10.189 C 46.373 10.052 40.804 9.998 35.670 10.019 Z M 47.729 39.438 C 46.693 39.334 45.759 39.413 44.996 39.706 C 37.606 42.542 38.069 57.415 45.686 61.843 C 53.245 66.237 57.265 65.207 62.033 57.648 C 64.871 53.149 63.972 50.208 58.080 44.719 C 54.881 41.739 50.840 39.752 47.730 39.438 Z\" fill=\"currentColor\"/></svg>"
   },
-  "glot": {
-    "ipa": "ʔ",
+  "null_c": {
+    "ipa": null,
     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"M 68.071 6.000 C 57.921 6.000 40.436 6.964 29.216 8.139 L 8.812 10.272 L 8.812 45.332 C 8.812 74.185 9.730 80.386 14.002 80.386 C 18.143 80.386 19.397 74.268 20.195 50.111 L 21.193 19.840 L 49.142 19.840 L 77.092 19.840 L 74.674 45.636 C 73.345 59.824 73.295 74.700 74.562 78.693 C 79.420 94.000 84.972 82.705 87.480 52.427 C 91.188 7.667 90.493 6.000 68.070 6.000 Z\" fill=\"currentColor\"/></svg>"
   },
-  "glot_v": {
+  "null_v": {
     "ipa": null,
     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"M 84.605 20.438 C 81.254 20.530 78.248 26.601 74.367 40.245 C 69.143 58.612 57.627 67.354 44.986 62.548 C 33.477 58.172 21.211 42.339 21.211 31.855 C 21.211 22.350 12.585 20.514 9.213 29.301 C 6.000 37.673 19.387 62.957 30.764 70.007 C 46.236 79.593 63.855 78.045 75.304 66.095 C 86.250 54.670 94.000 28.165 88.116 22.281 C 86.877 21.041 85.723 20.407 84.605 20.438 Z\" fill=\"currentColor\"/></svg>"
   },
@@ -429,5 +434,25 @@ window.AVATARIAN_REFERENCE = {
   "z": {
     "ipa": "z",
     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"M 81.580 17.531 C 73.742 17.531 71.753 25.543 78.031 31.821 C 82.638 36.428 84.863 36.325 89.028 31.306 C 94.000 25.315 89.792 17.531 81.580 17.531 Z M 14.994 20.509 C 9.080 20.509 6.000 25.595 8.235 31.672 C 10.078 36.684 16.354 36.375 20.767 31.058 C 25.213 25.700 22.372 20.509 14.994 20.509 Z M 48.693 20.989 C 47.934 21.023 47.185 21.197 46.421 21.491 C 41.294 23.458 9.199 68.010 9.063 73.347 C 8.831 82.469 18.375 75.413 32.554 55.978 C 50.166 31.840 50.551 31.868 67.474 58.268 C 78.564 75.569 82.599 79.048 86.760 74.886 C 88.584 73.062 84.211 63.944 74.660 49.664 C 59.809 27.460 54.005 20.749 48.693 20.989 Z\" fill=\"currentColor\"/></svg>"
+  },
+  "sh": {
+    "ipa": "ʃ",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"m -517.31372,100.17135 c 1.13194,-2.386585 2.55013,-4.613355 4.07254,-6.765674 1.20658,-1.70538 2.50063,-3.341942 3.85546,-4.930738 0.0109,-0.01262 0.45056,-0.521946 0.5099,-0.585383 0.0209,-0.02238 0.0455,-0.04111 0.0698,-0.05981 0.006,-0.0045 0.0262,-0.01344 0.0201,-0.0094 -0.15531,0.09983 -0.29125,0.24216 -0.46754,0.297032 -0.28268,0.08798 -0.58648,0.08153 -0.87971,0.122301 -0.21114,-0.0651 -0.4154,-0.159427 -0.63339,-0.195308 -0.0553,-0.0091 0.0825,0.07606 0.12573,0.111755 0.1552,0.128143 0.31179,0.254651 0.46953,0.37968 1.10397,0.875048 2.22983,1.713698 3.36788,2.543995 3.64154,2.533401 7.38817,4.911836 11.08797,7.358994 0.37595,0.257704 0.75187,0.515408 1.12782,0.773112 2.33381,1.599164 4.59536,-1.701347 2.26155,-3.30051 v 0 c -0.39404,-0.269896 -0.78809,-0.539795 -1.18213,-0.809694 -3.64916,-2.413587 -7.34351,-4.760799 -10.93825,-7.254959 -1.51783,-1.105641 -1.10646,-0.787795 -2.46271,-1.838101 -1.34313,-1.040143 -0.21802,-0.171082 -1.22545,-0.971322 -0.13925,-0.110596 -0.26437,-0.243403 -0.421,-0.327581 -0.31438,-0.168957 -0.65471,-0.284331 -0.98206,-0.426495 -0.37237,0.02886 -0.75557,-0.0071 -1.11712,0.08657 -0.77489,0.200732 -1.26958,0.962581 -1.77567,1.509496 -1.43346,1.681919 -2.80265,3.414665 -4.07966,5.21948 -0.34939,0.496107 -0.70946,0.984851 -1.04813,1.488318 -1.30606,1.941571 -2.46922,3.983615 -3.4703,6.098342 -1.05071,2.62678 2.66412,4.11272 3.71483,1.48593 z\" transform=\"translate(5.0,14.372198398105176) scale(2.804874248137876) translate(522.07927,-84.276144)\"/>\n<path d=\"m -514.86815,108.11103 c 1.73127,-1.15481 3.04636,-2.79298 4.33628,-4.39859 1.2655,-1.66344 2.50904,-3.34383 3.70549,-5.057709 0.30432,-0.470569 0.6268,-0.935701 0.85614,-1.449485 0.0405,-0.09083 0.17139,-0.355574 0.10985,-0.277432 -0.17166,0.21798 -0.29683,0.468863 -0.44526,0.703295 -0.67908,0.148433 -1.37467,0.235069 -2.03722,0.445304 -0.0755,0.02394 0.12433,0.09865 0.19167,0.140316 0.25252,0.156279 0.51136,0.302075 0.76708,0.453049 1.20417,0.710922 2.38699,1.444802 3.56169,2.203642 1.88425,1.28074 3.70456,2.67834 5.23909,4.37014 0.28668,0.31346 0.53975,0.65469 0.74782,1.02462 1.43018,2.44101 4.8823,0.41842 3.4521,-2.0226 v 0 c -0.36156,-0.60669 -0.76838,-1.18427 -1.24918,-1.70409 -1.78038,-1.93048 -3.83797,-3.572373 -6.01993,-5.02956 -1.21979,-0.786826 -2.44729,-1.549514 -3.69719,-2.287321 -0.01,-0.0058 -1.41337,-0.840419 -1.45364,-0.841142 -0.76311,-0.01368 -1.50842,0.234223 -2.26261,0.351332 -0.37801,0.553996 -0.68983,1.041488 -1.04135,1.630083 -1.14528,1.641377 -2.33693,3.249686 -3.54595,4.844578 -1.02999,1.28714 -2.06039,2.63075 -3.43423,3.57253 -2.35398,1.56932 -0.13462,4.89836 2.21935,3.32904 z\" transform=\"translate(5.0,14.372198398105176) scale(2.804874248137876) translate(522.07927,-84.276144)\"/>\n</svg>"
+  },
+  "oo": {
+    "ipa": "ʊ",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"m -506.0648,123.74513 c 0,1.50978 0,3.01957 0,4.52935 0,1.64386 0,3.28772 0,4.93157 0,1.36802 0,2.73603 0,4.10404 0,1.08808 0,2.17616 0,3.26423 0,0.56416 0,1.12831 0,1.69247 0,0.12314 0,0.24628 0,0.36942 0,2.82914 4.001,2.82914 4.001,0 v 0 c 0,-0.12314 0,-0.24628 0,-0.36942 0,-0.56416 0,-1.12831 0,-1.69247 0,-1.08807 0,-2.17615 0,-3.26423 0,-1.36801 0,-2.73602 0,-4.10404 0,-1.64385 0,-3.28771 0,-4.93157 0,-1.50978 0,-3.01957 0,-4.52935 0,-2.82914 -4.001,-2.82914 -4.001,0 z\" transform=\"translate(5.0,6.815755711727093) scale(3.5181564234890845) translate(517.5143,-120.91599000000002)\"/>\n<path d=\"m -514.43371,142.09958 c 0.146,0.0928 0.27808,0.21233 0.43799,0.27827 0.28816,0.1188 0.58473,0.23997 0.89482,0.27127 1.72339,0.17393 2.64827,-1.10973 2.3063,-2.90299 -0.0903,-0.47353 -0.65977,-0.70302 -0.98965,-1.05452 -0.80462,-0.35254 -1.6633,-0.45832 -2.53,-0.35136 -0.2232,0.0769 -0.46556,0.11202 -0.66961,0.23081 -0.95533,0.55621 -1.42557,1.57426 -1.07902,2.67287 0.24564,0.77875 0.63423,0.91585 1.21521,1.2895 0.25971,0.0659 0.51196,0.17751 0.77914,0.19762 1.04651,0.0788 1.88709,-0.45885 2.29264,-1.63014 0.39029,-1.12716 -0.48641,-1.96515 -1.27328,-2.43642 -0.53726,-0.30791 -1.05452,-0.35079 -1.66198,-0.31459 -2.80315,0.38265 -2.26198,4.34689 0.54115,3.96423 v 0 c -0.26924,0.003 -0.56827,0.0119 -0.80174,-0.14083 -0.55814,-0.41823 -1.00404,-1.24093 -0.6999,-1.98402 0.40455,-0.98842 1.1172,-1.55787 2.03819,-1.43551 0.17648,0.0234 0.33803,0.1119 0.50705,0.16785 0.42259,0.31031 0.69792,0.43556 0.85876,1.05574 0.23889,0.92125 -0.12343,1.7524 -0.94666,2.18211 -0.1438,0.0751 -0.31234,0.0878 -0.46849,0.13164 -0.085,0.001 -0.4127,-0.0393 -0.0238,0.002 0.21228,0.0225 0.34616,0.0628 -0.0337,-0.11123 -0.25305,-0.30845 -0.71496,-0.52884 -0.7592,-0.92536 -0.0777,-0.69645 0.10944,-1.43358 0.42625,-2.05866 0.31832,-0.62812 1.67373,-0.68821 2.13905,-0.22246 -2.20919,-1.76734 -4.70861,1.35691 -2.49941,3.12426 z\" transform=\"translate(5.0,6.815755711727093) scale(3.5181564234890845) translate(517.5143,-120.91599000000002)\"/>\n<path d=\"m -514.27067,131.04329 c 0.0687,0.0416 0.58425,0.36124 0.64934,0.36688 1.69794,0.14715 2.64247,0.35134 3.10065,-1.90524 0.19931,-0.9816 -0.61788,-1.64391 -1.17189,-2.217 -0.88726,-0.68274 -1.9876,-1.45671 -3.18691,-1.17956 -0.33766,0.078 -0.63963,0.26705 -0.95943,0.40058 -0.22918,0.25405 -0.49271,0.48089 -0.68752,0.76216 -0.38994,0.56296 -0.36782,1.32857 -0.34578,1.98007 0.10125,2.82733 4.09969,2.68415 3.99843,-0.14317 v 0 c -0.003,-0.091 0.0145,-0.35874 -0.0156,-0.27282 -0.16224,0.46077 -0.2876,0.70059 -0.74575,1.01317 -0.4349,0.14027 -0.88612,0.37956 -1.31527,0.0785 -0.0283,-0.0199 0.0693,0.0117 0.10006,0.0275 0.0553,0.0284 0.37182,0.22868 0.44593,0.27527 0.30639,-0.37251 -1.18782,1.46442 -0.1067,-1.0143 0.89214,-2.04544 1.08757,-1.43953 2.73544,-1.35507 0.10383,0.005 -0.36084,-0.1346 -0.27559,-0.14602 -2.35397,-1.56932 -4.57332,1.75971 -2.21935,3.32903 z\" transform=\"translate(5.0,6.815755711727093) scale(3.5181564234890845) translate(517.5143,-120.91599000000002)\"/>\n<path d=\"m -497.06614,129.09546 c 0.24217,0.78449 0.95086,1.80234 1.8465,1.88772 0.46675,0.0445 0.93202,-0.10334 1.39803,-0.15502 0.37386,-0.4854 0.99256,-0.85725 1.1216,-1.4562 0.27098,-1.25796 -0.78359,-2.3936 -1.90556,-2.61593 -0.24297,-0.0481 -0.49368,-0.0414 -0.74051,-0.0621 -0.17616,0.0307 -0.36563,0.0182 -0.52851,0.092 -0.34483,0.15623 -0.73562,0.29186 -0.97181,0.5877 -0.65707,0.82301 -0.6789,1.35405 -0.43302,2.23022 0.14793,0.52723 0.59558,0.77636 0.98443,1.13296 1.22172,0.30526 0.65268,0.30672 1.70315,0.11656 2.65912,-0.96596 1.29305,-4.72652 -1.36607,-3.76056 v 0 c 0.97798,-0.16284 0.44736,-0.1685 1.58613,0.13554 0.27839,0.26596 0.74274,0.55258 0.84447,0.98639 0.0577,0.24585 0.15626,0.50568 0.0974,0.75125 -0.23373,0.97585 -0.72302,1.6463 -1.74212,1.72513 -0.15999,-0.0245 -0.32319,-0.0334 -0.48001,-0.0734 -0.7803,-0.19933 -1.13053,-1.44653 -0.96559,-2.05854 0.15139,-0.56188 0.73374,-0.90341 1.10061,-1.35511 0.42646,-0.0332 0.85442,-0.14818 1.27942,-0.0995 0.36685,0.042 0.68932,0.35585 0.90406,0.62926 0.0989,0.12598 0.17354,0.40112 0.12657,0.28699 -0.0254,-0.0619 -0.0424,-0.12707 -0.0635,-0.19061 -0.89467,-2.68395 -4.69033,-1.41872 -3.79569,1.26523 z\" transform=\"translate(5.0,6.815755711727093) scale(3.5181564234890845) translate(517.5143,-120.91599000000002)\"/>\n<path d=\"m -496.34896,142.67675 c 1.00327,0.73257 2.21882,0.92885 3.25853,-0.0997 0.77015,-0.76189 0.56057,-1.4128 0.4599,-2.24193 -0.20807,-0.65555 -0.53571,-1.29968 -1.0526,-1.76966 -0.14324,-0.13024 -0.28082,-0.28159 -0.46029,-0.35424 -0.38918,-0.15757 -0.81132,-0.21656 -1.21698,-0.32484 -0.45918,0.18534 -0.97343,0.26986 -1.37752,0.55604 -0.79696,0.56439 -1.01005,2.00824 -0.82908,2.88624 0.0452,0.21921 0.13499,0.4268 0.20252,0.6402 0.36478,0.68608 0.93403,1.50349 1.81647,1.57058 0.46405,0.0353 1.15202,0.18529 1.3785,-0.22127 0.5144,-0.92336 0.32666,-2.08855 0.48998,-3.13282 -0.44418,-0.47358 -0.99422,-0.66157 -1.59244,-0.83561 -2.71944,-0.78018 -3.82281,3.06567 -1.10337,3.84586 v 0 c 0.067,0.0191 0.13814,0.0821 0.20201,0.0541 0.0484,-0.0212 -0.60156,-0.29932 -0.49538,-0.4049 0.19222,-1.01181 0.0534,-2.14833 0.57663,-3.03545 0.4359,-0.73911 1.67111,-0.0653 2.09796,0.17521 0.18389,0.10363 0.28261,0.34255 0.35494,0.52479 0.0233,0.19254 0.0278,0.38186 -0.11163,0.53789 -0.68109,0.76207 -0.24608,0.40801 -1.58223,0.84002 -0.33279,-0.10878 -0.6762,-0.1893 -0.99838,-0.32633 -0.082,-0.0349 -0.1352,-0.11665 -0.19611,-0.18169 -0.0196,-0.0208 -0.0414,-0.0454 -0.0433,-0.0739 0,-0.0198 0.0217,0.0459 0.0412,0.043 0.0389,-0.006 -0.0609,-0.12609 0,-0.11783 0.0251,-1.32449 0.69387,-1.71893 1.96353,-1.93175 0.32673,-0.0548 0.53779,0.0994 0.71696,0.25364 -2.20919,-1.76735 -4.7086,1.35691 -2.49941,3.12425 z\" transform=\"translate(5.0,6.815755711727093) scale(3.5181564234890845) translate(517.5143,-120.91599000000002)\"/>\n</svg>"
+  },
+  "j_dz": {
+    "ipa": "dʒ",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"m -504.3725,175.66123 c 0,-1.25981 0,-2.51962 0,-3.77942 0,-1.43431 0,-2.86861 0,-4.3029 0.006,-1.17918 -0.0829,-2.35644 -0.14193,-3.53363 -0.01,-0.61202 -0.11919,-1.21516 -0.21365,-1.81803 -0.0955,-0.37204 -0.0833,-0.85685 -0.27141,-1.20466 -0.16369,-0.30267 -0.37578,-0.57655 -0.56366,-0.86483 -0.23466,-0.16543 -0.45048,-0.36152 -0.70401,-0.4963 -0.79171,-0.42094 -1.79438,-0.408 -2.66517,-0.43533 -0.60841,-0.0209 -1.23061,-0.0331 -1.8311,-0.1449 -0.50734,-0.10184 -1.01936,-0.1734 -1.53493,-0.21537 -0.74864,-0.0644 -1.49408,-0.002 -2.23555,0.10168 -0.76853,0.12405 -1.53122,0.27902 -2.30277,0.38571 -1.20883,0.12491 -1.57499,0.44537 -2.23438,1.6659 -0.12978,0.2402 -0.12531,1.0689 -0.13282,1.36575 -0.0145,1.46888 0.0956,2.93456 0.16089,4.40117 0.009,1.14455 0.11682,2.27952 0.27551,3.41156 0.0871,0.78155 0.20945,1.55886 0.27903,2.34218 0.0833,1.33073 0.0952,2.66473 0.10687,3.99763 0.0156,1.2685 0.0227,2.53693 -0.0966,3.80089 -0.0845,0.73464 -0.20111,1.46403 -0.25205,2.20207 -0.0368,0.82938 -0.0341,1.65993 -0.0349,2.48995 0.0476,0.43141 -0.099,0.96486 0.0726,1.37943 0.14832,0.35836 0.37962,0.67643 0.56943,1.01465 0.33854,0.19799 0.65419,0.44173 1.01561,0.59398 0.55308,0.23298 1.81162,0.17567 2.36183,0.15162 0.3929,-0.0172 2.268,-0.14402 2.62352,-0.16763 2.36086,-0.16968 4.72573,-0.26554 7.09179,-0.31714 1.47275,-0.0642 2.94333,0.0113 4.41386,0.0824 1.31686,0.0656 2.63565,0.0715 3.95383,0.0793 1.1752,0.008 2.3478,0.0369 3.51776,-0.0858 0.7456,-0.10168 1.49321,-0.18908 2.21888,-0.39313 0.22595,-0.0551 0.45844,-0.075 0.68995,-0.0898 1.04744,-0.0286 1.61581,-0.57841 2.04002,-1.46151 0.15473,-0.32209 0.15309,-0.98316 0.16867,-1.3413 0.064,-2.64045 -0.0901,-5.27881 -0.19129,-7.91628 -0.10457,-2.88243 -0.14968,-5.76652 -0.17608,-8.65057 -0.0122,-1.52326 -0.0124,-3.04658 -0.0116,-4.56987 0,-0.76864 0.003,-1.53727 0.003,-2.30591 0.031,-0.54331 -0.0525,-1.07814 -0.14544,-1.61099 -0.0222,-0.11164 -0.0389,-0.22337 -0.0477,-0.33667 -0.24288,-2.81869 -4.2291,-2.4752 -3.98624,0.34349 v 0 c 0.0204,0.22867 0.0496,0.45627 0.0926,0.68188 0.0545,0.31165 0.12179,0.59889 0.0857,0.91976 0,0.76871 -0.003,1.53743 -0.003,2.30615 0,1.53629 0,3.07259 0.0117,4.60885 0.0268,2.92297 0.0727,5.84598 0.17888,8.7673 0.0975,2.5404 0.24744,5.08155 0.19071,7.62483 -0.003,0.10555 -0.0837,0.24589 -0.005,0.31664 0.0636,0.0574 0.0404,-0.17058 0.0888,-0.24133 0.18201,-0.26619 0.32938,-0.58116 0.59677,-0.76137 0.31964,-0.21541 0.73263,-0.24072 1.09305,-0.37741 0.0791,-0.03 -0.38214,0.0503 -0.2535,0.0124 -0.51139,0.0357 -1.02243,0.097 -1.51778,0.23427 -0.50686,0.14885 -1.04315,0.1743 -1.56361,0.26409 -1.0123,0.12374 -2.03406,0.0437 -3.05141,0.0613 -1.26161,-0.007 -2.52384,-0.0122 -3.78421,-0.0747 -1.56397,-0.0756 -3.12827,-0.15153 -4.69452,-0.0861 -2.42533,0.0532 -4.84945,0.15125 -7.26943,0.32498 -0.50554,0.0336 -1.92762,0.12965 -2.48206,0.16074 -0.21912,0.0123 -0.43831,0.0265 -0.65775,0.0292 -0.1152,0.001 -0.23029,-0.0255 -0.34518,-0.017 -0.0172,0.001 0.0214,0.0269 0.0323,0.0403 0.2131,0.1561 0.42622,0.3122 0.63932,0.4683 0.56604,1.16092 0.35329,0.45985 0.43783,1.17133 0.005,0.0399 0,-0.0804 0,-0.12061 0,-0.23609 0,-0.47217 0,-0.70825 0,-0.74429 0,-1.48893 0.0265,-2.23281 0.0419,-0.70456 0.18208,-1.3983 0.24415,-2.10113 0.12309,-1.39659 0.1378,-2.79648 0.11282,-4.19788 -0.0127,-1.44332 -0.0257,-2.88802 -0.12348,-4.32859 -0.0797,-0.84635 -0.20196,-1.6875 -0.30102,-2.5318 -0.1412,-1.007 -0.23741,-2.01541 -0.24071,-3.03411 -0.0617,-1.38409 -0.16611,-2.76718 -0.15754,-4.15329 0,-0.10861 0.0321,-0.22179 0,-0.32583 -0.0132,-0.0438 -0.0316,0.0881 -0.0619,0.12237 -0.28927,0.32698 -0.54401,0.69599 -0.89353,0.95757 -0.16814,0.12584 -0.40989,0.0957 -0.60777,0.16601 -0.15243,0.0541 0.73215,-0.13202 0.4817,-0.0589 0.78028,-0.10954 1.55324,-0.2585 2.32973,-0.38956 0.44826,-0.0705 0.8962,-0.10999 1.35004,-0.0712 0.4069,0.0272 0.80791,0.10259 1.20838,0.17678 0.77488,0.1163 1.55943,0.1844 2.3431,0.19339 0.27252,0.008 0.42346,0.01 0.68924,0.026 0.25516,0.0158 0.34493,0.0351 0.34089,0.0237 -0.0661,-0.18645 -0.60135,-0.002 -0.45713,-0.37852 -0.10369,-0.19859 -0.21404,-0.39383 -0.31101,-0.59578 -0.01,-0.0205 -0.0132,-0.09 -0.008,-0.0679 0.0561,0.22233 0.0943,0.39591 0.11761,0.61373 0.0727,0.46417 0.16632,0.92768 0.17045,1.3992 0.0557,1.11042 0.14097,2.2209 0.13689,3.3331 0,1.4343 0,2.8686 0,4.3029 0,1.25981 0,2.51962 0,3.77942 0,2.82914 4.001,2.82914 4.001,0 z\" transform=\"translate(6.026975186767288,5.0) scale(2.8138233763066696) translate(519.21838,-156.26644)\"/>\n</svg>"
+  },
+  "oi": {
+    "ipa": "ɔɪ",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"m -522.65243,218.08032 c -0.0169,1.7942 0.0767,3.58681 0.19833,5.37617 0.11716,1.70424 0.2753,3.40809 0.56573,5.09221 0.10526,0.54528 0.1778,1.09507 0.36132,1.62106 0.0821,0.16025 0.12822,0.34494 0.24649,0.48076 0.24391,0.2801 0.51366,0.54624 0.82462,0.74931 0.72107,0.47085 2.03322,0.39373 2.85509,0.41235 3.73727,0.0807 7.47054,-0.25216 11.19048,-0.57183 4.87333,-0.48943 9.71499,-1.24648 14.54708,-2.03711 1.22015,-0.1458 2.43213,-0.51408 3.66858,-0.52952 0.39441,-0.005 0.73374,0.0537 1.12347,0.10455 1.40722,0.25844 2.6851,0.54732 3.79812,-0.74426 0.30465,-0.35353 0.36754,-0.85797 0.55129,-1.28695 0.031,-0.36567 0.0919,-0.73003 0.0931,-1.09701 0.003,-0.7512 -0.15862,-1.88417 -0.27242,-2.61093 -0.23709,-1.51425 -0.56581,-3.01156 -0.88207,-4.51056 -0.41185,-2.00539 -0.86473,-4.00194 -1.27815,-6.00701 -0.12284,-0.63028 -0.34157,-1.22929 -0.64531,-1.79332 -0.27747,-0.53163 -0.74063,-0.90849 -1.27575,-1.16108 -0.48678,-0.22963 0.29494,0.27209 0.48133,0.32277 0.19535,0.0531 -0.31488,-0.2618 -0.49876,-0.34644 -0.65768,-0.30269 -1.33602,-0.29884 -2.03936,-0.32931 -2.57326,-0.0569 -5.14559,0.11229 -7.7166,0.20396 -2.41768,0.0533 -4.83325,0.16644 -7.25021,0.24183 -2.40967,-0.0242 -4.79087,0.26216 -7.15561,0.69702 -1.7889,0.40301 -3.58727,0.75715 -5.3916,1.08296 -1.10217,0.18823 -2.16873,0.504 -3.19847,0.93624 -0.34623,0.14979 -0.68548,0.3147 -1.03827,0.44888 -0.12288,0.0467 -0.14153,0.0598 -0.0909,0.0289 0.35137,-0.10384 -0.66019,0.10996 -0.72626,0.12273 -0.38973,0.0215 -0.76414,0.0991 -1.13471,0.22356 -0.65982,0.23703 -1.20854,0.6551 -1.45238,1.36364 -0.12438,0.36137 -0.0642,0.76165 -0.0964,1.14247 0.0504,0.68059 0.43256,1.2394 0.70217,1.84009 0.16193,0.32254 0.31237,0.64895 0.49493,0.96099 -0.0138,-0.0226 -0.0273,-0.0904 -0.0416,-0.068 -0.0156,0.0244 0.0228,0.0533 0.034,0.08 0.0161,0.0378 0.0319,0.0756 0.0479,0.11344 1.10281,2.60535 4.78732,1.04575 3.68454,-1.55959 v 0 c -0.0859,-0.20255 -0.16965,-0.40631 -0.2784,-0.59818 -0.13184,-0.21943 -0.22251,-0.4578 -0.34528,-0.68264 -0.10996,-0.22037 -0.23368,-0.46646 -0.32842,-0.58475 -0.0467,0.26491 -0.0301,0.5492 -0.14002,0.79472 -0.31626,0.70664 -0.51684,0.68769 -1.07802,1.0208 -0.18275,0.10848 0.36854,-0.19777 0.25254,-0.0961 -0.24018,0.0661 -0.10591,0.0385 -0.40518,0.0703 -0.0579,0.0132 0.11869,-0.006 0.17796,-0.0109 0.17283,-0.0128 0.28448,-0.0229 0.45641,-0.0474 0.0705,-0.0101 0.14052,-0.023 0.21076,-0.0345 0.35764,-0.0694 0.70848,-0.14166 1.06736,-0.20446 0.55057,-0.17001 1.07577,-0.40422 1.5989,-0.64461 0.74798,-0.3291 1.53474,-0.53487 2.33836,-0.67843 1.8097,-0.32726 3.61432,-0.67913 5.40806,-1.08596 2.1653,-0.40341 4.34507,-0.65893 6.55251,-0.63219 2.42287,-0.0757 4.84436,-0.18889 7.26797,-0.24243 2.46933,-0.0881 4.9398,-0.24972 7.41122,-0.20472 0.17254,0.006 0.34502,0.0134 0.51755,0.0193 0.0578,0.002 0.21916,0.0397 0.17352,0.004 -0.11028,-0.0859 -0.26385,-0.097 -0.38413,-0.16814 -0.12697,-0.0752 -0.48323,-0.33619 -0.3525,-0.26778 1.70725,0.89331 0.89371,0.53471 0.65254,0.4294 -0.25405,-0.13256 -0.50411,-0.3507 -0.62217,-0.58103 0.12515,0.21393 0.18032,0.40606 0.23726,0.68182 0.41473,2.01108 0.86852,4.01374 1.28193,6.0251 0.44736,2.11945 0.92924,4.24311 1.09826,6.40749 0.45265,-0.52047 0.33282,-0.48567 1.21547,-0.76783 0.0876,-0.028 0.24744,-0.0595 0.27432,0.0284 0.0265,0.0868 -0.18153,-0.008 -0.2716,-0.0195 -0.16483,-0.0208 -0.3285,-0.0501 -0.49252,-0.0768 -0.24331,-0.0395 -0.48625,-0.0812 -0.72938,-0.12175 -0.82928,-0.091 -1.05037,-0.14247 -1.90685,-0.11953 -1.34779,0.0361 -2.66996,0.38789 -3.99928,0.56959 -4.73152,0.77465 -9.47243,1.51659 -14.24403,1.99933 -3.57682,0.30854 -7.16677,0.63258 -10.76034,0.55802 -0.23984,-0.005 -0.47972,-0.008 -0.71951,-0.0149 -0.13811,-0.004 -0.27601,-0.0148 -0.4142,-0.0165 -0.0269,-2.6e-4 -0.10136,-0.006 -0.0802,0.0106 0.0849,0.0668 0.20542,0.0802 0.28641,0.1517 0.54753,0.48349 0.47985,0.41409 0.67985,0.87434 -0.005,-0.0121 -0.0161,-0.0496 -0.0151,-0.0364 0.004,0.0484 0.0309,0.19182 0.0233,0.14387 -0.0574,-0.35414 -0.12512,-0.70638 -0.19246,-1.05875 -0.26937,-1.54797 -0.40608,-3.11586 -0.51639,-4.68229 -0.11662,-1.69851 -0.20555,-3.40024 -0.18901,-5.1034 0,-2.82914 -4.00101,-2.82914 -4.00101,0 z\" transform=\"translate(4.999999999999993,14.803191815964816) scale(2.1586419551731586) translate(524.31861,-199.28274000000005)\"/>\n<path d=\"m -509.76225,202.11187 c 0,1.13537 0,2.27074 0,3.4061 0,0.82272 0,1.64544 0,2.46815 -0.0185,0.76824 0.15389,1.51722 0.34653,2.25505 0.10602,0.42485 0.22593,0.84669 0.32922,1.27204 0.0362,0.14122 0.0637,0.28492 0.0794,0.42987 0.3697,2.80487 4.33641,2.28203 3.96671,-0.52285 v 0 c -0.0422,-0.30349 -0.0921,-0.60611 -0.171,-0.90264 -0.11287,-0.42924 -0.21953,-0.86015 -0.33375,-1.28956 -0.10683,-0.40694 -0.2332,-0.81745 -0.21613,-1.24191 0,-0.82271 0,-1.64543 0,-2.46815 0,-1.13536 0,-2.27073 0,-3.4061 0,-2.82913 -4.00101,-2.82913 -4.00101,0 z\" transform=\"translate(4.999999999999993,14.803191815964816) scale(2.1586419551731586) translate(524.31861,-199.28274000000005)\"/>\n</svg>"
+  },
+  "ch": {
+    "ipa": "tʃ",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"m -508.76869,262.13972 c -0.99505,0.005 -1.98443,0.16294 -2.96886,0.29665 -1.0051,0.0967 -1.97882,0.36902 -2.97088,0.54141 -0.42928,0.0837 -0.86389,0.11531 -1.30013,0.12468 -0.41143,0.0162 -0.80614,-0.15402 -1.19454,-0.2749 -0.53782,-0.20489 -1.06493,-0.43618 -1.60333,-0.63933 -0.52866,-0.22957 -1.08302,-0.4097 -1.58715,-0.69218 -0.24252,-0.12172 -0.29951,-0.27507 -0.42646,-0.46883 -0.16195,-0.39173 -0.25439,-0.80839 -0.36301,-1.21704 -0.18153,-0.81829 -0.38594,-1.63411 -0.5003,-2.46527 -0.0807,-0.76362 -0.0923,-1.53248 -0.10191,-2.29966 -0.004,-0.57085 0,-1.14175 0,-1.71261 0,-0.86324 0.003,-1.72649 0.003,-2.58973 -0.003,-0.12892 0.13362,-0.42052 -0.005,0.0596 -0.0672,0.23243 -0.21968,0.37608 0.023,0.21773 0.46178,-0.26777 0.97491,-0.32737 1.49577,-0.38665 1.07355,-0.0897 2.15228,-0.0821 3.22871,-0.0844 0.99976,0.0159 2.00144,-0.0259 3.00025,0.0267 1.19589,0.082 2.39355,0.12579 3.59182,0.15147 1.30889,-0.007 2.6107,0.13602 3.91327,0.24323 1.33508,0.0772 2.66697,0.19722 4.00232,0.27031 1.45738,0.0678 2.91661,0.0776 4.37531,0.0852 0.66453,0.005 1.32141,0.0665 1.9726,0.19843 0.41706,0.0845 0.29205,0.0303 0.54674,0.18704 0.11377,0.0912 0.25979,0.19467 0.34187,0.31855 0.0429,0.0648 0.0591,0.14399 0.0926,0.21415 0.0713,0.14891 0.15764,0.2907 0.22164,0.44286 0.22683,0.5393 0.2621,0.77666 0.41416,1.36693 0.46841,2.11657 0.47828,4.29723 0.52461,6.45449 0.0204,1.72711 0.007,3.45315 0.0692,5.1794 0.18372,2.17783 0.41399,4.35013 0.55028,6.53176 0.0425,0.97439 0.1071,1.94912 0.12038,2.92466 0.006,0.47236 0.0156,0.90694 -0.14449,1.35138 -0.12874,0.29463 -0.11538,0.15277 -0.25016,0.21619 -0.56301,0.26496 0.13433,-0.011 -0.48911,0.22287 -1.10022,0.46112 -2.27669,0.59317 -3.45358,0.69031 -1.88971,0.0191 -3.78193,-0.10423 -5.6688,-0.21018 -1.80779,-0.0992 -3.61199,-0.25622 -5.41391,-0.43028 -1.22385,-0.12903 -2.45287,-0.18612 -3.68263,-0.21265 -1.08804,-0.0154 -2.17881,0.053 -3.26151,0.15937 -0.97243,0.0813 -1.93538,0.23114 -2.8974,0.38993 -0.84992,0.18711 -1.71501,0.28252 -2.58027,0.36298 -2.81689,0.26288 -2.44512,4.24657 0.37176,3.98369 v 0 c 0.9588,-0.0898 1.91797,-0.19535 2.86041,-0.39914 0.87964,-0.14534 1.75961,-0.28486 2.64914,-0.35687 0.91933,-0.0974 1.84841,-0.14658 2.77257,-0.13987 1.1298,0.0238 2.25891,0.0757 3.38323,0.19502 1.8555,0.17923 3.7134,0.34026 5.57493,0.44256 2.07364,0.11578 4.1542,0.25932 6.23094,0.2021 1.6229,-0.1409 3.23932,-0.36844 4.74691,-1.02386 0.24263,-0.11466 0.49252,-0.21509 0.7279,-0.34399 1.10204,-0.60357 1.87933,-1.54362 2.25221,-2.74277 0.063,-0.27221 0.14436,-0.54081 0.18899,-0.81663 0.25173,-1.55619 -0.0423,-3.1541 -0.0444,-4.71517 -0.13502,-2.1462 -0.35041,-4.28436 -0.54504,-6.42571 -0.0618,-1.70693 -0.0448,-3.41377 -0.0675,-5.12157 -0.054,-2.48325 -0.085,-4.99166 -0.66461,-7.42056 -0.11033,-0.39043 -0.19992,-0.78731 -0.33097,-1.17128 -0.3538,-1.03663 -0.86873,-2.02594 -1.63449,-2.82128 -0.47106,-0.48927 -0.85566,-0.65861 -1.43301,-0.99349 -0.26826,-0.10073 -0.53112,-0.21722 -0.80478,-0.30221 -1.02798,-0.31924 -2.16101,-0.33593 -3.22556,-0.38811 -1.39322,-0.007 -2.78694,-0.016 -4.17899,-0.0794 -1.29849,-0.0701 -2.5935,-0.18926 -3.89181,-0.26277 -1.38327,-0.11354 -2.76582,-0.26174 -4.15575,-0.25577 -1.1633,-0.0247 -2.32588,-0.0683 -3.48687,-0.14785 -1.06561,-0.047 -2.13249,-0.024 -3.19897,-0.0312 -1.2374,0.003 -2.47788,-0.004 -3.71091,0.11456 -1.22288,0.15844 -2.41004,0.44027 -3.42898,1.17427 -1.0686,0.84647 -1.55212,1.51341 -1.59493,2.90444 0,0.86141 0,1.72282 -0.003,2.58423 0,0.59003 -0.005,1.18009 3e-5,1.77011 0.0119,0.93981 0.0298,1.88184 0.14197,2.81604 0.1447,0.98543 0.36632,1.95727 0.59426,2.92637 0.22106,0.83127 0.43317,1.67413 0.90109,2.40903 0.49326,0.7322 1.07625,1.36266 1.86894,1.77732 0.6732,0.3526 1.3775,0.63648 2.08386,0.91564 0.6111,0.21794 1.19448,0.5114 1.81318,0.7105 0.80257,0.24602 1.61859,0.50169 2.46933,0.4516 0.63606,-0.0162 1.27027,-0.0656 1.89651,-0.18378 0.94155,-0.16653 1.86661,-0.41876 2.81956,-0.51783 0.80526,-0.11019 1.61541,-0.2455 2.42856,-0.26 2.82913,0 2.82913,-4.001 0,-4.001 z\" transform=\"translate(5.0,6.545285659336621) scale(2.4551726395561033) translate(525.79117,-246.53236000000004)\"/>\n</svg>"
   }
 };
