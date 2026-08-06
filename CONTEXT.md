@@ -503,6 +503,10 @@ noted inline.**
    Without that, fixing a word and then touching the English silently
    threw the fix away.
 
+   Order down the page follows the pipeline: your text, then the sounds
+   it became, then the drawing those sounds produce. The sounds sit
+   between their input and their output rather than after both.
+
    **The output can be saved** — Copy, PNG, SVG — and sized. The exporter
    reads positions and sizes back off the LAID-OUT DOM rather than
    re-deriving the block rules, so it cannot drift from `blocks.css` the

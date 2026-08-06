@@ -33,30 +33,6 @@ and made-up words too.</p>
   </p>
 </section>
 
-<section class="card out-card">
-  <div class="out-bar">
-    <span class="out-title">Avatarian</span>
-    <span class="spacer"></span>
-    <label class="size-ctl" title="How big the glyphs are drawn">
-      <span aria-hidden="true">A</span>
-      <input type="range" id="outSize" min="28" max="120" step="2" value="52"
-             aria-label="Glyph size">
-    </label>
-    <button type="button" id="copyBtn" title="Copy the drawing as an image">Copy</button>
-    <button type="button" id="pngBtn" title="Download as a PNG image">PNG</button>
-    <button type="button" id="svgBtn" title="Download as an SVG, which stays sharp at any size">SVG</button>
-  </div>
-
-  <div class="avatarian-output" id="avatarianOutput"></div>
-
-  <p class="out-foot">
-    <span class="hint" id="outHint"></span>
-    <span class="spacer"></span>
-    <span class="legend"><span class="dot"></span> dashed box = no glyph
-      for that sound yet</span>
-  </p>
-</section>
-
 <!-- The sounds box. It is what actually gets drawn, so it stays one
      click away and never hidden outright — but it greets nobody. Most
      people never need to open it now that the dictionary is doing the
@@ -98,6 +74,30 @@ and made-up words too.</p>
     </div>
   </details>
 </details>
+
+<section class="card out-card">
+  <div class="out-bar">
+    <span class="out-title">Avatarian</span>
+    <span class="spacer"></span>
+    <label class="size-ctl" title="How big the glyphs are drawn">
+      <span aria-hidden="true">A</span>
+      <input type="range" id="outSize" min="28" max="120" step="2" value="52"
+             aria-label="Glyph size">
+    </label>
+    <button type="button" id="copyBtn" title="Copy the drawing as an image">Copy</button>
+    <button type="button" id="pngBtn" title="Download as a PNG image">PNG</button>
+    <button type="button" id="svgBtn" title="Download as an SVG, which stays sharp at any size">SVG</button>
+  </div>
+
+  <div class="avatarian-output" id="avatarianOutput"></div>
+
+  <p class="out-foot">
+    <span class="hint" id="outHint"></span>
+    <span class="spacer"></span>
+    <span class="legend"><span class="dot"></span> dashed box = no glyph
+      for that sound yet</span>
+  </p>
+</section>
 
 </div>
 
