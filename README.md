@@ -390,13 +390,12 @@ that writes the path into `build_glyphs.py`, moves the name out of the
 `PLACEHOLDERS` dict and re-runs both scripts in one go.
 
 The other six — tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ — were placeholders until they
-were drawn in the designer and shipped. **None of them has a recorded
-source.** They were not in `reference/avatarian_key.svg`, which is what
-made them placeholders in the first place, so if they came from material
-outside the chart that material should go in `SOURCE_NOTES` the way
-`/ɑ/` and `/ɔ/` are handled — otherwise the set once again contains
-shapes that look exactly as authoritative as the sourced ones with
-nothing behind them. That is the failure /tʃ/ already had once.
+were drawn in the designer and shipped. They come from **source material
+outside the key chart**, which is why they were never in
+`reference/avatarian_key.svg` and have no tracing to sit beside; they are
+listed in `SOURCE_NOTES` for that reason, as `/ɑ/` and `/ɔ/` are. Nothing
+in the set is invented — /x/ has no glyph precisely because no source for
+one has been found.
 
 Not every glyph comes from `reference/avatarian_key.svg` — /ɑ/ and /ɔ/ were
 supplied separately, so they have no tracing to sit beside. Add such a glyph

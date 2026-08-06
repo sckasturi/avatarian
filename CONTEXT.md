@@ -271,14 +271,14 @@ gate, type `null_consonant`). **Neither is a sound.** (Session 4 rename:
 these were `glot_v`/`glot`, and `glot` was mistakenly documented as /ʔ/, a
 glottal stop — it never was.)
 
-**Session 5 correction:** which null is used is picked by what it's paired
-with, not by the null's own height class. Confirmed rule: **a vowel paired
-with a null takes the 5-height null; a consonant paired with a null takes
-the 3-height null.** The shipped code currently does the opposite — it
-picks `null_c` (consonant-height/5-row) for an empty consonant-height slot
-and `null_v` (vowel-height/4-row) for an empty vowel-height slot. That's
-backwards from the confirmed rule and needs fixing; see `HANDOFF.md`,
-Session 5.
+**Which null is used is picked by what it's paired with**, not by the
+null's own height class: **a vowel paired with a null takes the 5-height
+null; a consonant paired with a null takes the 3-height null.** Implemented
+in `render.js` as `nullFor`, and applied to any null — the one auto-inserted
+into a trailing empty slot and one typed as `0` mid-word alike, since `0`
+means "a null" and the sound beside it says which. It is also what keeps a
+block nine rows tall whatever is in it; the renderer used to write the cup
+everywhere, leaving vowel-plus-null blocks eight rows tall.
 
 **Orientation: SOME glyphs mirror top-to-bottom.** A glyph is drawn once,
 in its TOP-slot form. Those listed in `FLIPS` (`build_glyphs.py`) are
@@ -412,13 +412,15 @@ flip/orientation reframing) and the current feature/task backlog. Not yet
 reflected in the layout rule above beyond the two corrections already
 noted inline.**
 
-1. **/x/ has no glyph** and renders as a dashed "?" box. The other six
-   former placeholders (tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ) were drawn in the
-   designer and shipped, but none carries a recorded source — the
-   reference key has visible blanks next to "good" and "toy", which is
-   why they were placeholders. Record where they came from in
-   `SOURCE_NOTES`, or they are guesses wearing the same clothes as the
-   sourced glyphs. A wrong glyph propagates everywhere. /ɑ/ and /ɔ/ were filled in from material
+1. **/x/ has no glyph** and renders as a dashed "?" box. It is the only
+   one left: the other six former placeholders (tʃ, dʒ, ʃ, ʒ, ʊ, ɔɪ)
+   were drawn from source material outside the key chart and shipped,
+   and are in `SOURCE_NOTES` so the key tab explains why they have no
+   tracing to compare against. The reference key's visible blanks next
+   to "good" and "toy" are why they were absent from it. **Nothing in
+   the set is invented** — /x/ stays a placeholder exactly because no
+   source for it has turned up, and a wrong glyph propagates
+   everywhere. /ɑ/ and /ɔ/ were filled in from material
    supplied outside the key chart; such glyphs go in `SOURCE_NOTES` so the
    key tab explains why they have no tracing to compare against.
 2. **The remaining positional variants.** æ, /l/ and /e/ are done (see the

@@ -96,16 +96,14 @@ exactly as session 5 left them.
   rather than trusting a number written here. **Deciding which direction
   is right is still a per-glyph judgement**, which is why `ship all…`
   shows the list before it does anything.
-- **⚠️ Six of the seven placeholders were shipped during this session** —
+- **Six of the seven placeholders were shipped during this session** —
   `sh`, `zh`, `ch`, `j_dz`, `oi`, `oo` (ʃ, ʒ, tʃ, dʒ, ɔɪ, ʊ). Only `kh`
-  (/x/) is still a placeholder. **None of the six carries a recorded
-  source.** They were placeholders precisely because they appear nowhere
-  in `reference/avatarian_key.svg`, so unless the drawings came from
-  material outside the chart, the set now contains six shapes that look
-  exactly as authoritative as the sourced glyphs with nothing behind
-  them — the /tʃ/ failure, six times over. **Put their provenance in
-  `SOURCE_NOTES`** the way `ah` and `aw` are handled, or demote them
-  again. This is the highest-value follow-up in this list.
+  (/x/) is still a placeholder. **Confirmed by the user: all six come
+  from source material outside the key chart — nothing is invented, and
+  /x/ has no glyph precisely because no source for it exists.** They are
+  now in `SOURCE_NOTES` alongside `ah` and `aw`, so the key tab explains
+  why they have no tracing to compare against. The older passages
+  calling `tʃ` "an invention drawn from nothing" are superseded.
 - **`designs/null_c.json` is stale** — it still holds the old `glot`
   drawing (a ∪ cup at consonant height) rather than the shipped ⊓ gate.
   The rename fixed its metadata, not its shape.
@@ -133,8 +131,9 @@ marked below — don't treat the unconfirmed parts as settled.
    **3-height** null. The shipped `null_c`/`null_v` currently do the
    opposite — `null_c` (consonant-height/5-row) is used for an empty
    consonant-height slot, `null_v` (vowel-height/4-row) for an empty
-   vowel-height slot. **Code fix still needed** — this session only
-   corrected the docs.
+   vowel-height slot. **Fixed in code in session 6** (`render.js`,
+   `nullFor`); it also restored the 9-row block invariant, since a
+   vowel-plus-null block used to come out 8 rows tall.
 2. **The 4-row vowel set is AA, AW, EY, IH, OY, UH, UW** — not the code's
    `VOWEL_4ROW = {ɑ, e, ɪ, u}`. Every other vowel is 3-row. **Unresolved
    conflict:** OY/ɔɪ currently has no glyph anywhere in the shipped set
@@ -151,10 +150,12 @@ marked below — don't treat the unconfirmed parts as settled.
   the specific vowel (see the corrected list above).
 - Only three block types occur: **V-C, C-V, C-C**. V-V never happens — a
   null substitutes for the missing second vowel.
-- **V-C blocks** (vowel on top): rows 1–4 = vowel, rows 5–9 = consonant, no
-  gap — they abut directly, stated as applying regardless of whether the
-  vowel is 3- or 4-row. *(See "Open tension" below — this may not be fully
-  settled.)*
+- **V-C blocks** (vowel on top): **resolved in session 6.** A 3-row vowel
+  takes rows 1–3, row 4 is the gap, and the consonant takes rows 5–9. The
+  empty row falls BETWEEN the two glyphs, not at the block's top edge —
+  which is what the open tension below was worried about. (A 4-row vowel
+  in the top slot therefore fills rows 1–4 and abuts the consonant with
+  no gap; that mirrors the C-V rule exactly but is inferred, not stated.)
 - **C-V blocks** (vowel on bottom):
   - 3-row vowel: rows 1–5 consonant, row 6 empty (gap), rows 7–9 vowel —
     consonant and vowel do **not** touch.
@@ -162,7 +163,8 @@ marked below — don't treat the unconfirmed parts as settled.
     should visually merge into one glyph rather than render as two
     separate touching shapes.
 - **C-C blocks**: working guess is the two consonants **overlap by one
-  shared row** (10 rows of content packed into 9). **Unconfirmed** — needs
+  shared row** (10 rows of content packed into 9). **Still unconfirmed as
+  of session 6** — the user has this open and will come back to it. Needs
   reference examples before treating as fact.
 - **Null height**: see correction #1 above — confirmed from a reference
   sample.
@@ -171,17 +173,27 @@ marked below — don't treat the unconfirmed parts as settled.
   Working plan for now: manually specify/include mid-word nulls rather than
   deriving a placement rule algorithmically.
 
-### Open tension — not yet resolved
+### Open tension — RESOLVED in session 6
 
-The V-C rule above ("rows 1–4 vowel, no gap, no special-casing by vowel
-height") sits awkwardly next to an earlier concern raised in the same
-session: the user didn't want an empty top row when a 3-row vowel sits in
-the block's **top** slot, because unifying all vowels to a 4-row shape with
-an empty top row (to make them interchangeable) would put that empty row
-at the very top edge of the whole block — visible dead space, not a gap
-between two glyphs. Whether that's been accepted as fine, or whether V-C
-blocks actually need the same 3-row/4-row gap-vs-touch split that C-V
-blocks get, is **open**. Ask before implementing V-C layout.
+The worry was that unifying every vowel to a 4-row shape with an empty top
+row would put that empty row at the very top edge of the block — visible
+dead space rather than a gap between two glyphs.
+
+**It doesn't.** A 3-row vowel in the top slot occupies rows 1–3 and the
+gap is row 4, i.e. between the vowel and the consonant below it. So V-C
+gets the same gap-vs-touch split C-V does, and the vowel always sits
+flush against the block's outer edge with the gap on its inner side:
+
+```
+V-C, 3-row vowel:  1-3 vowel · 4 gap  · 5-9 consonant
+V-C, 4-row vowel:  1-4 vowel          · 5-9 consonant   (inferred)
+C-V, 3-row vowel:  1-5 consonant · 6 gap · 7-9 vowel
+C-V, 4-row vowel:  1-5 consonant        · 6-9 vowel
+```
+
+The 4-row V-C line is the symmetric completion, not something stated
+outright — worth confirming. **C-C is still open** (see below); the user
+will come back to it.
 
 ### Flip/orientation reframing
 

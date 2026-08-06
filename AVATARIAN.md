@@ -187,9 +187,11 @@ vowels (**V-V**) never happens: a null substitutes for the missing second
 vowel (see §7). Within the 9-row grid (from the Session 5 design discussion;
 parts still unconfirmed, marked):
 
-- **V-C** (vowel on top): rows 1–4 vowel, rows 5–9 consonant, abutting
-  directly. *(Whether a 3-row vowel in the top slot should still leave an
-  empty top row here is an open tension — see below.)*
+- **V-C**, **3-row vowel**: rows 1–3 vowel, row 4 empty (**gap**), rows 5–9
+  consonant — the empty row sits between the two glyphs, not at the block's
+  top edge.
+- **V-C**, **4-row vowel**: rows 1–4 vowel, rows 5–9 consonant — they
+  **touch**. *(Symmetric completion of the rule above; inferred, not stated.)*
 - **C-V**, **3-row vowel**: rows 1–5 consonant, row 6 empty (**gap**), rows
   7–9 vowel — they do **not** touch.
 - **C-V**, **4-row vowel**: rows 1–5 consonant, rows 6–9 vowel — they
@@ -198,11 +200,10 @@ parts still unconfirmed, marked):
 - **C-C**: working guess is the two consonants **overlap by one shared row**
   (10 rows of content in 9). *Unconfirmed — needs reference examples.*
 
-**Open tension (ask before implementing V-C layout):** unifying every vowel to
-a 4-row shape with an empty top row (to make top/bottom slots interchangeable)
-would put that empty row at the very top edge of the whole block — visible
-dead space, not a between-glyph gap. Whether that's acceptable, or whether V-C
-blocks need the same 3-row/4-row split C-V blocks get, is unresolved.
+**Resolved:** V-C blocks get the same 3-row/4-row split C-V blocks do. The
+vowel always sits flush against the block's outer edge and the gap, when there
+is one, falls on its inner side — so a 3-row vowel on top never leaves dead
+space at the very top of the block. **C-C remains open.**
 
 ### 4-row vs 3-row vowels
 
@@ -308,10 +309,12 @@ own height** (confirmed, Session 5):
 - a **vowel** paired with a null takes the **5-row** (consonant-height) null;
 - a **consonant** paired with a null takes the **3-row** (vowel-height) null.
 
-⚠️ **The shipped code does the opposite** — it picks `null_c` for an empty
-consonant-height slot and `null_v` for an empty vowel-height slot. That is
-backwards from the confirmed rule and still needs fixing (`render.js` /
-`build_glyphs.py`); this is a documented correction, not yet code.
+This is what `render.js` does (`nullFor`): any null, whether auto-inserted
+into a trailing empty slot or typed as `0` mid-word, takes its height from
+the sound beside it. It is also what keeps every block **nine rows** tall —
+4 + 5 for a vowel and its null, 5 + 4 for a consonant and its null. The
+renderer used to write the cup into every empty slot regardless, which left
+a vowel-plus-null block eight rows tall.
 
 The two differ by **height class**, which is what `type` means in a design:
 `mark_consonant` takes a consonant's 5×5 lattice, `mark` a vowel's 5×4 (see
@@ -406,12 +409,12 @@ Notes worth holding onto:
 **/x/** is the only sound still rendering as a dashed "?" box. Draw it in the
 designer and press **ship it** to fill it in.
 
-The other six — tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ — have since been drawn and
-shipped. ⚠️ **None of them carries a recorded source.** They were placeholders
-precisely because they appear nowhere in the key chart, so unless the drawings
-came from material outside it (which belongs in `SOURCE_NOTES`, as `/ɑ/` and
-`/ɔ/` are), they are inventions indistinguishable from the sourced glyphs. A
-wrong glyph propagates everywhere.
+The other six — tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ — have since been drawn and shipped
+from **source material outside the key chart**. That is why they appear
+nowhere in the chart and have no tracing to compare against, and they are
+listed in `SOURCE_NOTES` alongside `/ɑ/` and `/ɔ/` so the key tab says so.
+Nothing in the set is invented: /x/ is still a placeholder precisely because
+no source for it has been found.
 
 ---
 

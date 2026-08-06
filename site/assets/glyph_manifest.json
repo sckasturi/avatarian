@@ -47,12 +47,14 @@
   "tʃ": {
     "file": "ch.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "note": "from source material outside the key chart"
   },
   "dʒ": {
     "file": "j_dz.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "note": "from source material outside the key chart"
   },
   "f": {
     "file": "f.svg",
@@ -87,12 +89,14 @@
   "ʃ": {
     "file": "sh.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "note": "from source material outside the key chart"
   },
   "ʒ": {
     "file": "zh.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "note": "from source material outside the key chart"
   },
   "h": {
     "file": "h.svg",
@@ -184,6 +188,7 @@
     "file": "oo.svg",
     "status": "drawn",
     "type": "vowel",
+    "note": "from source material outside the key chart",
     "flat": "oo_flat.svg"
   },
   "oʊ": {
@@ -225,6 +230,7 @@
     "file": "oi.svg",
     "status": "drawn",
     "type": "vowel",
+    "note": "from source material outside the key chart",
     "flat": "oi_flat.svg",
     "flips": true
   },

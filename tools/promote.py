@@ -137,11 +137,16 @@ def edit_source(src, design):
 
     if found:
         e_start, e_end, comments = found
-        # A design with notes regenerates the comment above its entry; a
-        # design without notes leaves whatever is written there alone.
-        keep = "" if (design.get("notes") or "").strip() else comments
-        cut = e_start - len(comments) if keep == "" else e_start
-        new_src = src[:cut] + keep + entry + src[e_end:]
+        # A design with notes regenerates the comment above its entry
+        # (glyphspec.to_python emits it as part of the entry, so cut the
+        # old one away). A design with no notes leaves whatever comment
+        # is written there ALONE — which means cutting nothing, because
+        # src[:e_start] already contains it. Re-adding it here is how
+        # this managed to duplicate the comment on every single promote,
+        # so an entry could never converge and always "differed".
+        cut = e_start - len(comments) if (design.get("notes") or "").strip() \
+            else e_start
+        new_src = src[:cut] + entry + src[e_end:]
         action = "replaced"
     else:
         new_src = src[:end] + entry + src[end:]

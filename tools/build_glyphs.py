@@ -265,24 +265,10 @@ VOWELS = {
 
 MARKS_CONSONANT = {
     # 5-row null filler (consonant height) — the ⊓ gate shape.
-    # 5-row null filler (consonant height) — the ⊓ gate shape.
-    # 5-row null filler (consonant height) — the ⊓ gate shape.
-    # 5-row null filler (consonant height) — the ⊓ gate shape.
-    # 5-row null filler (consonant height) — the ⊓ gate shape.
-    # 5-row null filler (consonant height) — the ⊓ gate shape.
-    # 5-row null filler (consonant height) — the ⊓ gate shape.
-    # 5-row null filler (consonant height) — the ⊓ gate shape.
     "null_c": path("M 18 18 L 18 82 L 82 82 L 82 18"),
 }
 
 MARKS_VOWEL = {
-    # 3-row null filler (vowel height) — the ∪ cup shape.
-    # 3-row null filler (vowel height) — the ∪ cup shape.
-    # 3-row null filler (vowel height) — the ∪ cup shape.
-    # 3-row null filler (vowel height) — the ∪ cup shape.
-    # 3-row null filler (vowel height) — the ∪ cup shape.
-    # 3-row null filler (vowel height) — the ∪ cup shape.
-    # 3-row null filler (vowel height) — the ∪ cup shape.
     # 3-row null filler (vowel height) — the ∪ cup shape.
     "null_v": path("M 18 40 L 18 60 A 42 52.5 0 0 0 50 80 "
                    "A 42 52.5 0 0 0 82 60 L 82 40"),
@@ -298,6 +284,19 @@ NULL_C_IPA = "∅c"  # manifest key for the consonant-height filler
 SOURCE_NOTES = {
     "ah": "from source material outside the key chart",
     "aw": "from source material outside the key chart",
+    # These six were placeholders until they were drawn in the designer
+    # and shipped. They are NOT inventions — they come from reference
+    # material, just not from reference/avatarian_key.svg, which is why
+    # the key chart has nothing to compare them against. Recorded here
+    # for the same reason ah and aw are: without it they look identical
+    # to a glyph drawn from nothing, which is the mistake /tʃ/ already
+    # cost this project once.
+    "sh": "from source material outside the key chart",
+    "zh": "from source material outside the key chart",
+    "ch": "from source material outside the key chart",
+    "j_dz": "from source material outside the key chart",
+    "oi": "from source material outside the key chart",
+    "oo": "from source material outside the key chart",
 }
 
 # ---------------------------------------------------------------------------
