@@ -276,6 +276,13 @@ a general rule.
 
 ### Feature / task backlog (not started)
 
+> **`CORPUS.md` is the biggest open workstream** — provenance for WORDS
+> rather than glyphs. Digitise the attested writing samples into a
+> confirmed dictionary, mark inferred spellings in the UI, and use the
+> corpus as the evidence base for the null-placement and orientation
+> questions. It also covers handwriting input (stylus vs photo). Read it
+> before picking anything else up.
+
 > **Items 4 and 5 are done** — see Session 6. The pronunciation
 > dictionary closed the g2p-accuracy item too.
 
