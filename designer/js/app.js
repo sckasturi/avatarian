@@ -365,7 +365,14 @@ const App = {
 
   showProblems(problems) {
     const box = $("#problems");
-    if (!problems || !problems.length) { box.hidden = true; return; }
+    // Empty it as well as hiding it. Leaving the last glyph's problems
+    // sitting in the DOM means anything reading the panel back — a test,
+    // the inspector — sees a warning that belongs to a different letter.
+    if (!problems || !problems.length) {
+      box.hidden = true;
+      box.innerHTML = "";
+      return;
+    }
     box.hidden = false;
     box.innerHTML = "<b>check this</b><ul>"
       + problems.map((p) => `<li>${escapeHTML(p)}</li>`).join("") + "</ul>";

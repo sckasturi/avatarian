@@ -342,17 +342,23 @@ reaches only y=0.5 — half a row each. Closing it means deciding where a
 consonant's bottom edge and a 4-row vowel's connecting edge sit, then
 nudging both design conventions to touch. See HANDOFF.md "THE OPEN ISSUE."
 
-**4-row vs 3-row vowels.** `VOWEL_4ROW_BASE = {ɑ, e, ɪ, u}` fill lattice
-rows 0–3 (content from y=0.5) and carry `rows: 4` → `avatarian-4row` in
-the DOM; every other vowel starts at y=1.5, leaving the top row empty.
-This is the "four-line vowels use the top row, three-line vowels don't"
-distinction.
+**4-row vs 3-row vowels.** A 4-row vowel fills the top lattice row
+(ink spanning y 0.5–3.5) and carries `rows: 4` → `avatarian-4row` in the
+DOM; a 3-row vowel leaves that row empty (y 1.5–3.5). The confirmed set,
+in **ARPAbet**, is **AA, AW, EY, IH, OY, UH, UW**.
 
-**Session 5 correction:** the confirmed 4-row set is **AA, AW, EY, IH, OY,
-UH, UW** — not `{ɑ, e, ɪ, u}` above. OY/ɔɪ currently has no glyph at all
-in the shipped set (see "Still unresolved" in README's glyph section),
-which is a direct conflict to verify before treating this list as final.
-See `HANDOFF.md`, Session 5.
+**That list is ARPAbet codes, NOT file stems**, and the two are actively
+misleading: stem `uh` is /ʌ/ = ARPAbet **AH** (3-row), while ARPAbet
+**UH** is /ʊ/ = stem `oo` (4-row); stem `aw` is /ɔ/ = ARPAbet **AO**
+(3-row), while ARPAbet **AW** is /aʊ/ = stem `au` (4-row). Reading it as
+stems flips two of the seven, in both directions. Every vowel design now
+carries an explicit `rows`; `VOWEL_4ROW_BASE` matches the list and is
+only the fallback for a vowel with no design.
+
+`glyphspec.validate` cross-checks declared `rows` against where the ink
+starts, so a mismatch shows up in the designer's problems panel. Note the
+top row spans y=0 to y=1, so ink sitting exactly ON y=1 has not entered
+it — a 4-row vowel has to reach above y=1.
 
 **`flips` and `rows` are per-design now.** Both are set from the designer
 (checkbox and row toggle) into `designs/<name>.json`, and

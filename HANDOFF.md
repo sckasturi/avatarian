@@ -108,10 +108,21 @@ exactly as session 5 left them.
   session 6. Both nulls are cups; `null_c` is squared off and 5 rows
   tall, `null_v` rounded and 3. Docs that called it a "⊓ gate" were
   wrong and are corrected.
-- **`oi` and `oo` fail the new row check** against the row count the
-  build assumes for them: both draw into the top lattice row while
-  `VOWEL_4ROW_BASE` treats them as 3-row. Now that they render, this is
-  visible — set the row toggle on each, or fix the drawing.
+- **Two vowel DRAWINGS disagree with the confirmed row list**, and both
+  are flagged in the designer's problems panel:
+  - **`au` (/aʊ/, ARPAbet AW)** is declared 4-row per the list, but its
+    ink spans y 1.0–3.0 — half a row short at *both* ends, so it doesn't
+    reach into the top row. A 4-row vowel spans 0.5–3.5, so this needs
+    **extending**, not shifting.
+  - **`uh` (/ʌ/, ARPAbet AH)** is declared 3-row, since AH is not on the
+    list, but its ink spans y 0.5–2.5 — it reaches into the top row and
+    stops a row short at the bottom. Shifting it down one row would make
+    it exactly the 3-row convention (1.5–3.5). Alternatively AH belongs
+    on the 4-row list, which would make it eight entries; the drawing and
+    the list genuinely disagree and it needs a decision.
+
+  Both are drawing decisions, so neither was changed. Everything else —
+  14 of 16 vowels — agrees across drawing, declaration and manifest.
 
 ---
 
@@ -136,11 +147,11 @@ marked below — don't treat the unconfirmed parts as settled.
    `nullFor`); it also restored the 9-row block invariant, since a
    vowel-plus-null block used to come out 8 rows tall.
 2. **The 4-row vowel set is AA, AW, EY, IH, OY, UH, UW** — not the code's
-   `VOWEL_4ROW = {ɑ, e, ɪ, u}`. Every other vowel is 3-row. **Unresolved
-   conflict:** OY/ɔɪ currently has no glyph anywhere in the shipped set
-   (README's "Still unresolved" list) — either it's been drawn since that
-   was written, or this list needs revisiting. Verify before coding it in.
-   **Code fix still needed.**
+   old `VOWEL_4ROW = {ɑ, e, ɪ, u}`. Every other vowel is 3-row. **Applied
+   in session 6**, once OY/ɔɪ and UH/ʊ had glyphs: every vowel design now
+   carries an explicit `rows` and the build reads it. The list is
+   **ARPAbet codes** — reading it as file stems flips two of the seven,
+   since stem `uh` is /ʌ/ (AH) and stem `aw` is /ɔ/ (AO). See session 6.
 
 ### The 9-row block model, as described this session
 

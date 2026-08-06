@@ -189,7 +189,8 @@
     "status": "drawn",
     "type": "vowel",
     "note": "from source material outside the key chart",
-    "flat": "oo_flat.svg"
+    "flat": "oo_flat.svg",
+    "rows": 4
   },
   "oʊ": {
     "file": "ow.svg",
@@ -224,7 +225,8 @@
     "file": "au.svg",
     "status": "drawn",
     "type": "vowel",
-    "flat": "au_flat.svg"
+    "flat": "au_flat.svg",
+    "rows": 4
   },
   "ɔɪ": {
     "file": "oi.svg",
@@ -232,7 +234,8 @@
     "type": "vowel",
     "note": "from source material outside the key chart",
     "flat": "oi_flat.svg",
-    "flips": true
+    "flips": true,
+    "rows": 4
   },
   "ɜ": {
     "file": "nurse.svg",

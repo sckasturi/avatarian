@@ -210,15 +210,26 @@ space at the very top of the block. **C-C remains open.**
 A vowel is **4-row** (fills the top lattice row, connects upward) or **3-row**
 (leaves the top row empty, sits with a gap). The confirmed set:
 
-> **Confirmed 4-row set (Session 5): AA, AW, EY, IH, OY, UH, UW** (/ɑ, ɔ, e,
-> ɪ, ɔɪ, ʊ, u/). Every other vowel is 3-row.
+> **Confirmed 4-row set, in ARPAbet: AA, AW, EY, IH, OY, UH, UW** —
+> /ɑ, aʊ, e, ɪ, ɔɪ, ʊ, u/. Every other vowel is 3-row.
 
-⚠️ **The shipped code disagrees and needs updating.** `build_glyphs.py` has
-`VOWEL_4ROW = {ɑ, e, ɪ, u}` — only four, and a different set. 4-row vowels
-carry `rows: 4` through the manifest and get an `avatarian-4row` class in the
-DOM. Note also that **OY/ɔɪ has no glyph at all** in the shipped set (it's a
-placeholder, §8), so that entry in the confirmed list can't be rendered yet —
-verify before coding the list in.
+⚠️ **Read those as ARPAbet codes, not file stems.** The stems do not track the
+codes, and reading the list as stems flips two of the seven — in both
+directions:
+
+| ARPAbet | IPA | stem | rows |  | stem | IPA | is ARPAbet | rows |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **UH** | ʊ | `oo` | 4 | but | `uh` | ʌ | **AH** | 3 |
+| **AW** | aʊ | `au` | 4 | but | `aw` | ɔ | **AO** | 3 |
+
+Every vowel design carries an explicit `rows`, set from the designer's row
+toggle; `build_glyphs.py` reads it, and `VOWEL_4ROW_BASE` is only the fallback
+for a vowel with no design. 4-row vowels carry `rows: 4` through the manifest
+and get an `avatarian-4row` class in the DOM.
+
+A 4-row vowel's ink spans lattice y **0.5–3.5**; a 3-row vowel's spans
+**1.5–3.5**. `glyphspec.validate` checks the declaration against the drawing —
+the top row runs y=0 to y=1, so ink resting exactly on y=1 has not entered it.
 
 ### Known consequence: C+C blocks shrink
 
@@ -390,8 +401,10 @@ this table from the build script rather than trusting it blind.
 
 Notes worth holding onto:
 
-- **The "4-row" column above reflects the CODE** (`VOWEL_4ROW`), which §4
-  flags as stale — the confirmed set is AA, AW, EY, IH, OY, UH, UW.
+- **The "4-row" column above may lag the designs** — `rows` now lives in
+  `designs/<name>.json` and the build reads it from there. The confirmed set
+  is ARPAbet AA, AW, EY, IH, OY, UH, UW; see §4 on why that must not be read
+  as file stems.
 - **/ə/ vs /ʌ/ were once backwards.** /ə/ (schwa) is the recurve-with-two-dots
   and its recurve *descends* L→R; /ʌ/ is the four dots, two-by-two. The set had
   them swapped and /ʌ/ drawn as four short *rules* until the key was traced.

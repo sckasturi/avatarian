@@ -181,18 +181,23 @@ the two SVGs' clearance margins, or the lattices wouldn't meet. A residual
 one-row gap for 4-row vowels (e.g. T+ɑ) is a design-convention question, not
 a rendering one — see `HANDOFF.md` and `CONTEXT.md`.
 
-**4-row vs 3-row vowels:** as of session 5, the confirmed 4-row set is
-**AA, AW, EY, IH, OY, UH, UW** — not the `ɑ, e, ɪ, u` still coded as
-`VOWEL_4ROW_BASE`. Every other vowel is 3-row. Note OY/ɔɪ also currently
-has no glyph at all in the shipped set, which needs verifying before this
-list is treated as final.
+**4-row vs 3-row vowels:** the confirmed set, in ARPAbet, is **AA, AW,
+EY, IH, OY, UH, UW**; every other vowel is 3-row. Every vowel design now
+carries its own `rows`, set from the designer's **rows** toggle, and
+`build_glyphs.py` reads it — `VOWEL_4ROW_BASE` is only the fallback for a
+vowel with no design.
 
-Reconciling the two is now a per-glyph job rather than a code edit: the
-row count is set from the designer's **rows** toggle and saved into
-`designs/<name>.json`, which `build_glyphs.py` reads and lets override
-the base set. So a vowel gets re-checked against its drawing and its
-blocks, one at a time, instead of the list being swapped wholesale on a
-reading that OY already contradicts.
+**Read that list as ARPAbet codes, not file stems.** The two do not track
+each other and reading it wrong gets two of the seven backwards: stem
+`uh` is /ʌ/ (ARPAbet **AH**, 3-row) while ARPAbet **UH** is /ʊ/ (stem
+`oo`, 4-row); stem `aw` is /ɔ/ (ARPAbet **AO**, 3-row) while ARPAbet
+**AW** is /aʊ/ (stem `au`, 4-row).
+
+A 4-row vowel's ink spans lattice `y` 0.5–3.5; a 3-row vowel's spans
+1.5–3.5. `glyphspec.validate` checks a design's declared `rows` against
+where its ink actually starts, so declaring one and drawing the other is
+reported in the designer rather than riding silently through the
+manifest.
 
 The key chart's own note, "Consonants take up 3/4 height, Vowels take 1/4
 height", describes bands within a hand-lettered block rather than a scale
