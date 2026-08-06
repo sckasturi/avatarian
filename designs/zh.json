@@ -1,0 +1,39 @@
+{
+  "name": "zh",
+  "ipa": "ʒ",
+  "type": "consonant",
+  "grid": [
+    5,
+    5
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 4.5
+        },
+        {
+          "x": 0.5,
+          "y": 2.5,
+          "seg": "line"
+        },
+        {
+          "x": 4.5,
+          "y": 2.5,
+          "seg": "arc",
+          "bulge": 2
+        },
+        {
+          "x": 4.5,
+          "y": 4.5,
+          "seg": "line"
+        }
+      ]
+    }
+  ],
+  "updated": "2026-08-06T01:55:24Z"
+}

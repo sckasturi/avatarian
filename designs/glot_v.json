@@ -1,0 +1,45 @@
+{
+  "name": "glot_v",
+  "ipa": null,
+  "type": "mark",
+  "grid": [
+    5,
+    4
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 1.5
+        },
+        {
+          "x": 0.5,
+          "y": 2.5,
+          "seg": "arc"
+        },
+        {
+          "x": 2.5,
+          "y": 3.5,
+          "seg": "arc",
+          "bulge": -0.25
+        },
+        {
+          "x": 4.5,
+          "y": 2.5,
+          "seg": "arc",
+          "bulge": -0.25
+        },
+        {
+          "x": 4.5,
+          "y": 1.5,
+          "seg": "arc"
+        }
+      ]
+    }
+  ],
+  "updated": "2026-08-06T00:27:26Z"
+}

@@ -43,11 +43,11 @@
     "file": "g.svg",
     "ipa": "g"
   },
-  "glot": {
+  "null_c": {
     "file": "glot.svg",
-    "ipa": "ʔ"
+    "ipa": null
   },
-  "glot_v": {
+  "null_v": {
     "file": "glot_v.svg",
     "ipa": null
   },
@@ -138,5 +138,25 @@
   "z": {
     "file": "z.svg",
     "ipa": "z"
+  },
+  "sh": {
+    "file": "sh.svg",
+    "ipa": "ʃ"
+  },
+  "oo": {
+    "file": "oo.svg",
+    "ipa": "ʊ"
+  },
+  "j_dz": {
+    "file": "j_dz.svg",
+    "ipa": "dʒ"
+  },
+  "oi": {
+    "file": "oi.svg",
+    "ipa": "ɔɪ"
+  },
+  "ch": {
+    "file": "ch.svg",
+    "ipa": "tʃ"
   }
 }

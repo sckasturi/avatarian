@@ -12,8 +12,8 @@ symbol, not a facsimile of the hand-lettered original.
 Design system
 -------------
   viewBox      0 0 100 100 for every glyph (uniform metrics)
-  stroke       currentColor, width 9, round caps + joins
-  fill         none for strokes; dots are filled circles r=6.5
+  stroke       currentColor, width 9, square caps + miter joins
+  dots         filled circles at r = UNIT/2, so a dot fills one grid cell
   safe area    inset 16 from each edge for consonants
   vowels       drawn small/wide, they sit in the lower 1/4 of a block
 
@@ -29,10 +29,21 @@ OUT = ROOT / "site" / "assets" / "glyphs"
 MANIFEST_JSON = ROOT / "site" / "assets" / "glyph_manifest.json"
 
 SW = 9          # stroke width
-DOT = 6.5       # dot radius
+
+# A dot is the same weight as a stroke, so its radius is the stroke's
+# half-width. Measured off the reference: in the /aɪ/ photo the rule and
+# the dots either side of it are the same thickness to the pixel.
+#
+# Derived from SW so the two can't drift. They had: dots were authored
+# at 6.5, with several at 7 and 8, against a stroke of 9 — up to nearly
+# twice the weight, which reads as beads sitting on the writing rather
+# than part of it. Don't reintroduce a per-glyph radius without a
+# reference that actually shows a heavier dot.
+UNIT = 16       # svg units per lattice cell
+DOT = UNIT / 2  # circle fills one grid square
 
 # Vowels are authored at the same weight as everything else. When the
-# proportional-height mode is on they get stretched (full width, 3/5
+# proportional-height mode is on they get stretched (full width, 4/5
 # height), which scales stroke weight anisotropically — verticals keep
 # the x-scale, horizontals thin out by the y-scale. That is compensated
 # in CSS with a stroke-width override rather than a heavier authored
@@ -43,7 +54,7 @@ VOWEL_SW = SW
 HEADER = (
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 {h}" '
     'fill="none" stroke="currentColor" stroke-width="{sw}" '
-    'stroke-linecap="round" stroke-linejoin="round">'
+    'stroke-linecap="square" stroke-linejoin="miter">'
 )
 
 
@@ -53,9 +64,9 @@ def svg(body, sw=SW, box=100):
 
 
 # ---------------------------------------------------------------------------
-# Flat (3/5-height) variants
+# Flat (4/5-height) variants
 # ---------------------------------------------------------------------------
-# Proportional mode draws vowels at 3/5 the height of a consonant but the
+# Proportional mode draws vowels at 4/5 the height of a consonant but the
 # full width. Squashing a square drawing to fit is what the renderer used
 # to do, via preserveAspectRatio="none", and it distorted everything the
 # scale touched: dots turned into ellipses, and horizontal strokes thinned
@@ -67,11 +78,15 @@ def svg(body, sw=SW, box=100):
 #   * dots keep their radius and just move — a dot is a dot at any height;
 #   * stroke-width is untouched.
 #
-# The result is emitted into a 100x60 viewBox, which the renderer then
+# The result is emitted into a 100x80 viewBox, which the renderer then
 # scales UNIFORMLY. Stroke weight and dot roundness therefore match the
 # square set exactly, whichever height mode is on.
+#
+# The script's own units: a consonant is 5 tall, a vowel 4, and the two
+# stack flush, so a consonant over a vowel is 9 units. Kept in step with
+# tools/glyphspec.py, which the designer and designs/ both go through.
 
-FLAT = 0.6          # 3/5
+FLAT = 0.8          # 4/5
 FLAT_SUFFIX = "_flat"
 FLAT_BOX = 100 * FLAT
 
@@ -126,13 +141,13 @@ def flatten(body, f=FLAT):
         return f'<path d="{_squash_path(m.group(1), f)}"/>'
 
     def circle_sub(m):
-        cx, cy, r = m.group(1), float(m.group(2)) * f, m.group(3)
-        return (f'<circle cx="{cx}" cy="{_num(cy)}" r="{r}" '
-                'fill="currentColor" stroke="none"/>')
+        cx, cy, r = m.group(1), _num(float(m.group(2)) * f), m.group(3)
+        return f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="currentColor" stroke="none"/>'
 
     body = re.sub(r'<path d="([^"]*)"/>', path_sub, body)
-    body = re.sub(r'<circle cx="([^"]*)" cy="([^"]*)" r="([^"]*)"[^/]*/>',
-                  circle_sub, body)
+    body = re.sub(
+        r'<circle cx="([^"]*)" cy="([^"]*)" r="([^"]*)"[^/]*/>',
+        circle_sub, body)
     return body
 
 
@@ -149,93 +164,47 @@ def path(d):
 # ---------------------------------------------------------------------------
 
 CONSONANTS = {
-    # m — ring with a centred dot
-    "m": path("M 50 20 A 30 30 0 1 1 49.9 20 Z") + dot(50, 50),
-
-    # n — squared spiral, open at the left, winding clockwise; dot inside
-    "n": path("M 12 50 A 38 38 0 0 1 50 12 L 80 11 A 9 9 0 0 1 89 20 "
-              "L 88 58 A 20 20 0 0 1 68 78 L 20 80") + dot(50, 42, 8),
-
-    # b — arch: round left shoulder, square right, open foot, dot inside
-    "b": path("M 13 80 L 13 56 A 43 43 0 0 1 56 13 L 87 12 L 85 88")
-         + dot(50, 60, 8),
-
-    # d — left stem and top rule sweeping down into a returning foot,
-    #     leaving the lower left open. One continuous curve rather than
-    #     an arc segment, so the shoulder doesn't kink.
-    #     No dot: the key chart's tracing has one, but the reference
-    #     drawing supplied for it does not, and that is the newer source.
-    "d": path("M 13 56 L 13 13 L 36 13 C 67 17, 88 45, 88 86 L 14 86"),
-
-    # p — diamond
-    "p": path("M 50 18 L 82 50 L 50 82 L 18 50 Z"),
-
-    # t — top rule turning down a long right leg, over a closed box
-    "t": path("M 12 14 L 74 13 A 14 14 0 0 1 88 27 L 88 88")
-         + path("M 17 44 L 70 44 L 70 88 L 17 88 Z"),
-
-    # k — L-form (left stem, long foot) beside a closed box
-    "k": path("M 14 14 L 14 80 L 93 79")
-         + path("M 44 20 L 86 20 L 86 55 L 44 55 Z"),
-
-    # g — open-foot box with dot
-    "g": path("M 24 80 L 24 24 L 76 24 L 76 80") + dot(50, 48),
-
-    # h — I-form: capped top and bottom, ring at the waist meeting both
-    "h": path("M 12 20 L 91 20") + path("M 12 80 L 91 80")
-         + path("M 50 29 A 21 21 0 1 1 49.9 29 Z"),
-
-    # f — bowed saltire: the two strokes cross HIGH, about a third down,
-    #     so the top arms are shallow and wide and the legs run long.
-    #     Was a straight X, which the key tracing does not support.
-    "f": path("M 14 22 C 32 28, 44 32, 50 41 C 58 54, 68 70, 79 86")
-         + path("M 86 21 C 68 27, 56 32, 50 41 C 42 54, 30 70, 18 86"),
-
-    # θ (thing) — crossbar over a stem splaying into two curved legs
-    "th": path("M 13 20 L 91 20") + path("M 50 20 L 50 52")
-          + path("M 17 84 C 15 64, 32 55, 50 52 C 68 55, 85 64, 87 86"),
-
-    # ð (the) — top rule and right flank closed by a sagging diagonal
-    "dh": path("M 14 21 L 87 20 L 85 79 C 62 73, 36 47, 14 21 Z"),
-
-    # v — flag stroke turning back on itself, dot at the tail
-    "v": path("M 20 28 L 76 28 C 76 56 48 52 30 74") + dot(72, 66),
-
-    # s — chevron ∨ with a dot in the mouth (the top orientation).
-    #   NOTE /s/ does not follow the slot: "students" writes both of its
-    #   /s/ in top slots and uses a different orientation for each. Use
-    #   the $/% override there.
-    "s": path("M 20 24 L 50 74 L 80 24") + dot(50, 38),
-
-    # z — upright stem dropping into two bowed legs, flanked by two dots.
-    #     The key's tracing shows a bare chevron with no stem, but both
-    #     the supplied reference drawing and the writing sample ("please"
-    #     = /p l i z/) clearly carry the stem, so it is drawn.
-    "z": path("M 50 12 L 50 44")
-         + path("M 13 86 C 20 63, 34 50, 50 44 C 66 50, 76 65, 83 86")
-         + dot(22, 24) + dot(78, 24),
-
-    # w — L-form whose top corner also throws a slack arm out to the right
-    "w": path("M 89 49 C 74 50, 62 48, 52 41 C 40 32, 30 18, 16 12 "
-              "L 15 86 L 88 84"),
-
-    # l — hook opening at the bottom. The key chart draws this and its
-    # mirror stacked inside one cell, which is why they were once
-    # extracted and drawn as a single two-hook figure; they are the top
-    # and bottom orientations of one glyph.
-    "l": path("M 24 72 L 24 18 L 86 16 C 82 40, 62 66, 44 72"),
-
-    # r — top rule and right flank, with a hook curling in beneath
-    "r": path("M 52 76 C 30 78, 15 68, 13 45 L 12 15 L 87 13 L 85 87"),
-
-    # j (y-sound) — foot and right flank, closed by a swoop down to the left
-    "y": path("M 11 52 C 36 49, 62 32, 84 13 L 85 78 L 12 86"),
-
-    # ŋ (ng) — broken ring, gap at the foot
-    "ng": path("M 34 78 A 32 32 0 1 1 66 78"),
-
-    # ʔ — bare gate (the chart's "null" mark)
-    "glot": path("M 26 80 L 26 26 L 74 26 L 74 80"),
+    "p": path("M 50 18 L 18 50 L 50 82 L 82 50 L 66 34 L 50 18 Z"),
+    "b": path("M 18 82 A 54.67 54.67 0 0 1 82 18 L 82 82") + dot(50, 58),
+    "t": path("M 18 18 L 82 18 L 82 82")
+         + path("M 18 50 L 18 82 L 50 82 L 50 50 L 18 50 Z"),
+    "d": path("M 18 58 L 18 18 A 54.67 54.67 0 0 1 82 82 L 18 82"),
+    "k": path("M 18 18 L 18 82 L 82 82")
+         + path("M 50 18 L 50 50 L 82 50 L 82 18 L 50 18 Z"),
+    "g": path("M 18 82 L 18 34 L 18 18")
+         + path("M 18 18 L 82 18")
+         + path("M 82 82 L 82 18")
+         + dot(50, 50),
+    "m": path("M 50 18 A 32 32 0 0 1 82 50 A 32 32 0 0 1 50 82 "
+              "A 32 32 0 0 1 18 50 A 32 32 0 0 1 50 18 Z")
+         + dot(50, 50),
+    "n": path("M 18 82 L 58 82 A 27.09 27.09 0 0 0 82 58 L 82 18 L 42 18 "
+              "A 28.28 28.28 0 0 0 18 50")
+         + dot(50, 50),
+    "ng": path("M 34 82 A 34.67 34.67 0 0 1 50 18 A 34.67 34.67 0 0 1 66 82"),
+    "f": path("M 18 18 A 51.6 51.6 0 0 1 50 34 A 61.38 61.38 0 0 1 82 82")
+         + path("M 82 18 A 51.6 51.6 0 0 0 50 34 A 61.38 61.38 0 0 0 18 82"),
+    "v": path("M 18 18 L 82 18 A 36.22 36.22 0 0 1 50 58 A 52 52 0 0 0 18 82")
+         + dot(74, 74),
+    "th": path("M 18 18 L 82 18")
+          + path("M 50 18 L 50 42")
+          + path("M 18 82 A 36.22 36.22 0 0 1 50 42 A 36.22 36.22 0 0 1 82 82"),
+    "dh": path("M 18 18 L 82 18 L 82 82 A 64 64 0 0 1 18 18 Z") + dot(18, 82),
+    "s": path("M 18 18 L 50 82 L 82 18") + dot(50, 34),
+    "z": path("M 50 18 L 50 50")
+         + path("M 18 82 A 32 32 0 0 1 82 82")
+         + dot(26, 26) + dot(74, 26),
+    "h": path("M 18 18 L 82 18")
+         + path("M 18 82 L 82 82")
+         + path("M 50 26 A 24 24 0 0 1 74 50 A 24 24 0 0 1 50 74 "
+                "A 24 24 0 0 1 26 50 A 24 24 0 0 1 50 26 Z"),
+    "w": path("M 50 42 A 52 52 0 0 0 18 18 L 18 82 L 82 82")
+         + path("M 82 58 A 42 42 0 0 1 50 42"),
+    "l": path("M 18 82 L 18 18 L 82 18")
+         + path("M 34 82 A 60.01 60.01 0 0 0 82 18"),
+    "r": path("M 50 82 A 50.6 50.6 0 0 1 18 18 L 82 18 L 82 82"),
+    "y": path("M 50 34 A 42 42 0 0 1 82 18 L 82 82 L 18 82")
+         + path("M 18 58 A 36.46 36.46 0 0 0 50 34"),
 }
 
 # ---------------------------------------------------------------------------
@@ -243,99 +212,59 @@ CONSONANTS = {
 # ---------------------------------------------------------------------------
 
 VOWELS = {
-    # i (see) — two rules
-    "i": path("M 16 38 L 84 38") + path("M 16 62 L 84 62"),
-
-    # ɪ (sit) — TWO POSITIONAL VARIANTS, see VARIANTS.
-    # ih — bracket opening left, stem rising off its top rule. Written in
-    #   the bottom slot.
-    "ih": path("M 50 13 L 50 45")
-          + path("M 12 48 L 86 46 L 86 82 L 12 84"),
-    # ih_alt — the same mark mirrored top-to-bottom: the bracket still
-    #   opens LEFT, and the stem hangs below instead of rising above.
-    #   Not a 180° rotation, which would flip the opening to the right.
-    #   Written in the top slot ("metalbending" = /m ɛ t ə l ∅ b ɛ n d ɪ
-    #   ŋ/, where ɪ is the eleventh phoneme — an even index, so a top
-    #   slot). Same vertical-mirror relationship as ae/ae_alt and l1/l2.
-    "ih_alt": path("M 50 87 L 50 55")
-              + path("M 12 52 L 86 54 L 86 18 L 12 16"),
-
-    # e / eɪ (say) — rule across the top, stem hanging from it through a
-    #   shorter crossbar. ONE form, in both slots.
-    #
-    #   This was drawn the other way up for a long time, then briefly
-    #   treated as a positional pair after "wake" (/w e k/) turned out to
-    #   need the rotated form in a bottom slot. "Aang" (/e ŋ/) then
-    #   showed the SAME rotated form in a top slot, so there is no
-    #   evidence for the original orientation anywhere — it was simply
-    #   upside down, not a variant. Don't re-split it without a word that
-    #   actually shows the other form.
-    "ei": path("M 50 86 L 50 20") + path("M 22 60 L 78 60")
-          + path("M 14 20 L 86 20"),
-
-    # ɛ (set) — two bowed strokes crossing, ends left open
-    "eh": path("M 13 32 C 34 38, 43 45, 50 50 C 57 55, 66 62, 87 68")
-          + path("M 13 68 C 34 62, 43 55, 50 50 C 57 45, 66 38, 87 32"),
-
-    # æ (sat) — cup cradling a dot, opening upward. Top orientation
-    #   ("at" = /æ t/); "mad" shows the mirrored cap in a bottom slot.
-    "ae": path("M 24 30 L 24 50 A 26 26 0 0 0 76 50 L 76 30") + dot(50, 44),
-
-    # aɪ (tie) — paired dots beneath a hairline
-    "ai": path("M 26 34 L 74 34") + dot(34, 62) + dot(66, 62),
-
-    # ʌ (uh) — four dots, two by two. Was four short rules; the
-    # reference reading of "up" is unambiguously dots.
-    "uh": dot(28, 34, 8) + dot(72, 34, 8)
-          + dot(28, 66, 8) + dot(72, 66, 8),
-
-    # ə (some) — recurve ASCENDING left to right; dot ABOVE on the left,
-    # dot BELOW on the right.
-    "schwa": path("M 14 72 C 32 72, 40 60, 50 48 C 60 36, 68 25, 87 25")
-             + dot(33, 36, 8) + dot(77, 62, 8),
-
-    # ɜ (nurse) — the mirror of ə: recurve DESCENDING left to right, dot
-    # BELOW on the left, dot ABOVE on the right. These are two distinct
-    # glyphs, not one shared mark — an earlier reference screenshot
-    # labelled a single glyph "ə/ɜ" and they were merged on that basis.
-    "nurse": path("M 14 25 C 32 25, 40 37, 50 49 C 60 61, 68 72, 87 72")
-             + dot(33, 61, 8) + dot(77, 35, 8),
-
-    # u (too) — three uprights
-    "uu": path("M 26 26 L 26 74") + path("M 50 26 L 50 74")
-          + path("M 74 26 L 74 74"),
-
-    # oʊ (toe) — box with a following colon
-    "ow": path("M 18 32 L 18 68 L 54 68 L 54 32 Z") + dot(74, 38) + dot(74, 62),
-
-    # aʊ (now) — colon opening into a crescent
-    "au": path("M 84 30 A 26 26 0 1 0 84 70") + dot(20, 36) + dot(20, 64),
-
-    # ɔ (thought) — right stem curling into a long foot, dot in the crook
-    "aw": path("M 86 26 L 86 50 A 24 24 0 0 1 62 74 L 12 76")
-          + dot(29, 36, 7),
-
-    # ɑ (father) — two arms up off a junction, stem hanging down: a
-    #   proper Y. Top orientation ("appa"); "katara" shows the mirror in
-    #   a bottom slot. Three equal arms at 120 degrees.
-    "ah": path("M 50 83 L 50 39") + path("M 12 17 L 50 39 L 88 17"),
+    "i": path("M 18 40 L 82 40") + path("M 18 70 L 82 70"),
+    "ih": path("M 50 10 L 50 40") + path("M 18 40 L 82 40 L 82 80 L 18 80"),
+    "ei": path("M 50 80 L 50 20")
+          + path("M 18 60 L 82 60")
+          + path("M 18 20 L 82 20"),
+    "eh": path("M 18 20 A 42 52.5 0 0 1 50 40 A 42 52.5 0 0 0 82 60")
+          + path("M 82 20 A 42 52.5 0 0 0 50 40 A 42 52.5 0 0 1 18 60"),
+    "ae": path("M 26 30 L 26 60 A 28.36 35.44 0 0 0 74 60 L 74 30")
+          + dot(50, 40),
+    "ai": dot(26, 60) + path("M 74 30 L 26 30") + dot(74, 60),
+    "uh": path("M 18 40 L 34 40")
+          + path("M 18 80 L 34 80")
+          + path("M 66 80 L 82 80")
+          + path("M 66 40 L 82 40"),
+    "schwa": path("M 26 60 A 24.54 30.67 0 0 0 50 40 "
+                  "A 24.54 30.67 0 0 1 74 20")
+             + dot(18, 20)
+             + dot(82, 60)
+             + path("M 18 60 L 26 60")
+             + path("M 82 20 L 74 20"),
+    "nurse": path("M 18 30 L 34 30 L 58 70 C 62.8 78 74 70 82 70")
+             + dot(18, 70)
+             + dot(82, 30),
+    "uu": path("M 18 40 L 18 80")
+          + path("M 50 20 L 50 80")
+          + path("M 82 40 L 82 80"),
+    "ow": path("M 18 30 L 18 70 L 50 70 L 50 30 L 18 30 Z")
+          + dot(74, 40) + dot(74, 60),
+    "au": path("M 82 30 A 25.33 31.67 0 0 0 42 50 A 25.33 31.67 0 0 0 82 70")
+          + dot(26, 40) + dot(26, 60),
+    "aw": path("M 82 40 A 32 40 0 0 1 50 80 L 18 80") + dot(18, 40, 3.78),
+    "ah": path("M 50 80 L 50 50")
+          + path("M 18 20 L 50 50")
+          + path("M 82 20 L 50 50"),
 }
 
 # ---------------------------------------------------------------------------
 # MARKS — written like vowels (wide, flat) but standing for no sound
 # ---------------------------------------------------------------------------
 
-MARKS = {
-    # The ∪ cup that fills an empty second slot. Phonemes are written two
-    # to a block, so a word with an odd number of them leaves the last
-    # bottom slot empty and this fills it. Confirmed in the writing
-    # sample under "not", "mad", "when", "wake" and "but" — all of which
-    # have an odd phoneme count. Traced from the key chart's vowel-block
-    # "null" (extracted as glot_v), distinct from the ⊓ gate at /ʔ/.
-    "glot_v": path("M 22 26 L 22 52 A 28 28 0 0 0 78 52 L 78 26"),
+MARKS_CONSONANT = {
+    # 5-row null filler (consonant height) — the ⊓ gate shape.
+    "null_c": path("M 26 80 L 26 26 L 74 26 L 74 80"),
 }
 
-NULL_IPA = "∅"   # manifest key for the filler; not a phoneme
+MARKS_VOWEL = {
+    # 3-row null filler (vowel height) — the ∪ cup shape.
+    "null_v": path("M 18 40 L 18 60 A 42 52.5 0 0 0 50 80 "
+                   "A 42 52.5 0 0 0 82 60 L 82 40"),
+}
+
+NULL_IPA = "∅"    # manifest key for the vowel-height filler
+NULL_C_IPA = "∅c"  # manifest key for the consonant-height filler
 
 
 # Glyphs whose source is NOT reference/avatarian_key.svg, so the key tab
@@ -362,11 +291,21 @@ SOURCE_NOTES = {
 #   l   "please" (bottom); the key chart draws both orientations
 #   ɪ   "metalbending"
 #   e   "Aang" (top) vs "wake" (bottom)
+#   aɪ  key chart (rule above, dots below) vs "fire" (dots above the
+#       rule). "fire" is /f aɪ ə r/, so aɪ is the second phoneme and
+#       lands in a BOTTOM slot — and what canon writes there is the
+#       vertical mirror of the chart's citation form. Both forms
+#       attested, which is the bar for adding anything here.
 #
 # /s/ is deliberately absent: "students" writes both of its /s/ in TOP
 # slots with a different orientation for each, so the slot cannot decide
 # it. Spell those with the $/% override instead.
-FLIPS = {"æ", "ɑ", "l", "ɪ", "e"}
+FLIPS = {"æ", "ɑ", "l", "ɪ", "e", "aɪ"}
+
+# Vowels whose design spans all 4 rows of the vowel grid. These bridge
+# the gap between consonant and vowel in the 9-row block model.
+# All other vowels use only 3 rows, leaving a 1-row gap.
+VOWEL_4ROW = {"ɑ", "e", "ɪ", "u"}
 
 # Sounds with no symbol anywhere in the reference material yet.
 #
@@ -394,14 +333,15 @@ IPA_TO_NAME = {
     "m": "m", "n": "n", "ŋ": "ng", "tʃ": "ch", "dʒ": "j_dz",
     "f": "f", "v": "v", "θ": "th", "ð": "dh", "s": "s", "z": "z",
     "ʃ": "sh", "ʒ": "zh", "h": "h", "w": "w", "j": "y", "r": "r",
-    "l": "l", "ʔ": "glot", "x": "kh",
+    "l": "l", "x": "kh",
     "i": "i", "ɪ": "ih", "e": "ei", "ɛ": "eh", "æ": "ae", "ʌ": "uh",
     "ə": "schwa", "u": "uu", "ʊ": "oo", "oʊ": "ow", "ɔ": "aw",
     # ɜ is NOT ARPAbet's ER: g2p emits it with /r/ as a separate segment
     # ("bird" -> ɜ r), so the vowel carries no r-colouring. Named for its
     # lexical set instead, the way ə is named schwa.
     "ɑ": "ah", "aɪ": "ai", "aʊ": "au", "ɔɪ": "oi", "ɜ": "nurse",
-    NULL_IPA: "glot_v",
+    NULL_IPA: "null_v",
+    NULL_C_IPA: "null_c",
 }
 
 VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
@@ -411,6 +351,8 @@ VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
 def glyph_type(ipa):
     if ipa == NULL_IPA:
         return "null"
+    if ipa == NULL_C_IPA:
+        return "null_consonant"
     return "vowel" if ipa in VOWEL_IPA else "consonant"
 
 
@@ -424,15 +366,14 @@ def main():
         removed += 1
 
     drawn = {}
-    for name, body in CONSONANTS.items():
+    for name, body in {**CONSONANTS, **MARKS_CONSONANT}.items():
         (OUT / f"{name}.svg").write_text(svg(body), encoding="utf-8")
         drawn[name] = True
-    # Vowels and marks ship twice: the square drawing for equal-height
-    # mode, and a geometrically flattened 100x60 copy for proportional
-    # mode. Both are scaled uniformly at render time, so stroke weight
-    # and dot roundness are identical in either.
+    # Vowels and vowel-height marks ship twice: the square drawing for
+    # equal-height mode, and a geometrically flattened 100x80 copy for
+    # proportional mode.
     flat = {}
-    for name, body in {**VOWELS, **MARKS}.items():
+    for name, body in {**VOWELS, **MARKS_VOWEL}.items():
         (OUT / f"{name}.svg").write_text(svg(body), encoding="utf-8")
         (OUT / f"{name}{FLAT_SUFFIX}.svg").write_text(
             svg(flatten(body), box=FLAT_BOX), encoding="utf-8"
@@ -448,8 +389,9 @@ def main():
     # Sweep out SVGs this run didn't write. Renaming a glyph otherwise
     # leaves the old stem behind, and a ghost file looks exactly like a
     # live one when you go looking for why a shape didn't change.
-    current = {f"{n}.svg" for n in {**CONSONANTS, **VOWELS, **MARKS}} \
-        | {f"{n}{FLAT_SUFFIX}.svg" for n in {**VOWELS, **MARKS}} \
+    all_marks = {**MARKS_CONSONANT, **MARKS_VOWEL}
+    current = {f"{n}.svg" for n in {**CONSONANTS, **VOWELS, **all_marks}} \
+        | {f"{n}{FLAT_SUFFIX}.svg" for n in {**VOWELS, **MARKS_VOWEL}} \
         | {f"{n}.svg" for n in PLACEHOLDERS} | {"unknown.svg"}
     stale = [p for p in OUT.glob("*.svg") if p.name not in current]
     for p in stale:
@@ -468,6 +410,8 @@ def main():
             manifest[ipa]["flat"] = f"{name}{FLAT_SUFFIX}.svg"
         if ipa in FLIPS:
             manifest[ipa]["flips"] = True
+        if ipa in VOWEL_4ROW:
+            manifest[ipa]["rows"] = 4
 
 
     MANIFEST_JSON.write_text(

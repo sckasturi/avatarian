@@ -1,0 +1,45 @@
+{
+  "name": "ae",
+  "ipa": "æ",
+  "type": "vowel",
+  "grid": [
+    5,
+    4
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 1,
+          "y": 1.5
+        },
+        {
+          "x": 1,
+          "y": 3,
+          "seg": "line"
+        },
+        {
+          "x": 4,
+          "y": 3,
+          "seg": "arc",
+          "bulge": -0.6213
+        },
+        {
+          "x": 4,
+          "y": 1.5,
+          "seg": "line"
+        }
+      ]
+    },
+    {
+      "kind": "dot",
+      "x": 2.5,
+      "y": 2,
+      "size": "m"
+    }
+  ],
+  "updated": "2026-08-06T02:20:22Z"
+}

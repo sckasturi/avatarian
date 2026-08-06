@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8791", "--directory", "site"],
       "port": 8791
+    },
+    {
+      "name": "avatarian-designer",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["tools/designer_server.py"],
+      "port": 8792
     }
   ]
 }

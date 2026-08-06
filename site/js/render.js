@@ -35,9 +35,9 @@
  * it.
  *
  * Some glyphs change form with the slot they land in — see VARIANTS in
- * tools/build_glyphs.py. Sizing still follows the sound, not the slot:
- * vowels are 3 units tall against a consonant's 5, so a vowel in the top
- * slot is still short. Sizing lives in the CSS.
+ * tools/build_glyphs.py. Consonants are 5×5 grid, vowels 4×5 grid.
+ * 4-row vowels fill all 4 rows and bridge to the consonant above;
+ * 3-row vowels leave the top row empty (gap). Sizing lives in the CSS.
  *
  * This is deliberately not a font file: canon composes blocks (closer to
  * Hangul than to an alphabet), which no font format does well. The same
@@ -110,6 +110,7 @@ function makeGlyph(token, slot) {
     ? entry.type || (VOWELS.has(sym) ? "vowel" : "consonant")
     : VOWELS.has(sym) ? "vowel" : "consonant";
   span.className = "avatarian-glyph avatarian-" + kind;
+  if (entry && entry.rows === 4) span.classList.add("avatarian-4row");
   span.title = sym;
   if (entry) {
     const form = entry;
@@ -118,7 +119,7 @@ function makeGlyph(token, slot) {
     const orientation = forced || (entry.flips ? slot : "top");
     if (orientation === "bottom") span.classList.add("avatarian-flipped");
     // Both drawings ride along and CSS shows one. The flat copy is the
-    // same glyph re-laid-out at 3/5 height rather than a squashed copy
+    // same glyph re-laid-out at 4/5 height rather than a squashed copy
     // of the square one, so stroke weight and dots match exactly in
     // either height mode. Consonants have no flat form and keep theirs.
     //

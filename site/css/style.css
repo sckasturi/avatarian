@@ -154,16 +154,16 @@ button.primary:hover { opacity: 0.9; }
    no borders; word spacing, not per-block borders, separates words.
 
    Sizing follows the SOUND, not the slot: consonants are 5 units tall,
-   vowels 3. At 52px per consonant that puts a unit at 10.4px, so a
-   vowel is 31px — including a vowel sitting in the top slot, which
-   happens whenever a word starts with one ("at", "up").
+   vowels 4, and the two stack flush with nothing between them. At 52px
+   per consonant that puts a unit at 10.4px, so a vowel is 41.6px —
+   including a vowel sitting in the top slot, which happens whenever a
+   word starts with one ("at", "up").
 
    A vowel keeps the FULL block width and loses only height — canon
-   draws vowel marks wide and flat, spanning their partner. That is why
-   vowel SVGs carry preserveAspectRatio="none" (set in build_glyphs.py):
-   the default would letterbox them into a small centred square, which
-   is the bug that made 1:4 unreadable. Height alone is the ratio;
-   width is not.
+   draws vowel marks wide and flat, spanning their partner. It gets that
+   shape from a separately generated flat drawing, NOT by being squashed
+   at render time; see the proportional block below. Height alone is the
+   ratio; width is not.
 
    Change wiki/MediaWiki_Common.css.txt in step — both stylesheets drive
    the same render.js. */
@@ -176,7 +176,15 @@ button.primary:hover { opacity: 0.9; }
   margin-right: 3px;
 }
 .avatarian-slot { display: flex; justify-content: center; }
-.avatarian-slot-bottom { margin-top: -1px; }
+/* The two glyphs in a block share a lattice edge — a consonant's bottom
+   row line IS the vowel's top row line (glyphspec.py: "stack flush, 5
+   units over 4"). But each SVG carries its own clearance margin outside
+   the lattice (10svg on a 100 box = 5.2px for a consonant, 8svg on an 80
+   box = 4.16px for a flat vowel). Stacking the boxes flush would leave
+   both margins as a gap, so pull the bottom slot up by their sum to make
+   the lattices meet. The 4.5-unit shrink on C+C blocks keeps this sum at
+   5.2+4.16 for every common pairing, so one constant covers them. */
+.avatarian-slot-bottom { margin-top: -9.36px; }
 
 .render-opts { margin-top: 10px; font-size: 0.85rem; color: var(--muted-2); }
 .render-opts label { display: inline-flex; align-items: center; gap: 6px; }
@@ -186,69 +194,27 @@ button.primary:hover { opacity: 0.9; }
 }
 .avatarian-glyph { display: inline-block; line-height: 0; color: var(--ink); }
 .avatarian-glyph svg { display: block; width: 100%; height: 100%; }
-/* DEFAULT: every slot the same size. The proportional rule below is
-   opt-in because it still has unresolved nuance. */
+/* Consonants: 5×5 grid = 52px. Vowels: 4×5 grid = 41.6px.
+   3-row vowels leave the top row of their 4-row viewBox empty (gap);
+   4-row vowels fill it (bridge to the consonant above). */
 .avatarian-glyph.avatarian-consonant,
+.avatarian-glyph.avatarian-null_consonant { width: 52px; height: 52px; }
 .avatarian-glyph.avatarian-vowel,
-.avatarian-glyph.avatarian-null { width: 52px; height: 52px; }
-
-/* Proportional mode.
-
-   The block is a FIXED height and its two slots divide it, so every
-   block in a word is the same height regardless of what's in it — two
-   consonants stack to exactly the same total as a vowel over a
-   consonant. A consonant is therefore 5/8 of the block beside a vowel
-   but 1/2 beside another consonant, which is why these are flex ratios
-   rather than fixed pixel heights.
-
-   Consonant 5 : vowel 3. 83.2px makes a unit 10.4px, so a consonant
-   beside a vowel lands on exactly 52px — the same size it renders at in
-   the default mode.
-
-   EVERY glyph is scaled UNIFORMLY here: the slot sets the height and the
-   width follows from the SVG's own viewBox aspect. Nothing is stretched,
-   so stroke weight is identical to the default mode and dots stay round.
-   Vowels manage the wide-flat shape by swapping to a 100x60 drawing
-   (generated in build_glyphs.py) rather than by being squashed. */
-/* Sizes are explicit rather than flex-derived. An SVG sized height:100%
-   / width:auto inside an auto-width parent is circular and resolves to
-   zero width, which silently collapses every block onto the same x.
-
-   A unit is 10.4px. Consonant 5 units, vowel 3, so a mixed block is
-   52 + 31.2 = 83.2px. Two consonants split the same total, 4 units each
-   at 41.6px — that is the rule that a C+C block matches a V+C block in
-   height, expressed directly.
-
-   Every box matches its drawing's viewBox aspect (square for consonants,
-   100x60 for the flat vowels), so the scale stays uniform. */
-body.avatarian-proportional .avatarian-glyph.avatarian-consonant {
-  width: 52px; height: 52px;
-}
-body.avatarian-proportional .avatarian-glyph.avatarian-vowel,
-body.avatarian-proportional .avatarian-glyph.avatarian-null {
-  width: 52px; height: 31.2px;
-}
-/* A block of two consonants: 4 units each instead of 5. */
-body.avatarian-proportional
-  .avatarian-block:not(:has(.avatarian-vowel)):not(:has(.avatarian-null))
+.avatarian-glyph.avatarian-null { width: 52px; height: 41.6px; }
+/* A block of two consonants: 4.5 units each instead of 5. */
+.avatarian-block:not(:has(.avatarian-vowel)):not(:has(.avatarian-null)):not(:has(.avatarian-null_consonant))
   .avatarian-glyph.avatarian-consonant {
-  width: 41.6px; height: 41.6px;
+  width: 46.8px; height: 46.8px;
 }
-body.avatarian-proportional .avatarian-slot-bottom { margin-top: 0; }
 
 /* Bottom-slot glyphs are the same drawing mirrored top-to-bottom. A
    transform rather than a second asset: it is exact, costs nothing, and
    keeps stroke weight and dot roundness identical to the top form. */
 .avatarian-glyph.avatarian-flipped svg { transform: scaleY(-1); }
 
-/* One of the two drawings shows at a time. Only glyphs that HAVE a flat
-   form get their square one hidden — consonants ship a single drawing
-   and must keep showing it in both modes, hence :only-of-type. */
-.avatarian-glyph svg.g-flat { display: none; }
-body.avatarian-proportional .avatarian-glyph svg.g-square:not(:only-of-type) {
-  display: none;
-}
-body.avatarian-proportional .avatarian-glyph svg.g-flat { display: block; }
+/* Vowels carry both a square (100×100) and flat (100×80) SVG; always
+   use the flat form. Consonants have only the square one. */
+.avatarian-glyph svg.g-square:not(:only-of-type) { display: none; }
 
 .avatarian-placeholder { opacity: 0.5; }
 .avatarian-missing { font-size: 13px; color: var(--warn); line-height: 1; }

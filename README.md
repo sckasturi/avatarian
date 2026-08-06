@@ -41,10 +41,27 @@ site/            <- deploy this folder to GitHub Pages / Cloudflare Pages
 reference/
   avatarian_key.svg  the hand-lettered key chart, as exported from Inkscape
 
+designer/        <- the glyph designer: a LOCAL-ONLY second site, not deployed
+  index.html       draw a character on its 5×5 / 5×4 lattice
+  js/fit.js        reads a freehand gesture into lines, arcs and dots
+  js/import.js     takes a design/svg/python entry back in as a baseline
+  js/geom.js       the design format's geometry, ported for the canvas
+  js/editor.js     the lattice canvas: drawing, hit-testing, dragging
+  js/store.js      state, undo, autosave to designs/
+  js/app.js        sound list, previews, output panel
+
+designs/         <- one JSON per character, as drawn on the lattice
+  README.md        the format, in full
+  <name>.json
+
 tools/
   build_glyphs.py       DRAWS the glyph SVGs (edit shapes here)
   extract_reference.py  cuts the key chart into one traced SVG per sound
   build_manifest.py     re-embeds both sets into js/manifest.js
+  glyphspec.py          the design format + the one way to render it
+  designer_server.py    serves designer/ and writes designs/ (port 8792)
+  designs_to_svg.py     a design -> SVG, or -> a build_glyphs.py entry
+  check_geom.py         proves geom.js still matches glyphspec.py
 
 wiki/            <- paste these into the Fandom wiki, once
   Template_Avatarian.wiki       wikitext for {{avatarian|hello}}
@@ -115,29 +132,42 @@ everything else. It also explains why /ɑ/ looked inverted between "katara"
 and "appa": it was in different slots.
 
 An odd number of phonemes leaves the final bottom slot empty, and the **∅
-filler** — the ∪ cup, `glot_v` in the key — is written there. It is part of
-the spelling, not padding. Five of the sample's words need it.
+filler** — the ∪ cup, `null_v` — is written there. It is part of the
+spelling, not padding. Five of the sample's words need it. (A taller
+consonant-height null, `null_c`, the ⊓ gate, fills an empty consonant-height
+slot. Neither null is a sound.)
 
 Blocks pack tight with no borders; word spacing separates words.
 
-### Heights are an option, currently off
+### Heights are the script's native units — always on
 
-Every slot renders 52×52 by default. The **Proportional heights** checkbox
-turns on the script's native units — consonants 5 tall, vowels 3, so 52px
-against 31px — by adding `avatarian-proportional` to `<body>`. It ships off
-because the rule still has unresolved nuance.
+Consonants render 52×52, vowels 52×41.6 — 5 units tall against 4, stacked
+flush (9-row blocks). This used to be an off-by-default "Proportional
+heights" checkbox; as of session 4 it is the only mode, so the checkbox and
+the `avatarian-proportional` body class are gone and the proportional values
+are the base CSS rules.
 
-In that mode the ratio applies to **height only**: vowels keep the full
-block width, because canon draws them wide and flat, spanning their
-partner. Vowel SVGs are written with `preserveAspectRatio="none"` so they
-stretch rather than letterbox into a small centred square, and the CSS
-bumps their `stroke-width`, since stretching scales weight
-anisotropically — verticals follow the x-scale, horizontals thin out with
-the y-scale. That compensation is in the CSS rather than the authored SVG
-so the weight stays correct in the default mode, where nothing stretches.
+The ratio applies to **height only**: vowels keep the full block width,
+because canon draws them wide and flat, spanning their partner. They get
+that shape by swapping to a separately generated 100×80 drawing rather than
+by being squashed at render time, so every glyph is scaled **uniformly** —
+stroke weight is identical for every glyph and dots stay round. (An earlier
+version stretched a square drawing with `preserveAspectRatio="none"` and
+patched the weight back in CSS; that distorted everything the scale touched.
+Don't reintroduce it.)
 
 Sizing follows the **sound**, not the slot, so a vowel in the top slot is
 still short — which happens whenever a word starts with one.
+
+**The two glyphs in a block share a lattice edge**, so the bottom slot is
+pulled up (`.avatarian-slot-bottom { margin-top: -9.36px }`) by the sum of
+the two SVGs' clearance margins, or the lattices wouldn't meet. A residual
+one-row gap for 4-row vowels (e.g. T+ɑ) is a design-convention question, not
+a rendering one — see `HANDOFF.md` and `CONTEXT.md`.
+
+**4-row vs 3-row vowels:** ɑ, e, ɪ, u fill the top lattice row and connect
+upward (`VOWEL_4ROW` → `rows: 4` → `avatarian-4row` class); every other
+vowel leaves the top row empty, so it sits with a gap below the consonant.
 
 The key chart's own note, "Consonants take up 3/4 height, Vowels take 1/4
 height", describes bands within a hand-lettered block rather than a scale
@@ -170,6 +200,62 @@ To adjust a shape, edit its path there and re-run:
 
     python3 tools/build_glyphs.py     # redraw the SVGs
     python3 tools/build_manifest.py   # re-embed them into js/manifest.js
+
+### Designing a glyph on the lattice
+
+Writing path coordinates by hand is a poor way to work out what a shape
+*is*. The designer is for that part — a local-only site where a character
+is drawn on the script's own lattice, **5×5** cells for a consonant and
+**5×4** for a vowel, with the traced key shape and the current glyph
+available as underlays to line up against:
+
+    python3 tools/designer_server.py     # http://localhost:8792/
+
+**Draw the shape freehand and it gets tidied up.** A brushed stroke is
+read against the lattice: corners land on lattice points, runs meant to be
+straight come out straight, curves come out as real circular arcs (snapped
+to exact quarters and halves), a small scribble becomes a dot, and a
+gesture that returns to its start closes itself. Weights, margins and the
+vowel's two heights come out of `tools/glyphspec.py` afterwards.
+
+`R` re-reads the same gesture at a different tidiness — every brushed
+stroke keeps the raw gesture it was fitted from, so re-reading always goes
+back to what you drew rather than compounding one fit on another.
+
+**paste in…**, by the output tabs, takes back any of the three things the
+panel hands out — a design JSON, an SVG, or a `build_glyphs.py` entry — so a
+letter that's nearly right can be the baseline for the next one. **or copy
+from** fills it straight from another glyph. The **mirror** toggles (`↔`
+left–right, `↕` top–bottom) in the paste box reflect the incoming shape as
+it is loaded — the fastest way to start from a mirror pair. A design JSON is
+already lattice data and comes in untouched; an SVG or a Python entry is
+sampled and fitted like a brush stroke.
+
+**In-place mirror** (`⇄` / `⇅` in the toolbar, or `Shift+H` / `Shift+V`)
+reflects the current design without reloading — undoable with `⌘Z`.
+
+**use it**, next to the *current glyph* underlay, starts from the glyph the
+set already ships instead of a blank lattice — it samples that drawing back
+into a gesture and runs it through the same fitter, so you get an editable
+lattice design rather than a copy of the old path.
+
+The fitter is an input method, not a second geometry system: it writes the
+ordinary line-and-arc format, so nothing downstream knows how a shape was
+made. Node-by-node drawing is still there, in the **by hand** tray, for
+fixing something the fit read wrong. Each glyph autosaves to
+`designs/<name>.json`; `designs/README.md` documents the format.
+
+Getting a design into the shipped set is a deliberate copy-paste, not an
+automatic rebuild — `build_glyphs.py` stays the one place the set is
+defined:
+
+    python3 tools/designs_to_svg.py --report      # what's drawn, what isn't
+    python3 tools/designs_to_svg.py m --python    # a build_glyphs.py entry
+
+The designer's canvas uses a JavaScript port of the geometry so dragging
+redraws at pointer speed, but everything it hands back — the SVG, the
+snippet above — is rendered by the Python, so what you paste is what the
+build will draw. `python3 tools/check_geom.py` proves the two still agree.
 
 Glyphs are inlined into `js/manifest.js` (~16 KB for the whole set) rather
 than loaded as image files. That is what lets the site work over `file://`,
@@ -234,6 +320,7 @@ are listed in `FLIPS` in `tools/build_glyphs.py`:
 | l | "please" (bottom); the key chart draws both orientations |
 | ɪ | "metalbending" |
 | e | "Aang" (top) vs "wake" (bottom) |
+| aɪ | key chart (rule above, dots below) vs "fire" (dots above the rule) |
 
 This replaced a table of hand-drawn variant pairs — every pair in it was an
 exact vertical mirror, so one drawing plus a flip does the same job with
@@ -261,8 +348,8 @@ students                     metalbending
 ```
 
 * **ARPAbet codes** are the primary spelling — the table `g2p.js` already
-  converts through, extended with `AX` (schwa), `Q` (/ʔ/) and `NUL`, which
-  ARPAbet has no codes for. Case-insensitive.
+  converts through, extended with `AX` (schwa) and `NUL`, which ARPAbet has
+  no codes for. Case-insensitive.
 * **IPA is accepted too**, plus aliases: `eɪ` for `e`, `ɝ`/`ɜr` for `ɜ`.
 * **`0`** (or `_`, `-`) is the `∅` empty-slot filler.
 * **`$` / `%`** suffixes force a glyph's top or bottom orientation — `S$`.
@@ -290,11 +377,13 @@ Two more loose ends surfaced by the extraction:
   above the vowel-block null; `CELLS` maps it to `None` so it is skipped.
   It needs source material rather than a guess.
 
-  The vowel-block null itself is settled: it is `glot_v`, the ∪ cup, and
-  it fills an empty bottom slot. That was the open "two nulls" question —
-  the ⊓ gate (`glot`) is /ʔ/, a real sound; the ∪ cup is not a sound at
-  all. The writing sample shows it under "not", "mad", "when", "wake" and
-  "but", every one of which has an odd phoneme count.
+  The vowel-block null itself is settled: it is `null_v`, the ∪ cup, and
+  it fills an empty vowel-height slot. That resolved the old "two nulls"
+  question — **neither** null is a sound. The ⊓ gate (`null_c`) is just the
+  consonant-height filler for an empty consonant-height slot; it was briefly
+  mis-labelled `glot` /ʔ/, which it never was. The writing sample shows the
+  ∪ cup under "not", "mad", "when", "wake" and "but", every one of which has
+  an odd phoneme count.
 
 ## The English → IPA converter (g2p.js)
 
@@ -324,7 +413,7 @@ don't want to rely on the guesser.
 - Unstressed-vowel reduction isn't modelled, so some interior vowels come
   out as full vowels where canon would use a schwa
   (e.g. "metalbending" → /m ɛ t æ l .../ rather than /m ɛ t ə l .../).
-- Nine phonemes have no glyph yet (see above).
+- Seven phonemes have no glyph yet (tʃ, dʒ, ʃ, ʒ, x, ʊ, ɔɪ — see above).
 - Positional vowel variants ("top/bottom" forms) are not implemented.
 - Punctuation (comma, question mark, apostrophe) is stripped, not rendered,
   though the key chart documents how each should behave.

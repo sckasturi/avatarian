@@ -6,3 +6,7 @@
 
 # Local tool permissions — per-machine, not project config
 .claude/settings.local.json
+
+# The designer's server imports build_glyphs, so tools/ now gets compiled
+__pycache__/
+*.pyc

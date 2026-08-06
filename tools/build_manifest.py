@@ -59,6 +59,8 @@ def main():
             out[ipa]["note"] = info["note"]
         if info.get("flips"):
             out[ipa]["flips"] = True
+        if info.get("rows"):
+            out[ipa]["rows"] = info["rows"]
         # The flattened copy used by proportional-height mode.
         if info.get("flat"):
             fpath = GLYPHS / info["flat"]
