@@ -187,6 +187,28 @@ a general rule.
    `null`. Now maps both `null` and `null_consonant` to `"mark"`. This was
    the "issue" that was blocking `--report`.
 
+6. **`glyphspec.py` brought back in step (parity fix).** It was stale on two
+   things `build_glyphs.py` and `geom.js` had already moved to: dots at
+   `SW/2` (4.5) instead of `UNIT/2` (8, the big cell-filling circle), and
+   `round`/`round` caps instead of `square`/`miter`. Both fixed, so
+   `check_geom.py` again passes **all 203 cases** (it was failing on every
+   dot and every header before). This matters because `glyphspec.py` is what
+   `designs_to_svg.py --python` and the designer server emit — without the
+   fix, promoting a design would produce old-style small dots and round caps
+   that don't match the shipped set.
+
+### Also this session
+
+- **`AVATARIAN.md` written** — a consolidated reference for the *script
+  itself* (writing model, lattice/geometry, height model + block types,
+  orientation, nulls, full glyph inventory, sounds syntax, open decoding
+  questions), gathering what was scattered across README/CONTEXT/HANDOFF.
+  Reconciled with the Session 5 corrections and flags where shipped code
+  lags them. Committed to `main` in `c3d2e59` (which, note, also swept in the
+  uncommitted Session 5 edits to CONTEXT/HANDOFF).
+- **Committed and merged.** The Session 4 code went out as PR #1 (merged to
+  `main`, `141e438`); `AVATARIAN.md` followed on `main` directly.
+
 ### THE OPEN ISSUE — the residual T+AA gap (what to solve next)
 
 The user's complaint: **"when you have something like T AA, there should not
