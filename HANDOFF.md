@@ -91,11 +91,26 @@ row — which the user will come back to.
    its 4-row box — right for the bottom slot, where the empty row is the
    gap under the consonant, but wrong on top, where it put the empty row
    at the block's outer edge and left the vowel flush against its
-   partner. Measured on `AX T`: 1.2 rows of dead space above, 0.4 rows of
-   gap below. `blocks.css` now pulls a top-slot 3-row vowel up one row
-   (`translateY(-25%)`, one row of a 4-row box, so it holds at any size),
-   giving 0.2 above and 1.4 below. 4-row vowels are excluded — they fill
-   their box and abut directly.
+   partner. `blocks.css` now pulls a top-slot 3-row vowel up one lattice
+   row, which is `translateY(-20%)`. 4-row vowels are excluded — they
+   fill their box and abut directly.
+
+   **20%, not 25% — a trap worth naming.** A lattice row is NOT a
+   quarter of a vowel's box. The box is an 80-unit viewBox: 64 units of
+   lattice (4 rows x 16) plus 16 units of clearance margin outside it.
+   So a row is 16/80 = 20%, and one row is **8.32px** at the default
+   size, not the 10.4px you get by dividing the 41.6px box by 4. The
+   first attempt used 25% and over-shifted by a quarter of a row, which
+   showed up as V-C gaps being wider than C-V ones when the two should
+   match. The glyph-independent check is the lattice seam: C-V blocks
+   measure 0 rows between the two lattices (they meet), V-C blocks
+   measure exactly 1 (the gap row).
+
+   Beware measuring this with ink extents — they vary by drawing. A dot
+   has radius 8 units (0.5 row) against a stroke's half-width of 4.5
+   (0.28), so a glyph whose lowest ink is a dot reaches 0.22 rows
+   further than one ending in a stroke. Measure the lattice, not the
+   ink.
 
 10. **The wiki CSS had drifted badly** and is brought back in step. It was
     missing `.avatarian-flipped` entirely, so every glyph in `FLIPS`

@@ -35,13 +35,15 @@
 /* A 3-row vowel is drawn bottom-aligned in its 4-row box, which is right
    in the bottom slot and wrong in the top: there the empty row lands at
    the block's outer edge as dead space and the vowel sits flush against
-   the consonant. Pull it up one row (25% of a 4-row box) so the gap
+   the consonant. Pull it up one lattice row so the gap
    falls between the two glyphs — rows 1-3 vowel, row 4 gap, rows 5-9
-   consonant. 4-row vowels fill their box and abut directly, so they are
+   consonant. One lattice row is 20% of the box, not 25%: the viewBox is
+   80 units, 64 of lattice plus 16 of clearance margin outside it.
+   4-row vowels fill their box and abut directly, so they are
    excluded. */
 .avatarian-slot-top .avatarian-glyph.avatarian-vowel:not(.avatarian-4row),
 .avatarian-slot-top .avatarian-glyph.avatarian-null:not(.avatarian-4row) {
-  transform: translateY(-25%);
+  transform: translateY(-20%);
 }
 /* Bottom-slot glyphs listed in FLIPS are the same drawing mirrored
    top-to-bottom. On the SVG, so it composes with the row shift above

@@ -204,9 +204,8 @@ window.AVATARIAN_GLYPHS = {
     "name": "uh",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 80 L 34 80\"/><path d=\"M 18 40 L 34 40\"/><path d=\"M 66 40 L 82 40\"/><path d=\"M 66 80 L 82 80\"/><path d=\"M 66 80 L 74 60\"/></svg>",
-    "flips": true,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 64 L 34 64\"/><path d=\"M 18 32 L 34 32\"/><path d=\"M 66 32 L 82 32\"/><path d=\"M 66 64 L 82 64\"/><path d=\"M 66 64 L 74 48\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 80 L 34 80\"/><path d=\"M 18 40 L 34 40\"/><path d=\"M 66 40 L 82 40\"/><path d=\"M 66 80 L 82 80\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 64 L 34 64\"/><path d=\"M 18 32 L 34 32\"/><path d=\"M 66 32 L 82 32\"/><path d=\"M 66 64 L 82 64\"/></svg>"
   },
   "ə": {
     "name": "schwa",

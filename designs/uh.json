@@ -6,7 +6,7 @@
     5,
     4
   ],
-  "flips": true,
+  "flips": false,
   "rows": 3,
   "notes": "",
   "shapes": [
@@ -391,5 +391,5 @@
       ]
     }
   ],
-  "updated": "2026-08-06T18:44:14Z"
+  "updated": "2026-08-06T18:45:37Z"
 }

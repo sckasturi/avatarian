@@ -75,15 +75,18 @@
    vowel's ink is the only thing that moves; the row it vacates was
    empty, so nothing overflows the block.
 
-   25% of a vowel's box is exactly one row (4 rows to the box), so this
-   holds at any font size — which is why it is a percentage and not the
-   10.4px it happens to be at the default size.
+   One lattice row is 20% of the box, NOT 25%. The box is not four rows
+   tall — a vowel's viewBox is 80 units: 64 of lattice (4 rows x 16) plus
+   16 of clearance margin outside it. So a row is 16/80. Using 25% here
+   overshot by a quarter of a row and made the V-C gap wider than the
+   C-V one when the two should match. Percentage rather than the 8.32px
+   it works out to, so it holds at any size.
 
    4-row vowels are excluded: they fill their box and abut the
    consonant directly, which is already right in either slot. */
 .avatarian-slot-top .avatarian-glyph.avatarian-vowel:not(.avatarian-4row),
 .avatarian-slot-top .avatarian-glyph.avatarian-null:not(.avatarian-4row) {
-  transform: translateY(-25%);
+  transform: translateY(-20%);
 }
 
 /* Bottom-slot glyphs are the same drawing mirrored top-to-bottom. A

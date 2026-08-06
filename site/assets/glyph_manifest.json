@@ -169,8 +169,7 @@
     "file": "uh.svg",
     "status": "drawn",
     "type": "vowel",
-    "flat": "uh_flat.svg",
-    "flips": true
+    "flat": "uh_flat.svg"
   },
   "ə": {
     "file": "schwa.svg",
