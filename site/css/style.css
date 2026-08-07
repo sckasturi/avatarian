@@ -250,8 +250,14 @@ button.primary:hover { opacity: 0.9; }
 .sounds-part .fine { font-weight: normal; color: var(--muted-2); }
 #soundsInput {
   font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95rem;
-  /* Long transcriptions get long; scroll rather than grow without end. */
-  max-height: 34vh; overflow-y: auto; resize: vertical;
+  /* Grows to fit (see fitSounds), then scrolls. The cap is what stops a
+     long transcription pushing the drawing off screen. */
+  max-height: 30vh; overflow-y: auto; resize: vertical;
+}
+/* Tighter on mobile, where the output is pinned to the top and every
+   row the sounds box takes is a row the drawing doesn't get. */
+@media (max-width: 900px) {
+  #soundsInput { max-height: 22vh; }
 }
 .write.is-edited .sounds-part { border-top-color: var(--accent); }
 

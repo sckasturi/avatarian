@@ -75,23 +75,61 @@ function wordsToSoundText(words) {
 }
 
 /**
+ * Split one word's chunk into its sounds and its caption.
+ *
+ * (anything in parentheses) is a caption for the word, not a sound.
+ * This is a depth-counting scan rather than a regex because the regex
+ * version broke in three ways that all ended the same place — a bracket
+ * character reaching the tokeniser and being rendered as an unknown
+ * sound:
+ *
+ *   "T (unclosed"        the whole tail became sound tokens
+ *   "T (outer (inner))"  the label stopped at the inner bracket and the
+ *                        leftover ")" became a token
+ *   "T )stray("          both brackets became tokens
+ *
+ * and a fourth that was merely silent: "T (one) (two)" kept only the
+ * last label.
+ *
+ * The rules, in order of how likely you are to hit them:
+ *
+ *   - text inside brackets is caption, text outside is sounds;
+ *   - several captions in one word are joined, not overwritten;
+ *   - nesting is kept verbatim inside the caption, so "(mount (old)
+ *     baihu)" captions the lot;
+ *   - an unclosed "(" captions everything after it, which is what
+ *     someone mid-type means;
+ *   - a ")" with nothing open is dropped;
+ *   - a bracket NEVER reaches the tokeniser.
+ */
+function splitCaption(chunk) {
+  let depth = 0, body = "", label = "";
+  for (const ch of chunk) {
+    if (ch === "(") {
+      depth += 1;
+      if (depth === 1) continue;          // the opener itself isn't caption text
+    } else if (ch === ")") {
+      if (depth === 0) continue;          // unopened — drop it
+      depth -= 1;
+      if (depth === 0) { label += " "; continue; }
+    }
+    if (depth > 0) label += ch;
+    else body += ch;
+  }
+  return { body, label: label.trim().replace(/\s+/g, " ") };
+}
+
+/**
  * Parse the sounds box into words. Tolerant on purpose — this is a
- * correction surface, so stray slashes and runs of spaces shouldn't cost
- * you the render.
+ * correction surface, so stray slashes, half-typed brackets and runs of
+ * spaces shouldn't cost you the render.
  */
 function soundTextToWords(text) {
   return text.split("/")
     .map((chunk) => {
-      // (anything in parentheses) is a caption for this word, not a
-      // sound. Pulled out before tokenising so a multi-word label like
-      // (mount baihu) survives intact.
-      let word = "";
-      const body = chunk.replace(/\(([^)]*)\)/g, (_, inner) => {
-        word = inner.trim();
-        return " ";
-      });
+      const { body, label } = splitCaption(chunk);
       const ipa = body.trim().split(/\s+/).filter(Boolean).map(normaliseSound);
-      return { word, ipa };
+      return { word: label, ipa };
     })
     .filter(w => w.ipa.length);
 }
@@ -100,5 +138,6 @@ if (typeof module !== "undefined") {
   module.exports = {
     EXTRA_CODES, SOUND_ALIASES, IPA_TO_CODE,
     splitOverride, normaliseSound, wordsToSoundText, soundTextToWords,
+    splitCaption,
   };
 }

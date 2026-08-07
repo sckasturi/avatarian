@@ -106,14 +106,16 @@ corpus, not parallel to it. `CORPUS.md` §6.
 
 ### The site
 
-**10. Better handling of parentheses.** `(brackets)` caption a word and
-the rule is crude — anything parenthesised is pulled out before
-tokenising. Needs: nested or unclosed brackets, a caption on a word that
-already has one from the converter, and a literal bracket.
+~~**11. Sounds box scrolling.**~~ **Done in session 7.** It grows to fit
+as you type and then scrolls, capped at 30vh (22vh on mobile, where the
+output is pinned to the top and every row the box takes is a row the
+drawing doesn't get).
 
-**11. Sounds box scrolling.** Partly done — it has a `max-height` and
-`resize: vertical` — but the overflow behaviour still wants a look,
-especially next to the sticky output on mobile.
+~~**10. Better handling of parentheses.**~~ **Done in session 7.**
+Replaced the regex with a depth-counting scan. Three inputs used to put a
+bracket character into the tokeniser, where it rendered as an unknown
+sound — an unclosed `(`, a nested `(a (b))`, and a stray `)`. A fourth,
+two captions on one word, silently kept only the last.
 
 ~~**12. A space button.**~~ **Done in session 7.** A small toolbar on the
 sounds box: `/ word break`, `0 null`, `⌫` and `clear`. Clicks now insert
@@ -121,6 +123,44 @@ sounds box: `/ word break`, `0 null`, `⌫` and `clear`. Clicks now insert
 so going back to fix a word in the middle works — which is most of
 transcribing from a reference. Verified by building the attested poster
 line `F AE N IY / IH Z / M IH S IH NG` entirely by clicking.
+
+**29. Design a more intuitive sound alphabet than ARPAbet.** ARPAbet is
+what the sounds box takes today, and it is genuinely unintuitive — most
+sharply because **`AH` is /ʌ/ (STRUT) while `AA` is /ɑ/ (PALM)**, so the
+code that looks like "ah" is not the "ah" sound. `AO` is /ɔ/ but `AW` is
+/aʊ/. `EY` is /eɪ/. None of it can be guessed; it has to be learned, and
+this is the tool's main input surface for people who don't know IPA.
+
+The model to steal from is **iTrans for Sanskrit**, which is learnable
+because it is *systematic*: doubling marks length (`a`/`aa`), `h` marks
+aspiration (`k`/`kh`), capitals mark retroflex (`t`/`T`). You can predict
+a code you have never seen.
+
+English has no such neat axes, but it does have a well-tested precedent:
+the **respelling keys dictionaries use for laypeople** — `ah` father,
+`ay` face, `ee` fleece, `eye` price, `oh` goat, `oo` goose, `uu` foot,
+`ow` mouth, `oy` choice, `uh` schwa, `er` nurse. Those are guessable in a
+way `AA`/`AH`/`AO` never will be.
+
+Design constraints:
+
+- **Still typeable on a plain QWERTY keyboard**, which is why ARPAbet was
+  picked in the first place.
+- **Unambiguous when run together.** Sounds are space-separated, so this
+  is easier than it looks, but a scheme that only works with separators
+  is worth knowing about up front.
+- **Accept the old codes as input** — ARPAbet should keep working, and
+  IPA already does. This is about what the tool *teaches and displays*,
+  not about narrowing what it accepts.
+- **`0`, `$`, `%` and `/` stay** — they are punctuation, not sounds.
+
+**Sequence this against the corpus (20).** `CORPUS.md` proposes storing
+attested spellings as sounds-syntax strings, which would tie every corpus
+entry to whatever scheme is current — change the scheme later and the
+whole corpus needs migrating. The fix is to **store the corpus in IPA**,
+which is canonical and not going to change, and treat any ASCII scheme as
+a display and input layer over it. Worth deciding before 20 is built
+rather than after.
 
 **4. Fuzzy reverse-decode.** Given an Avatarian sequence, suggest likely
 English words ("pretty sure this is X") instead of the current

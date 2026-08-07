@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=17" />
-<link rel="stylesheet" href="css/style.css?v=17" />
+<link rel="stylesheet" href="css/blocks.css?v=19" />
+<link rel="stylesheet" href="css/style.css?v=19" />
 </head>
 <body>
 
@@ -154,16 +154,16 @@ and made-up words too.</p>
      target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
 </footer>
 
-<script src="js/manifest.js?v=17"></script>
+<script src="js/manifest.js?v=19"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=17"></script>
-<script src="js/g2p.js?v=17"></script>
+<script src="js/lexicon.js?v=19"></script>
+<script src="js/g2p.js?v=19"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=17"></script>
-<script src="js/render.js?v=17"></script>
+<script src="js/sounds.js?v=19"></script>
+<script src="js/render.js?v=19"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
@@ -187,6 +187,7 @@ let soundsEdited = false;
 function setSoundsFromEnglish() {
   const words = sentenceToIPA($("englishInput").value);
   $("soundsInput").value = wordsToSoundText(words);
+  fitSounds();
 }
 
 function markEdited(on) {
@@ -390,8 +391,27 @@ $("englishInput").addEventListener("input", () => {
   clearTimeout(drawTimer);
   drawTimer = setTimeout(convert, 140);
 });
+/**
+ * Grow the sounds box to fit, up to the cap in the stylesheet, then let
+ * it scroll. A transcription can run long, and a fixed three rows means
+ * scrolling a tiny window while you work; growing without limit means
+ * the drawing gets pushed off screen instead. This does both in the
+ * right order.
+ */
+function fitSounds() {
+  const box = $("soundsInput");
+  box.style.height = "auto";
+  // scrollHeight is the CONTENT box. With box-sizing: border-box the
+  // element's height also has to cover its border, so setting height
+  // straight from scrollHeight leaves the content a couple of pixels
+  // short and the box scrolls when it didn't need to.
+  const chrome = box.offsetHeight - box.clientHeight;
+  box.style.height = (box.scrollHeight + chrome) + "px";
+}
+
 $("soundsInput").addEventListener("input", () => {
   markEdited(true);
+  fitSounds();
   clearTimeout(drawTimer);
   drawTimer = setTimeout(draw, 120);
 });
@@ -407,6 +427,7 @@ document.querySelectorAll(".sound-tools [data-insert]").forEach((b) => {
 $("delToken").addEventListener("click", deleteToken);
 $("clearSounds").addEventListener("click", () => {
   $("soundsInput").value = "";
+  fitSounds();
   markEdited(true);
   $("soundsInput").focus();
   draw();
@@ -561,6 +582,7 @@ function insertToken(text) {
   const lead = before && !/\s$/.test(before) ? " " : "";
   const trail = after && !/^\s/.test(after) ? " " : "";
   box.value = before + lead + text + trail + after;
+  fitSounds();
   // Caret sits right after the token, not after the trailing space, so
   // the next insertion spaces itself off the token rather than stacking
   // a second gap.
@@ -581,6 +603,7 @@ function deleteToken() {
   const before = box.value.slice(0, at).replace(/\s*\S+\s*$/, "");
   const after = box.value.slice(at);
   box.value = before + after;
+  fitSounds();
   box.focus();
   box.setSelectionRange(before.length, before.length);
   markEdited(true);
@@ -783,6 +806,7 @@ buildKeyGrid();
 // page, and the first thing anyone should see is what the tool does.
 $("englishInput").value = $("englishInput").value || "Katara";
 convert();
+fitSounds();
 </script>
 </body>
 </html>
