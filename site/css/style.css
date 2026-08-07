@@ -233,6 +233,20 @@ button.primary:hover { opacity: 0.9; }
   border-top: 1px solid var(--line);
 }
 .sounds-part .field-label { font-weight: bold; }
+/* Enough to build a line without the keyboard. `/` is the one you cannot
+   click your way to from the glyph reference, which is what made
+   click-only transcription impossible. */
+.sound-tools {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  margin: 0 0 6px;
+}
+.tool-btn {
+  font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.78rem;
+  padding: 3px 9px; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--card); color: var(--muted);
+}
+.tool-btn:hover { background: var(--hover); color: var(--ink); border-color: var(--accent); }
 .sounds-part .fine { font-weight: normal; color: var(--muted-2); }
 #soundsInput {
   font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95rem;

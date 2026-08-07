@@ -27,6 +27,13 @@ a shared row. The last piece of the 9-row model (item 3); everything else
 in that model is implemented. Session 5's working guess was a one-row
 overlap, unconfirmed.
 
+**Deliberately deferred until the corpus exists (20).** Rather than
+reason about it from one or two samples, the plan is to build the corpus
+first and then *look* — with attested spellings machine-readable, every
+C-C block in the material can be pulled up at once and the answer read
+off real examples. So this is not waiting on a decision so much as
+waiting on 20, and item 3 is downstream of both.
+
 **B2. What reference material exists, and where.** Needed for the corpus
 (20–24), the catalogue page (7), and any handwriting work (25–26). An
 inventory of the images, and what words each contains.
@@ -56,7 +63,9 @@ material read or transcribed.
 **20. Digitise the attested writing samples** into a confirmed
 dictionary: one entry per attested word or phrase, storing the spelling
 actually observed as a sounds-syntax string, plus where it was observed.
-The biggest open workstream.
+The biggest open workstream — and now also the **prerequisite for item 3
+and B1**, since the C-C question is going to be answered by looking at
+attested blocks rather than by reasoning from a couple of samples.
 
 **21. Show confidence in the UI.** Three tiers — attested / derived /
 guessed — matching the lookup chain. Blocked on B4 for the visual
@@ -106,10 +115,12 @@ already has one from the converter, and a literal bracket.
 `resize: vertical` — but the overflow behaviour still wants a look,
 especially next to the sticky output on mobile.
 
-**12. A space button.** Building a line by clicking glyphs has no way to
-end a word; you have to reach for the keyboard to type `/`. A word-break
-button in the palette makes click-only transcription possible, which is
-the mode item 23 lives in. A null (`0`) button belongs beside it.
+~~**12. A space button.**~~ **Done in session 7.** A small toolbar on the
+sounds box: `/ word break`, `0 null`, `⌫` and `clear`. Clicks now insert
+**at the caret** rather than always appending, spaced off on both sides,
+so going back to fix a word in the middle works — which is most of
+transcribing from a reference. Verified by building the attested poster
+line `F AE N IY / IH Z / M IH S IH NG` entirely by clicking.
 
 **4. Fuzzy reverse-decode.** Given an Avatarian sequence, suggest likely
 English words ("pretty sure this is X") instead of the current
@@ -191,7 +202,8 @@ Kept for reference; numbers are not reused.
 Kept separate because it is nearly done and blocked on one question.
 
 Implemented: V-C layout, the 3-row/4-row split, null selection by
-pairing partner. **Outstanding: C-C (B1).** Once that lands, the model
+pairing partner. **Outstanding: C-C (B1), which is deferred until the
+corpus (20) can show every attested C-C block at once.** Once that lands, the model
 can be stated whole in `glyphspec.py` and `designer/js/geom.js` — run
 `check_geom.py` after — and it likely wants the designer's lattice
 reworked so a block's two glyphs share a coordinate space, which is what

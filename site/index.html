@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=15" />
-<link rel="stylesheet" href="css/style.css?v=15" />
+<link rel="stylesheet" href="css/blocks.css?v=17" />
+<link rel="stylesheet" href="css/style.css?v=17" />
 </head>
 <body>
 
@@ -51,6 +51,19 @@ and made-up words too.</p>
       <button type="button" id="resyncBtn">Use my text again</button>
     </p>
 
+    <!-- Enough buttons to build a line without touching the keyboard,
+         which is the mode transcribing from a reference image lives in. -->
+    <div class="sound-tools">
+      <button type="button" class="tool-btn" data-insert="/"
+              title="End this word and start the next one">/&nbsp;word break</button>
+      <button type="button" class="tool-btn" data-insert="0"
+              title="Null — fills a slot with no sound in it">0&nbsp;null</button>
+      <span class="spacer"></span>
+      <button type="button" class="tool-btn" id="delToken"
+              title="Remove the last sound">⌫</button>
+      <button type="button" class="tool-btn" id="clearSounds"
+              title="Empty the sounds box">clear</button>
+    </div>
     <textarea id="soundsInput" rows="3" spellcheck="false"
       placeholder="K AH T AA R AH   /   P L IY Z"></textarea>
     <div class="row">
@@ -141,16 +154,16 @@ and made-up words too.</p>
      target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
 </footer>
 
-<script src="js/manifest.js?v=15"></script>
+<script src="js/manifest.js?v=17"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=15"></script>
-<script src="js/g2p.js?v=15"></script>
+<script src="js/lexicon.js?v=17"></script>
+<script src="js/g2p.js?v=17"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=15"></script>
-<script src="js/render.js?v=15"></script>
+<script src="js/sounds.js?v=17"></script>
+<script src="js/render.js?v=17"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
@@ -388,6 +401,17 @@ $("resyncBtn").addEventListener("click", () => {
   $("englishInput").focus();
 });
 
+document.querySelectorAll(".sound-tools [data-insert]").forEach((b) => {
+  b.addEventListener("click", () => insertToken(b.dataset.insert));
+});
+$("delToken").addEventListener("click", deleteToken);
+$("clearSounds").addEventListener("click", () => {
+  $("soundsInput").value = "";
+  markEdited(true);
+  $("soundsInput").focus();
+  draw();
+});
+
 document.querySelectorAll(".chip").forEach((chip) => {
   chip.addEventListener("click", () => {
     $("englishInput").value = chip.dataset.example;
@@ -515,10 +539,50 @@ $("copyBtn").addEventListener("click", async (e) => {
   }
 });
 
-/** Append a sound to the box and redraw — the reference doubles as a palette. */
-function appendSound(code) {
+/**
+ * Put a token into the sounds box AT THE CARET, not at the end.
+ *
+ * Appending blindly is fine while you are building a line left to right,
+ * and wrong the moment you go back to fix a word in the middle — which
+ * is most of transcribing from a reference. The caret is also left after
+ * what was inserted, so clicking several glyphs in a row does what it
+ * looks like.
+ */
+function insertToken(text) {
   const box = $("soundsInput");
-  box.value = (box.value.trim() + " " + code).trim();
+  const at = box.selectionStart, to = box.selectionEnd;
+  const hasCaret = Number.isInteger(at);
+  const before = hasCaret ? box.value.slice(0, at) : box.value;
+  const after = hasCaret ? box.value.slice(to) : "";
+  // Space it off from whatever it lands next to, on BOTH sides, without
+  // doubling up. Only leading was handled at first, so inserting into
+  // the middle of a line fused the new token onto the next one — "K AH"
+  // plus M in front of T gave "K AH MT".
+  const lead = before && !/\s$/.test(before) ? " " : "";
+  const trail = after && !/^\s/.test(after) ? " " : "";
+  box.value = before + lead + text + trail + after;
+  // Caret sits right after the token, not after the trailing space, so
+  // the next insertion spaces itself off the token rather than stacking
+  // a second gap.
+  const pos = before.length + lead.length + text.length;
+  box.focus();
+  box.setSelectionRange(pos, pos);
+  markEdited(true);
+  draw();
+}
+
+/** The reference doubles as a palette; clicking a glyph inserts its code. */
+function appendSound(code) { insertToken(code); }
+
+/** Drop the token before the caret — the click-only backspace. */
+function deleteToken() {
+  const box = $("soundsInput");
+  const at = Number.isInteger(box.selectionStart) ? box.selectionStart : box.value.length;
+  const before = box.value.slice(0, at).replace(/\s*\S+\s*$/, "");
+  const after = box.value.slice(at);
+  box.value = before + after;
+  box.focus();
+  box.setSelectionRange(before.length, before.length);
   markEdited(true);
   draw();
 }
