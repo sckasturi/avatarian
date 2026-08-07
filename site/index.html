@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=11" />
-<link rel="stylesheet" href="css/style.css?v=11" />
+<link rel="stylesheet" href="css/blocks.css?v=13" />
+<link rel="stylesheet" href="css/style.css?v=13" />
 </head>
 <body>
 
@@ -86,6 +86,13 @@ and made-up words too.</p>
       <input type="range" id="outSize" min="28" max="120" step="2" value="52"
              aria-label="Glyph size">
     </label>
+    <label class="ink-ctl" title="Colour of the exported glyphs">
+      <input type="color" id="inkColour" value="#000000" aria-label="Glyph colour">
+    </label>
+    <label class="bg-ctl" title="Give the exported image a solid background instead of a transparent one">
+      <input type="checkbox" id="bgFill"> bg
+      <input type="color" id="bgColour" value="#ffffff" aria-label="Background colour">
+    </label>
     <button type="button" id="copyBtn" title="Copy the drawing as an image">Copy</button>
     <button type="button" id="pngBtn" title="Download as a PNG image">PNG</button>
     <button type="button" id="svgBtn" title="Download as an SVG, which stays sharp at any size">SVG</button>
@@ -138,16 +145,16 @@ and made-up words too.</p>
      target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
 </footer>
 
-<script src="js/manifest.js?v=11"></script>
+<script src="js/manifest.js?v=13"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=11"></script>
-<script src="js/g2p.js?v=11"></script>
+<script src="js/lexicon.js?v=13"></script>
+<script src="js/g2p.js?v=13"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=11"></script>
-<script src="js/render.js?v=11"></script>
+<script src="js/sounds.js?v=13"></script>
+<script src="js/render.js?v=13"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
@@ -261,42 +268,58 @@ function convert() {
 // of the block rules would. Flips are the one thing not in the geometry,
 // so they are re-applied from the class.
 
-function exportSVG() {
+function exportSVG(opts) {
   const out = $("avatarianOutput");
   const glyphs = [...out.querySelectorAll(".avatarian-glyph")];
   if (!glyphs.length) return null;
 
+  const ink = (opts && opts.ink) || $("inkColour").value;
+  const bg = (opts && "background" in opts)
+    ? opts.background
+    : ($("bgFill").checked ? $("bgColour").value : null);
+
   const boxes = glyphs.map((g) => ({ g, r: g.getBoundingClientRect() }));
-  const pad = 8;
+  const pad = 10;
   const minX = Math.min(...boxes.map(b => b.r.left)) - pad;
   const minY = Math.min(...boxes.map(b => b.r.top)) - pad;
   const w = Math.max(...boxes.map(b => b.r.right)) - minX + pad;
   const h = Math.max(...boxes.map(b => b.r.bottom)) - minY + pad;
 
-  // currentColor has to become a real colour once the drawing leaves the
-  // page and its stylesheet behind.
-  const ink = getComputedStyle(out).getPropertyValue("color").trim() || "#000";
-
   const parts = [];
+  if (bg) parts.push(`<rect width="100%" height="100%" fill="${bg}"/>`);
+
   boxes.forEach(({ g, r }) => {
     const src = g.querySelector("svg:not(.g-square)") || g.querySelector("svg");
     if (!src) return;
-    const inner = src.innerHTML;
-    const vb = src.getAttribute("viewBox") || "0 0 100 100";
+    // CLONE, don't scrape innerHTML. The glyph's own <svg> carries
+    // stroke-width="9", stroke-linecap and stroke-linejoin, and taking
+    // only its contents dropped all three — exported files came out at
+    // the SVG default stroke-width of 1, i.e. hairlines.
+    const el = src.cloneNode(true);
+    el.removeAttribute("class");
+    el.removeAttribute("xmlns");          // redundant inside the parent
     const x = r.left - minX, y = r.top - minY;
-    // A flipped glyph is the same drawing mirrored about its own centre.
-    const flip = g.classList.contains("avatarian-flipped")
-      ? ` transform="translate(0,${(y * 2 + r.height).toFixed(2)}) scale(1,-1)"`
-      : "";
-    parts.push(
-      `<svg x="${x.toFixed(2)}" y="${y.toFixed(2)}" ` +
-      `width="${r.width.toFixed(2)}" height="${r.height.toFixed(2)}" ` +
-      `viewBox="${vb}" overflow="visible"${flip}>${inner}</svg>`);
+    el.setAttribute("x", x.toFixed(2));
+    el.setAttribute("y", y.toFixed(2));
+    el.setAttribute("width", r.width.toFixed(2));
+    el.setAttribute("height", r.height.toFixed(2));
+    el.setAttribute("overflow", "visible");
+    // The drawings are authored against currentColor: strokes inherit
+    // `stroke`, dots are fill="currentColor". Setting both pins the
+    // colour once the file leaves the page's stylesheet behind.
+    el.setAttribute("stroke", ink);
+    el.setAttribute("color", ink);
+    if (g.classList.contains("avatarian-flipped")) {
+      // Mirror about the glyph's own horizontal centre line.
+      el.setAttribute("transform",
+        `translate(0,${(y * 2 + r.height).toFixed(2)}) scale(1,-1)`);
+    }
+    parts.push(el.outerHTML);
   });
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${w.toFixed(0)}" ` +
-    `height="${h.toFixed(0)}" viewBox="0 0 ${w.toFixed(2)} ${h.toFixed(2)}" ` +
-    `fill="none" stroke="${ink}" color="${ink}">${parts.join("")}</svg>`;
+    `height="${h.toFixed(0)}" viewBox="0 0 ${w.toFixed(2)} ${h.toFixed(2)}">` +
+    parts.join("") + `</svg>`;
 }
 
 function svgToBlob(svg) {
@@ -393,28 +416,87 @@ const savedSize = Number(localStorage.getItem("avatarian-size"));
 if (savedSize >= 28 && savedSize <= 120) { sizeCtl.value = savedSize; }
 applySize(sizeCtl.value);
 
-$("svgBtn").addEventListener("click", () => {
-  const svg = exportSVG();
-  if (svg) download(svgToBlob(svg), fileStem() + ".svg");
+// The export deliberately does NOT inherit the page's colours. It used
+// to take getComputedStyle(output).color, which meant anyone on the dark
+// theme downloaded near-white glyphs on a transparent background —
+// invisible in any white document, and indistinguishable from "the
+// download is broken". Black on transparent is the default because it
+// works wherever the file is most likely to end up.
+const ink = $("inkColour"), bgFill = $("bgFill"), bgColour = $("bgColour");
+[ink, bgFill, bgColour].forEach((el) => el.addEventListener("input", () => {
+  localStorage.setItem("avatarian-ink", ink.value);
+  localStorage.setItem("avatarian-bg", bgFill.checked ? bgColour.value : "");
+  bgColour.disabled = !bgFill.checked;
+}));
+const savedInk = localStorage.getItem("avatarian-ink");
+if (/^#[0-9a-f]{6}$/i.test(savedInk || "")) ink.value = savedInk;
+const savedBg = localStorage.getItem("avatarian-bg");
+if (/^#[0-9a-f]{6}$/i.test(savedBg || "")) { bgFill.checked = true; bgColour.value = savedBg; }
+bgColour.disabled = !bgFill.checked;
+
+/** Say what went wrong, instead of failing into silence. */
+function exportFailed(btn, what, err) {
+  flash(btn, "Failed");
+  $("outHint").textContent =
+    "Couldn't " + what + ": " + (err && err.message ? err.message : err);
+}
+
+// NOTE: every handler below grabs its button BEFORE the first await.
+// `event.currentTarget` is nulled once the event finishes dispatching, so
+// reading it after an await gives null — which is how the PNG button
+// silently stopped reporting anything and threw an unhandled TypeError
+// inside flash() instead.
+$("svgBtn").addEventListener("click", (e) => {
+  const btn = e.currentTarget;
+  try {
+    const svg = exportSVG();
+    if (!svg) return;
+    download(svgToBlob(svg), fileStem() + ".svg");
+    flash(btn, "Saved");
+  } catch (err) { exportFailed(btn, "save the SVG", err); }
 });
-$("pngBtn").addEventListener("click", async () => {
-  const blob = await exportPNG();
-  if (blob) download(blob, fileStem() + ".png");
-});
-$("copyBtn").addEventListener("click", async (e) => {
+
+$("pngBtn").addEventListener("click", async (e) => {
   const btn = e.currentTarget;
   try {
     const blob = await exportPNG();
     if (!blob) return;
-    await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-    flash(btn, "Copied");
-  } catch {
-    // Clipboard image writing isn't available everywhere, and refusing
-    // silently would look broken. Fall back to the thing that always
-    // works.
-    const blob = await exportPNG();
-    if (blob) download(blob, fileStem() + ".png");
+    download(blob, fileStem() + ".png");
     flash(btn, "Saved");
+  } catch (err) { exportFailed(btn, "save the PNG", err); }
+});
+
+$("copyBtn").addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  // Three tiers, because the image clipboard is the least available of
+  // them: it needs a secure context, so it is simply absent over
+  // file://, which is a first-class way to run this site. Falling all
+  // the way back to a download without saying so is what made a
+  // clipboard failure look like a surprise second file.
+  try {
+    const blob = await exportPNG();
+    if (!blob) return;
+    if (navigator.clipboard && navigator.clipboard.write &&
+        typeof ClipboardItem !== "undefined") {
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+      flash(btn, "Copied");
+      $("outHint").textContent = "Image copied to the clipboard.";
+      return;
+    }
+    throw new Error("no image clipboard");
+  } catch (err) {
+    try {
+      // Text is the clipboard that works everywhere, and SVG source is
+      // genuinely useful — it is what you paste into a wiki or an editor.
+      const svg = exportSVG();
+      await navigator.clipboard.writeText(svg);
+      flash(btn, "Copied SVG");
+      $("outHint").textContent =
+        "Copied the SVG code instead — this browser won't accept an image "
+        + "on the clipboard here.";
+    } catch (err2) {
+      exportFailed(btn, "copy", err2);
+    }
   }
 });
 

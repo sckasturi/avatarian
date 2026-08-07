@@ -351,42 +351,37 @@ a general rule.
     which is the mode the corpus work will live in. Consider a null
     button (`0`) beside it for the same reason.
 
-13. **Fix PNG and SVG downloading, and copy-to-clipboard.** The three
-    buttons on the output card are reported broken. Worth knowing what
-    was and wasn't checked when they were built: the *blob generation*
-    was verified — `exportSVG()` returns well-formed XML whose geometry
-    matches the page to 0.04px, and `exportPNG()` returns a ~10 KB
-    `image/png` Blob. What was **never exercised is the delivery**: the
-    synthetic `<a download>` click, and `navigator.clipboard.write()`
-    with a `ClipboardItem`. So look there first, not at the drawing code.
+13. ~~**Fix PNG and SVG downloading, and copy-to-clipboard.**~~
+    ~~**Colour selection for the export.**~~ ~~**Copy to clipboard.**~~
+    **All done in session 7.** Two real bugs, and neither was the
+    download machinery:
 
-    Specific suspects:
-    - `navigator.clipboard.write` needs a secure context. It is fine on
-      `localhost` and `https`, and **unavailable over `file://`** — which
-      is a first-class way to run this site. The catch block falls back
-      to a download, so a clipboard failure may be presenting as a
-      surprise second download rather than an error.
-    - The `<a download>` + `URL.createObjectURL` path can be blocked
-      outright over `file://` in some browsers.
-    - `exportPNG` loads the SVG through an `Image`; a browser that
-      dislikes anything in the serialised SVG fails in `onerror`, which
-      currently just rejects with "could not draw" and surfaces nowhere.
-      None of the three buttons report a failure to the user at all.
+    - **The exporter dropped the stroke attributes.** It took the glyph
+      SVG's `innerHTML`, which leaves behind `stroke-width="9"`,
+      `stroke-linecap="square"` and `stroke-linejoin="miter"` — those
+      live on the glyph's own `<svg>` element. Exported files rendered at
+      the SVG default `stroke-width: 1`, i.e. hairlines. Now it CLONES
+      the element instead of scraping its contents, so every presentation
+      attribute survives by construction.
+    - **The colour came from the page theme.** Anyone on dark mode
+      exported near-white glyphs on a transparent background: invisible
+      in any white document, and indistinguishable from a broken
+      download. The export no longer inherits the page at all — it
+      defaults to black on transparent, with a colour picker and an
+      optional background colour, both remembered.
 
-14. **Colour selection for the export.** Almost certainly related to 13,
-    and possibly the whole of it. The exporter bakes in the page's
-    *current* ink colour — `getComputedStyle(out).color` — so in dark
-    mode it writes near-white strokes onto a transparent background. Drop
-    that into any white document and it is invisible, which looks exactly
-    like "the download is broken". Needs an explicit choice: ink colour,
-    and whether the background is transparent or filled. Sensible default
-    is black-on-transparent regardless of the theme being viewed, since
-    the export leaves the page's stylesheet behind.
+    Two more found while testing:
 
-15. **Copy to clipboard.** Listed separately from 13 because it may want
-    a different answer: if the image clipboard is unavailable, copying
-    the **SVG source as text** is a useful fallback that works
-    everywhere, and is arguably what a wiki editor wants anyway.
+    - **`event.currentTarget` is null after the first `await`.** The PNG
+      handler read it post-await, so `flash()` threw an unhandled
+      `TypeError` and the button never reported anything. Every handler
+      now grabs its button before awaiting.
+    - **Failures were silent.** The clipboard path fell back to a
+      download without saying so, which presents as a surprise second
+      file. It now tries the image clipboard, falls back to copying the
+      **SVG source as text** (which works everywhere and is what a wiki
+      editor wants anyway), and says which happened. Genuine failures
+      name themselves in the status line.
 
 ### Also flagged, not yet a task
 

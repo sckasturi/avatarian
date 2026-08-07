@@ -204,6 +204,17 @@ button.primary:hover { opacity: 0.9; }
 .out-bar button:disabled { opacity: 0.4; cursor: default; }
 .size-ctl { display: inline-flex; align-items: center; gap: 6px; color: var(--faint); }
 .size-ctl input { width: 92px; }
+/* Export colour. Deliberately separate from the page theme — see the
+   comment by the handlers in index.html. */
+.ink-ctl, .bg-ctl {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.78rem; color: var(--faint);
+}
+.ink-ctl input[type="color"], .bg-ctl input[type="color"] {
+  width: 26px; height: 22px; padding: 0; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 5px; background: none;
+}
+.bg-ctl input[type="color"]:disabled { opacity: 0.35; cursor: default; }
 
 .out-foot {
   display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
