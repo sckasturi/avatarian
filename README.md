@@ -24,6 +24,8 @@ A static, no-server toolkit for the Avatarian conscript: English → Avatarian,
 a click-to-build/decode tool, glyph key, MediaWiki integration for Avatar
 Wiki (Fandom).
 
+> **What's next?** `TODO.md` is the one backlog.
+>
 > **New here?** `AVATARIAN.md` is the single reference for the *script itself* —
 > the writing model, the full glyph inventory, and every open decoding
 > question, gathered in one place. This README covers the *tool*: how it's

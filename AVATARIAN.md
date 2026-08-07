@@ -6,6 +6,7 @@ doesn't. It gathers what was scattered across `README.md` (architecture),
 `CONTEXT.md` (rules + open questions), and `HANDOFF.md` (session history)
 into one document about the script rather than the code.
 
+- **What still needs doing** → `TODO.md`
 - **Attested spellings, and the plan for a confirmed dictionary** → `CORPUS.md`
 - **How the tool is built and deployed** → `README.md`
 - **Non-obvious code decisions and the running open questions** → `CONTEXT.md`

@@ -274,123 +274,15 @@ neighbor" generalizes to every entry in `FLIPS`, or is specific to IH, is
 **unconfirmed** — worth checking each entry against it before assuming it's
 a general rule.
 
-### Feature / task backlog (not started)
+### Feature / task backlog
 
-> **`CORPUS.md` is the biggest open workstream** — provenance for WORDS
-> rather than glyphs. Digitise the attested writing samples into a
-> confirmed dictionary, mark inferred spellings in the UI, and use the
-> corpus as the evidence base for the null-placement and orientation
-> questions. It also covers handwriting input (stylus vs photo). Read it
-> before picking anything else up.
+**Moved to `TODO.md`** — the one backlog. It used to live here, which was
+a mistake: this file has several other numbered lists, so "item 12" was
+ambiguous depending on which one you meant. `TODO.md` also absorbed the
+"open work" list from `CONTEXT.md`, the open questions from `CORPUS.md`,
+and the loose ends that used to sit under "what this surfaced" below.
 
-> **Items 4 and 5 are done** — see Session 6. The pronunciation
-> dictionary closed the g2p-accuracy item too.
-
-
-1. ~~**Glyph editor needs to work a lot better with the current website
-   in general.**~~ **Done in session 6** — live block/word preview drawn
-   by the site's own `render.js` + `blocks.css`, and a "ship it" button
-   replacing the manual `build_glyphs.py` → `build_manifest.py` → reload
-   loop. The rest of what "work a lot better together" means is still
-   open; flag more specifics as they come up rather than treating this
-   as closed by the live-preview piece alone.
-2. ~~**Designer UI additions**~~ — **done in session 6.** `flips` is a
-   checkbox and `rows` a 3/4 toggle, both saved into the design and read
-   back by the build. Note the row toggle declares the form rather than
-   moving ink, and why: see session 6, item 7.
-3. **Implement the 9-row block model** above, once the open tension
-   (V-C empty-top-row) and the C-C overlap question are resolved. Touches
-   both `glyphspec.py` (Python, authority) and `designer/js/geom.js` (JS
-   port) — run `check_geom.py` after. Likely also requires reworking the
-   designer's lattice, which today treats each glyph's grid independently
-   with no shared coordinate space with its block partner — needed for the
-   "vowel+consonant merge into one glyph" case in 4-row C-V blocks.
-4. **Fuzzy reverse-decode.** Given an Avatarian sequence, suggest likely
-   English word(s) ("pretty sure this is X") instead of the current
-   exact-match-only lookup against the hardcoded exception dictionary.
-5. ~~**Fix mobile/vertical layout.**~~ **Done in session 6.** Below
-   900px the output is `position: sticky` and pins to the top while the
-   reference scrolls under it. The fix that mattered was
-   `.col-work { display: contents }`: sticky can't escape its parent's
-   box, and the reference is a sibling of that column, so while the
-   column was a box the drawing scrolled away no matter what `top` said.
-6. **Consolidate credits.** Move all "thank you"/credit content (README,
-   CONTEXT, wiki footer) into one dedicated section; user will supply more
-   links — contributors plus source material read/transcribed.
-7. **Reference material catalog page.** An index of all reference material
-   (writing samples, key chart, etc.) and what words/content each source
-   contains, for future lookup.
-8. **Final article/paper/thesis** synthesizing the full Avatarian
-   decipherment — structural rules, open questions — as one coherent
-   write-up, separate from these working dev docs.
-9. **Add a public-facing spec section to the very end of `AVATARIAN.md`.**
-   A clean description of the language *as it currently stands* — no
-   "session 5 correction," "the shipped code disagrees," or other process/
-   history language, no talk of what was discussed or decided along the
-   way. Present tense, states-the-facts only, written for someone reading
-   about the script for the first time. The rest of AVATARIAN.md can keep
-   its working-notes voice; this is a distinct section, appended at the
-   end, not a replacement for it. (Related to item 8 but not the same
-   thing — that's a separate write-up; this lives inside AVATARIAN.md
-   itself.)
-
-10. **Better handling of parentheses.** `(brackets)` currently caption a
-    word, and the rule is crude — anything parenthesised is pulled out
-    before tokenising. Needs thinking about: nested or unclosed brackets,
-    a caption on a word that also has one from the converter, and what
-    should happen when someone types a bracket meaning it literally.
-
-11. **The sounds box should scroll vertically.** A long transcription
-    grows the box without limit. Partly done — it now has a `max-height`
-    and `resize: vertical` — but the behaviour when it overflows still
-    wants a look, especially next to the sticky output on mobile.
-
-12. **A space button.** Building a line by clicking glyphs has no way to
-    end a word; you have to go to the keyboard for the `/`. A word-break
-    button in the palette would make click-only transcription possible,
-    which is the mode the corpus work will live in. Consider a null
-    button (`0`) beside it for the same reason.
-
-13. ~~**Fix PNG and SVG downloading, and copy-to-clipboard.**~~
-    ~~**Colour selection for the export.**~~ ~~**Copy to clipboard.**~~
-    **All done in session 7.** Two real bugs, and neither was the
-    download machinery:
-
-    - **The exporter dropped the stroke attributes.** It took the glyph
-      SVG's `innerHTML`, which leaves behind `stroke-width="9"`,
-      `stroke-linecap="square"` and `stroke-linejoin="miter"` — those
-      live on the glyph's own `<svg>` element. Exported files rendered at
-      the SVG default `stroke-width: 1`, i.e. hairlines. Now it CLONES
-      the element instead of scraping its contents, so every presentation
-      attribute survives by construction.
-    - **The colour came from the page theme.** Anyone on dark mode
-      exported near-white glyphs on a transparent background: invisible
-      in any white document, and indistinguishable from a broken
-      download. The export no longer inherits the page at all — it
-      defaults to black on transparent, with a colour picker and an
-      optional background colour, both remembered.
-
-    Two more found while testing:
-
-    - **`event.currentTarget` is null after the first `await`.** The PNG
-      handler read it post-await, so `flash()` threw an unhandled
-      `TypeError` and the button never reported anything. Every handler
-      now grabs its button before awaiting.
-    - **Failures were silent.** The clipboard path fell back to a
-      download without saying so, which presents as a surprise second
-      file. It now tries the image clipboard, falls back to copying the
-      **SVG source as text** (which works everywhere and is what a wiki
-      editor wants anyway), and says which happened. Genuine failures
-      name themselves in the status line.
-
-### Also flagged, not yet a task
-
-- README/CONTEXT will need a fuller rewrite once the 9-row model above is
-  implemented and settled — right now they carry inline corrections
-  pointing back here, not the full model.
-- No test suite exists; worth reconsidering given the scope of this
-  rewrite (echoes the existing "worth formalising if you keep iterating"
-  note under Testing).
+Numbers there are stable and never reused.
 
 ---
 

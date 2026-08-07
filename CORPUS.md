@@ -411,17 +411,10 @@ visible in the file.
 
 ---
 
-## 8. Open questions for the next session
+## 8. Open questions
 
-1. **Does `appa` show tall-short-tall nulls?** §7 — one look at the
-   image, and it either confirms the null-height rule on a third word or
-   breaks it.
-2. **What reference material exists, and where is it?** This document
-   assumes a pile of images. The inventory needs writing down — it is
-   also backlog item 7, the reference-material catalogue.
-3. **Squiggle or badge?** §3 argues for marking attested rather than
-   unattested. Needs a look at real content before committing.
-4. **How are phrases keyed?** "Ba Sing Se" as one entry or three.
-5. **Where does the corpus live** — `corpus/*.json` plus a generated
-   `site/js/corpus.js`, following the pattern `designs/` and
-   `lexicon.js` already set.
+**Tracked in `TODO.md`** — the corpus work is items 20–24, the
+handwriting work 25–26, and the decisions it is waiting on are B2
+(what reference material exists), B3 (does `appa` show tall-short-tall
+nulls) and B4 (squiggle or badge). The reasoning for each is above; the
+scheduling lives there.

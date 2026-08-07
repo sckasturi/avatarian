@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=13" />
-<link rel="stylesheet" href="css/style.css?v=13" />
+<link rel="stylesheet" href="css/blocks.css?v=15" />
+<link rel="stylesheet" href="css/style.css?v=15" />
 </head>
 <body>
 
@@ -86,12 +86,8 @@ and made-up words too.</p>
       <input type="range" id="outSize" min="28" max="120" step="2" value="52"
              aria-label="Glyph size">
     </label>
-    <label class="ink-ctl" title="Colour of the exported glyphs">
-      <input type="color" id="inkColour" value="#000000" aria-label="Glyph colour">
-    </label>
-    <label class="bg-ctl" title="Give the exported image a solid background instead of a transparent one">
-      <input type="checkbox" id="bgFill"> bg
-      <input type="color" id="bgColour" value="#ffffff" aria-label="Background colour">
+    <label class="ink-ctl" title="Colour of the exported glyphs. Follows the page unless you pick one.">
+      <input type="color" id="inkColour" aria-label="Glyph colour">
     </label>
     <button type="button" id="copyBtn" title="Copy the drawing as an image">Copy</button>
     <button type="button" id="pngBtn" title="Download as a PNG image">PNG</button>
@@ -145,16 +141,16 @@ and made-up words too.</p>
      target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
 </footer>
 
-<script src="js/manifest.js?v=13"></script>
+<script src="js/manifest.js?v=15"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=13"></script>
-<script src="js/g2p.js?v=13"></script>
+<script src="js/lexicon.js?v=15"></script>
+<script src="js/g2p.js?v=15"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=13"></script>
-<script src="js/render.js?v=13"></script>
+<script src="js/sounds.js?v=15"></script>
+<script src="js/render.js?v=15"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
@@ -274,9 +270,6 @@ function exportSVG(opts) {
   if (!glyphs.length) return null;
 
   const ink = (opts && opts.ink) || $("inkColour").value;
-  const bg = (opts && "background" in opts)
-    ? opts.background
-    : ($("bgFill").checked ? $("bgColour").value : null);
 
   const boxes = glyphs.map((g) => ({ g, r: g.getBoundingClientRect() }));
   const pad = 10;
@@ -285,8 +278,8 @@ function exportSVG(opts) {
   const w = Math.max(...boxes.map(b => b.r.right)) - minX + pad;
   const h = Math.max(...boxes.map(b => b.r.bottom)) - minY + pad;
 
+  // Transparent background, always. The glyphs are the artwork.
   const parts = [];
-  if (bg) parts.push(`<rect width="100%" height="100%" fill="${bg}"/>`);
 
   boxes.forEach(({ g, r }) => {
     const src = g.querySelector("svg:not(.g-square)") || g.querySelector("svg");
@@ -416,23 +409,45 @@ const savedSize = Number(localStorage.getItem("avatarian-size"));
 if (savedSize >= 28 && savedSize <= 120) { sizeCtl.value = savedSize; }
 applySize(sizeCtl.value);
 
-// The export deliberately does NOT inherit the page's colours. It used
-// to take getComputedStyle(output).color, which meant anyone on the dark
-// theme downloaded near-white glyphs on a transparent background —
-// invisible in any white document, and indistinguishable from "the
-// download is broken". Black on transparent is the default because it
-// works wherever the file is most likely to end up.
-const ink = $("inkColour"), bgFill = $("bgFill"), bgColour = $("bgColour");
-[ink, bgFill, bgColour].forEach((el) => el.addEventListener("input", () => {
-  localStorage.setItem("avatarian-ink", ink.value);
-  localStorage.setItem("avatarian-bg", bgFill.checked ? bgColour.value : "");
-  bgColour.disabled = !bgFill.checked;
-}));
-const savedInk = localStorage.getItem("avatarian-ink");
-if (/^#[0-9a-f]{6}$/i.test(savedInk || "")) ink.value = savedInk;
-const savedBg = localStorage.getItem("avatarian-bg");
-if (/^#[0-9a-f]{6}$/i.test(savedBg || "")) { bgFill.checked = true; bgColour.value = savedBg; }
-bgColour.disabled = !bgFill.checked;
+// WYSIWYG: the exported glyphs are the colour you can see on the page.
+// The control starts from the page's ink and follows the theme toggle, so
+// switching to light and exporting gives dark glyphs — which is what you
+// want for anything destined for a white page. Pick a colour explicitly
+// and that choice sticks instead, until you clear it.
+//
+// (It used to take the page colour with no control at all, which meant a
+// dark-theme export was near-white on transparent — invisible in a white
+// document, and indistinguishable from a broken download. The control is
+// the escape hatch; the default is what you see.)
+const inkCtl = $("inkColour");
+let inkPinned = localStorage.getItem("avatarian-ink") || "";
+
+function pageInk() {
+  const c = getComputedStyle($("avatarianOutput")).color;
+  const m = c.match(/(\d+),\s*(\d+),\s*(\d+)/);
+  if (!m) return "#000000";
+  return "#" + [1, 2, 3].map(i => (+m[i]).toString(16).padStart(2, "0")).join("");
+}
+
+function syncInk() {
+  inkCtl.value = /^#[0-9a-f]{6}$/i.test(inkPinned) ? inkPinned : pageInk();
+  inkCtl.classList.toggle("is-pinned", !!inkPinned);
+  inkCtl.title = inkPinned
+    ? "Exporting in this colour. Double-click to go back to the page colour."
+    : "Exporting in the colour shown on the page. Pick one to override.";
+}
+
+inkCtl.addEventListener("input", () => {
+  inkPinned = inkCtl.value;
+  localStorage.setItem("avatarian-ink", inkPinned);
+  syncInk();
+});
+inkCtl.addEventListener("dblclick", () => {
+  inkPinned = "";
+  localStorage.removeItem("avatarian-ink");
+  syncInk();
+});
+syncInk();
 
 /** Say what went wrong, instead of failing into silence. */
 function exportFailed(btn, what, err) {
@@ -674,6 +689,10 @@ function applyTheme(mode) {
   else document.documentElement.setAttribute("data-theme", mode);
   themeBtn.textContent = THEME_LABELS[mode];
   themeBtn.setAttribute("aria-label", "Colour theme: " + mode + ". Click to change.");
+  // The export follows the page, so a theme change moves it too — unless
+  // a colour has been pinned. Without this the picker kept the old
+  // theme's ink and quietly exported the wrong colour.
+  if (typeof syncInk === "function") syncInk();
 }
 
 let themeMode = localStorage.getItem("avatarian-theme") || "auto";
