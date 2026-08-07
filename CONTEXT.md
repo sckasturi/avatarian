@@ -5,23 +5,10 @@ what a fresh session needs to know that isn't obvious from the code.
 
 ## Credit
 
-Avatarian is a community decipherment. The reference material this tool
-encodes — the key chart, the writing samples, and the structural readings —
-comes from:
-
-* **BokerBigBanana** on Avatar Wiki —
-  <https://avatar.fandom.com/wiki/User:BokerBigBanana>
-* **u/DepressionDokkebi**, "Avatarian decipherment so far" —
-  <https://www.reddit.com/r/TheLastAirbender/comments/1v4yalr/avatarian_decipherment_so_far/>
-* **u/arienzio**, "New Avatar: The Last Airbender conscript" —
-  <https://www.reddit.com/r/neography/comments/1slqce2/new_avatar_the_last_airbender_conscript/>
-
-**Tool designed by TechFilmer** on Avatar Wiki —
-<https://avatar.fandom.com/wiki/User:TechFilmer>.
-
-The code here renders that decipherment work; the script itself is not this
-project's research. Keep the credit in the site footer, the `wiki/` files,
-and here.
+**See `AVATARIAN.md` § Credit** — the one place credits are
+maintained. It covers the decipherment sources, the tool's author and
+the pronunciation dictionary, and notes the two public-facing copies
+(the site footer and the wiki files) that must stay in step with it.
 
 ## What this is
 

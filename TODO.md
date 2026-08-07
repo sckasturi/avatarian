@@ -51,8 +51,9 @@ squiggling the unattested majority, since almost everything anyone types
 will be unattested and a page of squiggles teaches people to ignore them.
 Wants a look at real content before committing.
 
-**B5. Extra credits links.** For item 6 — contributors plus source
-material read or transcribed.
+**B5. Extra credits links.** Contributors plus source material read or
+transcribed. Item 6 is done, so these just get added to `AVATARIAN.md`
+§ Credit when they arrive.
 
 ---
 
@@ -195,8 +196,13 @@ language. Distinct from item 8.
 **7. Reference material catalogue page.** An index of every reference
 image and what it contains. Overlaps B2 — the inventory is the input.
 
-**6. Consolidate credits** into one section (README, CONTEXT, wiki
-footer, site footer all carry fragments). Waiting on B5.
+~~**6. Consolidate credits.**~~ **Done in session 7.** `AVATARIAN.md`
+§ Credit is the one place they are maintained; `README.md` and
+`CONTEXT.md` point at it. The site footer and the wiki file headers keep
+their copies deliberately — they are the only place a reader who never
+opens the repo will see attribution — and the site footer now leads with
+the tool's own credit rather than burying it last. B5 (extra links) can
+be added to the one section whenever they turn up.
 
 **8. Final article synthesising the decipherment** — structural rules and
 open questions as one write-up, separate from these working docs.

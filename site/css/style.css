@@ -58,6 +58,12 @@
   color-scheme: dark;
 }
 
+/* Links had no rule at all, so they fell back to the browser's blue and
+   purple — which reads as unstyled against the theme, and is unreadable
+   on the dark palette. */
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { color: var(--ink); }
+
 body {
   font-family: "Georgia", serif;
   background: var(--paper);
@@ -285,7 +291,13 @@ button.primary:hover { opacity: 0.9; }
 .legend { font-size: 0.8rem; color: var(--muted-2); margin-top: 10px; }
 .legend .dot { display: inline-block; width: 10px; height: 10px; border: 1px dashed var(--accent); margin-right: 4px; }
 
-footer { margin-top: 40px; font-size: 0.8rem; color: var(--faint); text-align: center; }
+footer {
+  margin-top: 40px; font-size: 0.8rem; color: var(--faint); text-align: center;
+}
+footer p { margin: 4px 0; }
+/* The tool's own credit leads, and is the one line that isn't faint. */
+.footer-by { font-size: 0.9rem; color: var(--muted); }
+.footer-by a { font-weight: bold; }
 
 /* Glyph key grid — each cell pairs the drawn glyph with the traced
    shape from the hand-lettered key, so the two can be compared. */

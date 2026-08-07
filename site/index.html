@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=19" />
-<link rel="stylesheet" href="css/style.css?v=19" />
+<link rel="stylesheet" href="css/blocks.css?v=21" />
+<link rel="stylesheet" href="css/style.css?v=21" />
 </head>
 <body>
 
@@ -133,37 +133,40 @@ and made-up words too.</p>
 </div>
 </div>
 
+<!-- The public-facing credit. This is the only place most readers will
+     ever see it, so it stays on the page even though AVATARIAN.md is
+     where credits are maintained — keep the two in step. -->
 <footer>
-  Avatarian Translator — static site, no server, no tracking. Glyphs are a
-  work in progress.
-  <br>
-  Reference material and decipherment work by
-  <a href="https://avatar.fandom.com/wiki/User:BokerBigBanana"
-     target="_blank" rel="noopener">BokerBigBanana</a> on Avatar Wiki,
-  <a href="https://www.reddit.com/r/TheLastAirbender/comments/1v4yalr/avatarian_decipherment_so_far/"
-     target="_blank" rel="noopener">u/DepressionDokkebi</a>, and
-  <a href="https://www.reddit.com/r/neography/comments/1slqce2/new_avatar_the_last_airbender_conscript/"
-     target="_blank" rel="noopener">u/arienzio</a>.
-  <br>
-  Pronunciations from the
-  <a href="https://github.com/cmusphinx/cmudict" target="_blank"
-     rel="noopener">CMU Pronouncing Dictionary</a>.
-  <br>
-  Tool designed by
-  <a href="https://avatar.fandom.com/wiki/User:TechFilmer"
-     target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
+  <p class="footer-by">
+    Built by
+    <a href="https://avatar.fandom.com/wiki/User:TechFilmer"
+       target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
+  </p>
+  <p>
+    Avatarian is a community decipherment. Reference material and
+    structural readings by
+    <a href="https://avatar.fandom.com/wiki/User:BokerBigBanana"
+       target="_blank" rel="noopener">BokerBigBanana</a>,
+    <a href="https://www.reddit.com/r/TheLastAirbender/comments/1v4yalr/avatarian_decipherment_so_far/"
+       target="_blank" rel="noopener">u/DepressionDokkebi</a> and
+    <a href="https://www.reddit.com/r/neography/comments/1slqce2/new_avatar_the_last_airbender_conscript/"
+       target="_blank" rel="noopener">u/arienzio</a>; pronunciations from the
+    <a href="https://github.com/cmusphinx/cmudict" target="_blank"
+       rel="noopener">CMU Pronouncing Dictionary</a>.
+  </p>
+  <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=19"></script>
+<script src="js/manifest.js?v=21"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=19"></script>
-<script src="js/g2p.js?v=19"></script>
+<script src="js/lexicon.js?v=21"></script>
+<script src="js/g2p.js?v=21"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=19"></script>
-<script src="js/render.js?v=19"></script>
+<script src="js/sounds.js?v=21"></script>
+<script src="js/render.js?v=21"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};

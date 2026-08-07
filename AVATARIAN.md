@@ -37,14 +37,41 @@ guesses are both called out.
 
 ### Credit
 
-The reference material — the key chart, the writing samples, the structural
+**This is the one place credits are maintained.** They used to be
+duplicated in `README.md` and `CONTEXT.md`, which drifted; those now
+point here.
+
+Avatarian is a **community decipherment**. The reference material this
+project encodes — the key chart, the writing samples, the structural
 readings — comes from:
 
 - **BokerBigBanana** on Avatar Wiki — <https://avatar.fandom.com/wiki/User:BokerBigBanana>
 - **u/DepressionDokkebi**, "Avatarian decipherment so far" — <https://www.reddit.com/r/TheLastAirbender/comments/1v4yalr/avatarian_decipherment_so_far/>
 - **u/arienzio**, "New Avatar: The Last Airbender conscript" — <https://www.reddit.com/r/neography/comments/1slqce2/new_avatar_the_last_airbender_conscript/>
 
-Tool designed by **TechFilmer** on Avatar Wiki — <https://avatar.fandom.com/wiki/User:TechFilmer>.
+**Tool designed by TechFilmer** on Avatar Wiki —
+<https://avatar.fandom.com/wiki/User:TechFilmer>.
+
+Pronunciations come from the **CMU Pronouncing Dictionary** (BSD-style
+licence) — <https://github.com/cmusphinx/cmudict>. See
+`tools/build_lexicon.py` for how it is mapped onto this project's
+phoneme set.
+
+The code renders that decipherment work; **the script itself is not this
+project's research.**
+
+#### Two copies stay outside this file, deliberately
+
+Attribution has to be visible to people who never open the repository,
+so it also lives on the two public surfaces — and those are the copies
+that matter most, because they are the only ones a reader sees:
+
+- **`site/index.html`** — the site footer.
+- **`wiki/MediaWiki_Common.js.txt`** and **`.css.txt`** — a header
+  comment, since those files get pasted into Avatar Wiki itself.
+
+Keep them in step with this section. Don't remove them to reduce
+duplication: they are the point.
 
 ---
 
