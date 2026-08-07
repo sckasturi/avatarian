@@ -267,6 +267,12 @@ button.primary:hover { opacity: 0.9; }
 }
 .write.is-edited .sounds-part { border-top-color: var(--accent); }
 
+/* `display: flex` beats the [hidden] attribute's UA `display: none`, so
+   without this rule the "you've edited these sounds by hand" banner was
+   shown to everyone on every load, including people who had edited
+   nothing. The JS was right all along — it sets .hidden, and .hidden was
+   simply having no effect. */
+.tune-note[hidden] { display: none; }
 .tune-note {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
   font-size: 0.85rem; color: var(--muted);

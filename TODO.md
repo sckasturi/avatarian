@@ -38,12 +38,21 @@ waiting on 20, and item 3 is downstream of both.
 (20–24), the catalogue page (7), and any handwriting work (25–26). An
 inventory of the images, and what words each contains.
 
+**Now the top blocker.** The corpus is built (22) and its format is
+settled, so adding a word is a row in a file — but there are only 23
+rows, and every one of them cites a source that reads "not yet
+catalogued — see TODO B2". The spellings are right; nobody can re-check
+them. `corpus/attested.json` has a `sources` map where each image is
+described once, so cataloguing fixes all of them in one place, and it is
+what turns 20 from blocked into typing.
+
 **B3. Does `appa` show tall-short-tall nulls?** One look at the art.
-Rendering its attested spelling `AA 0 P 0 AA 0` predicts tall, short,
-tall — which is what the pairing-partner rule gives, since ɑ is a vowel
-and p is a consonant. Confirm and the null-height rule holds on a third
-word with no syntax change; contradict it and the sounds syntax needs a
-`0c` code. See `CORPUS.md` §7.
+**The site now draws the prediction** — type `appa` and it comes out
+tall, short, tall, which is what the pairing-partner rule gives since ɑ
+is a vowel and p is a consonant. So this is a straight comparison against
+the image, not a thought experiment. Confirm and the null-height rule
+holds on a third word with no syntax change; contradict it and the sounds
+syntax needs a `0c` code. See `CORPUS.md` §7.
 
 **B4. Squiggle or badge?** How to mark unattested spellings (item 21).
 `CORPUS.md` §3 argues for marking the *attested* exception rather than
@@ -63,20 +72,51 @@ transcribed. Item 6 is done, so these just get added to `AVATARIAN.md`
 
 **20. Digitise the attested writing samples** into a confirmed
 dictionary: one entry per attested word or phrase, storing the spelling
-actually observed as a sounds-syntax string, plus where it was observed.
-The biggest open workstream — and now also the **prerequisite for item 3
-and B1**, since the C-C question is going to be answered by looking at
-attested blocks rather than by reasoning from a couple of samples.
+actually observed, plus where it was observed. The biggest open
+workstream — and also the **prerequisite for item 3 and B1**, since the
+C-C question is going to be answered by looking at attested blocks
+rather than by reasoning from a couple of samples.
 
-**21. Show confidence in the UI.** Three tiers — attested / derived /
-guessed — matching the lookup chain. Blocked on B4 for the visual
-treatment, not for the plumbing.
+**The file exists and 23 entries are in it** (item 22, session 8): the
+twelve words of the wake-up note, `students`, `metalbending`, `appa`,
+the four names, the poster sentence and `fire`. Adding a word is now a
+row in `corpus/attested.json` and a re-run of `tools/build_corpus.py`.
+What is left is the material this repo does not have — **which is B2,
+not a design problem.**
 
-**22. Make the corpus win in the lookup chain**, ahead of `EXCEPTIONS`.
-It differs in kind from everything below it: the others produce phonemes
-and let `pairUp()` decide the blocks, while the corpus supplies a
-finished spelling and `pairUp()` must not run. `appa` is the proof — it
-cannot be expressed as a phoneme list plus the pairing rule.
+Every entry's `source` currently ends in "not yet catalogued — see TODO
+B2". That is the honest state and it is deliberately loud: the spellings
+are right, but a year from now nobody will be able to re-check them.
+Cataloguing the images fixes every one of those lines at once.
+
+~~**21. Show confidence in the UI.**~~ **Plumbing done in session 8**;
+the display is still open and still blocked on B4. `lookupWord()`
+returns `{ipa, tier, entry}` and `sentenceToIPA` carries it onto every
+word, so the page knows which of attested / derived / guessed each word
+is, plus source and confidence for the attested ones. **Nothing shows it
+yet** — that is the judgement call in `CORPUS.md` §3, and it wants
+looking at with real content rather than deciding cold.
+
+~~**22. Make the corpus win in the lookup chain.**~~ **Done in session
+8.** `corpus/attested.json` → `tools/build_corpus.py` → `site/js/corpus.js`,
+loaded by the site, the wiki gadget and the designer, and consulted above
+`EXCEPTIONS`. `appa` draws as three blocks; `students` and
+`metalbending` draw their mid-word nulls. None of those were expressible
+before.
+
+Two things came out differently from the `CORPUS.md` design, both now
+corrected there:
+
+- **Entries store IPA, not the sounds syntax.** The syntax is ARPAbet and
+  item 29 wants to replace it, which would have meant migrating the whole
+  corpus. The site is already IPA internally — the codes are a display
+  layer — so **item 29 no longer has to be sequenced before 20.**
+- **`pairUp()` did not need bypassing.** A finished spelling with its
+  nulls written out has an even token count, and pairing an even list is
+  the exact inverse of flattening the blocks. So the feature is one
+  lookup plus a data file, not a second render path. `build_corpus.py`
+  rejects an odd count, since that means somebody recorded phonemes
+  instead of a spelling.
 
 **23. A transcription workbench.** Reference image on one side, the
 spelling being built on the other, live Avatarian underneath to compare.
@@ -84,11 +124,17 @@ Most of it exists already in the designer: the live block preview, the
 palette, the shared sounds syntax, a local server that writes files. What
 it needs is an image underlay, an entry form and a save route.
 
+The save target is now settled: append to `corpus/attested.json` and run
+`tools/build_corpus.py`, which validates before it writes anything.
+
 **24. Audit `EXCEPTIONS` against reference material.** Every in-world
 name is a guess until checked. Two of the first four checked were wrong
 (`toph`, `aang`), so expect more: `katara`, `sokka`, `iroh`, `azula`,
 `korra`, `omashu`, `kyoshi`, `sozin`, `roku`, `ozai`, `suki`, `yue`,
-`haru`. Confirmed ones migrate into the corpus.
+`haru`. The file now says so in a comment above them, and the two halves
+of the old table are properly separated: `EXCEPTIONS` is *readings* and
+all of it is provisional, the corpus is *observations* and none of it is.
+A confirmed name does not get corrected in `EXCEPTIONS` — it moves.
 
 ### Handwriting input
 
@@ -165,13 +211,14 @@ Design constraints:
   not about narrowing what it accepts.
 - **`0`, `$`, `%` and `/` stay** — they are punctuation, not sounds.
 
-**Sequence this against the corpus (20).** `CORPUS.md` proposes storing
-attested spellings as sounds-syntax strings, which would tie every corpus
-entry to whatever scheme is current — change the scheme later and the
-whole corpus needs migrating. The fix is to **store the corpus in IPA**,
-which is canonical and not going to change, and treat any ASCII scheme as
-a display and input layer over it. Worth deciding before 20 is built
-rather than after.
+~~**Sequence this against the corpus (20).**~~ **No longer coupled.**
+The worry was that storing attested spellings as sounds-syntax strings
+would tie every corpus entry to whatever scheme is current. The corpus
+stores **IPA** instead, which is canonical and not going to change, and
+the site was already IPA internally — `normaliseSound` converts on the
+way in and `IPA_TO_CODE` converts on the way out, so ARPAbet was only
+ever a display layer. Item 29 can land whenever; the corpus does not
+move with it.
 
 **4. Fuzzy reverse-decode.** Given an Avatarian sequence, suggest likely
 English words ("pretty sure this is X") instead of the current
@@ -191,6 +238,28 @@ which is why `ship all…` shows the list first.
 
 **18. `/x/` has no glyph** and renders as a dashed box. The only
 remaining placeholder, and it needs source material rather than a guess.
+
+**30. Two glyphs flip that the docs say don't.** `designs/s.json` and
+`designs/oi.json` both carry `flips: true`, so the shipped manifest
+mirrors /s/ and /ɔɪ/ by slot — but `FLIPS_BASE` in `build_glyphs.py` is
+`{æ, ɑ, l, ɪ, e, aɪ}` and `AVATARIAN.md` §6 states outright that **/s/ is
+deliberately NOT in the list**, which is the entire reason the `$`/`%`
+override exists. /ɔɪ/ is in neither the table nor any evidence note.
+
+Found while writing the `students` corpus entry, which spells both its
+/s/ by hand precisely because no slot rule works. Since session 6 moved
+`flips` into the designs and made them the authority, a checkbox tick in
+the designer silently overrides the documented table — so this is also a
+question about whether that override should be able to add a flip nobody
+recorded evidence for.
+
+**Deliberately deferred until the corpus is built (20)** — same reasoning
+as B1. `CORPUS.md` §4: every attested glyph in a known slot is evidence
+for or against a `FLIPS` entry, and the current table cites one or two
+words per glyph from memory. Rather than argue /s/ and /ɔɪ/ from the
+docs, transcribe the material and read every orientation off it at once.
+The answer arrives with the corpus instead of being litigated ahead of
+it.
 
 **19. Stroke-level fusion.** Canon is hand-lettered so adjacent glyphs
 interlock and share edges; this butts discrete SVGs together. Correct
@@ -222,6 +291,12 @@ machine-edits `build_glyphs.py`, which raises the stakes. The corpus (20)
 is the natural source of cases: real attested spellings rather than
 invented ones, so any change to pairing, nulls or flips can be checked
 against every attested word at once.
+
+**There are 23 cases to run against now**, so this stopped being
+circular. `tools/build_corpus.py` already validates the data; what's
+missing is a harness that loads the JS in node and asserts that every
+corpus entry still renders to the blocks it records. That is the
+regression net `CORPUS.md` §4 describes, and it is small.
 
 **28. README/CONTEXT rewrite** once the 9-row model is settled. They
 currently carry inline corrections pointing at the session log rather

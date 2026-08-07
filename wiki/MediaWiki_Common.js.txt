@@ -12,10 +12,17 @@
  *   5. Create Template:Avatarian, then use {{avatarian|word}} in articles.
  *
  * The glyphs are inline SVG embedded in manifest.js, so this loads
- * three small scripts and no images at all — nothing to upload to the
+ * four small scripts and no images at all — nothing to upload to the
  * wiki, and glyphs inherit the surrounding text colour and size.
  * If the scripts fail to load, the original English text stays
  * visible, so this always degrades gracefully.
+ *
+ * corpus.js carries the words somebody has actually seen written in
+ * Avatarian, and is the one file here the wiki most needs to be right —
+ * an article rendering "Appa" should render it the way canon does. The
+ * 1.6 MB pronunciation dictionary is deliberately NOT loaded: it is far
+ * too heavy for a page that may only draw one word, and the rules cover
+ * that case.
  */
 (function () {
   var AVATARIAN_SITE_BASE = "https://REPLACE-ME.github.io/avatarian/"; // <-- set this
@@ -32,6 +39,7 @@
 
   function init() {
     loadScript(AVATARIAN_SITE_BASE + "js/manifest.js")
+      .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/corpus.js"); })
       .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/g2p.js"); })
       .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/render.js"); })
       .then(renderAllSpans)

@@ -7,6 +7,102 @@ what to do next.
 
 ---
 
+## Session 8 — the corpus is real
+
+**Read `TODO.md` first**, then this. One item: **22**, the corpus in the
+lookup chain. It was picked because everything else on the critical path
+(20, 24, B1, B3) is waiting on reference material from the user, and 22
+was the piece that needed nothing.
+
+### What shipped
+
+```
+corpus/attested.json     the corpus — edit this
+tools/build_corpus.py    validates it, generates the JS
+site/js/corpus.js        generated; site + wiki gadget + designer load it
+```
+
+23 entries from 7 sources, consulted above `EXCEPTIONS`. Three words now
+draw spellings the pipeline could not previously express at all:
+
+```
+appa          (ɑ,∅) (p,∅) (ɑ,∅)                       three blocks, not two
+students      (s%,t) (u,∅) (d,ə) (n,t) (s$,∅)         mid-word null
+metalbending  (m,ɛ) (t,ə) (l,∅) (b,ɛ) (n,d) (ɪ,ŋ)     mid-word null
+```
+
+`appa` renders **tall, short, tall** — so B3 is now a straight look at
+the art beside the screen rather than a thought experiment.
+
+### Two things the design got wrong, and they made it smaller
+
+`CORPUS.md` proposed both and is corrected in place.
+
+1. **Store IPA, not the sounds syntax.** The syntax is ARPAbet, item 29
+   wants to replace ARPAbet, and every entry would have needed migrating.
+   The site turned out to be **already IPA internally** — `normaliseSound`
+   converts on the way in, `IPA_TO_CODE` on the way out — so ARPAbet was
+   only ever a display layer. **Item 29 is no longer coupled to the
+   corpus** and can land whenever.
+
+2. **`pairUp()` did not need bypassing**, which was stated as the whole
+   difficulty. A finished spelling with its nulls written out has an
+   **even** token count, and pairing an even list two at a time is the
+   exact inverse of flattening the blocks. So a corpus entry is an
+   ordinary symbol list that happens to have been observed, needs no
+   second render path, and `render.js` was not touched. What actually
+   gets bypassed is the *pronunciation* lookup above it.
+
+   `build_corpus.py` rejects an odd token count for this reason: an odd
+   count means somebody recorded a phoneme list instead of a spelling,
+   which is the one mistake that would quietly poison the data.
+
+### Bugs found on the way
+
+- **The "you've edited these sounds by hand" banner was shown to
+  everyone, always.** `.tune-note { display: flex }` beats the `[hidden]`
+  attribute's UA `display: none`, so the JS setting `.hidden = true` had
+  no effect. Session 7 shipped it. One line: `.tune-note[hidden]
+  { display: none }`. Worth remembering as a class of bug — **`hidden`
+  is only a default, and any `display` rule silently defeats it.**
+- **An orientation override didn't survive the round trip to the sounds
+  box.** `wordsToSoundText` looked the whole token up in `IPA_TO_CODE`,
+  and `s%` is not a key, so it wrote raw IPA into a box that otherwise
+  speaks ARPAbet. Nothing upstream produced an override until the corpus
+  did (`students` spells both its /s/ by hand), which is why a
+  round-trip bug sat there unnoticed. Split the suffix, then look up.
+
+### Surfaced, not acted on — new TODO item 30
+
+**Two glyphs flip that the docs say don't.** `designs/s.json` and
+`designs/oi.json` carry `flips: true`, so the shipped manifest mirrors
+/s/ and /ɔɪ/ by slot — but `FLIPS_BASE` is `{æ, ɑ, l, ɪ, e, aɪ}` and
+`AVATARIAN.md` §6 says outright that **/s/ deliberately does not flip**,
+which is the entire reason the `$`/`%` override exists. /ɔɪ/ has no
+evidence recorded anywhere.
+
+Since session 6 made the designs authoritative for `flips`, a checkbox
+tick silently overrides the documented table.
+
+**Deferred behind the corpus on the user's call**, same as B1 — the point
+of the corpus is that orientation questions get read off attested glyphs
+in known slots rather than argued from the docs. Don't pick this up
+early.
+
+### Where things stand
+
+**B2 is now the top blocker**, ahead of everything. The corpus format is
+settled and adding a word is a row in a file — but every one of the 23
+entries cites a source ending "not yet catalogued". The spellings are
+right and nobody can re-check them. Cataloguing the images is what turns
+item 20 from blocked into typing.
+
+Item 21's plumbing came along free: `lookupWord()` returns
+`{ipa, tier, entry}` with tier in attested / derived / guessed, carried
+onto every word by `sentenceToIPA`. Nothing displays it — that is B4.
+
+---
+
 ## Session 7 — dictionary, page rebuild, export, backlog
 
 **Read `TODO.md` first** — it is now the single backlog, and this session

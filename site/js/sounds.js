@@ -60,15 +60,27 @@ function normaliseSound(token) {
   return body + suffix;
 }
 
+/** One symbol -> the code to display, override suffix carried through. */
+function soundToCode(token) {
+  const { body, suffix } = splitOverride(token);
+  return (IPA_TO_CODE[body] || body) + suffix;
+}
+
 /**
  * Serialise words back into the ASCII syntax shown in the box, carrying
  * each word's English along in parentheses so the caption survives any
  * later hand-editing.
+ *
+ * The override suffix is split off before the code lookup — `s%` is not
+ * a key in IPA_TO_CODE, so looking the whole token up wrote raw IPA into
+ * a box that otherwise speaks ARPAbet. Nothing produced an override
+ * upstream until the corpus did ("students" spells both its /s/ by
+ * hand), which is why this only showed up now.
  */
 function wordsToSoundText(words) {
   return words
     .map((w) => {
-      const codes = w.ipa.map(sym => IPA_TO_CODE[sym] || sym).join(" ");
+      const codes = w.ipa.map(soundToCode).join(" ");
       return w.word ? codes + " (" + w.word + ")" : codes;
     })
     .join("  /  ");
@@ -186,7 +198,8 @@ function spreadCaptions(words) {
 if (typeof module !== "undefined") {
   module.exports = {
     EXTRA_CODES, SOUND_ALIASES, IPA_TO_CODE,
-    splitOverride, normaliseSound, wordsToSoundText, soundTextToWords,
+    splitOverride, normaliseSound, soundToCode,
+    wordsToSoundText, soundTextToWords,
     splitCaption, spreadCaptions,
   };
 }

@@ -1,8 +1,34 @@
 # The corpus — attested Avatarian, and what to build on it
 
-**Status: design note. Nothing here is implemented.** Written 2026-08-06,
-at the end of the session that shipped the pronunciation dictionary and
-rebuilt the site's front page.
+**Status: §2 is built. §3, §5 and §6 are still design notes.** Written
+2026-08-06 at the end of the session that shipped the pronunciation
+dictionary; §2 implemented the session after.
+
+What exists now:
+
+```
+corpus/attested.json     the corpus itself — edit this
+tools/build_corpus.py    validates it and generates the JS
+site/js/corpus.js        generated; loaded by the site, wiki and designer
+```
+
+23 entries from 7 sources. `appa` now draws as three blocks, and
+`students` and `metalbending` draw their mid-word nulls — none of which
+the pipeline could express before. Adding a word is a row in the JSON
+and a re-run of the build script.
+
+**Two things came out differently from the design below**, and the
+sections are corrected in place:
+
+- **Spellings are stored in IPA, not in the sounds syntax** (§2). The
+  syntax is ARPAbet-flavoured and TODO item 29 proposes replacing it;
+  storing codes would have tied every entry to a scheme that is expected
+  to move. IPA is canonical, and the site is already IPA internally —
+  the codes are only an input and display layer.
+- **`pairUp()` does not need to be bypassed** (§2). A finished spelling
+  written with its nulls always has an even token count, and pairing an
+  even list two at a time reproduces the blocks exactly. The thing that
+  has to be bypassed is the *pronunciation* lookup, not the pairing.
 
 This is about **provenance for WORDS**, which is a separate question from
 provenance for glyphs. Glyph provenance is settled and closed (see
@@ -77,24 +103,34 @@ A corpus records all three as data instead of deriving them.
 **One entry per attested word or phrase, recording the spelling actually
 observed, and where it was observed.**
 
-The spelling is stored as a **sounds-syntax string** — the same thing the
-site's sounds box takes. That is deliberate: it already encodes
-everything an attested spelling needs, including explicit nulls
-(`AA 0 P 0 AA 0`) and forced orientations (`S$`), and it round-trips
-through code that already exists. A corpus entry is literally a line
-someone could paste into the site.
+The spelling is stored **in IPA**, as the finished block structure
+flattened — read the blocks left to right, each one top slot then bottom
+slot, with the nulls written out.
 
-Sketch of an entry:
+*(The original plan here was to store the sounds-syntax string the box
+takes, `AA 0 P 0 AA 0`. That syntax is ARPAbet, and TODO item 29 wants to
+replace ARPAbet with something guessable; every entry would then have
+needed migrating. IPA does not move, the site is already IPA internally,
+and `wordsToSoundText` renders an entry into whatever the current codes
+are — so a corpus entry is still literally a line you could paste into
+the site, it just isn't stored that way.)*
 
+An entry, as it appears in `corpus/attested.json`:
+
+```json
+{
+  "key": "appa",
+  "spelling": "ɑ ∅ p ∅ ɑ ∅",
+  "gloss": "Appa",
+  "source": "appa-art",
+  "confidence": "certain",
+  "note": "Three blocks where pairing predicts two — every phoneme
+           padded with its own null. Why is unknown."
+}
 ```
-word:     appa
-spelling: AA 0 P 0 AA 0
-gloss:    Appa
-source:   writing-sample-3.png, second line, third word
-note:     three blocks where pairing predicts two; each phoneme
-          padded with its own null. Reason unknown.
-confidence: certain          # certain | probable | unclear
-```
+
+`source` names an entry in the file's `sources` map, so the description
+of an image is written once however many words come off it.
 
 Notes on the shape of this:
 
@@ -120,12 +156,22 @@ RULES      letter-to-sound guesser
 
 The corpus differs from the three below it in kind, not just priority:
 **the others produce phonemes and let `pairUp()` decide the blocks; the
-corpus supplies the finished spelling and `pairUp()` must not run.** That
-is the whole point — `appa` cannot be expressed as a phoneme list plus
-the pairing rule.
+corpus supplies the finished spelling.** That is the whole point — `appa`
+cannot be expressed as a phoneme list plus the pairing rule.
 
-So the renderer needs to accept a pre-spelled word, not just a phoneme
-sequence. It nearly does already: the sounds box is exactly that path.
+**But `pairUp()` does not have to be turned off**, which is what this
+section originally assumed. A finished spelling with its nulls written
+out always has an **even** token count, and pairing an even list two at a
+time reproduces exactly the blocks it was flattened from — `pairUp` is
+the inverse of the flattening, not a rival to it. So a corpus entry needs
+no special path through the renderer at all; it is an ordinary symbol
+list that happens to have been observed rather than derived. What gets
+bypassed is the *pronunciation* lookup above it.
+
+That is why the whole feature is one lookup at the top of `wordToIPA`
+plus a data file, and why `build_corpus.py` rejects an odd token count:
+an odd count means somebody recorded a phoneme list instead of a
+spelling, which is the exact mistake the corpus exists to prevent.
 
 ### One syntax gap this exposes
 
@@ -142,6 +188,13 @@ is needed. If it doesn't, the corpus needs a way to write the other null,
 and `0c` should be added.
 
 Do not guess this one. It is checkable.
+
+**How this is handled in the built version:** entries record the generic
+`∅` and let `nullFor` choose. Recording `∅c` would be recording an
+*interpretation* — the height is derived, not observed — and §4 depends
+on the raw observation staying separate from the model applied to it. So
+`appa` renders tall-short-tall today, which is the prediction; if B3 says
+otherwise, the fix is to the rule, and the corpus lines do not move.
 
 ---
 
@@ -163,6 +216,14 @@ The distinction between the bottom two is worth surfacing, because they
 fail differently. A *derived* word is probably right in sound and
 possibly wrong in block structure. A *guessed* word may be wrong about
 what it even sounds like.
+
+**The plumbing is built.** `lookupWord()` in `g2p.js` returns
+`{ ipa, tier, entry }`, and `sentenceToIPA` carries both onto every word
+group, so the page already knows the tier of every word it draws — plus
+the source and confidence for an attested one. **Nothing displays it
+yet**, because which of the two treatments below reads better is a
+judgement about how the page feels with real content (TODO B4), and the
+answer wants looking at rather than deciding.
 
 ### Mark the exception, not the rule
 
@@ -338,10 +399,17 @@ the same underlay the workbench needs anyway.
 
 ## 7. The first confirmed entries
 
-Five words are now checked against reference material. Until the corpus
-proper exists they live in `EXCEPTIONS` in `g2p.js`, under an `ATTESTED`
-heading that says not to "correct" them back toward the natural English
-reading — which is exactly how two of them were wrong.
+Five words were checked against reference material in session 7. They
+lived in `EXCEPTIONS` under an `ATTESTED` heading until the corpus
+existed; **they are now in `corpus/attested.json` and out of
+`EXCEPTIONS` entirely**, along with the twelve words of the wake-up note,
+`students`, `metalbending`, the poster sentence and `fire` — 23 entries.
+
+The `ATTESTED` heading was a warning not to "correct" those readings back
+toward natural English, which is exactly how two of them got wrong in the
+first place. That warning is no longer needed: the two kinds of knowledge
+now live in different files. `EXCEPTIONS` is readings, and every line of
+it is provisional; the corpus is observations, and none of it is.
 
 | word | attested | had been | |
 | --- | --- | --- | --- |
@@ -349,7 +417,7 @@ reading — which is exactly how two of them were wrong.
 | toph | `T AA F` | `t oʊ f` | wrong |
 | zuko | `Z UW K OW` | `z u k oʊ` | already right |
 | momo | `M OW M OW` | `m oʊ m oʊ` | already right |
-| appa | `AA 0 P 0 AA 0` | `ɑ p ə` | vowels wrong, structure still unreachable |
+| appa | `AA 0 P 0 AA 0` | `ɑ p ə` | vowels wrong, structure unreachable — now drawn |
 
 Two things fell out of these:
 
@@ -376,11 +444,16 @@ confirmed on a third word and no `0c` code is needed.** If it shows
 anything else, the rule is wrong and the syntax needs extending. Either
 way it is one look at the image.
 
-Only the vowels of `appa` could be fixed in `EXCEPTIONS` (both /ɑ/, not
-the /ə/ it used to guess). The three-block structure cannot be expressed
-as a phoneme list, because `pairUp()` would still make two blocks of it.
-That is the corpus's job, and `appa` is the reason the corpus has to
-store finished spellings rather than phonemes.
+**The site now draws it**, and it draws it tall-short-tall — so the
+prediction is on screen and B3 is a straight comparison against the art
+rather than a thought experiment. Type `appa` and look.
+
+Before the corpus, only the vowels could be fixed (in `EXCEPTIONS`: both
+/ɑ/, not the /ə/ it used to guess). The three-block structure cannot be
+expressed as a phoneme list, because pairing would make two blocks of it
+whatever phonemes you supply. `appa` is the reason the corpus stores
+finished spellings rather than phonemes, and it is the one entry that
+could not have been faked by fixing a pronunciation.
 
 ### The first attested sentence
 

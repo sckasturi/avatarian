@@ -300,8 +300,16 @@ Only tick it against a word that actually shows it flipped.">
 <!-- The main site, unmodified, served over /site/. The live preview
      calls renderAvatarian() the same way index.html and the wiki gadget
      do, so what it draws is the product and not a lookalike. Load order
-     matches index.html: manifest, g2p, sounds, render. -->
+     matches index.html: manifest, corpus, g2p, sounds, render.
+
+     The corpus matters here even though the designer only types single
+     test words: the "in a word" preview should show a glyph in the
+     spelling canon actually uses, which for an attested word is not
+     always the one pairing derives. The pronunciation dictionary is
+     deliberately left out — it is 1.6 MB and the example words are
+     short. -->
 <script src="/site/js/manifest.js"></script>
+<script src="/site/js/corpus.js"></script>
 <script src="/site/js/g2p.js"></script>
 <script src="/site/js/sounds.js"></script>
 <script src="/site/js/render.js"></script>

@@ -15,10 +15,17 @@
  * matching grapheme at each position and emitting phonemes into a
  * separate output array that rules can never touch.
  *
- * Coverage strategy:
- *   1. EXCEPTIONS — hand dictionary for common irregular words.
- *   2. RULES      — ordered, longest-first grapheme → phoneme rules.
- *   3. FALLBACK   — unmatched characters are skipped, never fatal.
+ * Coverage strategy, best evidence first:
+ *   1. CORPUS     — words somebody has SEEN written (js/corpus.js).
+ *   2. EXCEPTIONS — hand dictionary for common irregular words.
+ *   3. lexicon    — the bundled CMU dictionary, ~126k words.
+ *   4. RULES      — ordered, longest-first grapheme → phoneme rules.
+ *   5. FALLBACK   — unmatched characters are skipped, never fatal.
+ *
+ * The corpus differs from the rest IN KIND, not just in priority. The
+ * others answer "what does this word sound like" and let pairUp() decide
+ * the blocks; a corpus entry is the finished block structure, nulls and
+ * all. That is why `appa` can live there and nowhere else. See CORPUS.md.
  */
 
 const ARPABET_TO_IPA = {
@@ -46,37 +53,16 @@ const EXCEPTIONS = {
   // -ough is famously irregular; the rule table can only pick one reading
   "through": "θ r u", "though": "ð oʊ", "thought": "θ ɔ t",
   "enough": "ɪ n ʌ f", "cough": "k ɔ f", "bought": "b ɔ t",
-  // --- ATTESTED --------------------------------------------------
-  // Checked against reference material showing the word actually
-  // written in Avatarian. These are FACTS, not readings — do not
-  // "correct" them toward the natural English pronunciation, which is
-  // how two of them were wrong in the first place. See CORPUS.md.
-  //
-  //   aang  EY NG   — not /ɑ ŋ/. The natural English reading was wrong,
-  //                   and it also made the FLIPS evidence incoherent:
-  //                   that table cites "Aang" as showing /e/ in a top
-  //                   slot, which needs the word to contain an /e/.
-  //   toph  T AA F  — rhymes with "off", not with "loaf".
-  //   zuko  Z UW K OW
-  //   momo  M OW M OW
-  //   fanny is missing — a whole line off a poster, and the first
-  //                   attested SENTENCE. All three words already matched
-  //                   what the pipeline derives, so it confirms the
-  //                   chain end to end rather than correcting it.
-  "aang": "e ŋ", "toph": "t ɑ f", "zuko": "z u k oʊ",
-  "momo": "m oʊ m oʊ", "fanny": "f æ n i", "missing": "m ɪ s ɪ ŋ",
 
-  // Attested spelling is `AA 0 P 0 AA 0` — three blocks, every phoneme
-  // padded with its own null. Only the VOWELS can be fixed here: both
-  // are /ɑ/, not the /ə/ this used to guess. The block structure can't
-  // be expressed as a phoneme list, because pairUp() would still make
-  // two blocks out of it. That needs the corpus (CORPUS.md §2).
-  "appa": "ɑ p ɑ",
-
-  // --- not yet checked against any sample -------------------------
-  // Ordinary guesses, from English spelling. Treat every one as
-  // provisional and move it up as it gets confirmed.
-  "world": "w ɜ r l d", "water": "w ɔ t ə r", "fire": "f aɪ ə r",
+  // --- the Avatar vocabulary, NOT YET CHECKED against any sample ---
+  // Ordinary guesses from English spelling. Every one is provisional
+  // until somebody has seen the word written — TODO item 24 — and two
+  // of the first four audited (`aang`, `toph`) turned out wrong, so
+  // expect more. A word that gets confirmed does NOT get corrected
+  // here: it moves to corpus/attested.json, which records the observed
+  // spelling rather than a reading of it, and which wins above this
+  // table. See CORPUS.md.
+  "world": "w ɜ r l d", "water": "w ɔ t ə r",
   "earth": "ɜ r θ", "air": "ɛ r", "avatar": "æ v ə t ɑ r",
   "katara": "k ə t ɑ r ə", "sokka": "s ɑ k ə",
   "korra": "k ɔ r ə", "iroh": "aɪ r oʊ", "azula": "ə z u l ə",
@@ -84,6 +70,13 @@ const EXCEPTIONS = {
   // Coined compounds, so no general dictionary has them. The -bending
   // ones all reduce the linking vowel to schwa, which is the reading
   // canon shows for "metalbending".
+  //
+  // `metalbending` itself is ATTESTED and lives in the corpus, which
+  // wins over this entry. It stays here as the fallback if corpus.js
+  // hasn't loaded, and because it is the model the others copy — but
+  // note it is only the right SOUNDS. Canon puts a null after the `l`
+  // that this list cannot express, so the corpus entry is what actually
+  // gets drawn.
   "airbending": "ɛ r b ɛ n d ɪ ŋ", "waterbending": "w ɔ t ə r b ɛ n d ɪ ŋ",
   "earthbending": "ɜ r θ b ɛ n d ɪ ŋ", "firebending": "f aɪ ə r b ɛ n d ɪ ŋ",
   "metalbending": "m ɛ t ə l b ɛ n d ɪ ŋ",
@@ -213,23 +206,83 @@ function hasLexicon() {
   return lexicon().size > 0;
 }
 
-function wordToIPA(word) {
-  const w = word.toLowerCase().replace(/[^a-z']/g, "");
-  if (!w) return [];
-  // EXCEPTIONS first: it carries the Avatar vocabulary and the hand
+/**
+ * The attested corpus (js/corpus.js), if it loaded.
+ *
+ * Loaded eagerly, unlike the pronunciation dictionary — it is tens of
+ * entries, not 126k, so there is nothing to defer. If the file isn't on
+ * the page this is empty and everything falls through to EXCEPTIONS,
+ * which is how the site behaved before the corpus existed.
+ */
+function corpusWords() {
+  const src = (typeof window !== "undefined" && window.AVATARIAN_CORPUS) || null;
+  return (src && src.words) || {};
+}
+
+/** Longest corpus key, in words. 1 until a phrase entry is added. */
+let CORPUS_SPAN = null;
+
+function corpusSpan() {
+  if (CORPUS_SPAN === null) {
+    CORPUS_SPAN = 1;
+    for (const key of Object.keys(corpusWords())) {
+      CORPUS_SPAN = Math.max(CORPUS_SPAN, key.split(" ").length);
+    }
+  }
+  return CORPUS_SPAN;
+}
+
+/** The lookup key for a word: lowercased, punctuation dropped. */
+function normaliseWord(word) {
+  return word.toLowerCase().replace(/[^a-z']/g, "");
+}
+
+/**
+ * Which layer of the chain answered, so the UI can say how much to trust
+ * a spelling (TODO item 21, CORPUS.md §3):
+ *
+ *   attested  somebody has seen this written              corpus
+ *   derived   the sounds are known, the blocks inferred   EXCEPTIONS / lexicon
+ *   guessed   even the sounds are a guess from spelling   RULES
+ *
+ * The bottom two are worth separating because they fail differently: a
+ * derived word is probably right about its sounds and may be wrong about
+ * its block structure, while a guessed one may be wrong about what the
+ * word even sounds like.
+ */
+function lookupWord(word) {
+  const w = normaliseWord(word);
+  if (!w) return { ipa: [], tier: "guessed" };
+
+  const attested = corpusWords()[w];
+  if (attested) return { ipa: attested.ipa.slice(), tier: "attested", entry: attested };
+
+  // EXCEPTIONS next: it carries the Avatar vocabulary and the hand
   // corrections, which should win over a general dictionary.
-  if (EXCEPTIONS[w]) return EXCEPTIONS[w].split(" ");
+  if (EXCEPTIONS[w]) return { ipa: EXCEPTIONS[w].split(" "), tier: "derived" };
 
   // Then the bundled dictionary, which knows ~126k words and — because
   // it reads CMU's stress marks — reduces unstressed vowels to schwa,
-  // something the rules below never did.
+  // something the rules never did.
   const packed = lexicon().get(w);
   if (packed) {
     const out = [];
     for (const ch of packed) out.push(PHONE_OF[ch]);
-    return out;
+    return { ipa: out, tier: "derived" };
   }
 
+  return { ipa: rulesToIPA(w), tier: "guessed" };
+}
+
+function wordToIPA(word) {
+  return lookupWord(word).ipa;
+}
+
+/**
+ * The letter-to-sound guesser — the bottom of the chain, reached only
+ * when nothing above it knows the word.
+ */
+function rulesToIPA(w) {
   // Collapse doubled consonants: "hello" is /h ɛ l oʊ/, not /h ɛ l l oʊ/.
   // Vowels are excluded — "ee"/"oo" are meaningful digraphs.
   const s = w.replace(/([bcdfgklmnprstvz])\1/g, "$1");
@@ -291,16 +344,51 @@ function wordToIPA(word) {
   return out;
 }
 
+/**
+ * Text → one group per word, each carrying its symbols and which layer
+ * of the chain produced them.
+ *
+ * A corpus key may be a PHRASE — "Ba Sing Se" is plausibly written as a
+ * unit, and if it is, its blocks won't be the ones you get by spelling
+ * three words and running them together. So this scans longest-first
+ * rather than assuming one word at a time. With no phrase entries in the
+ * corpus, `corpusSpan()` is 1 and the loop below collapses to the
+ * word-at-a-time behaviour it replaced.
+ */
 function sentenceToIPA(text) {
-  return text
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((word) => ({ word, ipa: wordToIPA(word) }));
+  const words = text.trim().split(/\s+/).filter(Boolean);
+  const out = [];
+  const span = corpusSpan();
+  const attested = corpusWords();
+
+  for (let i = 0; i < words.length; ) {
+    let taken = 0;
+    for (let n = Math.min(span, words.length - i); n > 1; n--) {
+      const run = words.slice(i, i + n);
+      const key = run.map(normaliseWord).filter(Boolean).join(" ");
+      const entry = attested[key];
+      if (entry) {
+        out.push({
+          word: run.join(" "), ipa: entry.ipa.slice(),
+          tier: "attested", entry,
+        });
+        taken = n;
+        break;
+      }
+    }
+    if (!taken) {
+      const { ipa, tier, entry } = lookupWord(words[i]);
+      out.push({ word: words[i], ipa, tier, entry });
+      taken = 1;
+    }
+    i += taken;
+  }
+  return out;
 }
 
 if (typeof module !== "undefined") {
   module.exports = {
-    wordToIPA, sentenceToIPA, ARPABET_TO_IPA, EXCEPTIONS, hasLexicon,
+    wordToIPA, lookupWord, sentenceToIPA, normaliseWord,
+    ARPABET_TO_IPA, EXCEPTIONS, hasLexicon, corpusWords,
   };
 }

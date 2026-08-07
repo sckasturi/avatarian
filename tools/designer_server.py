@@ -71,8 +71,8 @@ NAME_OK = re.compile(r"^[a-z0-9_]+$")
 # than a path check: this server exists to write to designs/, and the
 # less of the tree it will hand out, the less there is to get wrong.
 SITE_FILES = {
-    "js/manifest.js", "js/render.js", "js/g2p.js", "js/sounds.js",
-    "css/blocks.css",
+    "js/manifest.js", "js/corpus.js", "js/render.js", "js/g2p.js",
+    "js/sounds.js", "css/blocks.css",
 }
 SITE_TYPES = {".js": "application/javascript", ".css": "text/css"}
 
