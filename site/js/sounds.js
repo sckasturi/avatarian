@@ -125,19 +125,68 @@ function splitCaption(chunk) {
  * spaces shouldn't cost you the render.
  */
 function soundTextToWords(text) {
-  return text.split("/")
+  const words = text.split("/")
     .map((chunk) => {
       const { body, label } = splitCaption(chunk);
       const ipa = body.trim().split(/\s+/).filter(Boolean).map(normaliseSound);
       return { word: label, ipa };
     })
     .filter(w => w.ipa.length);
+  return spreadCaptions(words);
+}
+
+/**
+ * A caption written once at the end of several words belongs to all of
+ * them, not to the last one.
+ *
+ *   HH AE M ER R / AH V / TH AO R (hammer of thor)
+ *
+ * captions only `TH AO R` if you read it naively, which is plainly not
+ * what was meant. So the caption's words are handed out **backwards**
+ * from the group it sits on, one apiece: thor, then of, then hammer.
+ *
+ * Nothing has to line up. If there are more caption words than groups to
+ * put them on, the leftovers pile onto the earliest group reached —
+ * which is what keeps a genuine multi-word name whole without a special
+ * case: `M AW N T B AY HH UW (mount baihu)` is one group, "baihu" lands
+ * on it, "mount" has nowhere to go and joins it, and the label comes out
+ * "mount baihu" again.
+ *
+ * The one thing it won't do is overwrite a group that carries its own
+ * caption; it stops there and drops the remainder on the group it
+ * reached. Otherwise `K AH T (katara) / P L IY Z (say please)` would
+ * quietly relabel katara.
+ */
+function spreadCaptions(words) {
+  for (let i = 0; i < words.length; i++) {
+    const parts = (words[i].word || "").split(/\s+/).filter(Boolean);
+    if (parts.length < 2) continue;
+
+    const placed = [];
+    let group = i, part = parts.length - 1;
+    while (part >= 0 && group >= 0) {
+      if (group !== i && words[group].word) break;   // don't clobber
+      placed.push([group, parts[part]]);
+      group -= 1;
+      part -= 1;
+    }
+
+    placed.forEach(([at, word]) => { words[at].word = word; });
+
+    // Whatever didn't fit joins the earliest group we got to.
+    const leftover = parts.slice(0, part + 1);
+    if (leftover.length) {
+      const earliest = placed[placed.length - 1][0];
+      words[earliest].word = leftover.concat(words[earliest].word).join(" ");
+    }
+  }
+  return words;
 }
 
 if (typeof module !== "undefined") {
   module.exports = {
     EXTRA_CODES, SOUND_ALIASES, IPA_TO_CODE,
     splitOverride, normaliseSound, wordsToSoundText, soundTextToWords,
-    splitCaption,
+    splitCaption, spreadCaptions,
   };
 }

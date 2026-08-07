@@ -112,11 +112,21 @@ as you type and then scrolls, capped at 30vh (22vh on mobile, where the
 output is pinned to the top and every row the box takes is a row the
 drawing doesn't get).
 
-~~**10. Better handling of parentheses.**~~ **Done in session 7.**
-Replaced the regex with a depth-counting scan. Three inputs used to put a
-bracket character into the tokeniser, where it rendered as an unknown
-sound — an unclosed `(`, a nested `(a (b))`, and a stray `)`. A fourth,
-two captions on one word, silently kept only the last.
+~~**10. Better handling of parentheses.**~~ **Done in session 7**, in two
+parts.
+
+*Parsing:* replaced the regex with a depth-counting scan. Three inputs
+used to put a bracket character into the tokeniser, where it rendered as
+an unknown sound — an unclosed `(`, a nested `(a (b))`, and a stray `)`.
+A fourth, two captions on one word, silently kept only the last.
+
+*Spacing:* a caption written once after several `/`-separated groups now
+spreads **backwards** across them, one word apiece —
+`HH AE M ER R / AH V / TH AO R (hammer of thor)` captions hammer / of /
+thor instead of putting the whole phrase under `TH AO R`. Nothing has to
+line up: leftovers pile onto the earliest group reached, which is what
+keeps `M AW N T B AY HH UW (mount baihu)` whole with no special case. It
+won't overwrite a group that already carries its own caption.
 
 ~~**12. A space button.**~~ **Done in session 7.** A small toolbar on the
 sounds box: `/ word break`, `0 null`, `⌫` and `clear`. Clicks now insert

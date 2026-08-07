@@ -60,18 +60,16 @@ phoneme set.
 The code renders that decipherment work; **the script itself is not this
 project's research.**
 
-#### Two copies stay outside this file, deliberately
+#### The markdown files are the only copy
 
-Attribution has to be visible to people who never open the repository,
-so it also lives on the two public surfaces — and those are the copies
-that matter most, because they are the only ones a reader sees:
+The site footer and the wiki files used to carry the decipherment credits
+too. They were **stripped on purpose** — the credits live here and will be
+published somewhere of their own later. What remains on the site is the
+tool's own byline, nothing else; the wiki files carry a one-line pointer
+back to this document.
 
-- **`site/index.html`** — the site footer.
-- **`wiki/MediaWiki_Common.js.txt`** and **`.css.txt`** — a header
-  comment, since those files get pasted into Avatar Wiki itself.
-
-Keep them in step with this section. Don't remove them to reduce
-duplication: they are the point.
+So if you are wondering where the attribution went: here, and only here.
+Don't re-add it to the site expecting to be helpful.
 
 ---
 
