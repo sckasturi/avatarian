@@ -9,8 +9,32 @@ what to do next.
 
 ## Session 10 — tests, flipped glyphs, and readable sound codes
 
-Items **27**, **29**, and the flipped-glyph half of **25**. Sections
-below in the order they were built.
+Items **27**, **29**, the flipped-glyph half of **25**, and **B3** is
+answered. Sections below in the order they were built.
+
+### B3 is closed: `appa` shows mixed null heights
+
+The user checked the art. It shows **tall nulls beside the vowels and a
+short one beside /p/** — exactly what the pairing-partner rule predicts,
+since ɑ is a vowel and p is a consonant.
+
+Worth being clear about why this one matters more than its size:
+
+- The null-height rule was read off **one** reference sample in session 5
+  and has been carrying the 9-row block invariant on its own ever since.
+  This is the first time a prediction from it has been checked against
+  material it was not derived from, and it held.
+- **No `0c` code is needed.** `CORPUS.md` §2's open syntax gap closes:
+  `0` means "a null" and the partner says which one.
+- **Not one corpus line changed.** Entries record the generic `∅` rather
+  than `∅c` precisely so they would hold an observation and not an
+  interpretation. The interpretation is now confirmed and the data did
+  not have to move — which is the discipline `CORPUS.md` §4 asks for,
+  paying off the first time it was tested.
+
+Two tests were written as predictions and are now records: `appa is
+three blocks, tall-short-tall` in `blocks.test.js`, and the `∅c` note in
+`sounds.test.js`.
 
 ### Item 29 — the sounds box speaks English now
 

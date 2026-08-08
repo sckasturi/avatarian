@@ -120,18 +120,19 @@ test("everything that doesn't collide stays case-insensitive", () => {
 test("every glyph has a readable code, and it round-trips", (t) => {
   const glyphs = ctx.window.AVATARIAN_GLYPHS || {};
   for (const ipa of Object.keys(glyphs)) {
-    // ∅c is the one symbol with no code, ON PURPOSE. `0` means "a null"
-    // and the renderer picks the height from the pairing partner, so
-    // there has never been a way to type the tall one. CORPUS.md §2
-    // says not to invent `0c` until the art has been checked (B3) —
-    // if the pairing-partner rule holds, no code is needed at all.
+    // ∅c is the one symbol with no code, ON PURPOSE and now settled.
+    // `0` means "a null" and the renderer picks the height from the
+    // pairing partner. CORPUS.md §2 held off on inventing `0c` until the
+    // art had been checked; B3 confirmed in session 10 that `appa` is
+    // written with mixed null heights exactly as the rule predicts, so
+    // `0` plus the partner says everything a code could say.
     if (ipa === "∅c") continue;
     const code = ctx.IPA_TO_CODE[ipa];
     assert.ok(code, `no code for ${ipa}`);
     assert.equal(normaliseSound(code), ipa,
       `${ipa} displays as '${code}', which reads back as something else`);
   }
-  t.diagnostic("∅c has no typeable code — deliberate, pending TODO B3");
+  t.diagnostic("∅c has no typeable code — deliberate, and settled by B3");
 });
 
 // ---------------------------------------------------------------------

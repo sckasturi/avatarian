@@ -202,12 +202,18 @@ and `0c` should be added.
 
 Do not guess this one. It is checkable.
 
+**Checked, session 10: the art shows mixed null heights** — tall beside
+the vowels, short beside /p/. The pairing-partner rule predicted exactly
+that, so **the automatic rule is confirmed and no `0c` is needed.** `0`
+means "a null" and the partner says which one; a second code would add
+nothing.
+
 **How this is handled in the built version:** entries record the generic
-`∅` and let `nullFor` choose. Recording `∅c` would be recording an
+`∅` and let `nullFor` choose. Recording `∅c` would have been recording an
 *interpretation* — the height is derived, not observed — and §4 depends
-on the raw observation staying separate from the model applied to it. So
-`appa` renders tall-short-tall today, which is the prediction; if B3 says
-otherwise, the fix is to the rule, and the corpus lines do not move.
+on the raw observation staying separate from the model applied to it.
+That discipline paid: the interpretation has now been confirmed, and not
+one corpus line had to change.
 
 ---
 
@@ -503,15 +509,22 @@ derived   AA P AA        ->  (ɑ,p)  (ɑ,∅c)           two blocks
 
 The nulls come out **tall, short, tall** — which is exactly what the
 pairing-partner rule predicts, since ɑ is a vowel and p is a consonant.
-So §2's open question has an answer to check rather than a guess to make:
-**if the reference art shows tall-short-tall, the null-height rule is
-confirmed on a third word and no `0c` code is needed.** If it shows
-anything else, the rule is wrong and the syntax needs extending. Either
-way it is one look at the image.
 
-**The site now draws it**, and it draws it tall-short-tall — so the
-prediction is on screen and B3 is a straight comparison against the art
-rather than a thought experiment. Type `appa` and look.
+**Confirmed in session 10.** The art shows mixed null heights, matching
+the prediction. So:
+
+- the null-height rule holds on a **third** word, and this time on
+  material it was not derived from;
+- **no `0c` code is needed** — §2's open syntax question closes;
+- the prediction was made by a rule read off *one* sample in session 5,
+  and it survived contact with independent evidence. That is the first
+  time anything in this model has been tested that way rather than
+  fitted.
+
+This is also the cleanest demonstration of why the corpus stores finished
+spellings. `appa` could not be reached from a phoneme list, its structure
+was recorded before anyone knew why, and the record then answered a
+question nobody had asked it.
 
 Before the corpus, only the vowels could be fixed (in `EXCEPTIONS`: both
 /ɑ/, not the /ə/ it used to guess). The three-block structure cannot be

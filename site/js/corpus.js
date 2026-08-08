@@ -208,7 +208,7 @@ window.AVATARIAN_CORPUS = {
       "source": "appa-art",
       "confidence": "certain",
       "gloss": "Appa",
-      "note": "THREE blocks where pairing predicts two — every phoneme padded with its own null. Why is unknown, and the corpus does not need to know. Also the FLIPS evidence for /ɑ/ in a top slot. The nulls come out tall-short-tall under the pairing-partner rule; whether the art agrees is TODO B3, and it is one look at the image."
+      "note": "THREE blocks where pairing predicts two — every phoneme padded with its own null. Why is unknown, and the corpus does not need to know. Also the FLIPS evidence for /ɑ/ in a top slot. CONFIRMED against the art (TODO B3, session 10): the nulls are mixed heights, tall beside the vowels and short beside /p/, exactly as the pairing-partner rule predicts. That is the third word to confirm the rule, and it settles the syntax question — no `0c` code is needed, because `0` plus the partner is enough to say which null is written."
     },
     "aang": {
       "ipa": [

@@ -60,13 +60,22 @@ is and where it came from. That is per *source*, not per word — seven
 images clears every entry in the corpus. From then on a new word is: drop
 the image, read it, take the suggested English, save.
 
-**B3. Does `appa` show tall-short-tall nulls?** One look at the art.
-**The site now draws the prediction** — type `appa` and it comes out
-tall, short, tall, which is what the pairing-partner rule gives since ɑ
-is a vowel and p is a consonant. So this is a straight comparison against
-the image, not a thought experiment. Confirm and the null-height rule
-holds on a third word with no syntax change; contradict it and the sounds
-syntax needs a `0c` code. See `CORPUS.md` §7.
+~~**B3. Does `appa` show tall-short-tall nulls?**~~ **Answered in session
+10: yes.** The art shows **mixed null heights** — tall beside the vowels,
+short beside /p/ — which is exactly what the pairing-partner rule gives,
+since ɑ is a vowel and p is a consonant.
+
+Two things follow, and both are closures rather than new work:
+
+- **The null-height rule is confirmed on a third word.** It was read off
+  one reference sample in session 5 and has since been carrying the
+  9-row block invariant on its own. A prediction made from it, checked
+  against art it was not derived from, came out right.
+- **No `0c` code is needed**, which closes the syntax gap `CORPUS.md` §2
+  opened. `0` means "a null" and the partner says which one; there is
+  nothing a second code could add. The corpus keeps recording the
+  generic `∅`, so the entries never encoded an interpretation and do not
+  move now that the interpretation is confirmed.
 
 **B4. Squiggle or badge?** How to mark unattested spellings (item 21).
 `CORPUS.md` §3 argues for marking the *attested* exception rather than

@@ -92,10 +92,14 @@ test("an empty trailing slot gets a null written into it", () => {
 // ---------------------------------------------------------------------
 
 test("appa is three blocks, tall-short-tall", () => {
-  // Canon writes three blocks where pairing predicts two. The heights
-  // are the prediction TODO B3 is a straight look at the art against:
-  // ɑ is a vowel so its null is tall, p is a consonant so its null is
-  // short. If the art disagrees, this test is where it shows.
+  // Canon writes three blocks where pairing predicts two, and the null
+  // heights are CONFIRMED against the art (B3, session 10): mixed, tall
+  // beside the vowels and short beside /p/, which is what the
+  // pairing-partner rule gives since ɑ is a vowel and p is a consonant.
+  //
+  // This was a prediction when it was written and is now a record. It is
+  // the third word to confirm the rule, and the one that settled whether
+  // the sounds syntax needs a way to write the tall null: it doesn't.
   const appa = entries(ctx).find(e => e.key === "appa");
   assert.ok(appa, "appa should be in the corpus");
 

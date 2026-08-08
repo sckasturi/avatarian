@@ -500,7 +500,8 @@ Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*), `dh`
 - **Sounds are separated by spaces, words by `/`.**
 - **`0`** (or `_`, `-`) is the `∅` empty-slot filler. The consonant-height
   null `∅c` has no code at all: the renderer picks the height from the
-  pairing partner, and whether a code is needed is TODO B3.
+  pairing partner. Confirmed against the art in session 10 (TODO B3), so
+  no code is needed: `0` plus the sound beside it says everything.
 - **`$` / `%`** suffixes force a glyph's top or bottom orientation (`s$`),
   for glyphs whose variant rule isn't known — currently only /s/.
 - **`(parentheses)`** caption a word instead of being read as sounds:
@@ -538,8 +539,19 @@ notes in `CONTEXT.md`.
 3. **"appa" breaks the pairing model.** Canon writes it as **three** blocks
    (Y, /p/, Y each over a null) where pairing predicts two, `(ɑ,p)(ɑ,∅)`. Not
    explained by phoneme count ("not" is also three and pairs normally) or by
-   intervocalic consonants ("hurry", "really" render fine). Unresolved; the
-   renderer does not special-case it.
+   intervocalic consonants ("hurry", "really" render fine).
+
+   **Why is still unresolved, but the tool now draws it correctly** — the
+   corpus records the observed spelling (`ah 0 p 0 ah 0`) rather than
+   deriving one, and nothing special-cases it. The point of a corpus is
+   that being right does not require knowing why.
+
+   Its **null heights are confirmed** against the art (session 10): mixed,
+   tall beside the vowels and short beside /p/, which is what the
+   pairing-partner rule predicts. A rule read off one sample in session 5,
+   checked against material it was not derived from, came out right — and
+   it closes the question of whether the sounds syntax needs a way to
+   write the tall null. It doesn't.
 
 4. **/s/ orientation** (§6) — rotates, but not by slot. Four observations
    (both /s/ in "students", plus "some") that no single slot rule satisfies.
