@@ -295,6 +295,14 @@ become **queries**, not arguments:
   this project has never had, and it would be made of real evidence
   rather than invented cases.
 
+  **Built in session 10** — `python3 tools/run_tests.py`, and the corpus
+  is the fixture for nearly every structural assertion. The suite gains
+  coverage each time a source is transcribed, with no test written. It
+  also does the null-placement query above in the one case where the
+  answer is unknown: the nine-row check **reports** every attested C-C
+  block instead of asserting a layout for it, so B1's evidence prints
+  itself and grows with the data.
+
 **Build the corpus so this is easy.** Concretely: keep the raw attested
 spelling separate from any derived interpretation, so a later change to
 the model can be re-run against untouched source data.

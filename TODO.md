@@ -34,6 +34,18 @@ C-C block in the material can be pulled up at once and the answer read
 off real examples. So this is not waiting on a decision so much as
 waiting on 20, and item 3 is downstream of both.
 
+**The list now prints itself.** `python3 tools/run_tests.py` reports
+every attested C-C block as a diagnostic (item 27), because the nine-row
+invariant can't assert an answer nobody has. Today it is four:
+
+```
+please: (p,l)   students: (s%,t)   students: (n,t)   metalbending: (n,d)
+```
+
+Four is not many to generalise from, which is the same reason this is
+still deferred — but the instrument exists, and every source transcribed
+in the workbench adds to it without anyone maintaining a list.
+
 **B2. What reference material exists, and where.** Needed for the corpus
 (20–24), the catalogue page (7), and any handwriting work (25–26). An
 inventory of the images, and what words each contains.
@@ -390,17 +402,46 @@ be added to the one section whenever they turn up.
 **8. Final article synthesising the decipherment** — structural rules and
 open questions as one write-up, separate from these working docs.
 
-**27. A test suite.** There has never been one, and `promote.py` now
-machine-edits `build_glyphs.py`, which raises the stakes. The corpus (20)
-is the natural source of cases: real attested spellings rather than
-invented ones, so any change to pairing, nulls or flips can be checked
-against every attested word at once.
+~~**27. A test suite.**~~ **Done in session 10.**
 
-**There are 23 cases to run against now**, so this stopped being
-circular. `tools/build_corpus.py` already validates the data; what's
-missing is a harness that loads the JS in node and asserts that every
-corpus entry still renders to the blocks it records. That is the
-regression net `CORPUS.md` §4 describes, and it is small.
+```bash
+python3 tools/run_tests.py
+```
+
+67 checks: geometry parity (243 cases, folded in from `check_geom.py`),
+16 Python tests over the corpus validator and its save path, and 51 node
+tests over the block model, the sounds syntax, the lookup chain and
+reverse-decode. **No dependencies** — `unittest` and node's built-in
+`--test`. See `tests/README.md`.
+
+**The corpus is the fixture.** Nearly every structural assertion runs
+against `corpus/attested.json` rather than invented examples, so the
+suite grows on its own: transcribe a source in the workbench and every
+test gets more evidence, with no test written. A failure names the word
+it broke.
+
+Two tests behave unusually, both on purpose:
+
+- **C-C blocks are reported, not failed on.** The nine-row invariant
+  holds for V-C and C-V; two consonants would be ten, and whether they
+  overlap is B1. Asserting either answer would invent one, so the test
+  prints the inventory instead — currently `please: (p,l)`,
+  `students: (s%,t)`, `students: (n,t)`, `metalbending: (n,d)`.
+  **That list is what B1 has been waiting for**, and it grows with the
+  corpus.
+- **V-V blocks do fail.** "V-V never happens, a null substitutes" is a
+  claim about the script, so attested material contradicting it should
+  stop the build.
+
+The recogniser needs `getPointAtLength` and cannot run in node, so
+`tests/recognise.html` is its test — open it. Floors are set below the
+measured numbers and averaged over three passes.
+
+One small refactor came out of it: `resolveBlocks()` in `render.js`. The
+null-resolution decision used to be three lines inside the render loop,
+so the structural rules could only be checked by building elements and
+reading them back. It is now a function, and the DOM is only what happens
+afterwards.
 
 **28. README/CONTEXT rewrite** once the 9-row model is settled. They
 currently carry inline corrections pointing at the session log rather

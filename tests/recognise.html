@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Recogniser accuracy — Avatarian tests</title>
+<style>
+  :root { color-scheme: dark light; }
+  body { font: 14px/1.5 system-ui, sans-serif; margin: 24px auto; max-width: 760px;
+         padding: 0 16px; }
+  h1 { font-size: 1.15rem; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid #8884; }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .pass { color: #3f7a2c; } .fail { color: #bb3322; font-weight: 600; }
+  @media (prefers-color-scheme: dark) { .pass { color: #8fbf7a; } .fail { color: #ff9080; } }
+  #verdict { font-size: 1.05rem; font-weight: 600; margin: 18px 0; }
+  .misses { color: #8888; font-size: 0.85em; }
+  code { background: #8882; padding: 1px 4px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<h1>Recogniser accuracy</h1>
+
+<p>The one part of the suite that <strong>cannot run in node</strong>:
+<code>recognise.js</code> samples its reference shapes with
+<code>getPointAtLength</code>, which is browser geometry. So this page is
+the test.</p>
+
+<p>Each glyph's own outline is traced back through the matcher at a random
+scale and offset, under four kinds of degradation, and we check it still
+recognises itself. Floors are set below the numbers measured when the
+recogniser was written — they are there to catch a scoring change that
+quietly makes things worse, not to police the exact figure.</p>
+
+<p><strong>Open this from the dev server</strong>
+(<code>python3 -m http.server 8791 --directory site</code> then
+<code>/../tests/recognise.html</code>), or just open the file — it loads
+the site's scripts by relative path and needs no server.</p>
+
+<div id="verdict">running…</div>
+<table id="results">
+  <thead><tr><th>input</th><th class="n">top-1</th><th class="n">floor</th>
+    <th class="n">top-3</th><th class="n">floor</th><th></th></tr></thead>
+  <tbody></tbody>
+</table>
+<div id="detail"></div>
+
+<script src="../site/js/manifest.js"></script>
+<script src="../site/js/recognise.js"></script>
+<script>
+/**
+ * Degrade a glyph's own drawing into something like a hand-drawn copy,
+ * then see whether the matcher still picks it.
+ *
+ * `merge` collapses every stroke into one, because where somebody lifts
+ * the pen is arbitrary. `coarse` samples fewer points, like a fast
+ * careless stroke. `drop` forgets a whole stroke — the honest limit,
+ * since half a glyph is a different shape.
+ */
+const holder = document.createElement("div");
+holder.style.cssText = "position:absolute;left:-9999px;top:0";
+document.body.appendChild(holder);
+
+function trace(svgText, { jitter = 0, merge = false, coarse = 1, drop = 0 }) {
+  holder.innerHTML = svgText;
+  const svg = holder.querySelector("svg");
+  let strokes = [];
+  const scale = 0.5 + Math.random() * 2;
+  const ox = Math.random() * 200, oy = Math.random() * 200;
+  const wobble = () => (Math.random() - 0.5) * jitter;
+
+  svg.querySelectorAll("path, circle").forEach((el) => {
+    const pts = [];
+    if (el.tagName === "circle") {
+      const cx = +el.getAttribute("cx"), cy = +el.getAttribute("cy");
+      const r = +el.getAttribute("r");
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        pts.push({ x: (cx + Math.cos(a) * r * 0.6) * scale + ox + wobble(),
+                   y: (cy + Math.sin(a) * r * 0.6) * scale + oy + wobble() });
+      }
+    } else {
+      const len = el.getTotalLength();
+      const n = Math.max(3, Math.round(len / (5 * coarse)));
+      for (let i = 0; i <= n; i++) {
+        const p = el.getPointAtLength((i / n) * len);
+        pts.push({ x: p.x * scale + ox + wobble(), y: p.y * scale + oy + wobble() });
+      }
+    }
+    strokes.push(pts);
+  });
+
+  if (drop && strokes.length > 1) strokes = strokes.slice(0, -drop);
+  if (merge) strokes = [strokes.flat()];
+  return strokes;
+}
+
+// Floors, not targets. Set below what was measured so a real regression
+// trips them and ordinary randomness does not.
+const CASES = [
+  { name: "clean trace, ±9% jitter", opts: { jitter: 9 },                     top1: 40, top3: 42 },
+  { name: "coarse + heavy jitter",   opts: { coarse: 4, jitter: 14 },         top1: 36, top3: 39 },
+  { name: "all strokes merged",      opts: { merge: true, jitter: 5 },        top1: 34, top3: 39 },
+  { name: "merged + coarse",         opts: { merge: true, coarse: 3, jitter: 12 }, top1: 30, top3: 36 },
+  { name: "a whole stroke forgotten", opts: { drop: 1, jitter: 5 },           top1: 18, top3: 27 },
+];
+
+// Averaged over several passes: one pass at a random scale and offset is
+// noisy enough that a floor set close to it would flake.
+const PASSES = 3;
+
+function run() {
+  const glyphs = Object.entries(window.AVATARIAN_GLYPHS)
+    .filter(([, e]) => e.status !== "PLACEHOLDER");
+  const body = document.querySelector("#results tbody");
+  const detail = document.getElementById("detail");
+  let failed = 0;
+
+  for (const c of CASES) {
+    let top1 = 0, top3 = 0;
+    const misses = new Map();
+    for (let pass = 0; pass < PASSES; pass++) {
+      for (const [ipa, entry] of glyphs) {
+        const ranked = rankGesture(trace(entry.flat || entry.svg, c.opts), 3);
+        if (ranked[0]?.ipa === ipa) top1++;
+        else misses.set(entry.name, (misses.get(entry.name) || 0) + 1);
+        if (ranked.some(r => r.ipa === ipa)) top3++;
+      }
+    }
+    const n1 = top1 / PASSES, n3 = top3 / PASSES;
+    const ok = n1 >= c.top1 && n3 >= c.top3;
+    if (!ok) failed++;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `<td></td><td class="n"></td><td class="n"></td>`
+      + `<td class="n"></td><td class="n"></td><td></td>`;
+    const cells = row.querySelectorAll("td");
+    cells[0].textContent = c.name;
+    cells[1].textContent = n1.toFixed(1) + "/" + glyphs.length;
+    cells[2].textContent = c.top1;
+    cells[3].textContent = n3.toFixed(1) + "/" + glyphs.length;
+    cells[4].textContent = c.top3;
+    cells[5].textContent = ok ? "pass" : "FAIL";
+    cells[5].className = ok ? "pass" : "fail";
+    body.appendChild(row);
+
+    const worst = [...misses.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8);
+    if (worst.length) {
+      const p = document.createElement("p");
+      p.className = "misses";
+      p.textContent = c.name + " — missed most often: "
+        + worst.map(([n, k]) => `${n} (${k}/${PASSES})`).join(", ");
+      detail.appendChild(p);
+    }
+  }
+
+  const verdict = document.getElementById("verdict");
+  verdict.textContent = failed
+    ? `${failed} of ${CASES.length} cases below their floor`
+    : `all ${CASES.length} cases at or above their floor`;
+  verdict.className = failed ? "fail" : "pass";
+  // So a script driving this page can read one value.
+  window.RECOGNISE_TEST = { failed, cases: CASES.length };
+}
+
+run();
+</script>
+</body>
+</html>

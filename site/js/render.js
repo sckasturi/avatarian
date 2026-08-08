@@ -141,6 +141,52 @@ function pairUp(ipaSeq) {
   return blocks;
 }
 
+/**
+ * Pair a sequence AND decide its nulls — the block model, with no DOM in
+ * sight.
+ *
+ * This used to be three lines inside the render loop, which meant the
+ * structural rules of the script could only be checked by rendering to
+ * elements and reading them back. Splitting it out is what lets
+ * `tests/blocks.test.js` assert the model directly, including against
+ * every attested spelling in the corpus.
+ *
+ * An empty bottom slot is written, not skipped — the null is part of the
+ * spelling, so dropping it would silently shorten the word. A null that
+ * was TYPED is resolved here too rather than taken literally: `0` means
+ * "a null", and the sound beside it says which one. That applies
+ * mid-word, where canon puts nulls the renderer cannot derive — (u,∅)
+ * takes the tall one, (s,∅) the short one.
+ */
+function resolveBlocks(ipaSeq) {
+  return pairUp(ipaSeq).map((pair) => {
+    const top = NULLS.has(pair.top) ? nullFor(pair.bottom) : pair.top;
+    const bottom = pair.bottom == null || NULLS.has(pair.bottom)
+      ? nullFor(top)
+      : pair.bottom;
+    return { top, bottom };
+  });
+}
+
+/** Height classes, in lattice rows. A block is meant to total nine. */
+const TALL_TYPES = new Set(["consonant", "null_consonant"]);
+
+/**
+ * How many of a block's nine rows this symbol occupies: 5 for a
+ * consonant-height slot, 4 for a vowel-height one.
+ *
+ * NOT the number of rows the drawing fills — a 3-row vowel leaves one of
+ * its four empty, and that gap is the point (see the V-C and C-V rules).
+ * This is the slot, which is what has to add up.
+ */
+function slotRows(token) {
+  if (token == null) return 0;
+  const sym = parseSymbol(token).sym;
+  const entry = GLYPHS[sym];
+  if (entry && entry.type) return TALL_TYPES.has(entry.type) ? 5 : 4;
+  return VOWELS.has(sym) ? 4 : 5;
+}
+
 function makeGlyph(token, slot) {
   const { sym, forced } = parseSymbol(token);
   const span = document.createElement("span");
@@ -193,25 +239,15 @@ function makeSlot(ipaSymbol, slot) {
  * phonemes, written top then bottom.
  */
 function renderAvatarian(ipaSeq, container) {
-  const blocks = pairUp(ipaSeq);
   container.innerHTML = "";
   container.classList.add("avatarian-word");
 
-  blocks.forEach((pair) => {
+  // Which symbol lands in which slot — nulls and all — is decided by
+  // resolveBlocks. Everything from here down is only turning that into
+  // elements.
+  resolveBlocks(ipaSeq).forEach(({ top, bottom }) => {
     const block = document.createElement("span");
     block.className = "avatarian-block";
-    // An empty bottom slot is written, not skipped — the null is part of
-    // the spelling, so dropping it would silently shorten the word. Its
-    // height comes from the partner (see nullFor), which is also why a
-    // null already typed into the sounds box gets resolved here rather
-    // than taken literally: `0` means "a null", and the sound beside it
-    // is what says which one. That applies mid-word too, where canon
-    // puts nulls the renderer can't yet derive — (u,∅) takes the tall
-    // one, (s,∅) the short one.
-    const top = NULLS.has(pair.top) ? nullFor(pair.bottom) : pair.top;
-    const bottom = pair.bottom == null || NULLS.has(pair.bottom)
-      ? nullFor(top)
-      : pair.bottom;
     block.appendChild(makeSlot(top, "top"));
     block.appendChild(makeSlot(bottom, "bottom"));
     container.appendChild(block);
@@ -221,7 +257,7 @@ function renderAvatarian(ipaSeq, container) {
 
 if (typeof module !== "undefined") {
   module.exports = {
-    renderAvatarian, pairUp, glyphSVG, VOWELS,
-    NULL_IPA, NULL_C_IPA, nullFor,
+    renderAvatarian, pairUp, resolveBlocks, slotRows, glyphSVG, VOWELS,
+    NULL_IPA, NULL_C_IPA, NULLS, nullFor, isVowelSymbol, parseSymbol,
   };
 }

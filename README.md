@@ -72,6 +72,13 @@ tools/
   designer_server.py    serves designer/ and writes designs/ (port 8792)
   corpus_server.py      serves workbench/ and writes corpus/ (port 8793)
   build_corpus.py       validates corpus/attested.json -> js/corpus.js
+  run_tests.py          the whole suite, one command
+
+tests/           <- no dependencies; see tests/README.md
+  harness.js       loads site/js/* into one context, the way a page does
+  *.test.js        block model, sounds syntax, lookup chain, reverse-decode
+  test_*.py        the corpus validator and its save path
+  recognise.html   draw-to-recognise accuracy (browser only)
   designs_to_svg.py     a design -> SVG, or -> a build_glyphs.py entry
   promote.py            a design -> INTO build_glyphs.py, then rebuild
   check_geom.py         proves geom.js still matches glyphspec.py
@@ -100,6 +107,17 @@ English suggested by fuzzy reverse-decode, and already citing that
 source. It also shows the attested spelling beside what the model would
 have predicted, so a disagreement is visible while you type rather than
 found later. The image is provenance — nothing reads its pixels.
+
+## Tests
+
+```bash
+python3 tools/run_tests.py
+```
+
+Nothing to install — Python's `unittest` and node's built-in `--test`.
+The cases are mostly the corpus itself, so the suite gains coverage every
+time a source is transcribed. `tests/README.md` has the detail, including
+the two tests that deliberately report instead of failing.
 
 ## Testing locally
 

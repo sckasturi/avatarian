@@ -7,6 +7,98 @@ what to do next.
 
 ---
 
+## Session 10 — a test suite, at last
+
+Item **27**. The project had never had one, and two tools now machine-edit
+source files (`promote.py` rewrites `build_glyphs.py`, `corpus_server.py`
+rewrites `attested.json`).
+
+```bash
+python3 tools/run_tests.py
+```
+
+67 checks in three groups — geometry parity (folded in from the existing
+`check_geom.py`), 16 Python tests over the corpus validator and its save
+path, 51 node tests over the block model, sounds syntax, lookup chain and
+reverse-decode. **No dependencies**: `unittest` and node's built-in
+`--test`. A suite you have to install is a suite that stops being run.
+
+`tests/README.md` is the fuller write-up.
+
+### The corpus is the fixture
+
+Nearly every structural assertion runs against `corpus/attested.json`
+rather than invented examples. That is `CORPUS.md` §4 in practice, and it
+has a property worth knowing: **the suite grows on its own.** Transcribe
+a source in the workbench and every test gets more evidence to run
+against, with no test written.
+
+### Two tests that behave unusually
+
+**C-C blocks are reported, not failed on.** The nine-row invariant holds
+for V-C and C-V. Two consonants would be ten rows, and whether they
+overlap by a shared row is exactly B1 — so asserting either answer would
+be inventing one. The test collects them and prints the inventory:
+
+```
+ℹ 4 attested C-C blocks (TODO B1 — unresolved):
+ℹ   please: (p,l)      students: (s%,t)
+ℹ   students: (n,t)    metalbending: (n,d)
+```
+
+**That is the list B1 has been waiting for**, produced as a by-product
+and growing with the corpus. Four is not enough to generalise from, which
+is why B1 stays deferred — but nobody has to maintain the list now.
+
+**V-V blocks DO fail.** "V-V never happens, a null substitutes" is a
+claim about the script, so attested material contradicting it should stop
+the build.
+
+### The refactor it forced
+
+`resolveBlocks()` in `render.js`. Deciding which symbol lands in which
+slot — and which null — used to be three lines inside the render loop,
+which meant the structural rules could only be checked by building
+elements and reading them back. It is a function now; `renderAvatarian`
+is only what happens afterwards. `slotRows()` came with it, so the
+nine-row sum is assertable.
+
+### Traps worth remembering
+
+- **A top-level `const` does not become a property of the global
+  object.** Functions do. So in a `vm` context `ctx.pairUp` resolves and
+  `ctx.NULL_IPA` is `undefined` — and a test comparing against it passes
+  by comparing `undefined` to `undefined`. Caught only because the
+  *first* run failed for an unrelated reason. The harness folds each
+  file's `module.exports` onto the context to get the constants back.
+- **A `vm` context has its own intrinsics.** An array built inside it
+  fails `deepStrictEqual` against an identical one built outside, and the
+  diff prints them as equal. Anything crossing the boundary goes through
+  `plain()`.
+- **`node --test tests/` tries to REQUIRE the directory** and fails with
+  `MODULE_NOT_FOUND`. Use a glob: `node --test "tests/*.test.js"`.
+- **Flush stdout before handing the terminal to a subprocess** — Python's
+  prints are buffered and the child writes straight to the descriptor, so
+  every heading lands after the output it labels.
+- **`CORPUS_SPAN` is cached on first use and never invalidated.** Correct
+  on a page, where the corpus is a static file; it means a test cannot
+  add a phrase entry at runtime and expect the scan to widen. The harness
+  injects extra words between `corpus.js` and `g2p.js` instead, which is
+  what a browser would see.
+
+### What is deliberately not covered
+
+The DOM `renderAvatarian` produces — class names, the flip class,
+`data-glyph`. A jsdom dependency to assert them would cost more than it
+would catch, and the CSS is checked by eye.
+
+The recogniser cannot run in node at all: it samples SVG paths with
+`getPointAtLength`. `tests/recognise.html` is its test — open it. Floors
+are set below the measured numbers and averaged over three passes,
+because one pass at a random scale is noisy enough to flake.
+
+---
+
 ## Session 9 — the workbench, and drawing glyphs
 
 Items **23** (transcription workbench), **25** (stylus recognition) and
