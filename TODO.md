@@ -237,6 +237,19 @@ Stroke order and direction are deliberately unused: they say how the
 has no reason to take the same route. Stroke count is used at a low
 weight because it is far more stable than either.
 
+**Flipped forms, added in session 10.** A glyph is drawn once, in its
+top-slot form, and eight of them mirror when they land in a bottom slot
+(`s l ɪ e æ ɑ aɪ ɔɪ`). Until this, drawing a cap off a reference image
+matched nothing — which is the whole use case. Each flipping glyph now
+carries a second, mirrored reference cloud, and a mirrored win reports
+itself: the code comes out `AE%`, the thumbnail is drawn the way you drew
+it, and the tooltip says "bottom-slot form".
+
+Only glyphs that actually flip get one — a mirrored drawing of a glyph
+that doesn't flip is not that glyph. **The /s/ case works end to end**:
+draw `∧` and get `S`, draw `∨` and get `S%`, which is exactly the
+distinction "students" needs and which no slot rule can make.
+
 **26. Photo input — as an underlay, not as recognition.** ~~Show a
 reference image behind the transcription surface~~ — **superseded.** The
 image turns out to be wanted as *provenance*, not as something to trace

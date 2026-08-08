@@ -46,8 +46,17 @@ the site's scripts by relative path and needs no server.</p>
 </table>
 <div id="detail"></div>
 
-<script src="../site/js/manifest.js"></script>
-<script src="../site/js/recognise.js"></script>
+<!-- Loaded with a cache-busting query rather than as plain <script src>.
+     A test page that silently runs against a stale copy of the thing it
+     tests is worse than no test — this one reported 0/8 on a change that
+     was actually correct, because the browser had held on to the
+     previous recognise.js. Caching lies; see README "Traps". -->
+<script>
+  document.write([
+    "../site/js/manifest.js",
+    "../site/js/recognise.js",
+  ].map(src => `<script src="${src}?t=${Date.now()}"><\/script>`).join(""));
+</script>
 <script>
 /**
  * Degrade a glyph's own drawing into something like a hand-drawn copy,
@@ -155,13 +164,76 @@ function run() {
     }
   }
 
+  failed += runFlipped(glyphs, body, detail);
+
   const verdict = document.getElementById("verdict");
   verdict.textContent = failed
-    ? `${failed} of ${CASES.length} cases below their floor`
-    : `all ${CASES.length} cases at or above their floor`;
+    ? `${failed} of ${CASES.length + 1} cases below their floor`
+    : `all ${CASES.length + 1} cases at or above their floor`;
   verdict.className = failed ? "fail" : "pass";
   // So a script driving this page can read one value.
-  window.RECOGNISE_TEST = { failed, cases: CASES.length };
+  window.RECOGNISE_TEST = { failed, cases: CASES.length + 1 };
+}
+
+/**
+ * Drawing a glyph the way it appears in a BOTTOM slot.
+ *
+ * Eight glyphs mirror top-to-bottom by slot, and a glyph is drawn only
+ * once — in its top form. So somebody copying a cap off a reference
+ * image is drawing a shape the matcher would never have seen unless
+ * mirrored candidates exist. Reading glyphs off reference images is the
+ * entire point of the pad, which makes this the case that matters most
+ * and the one that was missing until it was asked for.
+ *
+ * The answer has to be right in BOTH parts: the glyph, and which way up.
+ * Getting `æ` with `flipped: false` from a drawn cap would put the wrong
+ * orientation into a corpus entry, which is worse than no match at all.
+ */
+function runFlipped(glyphs, body, detail) {
+  const flipping = glyphs.filter(([, e]) => e.flips);
+  let ok = 0;
+  const misses = [];
+
+  for (let pass = 0; pass < PASSES; pass++) {
+    for (const [ipa, entry] of flipping) {
+      const strokes = trace(entry.flat || entry.svg, { jitter: 5 });
+      // Mirror about the drawing's own vertical centre.
+      const ys = strokes.flat().map(p => p.y);
+      const mid = Math.min(...ys) + Math.max(...ys);
+      const upside = strokes.map(s => s.map(p => ({ x: p.x, y: mid - p.y })));
+
+      const hit = rankGesture(upside, 1)[0];
+      if (hit && hit.ipa === ipa && hit.flipped === true) ok++;
+      else misses.push(`${entry.name}→${hit ? hit.name + (hit.flipped ? "%" : "") : "?"}`);
+    }
+  }
+
+  const n = ok / PASSES;
+  const floor = flipping.length;          // all of them; this one is exact
+  const pass = n >= floor;
+
+  const row = document.createElement("tr");
+  row.innerHTML = `<td></td><td class="n"></td><td class="n"></td>`
+    + `<td class="n"></td><td class="n"></td><td></td>`;
+  const cells = row.querySelectorAll("td");
+  cells[0].textContent = "drawn as a BOTTOM-slot form";
+  cells[1].textContent = n.toFixed(1) + "/" + flipping.length;
+  cells[2].textContent = floor;
+  cells[3].textContent = "—";
+  cells[4].textContent = "—";
+  cells[5].textContent = pass ? "pass" : "FAIL";
+  cells[5].className = pass ? "pass" : "fail";
+  body.appendChild(row);
+
+  const p = document.createElement("p");
+  p.className = "misses";
+  p.textContent = misses.length
+    ? "bottom-slot misses: " + [...new Set(misses)].join(", ")
+    : `all ${flipping.length} flipping glyphs recognised upside down, `
+      + "with the right orientation";
+  detail.appendChild(p);
+
+  return pass ? 0 : 1;
 }
 
 run();

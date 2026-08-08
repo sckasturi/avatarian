@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=23" />
-<link rel="stylesheet" href="css/style.css?v=23" />
+<link rel="stylesheet" href="css/blocks.css?v=24" />
+<link rel="stylesheet" href="css/style.css?v=24" />
 </head>
 <body>
 
@@ -157,25 +157,25 @@ and made-up words too.</p>
   <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=23"></script>
+<script src="js/manifest.js?v=24"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=23"></script>
+<script src="js/corpus.js?v=24"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=23"></script>
-<script src="js/g2p.js?v=23"></script>
+<script src="js/lexicon.js?v=24"></script>
+<script src="js/g2p.js?v=24"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=23"></script>
-<script src="js/render.js?v=23"></script>
+<script src="js/sounds.js?v=24"></script>
+<script src="js/render.js?v=24"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=23"></script>
-<script src="js/draw.js?v=23"></script>
+<script src="js/recognise.js?v=24"></script>
+<script src="js/draw.js?v=24"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};

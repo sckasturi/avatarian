@@ -121,10 +121,28 @@ function references() {
       strokes += 1;
       samplePoints(el, points);
     });
-    if (points.length) {
+    if (!points.length) continue;
+
+    const shape = normalise(points);
+    REFERENCES.push({
+      ipa, name: entry.name, type: entry.type, strokes,
+      points: shape, flipped: false,
+    });
+
+    // A glyph is DRAWN once, in its top-slot form, and some mirror
+    // top-to-bottom when they land in a bottom slot — æ's cup becomes a
+    // cap, /ɑ/'s Y inverts. Without a mirrored candidate, somebody
+    // copying a cap off a reference image draws a shape the matcher has
+    // never seen, and the whole point of this is reading glyphs off
+    // reference images.
+    //
+    // Only glyphs that actually flip get one. A mirrored drawing of a
+    // glyph that does not flip is not that glyph, and adding candidates
+    // nothing writes would be inventing evidence.
+    if (entry.flips) {
       REFERENCES.push({
         ipa, name: entry.name, type: entry.type, strokes,
-        points: normalise(points),
+        points: mirrorY(shape), flipped: true,
       });
     }
   }
@@ -158,6 +176,19 @@ function normalise(points) {
   const offX = (1 - w * scale) / 2, offY = (1 - h * scale) / 2;
   return points.map(([x, y]) =>
     [(x - minX) * scale + offX, (y - minY) * scale + offY]);
+}
+
+/**
+ * Reflect a normalised cloud top-to-bottom.
+ *
+ * Safe to do after `normalise` rather than before: the shape sits inside
+ * the unit box, centred on its short axis and spanning 0–1 on its long
+ * one, so reflecting about y = 0.5 mirrors the shape exactly and leaves
+ * it normalised. Which means the mirrored copy costs one pass over the
+ * points, not a second round of sampling.
+ */
+function mirrorY(points) {
+  return points.map(([x, y]) => [x, 1 - y]);
 }
 
 /** Mean distance from every point of `a` to its nearest point in `b`. */
@@ -213,14 +244,25 @@ function rankGesture(strokes, limit = 6) {
   const drawn = normalise(thin(flat, MAX_POINTS));
   const drawnStrokes = strokes.filter(s => s.length > 1).length || strokes.length;
 
-  return references()
-    .map((ref) => ({
-      ipa: ref.ipa,
-      name: ref.name,
-      type: ref.type,
-      score: chamfer(drawn, ref.points)
-        + Math.abs(ref.strokes - drawnStrokes) * STROKE_PENALTY,
-    }))
+  // One row per GLYPH, not per candidate: a flipping glyph has two
+  // reference clouds, and offering both would fill the list with pairs
+  // that look identical for anything near-symmetric. Keeping the better
+  // orientation is also what makes the answer useful — it says which way
+  // up you drew it.
+  const best = new Map();
+  for (const ref of references()) {
+    const score = chamfer(drawn, ref.points)
+      + Math.abs(ref.strokes - drawnStrokes) * STROKE_PENALTY;
+    const seen = best.get(ref.ipa);
+    if (!seen || score < seen.score) {
+      best.set(ref.ipa, {
+        ipa: ref.ipa, name: ref.name, type: ref.type,
+        flipped: ref.flipped, score,
+      });
+    }
+  }
+
+  return [...best.values()]
     .sort((a, b) => a.score - b.score)
     .slice(0, limit);
 }

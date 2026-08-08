@@ -138,3 +138,15 @@ The weakest case — a whole stroke forgotten — sits around 25/42 top-1 and
 32/42 top-3, and that is honest rather than a defect: draw half a glyph
 and you have drawn a different shape. It is why the pad offers a ranked
 list instead of one answer.
+
+The sixth case is **exact, not a floor**: all eight flipping glyphs, drawn
+the way they appear in a *bottom* slot, must come back as the right glyph
+*and* as `flipped`. Getting `æ` with `flipped: false` from a drawn cap
+would put the wrong orientation into a corpus entry, which is worse than
+no match at all.
+
+**The scripts are loaded with a cache-busting query.** This page reported
+0/8 on a change that was actually correct, because the browser had held
+on to the previous `recognise.js`. A test that silently runs against a
+stale copy of its subject is worse than no test — and "caching lies" is
+already the first entry under Traps in `HANDOFF.md`.

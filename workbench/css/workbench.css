@@ -296,6 +296,8 @@ input:focus, textarea:focus, select:focus {
 .drawpad-hit-code { font-size: 0.68rem; color: var(--faint);
                     font-family: ui-monospace, Menlo, monospace; }
 .drawpad-hit.is-best { border-color: var(--accent); }
+/* A bottom-slot match shows the form you actually drew. */
+.drawpad-hit.is-flipped svg { transform: scaleY(-1); }
 /* How sure the match is, said in colour as well as in the tooltip. A
    transcription tool that hides its own uncertainty puts guesses in the
    corpus, which is the one thing the corpus exists to prevent. */

@@ -338,6 +338,10 @@ button.primary:hover { opacity: 0.9; }
   font-size: 0.7rem; color: var(--muted-2);
 }
 .drawpad-hit.is-best { border-color: var(--accent); }
+/* A bottom-slot match shows the form you actually drew, not the form the
+   glyph is stored in. Offering a cap and drawing a cup would make the
+   answer look wrong when it is right. */
+.drawpad-hit.is-flipped svg { transform: scaleY(-1); }
 /* How sure the match is, in colour as well as in the tooltip. The
    failure mode of a recogniser is a confident wrong answer, so a loose
    match should look loose. */

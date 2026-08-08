@@ -184,12 +184,19 @@ function createDrawPad(container, options = {}) {
 
     ranked.forEach((hit, i) => {
       const entry = glyphs[hit.ipa] || {};
-      const code = codes[hit.ipa] || hit.ipa;
+      // A mirrored match carries its orientation into the code. `%`
+      // forces the bottom form, which is exactly what you mean when you
+      // have copied a shape the way it appears in a bottom slot — and
+      // recording it is the difference between a spelling that says
+      // which way up the glyph was and one that leaves it to be guessed.
+      const code = (codes[hit.ipa] || hit.ipa) + (hit.flipped ? "%" : "");
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "drawpad-hit drawpad-" + quality(hit.score);
       if (i === 0) btn.classList.add("is-best");
-      btn.title = `${code} — ${quality(hit.score)} match (${hit.score.toFixed(3)})`;
+      if (hit.flipped) btn.classList.add("is-flipped");
+      btn.title = `${code} — ${quality(hit.score)} match (${hit.score.toFixed(3)})`
+        + (hit.flipped ? ", bottom-slot form" : "");
       btn.innerHTML =
         `<span class="drawpad-hit-glyph">${entry.flat || entry.svg || ""}</span>` +
         `<span class="drawpad-hit-code"></span>`;
