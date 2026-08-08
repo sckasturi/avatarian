@@ -415,9 +415,16 @@ glyph — a real type-design project.
 
 ### Docs and process
 
-**9. A public-facing spec section at the end of `AVATARIAN.md`.** The
-language as it currently stands, present tense, no process or history
-language. Distinct from item 8.
+~~**9. A public-facing spec section at the end of `AVATARIAN.md`.**~~
+**Done in session 10** — §12, "The specification".
+
+The rest of `AVATARIAN.md` is a working reference: it carries the
+reasoning, the evidence, and the record of what was believed and
+corrected on the way, which is exactly what you want while the model is
+still moving and exactly what you don't want when you are trying to
+implement it. §12 is the other thing — present tense, no history, no
+citations, no argument. Where a rule isn't determined it says so and
+stops rather than guessing.
 
 **7. Reference material catalogue page.** An index of every reference
 image and what it contains. Overlaps B2 — the inventory is the input.
@@ -430,8 +437,25 @@ opens the repo will see attribution — and the site footer now leads with
 the tool's own credit rather than burying it last. B5 (extra links) can
 be added to the one section whenever they turn up.
 
-**8. Final article synthesising the decipherment** — structural rules and
-open questions as one write-up, separate from these working docs.
+~~**8. Final article synthesising the decipherment**~~ **Done in session
+10** — `DECIPHERMENT.md`, "Reading Avatarian".
+
+A write-up rather than a working doc: what is known, how it is known, and
+what isn't. Deliberately a different genre from item 9 — that one states
+the rules, this one makes the argument for them.
+
+The section that earns its place is the last one. Three failures shaped
+how this project works and they are all the same failure — treating a
+single observation as a rule. /e/ was made a positional variant on one
+example and had to be reverted; `toph` sat in the dictionary confidently
+wrong for months; the tool's own help text taught a broken spelling of
+"Katara" in three places. The response to all three is the commitment the
+corpus exists to enforce: **record what was observed separately from what
+was inferred from it.**
+
+It also ends with what would actually move the decipherment forward,
+ranked — glossed sentences first, isolated names a distant fifth — since
+"send more material" is not useful advice on its own.
 
 ~~**27. A test suite.**~~ **Done in session 10.**
 

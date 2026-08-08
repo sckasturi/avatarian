@@ -13,6 +13,10 @@ Wiki (Fandom).
 
 > **What's next?** `TODO.md` is the one backlog.
 >
+> **Curious about the script rather than the code?** `DECIPHERMENT.md` is
+> the write-up: how Avatarian was worked out, from what evidence, and what
+> is still unknown. `AVATARIAN.md` §12 is the same rules stated as a spec.
+>
 > **New here?** `AVATARIAN.md` is the single reference for the *script itself* —
 > the writing model, the full glyph inventory, and every open decoding
 > question, gathered in one place. This README covers the *tool*: how it's
@@ -30,7 +34,7 @@ site/            <- deploy this folder to GitHub Pages / Cloudflare Pages
   js/corpus.js     generated — the attested corpus, top of the lookup chain
   js/recognise.js  draw a glyph -> ranked matches (samples manifest.js)
   js/draw.js       the drawing pad, shared with the workbench
-  js/reverse.js    sounds -> likely English words, fuzzy (workbench only)
+  js/reverse.js    sounds -> likely English words, fuzzy (site + workbench)
   css/blocks.css   block layout (site + wiki + the designer's live preview)
   css/style.css    the page around it
   assets/glyphs/   one clean SVG per phoneme
@@ -74,14 +78,15 @@ tools/
   build_corpus.py       validates corpus/attested.json -> js/corpus.js
   run_tests.py          the whole suite, one command
 
+  designs_to_svg.py     a design -> SVG, or -> a build_glyphs.py entry
+  promote.py            a design -> INTO build_glyphs.py, then rebuild
+  check_geom.py         proves geom.js still matches glyphspec.py
+
 tests/           <- no dependencies; see tests/README.md
   harness.js       loads site/js/* into one context, the way a page does
   *.test.js        block model, sounds syntax, lookup chain, reverse-decode
   test_*.py        the corpus validator and its save path
   recognise.html   draw-to-recognise accuracy (browser only)
-  designs_to_svg.py     a design -> SVG, or -> a build_glyphs.py entry
-  promote.py            a design -> INTO build_glyphs.py, then rebuild
-  check_geom.py         proves geom.js still matches glyphspec.py
 
 wiki/            <- paste these into the Fandom wiki, once
   Template_Avatarian.wiki       wikitext for {{avatarian|hello}}
@@ -623,8 +628,16 @@ don't want to rely on the guesser.
   now comes out /m ɛ t ə l .../, and is in the corpus besides.
 - /x/ has no glyph yet; six others were drawn and shipped without a
   recorded source (see above).
-- Positional vowel variants ("top/bottom" forms) are not implemented.
+- ~~Positional vowel variants ("top/bottom" forms) are not implemented.~~
+  Implemented: six glyphs mirror by slot, and the draw pad recognises a
+  bottom-slot form and reports it as such.
 - Punctuation (comma, question mark, apostrophe) is stripped, not rendered,
   though the key chart documents how each should behave.
-- Reverse decode (clicked IPA → English) only matches the built-in
-  exception dictionary; anything else shows as raw IPA.
+- ~~Reverse decode (clicked IPA → English) only matches the built-in
+  exception dictionary.~~ Fixed by `js/reverse.js` — fuzzy phoneme edit
+  distance against the corpus, `EXCEPTIONS` and the whole CMU dictionary.
+  Any word you build by hand gets suggestions under the sounds box.
+
+*(The rest of this README predates the corpus and the readable sound
+codes in places. TODO item 28 is the rewrite; it waits on the C-C
+question so the 9-row model can be stated whole.)*

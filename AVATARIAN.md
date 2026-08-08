@@ -6,6 +6,8 @@ doesn't. It gathers what was scattered across `README.md` (architecture),
 `CONTEXT.md` (rules + open questions), and `HANDOFF.md` (session history)
 into one document about the script rather than the code.
 
+- **The rules, stated once with no history** → §12 at the end of this file
+- **How the script was worked out, as an article** → `DECIPHERMENT.md`
 - **What still needs doing** → `TODO.md`
 - **Attested spellings, and the plan for a confirmed dictionary** → `CORPUS.md`
 - **How the tool is built and deployed** → `README.md`
@@ -585,3 +587,151 @@ reproduces the *structure* correctly (the pairing, the heights, the flips) but
 not the stroke-level fusion. Getting that would mean redrawing every glyph
 with defined connection points: a genuine type-design project, a v2, not a
 layout tweak.
+
+---
+
+## 12. The specification
+
+Everything above is a working reference: it carries the reasoning, the
+evidence, and the record of what was believed and corrected along the
+way. This section is the other thing — **the writing system as it stands,
+stated once, in the present tense.** No history, no argument, no
+citations. If you wanted to implement Avatarian from scratch, this is the
+part to read.
+
+Where a rule is not fully determined, it says so and stops. It does not
+guess.
+
+### 12.1 What is encoded
+
+Avatarian encodes **sounds, not letters**. A word is written from its
+pronunciation, so any two words that sound alike are written alike, and
+English spelling has no bearing on the result.
+
+The sound inventory is **41 phonemes** — 25 consonants and 16 vowels —
+plus two marks that are not sounds.
+
+### 12.2 Blocks
+
+Sounds are written **two to a block**, in strict order: the first into
+the top slot, the second into the bottom slot. Blocks run left to right.
+Words are separated by a space; blocks within a word are packed tight,
+with no separator.
+
+Nothing about this depends on a sound being a consonant or a vowel. A
+block is simply the next two sounds.
+
+```
+please   /p l i z/     (p,l) (i,z)
+at       /æ t/         (æ,t)          vowel on top
+me       /m i/         (m,i)
+```
+
+### 12.3 Nulls
+
+When a slot has no sound for it, a **null** is written into it. A null is
+part of the spelling, not padding, and is never omitted.
+
+There are two, distinguished by height:
+
+| | | height |
+| --- | --- | --- |
+| `∅` | a rounded cup | vowel-height |
+| `∅c` | a squared cup | consonant-height |
+
+**Which one is written is decided by the null's pairing partner, not by
+the slot it fills:**
+
+- a **vowel** paired with a null takes the **consonant-height** null;
+- a **consonant** paired with a null takes the **vowel-height** null.
+
+This is what keeps every block the same height whatever is in it.
+
+Nulls occur at the end of a word with an odd sound count, and also
+**inside** words. Mid-word nulls are attested but the rule that places
+them is not determined — see §12.8.
+
+### 12.4 Heights
+
+Every block is **nine rows** tall.
+
+- A **consonant** occupies **5 rows**.
+- A **vowel** occupies **4 rows**.
+
+A vowel's *drawing* fills either 3 or 4 of its 4 rows. A 3-row vowel
+leaves one row empty, and that empty row is a deliberate gap on the
+vowel's **inner** side — between the vowel and its partner, never at the
+block's outer edge.
+
+| | drawn rows |
+| --- | --- |
+| 4-row vowels | ɪ e u ʊ ɑ aʊ ɔɪ |
+| 3-row vowels | i ɛ æ ʌ ə oʊ ɔ aɪ ɜ |
+
+So, reading a block top to bottom:
+
+```
+V-C, 3-row vowel:   1-3 vowel · 4 gap · 5-9 consonant
+V-C, 4-row vowel:   1-4 vowel         · 5-9 consonant
+C-V, 3-row vowel:   1-5 consonant · 6 gap · 7-9 vowel
+C-V, 4-row vowel:   1-5 consonant        · 6-9 vowel
+```
+
+A 4-row vowel touches its partner directly and reads as one merged
+figure. A 3-row vowel does not touch it.
+
+### 12.5 Block types
+
+Three combinations occur: **V-C**, **C-V** and **C-C**. **V-V does not
+occur** — where two vowels would meet, a null takes the second slot.
+
+C-C is the one case whose layout is not determined: two consonants are
+ten rows of content in a nine-row block, so they overlap, and by how much
+is unresolved (§12.8).
+
+### 12.6 Orientation
+
+A glyph is drawn **once**, in its top-slot form. Most glyphs are written
+the same way in either slot. Some mirror top-to-bottom when they land in
+a bottom slot — æ's cup becomes a cap, ɑ's Y inverts.
+
+The glyphs that mirror by slot are **æ ɑ l ɪ e aɪ**.
+
+Two glyphs do not follow the slot at all. **/s/ takes different
+orientations in the same slot**, so its orientation is part of the
+spelling and must be written explicitly rather than derived. (The shipped
+glyph set also mirrors /s/ and /ɔɪ/ by slot; whether it should is under
+review — §12.8.)
+
+### 12.7 The lattice
+
+Glyphs are constructed on a shared grid rather than drawn freehand.
+
+| | grid | box |
+| --- | --- | --- |
+| consonant | 5 × 5 cells | 100 × 100 |
+| vowel | 5 × 4 cells | 100 × 80 |
+
+One stroke weight throughout, square caps, mitred joins. A dot is a
+filled circle whose diameter is half the stroke weight. Every glyph
+scales uniformly — vowels are drawn at their own proportions rather than
+being squashed copies of a square drawing, so stroke weight is identical
+across the set and dots stay round.
+
+### 12.8 What is not determined
+
+Four things. Each is a genuine gap, not a simplification:
+
+1. **Where mid-word nulls go.** They are attested inside words, and the
+   words that carry them divide into units that are paired independently.
+   What decides the division is unknown: it is not morpheme boundaries
+   and not syllables.
+2. **How much two consonants overlap** in a C-C block.
+3. **What selects /s/'s orientation.** It is not the slot.
+4. **Whether /x/ has a glyph.** No source shows one.
+
+One further sound, /x/, is written as a placeholder box; and one mark in
+the reference key is unassigned.
+
+Anything a tool derives beyond these is inference, and should be
+presented as such.

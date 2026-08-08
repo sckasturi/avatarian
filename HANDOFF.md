@@ -75,6 +75,31 @@ opposite of what the item originally predicted.
 it read `ARPABET_TO_IPA` out of `g2p.js`, so the designer's sound list
 teaches the same codes rather than a stale copy.
 
+### Items 4, 9 and 8 — decode on the site, and two documents
+
+**Item 4** finished. `reverse.js` had existed since session 9 but only
+the workbench used it; the public site had no decode direction at all.
+Now any word in the sounds box with **no caption** gets suggestions under
+it, and clicking one writes the caption in. Words converted from English
+already carry labels, so the strip only appears for sounds you built by
+hand — clicking glyphs, drawing them, or reading them off reference art,
+which is exactly when the page could draw your word perfectly and never
+tell you what it said.
+
+**Item 9** — `AVATARIAN.md` §12, "The specification". The rest of that
+file is a working reference and carries the history; §12 is the rules
+stated once, present tense, no citations. Where something isn't
+determined it says so and stops.
+
+**Item 8** — `DECIPHERMENT.md`, "Reading Avatarian". The article: what is
+known, how it is known, what isn't. The part worth reading is the last
+section, on method — three failures that were all the same failure
+(treating one observation as a rule), and why the corpus exists to stop
+the fourth.
+
+**Item 26 dropped** on the user's call. Photo OCR is off the backlog;
+struck through rather than deleted, per this file's numbering rule.
+
 ### The recogniser learned bottom-slot forms
 
 A glyph is drawn once, in its top form, and eight mirror by slot
