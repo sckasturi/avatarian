@@ -436,7 +436,7 @@ function newEntry() {
   state.index = -1;
   writeEditor(blankEntry());
   renderEntryList();
-  $("spelling").focus();
+  $("spelling").focus({ preventScroll: true });
 }
 
 function deleteEntry() {
@@ -524,7 +524,13 @@ function insertToken(text) {
   const trail = after && !/^\s/.test(after) ? " " : "";
   box.value = before + lead + text + trail + after;
   const pos = before.length + lead.length + text.length;
-  box.focus();
+  // preventScroll, because the control that called this is often nowhere
+  // near the box: clicking a glyph in the reference, or picking a match
+  // off the draw pad, would otherwise focus the textarea and have the
+  // browser yank the page back to the top — a 1600px jump on every
+  // single letter, which is exactly the mode you are in when building a
+  // word by clicking.
+  box.focus({ preventScroll: true });
   box.setSelectionRange(pos, pos);
   markDirty();
   commitEditor();
@@ -543,7 +549,13 @@ function appendOverride(mark) {
   if (!before.trim()) return;
   const after = box.value.slice(at);
   box.value = before + mark + after;
-  box.focus();
+  // preventScroll, because the control that called this is often nowhere
+  // near the box: clicking a glyph in the reference, or picking a match
+  // off the draw pad, would otherwise focus the textarea and have the
+  // browser yank the page back to the top — a 1600px jump on every
+  // single letter, which is exactly the mode you are in when building a
+  // word by clicking.
+  box.focus({ preventScroll: true });
   box.setSelectionRange(before.length + 1, before.length + 1);
   markDirty();
   commitEditor();
@@ -555,7 +567,13 @@ function deleteToken() {
   const at = Number.isInteger(box.selectionStart) ? box.selectionStart : box.value.length;
   const before = box.value.slice(0, at).replace(/\s*\S+\s*$/, "");
   box.value = before + box.value.slice(at);
-  box.focus();
+  // preventScroll, because the control that called this is often nowhere
+  // near the box: clicking a glyph in the reference, or picking a match
+  // off the draw pad, would otherwise focus the textarea and have the
+  // browser yank the page back to the top — a 1600px jump on every
+  // single letter, which is exactly the mode you are in when building a
+  // word by clicking.
+  box.focus({ preventScroll: true });
   box.setSelectionRange(before.length, before.length);
   markDirty();
   commitEditor();
