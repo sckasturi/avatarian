@@ -13,6 +13,7 @@
   <h1>Transcription workbench</h1>
   <span class="bar-note" id="corpusCount"></span>
   <span class="spacer"></span>
+  <button type="button" id="importBtn">+ import a source</button>
   <span class="save-state" id="saveState"></span>
   <button type="button" id="saveBtn" class="primary">save corpus</button>
 </header>
@@ -43,6 +44,73 @@
 
 <!-- ------------------------------------------------------------------ -->
 <main class="col-edit">
+
+<!-- The primary way in. A reference image almost never holds one word —
+     it holds a line, a caption, a poster. So the unit of work is the
+     SOURCE: drop its image, transcribe the whole thing in one go with
+     "/" between words, and get one entry per word out.
+
+     The per-entry editor below is for refining afterwards, not for
+     getting things in. -->
+<section class="panel" id="importPanel">
+  <div class="panel-head">
+    <h2>Import a source</h2>
+    <button type="button" id="closeImport" class="small">close</button>
+  </div>
+
+  <div class="row">
+    <label class="field grow">
+      <span class="field-label">Source name <span class="fine">— how entries
+        will cite it</span></span>
+      <input type="text" id="impName" placeholder="fanny-poster" autocomplete="off" />
+    </label>
+    <label class="field">
+      <span class="field-label">Confidence <span class="fine">— for all of them</span></span>
+      <select id="impConfidence">
+        <option value="certain">certain</option>
+        <option value="probable">probable</option>
+        <option value="unclear">unclear</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="row">
+    <label class="field grow">
+      <span class="field-label">What it is</span>
+      <textarea id="impWhat" rows="2"
+        placeholder="A poster reading “fanny is missing”."></textarea>
+    </label>
+    <label class="field grow">
+      <span class="field-label">Where it came from
+        <span class="fine">— specific enough to find again</span></span>
+      <textarea id="impWhere" rows="2"
+        placeholder="Season 2 episode 7, background art at 04:12."></textarea>
+    </label>
+  </div>
+
+  <div class="dropzone" id="impDrop">
+    <img id="impImage" alt="" hidden />
+    <p class="dropzone-hint" id="impDropHint">Drop the reference image here,
+      or paste it.</p>
+  </div>
+
+  <label class="field">
+    <span class="field-label">Transcription
+      <span class="fine">— the whole source, <code>/</code> between words.
+        Put the English in <code>(brackets)</code> if you already know it;
+        anything you leave out gets suggested.</span></span>
+    <textarea id="impText" rows="3" spellcheck="false"
+      placeholder="F AE N IY / IH Z / M IH S IH NG 0"></textarea>
+  </label>
+
+  <div id="impRows"></div>
+
+  <div class="import-actions">
+    <button type="button" id="impAdd" class="primary">add entries</button>
+    <span class="fine" id="impSummary"></span>
+  </div>
+</section>
+
   <section class="panel" id="editor">
     <div class="panel-head">
       <h2 id="editorTitle">New entry</h2>

@@ -422,6 +422,9 @@ function applyZoom() {
  */
 function openEntry(i, commit = true) {
   if (commit) commitEditor();
+  // Picking an entry means you want to refine it, so leave the import
+  // panel rather than hiding the thing you just asked to see.
+  closeImport();
   state.index = i;
   writeEditor(state.entries[i]);
   renderEntryList();
@@ -429,6 +432,7 @@ function openEntry(i, commit = true) {
 
 function newEntry() {
   commitEditor();
+  closeImport();
   state.index = -1;
   writeEditor(blankEntry());
   renderEntryList();
@@ -583,15 +587,276 @@ function buildPalette() {
 }
 
 // ---------------------------------------------------------------------
+// Importing a whole source
+// ---------------------------------------------------------------------
+//
+// A reference image almost never holds one word — it holds a line, a
+// caption, a poster. So the unit of work here is the SOURCE: its image
+// and its whole transcription go in together, and one entry per word
+// comes out, every one of them already citing it.
+//
+// The transcription uses the site's own sounds syntax, which already has
+// everything this needs: "/" between words, and "(brackets)" for a word
+// you already know. So a line you could paste into the main site is also
+// a line you can paste here, and the parser is `soundTextToWords` rather
+// than anything new.
+
+/** The image filed for the import in progress, if one has been dropped. */
+let importImage = null;
+
+/** The parsed rows, rebuilt whenever the transcription changes. */
+let importRows = [];
+
+function openImport() {
+  $("importPanel").hidden = false;
+  $("editor").hidden = true;
+  $("impName").focus();
+}
+
+function closeImport() {
+  $("importPanel").hidden = true;
+  $("editor").hidden = false;
+}
+
+/**
+ * Split the transcription into words and work out what each one is.
+ *
+ * A caption wins over a suggestion: if you already know the word, saying
+ * so is not something the reverse-decode should be allowed to overrule.
+ */
+function parseImport() {
+  const words = soundTextToWords($("impText").value);
+  importRows = words.map((w) => {
+    const known = (w.word || "").trim();
+    const suggestions = suggestWords(w.ipa, 4);
+    const guess = known || (suggestions[0]?.word ?? "");
+    const existing = state.entries.findIndex(
+      e => (e.key || "").toLowerCase() === guess.toLowerCase());
+    return {
+      ipa: w.ipa,
+      word: guess,
+      fromCaption: !!known,
+      suggestions,
+      existing,
+      // A word already in the corpus is skipped by default. Re-recording
+      // it would be a duplicate, and silently overwriting an entry that
+      // somebody wrote a note on is worse.
+      update: false,
+    };
+  });
+  renderImportRows();
+}
+
+function renderImportRows() {
+  const box = $("impRows");
+  box.innerHTML = "";
+
+  importRows.forEach((row, i) => {
+    const el = document.createElement("div");
+    el.className = "imp-row";
+
+    const art = document.createElement("div");
+    art.className = "imp-art";
+    renderAvatarian(row.ipa, art);
+
+    const body = document.createElement("div");
+    body.className = "imp-body";
+
+    const codes = document.createElement("div");
+    codes.className = "imp-codes";
+    codes.textContent = ipaToSpelling(row.ipa);
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "imp-word";
+    input.value = row.word;
+    input.placeholder = "word";
+    input.addEventListener("input", () => {
+      row.word = input.value.trim();
+      row.existing = state.entries.findIndex(
+        e => (e.key || "").toLowerCase() === row.word.toLowerCase());
+      updateImportSummary();
+    });
+
+    body.append(input, codes);
+
+    // Suggestions, unless the transcription already named the word.
+    if (!row.fromCaption && row.suggestions.length) {
+      const chips = document.createElement("div");
+      chips.className = "imp-chips";
+      for (const hit of row.suggestions) {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "sugg from-" + hit.source;
+        chip.textContent = hit.word;
+        chip.title = hit.distance === 0
+          ? `exact match on the sounds (${hit.source})`
+          : `${hit.distance} sound${hit.distance > 1 ? "s" : ""} different`;
+        chip.addEventListener("click", () => {
+          row.word = hit.word;
+          input.value = hit.word;
+          row.existing = state.entries.findIndex(
+            e => (e.key || "").toLowerCase() === hit.word.toLowerCase());
+          renderImportRows();
+        });
+        chips.appendChild(chip);
+      }
+      body.appendChild(chips);
+    }
+
+    const flags = [];
+    if (row.ipa.length % 2) {
+      flags.push(["is-warn", `${row.ipa.length} symbols — odd, so a null is `
+        + `missing. This one can't be saved as it stands.`]);
+    }
+    if (row.existing >= 0) {
+      flags.push(["is-dupe", `"${row.word}" is already in the corpus.`]);
+    }
+    for (const [cls, text] of flags) {
+      const p = document.createElement("p");
+      p.className = "imp-flag " + cls;
+      p.textContent = text;
+      if (cls === "is-dupe") {
+        const label = document.createElement("label");
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.checked = row.update;
+        cb.addEventListener("change", () => {
+          row.update = cb.checked;
+          updateImportSummary();
+        });
+        label.append(cb, document.createTextNode(" replace it"));
+        p.appendChild(label);
+      }
+      body.appendChild(p);
+    }
+
+    el.append(art, body);
+    box.appendChild(el);
+  });
+
+  updateImportSummary();
+}
+
+/** What the button is actually about to do, counted rather than promised. */
+function importPlan() {
+  const add = [], replace = [], blocked = [];
+  for (const row of importRows) {
+    if (!row.word) { blocked.push(row); continue; }
+    if (row.ipa.length % 2) { blocked.push(row); continue; }
+    if (row.existing >= 0) {
+      if (row.update) replace.push(row);
+      else blocked.push(row);
+      continue;
+    }
+    add.push(row);
+  }
+  return { add, replace, blocked };
+}
+
+function updateImportSummary() {
+  const { add, replace, blocked } = importPlan();
+  const bits = [];
+  if (add.length) bits.push(`${add.length} new`);
+  if (replace.length) bits.push(`${replace.length} replaced`);
+  if (blocked.length) bits.push(`${blocked.length} skipped`);
+  $("impSummary").textContent = importRows.length
+    ? bits.join(" · ") || "nothing to add"
+    : "";
+  $("impAdd").disabled = !add.length && !replace.length;
+  // Say what the button will actually do — "add" is the wrong verb when
+  // every row is a replacement, and "1 entries" reads like a bug.
+  const n = (k) => `${k} ${k === 1 ? "entry" : "entries"}`;
+  $("impAdd").textContent =
+    add.length && replace.length ? `add ${n(add.length)}, replace ${replace.length}`
+    : add.length ? `add ${n(add.length)}`
+    : replace.length ? `replace ${n(replace.length)}`
+    : "add entries";
+}
+
+function commitImport() {
+  const name = $("impName").value.trim();
+  if (!name) {
+    showProblems(["Give the source a name before adding its entries."]);
+    $("impName").focus();
+    return;
+  }
+
+  const source = state.sources[name] || {};
+  source.what = $("impWhat").value.trim();
+  source.where = $("impWhere").value.trim();
+  if (importImage) source.image = importImage;
+  state.sources[name] = source;
+
+  const confidence = $("impConfidence").value;
+  const make = (row) => {
+    const entry = { key: row.word, spelling: row.ipa.join(" "), source, confidence };
+    entry.source = name;
+    return entry;
+  };
+
+  const { add, replace } = importPlan();
+  for (const row of replace) {
+    const was = state.entries[row.existing];
+    state.entries[row.existing] = { ...was, ...make(row) };
+  }
+  for (const row of add) state.entries.push(make(row));
+
+  showProblems([]);
+  markDirty();
+  renderSourceList();
+  renderEntryList();
+
+  // Clear the transcription but keep the source, because the next thing
+  // you do is usually another line off the same image.
+  $("impText").value = "";
+  importRows = [];
+  renderImportRows();
+  setStatus(`${add.length + replace.length} entries added — not saved yet`,
+            "is-dirty");
+}
+
+function wireImport() {
+  $("importBtn").addEventListener("click", openImport);
+  $("closeImport").addEventListener("click", closeImport);
+  $("impAdd").addEventListener("click", commitImport);
+
+  let timer = null;
+  $("impText").addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(parseImport, 200);
+  });
+  $("impConfidence").addEventListener("change", updateImportSummary);
+
+  // The name defaults from the image's filename, since that is usually
+  // what you would have typed anyway.
+  $("impName").addEventListener("input", updateImportSummary);
+
+  wireDrop($("impDrop"), importDropped);
+}
+
+/** An image dropped or pasted onto the import panel. */
+async function importDropped(file) {
+  const stored = await storeImage(file);
+  if (!stored) return;
+  importImage = stored;
+  const img = $("impImage");
+  img.src = "/images/" + stored + "?t=" + Date.now();
+  img.hidden = false;
+  $("impDropHint").hidden = true;
+  // The filename is usually what you would have typed for the name anyway.
+  if (!$("impName").value.trim()) {
+    $("impName").value = stored.replace(/\.[a-z]+$/i, "");
+  }
+  updateImportSummary();
+}
+
+// ---------------------------------------------------------------------
 // The reference image
 // ---------------------------------------------------------------------
 
-async function fileImage(file) {
-  const name = $("source").value;
-  if (!state.sources[name]) {
-    showProblems(["Pick or create a source before filing an image against it."]);
-    return;
-  }
+/** Send an image to the server and return the filename it was stored as. */
+async function storeImage(file) {
   const data = await new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result);
@@ -601,18 +866,19 @@ async function fileImage(file) {
   const res = await fetch("/api/image", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: file.name || name, data }),
+    body: JSON.stringify({ name: file.name || "source", data }),
   });
   const body = await res.json();
-  if (body.error) return showProblems([body.error]);
+  if (body.error) {
+    showProblems([body.error]);
+    return null;
+  }
   showProblems([]);
-  state.sources[name].image = body.file;
-  showSource(name);
-  markDirty();
+  return body.file;
 }
 
-function wireDropzone() {
-  const zone = $("dropzone");
+/** Drag-and-drop onto one zone. */
+function wireDrop(zone, onFile) {
   const stop = (e) => { e.preventDefault(); e.stopPropagation(); };
   zone.addEventListener("dragover", (e) => { stop(e); zone.classList.add("is-over"); });
   zone.addEventListener("dragleave", (e) => { stop(e); zone.classList.remove("is-over"); });
@@ -620,13 +886,34 @@ function wireDropzone() {
     stop(e);
     zone.classList.remove("is-over");
     const file = e.dataTransfer?.files?.[0];
-    if (file) fileImage(file);
+    if (file) onFile(file);
   });
-  // Pasting a screenshot is how most of these will arrive.
+}
+
+/** File an image against the source the open ENTRY cites. */
+async function fileImage(file) {
+  const name = $("source").value;
+  if (!state.sources[name]) {
+    showProblems(["Pick or create a source before filing an image against it."]);
+    return;
+  }
+  const stored = await storeImage(file);
+  if (!stored) return;
+  state.sources[name].image = stored;
+  showSource(name);
+  markDirty();
+}
+
+function wireDropzone() {
+  wireDrop($("dropzone"), fileImage);
+  // Pasting a screenshot is how most of these will arrive. It goes to
+  // whichever panel is open, because that is the one you are looking at.
   window.addEventListener("paste", (e) => {
     const item = [...(e.clipboardData?.items || [])]
       .find(i => i.type.startsWith("image/"));
-    if (item) fileImage(item.getAsFile());
+    if (!item) return;
+    const file = item.getAsFile();
+    ($("importPanel").hidden ? fileImage : importDropped)(file);
   });
 }
 
@@ -645,6 +932,11 @@ async function load() {
   if (state.entries.length) openEntry(0);
   else writeEditor(blankEntry());
   setStatus(body.problems?.length ? "loaded with problems" : "loaded");
+
+  // Importing a source is the way things get IN; the entry editor is for
+  // refining what is already there. So the import panel is what you land
+  // on, and clicking an entry is what takes you out of it.
+  openImport();
 }
 
 function wire() {
@@ -701,6 +993,7 @@ function wire() {
 
   $("imageZoom").addEventListener("input", applyZoom);
   wireDropzone();
+  wireImport();
 
   createDrawPad($("drawpad"), {
     onPick: (hit) => insertToken(hit.code),

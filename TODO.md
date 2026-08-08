@@ -126,10 +126,33 @@ corrected there:
 python3 tools/corpus_server.py     # http://localhost:8793/
 ```
 
-`workbench/`, a local tool like the glyph designer and not deployed. The
-loop it is built around: **file a reference image against a source, read
-the Avatarian off it and type the spelling, let the fuzzy reverse-decode
-say what English word that is, confirm, save.**
+`workbench/`, a local tool like the glyph designer and not deployed.
+
+**The unit of work is a SOURCE, not a word.** A reference image almost
+never holds one word — it holds a line, a caption, a poster. So the
+landing screen is *import a source*: drop the image, transcribe the whole
+thing in one box with `/` between words, and get one entry per word out,
+every one already citing it.
+
+The transcription box takes the site's own sounds syntax, so nothing new
+had to be invented: `/` splits words and `(brackets)` name one you
+already know. A line you could paste into the main site is a line you can
+paste here.
+
+```
+F AE N IY / IH Z / M IH S IH NG 0            three entries, words suggested
+F AE N IY (fanny) / IH Z (is) / M IH S IH NG 0 (missing)   words given
+```
+
+Each parsed word shows its rendered Avatarian, the English the fuzzy
+reverse-decode suggests, and the runners-up as one-click chips. A word
+already in the corpus is flagged and **skipped** unless you tick *replace
+it*; an odd token count is flagged as unsaveable before you get anywhere
+near the save button. The button says what it will actually do — "add 3
+entries", "replace 1 entry" — counted, not promised.
+
+The per-entry editor is still there for refining afterwards; clicking any
+entry in the list opens it.
 
 The image is **provenance, not input** — nothing reads its pixels. It is
 stored in `corpus/sources/` so an entry can be re-checked later, which is

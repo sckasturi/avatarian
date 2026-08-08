@@ -185,6 +185,44 @@ input:focus, textarea:focus, select:focus {
 
 /* --- word suggestions --------------------------------------------- */
 
+/* --- importing a whole source -------------------------------------- */
+
+#importPanel[hidden], #editor[hidden] { display: none; }
+
+.imp-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 0; border-top: 1px solid var(--line);
+}
+.imp-row:first-child { border-top: none; }
+.imp-art {
+  flex: none; padding: 6px 10px; border-radius: 6px;
+  background: var(--surface); border: 1px solid var(--line);
+  --glyph-size: 30px; overflow-x: auto; max-width: 46%;
+}
+.imp-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.imp-word { font-size: 0.95rem; }
+.imp-codes {
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.75rem;
+  color: var(--faint); overflow-x: auto; white-space: nowrap;
+}
+.imp-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.imp-chips .sugg { font-size: 0.8rem; padding: 2px 8px; }
+.imp-flag {
+  margin: 0; font-size: 0.78rem;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.imp-flag.is-warn { color: var(--warn); }
+.imp-flag.is-dupe { color: var(--accent); }
+.imp-flag label { display: inline-flex; align-items: center; gap: 4px;
+                  cursor: pointer; }
+
+.import-actions {
+  display: flex; align-items: center; gap: 12px; margin-top: 14px;
+  padding-top: 12px; border-top: 1px solid var(--line);
+}
+.import-actions button[disabled] { opacity: 0.45; cursor: default; }
+.import-actions button[disabled]:hover { filter: none; }
+
 .dupe {
   display: flex; align-items: center; gap: 10px;
   margin: -6px 0 10px; padding: 7px 10px;

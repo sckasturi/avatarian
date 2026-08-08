@@ -322,7 +322,7 @@ Most of this exists. The designer already has:
 reuses all four of those through a read-only `/site/` route, exactly as
 the designer does.
 
-Two things came out differently from the sketch above:
+Three things came out differently from the sketch above:
 
 - **No image underlay.** The image is *provenance*, not something to
   trace over: it is filed in `corpus/sources/` against a source, and the
@@ -332,6 +332,14 @@ Two things came out differently from the sketch above:
   spell. So the spelling drives a fuzzy reverse-decode (`reverse.js`)
   and you pick from ranked candidates. That is what §4's "the corpus is
   also the research instrument" feels like in practice.
+- **The unit is a SOURCE, not an entry.** This section is written as
+  "one entry per attested word", which is right for the *data* and wrong
+  for the *work*: an image holds a line or a poster, so an entry-at-a-time
+  tool means re-picking the same source for every word on it. The
+  workbench takes a whole transcription at once — `/` between words,
+  `(brackets)` for a word you already know — and produces the entries
+  together. Both syntaxes are the site's own, so nothing new had to be
+  invented for it.
 
 It also shows the attested spelling **beside what the model would have
 predicted**, and names which of the two ways they disagree — see §4.

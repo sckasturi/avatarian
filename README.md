@@ -93,12 +93,13 @@ python3 tools/designer_server.py    # glyph designer      :8792
 python3 tools/corpus_server.py      # transcription bench :8793
 ```
 
-The **workbench** is where attested words get recorded. File a reference
-image against a source, type the spelling you can read off it, take the
-English word the fuzzy reverse-decode suggests, save. It shows the
-attested spelling beside what the model would have predicted, so a
-disagreement is visible while you type rather than found later. The image
-is provenance — nothing reads its pixels.
+The **workbench** is where attested words get recorded, **a source at a
+time**. Drop a reference image, transcribe the whole thing in one box
+with `/` between words, and get one entry per word — each with the
+English suggested by fuzzy reverse-decode, and already citing that
+source. It also shows the attested spelling beside what the model would
+have predicted, so a disagreement is visible while you type rather than
+found later. The image is provenance — nothing reads its pixels.
 
 ## Testing locally
 

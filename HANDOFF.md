@@ -19,10 +19,25 @@ done — see below.
 python3 tools/corpus_server.py     # http://localhost:8793/
 ```
 
-`workbench/`, local-only like the glyph designer. The loop: **file a
-reference image against a source, read the Avatarian off it and type the
-spelling, let the reverse-decode say what English word that is, confirm,
-save.**
+`workbench/`, local-only like the glyph designer.
+
+**The unit of work is a SOURCE, not a word** — a correction from the user
+partway through, and the right one. A reference image holds a line or a
+poster, not a single word, so making the entry the unit meant re-picking
+the same source over and over. The landing screen is now *import a
+source*: drop the image, transcribe the whole thing in one box with `/`
+between words, get one entry per word out, all citing it.
+
+That needed no new syntax. The box takes the site's own sounds syntax,
+where `/` already splits words and `(brackets)` already name one — so a
+line you could paste into the main site is a line you can paste here, and
+the parser is `soundTextToWords`.
+
+Each parsed word shows its rendered Avatarian, the suggested English, and
+the runners-up as chips. Already-attested words are flagged and skipped
+unless you tick *replace it*; odd token counts are flagged before you
+reach the save button. The per-entry editor is still there for refining,
+and clicking an entry opens it.
 
 **The image is provenance, not input** — nothing reads its pixels. That
 was a correction from the user mid-build, and it made the feature
