@@ -449,13 +449,23 @@ supplied separately, so they have no tracing to sit beside. Add such a glyph
 to `SOURCE_NOTES` in `build_glyphs.py` and the key tab will say where it came
 from.
 
-`ɜ` and `ə` are **mirror images, and separate glyphs**. `ə` (`schwa`) has its
-recurve ascending left to right with the dot above on the left; `ɜ` (`nurse`)
-descends with the dot below on the left. They were briefly merged onto one
-file because a reference screenshot labelled a single mark `ə/ɜ` — that was
-wrong. The stem is `nurse`, never `er`: the rest of the stems are ARPAbet
-codes and ARPAbet's ER is the r-coloured ɝ, but `g2p.js` emits ɜ with /r/ as
-a separate segment, "bird" → `ɜ r`, so the vowel carries no r-colouring.
+`ɜ` and `ə` are **one glyph**, and the reference screenshot that labelled a
+single mark `ə/ɜ` was right all along.
+
+It was briefly merged on that evidence, then split back into two files on the
+reasoning that the two shapes are mirror images and therefore different
+letters. That inference was wrong twice over. Avatarian *merges* the NURSE
+vowel and the schwa — the reference material supplies IPA alongside Avatarian
+for **water, earth, fire and air**, and earth's first glyph is fire's third,
+one glyph against two different IPA symbols. And being mirror images is not
+evidence of being different letters here: it is the signature of a glyph that
+**flips by slot**, like æ, ɑ, l, ɪ, e and aɪ. The two drawings were
+point-for-point mirrors including the dots, which is exactly what the flip
+mechanism produces.
+
+So `ə` is drawn once, in its top-slot form — the shape that used to be
+`nurse` — and the bottom form is derived. `ɜ` no longer exists anywhere in
+the pipeline, and `er`, `ur` and `ir` are accepted spellings of `uh`.
 
 ### Orientation
 
@@ -507,8 +517,9 @@ students                     metalbending
   dictionaries use for laypeople. `k uh t ah r uh` is *Katara*;
   `a` cat, `ah` father, `ee` see, `oh` goat, `oo` soon, `uu` foot,
   `ow` mouth, `aw` thought, `ey` face, `eye` price, `oy` choice,
-  `er` nurse, `uh` comma. Consonants are themselves plus `ng ch sh th dh
-  zh j y kh`. The table is `READABLE` in `sounds.js`.
+  `uh` comma — which also covers *nurse* and *bird*, since Avatarian
+  writes one letter where English writes two. Consonants are themselves
+  plus `ng ch sh th dh zh j y kh`. The table is `READABLE` in `sounds.js`.
 * **ARPAbet still works, in CAPITALS** — `K AX T AA R AX`. Four codes
   (`ah uh ow aw`) mean different things in the two schemes, so case is
   what separates them; everything else stays case-insensitive. Nothing

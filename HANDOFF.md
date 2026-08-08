@@ -9,8 +9,56 @@ what to do next.
 
 ## Session 10 — tests, flipped glyphs, and readable sound codes
 
-Items **27**, **29**, the flipped-glyph half of **25**, and **B3** is
-answered. Sections below in the order they were built.
+Items **27**, **29**, **4**, **9**, **8**, the flipped-glyph half of
+**25**, **B3** answered, and a correction to the phoneme inventory
+itself. Sections below in the order they were built.
+
+### /ɜ/ does not exist: Avatarian merges it with /ə/
+
+**The inventory is 40 phonemes, not 41.** The NURSE vowel and the schwa
+are one letter in this script, and the tool had been carrying them as
+two.
+
+The evidence is the user's, and it is direct: the reference material
+supplies **IPA alongside Avatarian for water, earth, fire and air**, and
+**earth's first glyph is fire's third** — the same glyph, where the
+supplied IPA reads ɜ for one word and ə for the other. English
+transcription distinguishes them; Avatarian does not.
+
+The second half is why the project got it wrong twice. `ɜ` and `ə`
+shipped as separate drawings that are **exact mirror images**, and that
+was read as proof they were different letters. It is the opposite: being
+a mirror pair is the signature of a glyph that **flips by slot**, like æ
+ɑ l ɪ e aɪ. Checked point-for-point, `schwa` is `nurse` reflected, dots
+included — `nurse` was the top-slot form and `schwa` the bottom one.
+
+A reference screenshot had labelled a single mark `ə/ɜ` back in session
+3. It was merged on that evidence, then split again on the mirror
+argument. **The original merge was right.**
+
+What changed: `ə` is drawn once (the old `nurse` shape), `flips: true`,
+bottom form derived. `designs/nurse.json` retired. `ɜ` is gone from
+`build_glyphs.py`, `g2p.js` (ARPAbet ER now maps to ə), ten `EXCEPTIONS`
+entries, `render.js`'s vowel set, and the sound codes — `er`, `ur`, `ir`
+are now accepted spellings of `uh`.
+
+**No corpus entry used ɜ**, so the attested data did not move. Again.
+
+`lexicon.js` was the awkward part: it is generated from a CMU dictionary
+that is not in the repo, and it packed ɜ and ə as *different characters*,
+which would have made every `-er` word score one edit off in
+reverse-decode. Rewrote the packed blob in place — per line, substituting
+only in the segment after the last space, since the front-coding head
+carries a length byte and raw word characters that a global replace would
+corrupt. 26,104 of ~126k entries touched, and `build_lexicon.py` fixed so
+a regeneration matches.
+
+**It also explains a bug found ten minutes earlier and not yet fixed.**
+`water` came out `w aw t uh r` from `EXCEPTIONS` while `after` came out
+`a f t er r` from the dictionary — the same unstressed ending, two
+different vowels. That looked like one layer being wrong. Neither was:
+they were the same sound all along, and the split was the error. Every
+one of those words now agrees.
 
 ### B3 is closed: `appa` shows mixed null heights
 

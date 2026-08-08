@@ -175,7 +175,8 @@
     "file": "schwa.svg",
     "status": "drawn",
     "type": "vowel",
-    "flat": "schwa_flat.svg"
+    "flat": "schwa_flat.svg",
+    "flips": true
   },
   "u": {
     "file": "uu.svg",
@@ -236,12 +237,6 @@
     "flat": "oi_flat.svg",
     "flips": true,
     "rows": 4
-  },
-  "ɜ": {
-    "file": "nurse.svg",
-    "status": "drawn",
-    "type": "vowel",
-    "flat": "nurse_flat.svg"
   },
   "∅": {
     "file": "null_v.svg",

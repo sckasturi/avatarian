@@ -63,31 +63,29 @@
     "fire-photo": {
       "what": "Photograph of the word \"fire\", showing /aɪ/ in a bottom slot as the vertical mirror of its citation form.",
       "where": "Read in session 3; it is what put /aɪ/ in FLIPS. Not yet catalogued — see TODO B2."
+    },
+    "cherries on top poster": {
+      "what": "Cherries on top",
+      "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=1",
+      "image": "image-3.png"
     }
   },
   "entries": [
     {
-      "key": "please",
-      "spelling": "p l i z",
+      "key": "be",
+      "spelling": "b i",
+      "source": "wake-up-note",
+      "confidence": "certain"
+    },
+    {
+      "key": "but",
+      "spelling": "b ʌ t ∅",
       "source": "wake-up-note",
       "confidence": "certain"
     },
     {
       "key": "do",
       "spelling": "d u",
-      "source": "wake-up-note",
-      "confidence": "certain"
-    },
-    {
-      "key": "not",
-      "spelling": "n ɑ t ∅",
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "Three phonemes, so a trailing null. Cited against `appa`: an odd count on its own does not make canon give every phoneme its own block."
-    },
-    {
-      "key": "be",
-      "spelling": "b i",
       "source": "wake-up-note",
       "confidence": "certain"
     },
@@ -99,17 +97,37 @@
       "note": "/æ/ in a bottom slot, drawn as a cap ∩. Half the FLIPS evidence for æ; \"at\" is the other half."
     },
     {
-      "key": "at",
-      "spelling": "æ t",
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "Vowel on TOP, drawn as a cup ∪. This is the word that killed the syllable model."
-    },
-    {
       "key": "me",
       "spelling": "m i",
       "source": "wake-up-note",
       "confidence": "certain"
+    },
+    {
+      "key": "not",
+      "spelling": "n ɑ t ∅",
+      "source": "wake-up-note",
+      "confidence": "certain",
+      "note": "Three phonemes, so a trailing null. Cited against `appa`: an odd count on its own does not make canon give every phoneme its own block."
+    },
+    {
+      "key": "please",
+      "spelling": "p l i z",
+      "confidence": "certain",
+      "source": "wake-up-note"
+    },
+    {
+      "key": "up",
+      "spelling": "ʌ p",
+      "source": "wake-up-note",
+      "confidence": "certain",
+      "note": "Vowel on TOP."
+    },
+    {
+      "key": "wake",
+      "spelling": "w e k ∅",
+      "source": "wake-up-note",
+      "confidence": "certain",
+      "note": "/e/ in a bottom slot. Pairs with \"aang\" (/e/ on top) as the FLIPS evidence for e."
     },
     {
       "key": "when",
@@ -120,26 +138,6 @@
     {
       "key": "you",
       "spelling": "j u",
-      "source": "wake-up-note",
-      "confidence": "certain"
-    },
-    {
-      "key": "wake",
-      "spelling": "w e k ∅",
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "/e/ in a bottom slot. Pairs with \"aang\" (/e/ on top) as the FLIPS evidence for e."
-    },
-    {
-      "key": "up",
-      "spelling": "ʌ p",
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "Vowel on TOP."
-    },
-    {
-      "key": "but",
-      "spelling": "b ʌ t ∅",
       "source": "wake-up-note",
       "confidence": "certain"
     },
@@ -174,6 +172,14 @@
       "note": "Not /ɑ ŋ/, which is what EXCEPTIONS used to guess. The correction also repairs the FLIPS table, which cites \"Aang\" as showing /e/ in a top slot — evidence that made no sense while the word was read as containing no /e/."
     },
     {
+      "key": "momo",
+      "spelling": "m oʊ m oʊ",
+      "gloss": "Momo",
+      "source": "name-references",
+      "confidence": "certain",
+      "note": "Checked and already right."
+    },
+    {
       "key": "toph",
       "spelling": "t ɑ f ∅",
       "gloss": "Toph",
@@ -185,14 +191,6 @@
       "key": "zuko",
       "spelling": "z u k oʊ",
       "gloss": "Zuko",
-      "source": "name-references",
-      "confidence": "certain",
-      "note": "Checked and already right."
-    },
-    {
-      "key": "momo",
-      "spelling": "m oʊ m oʊ",
-      "gloss": "Momo",
       "source": "name-references",
       "confidence": "certain",
       "note": "Checked and already right."
@@ -222,6 +220,31 @@
       "source": "fire-photo",
       "confidence": "probable",
       "note": "Only the FIRST block is directly attested — the photo was read for /aɪ/'s orientation in a bottom slot, which is (f,aɪ). The second block is the ordinary derivation and has not been checked. Downgrade or confirm when the image is catalogued (B2)."
+    },
+    {
+      "key": "at",
+      "spelling": "æ t",
+      "confidence": "certain",
+      "source": "cherries on top poster",
+      "note": "Vowel on TOP, drawn as a cup ∪. This is the word that killed the syllable model."
+    },
+    {
+      "key": "cherries",
+      "spelling": "tʃ ɛ r i z ∅",
+      "source": "cherries on top poster",
+      "confidence": "certain"
+    },
+    {
+      "key": "on",
+      "spelling": "ɑ n",
+      "source": "cherries on top poster",
+      "confidence": "certain"
+    },
+    {
+      "key": "top",
+      "spelling": "t ɑ p ∅",
+      "source": "cherries on top poster",
+      "confidence": "certain"
     }
   ]
 }

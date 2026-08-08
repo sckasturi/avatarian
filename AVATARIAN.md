@@ -478,7 +478,11 @@ notation for English sounds that ordinary readers already know how to read.
 | `a` | c**a**t | `ah` | f**a**ther | `ee` | s**ee** | `ow` | m**ou**th |
 | `e` | b**e**d | `oh` | g**o**at | `oo` | s**oo**n | `aw` | th**ou**ght |
 | `i` | s**i**t | `uh` | comm**a** | `uu` | f**oo**t | `oy` | ch**oi**ce |
-| `u` | c**u**t | `ey` | f**a**ce | `eye` | pr**i**ce | `er` | n**ur**se |
+| `u` | c**u**t | `ey` | f**a**ce | `eye` | pr**i**ce | | |
+
+`uh` also covers the vowel of *nurse* and *bird*: **Avatarian writes one
+letter where English dictionaries write two** (see §12.1), so `er`, `ur`
+and `ir` all land on it.
 
 Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*), `dh`
 (*this*), `zh` (*vision*), `j` (*jam*), `y` (*yes*) and `kh` (/x/).
@@ -608,8 +612,16 @@ Avatarian encodes **sounds, not letters**. A word is written from its
 pronunciation, so any two words that sound alike are written alike, and
 English spelling has no bearing on the result.
 
-The sound inventory is **41 phonemes** — 25 consonants and 16 vowels —
+The sound inventory is **40 phonemes** — 25 consonants and 15 vowels —
 plus two marks that are not sounds.
+
+It is not a one-to-one map onto English IPA. **Avatarian writes /ɜ/ and
+/ə/ with a single letter** — the NURSE vowel and the schwa — where
+English transcription distinguishes them. The reference material gives
+IPA alongside Avatarian for *water*, *earth*, *fire* and *air*, and
+earth's first glyph is fire's third: one glyph, two IPA symbols. Anything
+converting English into Avatarian therefore has to collapse that
+distinction, and cannot recover it going the other way.
 
 ### 12.2 Blocks
 
@@ -666,7 +678,7 @@ block's outer edge.
 | | drawn rows |
 | --- | --- |
 | 4-row vowels | ɪ e u ʊ ɑ aʊ ɔɪ |
-| 3-row vowels | i ɛ æ ʌ ə oʊ ɔ aɪ ɜ |
+| 3-row vowels | i ɛ æ ʌ ə oʊ ɔ aɪ |
 
 So, reading a block top to bottom:
 
@@ -695,7 +707,7 @@ A glyph is drawn **once**, in its top-slot form. Most glyphs are written
 the same way in either slot. Some mirror top-to-bottom when they land in
 a bottom slot — æ's cup becomes a cap, ɑ's Y inverts.
 
-The glyphs that mirror by slot are **æ ɑ l ɪ e aɪ**.
+The glyphs that mirror by slot are **æ ɑ l ɪ e aɪ ə**.
 
 Two glyphs do not follow the slot at all. **/s/ takes different
 orientations in the same slot**, so its orientation is part of the

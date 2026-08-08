@@ -230,11 +230,22 @@ VOWELS = {
           + path("M 18 40 L 34 40")
           + path("M 66 40 L 82 40")
           + path("M 66 80 L 82 80"),
-    "schwa": dot(18, 40)
-             + dot(82, 80)
-             + path("M 18 80 A 29.77 37.21 0 0 0 50 60 "
-                    "A 29.77 37.21 0 0 1 82 40"),
-    "nurse": path("M 82 80 A 25.3 31.62 0 0 1 50 60 A 25.3 31.62 0 0 0 18 40")
+    # ə, drawn in its TOP-slot form. The bottom form is this mirrored,
+    # which the renderer derives — see FLIPS_BASE.
+    #
+    # AVATARIAN MERGES ɜ AND ə INTO ONE LETTER. The reference material
+    # gives IPA alongside Avatarian for water, earth, fire and air, and
+    # earth's first glyph is fire's third — the same glyph, where the
+    # supplied IPA reads ɜ for one and ə for the other. English spells
+    # them apart; this script does not.
+    #
+    # This shape therefore used to ship TWICE, as `schwa` and `nurse`.
+    # The two drawings are point-for-point mirrors, dots included — they
+    # were one letter in its two slot orientations all along, `nurse`
+    # being the top form and `schwa` the bottom. The top form is kept
+    # and the bottom is derived, exactly as for every other flipping
+    # glyph.
+    "schwa": path("M 82 80 A 25.3 31.62 0 0 1 50 60 A 25.3 31.62 0 0 0 18 40")
              + dot(82, 40)
              + dot(18, 80),
     "uu": path("M 18 40 L 18 80")
@@ -326,7 +337,7 @@ SOURCE_NOTES = {
 # /s/ is deliberately absent: "students" writes both of its /s/ in TOP
 # slots with a different orientation for each, so the slot cannot decide
 # it. Spell those with the $/% override instead.
-FLIPS_BASE = {"æ", "ɑ", "l", "ɪ", "e", "aɪ"}
+FLIPS_BASE = {"æ", "ɑ", "l", "ɪ", "e", "aɪ", "ə"}
 
 # Vowels whose design spans all 4 rows of the vowel grid. These bridge
 # the gap between consonant and vowel in the 9-row block model.
@@ -371,16 +382,16 @@ IPA_TO_NAME = {
     "l": "l", "x": "kh",
     "i": "i", "ɪ": "ih", "e": "ei", "ɛ": "eh", "æ": "ae", "ʌ": "uh",
     "ə": "schwa", "u": "uu", "ʊ": "oo", "oʊ": "ow", "ɔ": "aw",
-    # ɜ is NOT ARPAbet's ER: g2p emits it with /r/ as a separate segment
-    # ("bird" -> ɜ r), so the vowel carries no r-colouring. Named for its
-    # lexical set instead, the way ə is named schwa.
-    "ɑ": "ah", "aɪ": "ai", "aʊ": "au", "ɔɪ": "oi", "ɜ": "nurse",
+    # There is no ɜ. It was carried as a separate sound until the two
+    # drawings turned out to be one letter flipped by slot; everything
+    # that emitted ɜ now emits ə.
+    "ɑ": "ah", "aɪ": "ai", "aʊ": "au", "ɔɪ": "oi",
     NULL_IPA: "null_v",
     NULL_C_IPA: "null_c",
 }
 
 VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
-             "ɑ", "aɪ", "aʊ", "ɔɪ", "ɜ"}
+             "ɑ", "aɪ", "aʊ", "ɔɪ"}
 
 
 def glyph_type(ipa):

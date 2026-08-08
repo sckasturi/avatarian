@@ -34,12 +34,12 @@ deliberate mapping rather than a substitution. Three decisions:
       the rule-based converter never modelled. "metalbending" comes out
       /m ɛ t ə l .../ instead of /m ɛ t æ l .../.
 
-  ER  -> ɜ r
+  ER  -> ə r
       CMU's ER is the r-coloured /ɝ/, one phoneme. `g2p.js` deliberately
-      emits /ɜ/ with /r/ as a SEPARATE segment ("bird" -> ɜ r), because
-      the vowel glyph `nurse` carries no r-colouring. Splitting it here
+      emits /ə/ with /r/ as a SEPARATE segment ("bird" -> ə r), because
+      the vowel glyph carries no r-colouring. Splitting it here
       keeps the glyph set's distinction intact. Without this the lexicon
-      would quietly stop ever emitting /r/ after a nurse vowel.
+      would quietly stop ever emitting /r/ after that vowel.
 
   stress digits are otherwise dropped
       Nothing downstream reads stress, and keeping it would triple the
@@ -111,7 +111,7 @@ def phones_to_ipa(phones):
             out.append("ə" if stress == "0" else "ʌ")
         elif base == "ER":
             # r-coloured in CMU, two segments here.
-            out.extend(("ɜ", "r"))
+            out.extend(("ə", "r"))
         else:
             ipa = ARPA.get(base)
             if ipa is None:

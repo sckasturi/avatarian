@@ -84,8 +84,11 @@ the panel hands out — a design JSON, an SVG, or a `build_glyphs.py`
 entry — so a letter that is nearly right can be the baseline for the
 next one. The **mirror** toggles (`↔` left–right, `↕` top–bottom) in the
 paste box reflect the incoming shape as it is loaded — the fastest way to
-start from a mirror pair (e.g. copy /ə/ → paste with ↕ → get /ɜ/'s
-shape). A design JSON is already lattice data and comes in untouched;
+start from a mirror pair (e.g. copy /æ/ → paste with ↕ → get its
+bottom-slot cap). This used to cite /ə/ → /ɜ/, which is exactly the
+mistake that cost the project two sessions: a top-to-bottom mirror is
+not a different LETTER, it is the same letter in the other slot, and ə
+and ɜ turned out to be one glyph. A design JSON is already lattice data and comes in untouched;
 an SVG or a Python entry is drawing coordinates, so it is sampled and
 fitted like a brush stroke. Nothing is rescaled across grids: a
 consonant shape on a vowel's shorter lattice hangs off the bottom and

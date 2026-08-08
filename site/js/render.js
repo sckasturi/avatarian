@@ -49,7 +49,7 @@ const GLYPHS = (typeof window !== "undefined" && window.AVATARIAN_GLYPHS) || {};
 
 const VOWELS = new Set([
   "i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ", "ɑ",
-  "aɪ", "aʊ", "ɔɪ", "ɜ",
+  "aɪ", "aʊ", "ɔɪ",
 ]);
 
 /** Kept async for API compatibility; glyphs are already in memory. */

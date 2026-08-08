@@ -44,15 +44,28 @@ window.AVATARIAN_CORPUS = {
     "fire-photo": {
       "what": "Photograph of the word \"fire\", showing /aɪ/ in a bottom slot as the vertical mirror of its citation form.",
       "where": "Read in session 3; it is what put /aɪ/ in FLIPS. Not yet catalogued — see TODO B2."
+    },
+    "cherries on top poster": {
+      "what": "Cherries on top",
+      "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=1",
+      "image": "image-3.png"
     }
   },
   "words": {
-    "please": {
+    "be": {
       "ipa": [
-        "p",
-        "l",
-        "i",
-        "z"
+        "b",
+        "i"
+      ],
+      "source": "wake-up-note",
+      "confidence": "certain"
+    },
+    "but": {
+      "ipa": [
+        "b",
+        "ʌ",
+        "t",
+        "∅"
       ],
       "source": "wake-up-note",
       "confidence": "certain"
@@ -61,25 +74,6 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "d",
         "u"
-      ],
-      "source": "wake-up-note",
-      "confidence": "certain"
-    },
-    "not": {
-      "ipa": [
-        "n",
-        "ɑ",
-        "t",
-        "∅"
-      ],
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "Three phonemes, so a trailing null. Cited against `appa`: an odd count on its own does not make canon give every phoneme its own block."
-    },
-    "be": {
-      "ipa": [
-        "b",
-        "i"
       ],
       "source": "wake-up-note",
       "confidence": "certain"
@@ -95,15 +89,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "note": "/æ/ in a bottom slot, drawn as a cap ∩. Half the FLIPS evidence for æ; \"at\" is the other half."
     },
-    "at": {
-      "ipa": [
-        "æ",
-        "t"
-      ],
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "Vowel on TOP, drawn as a cup ∪. This is the word that killed the syllable model."
-    },
     "me": {
       "ipa": [
         "m",
@@ -111,6 +96,47 @@ window.AVATARIAN_CORPUS = {
       ],
       "source": "wake-up-note",
       "confidence": "certain"
+    },
+    "not": {
+      "ipa": [
+        "n",
+        "ɑ",
+        "t",
+        "∅"
+      ],
+      "source": "wake-up-note",
+      "confidence": "certain",
+      "note": "Three phonemes, so a trailing null. Cited against `appa`: an odd count on its own does not make canon give every phoneme its own block."
+    },
+    "please": {
+      "ipa": [
+        "p",
+        "l",
+        "i",
+        "z"
+      ],
+      "source": "wake-up-note",
+      "confidence": "certain"
+    },
+    "up": {
+      "ipa": [
+        "ʌ",
+        "p"
+      ],
+      "source": "wake-up-note",
+      "confidence": "certain",
+      "note": "Vowel on TOP."
+    },
+    "wake": {
+      "ipa": [
+        "w",
+        "e",
+        "k",
+        "∅"
+      ],
+      "source": "wake-up-note",
+      "confidence": "certain",
+      "note": "/e/ in a bottom slot. Pairs with \"aang\" (/e/ on top) as the FLIPS evidence for e."
     },
     "when": {
       "ipa": [
@@ -126,36 +152,6 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "j",
         "u"
-      ],
-      "source": "wake-up-note",
-      "confidence": "certain"
-    },
-    "wake": {
-      "ipa": [
-        "w",
-        "e",
-        "k",
-        "∅"
-      ],
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "/e/ in a bottom slot. Pairs with \"aang\" (/e/ on top) as the FLIPS evidence for e."
-    },
-    "up": {
-      "ipa": [
-        "ʌ",
-        "p"
-      ],
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "Vowel on TOP."
-    },
-    "but": {
-      "ipa": [
-        "b",
-        "ʌ",
-        "t",
-        "∅"
       ],
       "source": "wake-up-note",
       "confidence": "certain"
@@ -220,6 +216,18 @@ window.AVATARIAN_CORPUS = {
       "gloss": "Aang",
       "note": "Not /ɑ ŋ/, which is what EXCEPTIONS used to guess. The correction also repairs the FLIPS table, which cites \"Aang\" as showing /e/ in a top slot — evidence that made no sense while the word was read as containing no /e/."
     },
+    "momo": {
+      "ipa": [
+        "m",
+        "oʊ",
+        "m",
+        "oʊ"
+      ],
+      "source": "name-references",
+      "confidence": "certain",
+      "gloss": "Momo",
+      "note": "Checked and already right."
+    },
     "toph": {
       "ipa": [
         "t",
@@ -242,18 +250,6 @@ window.AVATARIAN_CORPUS = {
       "source": "name-references",
       "confidence": "certain",
       "gloss": "Zuko",
-      "note": "Checked and already right."
-    },
-    "momo": {
-      "ipa": [
-        "m",
-        "oʊ",
-        "m",
-        "oʊ"
-      ],
-      "source": "name-references",
-      "confidence": "certain",
-      "gloss": "Momo",
       "note": "Checked and already right."
     },
     "fanny": {
@@ -297,6 +293,45 @@ window.AVATARIAN_CORPUS = {
       "source": "fire-photo",
       "confidence": "probable",
       "note": "Only the FIRST block is directly attested — the photo was read for /aɪ/'s orientation in a bottom slot, which is (f,aɪ). The second block is the ordinary derivation and has not been checked. Downgrade or confirm when the image is catalogued (B2)."
+    },
+    "at": {
+      "ipa": [
+        "æ",
+        "t"
+      ],
+      "source": "cherries on top poster",
+      "confidence": "certain",
+      "note": "Vowel on TOP, drawn as a cup ∪. This is the word that killed the syllable model."
+    },
+    "cherries": {
+      "ipa": [
+        "tʃ",
+        "ɛ",
+        "r",
+        "i",
+        "z",
+        "∅"
+      ],
+      "source": "cherries on top poster",
+      "confidence": "certain"
+    },
+    "on": {
+      "ipa": [
+        "ɑ",
+        "n"
+      ],
+      "source": "cherries on top poster",
+      "confidence": "certain"
+    },
+    "top": {
+      "ipa": [
+        "t",
+        "ɑ",
+        "p",
+        "∅"
+      ],
+      "source": "cherries on top poster",
+      "confidence": "certain"
     }
   }
 };

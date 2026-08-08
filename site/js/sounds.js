@@ -69,7 +69,6 @@ const READABLE = {
   "ow": "aʊ",    // mouth
   "aw": "ɔ",     // thought
   "oy": "ɔɪ",    // choice
-  "er": "ɜ",     // nurse
   // --- consonants ---------------------------------------------------
   "p": "p", "b": "b", "t": "t", "d": "d", "k": "k", "g": "g",
   "m": "m", "n": "n", "ng": "ŋ",
@@ -91,7 +90,9 @@ const READABLE_ALIASES = {
   "o": "ɑ",                       // lot, for anyone reading a/e/i/o/u as a set
   "ay": "e", "ai": "e",           // face — the other respelling convention
   "au": "ɔ", "or": "ɔ",           // thought
-  "ur": "ɜ", "ir": "ɜ",           // nurse
+  // These all used to name a separate vowel /ɜ/, which turned out to be
+  // ə written in a top slot. Still accepted, still the same sound.
+  "er": "ə", "ur": "ə", "ir": "ə",
   "igh": "aɪ",                    // price
   "schwa": "ə", "ax": "ə",
   "sh'": "ʃ",
@@ -101,7 +102,7 @@ const READABLE_ALIASES = {
 const SOUND_ALIASES = {
   "0": "∅", "_": "∅", "-": "∅",   // the empty-slot filler
   "eɪ": "e", "ej": "e",           // key chart labels this vowel e/eɪ
-  "ɝ": "ɜ", "ɜr": "ɜ",            // r-coloured spellings of the nurse vowel
+  "ɝ": "ə", "ɜr": "ə", "ɜ": "ə",  // r-coloured spellings, and ɜ itself
   "ɑː": "ɑ", "iː": "i", "uː": "u",
 };
 

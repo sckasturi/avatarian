@@ -87,9 +87,9 @@ EXAMPLES = {
     "ch": "chase", "j_dz": "just", "sh": "she",
     "zh": "vision", "kh": "loch",
     "i": "please", "ih": "metalbending", "ei": "wake", "eh": "set",
-    "ae": "mad", "uh": "up", "schwa": "katara", "uu": "do", "oo": "good",
+    "ae": "mad", "uh": "up", "schwa": "katara / earth", "uu": "do", "oo": "good",
     "ow": "toe", "aw": "thought", "ah": "appa", "ai": "tie", "au": "now",
-    "oi": "toy", "nurse": "bird",
+    "oi": "toy",
     "null_c": "(null, consonant height)", "null_v": "(null, vowel height)",
 }
 

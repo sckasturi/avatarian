@@ -30,7 +30,7 @@
 
 const ARPABET_TO_IPA = {
   AA: "ɑ", AE: "æ", AH: "ʌ", AO: "ɔ", AW: "aʊ", AY: "aɪ",
-  EH: "ɛ", ER: "ɜ", EY: "e", IH: "ɪ", IY: "i", OW: "oʊ",
+  EH: "ɛ", ER: "ə", EY: "e", IH: "ɪ", IY: "i", OW: "oʊ",
   OY: "ɔɪ", UH: "ʊ", UW: "u",
   B: "b", CH: "tʃ", D: "d", DH: "ð", F: "f", G: "g", HH: "h",
   JH: "dʒ", K: "k", L: "l", M: "m", N: "n", NG: "ŋ", P: "p",
@@ -42,7 +42,7 @@ const EXCEPTIONS = {
   "the": "ð ə", "a": "ə", "of": "ʌ v", "to": "t u", "and": "æ n d",
   "one": "w ʌ n", "two": "t u", "said": "s ɛ d", "says": "s ɛ z",
   "you": "j u", "your": "j ɔ r", "are": "ɑ r", "is": "ɪ z",
-  "was": "w ʌ z", "were": "w ɜ r", "have": "h æ v", "has": "h æ z",
+  "was": "w ʌ z", "were": "w ə r", "have": "h æ v", "has": "h æ z",
   "here": "h ɪ r", "there": "ð ɛ r", "they": "ð e", "their": "ð ɛ r",
   "what": "w ʌ t", "who": "h u", "where": "w ɛ r", "when": "w ɛ n",
   "some": "s ʌ m", "come": "k ʌ m", "done": "d ʌ n", "gone": "g ɔ n",
@@ -62,8 +62,8 @@ const EXCEPTIONS = {
   // here: it moves to corpus/attested.json, which records the observed
   // spelling rather than a reading of it, and which wins above this
   // table. See CORPUS.md.
-  "world": "w ɜ r l d", "water": "w ɔ t ə r",
-  "earth": "ɜ r θ", "air": "ɛ r", "avatar": "æ v ə t ɑ r",
+  "world": "w ə r l d", "water": "w ɔ t ə r",
+  "earth": "ə r θ", "air": "ɛ r", "avatar": "æ v ə t ɑ r",
   "katara": "k ə t ɑ r ə", "sokka": "s ɑ k ə",
   "korra": "k ɔ r ə", "iroh": "aɪ r oʊ", "azula": "ə z u l ə",
   "bending": "b ɛ n d ɪ ŋ",
@@ -78,12 +78,12 @@ const EXCEPTIONS = {
   // that this list cannot express, so the corpus entry is what actually
   // gets drawn.
   "airbending": "ɛ r b ɛ n d ɪ ŋ", "waterbending": "w ɔ t ə r b ɛ n d ɪ ŋ",
-  "earthbending": "ɜ r θ b ɛ n d ɪ ŋ", "firebending": "f aɪ ə r b ɛ n d ɪ ŋ",
+  "earthbending": "ə r θ b ɛ n d ɪ ŋ", "firebending": "f aɪ ə r b ɛ n d ɪ ŋ",
   "metalbending": "m ɛ t ə l b ɛ n d ɪ ŋ",
   "bloodbending": "b l ʌ d b ɛ n d ɪ ŋ",
-  "airbender": "ɛ r b ɛ n d ɜ r", "waterbender": "w ɔ t ə r b ɛ n d ɜ r",
-  "earthbender": "ɜ r θ b ɛ n d ɜ r", "firebender": "f aɪ ə r b ɛ n d ɜ r",
-  "bender": "b ɛ n d ɜ r", "benders": "b ɛ n d ɜ r z",
+  "airbender": "ɛ r b ɛ n d ə r", "waterbender": "w ɔ t ə r b ɛ n d ə r",
+  "earthbender": "ə r θ b ɛ n d ə r", "firebender": "f aɪ ə r b ɛ n d ə r",
+  "bender": "b ɛ n d ə r", "benders": "b ɛ n d ə r z",
   "kyoshi": "k i oʊ ʃ i", "omashu": "oʊ m ɑ ʃ u",
   "sozin": "s oʊ z ɪ n", "roku": "r oʊ k u", "ozai": "oʊ z aɪ",
   "suki": "s u k i", "yue": "j u e", "haru": "h ɑ r u",
@@ -136,9 +136,9 @@ const RULES = [
   ["au", ["ɔ"]],
   ["aw", ["ɔ"]],
   ["ar", ["ɑ", "r"]],
-  ["er", ["ɜ", "r"]],
-  ["ir", ["ɜ", "r"]],
-  ["ur", ["ɜ", "r"]],
+  ["er", ["ə", "r"]],
+  ["ir", ["ə", "r"]],
+  ["ur", ["ə", "r"]],
   ["or", ["ɔ", "r"]],
   ["o$", ["oʊ"]],
   ["y$", ["i"]],
