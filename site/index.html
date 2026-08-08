@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=25" />
-<link rel="stylesheet" href="css/style.css?v=25" />
+<link rel="stylesheet" href="css/blocks.css?v=26" />
+<link rel="stylesheet" href="css/style.css?v=26" />
 </head>
 <body>
 
@@ -69,6 +69,12 @@ and made-up words too.</p>
     <div class="row">
       <span class="ipa-hint" id="soundsHint"></span>
     </div>
+
+    <!-- The other direction. If you built these sounds by hand — clicking
+         glyphs, drawing them, or reading them off a reference image —
+         nothing has told you what word you made. This does, and clicking
+         a suggestion labels the word. -->
+    <div class="decode" id="decodeStrip" hidden></div>
 
     <details class="syntax-details">
       <summary class="fine">How to write sounds</summary>
@@ -182,25 +188,29 @@ and made-up words too.</p>
   <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=25"></script>
+<script src="js/manifest.js?v=26"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=25"></script>
+<script src="js/corpus.js?v=26"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=25"></script>
-<script src="js/g2p.js?v=25"></script>
+<script src="js/lexicon.js?v=26"></script>
+<script src="js/g2p.js?v=26"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=25"></script>
-<script src="js/render.js?v=25"></script>
+<script src="js/sounds.js?v=26"></script>
+<script src="js/render.js?v=26"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=25"></script>
-<script src="js/draw.js?v=25"></script>
+<script src="js/recognise.js?v=26"></script>
+<script src="js/draw.js?v=26"></script>
+<!-- Sounds -> likely English. Searches the corpus, then EXCEPTIONS, then
+     the whole bundled dictionary, so it only earns its keep on a page
+     that already loads lexicon.js — which this one does. -->
+<script src="js/reverse.js?v=26"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
@@ -269,6 +279,106 @@ function renderWords(words) {
   return words;
 }
 
+// ---------------------------------------------------------------------
+// The other direction: sounds -> likely English
+// ---------------------------------------------------------------------
+//
+// Converting from English labels every word on the way past, so the
+// caption is already there. Building sounds by HAND doesn't — and that is
+// the mode you are in when you click glyphs out of the reference, draw
+// them, or copy a word off a piece of reference art. In that mode the
+// page could draw your word perfectly and still never tell you what it
+// said.
+//
+// So: any word with no caption gets suggestions, and clicking one writes
+// the caption into the box. Words that already carry a label are left
+// alone — there is nothing to tell you about a word you just typed.
+
+let decodeTimer = null;
+
+/**
+ * Which `/`-separated chunk each parsed word came from.
+ *
+ * `soundTextToWords` drops chunks that hold no sounds, so the two lists
+ * are not index-aligned and a suggestion could otherwise label the wrong
+ * word. This mirrors that filter rather than guessing at it.
+ */
+function chunkIndices(text) {
+  const out = [];
+  text.split("/").forEach((chunk, i) => {
+    const { body } = splitCaption(chunk);
+    if (body.trim().split(/\s+/).filter(Boolean).length) out.push(i);
+  });
+  return out;
+}
+
+/** Write `(word)` onto the chunk a suggestion belongs to. */
+function captionWord(wordIndex, word) {
+  const box = $("soundsInput");
+  const at = chunkIndices(box.value)[wordIndex];
+  if (at == null) return;
+  const chunks = box.value.split("/");
+  // Surgery on the one chunk rather than rebuilding the whole box, so
+  // hand-typed spacing survives being helped — and the caption goes in
+  // BEFORE any trailing space, or labelling a word would close up the
+  // gap in front of the next `/`.
+  chunks[at] = chunks[at].replace(/(\s*)$/, " (" + word + ")$1");
+  box.value = chunks.join("/");
+  markEdited(true);
+  fitSounds();
+  draw();
+}
+
+function renderDecode(words) {
+  const strip = $("decodeStrip");
+  const pending = words
+    .map((w, i) => ({ w, i }))
+    .filter(({ w }) => !w.word && w.ipa.length);
+
+  // Nothing to say, or the dictionary hasn't loaded — in which case the
+  // corpus and EXCEPTIONS alone would give a thin, misleading list.
+  if (!pending.length || !hasLexicon()) {
+    strip.hidden = true;
+    strip.innerHTML = "";
+    return;
+  }
+
+  strip.innerHTML = "";
+  for (const { w, i } of pending) {
+    const hits = suggestWords(w.ipa, 5);
+    if (!hits.length) continue;
+
+    const row = document.createElement("div");
+    row.className = "decode-row";
+
+    const label = document.createElement("span");
+    label.className = "decode-label";
+    // Name the word by its sounds when there is more than one pending,
+    // so it is obvious which row belongs to which.
+    label.textContent = pending.length > 1
+      ? w.ipa.map(soundToCode).join(" ") + " —"
+      : "Sounds like";
+    row.appendChild(label);
+
+    for (const hit of hits) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "decode-hit from-" + hit.source;
+      btn.textContent = hit.word;
+      btn.title = hit.source === "corpus"
+        ? "someone has seen this word written in Avatarian"
+        : hit.distance === 0
+          ? "these sounds exactly"
+          : `${hit.distance} sound${hit.distance > 1 ? "s" : ""} different`;
+      if (hit.source === "corpus") btn.textContent += " ✓";
+      btn.addEventListener("click", () => captionWord(i, hit.word));
+      row.appendChild(btn);
+    }
+    strip.appendChild(row);
+  }
+  strip.hidden = !strip.children.length;
+}
+
 /** Warn about anything typed that maps to no glyph, rather than dropping it. */
 function reportUnknown(words) {
   const unknown = [...new Set(
@@ -298,6 +408,11 @@ function draw() {
              ", " + blocks + (blocks === 1 ? " block" : " blocks") + ".";
   $("outHint").textContent = msg;
   setExportEnabled(blocks > 0);
+
+  // Searching the whole dictionary is fast but not free, and this is the
+  // one thing on the page that doesn't have to keep up with a keystroke.
+  clearTimeout(decodeTimer);
+  decodeTimer = setTimeout(() => renderDecode(words), 250);
 }
 
 /** The whole chain, from the English box down. */

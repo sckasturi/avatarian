@@ -47,8 +47,8 @@ still deferred — but the instrument exists, and every source transcribed
 in the workbench adds to it without anyone maintaining a list.
 
 **B2. What reference material exists, and where.** Needed for the corpus
-(20–24), the catalogue page (7), and any handwriting work (25–26). An
-inventory of the images, and what words each contains.
+(20–24) and the catalogue page (7). An inventory of the images, and what
+words each contains.
 
 **The top blocker, and now the only one that costs you anything.** All 23
 entries cite a source that reads "not yet catalogued — see TODO B2": the
@@ -259,14 +259,18 @@ that doesn't flip is not that glyph. **The /s/ case works end to end**:
 draw `∧` and get `S`, draw `∨` and get `S%`, which is exactly the
 distinction "students" needs and which no slot rule can make.
 
-**26. Photo input — as an underlay, not as recognition.** ~~Show a
-reference image behind the transcription surface~~ — **superseded.** The
-image turns out to be wanted as *provenance*, not as something to trace
-over: it is filed against a source so the entry can be re-checked, and
-the reading is done by eye. Item 23 does that. What is left of 26 is only
-full photo OCR, which still needs segmentation of interlocking
-hand-lettered blocks and training data that only 20 can produce.
-`CORPUS.md` §6.
+~~**26. Photo input / photo OCR.**~~ **Dropped — not doing this.**
+
+Two things ate it from both ends. The "photo as an underlay" half was
+**superseded**: the image turned out to be wanted as *provenance*, not as
+something to trace over, and item 23 does that. What was left was full
+OCR — segmenting interlocking hand-lettered blocks, then a bundled
+classifier — which needs training data only item 20 can produce and would
+put megabytes on a static page.
+
+Kept as a number, per the rule at the top of this file, so nothing that
+refers to "26" goes dangling. `CORPUS.md` §6 has the full reasoning if it
+is ever revisited.
 
 ### The site
 
@@ -335,21 +339,37 @@ Still true, and now demonstrated rather than argued: `AH` is /ʌ/ while
 `AA` is /ɑ/, and this project shipped `K AH T AA R AH` as *Katara* in
 three separate places.
 
-**4. Fuzzy reverse-decode.** Given an Avatarian sequence, suggest likely
-English words ("pretty sure this is X") instead of the current
-exact-match-only lookup.
+~~**4. Fuzzy reverse-decode.**~~ **Done in session 10.**
+`site/js/reverse.js` — phoneme edit distance against the corpus, then
+`EXCEPTIONS`, then all ~126k CMU words. Nulls and `$`/`%` come off before
+matching, so `ah 0 p 0 ah 0` reaches "appa".
 
-**Built in session 9 as `site/js/reverse.js`**, because the workbench
-needs it — transcribing is the reverse direction by definition. Phoneme
-edit distance against the corpus, then `EXCEPTIONS`, then the whole CMU
-lexicon; nulls and orientation overrides are stripped before matching, so
-`AA 0 P 0 AA 0` reaches "appa". ~58 ms a query after a 220 ms index
-build, which took reusing the edit-distance rows and bucketing the
-lexicon by pronunciation length — the naive version was 500 ms.
+**Where it shows on the site.** Converting from English labels every word
+on the way past, so the caption is already there. Building sounds *by
+hand* doesn't — and that is the mode you are in when you click glyphs out
+of the reference, draw them with the pad, or copy a word off reference
+art. In that mode the page could draw your word perfectly and never tell
+you what it said.
 
-**Still open: it is not on the main page.** The workbench uses it; the
-public site has no decode direction at all yet. That is what is left of
-this item.
+So any word with **no caption** gets a row of suggestions under the
+sounds box, and clicking one writes the caption in. Words that already
+carry a label are left alone; when every word has one the strip hides
+itself. A corpus hit is outlined and ticked — somebody has *seen* that
+word written, which outranks any dictionary guess.
+
+```
+ah 0 p 0 ah 0        Sounds like  [appa ✓] [apia] [aha] [ahah] [op]
+```
+
+Two details worth keeping: the caption is inserted into the one
+`/`-separated chunk it belongs to rather than rebuilding the box, so
+hand-typed spacing survives; and `chunkIndices()` mirrors
+`soundTextToWords`'s own filter, because that function drops chunks with
+no sounds in them and a naive index would label the wrong word.
+
+Performance: ~58 ms a query after a 220 ms index build, debounced 250 ms.
+The naive version was 500 ms — reusing the edit-distance rows and
+bucketing the lexicon by pronunciation length is what fixed it.
 
 **16. Punctuation.** Comma, question mark and apostrophe are documented
 in the key chart — comma at the bottom beside the word, apostrophe

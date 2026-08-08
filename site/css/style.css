@@ -286,6 +286,27 @@ button.primary:hover { opacity: 0.9; }
   background: var(--card); color: var(--muted); cursor: pointer;
 }
 .tune-note button:hover { background: var(--hover); color: var(--ink); }
+/* --- sounds -> likely English (js/reverse.js) ---------------------- */
+
+.decode { margin-top: 8px; display: flex; flex-direction: column; gap: 5px; }
+/* [hidden] loses to any display rule — the banner above shipped that bug
+   for a week, so every hideable block here declares it. */
+.decode[hidden] { display: none; }
+.decode-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.decode-label {
+  font-size: 0.8rem; color: var(--faint);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.decode-hit {
+  font-family: inherit; font-size: 0.82rem; padding: 2px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--card); color: var(--muted); cursor: pointer;
+}
+.decode-hit:hover { background: var(--hover); color: var(--ink); }
+/* A word somebody has actually seen written outranks any dictionary
+   guess, and should look like it does. */
+.decode-hit.from-corpus { border-color: var(--accent); color: var(--ink); }
+
 /* The vowel key. Four pairs across, so it reads as a small chart rather
    than a wall of codes — the point is that you can find your sound at a
    glance, not that you memorise it. */

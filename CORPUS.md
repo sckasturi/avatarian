@@ -370,6 +370,13 @@ images, which is what a pass through the workbench adds.
 
 ## 6. Handwriting input
 
+> **Status: the stylus half shipped (item 25); the photo half is
+> dropped (item 26).** Photo OCR still needs segmentation of interlocking
+> hand-lettered blocks and training data only the corpus can produce, and
+> the "underlay" middle option was superseded once the reference image
+> turned out to be provenance rather than something to trace. The
+> reasoning below is kept for anyone who revisits it.
+
 The question asked: how hard is handwriting-to-text, photo versus stylus?
 
 **They are very different problems, and the project is already most of
