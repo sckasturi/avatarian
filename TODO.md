@@ -50,15 +50,20 @@ in the workbench adds to it without anyone maintaining a list.
 (20–24) and the catalogue page (7). An inventory of the images, and what
 words each contains.
 
-**The top blocker, and now the only one that costs you anything.** All 23
-entries cite a source that reads "not yet catalogued — see TODO B2": the
-spellings are right and nobody can re-check them.
+**The top blocker, and now the only one that costs you anything** — but
+it has started moving. **One source of eight is catalogued**: the
+"cherries on top" poster, filed through the workbench with its image and
+an Instagram URL for `where`. That is the first entry in this project's
+history whose provenance survives the session it was read in.
+
+The other seven still say "Not yet catalogued — see TODO B2", covering
+23 of the 26 entries. The spellings are right and nobody can re-check
+them.
 
 **There is a tool for it now** (item 23). Start the workbench, pick a
 source, drop its image on it, and write the two sentences saying what it
 is and where it came from. That is per *source*, not per word — seven
-images clears every entry in the corpus. From then on a new word is: drop
-the image, read it, take the suggested English, save.
+more images clears the rest of the corpus.
 
 ~~**B3. Does `appa` show tall-short-tall nulls?**~~ **Answered in session
 10: yes.** The art shows **mixed null heights** — tall beside the vowels,
@@ -100,17 +105,25 @@ workstream — and also the **prerequisite for item 3 and B1**, since the
 C-C question is going to be answered by looking at attested blocks
 rather than by reasoning from a couple of samples.
 
-**The file exists and 23 entries are in it** (item 22, session 8): the
-twelve words of the wake-up note, `students`, `metalbending`, `appa`,
-the four names, the poster sentence and `fire`. Adding a word is now a
-row in `corpus/attested.json` and a re-run of `tools/build_corpus.py`.
-What is left is the material this repo does not have — **which is B2,
-not a design problem.**
+**The file exists and 26 entries are in it**, from 8 sources. Twenty-three
+came from the docs in session 8 — the twelve words of the wake-up note,
+`students`, `metalbending`, `appa`, the four names, the poster sentence
+and `fire`. Three more (`cherries`, `on`, `top`) were transcribed through
+the workbench in session 10, and are the first with a citable source.
 
-Every entry's `source` currently ends in "not yet catalogued — see TODO
+Adding a word is a row in `corpus/attested.json` and a re-run of
+`tools/build_corpus.py`, or a pass through the workbench. What is left is
+the material this repo does not have — **which is B2, not a design
+problem.**
+
+Seven of the eight sources still end in "Not yet catalogued — see TODO
 B2". That is the honest state and it is deliberately loud: the spellings
 are right, but a year from now nobody will be able to re-check them.
-Cataloguing the images fixes every one of those lines at once.
+
+**Next up, per the user: water, earth and air**, added with images. Those
+three are worth more than their count — the reference material supplies
+IPA *alongside* Avatarian for all four elements, which is what proved the
+ɜ/ə merge, and none of that evidence is in the corpus yet.
 
 ~~**21. Show confidence in the UI.**~~ **Plumbing done in session 8**;
 the display is still open and still blocked on B4. `lookupWord()`
@@ -370,6 +383,40 @@ no sounds in them and a naive index would label the wrong word.
 Performance: ~58 ms a query after a 220 ms index build, debounced 250 ms.
 The naive version was 500 ms — reusing the edit-distance rows and
 bucketing the lexicon by pronunciation length is what fixed it.
+
+**31. A public corpus page on the site.** Read-only, a second page
+alongside the translator: every attested word, its spelling rendered in
+real Avatarian, which source it came from, and the confidence. **Not the
+workbench** — that stays local and stays the only thing that writes.
+
+Cheap, because the data already ships. `site/js/corpus.js` is generated
+into the deployed folder and loaded on every page load already, since it
+sits at the top of the lookup chain — so this is one more static HTML
+file reading a global that is on the page anyway. No server, no build
+step, nothing new to deploy.
+
+Three things to decide when it is picked up:
+
+- **The images are the open question, not the data.** `corpus/sources/`
+  is gitignored, so nothing that would let a reader *check* an entry is
+  currently deployed. Publishing the spellings without them is still
+  worth doing — it is what the corpus says — but "source: a poster,
+  season 1 episode 4" reads very differently from a thumbnail you can
+  click. Whether other people's screenshots and stills can go in a public
+  repo is a licensing call, not a technical one, and it is the same call
+  `.gitignore` is currently deferring.
+- **It overlaps item 7** (reference material catalogue). A page listing
+  every source with what it contains, and a page listing every word with
+  where it came from, are two views of one table. Build them together or
+  build one and let the other be a filter.
+- **It wants item 21's tiers**, or at least the vocabulary — attested
+  against derived is the distinction the whole page exists to make
+  visible, and B4 is the judgement about how to show it.
+
+The reason to want it: right now the corpus is the most interesting thing
+this project has produced and it is only visible to somebody who clones
+the repo and reads JSON. It is also the part other people could
+contribute to, and they cannot contribute to what they cannot see.
 
 **16. Punctuation.** Comma, question mark and apostrophe are documented
 in the key chart — comma at the bottom beside the word, apostrophe
