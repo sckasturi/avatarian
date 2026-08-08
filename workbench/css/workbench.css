@@ -1,0 +1,265 @@
+/* The workbench's own styling. Deliberately a smaller, denser palette
+   than the main site's — this is a tool for one person doing repetitive
+   work, not a page for visitors, so information density beats comfort.
+
+   Colours come through the same variable names the site uses so
+   /site/css/blocks.css, which the preview depends on, drops straight in.
+   blocks.css is loaded first and is NOT restated here: the rendered
+   Avatarian has to be the product's, or comparing it against a reference
+   image proves nothing. */
+
+:root {
+  --ink: #ece0cc;
+  --paper: #161210;
+  --accent: #d98e6d;
+  --line: #4a3d2e;
+  --card: #211b15;
+  --surface: #29221a;
+  --muted: #bcab90;
+  --muted-2: #a8967c;
+  --faint: #8a7a63;
+  --hover: #372c20;
+  --code-bg: #2f2619;
+  --warn: #ff9080;
+  --ok: #8fbf7a;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --ink: #3a2a20; --paper: #f2e2c4; --accent: #8a3b2a; --line: #c9b083;
+    --card: #fffaf0; --surface: #ffffff; --muted: #6b5a45; --muted-2: #7a6a55;
+    --faint: #9a8a72; --hover: #fff0d8; --code-bg: #f3e7d2; --warn: #bb3322;
+    --ok: #3f7a2c;
+    color-scheme: light;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+h1 { font-size: 1.05rem; margin: 0; font-weight: 600; }
+h2 { font-size: 0.82rem; margin: 0; text-transform: uppercase;
+     letter-spacing: 0.07em; color: var(--muted-2); font-weight: 600; }
+h3 { font-size: 0.8rem; margin: 0 0 6px; text-transform: uppercase;
+     letter-spacing: 0.06em; color: var(--muted-2); font-weight: 600; }
+
+.spacer { flex: 1; }
+.fine { font-weight: 400; text-transform: none; letter-spacing: 0;
+        color: var(--faint); font-size: 0.82em; }
+
+/* --- chrome ------------------------------------------------------- */
+
+.bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px;
+  background: var(--card); border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 5;
+}
+.bar-note { color: var(--faint); font-size: 0.85rem; }
+.save-state { font-size: 0.85rem; color: var(--muted); }
+.save-state.is-dirty { color: var(--accent); }
+.save-state.is-error { color: var(--warn); }
+.save-state.is-ok { color: var(--ok); }
+
+.problems {
+  margin: 0; padding: 10px 16px;
+  background: var(--code-bg); border-bottom: 1px solid var(--warn);
+  color: var(--warn); font-size: 0.85rem; white-space: pre-wrap;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.problems[hidden] { display: none; }
+
+/* --- layout ------------------------------------------------------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: 250px minmax(420px, 1fr) 320px;
+  gap: 14px;
+  padding: 14px;
+  align-items: start;
+}
+@media (max-width: 1180px) {
+  .layout { grid-template-columns: 240px 1fr; }
+  .col-tools { grid-column: 1 / -1; display: grid; gap: 14px;
+               grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+}
+@media (max-width: 820px) {
+  .layout { grid-template-columns: 1fr; }
+  .col-tools { grid-column: auto; }
+}
+
+.col-list, .col-tools { display: flex; flex-direction: column; gap: 14px; }
+
+.panel {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 8px; padding: 12px;
+}
+.panel-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.panel-head h2 { flex: 1; }
+
+/* --- controls ----------------------------------------------------- */
+
+button {
+  font: inherit; font-size: 0.85rem;
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 6px;
+  padding: 5px 11px; cursor: pointer;
+}
+button:hover { background: var(--hover); }
+button.primary { background: var(--accent); border-color: var(--accent);
+                 color: var(--paper); font-weight: 600; }
+button.primary:hover { filter: brightness(1.1); }
+button.small { font-size: 0.78rem; padding: 3px 8px; }
+button.danger { color: var(--warn); border-color: var(--warn); }
+
+input[type="text"], input[type="search"], textarea, select {
+  font: inherit; width: 100%;
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 6px;
+  padding: 7px 9px;
+}
+textarea { resize: vertical; }
+#spelling {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.95rem; letter-spacing: 0.03em;
+}
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid var(--accent); outline-offset: -1px;
+}
+
+.field { display: block; margin-bottom: 12px; }
+.field-label { display: block; font-size: 0.8rem; font-weight: 600;
+               color: var(--muted); margin-bottom: 5px; }
+.row { display: flex; gap: 10px; align-items: flex-end; }
+.row .grow { flex: 1; }
+
+.sound-tools { display: flex; gap: 5px; margin-bottom: 6px; align-items: center; }
+.tool-btn { font-family: ui-monospace, Menlo, monospace; font-size: 0.75rem;
+            padding: 3px 8px; }
+
+/* --- entry + source lists ----------------------------------------- */
+
+.entry-list, .source-list { list-style: none; margin: 8px 0 0; padding: 0;
+                            max-height: 46vh; overflow-y: auto; }
+.entry-list li, .source-list li { margin-bottom: 3px; }
+
+.entry-btn, .source-btn {
+  width: 100%; text-align: left; display: flex; align-items: baseline; gap: 7px;
+  background: none; border: 1px solid transparent; padding: 5px 8px;
+}
+.entry-btn:hover, .source-btn:hover { background: var(--hover); }
+.entry-btn.is-active { border-color: var(--accent); background: var(--hover); }
+.entry-key { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.entry-blocks { font-size: 0.75rem; color: var(--faint); font-variant-numeric: tabular-nums; }
+.entry-flag { font-size: 0.7rem; color: var(--accent); }
+.source-btn .entry-key { font-size: 0.85rem; }
+
+/* --- the preview -------------------------------------------------- */
+
+.preview {
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--surface); padding: 14px; margin-bottom: 12px;
+  min-height: 96px;
+}
+.preview .avatarian-output { --glyph-size: 46px; overflow-x: auto; }
+.preview-note { margin: 10px 0 0; font-size: 0.8rem; color: var(--faint); }
+.preview-note.is-warn { color: var(--warn); }
+
+.compare {
+  border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 6px; padding: 10px 12px; margin-bottom: 12px;
+  background: var(--surface); font-size: 0.85rem;
+}
+.compare-row { display: flex; gap: 10px; margin: 3px 0; align-items: baseline; }
+.compare-tag { width: 78px; flex: none; color: var(--faint); font-size: 0.78rem; }
+.compare-val { font-family: ui-monospace, Menlo, monospace; font-size: 0.82rem; }
+.compare-verdict { margin-top: 8px; color: var(--accent); }
+.compare-verdict.is-same { color: var(--ok); }
+
+/* --- word suggestions --------------------------------------------- */
+
+.dupe {
+  display: flex; align-items: center; gap: 10px;
+  margin: -6px 0 10px; padding: 7px 10px;
+  border: 1px solid var(--accent); border-left-width: 3px; border-radius: 6px;
+  background: var(--surface); font-size: 0.85rem; color: var(--muted);
+}
+/* [hidden] loses to any display rule — the site shipped this exact bug in
+   session 7 and showed a warning banner to everyone for a week. */
+.dupe[hidden] { display: none; }
+
+.suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 0 14px; }
+.sugg {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  font-size: 0.85rem; padding: 3px 9px;
+}
+.sugg-mark { font-size: 0.7rem; color: var(--faint); }
+.sugg.from-corpus { border-color: var(--ok); }
+.sugg.from-corpus .sugg-mark { color: var(--ok); }
+.sugg.from-exceptions { border-color: var(--accent); }
+.suggestions .empty { color: var(--faint); font-size: 0.82rem; }
+
+/* --- reference image ---------------------------------------------- */
+
+.dropzone {
+  border: 1px dashed var(--line); border-radius: 6px;
+  min-height: 150px; max-height: 52vh; overflow: auto;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface); padding: 6px;
+}
+.dropzone.is-over { border-color: var(--accent); background: var(--hover); }
+.dropzone img { display: block; max-width: none; }
+.dropzone-hint { color: var(--faint); font-size: 0.82rem; text-align: center;
+                 margin: 0; padding: 18px; }
+.zoom-ctl { display: flex; align-items: center; gap: 8px; font-size: 0.8rem;
+            color: var(--muted); width: 100%; margin-top: 8px; }
+.zoom-ctl[hidden] { display: none; }
+.zoom-ctl input { flex: 1; }
+
+/* --- palette ------------------------------------------------------ */
+
+.palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+           gap: 4px; max-height: 40vh; overflow-y: auto; }
+.pal-btn { display: flex; flex-direction: column; align-items: center; gap: 2px;
+           padding: 5px 2px; }
+.pal-btn svg { width: 22px; height: 22px; color: var(--ink); }
+.pal-code { font-size: 0.65rem; color: var(--faint);
+            font-family: ui-monospace, Menlo, monospace; }
+
+/* --- the drawing pad ---------------------------------------------- */
+
+/* Square, so an uncapped width makes it as tall as the column is wide. */
+.drawpad-surface { position: relative; max-width: 280px; }
+.drawpad-canvas {
+  display: block; width: 100%; aspect-ratio: 1;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--surface); touch-action: none; cursor: crosshair;
+}
+.drawpad-hint {
+  position: absolute; inset: 0; margin: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--faint); font-size: 0.85rem; pointer-events: none;
+}
+.drawpad-hint[hidden] { display: none; }
+.drawpad-bar { display: flex; gap: 6px; margin: 6px 0; }
+.drawpad-bar .drawpad-btn { font-size: 0.78rem; padding: 3px 9px; }
+.drawpad-results { display: grid; gap: 4px;
+                   grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); }
+.drawpad-hit { display: flex; flex-direction: column; align-items: center; gap: 2px;
+               padding: 5px 2px; }
+.drawpad-hit svg { width: 24px; height: 24px; color: var(--ink); }
+.drawpad-hit-code { font-size: 0.68rem; color: var(--faint);
+                    font-family: ui-monospace, Menlo, monospace; }
+.drawpad-hit.is-best { border-color: var(--accent); }
+/* How sure the match is, said in colour as well as in the tooltip. A
+   transcription tool that hides its own uncertainty puts guesses in the
+   corpus, which is the one thing the corpus exists to prevent. */
+.drawpad-close .drawpad-hit-code { color: var(--ok); }
+.drawpad-loose { opacity: 0.62; }

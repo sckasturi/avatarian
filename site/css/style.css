@@ -294,6 +294,56 @@ button.primary:hover { opacity: 0.9; }
 .render-opts label { display: inline-flex; align-items: center; gap: 6px; }
 .ipa-hint { margin-left: 10px; font-size: 0.8rem; color: var(--warn); }
 
+/* --- the drawing pad (js/draw.js) ---------------------------------- */
+
+/* The pad is square, so an uncapped width makes it as TALL as the column
+   is wide — which on the stacked mobile layout is a screen and a half of
+   empty box. Cap it and let it sit left. */
+.drawpad-surface { position: relative; max-width: 300px; }
+.drawpad-canvas {
+  display: block; width: 100%; aspect-ratio: 1;
+  border: 1px solid var(--line); border-radius: 8px;
+  background: var(--surface);
+  /* Without this a stylus or finger scrolls the page instead of drawing. */
+  touch-action: none;
+  cursor: crosshair;
+}
+.drawpad-hint {
+  position: absolute; inset: 0; margin: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--faint); font-size: 0.9rem; pointer-events: none;
+}
+.drawpad-hint[hidden] { display: none; }
+.drawpad-bar { display: flex; gap: 6px; margin: 8px 0; }
+.drawpad-btn {
+  font-family: inherit; font-size: 0.8rem; padding: 3px 10px;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--card); color: var(--muted); cursor: pointer;
+}
+.drawpad-btn:hover { background: var(--hover); color: var(--ink); }
+.drawpad-results {
+  display: grid; gap: 5px;
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+}
+.drawpad-hit {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 6px 2px; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--card); color: var(--ink);
+}
+.drawpad-hit:hover { background: var(--hover); }
+.drawpad-hit svg { width: 26px; height: 26px; color: var(--ink); }
+.drawpad-hit-code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.7rem; color: var(--muted-2);
+}
+.drawpad-hit.is-best { border-color: var(--accent); }
+/* How sure the match is, in colour as well as in the tooltip. The
+   failure mode of a recogniser is a confident wrong answer, so a loose
+   match should look loose. */
+.drawpad-close .drawpad-hit-code { color: var(--accent); }
+.drawpad-loose { opacity: 0.6; }
+
 .legend { font-size: 0.8rem; color: var(--muted-2); margin-top: 10px; }
 .legend .dot { display: inline-block; width: 10px; height: 10px; border: 1px dashed var(--accent); margin-right: 4px; }
 

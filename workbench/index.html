@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Avatarian transcription workbench</title>
+<link rel="stylesheet" href="/site/css/blocks.css" />
+<link rel="stylesheet" href="css/workbench.css" />
+</head>
+<body>
+
+<header class="bar">
+  <h1>Transcription workbench</h1>
+  <span class="bar-note" id="corpusCount"></span>
+  <span class="spacer"></span>
+  <span class="save-state" id="saveState"></span>
+  <button type="button" id="saveBtn" class="primary">save corpus</button>
+</header>
+
+<p class="problems" id="problems" hidden></p>
+
+<div class="layout">
+
+<!-- ------------------------------------------------------------------ -->
+<aside class="col-list">
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Entries</h2>
+      <button type="button" id="newEntry" class="small">+ new</button>
+    </div>
+    <input type="search" id="filter" placeholder="filter…" />
+    <ul class="entry-list" id="entryList"></ul>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Sources</h2>
+      <button type="button" id="newSource" class="small">+ new</button>
+    </div>
+    <ul class="source-list" id="sourceList"></ul>
+  </div>
+</aside>
+
+<!-- ------------------------------------------------------------------ -->
+<main class="col-edit">
+  <section class="panel" id="editor">
+    <div class="panel-head">
+      <h2 id="editorTitle">New entry</h2>
+      <button type="button" id="deleteEntry" class="small danger" hidden>delete</button>
+    </div>
+
+    <label class="field">
+      <span class="field-label">Avatarian transcription
+        <span class="fine">— what you can read off the image, in order,
+          two slots per block. Write the nulls.</span></span>
+      <div class="sound-tools">
+        <button type="button" class="tool-btn" data-insert="0"
+                title="Null — a slot with no sound in it">0&nbsp;null</button>
+        <button type="button" class="tool-btn" data-insert="$"
+                title="Force the glyph's top form">$&nbsp;top form</button>
+        <button type="button" class="tool-btn" data-insert="%"
+                title="Force the glyph's bottom form">%&nbsp;bottom form</button>
+        <span class="spacer"></span>
+        <button type="button" class="tool-btn" id="delToken" title="Remove the last sound">⌫</button>
+        <button type="button" class="tool-btn" id="clearSpelling">clear</button>
+      </div>
+      <textarea id="spelling" rows="2" spellcheck="false"
+        placeholder="AA 0 P 0 AA 0"></textarea>
+    </label>
+
+    <div class="preview">
+      <div class="avatarian-output" id="preview"></div>
+      <p class="preview-note" id="previewNote"></p>
+    </div>
+
+    <!-- The comparison that makes the corpus a research instrument
+         rather than a spelling patch: what the model would have
+         predicted, beside what canon actually does. -->
+    <div class="compare" id="compare" hidden>
+      <h3>Against the model</h3>
+      <div id="compareBody"></div>
+    </div>
+
+    <label class="field">
+      <span class="field-label">Word
+        <span class="fine">— suggested from the sounds; click one or type
+          your own.</span></span>
+      <input type="text" id="key" placeholder="appa" autocomplete="off" />
+    </label>
+    <!-- Transcribing a word that is already in the corpus should take you
+         to that entry, not quietly build a second one beside it. -->
+    <p class="dupe" id="dupeWarn" hidden>
+      <span id="dupeText"></span>
+      <button type="button" id="dupeOpen" class="small">open it instead</button>
+    </p>
+    <div class="suggestions" id="suggestions"></div>
+
+    <div class="row">
+      <label class="field grow">
+        <span class="field-label">Gloss <span class="fine">— optional, how it's
+          written in English</span></span>
+        <input type="text" id="gloss" placeholder="Appa" autocomplete="off" />
+      </label>
+      <label class="field">
+        <span class="field-label">Confidence</span>
+        <select id="confidence">
+          <option value="certain">certain</option>
+          <option value="probable">probable</option>
+          <option value="unclear">unclear</option>
+        </select>
+      </label>
+    </div>
+
+    <label class="field">
+      <span class="field-label">Source <span class="fine">— which image this
+        was read off</span></span>
+      <select id="source"></select>
+    </label>
+
+    <label class="field">
+      <span class="field-label">Note <span class="fine">— anything surprising
+        about this spelling</span></span>
+      <textarea id="note" rows="3"></textarea>
+    </label>
+  </section>
+</main>
+
+<!-- ------------------------------------------------------------------ -->
+<aside class="col-tools">
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Source</h2>
+      <span class="fine" id="imageName"></span>
+    </div>
+
+    <!-- Provenance, not input. Nothing here reads the pixels; the image
+         is stored so that "where did this spelling come from" still has
+         an answer in a year. -->
+    <div class="dropzone" id="dropzone">
+      <img id="sourceImage" alt="" hidden />
+      <p class="dropzone-hint" id="dropHint">Drop the reference image here
+        to file it against this source.</p>
+    </div>
+    <label class="zoom-ctl">zoom
+      <input type="range" id="imageZoom" min="100" max="400" step="10" value="100" />
+    </label>
+
+    <div id="sourceFields" hidden>
+      <label class="field">
+        <span class="field-label">Name <span class="fine">— how entries cite it</span></span>
+        <input type="text" id="srcName" autocomplete="off" />
+      </label>
+      <label class="field">
+        <span class="field-label">What it is</span>
+        <textarea id="srcWhat" rows="2"></textarea>
+      </label>
+      <label class="field">
+        <span class="field-label">Where it came from
+          <span class="fine">— specific enough to find again</span></span>
+        <textarea id="srcWhere" rows="2"></textarea>
+      </label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Draw a glyph</h2></div>
+    <div id="drawpad"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Palette</h2></div>
+    <div class="palette" id="palette"></div>
+  </section>
+</aside>
+
+</div>
+
+<!-- The site's own files, read-only over /site/. The preview beside your
+     transcription is drawn by the product's code, not a lookalike.
+
+     lexicon.js is 1.6 MB and the deployed wiki gadget deliberately skips
+     it — reverse-decode needs the whole dictionary to search against,
+     and this is a tool running on your own laptop. -->
+<script src="/site/js/manifest.js"></script>
+<script src="/site/js/corpus.js"></script>
+<script src="/site/js/lexicon.js"></script>
+<script src="/site/js/g2p.js"></script>
+<script src="/site/js/sounds.js"></script>
+<script src="/site/js/render.js"></script>
+<script src="/site/js/recognise.js"></script>
+<script src="/site/js/reverse.js"></script>
+<script src="/site/js/draw.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

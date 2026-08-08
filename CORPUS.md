@@ -1,16 +1,29 @@
 # The corpus — attested Avatarian, and what to build on it
 
-**Status: §2 is built. §3, §5 and §6 are still design notes.** Written
-2026-08-06 at the end of the session that shipped the pronunciation
-dictionary; §2 implemented the session after.
+**Status: §2, §5 and the stylus half of §6 are built. §3 is still a
+design note; §4 is what the workbench now shows you.** Written 2026-08-06
+at the end of the session that shipped the pronunciation dictionary; §2
+implemented the session after, §5 and §6 the session after that.
 
 What exists now:
 
 ```
 corpus/attested.json     the corpus itself — edit this
+corpus/sources/          the reference images, kept as provenance
 tools/build_corpus.py    validates it and generates the JS
+tools/corpus_server.py   the workbench's server        (port 8793)
+workbench/               the transcription workbench
 site/js/corpus.js        generated; loaded by the site, wiki and designer
+site/js/recognise.js     draw a glyph, get ranked matches
+site/js/reverse.js       sounds -> likely English words, fuzzy
 ```
+
+**One correction runs through §5 and §6: the reference image is
+provenance, not input.** Both sections below assumed it was something to
+show *behind* the transcription surface and read through. It isn't. It is
+filed against a source so the entry can be re-checked later, and the
+reading is done by eye. That removed the underlay, and with it most of
+what made §6's "photo as a middle option" look attractive.
 
 23 entries from 7 sources. `appa` now draws as three blocks, and
 `students` and `metalbending` draw their mid-word nulls — none of which
@@ -305,15 +318,31 @@ Most of this exists. The designer already has:
 - the sounds syntax shared through `site/js/sounds.js`;
 - a local server that can read and write files.
 
-What it needs is an image underlay, a corpus-entry form (source, note,
-confidence) and a save route. That is a much smaller job than it sounds
-because the comparison surface is already built.
+**Built — `workbench/`, served by `tools/corpus_server.py` on 8793.** It
+reuses all four of those through a read-only `/site/` route, exactly as
+the designer does.
+
+Two things came out differently from the sketch above:
+
+- **No image underlay.** The image is *provenance*, not something to
+  trace over: it is filed in `corpus/sources/` against a source, and the
+  reading is done by eye. Nothing in the tool reads its pixels.
+- **The word is suggested, not typed.** Transcribing runs backwards —
+  you can read the glyphs and what you don't know is which word they
+  spell. So the spelling drives a fuzzy reverse-decode (`reverse.js`)
+  and you pick from ranked candidates. That is what §4's "the corpus is
+  also the research instrument" feels like in practice.
+
+It also shows the attested spelling **beside what the model would have
+predicted**, and names which of the two ways they disagree — see §4.
 
 **Do the highest-value words first**: the ones already cited in the docs
 as evidence (`appa`, `students`, `metalbending`, `fire`, `at`, `mad`,
 `katara`, and the twelve words of the "please do not be mad at me when
 you wake up, but" sample), since those are the words the current rules
-were derived from and the ones most likely to contradict them.
+were derived from and the ones most likely to contradict them. **All but
+`katara` are already in**, from session 8 — what they are missing is the
+images, which is what a pass through the workbench adds.
 
 ---
 
@@ -389,11 +418,31 @@ the photo path, not a parallel effort.**
    as a research project with a real chance of not working well, not as a
    feature.
 
-A useful middle option: **photo as an underlay, not as input.** Upload
-the image, show it behind the transcription surface, and let a human do
-the reading with the stylus recogniser helping. That captures most of the
-practical value of the photo path for a fraction of the effort, and it is
-the same underlay the workbench needs anyway.
+~~A useful middle option: **photo as an underlay, not as input.**~~
+**Superseded.** This assumed the image wanted showing *behind* the
+transcription surface so it could be traced. It doesn't: it is filed as
+provenance and read by eye, beside the work rather than under it. The
+practical value the underlay was reaching for is delivered by the
+workbench without it, and what remains of the photo path is only full
+OCR — still gated on training data the corpus has yet to produce.
+
+### The stylus recogniser, as built
+
+`site/js/recognise.js`. The one thing this section got wrong was
+assuming `fit.js` was needed: **it isn't.** `manifest.js` already carries
+every glyph's SVG on the page, so reference shapes are sampled straight
+off it with `getPointAtLength`, and comparing raw point clouds is already
+tolerant of the wobble fitting would have removed. Skipping it kept the
+whole feature inside `site/`, which is what let the main page have it too
+rather than it being a designer-only tool.
+
+Both sides normalise into a unit box keeping the aspect ratio; score is a
+symmetric chamfer distance. Measured against the shipped set at random
+scale and offset: 42/42 top-1 on a clean trace with ±9% jitter, 38–40/42
+when merged or heavily jittered, 24/42 (32/42 top-3) with a whole stroke
+missing. That last case is the honest limit and is barely a recogniser
+failure — half a glyph is a different shape. It is why the pad ranks
+rather than answers.
 
 ---
 

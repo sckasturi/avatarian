@@ -38,13 +38,15 @@ waiting on 20, and item 3 is downstream of both.
 (20–24), the catalogue page (7), and any handwriting work (25–26). An
 inventory of the images, and what words each contains.
 
-**Now the top blocker.** The corpus is built (22) and its format is
-settled, so adding a word is a row in a file — but there are only 23
-rows, and every one of them cites a source that reads "not yet
-catalogued — see TODO B2". The spellings are right; nobody can re-check
-them. `corpus/attested.json` has a `sources` map where each image is
-described once, so cataloguing fixes all of them in one place, and it is
-what turns 20 from blocked into typing.
+**The top blocker, and now the only one that costs you anything.** All 23
+entries cite a source that reads "not yet catalogued — see TODO B2": the
+spellings are right and nobody can re-check them.
+
+**There is a tool for it now** (item 23). Start the workbench, pick a
+source, drop its image on it, and write the two sentences saying what it
+is and where it came from. That is per *source*, not per word — seven
+images clears every entry in the corpus. From then on a new word is: drop
+the image, read it, take the suggested English, save.
 
 **B3. Does `appa` show tall-short-tall nulls?** One look at the art.
 **The site now draws the prediction** — type `appa` and it comes out
@@ -118,14 +120,37 @@ corrected there:
   rejects an odd count, since that means somebody recorded phonemes
   instead of a spelling.
 
-**23. A transcription workbench.** Reference image on one side, the
-spelling being built on the other, live Avatarian underneath to compare.
-Most of it exists already in the designer: the live block preview, the
-palette, the shared sounds syntax, a local server that writes files. What
-it needs is an image underlay, an entry form and a save route.
+~~**23. A transcription workbench.**~~ **Done in session 9.**
 
-The save target is now settled: append to `corpus/attested.json` and run
-`tools/build_corpus.py`, which validates before it writes anything.
+```
+python3 tools/corpus_server.py     # http://localhost:8793/
+```
+
+`workbench/`, a local tool like the glyph designer and not deployed. The
+loop it is built around: **file a reference image against a source, read
+the Avatarian off it and type the spelling, let the fuzzy reverse-decode
+say what English word that is, confirm, save.**
+
+The image is **provenance, not input** — nothing reads its pixels. It is
+stored in `corpus/sources/` so an entry can be re-checked later, which is
+the one thing every pre-existing entry is missing. That makes this the
+tool for **B2**: cataloguing is now filing an image and typing two
+sentences about it, per source rather than per word.
+
+What it gives you beyond a form:
+
+- **Against the model** — the attested spelling beside what the pipeline
+  would have predicted, and which of the two ways they disagree. "Same
+  sounds, different blocks" means the pairing rule is wrong here;
+  "different sounds" means the pronunciation is. That is `CORPUS.md` §4
+  made visible while you type rather than as a later analysis.
+- **A duplicate warning** with one button to open the existing entry,
+  because transcribing a word already in the corpus should take you there
+  rather than quietly building a second one.
+- **Validation at the same strictness as the CLI** — it calls
+  `build_corpus.check()`, so nothing can be saved through the UI that
+  `python3 tools/build_corpus.py` would reject, and a rejected save
+  writes nothing at all.
 
 **24. Audit `EXCEPTIONS` against reference material.** Every in-world
 name is a guess until checked. Two of the first four checked were wrong
@@ -138,18 +163,53 @@ A confirmed name does not get corrected in `EXCEPTIONS` — it moves.
 
 ### Handwriting input
 
-**25. Stylus glyph recognition.** Draw a glyph, get ranked matches. Much
-of the work is done: `designer/js/fit.js` already normalises a freehand
-gesture onto the lattice, which is exactly the step a stroke recogniser
-needs. Recognition on top is nearest-neighbour against the 43 shipped
-designs. No model, no training data, no page weight.
+~~**25. Stylus glyph recognition.**~~ **Done in session 9.**
+`site/js/recognise.js` scores, `site/js/draw.js` is the pad. On the main
+page it is a card in the reference column; in the workbench it is beside
+the spelling being built.
 
-**26. Photo input — as an underlay, not as recognition.** Show a
-reference image behind the transcription surface and let a human read it
-with 25 helping. Full photo OCR is a much larger project (segmentation of
-interlocking hand-lettered blocks, a bundled classifier) and needs
-training data that only 20 can produce, so it is downstream of the
-corpus, not parallel to it. `CORPUS.md` §6.
+**It needed no new data.** `manifest.js` already carries every glyph's
+SVG inline, so the reference shapes are sampled off the page with
+`getPointAtLength`. The plan had been to reuse `designer/js/fit.js` and
+snap the gesture to the lattice first; that turned out to be unnecessary
+— comparing raw point clouds is tolerant of the same wobble fitting
+would have removed, and it kept the whole feature inside `site/`, where
+the main page can reach it.
+
+Both sides normalise into a unit box **keeping the aspect ratio**, and
+score is a symmetric chamfer distance. Aspect matters: normalise each
+axis independently and every glyph fills a square, at which point a wide
+flat cup starts looking like a tall narrow one.
+
+Measured by tracing each glyph's own outline back through the matcher at
+random scale and offset:
+
+| input | top-1 | top-3 |
+| --- | --- | --- |
+| clean trace, ±9% jitter | 42/42 | 42/42 |
+| coarse + heavy jitter | 40/42 | 41/42 |
+| all strokes merged into one | 38/42 | 41/42 |
+| **a whole stroke forgotten** | **24/42** | **32/42** |
+
+The last row is the honest limit, and it is not really a recogniser
+failure — draw half a glyph and you have drawn a different shape. It is
+why the pad shows a ranked list rather than one answer, and why a loose
+match is drawn faded with the distance in its tooltip. A transcription
+tool that hides its own uncertainty puts guesses in the corpus.
+
+Stroke order and direction are deliberately unused: they say how the
+*designer* drew a glyph, and somebody copying one off a reference image
+has no reason to take the same route. Stroke count is used at a low
+weight because it is far more stable than either.
+
+**26. Photo input — as an underlay, not as recognition.** ~~Show a
+reference image behind the transcription surface~~ — **superseded.** The
+image turns out to be wanted as *provenance*, not as something to trace
+over: it is filed against a source so the entry can be re-checked, and
+the reading is done by eye. Item 23 does that. What is left of 26 is only
+full photo OCR, which still needs segmentation of interlocking
+hand-lettered blocks and training data that only 20 can produce.
+`CORPUS.md` §6.
 
 ### The site
 
@@ -184,7 +244,16 @@ line `F AE N IY / IH Z / M IH S IH NG` entirely by clicking.
 **29. Design a more intuitive sound alphabet than ARPAbet.** ARPAbet is
 what the sounds box takes today, and it is genuinely unintuitive — most
 sharply because **`AH` is /ʌ/ (STRUT) while `AA` is /ɑ/ (PALM)**, so the
-code that looks like "ah" is not the "ah" sound. `AO` is /ɔ/ but `AW` is
+code that looks like "ah" is not the "ah" sound.
+
+**This is not hypothetical: the project itself got it wrong.** Until
+session 9 the site's sounds-box placeholder, its "how to write sounds"
+help, and `AVATARIAN.md` §9 all said `K AH T AA R AH` spells *Katara*. It
+does not — it gives /k ʌ t ɑ r ʌ/. The right answer is `K AX T AA R AX`.
+Three places, written by people who knew the table, wrong for months, and
+found only when the workbench's reverse-decode ranked *qatar* above
+*katara* and the reason turned out to be the input. Fixed, with the trap
+now named in the help text. `AO` is /ɔ/ but `AW` is
 /aʊ/. `EY` is /eɪ/. None of it can be guessed; it has to be learned, and
 this is the tool's main input surface for people who don't know IPA.
 
@@ -223,6 +292,18 @@ move with it.
 **4. Fuzzy reverse-decode.** Given an Avatarian sequence, suggest likely
 English words ("pretty sure this is X") instead of the current
 exact-match-only lookup.
+
+**Built in session 9 as `site/js/reverse.js`**, because the workbench
+needs it — transcribing is the reverse direction by definition. Phoneme
+edit distance against the corpus, then `EXCEPTIONS`, then the whole CMU
+lexicon; nulls and orientation overrides are stripped before matching, so
+`AA 0 P 0 AA 0` reaches "appa". ~58 ms a query after a 220 ms index
+build, which took reusing the edit-distance rows and bucketing the
+lexicon by pronunciation length — the naive version was 500 ms.
+
+**Still open: it is not on the main page.** The workbench uses it; the
+public site has no decode direction at all yet. That is what is left of
+this item.
 
 **16. Punctuation.** Comma, question mark and apostrophe are documented
 in the key chart — comma at the bottom beside the word, apostrophe

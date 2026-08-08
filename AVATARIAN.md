@@ -467,7 +467,11 @@ the **sounds box**, which is what actually gets drawn and is always editable
 (`g2p.js` is rule-based and gets words wrong — you fix the sounds, not the
 English). It is **ASCII-first**, typeable on a plain QWERTY keyboard.
 
-- **ARPAbet codes** are the primary spelling: `K AH T AA R AH`. Case-insensitive.
+- **ARPAbet codes** are the primary spelling: `K AX T AA R AX`. Case-insensitive.
+  (This example read `K AH T AA R AH` until session 8, which is *wrong* and
+  gives /k ʌ t ɑ r ʌ/ — `AH` is the STRUT vowel, not the "ah" of *father*.
+  Both the site's placeholder and its help text carried the same mistake.
+  It is the sharpest possible argument for TODO item 29.)
   Extended with `AX` (schwa) and `NUL`, which ARPAbet has no code for.
 - **IPA is accepted too**, plus aliases: `eɪ`→`e`, `ɝ`/`ɜr`→`ɜ`, `ɑː`→`ɑ`,
   `iː`→`i`, `uː`→`u`.

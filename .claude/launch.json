@@ -4,14 +4,30 @@
     {
       "name": "avatarian-site",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8791", "--directory", "site"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8791",
+        "--directory",
+        "site"
+      ],
       "port": 8791
     },
     {
       "name": "avatarian-designer",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["tools/designer_server.py"],
+      "runtimeArgs": [
+        "tools/designer_server.py"
+      ],
       "port": 8792
+    },
+    {
+      "name": "avatarian-workbench",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "tools/corpus_server.py"
+      ],
+      "port": 8793
     }
   ]
 }

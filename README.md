@@ -23,10 +23,14 @@ Wiki (Fandom).
 ```
 site/            <- deploy this folder to GitHub Pages / Cloudflare Pages
   index.html       the whole app: English↔Avatarian, glyph reference
-  js/g2p.js        English -> IPA (rule-based, no server/dictionary needed)
+  js/g2p.js        English -> IPA (corpus, then dictionary, then rules)
   js/sounds.js     the ASCII sounds syntax, in and out (site + designer)
   js/render.js     IPA -> Avatarian glyphs (shared by site AND the wiki)
   js/manifest.js   generated — every glyph's SVG inlined (the whole "font")
+  js/corpus.js     generated — the attested corpus, top of the lookup chain
+  js/recognise.js  draw a glyph -> ranked matches (samples manifest.js)
+  js/draw.js       the drawing pad, shared with the workbench
+  js/reverse.js    sounds -> likely English words, fuzzy (workbench only)
   css/blocks.css   block layout (site + wiki + the designer's live preview)
   css/style.css    the page around it
   assets/glyphs/   one clean SVG per phoneme
@@ -36,6 +40,15 @@ site/            <- deploy this folder to GitHub Pages / Cloudflare Pages
 
 reference/
   avatarian_key.svg  the hand-lettered key chart, as exported from Inkscape
+
+corpus/          <- the attested corpus: words somebody has SEEN written
+  attested.json    edit this (or use the workbench); see CORPUS.md
+  sources/         the reference images, kept as provenance
+
+workbench/       <- the transcription workbench: LOCAL-ONLY, not deployed
+  index.html       image + spelling + live Avatarian + word suggestions
+  js/app.js        the transcribing loop and the corpus editor
+  css/workbench.css
 
 designer/        <- the glyph designer: a LOCAL-ONLY second site, not deployed
   index.html       draw a character on its 5×5 / 5×4 lattice
@@ -57,6 +70,8 @@ tools/
   build_manifest.py     re-embeds both sets into js/manifest.js
   glyphspec.py          the design format + the one way to render it
   designer_server.py    serves designer/ and writes designs/ (port 8792)
+  corpus_server.py      serves workbench/ and writes corpus/ (port 8793)
+  build_corpus.py       validates corpus/attested.json -> js/corpus.js
   designs_to_svg.py     a design -> SVG, or -> a build_glyphs.py entry
   promote.py            a design -> INTO build_glyphs.py, then rebuild
   check_geom.py         proves geom.js still matches glyphspec.py
@@ -67,6 +82,23 @@ wiki/            <- paste these into the Fandom wiki, once
   MediaWiki_Common.css.txt      sizing/positioning for the glyphs
 
 ```
+
+## The two local tools
+
+Neither is deployed. The site is static and has no server; these write
+files, which is the point.
+
+```bash
+python3 tools/designer_server.py    # glyph designer      :8792
+python3 tools/corpus_server.py      # transcription bench :8793
+```
+
+The **workbench** is where attested words get recorded. File a reference
+image against a source, type the spelling you can read off it, take the
+English word the fuzzy reverse-decode suggests, save. It shows the
+attested spelling beside what the model would have predicted, so a
+disagreement is visible while you type rather than found later. The image
+is provenance — nothing reads its pixels.
 
 ## Testing locally
 

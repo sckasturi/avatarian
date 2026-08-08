@@ -1,5 +1,6 @@
 /* Auto-generated — do not edit by hand.
  * Source: corpus/attested.json    Regenerate: python3 tools/build_corpus.py
+ * Or edit it in the workbench: python3 tools/corpus_server.py
  *
  * The attested corpus: words somebody has SEEN written in Avatarian,
  * stored as the finished block structure flattened two-slots-per-block,

@@ -279,6 +279,28 @@ function wordToIPA(word) {
 }
 
 /**
+ * What the chain WOULD have said if the corpus didn't know this word.
+ *
+ * The transcription workbench needs it to show canon beside the model:
+ * an attested spelling is only interesting against the prediction it
+ * agrees or disagrees with, and `lookupWord` on an attested word just
+ * hands the corpus entry back. Asking the question this way round also
+ * keeps it honest — the model is not consulted about its own answer.
+ */
+function derivedLookup(word) {
+  const w = normaliseWord(word);
+  if (!w) return { ipa: [], tier: "guessed" };
+  if (EXCEPTIONS[w]) return { ipa: EXCEPTIONS[w].split(" "), tier: "derived" };
+  const packed = lexicon().get(w);
+  if (packed) {
+    const out = [];
+    for (const ch of packed) out.push(PHONE_OF[ch]);
+    return { ipa: out, tier: "derived" };
+  }
+  return { ipa: rulesToIPA(w), tier: "guessed" };
+}
+
+/**
  * The letter-to-sound guesser — the bottom of the chain, reached only
  * when nothing above it knows the word.
  */
@@ -388,7 +410,7 @@ function sentenceToIPA(text) {
 
 if (typeof module !== "undefined") {
   module.exports = {
-    wordToIPA, lookupWord, sentenceToIPA, normaliseWord,
+    wordToIPA, lookupWord, derivedLookup, sentenceToIPA, normaliseWord,
     ARPABET_TO_IPA, EXCEPTIONS, hasLexicon, corpusWords,
   };
 }

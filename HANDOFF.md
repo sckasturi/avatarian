@@ -7,6 +7,124 @@ what to do next.
 
 ---
 
+## Session 9 — the workbench, and drawing glyphs
+
+Items **23** (transcription workbench), **25** (stylus recognition) and
+most of **4** (fuzzy reverse-decode). Item 26 is superseded rather than
+done — see below.
+
+### The workbench
+
+```
+python3 tools/corpus_server.py     # http://localhost:8793/
+```
+
+`workbench/`, local-only like the glyph designer. The loop: **file a
+reference image against a source, read the Avatarian off it and type the
+spelling, let the reverse-decode say what English word that is, confirm,
+save.**
+
+**The image is provenance, not input** — nothing reads its pixels. That
+was a correction from the user mid-build, and it made the feature
+smaller and better: no underlay, no tracing surface, just a file stored
+in `corpus/sources/` so the entry can be re-checked in a year. It is
+also what makes this the tool for **B2** — cataloguing is now per
+*source*, not per word, so seven images clears the whole corpus.
+
+The part worth keeping is **"against the model"**: the attested spelling
+beside what the pipeline would have predicted, and *which way* they
+disagree. "Same sounds, different blocks" means the pairing rule is
+wrong here (that is `appa`); "different sounds" means the pronunciation
+is (that was `toph`). `CORPUS.md` §4 said the corpus would turn the open
+questions into queries; this is that, while you type.
+
+Saving calls `build_corpus.check()` — the same function the CLI uses — so
+nothing can go in through the UI that `python3 tools/build_corpus.py`
+would reject, and a rejected save writes **nothing**, not half.
+
+### Drawing glyphs
+
+`site/js/recognise.js` scores, `site/js/draw.js` is the pad. Both the
+main page and the workbench mount it.
+
+**It needed no new data, and no fitting step.** The plan was to reuse
+`designer/js/fit.js` to snap a gesture to the lattice first. Two things
+made that unnecessary:
+
+1. `manifest.js` already carries every glyph's SVG inline, so the
+   reference shapes can be sampled straight off the page with
+   `getPointAtLength`. No Python build step, no second copy to drift.
+2. Comparing raw point clouds is already tolerant of the wobble fitting
+   would have removed — and skipping it kept the whole feature inside
+   `site/`, which is what let the main page have it too.
+
+Both sides normalise into a unit box **keeping the aspect ratio**; score
+is a symmetric chamfer distance. Normalise the axes independently and
+every glyph fills a square, at which point a wide flat cup looks like a
+tall narrow one.
+
+Measured, by tracing each glyph's own outline back through the matcher at
+random scale and offset: 42/42 top-1 on a clean trace with ±9% jitter,
+40/42 coarse and heavily jittered, 38/42 with all strokes merged into
+one, and **24/42 (32/42 top-3) with a whole stroke forgotten**. That last
+one is the honest limit and is barely a recogniser failure — half a glyph
+is a different shape. It is why the pad ranks rather than answers, and
+why a loose match is faded with its distance in the tooltip.
+
+Stroke order and direction are deliberately unused: they record how the
+*designer* drew a glyph, and somebody copying off a reference image has
+no reason to take the same route.
+
+### Reverse-decode
+
+`site/js/reverse.js`. Phoneme edit distance against the corpus, then
+`EXCEPTIONS`, then all ~126k CMU words. Nulls and `$`/`%` come off before
+matching, so `AA 0 P 0 AA 0` reaches "appa".
+
+The first version took **500 ms a query**, which is not usable as you
+type. Two fixes got it to ~58 ms: reuse the edit-distance rows instead of
+allocating two arrays per candidate (this was most of it), and bucket the
+lexicon by pronunciation length so a four-phoneme word is never compared
+against "unconstitutional".
+
+### The bug worth remembering
+
+**`K AH T AA R AH` does not spell Katara.** It gives /k ʌ t ɑ r ʌ/ —
+`AH` is the STRUT vowel, not the "ah" of *father*. The correct spelling
+is `K AX T AA R AX`.
+
+That wrong example was in **three places**: the sounds-box placeholder,
+the "how to write sounds" help, and `AVATARIAN.md` §9. All written by
+people who knew the table. It was found only because the workbench's
+reverse-decode ranked *qatar* above *katara* and the reason turned out to
+be the query, not the ranking. All three fixed, and the help text now
+names the trap.
+
+**This is the strongest argument item 29 has.** If the people who built
+the table get it wrong in the documentation, a visitor has no chance.
+
+### Also
+
+- Item 26 is **superseded, not done**. "Photo as an underlay" assumed the
+  image was something to trace over; it is provenance. What is left of 26
+  is only full photo OCR.
+- `.claude/launch.json` gained an `avatarian-workbench` entry.
+- The pad is square, so an uncapped width makes it as *tall* as its
+  column is wide — a screen and a half of empty box on the stacked mobile
+  layout. Capped in both stylesheets.
+
+### The flips task, reverted
+
+A background agent for item 30 finished before the instruction to hold
+off reached it, and had already set `flips: false` on `designs/s.json`
+and `designs/oi.json`, rebuilt the manifest, added a `FLIPS_BASE`
+disagreement warning to `glyphspec.validate`, and edited four docs. **All
+of it was reverted** — item 30 stays deferred behind the corpus, same as
+B1, because the corpus is the instrument for settling it. The work is
+kept as a patch if it is wanted later.
+
+---
+
 ## Session 8 — the corpus is real
 
 **Read `TODO.md` first**, then this. One item: **22**, the corpus in the

@@ -65,7 +65,7 @@ and made-up words too.</p>
               title="Empty the sounds box">clear</button>
     </div>
     <textarea id="soundsInput" rows="3" spellcheck="false"
-      placeholder="K AH T AA R AH   /   P L IY Z"></textarea>
+      placeholder="K AX T AA R AX   /   P L IY Z"></textarea>
     <div class="row">
       <span class="ipa-hint" id="soundsHint"></span>
     </div>
@@ -76,9 +76,13 @@ and made-up words too.</p>
         <p>Each sound is written as a short code, sounds separated by spaces
           and words by <code>/</code>. Click any glyph in the reference to add
           its code here.</p>
-        <p><code>K AH T AA R AH</code> spells <em>Katara</em>. The codes are
+        <p><code>K AX T AA R AX</code> spells <em>Katara</em>. The codes are
           the ones used in pronunciation dictionaries; real IPA works too if
           you prefer it (<code>k ə t ɑ r ə</code>).</p>
+        <p class="fine">The codes have one genuine trap: <code>AH</code> is
+          the vowel in <em>strut</em>, not the "ah" in <em>father</em> —
+          that one is <code>AA</code>, and the <em>uh</em> at the end of
+          Katara is <code>AX</code>.</p>
         <p>Anything in <code>(brackets)</code> is a label for that word, not a
           sound — that is how the English caption under each word gets there.</p>
         <p><code>0</code> fills an empty slot at the end of a word with an odd
@@ -120,6 +124,17 @@ and made-up words too.</p>
 </div>
 
 <div class="col-ref">
+<!-- The way in for somebody who can SEE a glyph but doesn't know its
+     code — copying off a reference image, or off the key chart. Hunting
+     a 42-cell grid for a shape you are looking straight at is the slow
+     way round. -->
+<section class="card">
+  <h2>Draw a glyph</h2>
+  <p class="subtitle">Draw a shape and pick the closest match — it goes
+    into the sounds box.</p>
+  <div id="drawpad"></div>
+</section>
+
 <section class="card">
   <h2>Glyph reference</h2>
   <p class="subtitle">Every sound in the script. Click one to add it to the
@@ -156,6 +171,11 @@ and made-up words too.</p>
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
 <script src="js/sounds.js?v=22"></script>
 <script src="js/render.js?v=22"></script>
+<!-- Draw-to-recognise. recognise.js samples its reference shapes out of
+     manifest.js, which is already on the page, so this adds no data —
+     only the two small scripts. -->
+<script src="js/recognise.js?v=22"></script>
+<script src="js/draw.js?v=22"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
@@ -793,6 +813,10 @@ keyBox.addEventListener("change", applyKeyTracings);
 applyKeyTracings();
 
 buildKeyGrid();
+
+// A pick goes through the same path a palette click does, so a drawn
+// glyph lands at the caret and is spaced off exactly like a typed one.
+createDrawPad($("drawpad"), { onPick: (hit) => appendSound(hit.code), limit: 5 });
 
 // Start with something on screen. An empty output looks like a broken
 // page, and the first thing anyone should see is what the tool does.
