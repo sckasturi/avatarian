@@ -425,10 +425,21 @@ than rendered.
 
 ### Glyphs
 
-**17. Five designs differ from the glyph they ship**: `aw`, `f`, `ng`,
-`nurse`, `schwa`. Run `python3 tools/promote.py --all --dry-run` for the
-live list. Deciding which direction is right is a per-glyph judgement,
-which is why `ship all…` shows the list first.
+~~**17. Five designs differ from the glyph they ship.**~~ **Checked in
+session 10: none of them do.** Every design renders to the shape it
+ships. There is no per-glyph judgement to make and never was one by the
+end — the drift closed as glyphs were shipped through the designer.
+
+`python3 tools/promote.py --all --dry-run` still reports four (`f`,
+`ng`, `uh`, `schwa`), which is what this item was counting. **They are
+comment differences, not shape differences.** Promote compares the whole
+generated entry, and a design's `notes` field is not the hand-written
+comment above the same entry in `build_glyphs.py`. Strip the comments and
+the drawing expressions are identical.
+
+That is worth knowing before pressing **ship all…**: right now it would
+rewrite four hand-written comments — including the one explaining the
+ɜ/ə merge — with shorter design notes, for no change to any glyph.
 
 **18. `/x/` has no glyph** and renders as a dashed box. The only
 remaining placeholder, and it needs source material rather than a guess.
@@ -436,9 +447,19 @@ remaining placeholder, and it needs source material rather than a guess.
 **30. Two glyphs flip that the docs say don't.** `designs/s.json` and
 `designs/oi.json` both carry `flips: true`, so the shipped manifest
 mirrors /s/ and /ɔɪ/ by slot — but `FLIPS_BASE` in `build_glyphs.py` is
-`{æ, ɑ, l, ɪ, e, aɪ}` and `AVATARIAN.md` §6 states outright that **/s/ is
-deliberately NOT in the list**, which is the entire reason the `$`/`%`
-override exists. /ɔɪ/ is in neither the table nor any evidence note.
+`{æ, ɑ, l, ɪ, e, aɪ, ə}` and `AVATARIAN.md` §6 states outright that
+**/s/ is deliberately NOT in the list**, which is the entire reason the
+`$`/`%` override exists. /ɔɪ/ is in neither the table nor any evidence
+note.
+
+**Session 10 added ə to `FLIPS_BASE` and that is relevant evidence, not
+noise.** ə got there because its two drawings turned out to be an exact
+mirror pair, and a mirror pair is what a slot flip looks like — the
+project had read the same fact as proof of two separate letters and been
+wrong for two sessions. So "these two shapes are mirrors" is now a known
+argument FOR a flip. Whether it applies to /s/ is a different question,
+since /s/'s problem is that both forms appear in the *same* slot, which
+no flip rule can produce.
 
 Found while writing the `students` corpus entry, which spells both its
 /s/ by hand precisely because no slot rule works. Since session 6 moved
