@@ -498,9 +498,17 @@ S$ T UW 0 D AX N T S 0   /   M EH T AX L 0 B EH N D IH NG
 students                     metalbending
 ```
 
-* **ARPAbet codes** are the primary spelling — the table `g2p.js` already
-  converts through, extended with `AX` (schwa) and `NUL`, which ARPAbet has
-  no codes for. Case-insensitive.
+* **Readable codes** are the primary spelling — the respelling keys
+  dictionaries use for laypeople. `k uh t ah r uh` is *Katara*;
+  `a` cat, `ah` father, `ee` see, `oh` goat, `oo` soon, `uu` foot,
+  `ow` mouth, `aw` thought, `ey` face, `eye` price, `oy` choice,
+  `er` nurse, `uh` comma. Consonants are themselves plus `ng ch sh th dh
+  zh j y kh`. The table is `READABLE` in `sounds.js`.
+* **ARPAbet still works, in CAPITALS** — `K AX T AA R AX`. Four codes
+  (`ah uh ow aw`) mean different things in the two schemes, so case is
+  what separates them; everything else stays case-insensitive. Nothing
+  written before the change needs migrating, since ARPAbet has always
+  been written in capitals. See TODO item 29.
 * **IPA is accepted too**, plus aliases: `eɪ` for `e`, `ɝ`/`ɜr` for `ɜ`.
 * **`0`** (or `_`, `-`) is the `∅` empty-slot filler.
 * **`$` / `%`** suffixes force a glyph's top or bottom orientation — `S$`.

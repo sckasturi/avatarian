@@ -22,6 +22,81 @@
  */
 const EXTRA_CODES = { "AX": "ə", "NUL": "∅" };
 
+/**
+ * THE READABLE CODES — what the tool now teaches and displays.
+ *
+ * ARPAbet was picked because it is typeable on a plain keyboard, and it
+ * is: it is also close to unguessable. `AH` is /ʌ/ (STRUT) while `AA` is
+ * /ɑ/ (PALM), so the code that looks like "ah" is not the "ah" sound.
+ * That is not a theoretical complaint — this project shipped
+ * `K AH T AA R AH` as the spelling of "Katara" in three separate places,
+ * written by people who knew the table. It gives /k ʌ t ɑ r ʌ/.
+ *
+ * These are the **respelling keys dictionaries use for laypeople**, which
+ * are the one notation for English sounds that ordinary readers already
+ * know how to read. The pattern worth noticing:
+ *
+ *   a e i u        the short vowels, as in cat bed sit cut
+ *   ah oh uh       the broad ones — father, goat, comma
+ *   ee oo uu       fleece, goose, foot
+ *   ey eye ow aw oy   the diphthongs, spelled the way they sound
+ *
+ * Consonants are almost all just themselves. The only ones worth
+ * learning are `dh` (this) against `th` (thin), and `zh` (vision).
+ *
+ * WHY CASE MATTERS HERE AND NOWHERE ELSE. Four of these mean something
+ * different in ARPAbet — `ah`, `uh`, `ow`, `aw` — and they are exactly
+ * the cluster ARPAbet is worst at, so dodging them would give up most of
+ * the benefit. Instead: **lowercase is this scheme, UPPERCASE is
+ * ARPAbet.** Every document ever written for this tool keeps working
+ * unchanged, because ARPAbet has always been written in capitals. One
+ * sentence to learn, and nothing to migrate.
+ */
+const READABLE = {
+  // --- vowels, in the order the key chart lists them -----------------
+  "a": "æ",      // trap
+  "e": "ɛ",      // dress
+  "i": "ɪ",      // kit
+  "u": "ʌ",      // strut
+  "ah": "ɑ",     // father, lot
+  "uh": "ə",     // comma, the second vowel of Katara
+  "ee": "i",     // fleece
+  "ey": "e",     // face
+  "eye": "aɪ",   // price
+  "oh": "oʊ",    // goat
+  "oo": "u",     // goose
+  "uu": "ʊ",     // foot
+  "ow": "aʊ",    // mouth
+  "aw": "ɔ",     // thought
+  "oy": "ɔɪ",    // choice
+  "er": "ɜ",     // nurse
+  // --- consonants ---------------------------------------------------
+  "p": "p", "b": "b", "t": "t", "d": "d", "k": "k", "g": "g",
+  "m": "m", "n": "n", "ng": "ŋ",
+  "ch": "tʃ", "j": "dʒ",
+  "f": "f", "v": "v", "th": "θ", "dh": "ð",
+  "s": "s", "z": "z", "sh": "ʃ", "zh": "ʒ",
+  "h": "h", "w": "w", "y": "j", "r": "r", "l": "l", "kh": "x",
+  // Not a sound; kept alongside so `0` has a spelled-out twin.
+  "nul": "∅",
+};
+
+/**
+ * Spellings accepted but not taught. Mostly the other obvious guess for
+ * a sound: somebody who writes `ay` for FACE or `au` for THOUGHT has
+ * understood the scheme and picked the other common convention, and
+ * should not be told they are wrong.
+ */
+const READABLE_ALIASES = {
+  "o": "ɑ",                       // lot, for anyone reading a/e/i/o/u as a set
+  "ay": "e", "ai": "e",           // face — the other respelling convention
+  "au": "ɔ", "or": "ɔ",           // thought
+  "ur": "ɜ", "ir": "ɜ",           // nurse
+  "igh": "aɪ",                    // price
+  "schwa": "ə", "ax": "ə",
+  "sh'": "ʃ",
+};
+
 /** Spellings accepted for symbols that are awkward to type. */
 const SOUND_ALIASES = {
   "0": "∅", "_": "∅", "-": "∅",   // the empty-slot filler
@@ -30,9 +105,19 @@ const SOUND_ALIASES = {
   "ɑː": "ɑ", "iː": "i", "uː": "u",
 };
 
-/** IPA -> the ARPAbet code to display, so the UI teaches the syntax. */
+/**
+ * IPA -> the code to DISPLAY, so the UI teaches one scheme rather than
+ * showing a second one it also happens to accept.
+ *
+ * Built from READABLE first, with ARPAbet only as the fallback for any
+ * sound the readable table somehow misses — which is nothing today, and
+ * is a safety net rather than a plan.
+ */
 const IPA_TO_CODE = (() => {
   const map = { "∅": "0" };
+  Object.entries(READABLE).forEach(([code, ipa]) => {
+    if (!map[ipa]) map[ipa] = code;
+  });
   Object.entries(ARPABET_TO_IPA).forEach(([code, ipa]) => {
     if (!map[ipa]) map[ipa] = code;
   });
@@ -50,11 +135,39 @@ function splitOverride(token) {
     : { body: token, suffix: "" };
 }
 
-/** One typed token -> the manifest's symbol, override suffix preserved. */
+/**
+ * One typed token -> the manifest's symbol, override suffix preserved.
+ *
+ * The order is the whole compatibility story:
+ *
+ *   1. IPA and its aliases, which are exact and never ambiguous.
+ *   2. ALL-CAPS is read as ARPAbet. This is what keeps every document
+ *      ever written for this tool working: `AH` is still /ʌ/, `AW` is
+ *      still /aʊ/. It is checked before the readable table precisely
+ *      because four codes collide.
+ *   3. The readable scheme, case-insensitively — so `ah`, `Ah` and `aH`
+ *      all mean /ɑ/, and only the shouted `AH` means /ʌ/.
+ *   4. ARPAbet again, case-insensitively, for the codes that DON'T
+ *      collide. `iy`, `ae` and `hh` keep working in lowercase, because
+ *      there is no reason for them not to.
+ *
+ * A single-letter ARPAbet consonant like `B` is caught at step 2 and
+ * `b` at step 3; both are /b/, so the split is invisible for everything
+ * except the four vowels it exists for.
+ */
 function normaliseSound(token) {
   const { body, suffix } = splitOverride(token);
   if (SOUND_ALIASES[body]) return SOUND_ALIASES[body] + suffix;
+
   const upper = body.toUpperCase();
+  const lower = body.toLowerCase();
+
+  if (body === upper && ARPABET_TO_IPA[upper]) return ARPABET_TO_IPA[upper] + suffix;
+  if (body === upper && EXTRA_CODES[upper]) return EXTRA_CODES[upper] + suffix;
+
+  if (READABLE[lower]) return READABLE[lower] + suffix;
+  if (READABLE_ALIASES[lower]) return READABLE_ALIASES[lower] + suffix;
+
   if (ARPABET_TO_IPA[upper]) return ARPABET_TO_IPA[upper] + suffix;
   if (EXTRA_CODES[upper]) return EXTRA_CODES[upper] + suffix;
   return body + suffix;
@@ -197,7 +310,7 @@ function spreadCaptions(words) {
 
 if (typeof module !== "undefined") {
   module.exports = {
-    EXTRA_CODES, SOUND_ALIASES, IPA_TO_CODE,
+    EXTRA_CODES, SOUND_ALIASES, READABLE, READABLE_ALIASES, IPA_TO_CODE,
     splitOverride, normaliseSound, soundToCode,
     wordsToSoundText, soundTextToWords,
     splitCaption, spreadCaptions,

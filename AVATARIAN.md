@@ -467,20 +467,44 @@ the **sounds box**, which is what actually gets drawn and is always editable
 (`g2p.js` is rule-based and gets words wrong — you fix the sounds, not the
 English). It is **ASCII-first**, typeable on a plain QWERTY keyboard.
 
-- **ARPAbet codes** are the primary spelling: `K AX T AA R AX`. Case-insensitive.
-  (This example read `K AH T AA R AH` until session 8, which is *wrong* and
-  gives /k ʌ t ɑ r ʌ/ — `AH` is the STRUT vowel, not the "ah" of *father*.
-  Both the site's placeholder and its help text carried the same mistake.
-  It is the sharpest possible argument for TODO item 29.)
-  Extended with `AX` (schwa) and `NUL`, which ARPAbet has no code for.
+**The readable codes** are the primary spelling: `k uh t ah r uh` is *Katara*.
+They are the respelling keys dictionaries use for laypeople, which is the one
+notation for English sounds that ordinary readers already know how to read.
+
+| | | | | | | | |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `a` | c**a**t | `ah` | f**a**ther | `ee` | s**ee** | `ow` | m**ou**th |
+| `e` | b**e**d | `oh` | g**o**at | `oo` | s**oo**n | `aw` | th**ou**ght |
+| `i` | s**i**t | `uh` | comm**a** | `uu` | f**oo**t | `oy` | ch**oi**ce |
+| `u` | c**u**t | `ey` | f**a**ce | `eye` | pr**i**ce | `er` | n**ur**se |
+
+Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*), `dh`
+(*this*), `zh` (*vision*), `j` (*jam*), `y` (*yes*) and `kh` (/x/).
+
+- **ARPAbet still works, in CAPITALS**: `K AX T AA R AX`. Four codes mean
+  different things in the two schemes — `ah uh ow aw` — and they are exactly
+  the cluster ARPAbet is worst at, so case is what tells them apart:
+  lowercase `ah` is *father*, shouted `AH` is *cut*. Everything else is
+  case-insensitive, so the split is invisible unless you hit one of the four.
+  **Nothing written before this change needs migrating**, because ARPAbet has
+  always been written in capitals.
+- **Why the change.** `AH` is /ʌ/ (STRUT) while `AA` is /ɑ/ (PALM), so the
+  code that looks like "ah" is not the "ah" sound. That is not theoretical:
+  this document, the site's placeholder and the site's help text all carried
+  `K AH T AA R AH` as the spelling of *Katara* until session 9. It gives
+  /k ʌ t ɑ r ʌ/. Three places, written by people who knew the table.
 - **IPA is accepted too**, plus aliases: `eɪ`→`e`, `ɝ`/`ɜr`→`ɜ`, `ɑː`→`ɑ`,
-  `iː`→`i`, `uː`→`u`.
+  `iː`→`i`, `uː`→`u`. The corpus is stored in IPA for this reason — it does
+  not move when the ASCII layer does, which is why item 29 could land after
+  the corpus rather than before it.
 - **Sounds are separated by spaces, words by `/`.**
-- **`0`** (or `_`, `-`) is the `∅` empty-slot filler.
-- **`$` / `%`** suffixes force a glyph's top or bottom orientation (`S$`),
+- **`0`** (or `_`, `-`) is the `∅` empty-slot filler. The consonant-height
+  null `∅c` has no code at all: the renderer picks the height from the
+  pairing partner, and whether a code is needed is TODO B3.
+- **`$` / `%`** suffixes force a glyph's top or bottom orientation (`s$`),
   for glyphs whose variant rule isn't known — currently only /s/.
 - **`(parentheses)`** caption a word instead of being read as sounds:
-  `M EH T AX L 0 B EH N D IH NG (metalbending)`. Converting from English emits
+  `m e t uh l 0 b e n d i ng (metalbending)`. Converting from English emits
   these automatically, and since the label is part of the text it survives
   hand-editing.
 

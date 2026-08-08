@@ -59,13 +59,79 @@ test("an orientation override rides on the sound", () => {
 
 test("an override survives the trip back to codes", () => {
   // `s%` is not a key in IPA_TO_CODE, so looking the whole token up
-  // wrote raw IPA into a box that otherwise speaks ARPAbet. Nothing
+  // wrote raw IPA into a box that otherwise speaks codes. Nothing
   // produced an override upstream until the corpus did, which is why
   // this sat unnoticed.
-  assert.equal(soundToCode("s%"), "S%");
-  assert.equal(soundToCode("s$"), "S$");
-  assert.equal(soundToCode("ɑ"), "AA");
+  assert.equal(soundToCode("s%"), "s%");
+  assert.equal(soundToCode("s$"), "s$");
+  assert.equal(soundToCode("ɑ"), "ah");
   assert.equal(soundToCode("∅"), "0");
+});
+
+// ---------------------------------------------------------------------
+// The readable scheme (item 29)
+// ---------------------------------------------------------------------
+
+test("the readable codes read the way they look", () => {
+  const say = (text) => soundTextToWords(text)[0].ipa.join(" ");
+  assert.equal(say("k uh t ah r uh"), "k ə t ɑ r ə", "katara");
+  assert.equal(say("ah p ah"), "ɑ p ɑ", "appa");
+  assert.equal(say("p l ee z"), "p l i z", "please");
+  assert.equal(say("th aw t"), "θ ɔ t", "thought");
+  assert.equal(say("m ow th"), "m aʊ θ", "mouth");
+  assert.equal(say("p r eye s"), "p r aɪ s", "price");
+  assert.equal(say("f uu t"), "f ʊ t", "foot");
+  assert.equal(say("v i zh uh n"), "v ɪ ʒ ə n", "vision");
+});
+
+test("CAPITALS still mean ARPAbet, so old documents keep working", () => {
+  const say = (text) => soundTextToWords(text)[0].ipa.join(" ");
+  assert.equal(say("K AX T AA R AX"), "k ə t ɑ r ə");
+  assert.equal(say("HH EH L OW"), "h ɛ l oʊ");
+  assert.equal(say("AA 0 P 0 AA 0"), "ɑ ∅ p ∅ ɑ ∅");
+});
+
+test("case decides for the four codes that collide, and only those", () => {
+  // These are the whole reason case is significant. Everything else is
+  // case-insensitive, so the split is invisible unless you hit one.
+  for (const [lower, readable, upper, arpabet] of [
+    ["ah", "ɑ", "AH", "ʌ"],
+    ["uh", "ə", "UH", "ʊ"],
+    ["ow", "aʊ", "OW", "oʊ"],
+    ["aw", "ɔ", "AW", "aʊ"],
+  ]) {
+    assert.equal(normaliseSound(lower), readable, `${lower} should be ${readable}`);
+    assert.equal(normaliseSound(upper), arpabet, `${upper} should be ${arpabet}`);
+  }
+});
+
+test("everything that doesn't collide stays case-insensitive", () => {
+  for (const [a, b] of [["ee", "EE"], ["b", "B"], ["ng", "NG"], ["sh", "SH"],
+                        ["eye", "EYE"], ["oy", "OY"], ["er", "ER"]]) {
+    assert.equal(normaliseSound(a), normaliseSound(b), `${a} vs ${b}`);
+  }
+  // ARPAbet codes with no readable twin work lowercase too — there is no
+  // reason to make somebody shout `IY`.
+  assert.equal(normaliseSound("iy"), "i");
+  assert.equal(normaliseSound("hh"), "h");
+  assert.equal(normaliseSound("jh"), "dʒ");
+});
+
+test("every glyph has a readable code, and it round-trips", (t) => {
+  const glyphs = ctx.window.AVATARIAN_GLYPHS || {};
+  for (const ipa of Object.keys(glyphs)) {
+    // ∅c is the one symbol with no code, ON PURPOSE. `0` means "a null"
+    // and the renderer picks the height from the pairing partner, so
+    // there has never been a way to type the tall one. CORPUS.md §2
+    // says not to invent `0c` until the art has been checked (B3) —
+    // if the pairing-partner rule holds, no code is needed at all.
+    if (ipa === "∅c") continue;
+    const code = ctx.IPA_TO_CODE[ipa];
+    assert.ok(code, `no code for ${ipa}`);
+    assert.equal(normaliseSound(code), ipa,
+      `${ipa} displays as '${code}', which reads back as something else`);
+  }
+  t.diagnostic("∅c has no typeable code — deliberate, pending TODO B3");
 });
 
 // ---------------------------------------------------------------------

@@ -289,53 +289,42 @@ so going back to fix a word in the middle works — which is most of
 transcribing from a reference. Verified by building the attested poster
 line `F AE N IY / IH Z / M IH S IH NG` entirely by clicking.
 
-**29. Design a more intuitive sound alphabet than ARPAbet.** ARPAbet is
-what the sounds box takes today, and it is genuinely unintuitive — most
-sharply because **`AH` is /ʌ/ (STRUT) while `AA` is /ɑ/ (PALM)**, so the
-code that looks like "ah" is not the "ah" sound.
+~~**29. Design a more intuitive sound alphabet than ARPAbet.**~~ **Done in
+session 10.** The sounds box now takes, and teaches, the respelling keys
+dictionaries use for laypeople — the one notation for English sounds
+ordinary readers already know how to read.
 
-**This is not hypothetical: the project itself got it wrong.** Until
-session 9 the site's sounds-box placeholder, its "how to write sounds"
-help, and `AVATARIAN.md` §9 all said `K AH T AA R AH` spells *Katara*. It
-does not — it gives /k ʌ t ɑ r ʌ/. The right answer is `K AX T AA R AX`.
-Three places, written by people who knew the table, wrong for months, and
-found only when the workbench's reverse-decode ranked *qatar* above
-*katara* and the reason turned out to be the input. Fixed, with the trap
-now named in the help text. `AO` is /ɔ/ but `AW` is
-/aʊ/. `EY` is /eɪ/. None of it can be guessed; it has to be learned, and
-this is the tool's main input surface for people who don't know IPA.
+```
+k uh t ah r uh   Katara          th aw t    thought
+ah 0 p 0 ah 0    appa            p r eye s  price
+```
 
-The model to steal from is **iTrans for Sanskrit**, which is learnable
-because it is *systematic*: doubling marks length (`a`/`aa`), `h` marks
-aspiration (`k`/`kh`), capitals mark retroflex (`t`/`T`). You can predict
-a code you have never seen.
+| | | | | | | | |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `a` | c**a**t | `ah` | f**a**ther | `ee` | s**ee** | `ow` | m**ou**th |
+| `e` | b**e**d | `oh` | g**o**at | `oo` | s**oo**n | `aw` | th**ou**ght |
+| `i` | s**i**t | `uh` | comm**a** | `uu` | f**oo**t | `oy` | ch**oi**ce |
+| `u` | c**u**t | `ey` | f**a**ce | `eye` | pr**i**ce | `er` | n**ur**se |
 
-English has no such neat axes, but it does have a well-tested precedent:
-the **respelling keys dictionaries use for laypeople** — `ah` father,
-`ay` face, `ee` fleece, `eye` price, `oh` goat, `oo` goose, `uu` foot,
-`ow` mouth, `oy` choice, `uh` schwa, `er` nurse. Those are guessable in a
-way `AA`/`AH`/`AO` never will be.
+Consonants are themselves, plus `ng ch sh th dh zh j y kh`. Only `dh`
+(*this*) against `th` (*thin*) has to be learned.
 
-Design constraints:
+**The compatibility problem, and how it was solved.** Exactly four codes
+mean different things in the two schemes — `ah uh ow aw` — and they are
+precisely the cluster ARPAbet is worst at, so dodging them would have
+given up most of the benefit. Resolution: **lowercase is the readable
+scheme, CAPITALS are ARPAbet.** Every document ever written for this tool
+keeps working verbatim, because ARPAbet has always been written in
+capitals. One sentence to teach, nothing to migrate. Everything that
+doesn't collide stays case-insensitive, so the split is invisible unless
+you hit one of the four.
 
-- **Still typeable on a plain QWERTY keyboard**, which is why ARPAbet was
-  picked in the first place.
-- **Unambiguous when run together.** Sounds are space-separated, so this
-  is easier than it looks, but a scheme that only works with separators
-  is worth knowing about up front.
-- **Accept the old codes as input** — ARPAbet should keep working, and
-  IPA already does. This is about what the tool *teaches and displays*,
-  not about narrowing what it accepts.
-- **`0`, `$`, `%` and `/` stay** — they are punctuation, not sounds.
+The corpus needed no migration at all — it stores IPA, which is what
+made this landable after the corpus rather than before it (see item 22).
 
-~~**Sequence this against the corpus (20).**~~ **No longer coupled.**
-The worry was that storing attested spellings as sounds-syntax strings
-would tie every corpus entry to whatever scheme is current. The corpus
-stores **IPA** instead, which is canonical and not going to change, and
-the site was already IPA internally — `normaliseSound` converts on the
-way in and `IPA_TO_CODE` converts on the way out, so ARPAbet was only
-ever a display layer. Item 29 can land whenever; the corpus does not
-move with it.
+Still true, and now demonstrated rather than argued: `AH` is /ʌ/ while
+`AA` is /ɑ/, and this project shipped `K AH T AA R AH` as *Katara* in
+three separate places.
 
 **4. Fuzzy reverse-decode.** Given an Avatarian sequence, suggest likely
 English words ("pretty sure this is X") instead of the current

@@ -7,6 +7,67 @@ what to do next.
 
 ---
 
+## Session 10 — tests, flipped glyphs, and readable sound codes
+
+Items **27**, **29**, and the flipped-glyph half of **25**. Sections
+below in the order they were built.
+
+### Item 29 — the sounds box speaks English now
+
+```
+k uh t ah r uh   Katara        th aw t     thought
+ah 0 p 0 ah 0    appa          p r eye s   price
+```
+
+The codes are the respelling keys dictionaries use for laypeople —
+`a` cat, `ah` father, `ee` see, `ow` mouth, `uh` comma — which is the one
+notation for English sounds ordinary readers already know how to read.
+Consonants are themselves; only `dh` (*this*) against `th` (*thin*) has
+to be learned.
+
+**The compatibility problem is the whole design.** Exactly four codes
+mean different things in the two schemes — `ah uh ow aw` — and they are
+precisely the cluster ARPAbet is worst at, so dodging them would have
+given up most of the benefit. I measured it rather than guessed:
+
+```
+ah=ɑ  but ARPAbet AH=ʌ        ow=aʊ  but ARPAbet OW=oʊ
+uh=ə  but ARPAbet UH=ʊ        aw=ɔ   but ARPAbet AW=aʊ
+```
+
+Resolution: **lowercase is the readable scheme, CAPITALS are ARPAbet.**
+Every document ever written for this tool keeps working verbatim, because
+ARPAbet has always been written in capitals. One sentence to teach and
+nothing to migrate. Everything that doesn't collide stays
+case-insensitive, so the split is invisible unless you hit one of the
+four — and `normaliseSound` checks ALL-CAPS before the readable table for
+exactly that reason.
+
+**The corpus needed no migration**, because it stores IPA. That is what
+let 29 land *after* the corpus instead of before it, which is the
+opposite of what the item originally predicted.
+
+`designer_server.py` now reads `READABLE` out of `sounds.js` the same way
+it read `ARPABET_TO_IPA` out of `g2p.js`, so the designer's sound list
+teaches the same codes rather than a stale copy.
+
+### The recogniser learned bottom-slot forms
+
+A glyph is drawn once, in its top form, and eight mirror by slot
+(`s l ɪ e æ ɑ aɪ ɔɪ`). The recogniser only sampled the drawn form, so
+copying a cap off a reference image matched nothing — which is the entire
+use case. Each flipping glyph now carries a mirrored reference cloud, and
+a mirrored win reports itself: the code comes out `ah%`, the thumbnail is
+drawn the way you drew it, the tooltip says "bottom-slot form".
+
+**The /s/ case works end to end**: draw `∧` → `s`, draw `∨` → `s%`. That
+is the distinction "students" needs and the one no slot rule can make.
+
+Mirroring happens *after* normalisation (reflect about y = 0.5), so it
+costs one pass over the points rather than a second round of sampling.
+
+---
+
 ## Session 10 — a test suite, at last
 
 Item **27**. The project had never had one, and two tools now machine-edit

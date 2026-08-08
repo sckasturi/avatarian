@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=24" />
-<link rel="stylesheet" href="css/style.css?v=24" />
+<link rel="stylesheet" href="css/blocks.css?v=25" />
+<link rel="stylesheet" href="css/style.css?v=25" />
 </head>
 <body>
 
@@ -65,7 +65,7 @@ and made-up words too.</p>
               title="Empty the sounds box">clear</button>
     </div>
     <textarea id="soundsInput" rows="3" spellcheck="false"
-      placeholder="K AX T AA R AX   /   P L IY Z"></textarea>
+      placeholder="k uh t ah r uh   /   p l ee z"></textarea>
     <div class="row">
       <span class="ipa-hint" id="soundsHint"></span>
     </div>
@@ -76,13 +76,38 @@ and made-up words too.</p>
         <p>Each sound is written as a short code, sounds separated by spaces
           and words by <code>/</code>. Click any glyph in the reference to add
           its code here.</p>
-        <p><code>K AX T AA R AX</code> spells <em>Katara</em>. The codes are
-          the ones used in pronunciation dictionaries; real IPA works too if
-          you prefer it (<code>k ə t ɑ r ə</code>).</p>
-        <p class="fine">The codes have one genuine trap: <code>AH</code> is
-          the vowel in <em>strut</em>, not the "ah" in <em>father</em> —
-          that one is <code>AA</code>, and the <em>uh</em> at the end of
-          Katara is <code>AX</code>.</p>
+        <p><code>k uh t ah r uh</code> spells <em>Katara</em>. The codes are
+          the ones dictionaries use to show pronunciation, so most of them
+          read the way they look. Real IPA works too if you prefer it
+          (<code>k ə t ɑ r ə</code>).</p>
+        <table class="sound-key">
+          <tr><td><code>a</code></td><td>c<b>a</b>t</td>
+              <td><code>ah</code></td><td>f<b>a</b>ther</td>
+              <td><code>ee</code></td><td>s<b>ee</b></td>
+              <td><code>ow</code></td><td>m<b>ou</b>th</td></tr>
+          <tr><td><code>e</code></td><td>b<b>e</b>d</td>
+              <td><code>oh</code></td><td>g<b>o</b>at</td>
+              <td><code>oo</code></td><td>s<b>oo</b>n</td>
+              <td><code>aw</code></td><td>th<b>ou</b>ght</td></tr>
+          <tr><td><code>i</code></td><td>s<b>i</b>t</td>
+              <td><code>uh</code></td><td>comm<b>a</b></td>
+              <td><code>uu</code></td><td>f<b>oo</b>t</td>
+              <td><code>oy</code></td><td>ch<b>oi</b>ce</td></tr>
+          <tr><td><code>u</code></td><td>c<b>u</b>t</td>
+              <td><code>ey</code></td><td>f<b>a</b>ce</td>
+              <td><code>eye</code></td><td>pr<b>i</b>ce</td>
+              <td><code>er</code></td><td>n<b>ur</b>se</td></tr>
+        </table>
+        <p class="fine">Consonants are themselves, plus <code>ng</code>,
+          <code>ch</code>, <code>sh</code>, <code>th</code> (<em>thin</em>),
+          <code>dh</code> (<em>this</em>), <code>zh</code>
+          (<em>vision</em>) and <code>j</code> (<em>jam</em>).</p>
+        <p class="fine">The older <b>ARPAbet</b> codes still work if you
+          know them — write them in <b>capitals</b>
+          (<code>K AX T AA R AX</code>). Four of them mean something
+          different from the codes above, so the capitals are what tells
+          them apart: <code>AH</code> is <em>cut</em> where <code>ah</code>
+          is <em>father</em>.</p>
         <p>Anything in <code>(brackets)</code> is a label for that word, not a
           sound — that is how the English caption under each word gets there.</p>
         <p><code>0</code> fills an empty slot at the end of a word with an odd
@@ -157,25 +182,25 @@ and made-up words too.</p>
   <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=24"></script>
+<script src="js/manifest.js?v=25"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=24"></script>
+<script src="js/corpus.js?v=25"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=24"></script>
-<script src="js/g2p.js?v=24"></script>
+<script src="js/lexicon.js?v=25"></script>
+<script src="js/g2p.js?v=25"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=24"></script>
-<script src="js/render.js?v=24"></script>
+<script src="js/sounds.js?v=25"></script>
+<script src="js/render.js?v=25"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=24"></script>
-<script src="js/draw.js?v=24"></script>
+<script src="js/recognise.js?v=25"></script>
+<script src="js/draw.js?v=25"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};

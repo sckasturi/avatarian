@@ -286,6 +286,15 @@ button.primary:hover { opacity: 0.9; }
   background: var(--card); color: var(--muted); cursor: pointer;
 }
 .tune-note button:hover { background: var(--hover); color: var(--ink); }
+/* The vowel key. Four pairs across, so it reads as a small chart rather
+   than a wall of codes — the point is that you can find your sound at a
+   glance, not that you memorise it. */
+.sound-key { border-collapse: collapse; margin: 10px 0; font-size: 0.85rem; }
+.sound-key td { padding: 2px 10px 2px 0; color: var(--muted); }
+.sound-key td:nth-child(odd) { text-align: right; padding-right: 4px; }
+.sound-key code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.sound-key b { color: var(--ink); font-weight: 600; }
+
 .syntax-details { margin-top: 10px; }
 .syntax-details > summary { cursor: pointer; color: var(--muted-2); }
 .syntax-details .syntax-help p { margin: 8px 0; }
