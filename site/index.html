@@ -276,6 +276,34 @@ function renderWords(words) {
     ipa.className = "cap-ipa";
     ipa.textContent = "/" + w.ipa.map(t => splitOverride(t).body).join(" ") + "/";
     cap.appendChild(ipa);
+
+    // A contested word is one the sources themselves disagree about. The
+    // corpus draws the most-attested spelling, but saying so out loud is
+    // the point — two pieces of canon disagreeing is a fact about the
+    // script, and silently picking a winner would hide it.
+    //
+    // Looked up here rather than carried on `w`, because `draw()` renders
+    // from the SOUNDS BOX: these word objects come out of
+    // `soundTextToWords` and have no corpus entry attached. The caption
+    // is the only thing that names the word, so it is what gets looked up.
+    //
+    // Deliberately narrower than the attested/derived/guessed display
+    // (item 21, blocked on B4): that one has to mark almost every word on
+    // the page, which is the judgement call B4 is about. This marks the
+    // handful genuinely in dispute, so it does not need that decision.
+    const record = w.word ? corpusWords()[normaliseWord(w.word)] : null;
+    if (record && record.contested) {
+      const alts = (record.alternates || []).length;
+      const mark = document.createElement("span");
+      mark.className = "cap-contested";
+      mark.textContent = "contested";
+      mark.title =
+        `Sources disagree on how "${w.word}" is written. The corpus holds `
+        + `${record.count} sighting${record.count === 1 ? "" : "s"} of the `
+        + `spelling it prefers (${(record.sources || []).join(", ")}) and `
+        + `${alts} other${alts === 1 ? "" : "s"}.`;
+      cap.appendChild(mark);
+    }
     unit.appendChild(cap);
 
     output.appendChild(unit);

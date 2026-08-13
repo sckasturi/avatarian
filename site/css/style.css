@@ -173,6 +173,13 @@ button.primary:hover { opacity: 0.9; }
 }
 .avatarian-caption .cap-en { font-size: 0.85rem; color: var(--ink); }
 .avatarian-caption .cap-ipa { font-size: 0.72rem; color: var(--muted-2); }
+/* Rare by design — only when two sources actually disagree. Small enough
+   not to shout, distinct enough that it is never mistaken for the IPA. */
+.avatarian-caption .cap-contested {
+  font-size: 0.62rem; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid currentColor; border-radius: 3px;
+  padding: 0 4px; margin-top: 2px; cursor: help;
+}
 /* Block layout lives in blocks.css — the site, the wiki gadget and the
    designer's live preview all have to agree on it, so it is one file
    rather than three copies. What stays here is page chrome. */
