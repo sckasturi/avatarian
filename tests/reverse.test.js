@@ -65,16 +65,30 @@ test("the scratch rows are reused without corrupting a result", () => {
 // ---------------------------------------------------------------------
 
 test("every attested word is the top suggestion for its own spelling", (t) => {
-  const misses = [];
+  // HOMOPHONES MAKE "first" THE WRONG TEST. `to` and `too` are both
+  // attested and both spell /t u/, so the spelling alone cannot pick
+  // between them and no ranking could put each of them first. Demanding
+  // it would be demanding the reverse-decode invent a distinction the
+  // script does not make — which is the opposite of what this suite is
+  // for. So the property is: a zero-distance hit, not necessarily the
+  // zero-distance hit. Anything ranked above it must be an exact match
+  // too, meaning a genuine homophone rather than a worse guess.
+  const misses = [], ties = [];
   for (const entry of entries(ctx)) {
     const hits = suggestWords(entry.ipa, 5);
-    if (hits[0]?.word !== entry.key) {
+    const at = hits.findIndex(h => h.word === entry.key);
+    const above = at < 0 ? [] : hits.slice(0, at);
+    if (at < 0 || above.some(h => h.distance !== 0)) {
       misses.push(`${entry.key} -> ${hits.map(h => h.word).join(", ") || "(nothing)"}`);
+    } else if (at > 0) {
+      ties.push(`${entry.key} = ${above.map(h => h.word).join(", ")}`);
     }
   }
   assert.deepEqual(plain(misses), [],
-    "an attested word did not rank first for its own spelling");
-  t.diagnostic(`${entries(ctx).length}/${entries(ctx).length} attested words rank first`);
+    "an attested word was beaten by something that is not a homophone");
+  const n = entries(ctx).length;
+  t.diagnostic(`${n - ties.length}/${n} attested words rank first`);
+  for (const tie of ties) t.diagnostic(`homophone, tied on spelling: ${tie}`);
 });
 
 test("an attested word is marked as coming from the corpus", () => {
