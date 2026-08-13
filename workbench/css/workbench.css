@@ -22,6 +22,9 @@
   --code-bg: #2f2619;
   --warn: #ff9080;
   --ok: #8fbf7a;
+  /* The sticky top bar's height. The tools column sticks below it, so
+     the two have to agree — measured from .bar's padding + line-height. */
+  --bar-h: 53px;
   color-scheme: dark;
 }
 
@@ -96,6 +99,30 @@ h3 { font-size: 0.8rem; margin: 0 0 6px; text-transform: uppercase;
 }
 
 .col-list, .col-tools { display: flex; flex-direction: column; gap: 14px; }
+
+/* The tools follow the page down.
+ *
+ * The source image, the draw pad and the palette are all things you
+ * reach for WHILE working through the rows in the middle column, and a
+ * long transcription used to scroll them off the top — putting the
+ * reference you are copying from and the field you are typing into on
+ * different screens.
+ *
+ * Sticky rather than fixed so it still sits in the grid, and capped to
+ * the viewport with its own scrollbar: the panels inside already cap
+ * themselves, but three of them together can outgrow a short window.
+ * Only at the wide breakpoint, where this is genuinely a side column —
+ * below 1180px it wraps underneath and sticking would be nonsense.
+ */
+@media (min-width: 1181px) {
+  .col-tools {
+    position: sticky;
+    top: calc(var(--bar-h) + 14px);
+    max-height: calc(100vh - var(--bar-h) - 28px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
 
 .panel {
   background: var(--card); border: 1px solid var(--line);
@@ -201,10 +228,53 @@ input:focus, textarea:focus, select:focus {
 }
 .imp-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
 .imp-word { font-size: 0.95rem; }
+/* Editable now, but still reads as the machine half of the row: mono,
+   quiet, and visually subordinate to the word above it. */
 .imp-codes {
   font-family: ui-monospace, Menlo, monospace; font-size: 0.75rem;
-  color: var(--faint); overflow-x: auto; white-space: nowrap;
+  color: var(--faint);
+  width: 100%; padding: 4px 7px;
+  background: var(--code-bg); border: 1px solid transparent; border-radius: 5px;
 }
+.imp-codes:hover { border-color: var(--line); }
+.imp-codes:focus {
+  border-color: var(--accent); outline: none; color: var(--ink);
+}
+
+.imp-flags { display: flex; flex-direction: column; gap: 5px; }
+.imp-flags:empty { display: none; }
+
+/* Every sourcing of the word being edited. */
+.sightings {
+  margin: -4px 0 12px; padding: 10px 12px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+}
+.sightings-head {
+  margin: 0 0 8px; font-size: 0.82rem; font-weight: 600; color: var(--muted);
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: baseline;
+}
+.sightings ul { list-style: none; margin: 0; padding: 0;
+                display: flex; flex-direction: column; gap: 6px; }
+.sighting {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  padding: 6px 8px; text-align: left;
+  background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+  cursor: pointer;
+}
+.sighting:hover { background: var(--hover); }
+.sighting.is-active { border-color: var(--accent); }
+.sighting-art { --glyph-size: 20px; flex: none; max-width: 40%; overflow-x: auto; }
+.sighting-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sighting-src { font-size: 0.8rem; color: var(--ink); }
+.sighting-codes {
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem;
+  color: var(--faint); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* A word whose sources disagree, in the list. */
+.entry-btn.is-contested .entry-flag { color: var(--accent); }
+
 .imp-chips { display: flex; flex-wrap: wrap; gap: 5px; }
 .imp-chips .sugg { font-size: 0.8rem; padding: 2px 8px; }
 .imp-flag {
@@ -213,8 +283,24 @@ input:focus, textarea:focus, select:focus {
 }
 .imp-flag.is-warn { color: var(--warn); }
 .imp-flag.is-dupe { color: var(--accent); }
+/* Corroboration is good news — a second source agreeing is the strongest
+   thing the corpus can record, so it reads as confirmation, not warning. */
+.imp-flag.is-ok { color: var(--ok); }
+/* A repeat is bookkeeping, not a problem — it says where the count went. */
+.imp-flag.is-muted { color: var(--faint); }
+.imp-row.is-repeat .imp-art, .imp-row.is-repeat .imp-word { opacity: 0.55; }
+/* Unchecked is the ordinary state of a freshly derived row, not an
+   error — muted rather than alarming, but the row is dimmed so it reads
+   as provisional beside the ones that have been looked at. */
+.imp-flag.is-unchecked { color: var(--muted-2); }
 .imp-flag label { display: inline-flex; align-items: center; gap: 4px;
                   cursor: pointer; }
+
+.imp-row.is-unchecked .imp-art,
+.imp-row.is-unchecked .imp-codes { opacity: 0.5; }
+
+.english-row { display: flex; gap: 8px; align-items: center; }
+.english-row input { flex: 1; min-width: 0; }
 
 .import-actions {
   display: flex; align-items: center; gap: 12px; margin-top: 14px;

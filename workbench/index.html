@@ -75,10 +75,16 @@
   </div>
 
   <div class="row">
+    <!-- The full reading lives here, not just a label. A source is
+         usually a line, a caption or a poster, and the words come off it
+         one at a time — so without somewhere to keep the whole text, the
+         only record of what the source SAYS is scattered across its
+         entries with the order lost. -->
     <label class="field grow">
-      <span class="field-label">What it is</span>
-      <textarea id="impWhat" rows="2"
-        placeholder="A poster reading “fanny is missing”."></textarea>
+      <span class="field-label">What it is <span class="fine">— and what it
+        says, in full</span></span>
+      <textarea id="impWhat" rows="4"
+        placeholder="A poster on the wall of the metal bending academy.&#10;&#10;“How is the metal bending academy? Cherries on top!”"></textarea>
     </label>
     <label class="field grow">
       <span class="field-label">Where it came from
@@ -94,6 +100,26 @@
       or paste it.</p>
   </div>
 
+  <!-- English in, a first draft of the sounds out.
+
+       The spelling this produces is the MODEL's guess, not an
+       observation, so every word it fills in starts UNCONFIRMED and
+       cannot be saved until it has been compared with the image. Seeding
+       the corpus from the model and saving it unchecked would record an
+       inference as an attestation, which is the one thing the corpus
+       exists to prevent (CORPUS.md §4, DECIPHERMENT.md on method). -->
+  <label class="field">
+    <span class="field-label">English
+      <span class="fine">— type the line as you read it and get a first
+        draft of the sounds. Every word it fills in has to be checked
+        against the image before it can be saved.</span></span>
+    <div class="english-row">
+      <input type="text" id="impEnglish" autocomplete="off"
+        placeholder="how is the metal bending academy?" />
+      <button type="button" id="impDerive" class="small">derive sounds ↓</button>
+    </div>
+  </label>
+
   <label class="field">
     <span class="field-label">Transcription
       <span class="fine">— the whole source, <code>/</code> between words.
@@ -107,6 +133,8 @@
 
   <div class="import-actions">
     <button type="button" id="impAdd" class="primary">add entries</button>
+    <button type="button" id="impCheckAll" class="small" hidden>all of them
+      match the image</button>
     <span class="fine" id="impSummary"></span>
   </div>
 </section>
@@ -161,6 +189,18 @@
       <span id="dupeText"></span>
       <button type="button" id="dupeOpen" class="small">open it instead</button>
     </p>
+
+    <!-- Every sighting of this word, because an entry is one sighting and
+         a well-attested word has several. Without this the other ones are
+         invisible from here: you would be editing one of four and have no
+         way to see the other three, or which of them disagree. -->
+    <section class="sightings" id="sightings" hidden>
+      <h3 class="sightings-head">
+        <span id="sightingsCount"></span>
+        <span class="fine" id="sightingsNote"></span>
+      </h3>
+      <ul id="sightingsList"></ul>
+    </section>
     <div class="suggestions" id="suggestions"></div>
 
     <div class="row">
@@ -219,8 +259,9 @@
         <input type="text" id="srcName" autocomplete="off" />
       </label>
       <label class="field">
-        <span class="field-label">What it is</span>
-        <textarea id="srcWhat" rows="2"></textarea>
+        <span class="field-label">What it is <span class="fine">— and what it
+          says, in full</span></span>
+        <textarea id="srcWhat" rows="4"></textarea>
       </label>
       <label class="field">
         <span class="field-label">Where it came from

@@ -146,6 +146,7 @@ function refresh() {
   renderPreview(ipa);
   renderComparison(ipa);
   renderDuplicate();
+  renderSightings();
   // Reverse-decode scans the whole dictionary. It is fast enough to feel
   // instant but not fast enough to run on every keystroke of a long
   // spelling, so it waits for a pause.
@@ -163,15 +164,18 @@ function refresh() {
  * action worth offering.
  */
 function renderDuplicate() {
-  const key = normaliseWord($("key").value.trim().split(/\s+/)[0] || "");
-  const full = $("key").value.trim().toLowerCase();
+  const full = corpusKey($("key").value);
   const at = state.entries.findIndex((e, i) =>
-    i !== state.index && (e.key || "").toLowerCase() === full);
+    i !== state.index && corpusKey(e.key) === full);
   const box = $("dupeWarn");
-  box.hidden = at < 0 || !key;
-  if (at < 0) return;
+  // Only while building a NEW entry. A word already having sightings is
+  // no longer a problem — it is the point — so for a saved entry the
+  // sightings panel says so instead of this warning crying wolf.
+  box.hidden = at < 0 || !full || state.index >= 0;
+  if (box.hidden) return;
   $("dupeText").textContent =
-    `"${state.entries[at].key}" is already in the corpus.`;
+    `"${state.entries[at].key}" is already attested. A second sighting is `
+    + `worth recording — open it if you meant to edit that one.`;
   $("dupeOpen").onclick = () => {
     // Drop the half-built duplicate, and do NOT let openEntry commit the
     // editor on the way — committing is what would push it straight back.
@@ -180,6 +184,62 @@ function renderDuplicate() {
     const to = state.entries.findIndex(e => (e.key || "").toLowerCase() === full);
     if (to >= 0) openEntry(to, false);
   };
+}
+
+/**
+ * Every sourcing of the word being edited.
+ *
+ * A word attested in four places is four entries, and the editor shows
+ * one of them. Without this panel the other three are unreachable from
+ * here — you cannot see who else attests it, how many times, or that two
+ * of them disagree. Each row opens that sighting.
+ */
+function renderSightings() {
+  const box = $("sightings");
+  const key = corpusKey($("key").value);
+  const group = key ? sightingsOf(key) : { at: [] };
+
+  // One sighting is just the entry you are already looking at.
+  if (group.at.length < 2) { box.hidden = true; return; }
+
+  const contested = group.spellings.length > 1;
+  $("sightingsCount").textContent =
+    `Seen ${group.instances} time${group.instances === 1 ? "" : "s"} `
+    + `in ${group.sources.length} source${group.sources.length === 1 ? "" : "s"}`;
+  $("sightingsNote").textContent = contested
+    ? "— and they disagree on the spelling"
+    : "— all agreeing";
+
+  const list = $("sightingsList");
+  list.innerHTML = "";
+  for (const { entry, index } of group.at) {
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "sighting" + (index === state.index ? " is-active" : "");
+
+    const tokens = (entry.spelling || "").split(" ").filter(Boolean);
+    const art = document.createElement("span");
+    art.className = "sighting-art";
+    renderAvatarian(tokens, art);
+
+    const meta = document.createElement("span");
+    meta.className = "sighting-meta";
+    const times = entry.times || 1;
+    const bits = [entry.source || "(no source)"];
+    if (times > 1) bits.push(`written ${times}×`);
+    if ((entry.confidence || "certain") !== "certain") bits.push(entry.confidence);
+    meta.innerHTML = '<span class="sighting-src"></span>'
+      + '<span class="sighting-codes"></span>';
+    meta.querySelector(".sighting-src").textContent = bits.join(" · ");
+    meta.querySelector(".sighting-codes").textContent = ipaToSpelling(tokens);
+
+    btn.append(art, meta);
+    btn.addEventListener("click", () => openEntry(index));
+    li.appendChild(btn);
+    list.appendChild(li);
+  }
+  box.hidden = false;
 }
 
 function renderPreview(ipa) {
@@ -311,30 +371,84 @@ function renderSuggestions(ipa) {
 // Lists
 // ---------------------------------------------------------------------
 
+/**
+ * Every entry for one word, with the total number of times it was seen.
+ *
+ * An entry is a sighting, so a word can have several — and `times`
+ * carries repeats within a single source. "Instances" is the sum, which
+ * is the number that says how well attested a word actually is.
+ */
+function sightingsOf(key) {
+  const want = corpusKey(key);
+  const at = [];
+  state.entries.forEach((entry, index) => {
+    if (corpusKey(entry.key) === want) at.push({ entry, index });
+  });
+  return {
+    at,
+    instances: at.reduce((n, m) => n + (m.entry.times || 1), 0),
+    sources: [...new Set(at.map(m => m.entry.source))],
+    spellings: [...new Set(at.map(m => m.entry.spelling || ""))],
+  };
+}
+
+/**
+ * The list is one row per WORD, not per entry.
+ *
+ * It used to be one row per entry showing that entry's block count. Both
+ * halves were wrong once entries became sightings: a word attested three
+ * times appeared as three identical-looking rows, and the block count
+ * was a fact about the spelling you can already see in the preview.
+ * How many times a word has been seen is the thing you cannot see
+ * anywhere else, and it is what tells you whether a spelling is solid.
+ */
 function renderEntryList() {
   const filter = $("filter").value.trim().toLowerCase();
   const list = $("entryList");
   list.innerHTML = "";
+
+  const seen = new Set();
   state.entries.forEach((entry, i) => {
-    if (filter && !(entry.key || "").toLowerCase().includes(filter)
-        && !(entry.source || "").toLowerCase().includes(filter)) return;
-    const tokens = (entry.spelling || "").split(" ").filter(Boolean);
+    const key = corpusKey(entry.key);
+    if (seen.has(key) && key) return;
+    if (key) seen.add(key);
+
+    const group = key ? sightingsOf(key) : { at: [{ entry, index: i }],
+      instances: entry.times || 1, sources: [entry.source], spellings: [] };
+    // Filtering matches ANY of the word's sources, since the row stands
+    // for all of them.
+    if (filter && !key.includes(filter)
+        && !group.sources.some(s => (s || "").toLowerCase().includes(filter))) return;
+
+    const contested = group.spellings.length > 1;
     const li = document.createElement("li");
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "entry-btn" + (i === state.index ? " is-active" : "");
+    const isOpen = group.at.some(m => m.index === state.index);
+    btn.className = "entry-btn" + (isOpen ? " is-active" : "")
+                  + (contested ? " is-contested" : "");
     btn.innerHTML = '<span class="entry-key"></span>'
       + '<span class="entry-flag"></span><span class="entry-blocks"></span>';
     btn.querySelector(".entry-key").textContent = entry.key || "(unnamed)";
     btn.querySelector(".entry-flag").textContent =
-      entry.confidence && entry.confidence !== "certain" ? "?" : "";
-    btn.querySelector(".entry-blocks").textContent = Math.ceil(tokens.length / 2);
-    btn.addEventListener("click", () => openEntry(i));
+      contested ? "≠" : group.at.some(m => (m.entry.confidence || "certain") !== "certain")
+        ? "?" : "";
+    const count = btn.querySelector(".entry-blocks");
+    count.textContent = group.instances;
+    count.title = `Seen ${group.instances} time`
+      + `${group.instances === 1 ? "" : "s"}, in `
+      + `${group.sources.length} source${group.sources.length === 1 ? "" : "s"}`
+      + (contested ? ` — and they do not agree on the spelling` : "");
+    btn.addEventListener("click", () => openEntry(group.at[0].index));
     li.appendChild(btn);
     list.appendChild(li);
   });
+
+  const words = new Set(state.entries.map(e => corpusKey(e.key))).size;
+  const sightings = state.entries.reduce((n, e) => n + (e.times || 1), 0);
   $("corpusCount").textContent =
-    `${state.entries.length} entries · ${Object.keys(state.sources).length} sources`;
+    `${words} word${words === 1 ? "" : "s"} · ${sightings} sighting`
+    + `${sightings === 1 ? "" : "s"} · ${Object.keys(state.sources).length} sources`;
 }
 
 function renderSourceList() {
@@ -515,8 +629,52 @@ function showProblems(problems) {
  * appending — going back to fix a block in the middle is most of what
  * transcribing from an image actually is.
  */
+/**
+ * The sounds field the shared controls act on.
+ *
+ * The palette and the draw pad live in the right-hand column and are
+ * used from BOTH panels, but they used to write to the editor's spelling
+ * box unconditionally. With the import panel open that box is hidden, so
+ * clicking a glyph appeared to do nothing — and then `commitEditor` filed
+ * the result as a new entry with no key, which the validator only catches
+ * at save time.
+ *
+ * So the target is whatever sounds field you last touched: a row's codes,
+ * the transcription box, or the editor's spelling. `offsetParent` is the
+ * hidden check — a field in a closed panel is never the target.
+ */
+let activeSoundField = null;
+
+function soundTarget() {
+  if (activeSoundField && document.contains(activeSoundField)
+      && activeSoundField.offsetParent !== null) return activeSoundField;
+  return $("importPanel").hidden ? $("spelling") : $("impText");
+}
+
+function trackSoundField(el) {
+  el.addEventListener("focus", () => { activeSoundField = el; });
+}
+
+/**
+ * Tell whatever owns the field that it changed.
+ *
+ * The row and transcription handlers already know how to react to their
+ * own input, so firing the event they listen for keeps one code path
+ * instead of three — a row repaints its glyphs and its flags, the
+ * transcription box re-parses.
+ */
+function afterSoundEdit(box) {
+  if (box.id === "spelling") {
+    markDirty();
+    commitEditor();
+    refresh();
+  } else {
+    box.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+}
+
 function insertToken(text) {
-  const box = $("spelling");
+  const box = soundTarget();
   const at = Number.isInteger(box.selectionStart) ? box.selectionStart : box.value.length;
   const before = box.value.slice(0, at);
   const after = box.value.slice(at);
@@ -532,9 +690,7 @@ function insertToken(text) {
   // word by clicking.
   box.focus({ preventScroll: true });
   box.setSelectionRange(pos, pos);
-  markDirty();
-  commitEditor();
-  refresh();
+  afterSoundEdit(box);
 }
 
 /**
@@ -543,7 +699,7 @@ function insertToken(text) {
  * inserted as one of their own.
  */
 function appendOverride(mark) {
-  const box = $("spelling");
+  const box = soundTarget();
   const at = Number.isInteger(box.selectionStart) ? box.selectionStart : box.value.length;
   const before = box.value.replace(/\s+$/, "").slice(0, at).replace(/[$%]+$/, "");
   if (!before.trim()) return;
@@ -557,13 +713,11 @@ function appendOverride(mark) {
   // word by clicking.
   box.focus({ preventScroll: true });
   box.setSelectionRange(before.length + 1, before.length + 1);
-  markDirty();
-  commitEditor();
-  refresh();
+  afterSoundEdit(box);
 }
 
 function deleteToken() {
-  const box = $("spelling");
+  const box = soundTarget();
   const at = Number.isInteger(box.selectionStart) ? box.selectionStart : box.value.length;
   const before = box.value.slice(0, at).replace(/\s*\S+\s*$/, "");
   box.value = before + box.value.slice(at);
@@ -575,9 +729,7 @@ function deleteToken() {
   // word by clicking.
   box.focus({ preventScroll: true });
   box.setSelectionRange(before.length, before.length);
-  markDirty();
-  commitEditor();
-  refresh();
+  afterSoundEdit(box);
 }
 
 function buildPalette() {
@@ -625,6 +777,72 @@ let importImage = null;
 /** The parsed rows, rebuilt whenever the transcription changes. */
 let importRows = [];
 
+/**
+ * Words the English box filled in, and the spelling the MODEL gave each
+ * one — plus the ones you have since confirmed against the image.
+ *
+ * This pair is the whole safety mechanism behind deriving from English.
+ * A seeded spelling is an inference; a corpus entry is an observation;
+ * and the corpus is only worth anything because it keeps those apart
+ * (CORPUS.md §4). Saving a seeded row unchecked would file the model's
+ * own prediction as evidence, and the "against the model" comparison
+ * would then show perfect agreement for it — the model being validated
+ * against itself, which reads exactly like the model being right.
+ *
+ * So a seeded row is unsaveable until one of two things has happened:
+ *
+ *   the spelling CHANGED   you corrected it while looking at the image,
+ *                          so the result is what you saw
+ *   you ticked it          you looked, and it already agreed
+ *
+ * Either way a human compared it with the source. The check is keyed on
+ * the word rather than the row index because rows are rebuilt from the
+ * text on every keystroke.
+ */
+let importSeeded = new Map();
+let importConfirmed = new Set();
+
+/**
+ * English in, a first draft of the sounds out.
+ *
+ * `derivedLookup` rather than `lookupWord` on purpose: the corpus must
+ * not seed a transcription that is about to be compared against the
+ * corpus. Asking the model what it thinks, while it is not allowed to
+ * consult the answer, is the same reason `renderComparison` uses it.
+ *
+ * Odd counts get the trailing null the block model requires. Mid-word
+ * nulls are deliberately NOT guessed — canon puts them where the model
+ * cannot derive them (this is what `appa` is), so leaving them out keeps
+ * the draft honestly wrong rather than invisibly wrong.
+ */
+function deriveFromEnglish() {
+  const words = ($("impEnglish").value.match(/[A-Za-z][A-Za-z'’-]*/g) || []);
+  if (!words.length) {
+    showProblems(["Type an English line first."]);
+    return;
+  }
+
+  importSeeded = new Map();
+  importConfirmed = new Set();
+
+  const chunks = [], missing = [];
+  for (const word of words) {
+    const { ipa } = derivedLookup(word);
+    if (!ipa.length) { missing.push(word); continue; }
+    const tokens = ipa.slice();
+    if (tokens.length % 2) tokens.push("∅");
+    importSeeded.set(corpusKey(word), tokens.join(" "));
+    chunks.push(`${ipaToSpelling(tokens)} (${word})`);
+  }
+
+  $("impText").value = chunks.join(" / ");
+  parseImport();
+  showProblems(missing.length
+    ? [`No pronunciation for: ${missing.join(", ")}. Those words were left `
+       + `out — spell them by hand.`]
+    : []);
+}
+
 function openImport() {
   $("importPanel").hidden = false;
   $("editor").hidden = true;
@@ -648,21 +866,258 @@ function parseImport() {
     const known = (w.word || "").trim();
     const suggestions = suggestWords(w.ipa, 4);
     const guess = known || (suggestions[0]?.word ?? "");
-    const existing = state.entries.findIndex(
-      e => (e.key || "").toLowerCase() === guess.toLowerCase());
-    return {
+    // A seeded word whose spelling still matches what the model wrote is
+    // unchecked. Edit it and it stops being the model's opinion, so the
+    // flag clears on its own — the common case is correcting a draft
+    // against the image, and that should not also need a tick.
+    const row = {
       ipa: w.ipa,
       word: guess,
       fromCaption: !!known,
       suggestions,
-      existing,
-      // A word already in the corpus is skipped by default. Re-recording
-      // it would be a duplicate, and silently overwriting an entry that
-      // somebody wrote a note on is worse.
+      checked: importConfirmed.has(corpusKey(guess)),
+      // Only ever ticked for a true duplicate, where there is nothing to
+      // add and correcting the existing entry is the only sensible move.
       update: false,
     };
+    row.needsCheck = seedUnchanged(row);
+    return row;
   });
+  // Relations are a second pass because a row can repeat an EARLIER row
+  // in the same transcription, which means they have to all exist first.
+  recountRows();
   renderImportRows();
+}
+
+/**
+ * Work out each row's relation, then fold repeats onto the row that
+ * first recorded them.
+ *
+ * A repeat is not thrown away: the word really was written that many
+ * times, and three renderings of a spelling rule out a slip of the pen
+ * in a way one does not. It is counted on the FIRST row, so the source
+ * yields one entry carrying `times` rather than N entries the validator
+ * would reject as the same observation.
+ *
+ * Both passes run over every row because one edit can change another
+ * row's answer — correcting word 30 to a different spelling stops it
+ * being a repeat, and word 1's count has to drop.
+ */
+function recountRows() {
+  importRows.forEach((row) => {
+    row.relation = importRelation(row);
+    row.times = 1;
+  });
+  for (const row of importRows) {
+    if ((row.relation || {}).kind !== "repeat") continue;
+    const first = importRows[row.relation.at];
+    if (first) first.times += 1;
+  }
+}
+
+/** Repaint every row's warnings, leaving the inputs (and the caret) alone. */
+function repaintAllFlags() {
+  for (const row of importRows) {
+    if (!row.flagBox) continue;
+    row.el.classList.toggle("is-unchecked", row.needsCheck && !row.checked);
+    row.el.classList.toggle("is-repeat", (row.relation || {}).kind === "repeat");
+    paintFlags(row, row.flagBox);
+  }
+}
+
+/** The source name the import panel is currently filing under. */
+function currentImportSource() {
+  return $("impName").value.trim();
+}
+
+/**
+ * The lookup key for a word, normalised the way the corpus stores keys.
+ *
+ * Mirrors `build_corpus.normalise_key`, which lowercases and drops
+ * anything but letters and apostrophes, per word so a phrase key keeps
+ * its single spaces. The validator REJECTS an unnormalised key rather
+ * than fixing it, deliberately — an entry whose key doesn't match the
+ * form its own lookup uses would sit in the file unreachable.
+ *
+ * So it has to be normalised here instead. Typing "Zuko", or deriving
+ * from an English line that capitalises a name, must not produce an
+ * entry the save then bounces. The word as you wrote it is kept as the
+ * gloss, which is exactly what `gloss` is for.
+ */
+function corpusKey(word) {
+  return String(word || "").trim().split(/\s+/)
+    .map(normaliseWord).filter(Boolean).join(" ");
+}
+
+/**
+ * How a row relates to what the corpus already holds.
+ *
+ * A word being present is not by itself a problem, and treating it as
+ * one was the old design's mistake: the only way past a "duplicate" was
+ * to overwrite the earlier observation. Three cases, and only the first
+ * is actually a problem:
+ *
+ *   duplicate      same word, same spelling, same source. Nothing to
+ *                  add — it is one observation entered twice.
+ *   corroborates   same spelling, a different source. This is EVIDENCE,
+ *                  and it is the case the old model could not record at
+ *                  all. Saving it counts the second sighting.
+ *   conflict       a different spelling. Both are kept as alternates and
+ *                  the most-attested one renders. Two sources disagreeing
+ *                  is a finding about the script; deleting either side
+ *                  destroys it.
+ */
+function importRelation(row) {
+  // Compared on the normalised key, so "Zuko" and "zuko" are recognised
+  // as the same word rather than filed as two.
+  const word = corpusKey(row.word);
+  if (!word) return { kind: "new" };
+
+  const spelling = row.ipa.join(" ");
+  const source = currentImportSource();
+
+  // A line can repeat a word — "on top of the on" — and two rows that
+  // agree exactly would be filed as the same word, same spelling, same
+  // source: one observation entered twice, which the validator rejects.
+  // Caught here rather than at save, because a save is all-or-nothing
+  // and finding out then means the whole batch bounces.
+  //
+  // A repeat with a DIFFERENT spelling is left alone on purpose: one
+  // source writing a word two ways is a real finding, and it records
+  // correctly as a contested word.
+  const at = importRows.indexOf(row);
+  const earlier = importRows.findIndex(
+    (other, i) => i < at
+      && corpusKey(other.word) === word
+      && other.ipa.join(" ") === spelling);
+  if (at > 0 && earlier >= 0) return { kind: "repeat", at: earlier };
+  const matches = [];
+  state.entries.forEach((entry, index) => {
+    if (corpusKey(entry.key) === word) matches.push({ entry, index });
+  });
+  if (!matches.length) return { kind: "new" };
+
+  const identical = matches.find(
+    m => (m.entry.spelling || "") === spelling && m.entry.source === source);
+  if (identical) return { kind: "duplicate", at: identical.index };
+
+  const agreeing = matches.filter(m => (m.entry.spelling || "") === spelling);
+  if (agreeing.length) {
+    return { kind: "corroborates", at: agreeing[0].index,
+             sources: [...new Set(agreeing.map(m => m.entry.source))] };
+  }
+  return {
+    kind: "conflict", at: matches[0].index,
+    sources: [...new Set(matches.map(m => m.entry.source))],
+    spellings: [...new Set(matches.map(m => m.entry.spelling || ""))],
+  };
+}
+
+/**
+ * Is this row still exactly what the model wrote for it?
+ *
+ * Recomputed rather than stored, because the spelling is editable in the
+ * row itself now: correct a draft against the image and the row stops
+ * being the model's opinion the moment the text differs. Editing it back
+ * to the model's own answer makes it unchecked again, which is right —
+ * that is the state it describes.
+ */
+function seedUnchanged(row) {
+  const seed = importSeeded.get(corpusKey(row.word));
+  return seed !== undefined && seed === row.ipa.join(" ");
+}
+
+/**
+ * Rewrite the transcription box from the rows.
+ *
+ * The box stays the record of what is about to be saved, so an edit made
+ * in a row has to land there too — otherwise the next keystroke in the
+ * box would re-parse and silently throw the edit away. Captions are
+ * written for every named word, which also fixes a older quiet loss: a
+ * word typed into a row used to vanish on the next re-parse.
+ */
+function syncImportText() {
+  $("impText").value = wordsToSoundText(
+    importRows.map(r => ({ word: r.word || "", ipa: r.ipa })));
+}
+
+/**
+ * The warnings under one row, rebuilt in place.
+ *
+ * Separate from `renderImportRows` because editing a spelling changes
+ * which of these apply — an odd count appears and clears as you type —
+ * and rebuilding the whole list to say so would move the caret.
+ */
+function paintFlags(row, into) {
+  into.innerHTML = "";
+
+  const flags = [];
+  if (row.ipa.length % 2) {
+    flags.push(["is-warn", `${row.ipa.length} symbols — odd, so a null is `
+      + `missing. This one can't be saved as it stands.`]);
+  }
+  // Seen more than once in this transcription, and counted on the row
+  // that first recorded it.
+  if (row.times > 1) {
+    flags.push(["is-ok",
+      `Written ${row.times} times in this transcription. All ${row.times} are `
+      + `counted on this one entry — repeats of a spelling are evidence for `
+      + `it, so they raise its count rather than making a second entry.`]);
+  }
+
+  const rel = row.relation || { kind: "new" };
+  if (rel.kind === "repeat") {
+    flags.push(["is-muted",
+      `Same spelling as word ${rel.at + 1}, so it is counted there rather `
+      + `than recorded again. Spell it differently if the source really `
+      + `does.`]);
+  } else if (rel.kind === "duplicate") {
+    flags.push(["is-dupe",
+      `Already recorded from this source with this spelling — the same `
+      + `observation twice, so there is nothing to add.`,
+      "correct the existing entry instead", row.update,
+      (on) => { row.update = on; }]);
+  } else if (rel.kind === "corroborates") {
+    flags.push(["is-ok",
+      `${rel.sources.join(" and ")} spell${rel.sources.length > 1 ? "" : "s"} `
+      + `this the same way. Saving records a second sighting — the count is `
+      + `what makes it stronger evidence.`]);
+  } else if (rel.kind === "conflict") {
+    flags.push(["is-dupe",
+      `${rel.sources.join(" and ")} spell${rel.sources.length > 1 ? "" : "s"} `
+      + `this ${rel.spellings.map(s => ipaToSpelling(s.split(" "))).join(" / ")}`
+      + `. Both are kept — the most-attested one is what renders.`]);
+  }
+  if (row.needsCheck && !row.checked) {
+    flags.push(["is-unchecked",
+      "Derived from English — the model wrote this, nobody has seen it. "
+      + "Compare it with the image: correct it, or say it already agrees.",
+      "matches the image", false, (on) => {
+        row.checked = on;
+        const key = corpusKey(row.word);
+        if (on) importConfirmed.add(key); else importConfirmed.delete(key);
+        renderImportRows();
+      }]);
+  }
+
+  for (const [cls, text, label, checked, onToggle] of flags) {
+    const p = document.createElement("p");
+    p.className = "imp-flag " + cls;
+    p.textContent = text;
+    if (label) {
+      const wrap = document.createElement("label");
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = checked;
+      cb.addEventListener("change", () => {
+        onToggle(cb.checked);
+        updateImportSummary();
+      });
+      wrap.append(cb, document.createTextNode(" " + label));
+      p.appendChild(wrap);
+    }
+    into.appendChild(p);
+  }
 }
 
 function renderImportRows() {
@@ -671,7 +1126,9 @@ function renderImportRows() {
 
   importRows.forEach((row, i) => {
     const el = document.createElement("div");
-    el.className = "imp-row";
+    el.className = "imp-row"
+      + (row.needsCheck && !row.checked ? " is-unchecked" : "")
+      + ((row.relation || {}).kind === "repeat" ? " is-repeat" : "");
 
     const art = document.createElement("div");
     art.className = "imp-art";
@@ -680,9 +1137,49 @@ function renderImportRows() {
     const body = document.createElement("div");
     body.className = "imp-body";
 
-    const codes = document.createElement("div");
+    // The spelling is editable here rather than only in the transcription
+    // box above. Correcting a draft against the image is the main thing
+    // this panel is for, and hunting for the right word in one long line
+    // of codes is the slow part of doing it.
+    const codes = document.createElement("input");
+    codes.type = "text";
     codes.className = "imp-codes";
-    codes.textContent = ipaToSpelling(row.ipa);
+    codes.spellcheck = false;
+    codes.value = ipaToSpelling(row.ipa);
+    codes.title = "The spelling as it will be saved. Edit it to match the "
+                + "image — 0 is a null.";
+    // So the palette and the draw pad insert into THIS row once you have
+    // clicked into it, which is the whole point of them being shared.
+    trackSoundField(codes);
+
+    const flagBox = document.createElement("div");
+    flagBox.className = "imp-flags";
+    // Kept on the row so an edit in ONE row can repaint the warnings of
+    // the others — a repeat that stops being a repeat changes the count
+    // shown on the row it was folded into.
+    row.el = el;
+    row.flagBox = flagBox;
+
+    /** Everything about the row that its own spelling can change. */
+    const repaint = () => {
+      row.needsCheck = seedUnchanged(row);
+      art.innerHTML = "";
+      renderAvatarian(row.ipa, art);
+      // Relations and repeat counts are global, not per-row: editing this
+      // spelling can make it match — or stop matching — another row.
+      recountRows();
+      repaintAllFlags();
+      syncImportText();
+      updateImportSummary();
+    };
+
+    // Repainting in place rather than calling renderImportRows: a full
+    // rebuild on every keystroke would take the caret out of the field
+    // being typed in.
+    codes.addEventListener("input", () => {
+      row.ipa = spellingToIPA(codes.value);
+      repaint();
+    });
 
     const input = document.createElement("input");
     input.type = "text";
@@ -691,9 +1188,11 @@ function renderImportRows() {
     input.placeholder = "word";
     input.addEventListener("input", () => {
       row.word = input.value.trim();
-      row.existing = state.entries.findIndex(
-        e => (e.key || "").toLowerCase() === row.word.toLowerCase());
-      updateImportSummary();
+      // Naming it yourself is what a caption means, so it survives the
+      // next re-parse instead of being re-guessed.
+      row.fromCaption = !!row.word;
+      row.checked = importConfirmed.has(corpusKey(row.word));
+      repaint();
     });
 
     body.append(input, codes);
@@ -713,8 +1212,8 @@ function renderImportRows() {
         chip.addEventListener("click", () => {
           row.word = hit.word;
           input.value = hit.word;
-          row.existing = state.entries.findIndex(
-            e => (e.key || "").toLowerCase() === hit.word.toLowerCase());
+          row.relation = importRelation(row);
+          syncImportText();
           renderImportRows();
         });
         chips.appendChild(chip);
@@ -722,32 +1221,8 @@ function renderImportRows() {
       body.appendChild(chips);
     }
 
-    const flags = [];
-    if (row.ipa.length % 2) {
-      flags.push(["is-warn", `${row.ipa.length} symbols — odd, so a null is `
-        + `missing. This one can't be saved as it stands.`]);
-    }
-    if (row.existing >= 0) {
-      flags.push(["is-dupe", `"${row.word}" is already in the corpus.`]);
-    }
-    for (const [cls, text] of flags) {
-      const p = document.createElement("p");
-      p.className = "imp-flag " + cls;
-      p.textContent = text;
-      if (cls === "is-dupe") {
-        const label = document.createElement("label");
-        const cb = document.createElement("input");
-        cb.type = "checkbox";
-        cb.checked = row.update;
-        cb.addEventListener("change", () => {
-          row.update = cb.checked;
-          updateImportSummary();
-        });
-        label.append(cb, document.createTextNode(" replace it"));
-        p.appendChild(label);
-      }
-      body.appendChild(p);
-    }
+    paintFlags(row, flagBox);
+    body.appendChild(flagBox);
 
     el.append(art, body);
     box.appendChild(el);
@@ -758,38 +1233,62 @@ function renderImportRows() {
 
 /** What the button is actually about to do, counted rather than promised. */
 function importPlan() {
-  const add = [], replace = [], blocked = [];
+  const add = [], replace = [], blocked = [], unchecked = [], agreeing = [],
+        conflicting = [], merged = [];
   for (const row of importRows) {
     if (!row.word) { blocked.push(row); continue; }
     if (row.ipa.length % 2) { blocked.push(row); continue; }
-    if (row.existing >= 0) {
+    // Counted apart from `blocked` because it is the one kind of skip you
+    // can clear by looking at something rather than by typing.
+    if (row.needsCheck && !row.checked) { unchecked.push(row); continue; }
+
+    const kind = (row.relation || {}).kind;
+    // Not skipped and not lost — counted onto the row it repeats, which
+    // carries the total as `times`.
+    if (kind === "repeat") { merged.push(row); continue; }
+    // The only case with nothing to record. Everything else is a
+    // sighting, and a sighting is always worth adding.
+    if (kind === "duplicate") {
       if (row.update) replace.push(row);
       else blocked.push(row);
       continue;
     }
+    if (kind === "corroborates") agreeing.push(row);
+    if (kind === "conflict") conflicting.push(row);
     add.push(row);
   }
-  return { add, replace, blocked };
+  return { add, replace, blocked, unchecked, agreeing, conflicting, merged };
 }
 
 function updateImportSummary() {
-  const { add, replace, blocked } = importPlan();
+  const { add, replace, blocked, unchecked, agreeing, conflicting, merged }
+    = importPlan();
   const bits = [];
-  if (add.length) bits.push(`${add.length} new`);
-  if (replace.length) bits.push(`${replace.length} replaced`);
+  const fresh = add.length - agreeing.length - conflicting.length;
+  if (fresh) bits.push(`${fresh} new`);
+  if (agreeing.length) bits.push(`${agreeing.length} corroborating`);
+  if (conflicting.length) bits.push(`${conflicting.length} conflicting`);
+  if (merged.length) bits.push(`${merged.length} counted onto a repeat`);
+  if (replace.length) bits.push(`${replace.length} corrected`);
+  if (unchecked.length) bits.push(`${unchecked.length} unchecked`);
   if (blocked.length) bits.push(`${blocked.length} skipped`);
+
+  const all = $("impCheckAll");
+  all.hidden = !unchecked.length;
+  all.textContent = unchecked.length === 1
+    ? "it matches the image" : "all of them match the image";
   $("impSummary").textContent = importRows.length
     ? bits.join(" · ") || "nothing to add"
     : "";
   $("impAdd").disabled = !add.length && !replace.length;
   // Say what the button will actually do — "add" is the wrong verb when
   // every row is a replacement, and "1 entries" reads like a bug.
-  const n = (k) => `${k} ${k === 1 ? "entry" : "entries"}`;
+  const n = (k) => `${k} ${k === 1 ? "sighting" : "sightings"}`;
   $("impAdd").textContent =
-    add.length && replace.length ? `add ${n(add.length)}, replace ${replace.length}`
-    : add.length ? `add ${n(add.length)}`
-    : replace.length ? `replace ${n(replace.length)}`
-    : "add entries";
+    add.length && replace.length ? `record ${n(add.length)}, correct ${replace.length}`
+    : add.length ? `record ${n(add.length)}`
+    : replace.length ? `correct ${replace.length === 1 ? "1 entry" : replace.length + " entries"}`
+    : "record sightings";
 }
 
 function commitImport() {
@@ -808,15 +1307,24 @@ function commitImport() {
 
   const confidence = $("impConfidence").value;
   const make = (row) => {
-    const entry = { key: row.word, spelling: row.ipa.join(" "), source, confidence };
+    const key = corpusKey(row.word);
+    const entry = { key, spelling: row.ipa.join(" "), source, confidence };
     entry.source = name;
+    // "Zuko" saves under "zuko" but is still displayed as you wrote it.
+    if (row.word && row.word !== key) entry.gloss = row.word;
+    // Written out only when it says something. `times: 1` on every entry
+    // would be noise in the file and in its diffs.
+    if (row.times > 1) entry.times = row.times;
     return entry;
   };
 
-  const { add, replace } = importPlan();
+  const { add, replace, agreeing, conflicting } = importPlan();
+  // Only a true duplicate is ever written over, and only when asked —
+  // everything else is appended, because an entry is a sighting and a
+  // second sighting must not erase the first.
   for (const row of replace) {
-    const was = state.entries[row.existing];
-    state.entries[row.existing] = { ...was, ...make(row) };
+    const was = state.entries[row.relation.at];
+    state.entries[row.relation.at] = { ...was, ...make(row) };
   }
   for (const row of add) state.entries.push(make(row));
 
@@ -828,16 +1336,41 @@ function commitImport() {
   // Clear the transcription but keep the source, because the next thing
   // you do is usually another line off the same image.
   $("impText").value = "";
+  $("impEnglish").value = "";
+  importSeeded = new Map();
+  importConfirmed = new Set();
   importRows = [];
   renderImportRows();
-  setStatus(`${add.length + replace.length} entries added — not saved yet`,
-            "is-dirty");
+  const extra = [];
+  if (agreeing.length) extra.push(`${agreeing.length} corroborating`);
+  if (conflicting.length) extra.push(`${conflicting.length} conflicting`);
+  setStatus(`${add.length + replace.length} sightings recorded`
+            + (extra.length ? ` (${extra.join(", ")})` : "")
+            + " — not saved yet", "is-dirty");
 }
 
 function wireImport() {
   $("importBtn").addEventListener("click", openImport);
   $("closeImport").addEventListener("click", closeImport);
   $("impAdd").addEventListener("click", commitImport);
+
+  $("impDerive").addEventListener("click", deriveFromEnglish);
+  $("impEnglish").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); deriveFromEnglish(); }
+  });
+
+  // One tick for the line rather than one per word — you check a poster
+  // at a glance, not word by word. Still a deliberate act, which is the
+  // whole requirement.
+  $("impCheckAll").addEventListener("click", () => {
+    for (const row of importRows) {
+      if (row.needsCheck && !row.checked) {
+        row.checked = true;
+        importConfirmed.add(corpusKey(row.word));
+      }
+    }
+    renderImportRows();
+  });
 
   let timer = null;
   $("impText").addEventListener("input", () => {
@@ -847,25 +1380,30 @@ function wireImport() {
   $("impConfidence").addEventListener("change", updateImportSummary);
 
   // The name defaults from the image's filename, since that is usually
-  // what you would have typed anyway.
-  $("impName").addEventListener("input", updateImportSummary);
+  // what you would have typed anyway. It also decides whether a row is a
+  // duplicate or a second source corroborating, so the rows repaint.
+  $("impName").addEventListener("input", () => {
+    for (const row of importRows) row.relation = importRelation(row);
+    renderImportRows();
+  });
 
   wireDrop($("impDrop"), importDropped);
 }
 
 /** An image dropped or pasted onto the import panel. */
 async function importDropped(file) {
-  const stored = await storeImage(file);
+  // Name the source first if it hasn't been, so the image can be named
+  // after it rather than after whatever the screenshot was called.
+  if (!$("impName").value.trim() && file.name) {
+    $("impName").value = file.name.replace(/\.[a-z]+$/i, "");
+  }
+  const stored = await storeImage(file, $("impName").value);
   if (!stored) return;
   importImage = stored;
   const img = $("impImage");
   img.src = "/images/" + stored + "?t=" + Date.now();
   img.hidden = false;
   $("impDropHint").hidden = true;
-  // The filename is usually what you would have typed for the name anyway.
-  if (!$("impName").value.trim()) {
-    $("impName").value = stored.replace(/\.[a-z]+$/i, "");
-  }
   updateImportSummary();
 }
 
@@ -874,7 +1412,17 @@ async function importDropped(file) {
 // ---------------------------------------------------------------------
 
 /** Send an image to the server and return the filename it was stored as. */
-async function storeImage(file) {
+/**
+ * File an image and get back the name it was stored under.
+ *
+ * Named after the SOURCE, not the dropped file. A folder of `image.png`,
+ * `image-2.png`, `image-3.png` says nothing about which entry each one
+ * backs up — and re-checking a spelling a year from now means finding
+ * its image, which is the entire reason these are kept. The server
+ * slugifies and de-duplicates, so a name it would not accept still lands
+ * somewhere safe.
+ */
+async function storeImage(file, sourceName) {
   const data = await new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result);
@@ -884,7 +1432,10 @@ async function storeImage(file) {
   const res = await fetch("/api/image", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: file.name || "source", data }),
+    body: JSON.stringify({
+      name: (sourceName || "").trim() || file.name || "source",
+      data,
+    }),
   });
   const body = await res.json();
   if (body.error) {
@@ -915,7 +1466,7 @@ async function fileImage(file) {
     showProblems(["Pick or create a source before filing an image against it."]);
     return;
   }
-  const stored = await storeImage(file);
+  const stored = await storeImage(file, name);
   if (!stored) return;
   state.sources[name].image = stored;
   showSource(name);
@@ -970,6 +1521,11 @@ function wire() {
       el.addEventListener("change", () => { showSource(el.value); markDirty(); });
     }
   }
+
+  // The two standing sounds fields. A row's codes field registers itself
+  // as it is built, since rows come and go with every re-parse.
+  trackSoundField($("spelling"));
+  trackSoundField($("impText"));
 
   $("filter").addEventListener("input", renderEntryList);
   $("newEntry").addEventListener("click", newEntry);
