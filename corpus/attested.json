@@ -32,195 +32,18 @@
     "Then run: python3 tools/build_corpus.py"
   ],
   "sources": {
-    "wake-up-note": {
-      "what": "Labelled writing sample, one line: \"please do not be mad at me when you wake up, but\". Every word glossed in English beside it.",
-      "where": "Supplied by TechFilmer (Avatar Wiki). Read in session 1; the image is not yet catalogued in this repo — see TODO B2.",
-      "why_it_matters": "This is the sample the whole pairing model was read off. All twelve words are here so that any future change to pairing can be checked against the evidence it came from."
-    },
-    "students": {
-      "what": "The word \"students\", showing a mid-word null and two /s/ in top slots with different orientations.",
-      "where": "Reference material, read in session 1. Not yet catalogued — see TODO B2."
-    },
-    "metalbending": {
-      "what": "The word \"metalbending\", showing a mid-word null.",
-      "where": "Reference material, read in session 1. Not yet catalogued — see TODO B2."
-    },
-    "appa-art": {
-      "what": "In-world art showing \"Appa\" written as three blocks.",
-      "where": "Reference material, read in session 7. Not yet catalogued — see TODO B2.",
-      "why_it_matters": "The single spelling that cannot be expressed as a phoneme list plus the pairing rule, and therefore the reason the corpus stores finished spellings."
-    },
-    "name-references": {
-      "what": "Reference material showing the in-world names written out.",
-      "where": "Checked in session 7. The individual images are not yet catalogued — see TODO B2.",
-      "why_it_matters": "Two of the first four checked were wrong in EXCEPTIONS. Assume the unchecked ones are too — TODO item 24."
-    },
-    "fanny-poster": {
-      "what": "A poster reading \"fanny is missing\" — the first attested SENTENCE rather than an isolated name.",
-      "where": "Read in session 7; link to follow. Not yet catalogued — see TODO B2.",
-      "why_it_matters": "All three words already matched what the pipeline derives. It records where the model is RIGHT, which a corpus needs as much as it needs corrections."
-    },
-    "fire-photo": {
-      "what": "Photograph of the word \"fire\", showing /aɪ/ in a bottom slot as the vertical mirror of its citation form.",
-      "where": "Read in session 3; it is what put /aɪ/ in FLIPS. Not yet catalogued — see TODO B2."
-    },
     "cherries on top poster": {
       "what": "Cherries on top",
       "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=1",
       "image": "image-3.png"
+    },
+    "toph-letter": {
+      "what": "Hey Toph, How is the metalbending academy? Hope you're not being too hard on your students! Anyway, i found something out and it is really big! I am going to need your help. I have asked Zuko to come pick you up, then I need you all to come meet me at Mount Baihu. Please hurry. Aang",
+      "where": "movie",
+      "image": "new-avatar-the-last-airbender-conscript-v0-clrg6ebgx8vg1-4.webp"
     }
   },
   "entries": [
-    {
-      "key": "be",
-      "spelling": "b i",
-      "source": "wake-up-note",
-      "confidence": "certain"
-    },
-    {
-      "key": "but",
-      "spelling": "b ʌ t ∅",
-      "source": "wake-up-note",
-      "confidence": "certain"
-    },
-    {
-      "key": "do",
-      "spelling": "d u",
-      "source": "wake-up-note",
-      "confidence": "certain"
-    },
-    {
-      "key": "mad",
-      "spelling": "m æ d ∅",
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "/æ/ in a bottom slot, drawn as a cap ∩. Half the FLIPS evidence for æ; \"at\" is the other half."
-    },
-    {
-      "key": "me",
-      "spelling": "m i",
-      "source": "wake-up-note",
-      "confidence": "certain"
-    },
-    {
-      "key": "not",
-      "spelling": "n ɑ t ∅",
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "Three phonemes, so a trailing null. Cited against `appa`: an odd count on its own does not make canon give every phoneme its own block."
-    },
-    {
-      "key": "please",
-      "spelling": "p l i z",
-      "confidence": "certain",
-      "source": "wake-up-note"
-    },
-    {
-      "key": "up",
-      "spelling": "ʌ p",
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "Vowel on TOP."
-    },
-    {
-      "key": "wake",
-      "spelling": "w e k ∅",
-      "source": "wake-up-note",
-      "confidence": "certain",
-      "note": "/e/ in a bottom slot. Pairs with \"aang\" (/e/ on top) as the FLIPS evidence for e."
-    },
-    {
-      "key": "when",
-      "spelling": "w ɛ n ∅",
-      "source": "wake-up-note",
-      "confidence": "certain"
-    },
-    {
-      "key": "you",
-      "spelling": "j u",
-      "source": "wake-up-note",
-      "confidence": "certain"
-    },
-    {
-      "key": "students",
-      "spelling": "s% t u ∅ d ə n t s$ ∅",
-      "source": "students",
-      "confidence": "certain",
-      "note": "A MID-WORD null: the word divides into two units, `stu` and `dents`, each paired independently and each padded if odd. What decides the split is unknown — not morphemes (`stu|dents` is not one) and not syllables. Both /s/ land in top slots yet are drawn differently (∨ first, ∧ last), which no slot rule can produce; hence the overrides. The drawn form of /s/ is ∧, so the first one is the mirrored `%` and the last the plain `$`."
-    },
-    {
-      "key": "metalbending",
-      "spelling": "m ɛ t ə l ∅ b ɛ n d ɪ ŋ",
-      "source": "metalbending",
-      "confidence": "certain",
-      "note": "The second mid-word null, splitting `metal` / `bending`. Also the FLIPS evidence for ɪ, and it shows the linking vowel reduced to schwa — which is what the -bending guesses in EXCEPTIONS copy."
-    },
-    {
-      "key": "appa",
-      "spelling": "ɑ ∅ p ∅ ɑ ∅",
-      "gloss": "Appa",
-      "source": "appa-art",
-      "confidence": "certain",
-      "note": "THREE blocks where pairing predicts two — every phoneme padded with its own null. Why is unknown, and the corpus does not need to know. Also the FLIPS evidence for /ɑ/ in a top slot. CONFIRMED against the art (TODO B3, session 10): the nulls are mixed heights, tall beside the vowels and short beside /p/, exactly as the pairing-partner rule predicts. That is the third word to confirm the rule, and it settles the syntax question — no `0c` code is needed, because `0` plus the partner is enough to say which null is written."
-    },
-    {
-      "key": "aang",
-      "spelling": "e ŋ",
-      "gloss": "Aang",
-      "source": "name-references",
-      "confidence": "certain",
-      "note": "Not /ɑ ŋ/, which is what EXCEPTIONS used to guess. The correction also repairs the FLIPS table, which cites \"Aang\" as showing /e/ in a top slot — evidence that made no sense while the word was read as containing no /e/."
-    },
-    {
-      "key": "momo",
-      "spelling": "m oʊ m oʊ",
-      "gloss": "Momo",
-      "source": "name-references",
-      "confidence": "certain",
-      "note": "Checked and already right."
-    },
-    {
-      "key": "toph",
-      "spelling": "t ɑ f ∅",
-      "gloss": "Toph",
-      "source": "name-references",
-      "confidence": "certain",
-      "note": "Rhymes with \"off\", not with \"loaf\". EXCEPTIONS had /t oʊ f/."
-    },
-    {
-      "key": "zuko",
-      "spelling": "z u k oʊ",
-      "gloss": "Zuko",
-      "source": "name-references",
-      "confidence": "certain",
-      "note": "Checked and already right."
-    },
-    {
-      "key": "fanny",
-      "spelling": "f æ n i",
-      "source": "fanny-poster",
-      "confidence": "certain"
-    },
-    {
-      "key": "is",
-      "spelling": "ɪ z",
-      "source": "fanny-poster",
-      "confidence": "certain"
-    },
-    {
-      "key": "missing",
-      "spelling": "m ɪ s ɪ ŋ ∅",
-      "source": "fanny-poster",
-      "confidence": "certain",
-      "note": "Five phonemes and a trailing null, exactly as derived."
-    },
-    {
-      "key": "fire",
-      "spelling": "f aɪ ə r",
-      "source": "fire-photo",
-      "confidence": "probable",
-      "note": "Only the FIRST block is directly attested — the photo was read for /aɪ/'s orientation in a bottom slot, which is (f,aɪ). The second block is the ordinary derivation and has not been checked. Downgrade or confirm when the image is catalogued (B2)."
-    },
     {
       "key": "at",
       "spelling": "æ t",
@@ -245,6 +68,292 @@
       "spelling": "t ɑ p ∅",
       "source": "cherries on top poster",
       "confidence": "certain"
+    },
+    {
+      "key": "aang",
+      "spelling": "e ŋ",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "academy",
+      "spelling": "ə ∅ k æ d ə m i",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "all",
+      "spelling": "ɔ% l",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "am",
+      "spelling": "æ m",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "and",
+      "spelling": "æ n d ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "anyway",
+      "spelling": "ɛ n i ∅ w e",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "asked",
+      "spelling": "æ s$ k t",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "at",
+      "spelling": "æ t",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "baihu",
+      "spelling": "b aɪ h u",
+      "source": "toph-letter",
+      "confidence": "certain",
+      "gloss": "Baihu"
+    },
+    {
+      "key": "being",
+      "spelling": "b i ɪ ŋ",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "big",
+      "spelling": "b ɪ g ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "come",
+      "spelling": "k ʌ m ∅",
+      "source": "toph-letter",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "found",
+      "spelling": "f aʊ n d",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "going",
+      "spelling": "g oʊ ɪ ŋ",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "hard",
+      "spelling": "h ɑ r d",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "have",
+      "spelling": "h æ v ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "help",
+      "spelling": "h ɛ l p",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "hey",
+      "spelling": "h e",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "hope",
+      "spelling": "h oʊ p ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "how",
+      "spelling": "h aʊ",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "hurry",
+      "spelling": "h ə r i",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "i",
+      "spelling": "aɪ ∅",
+      "source": "toph-letter",
+      "confidence": "certain",
+      "times": 4
+    },
+    {
+      "key": "is",
+      "spelling": "ɪ z",
+      "source": "toph-letter",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "it",
+      "spelling": "ɪ t",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "me",
+      "spelling": "m i",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "meet",
+      "spelling": "m i t ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "metalbending",
+      "spelling": "m ɛ t ə l ∅ b ɛ n d ɪ ŋ",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "mount",
+      "spelling": "m aʊ n t",
+      "source": "toph-letter",
+      "confidence": "certain",
+      "gloss": "Mount"
+    },
+    {
+      "key": "need",
+      "spelling": "n i d ∅",
+      "source": "toph-letter",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "not",
+      "spelling": "n ɑ t ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "on",
+      "spelling": "ɑ n",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "out",
+      "spelling": "aʊ t",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "pick",
+      "spelling": "p ɪ k ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "please",
+      "spelling": "p l i z",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "really",
+      "spelling": "r ɪ l i",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "something",
+      "spelling": "s ʌ ∅ m θ ɪ ŋ ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "the",
+      "spelling": "ð ə",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "then",
+      "spelling": "ð ɛ n ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "to",
+      "spelling": "t u",
+      "source": "toph-letter",
+      "confidence": "certain",
+      "times": 3
+    },
+    {
+      "key": "too",
+      "spelling": "t u",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "toph",
+      "spelling": "t ɑ f ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "up",
+      "spelling": "ʌ p",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "you",
+      "spelling": "j u",
+      "source": "toph-letter",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "you're",
+      "spelling": "j u r ∅",
+      "source": "toph-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "your",
+      "spelling": "j oʊ r ∅",
+      "source": "toph-letter",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "zuko",
+      "spelling": "z u k oʊ",
+      "source": "toph-letter",
+      "confidence": "certain",
+      "gloss": "Zuko"
     }
   ]
 }
