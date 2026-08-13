@@ -110,11 +110,39 @@ def check(data):
     Validate the whole corpus. Returns (errors, records) where `records`
     is the compiled key -> entry mapping the JS ships. Records are built
     even when there are errors, so a UI can still show what it has.
+
+    ONE ENTRY IS ONE SIGHTING, not one word. A word seen in two sources
+    is two entries, and that used to be a "duplicate key" error — which
+    meant the only way to record a second sighting was to overwrite the
+    first. For a file whose whole job is preserving observations, that
+    was exactly backwards.
+
+    So the unique thing is (key, source, spelling), and entries sharing a
+    key are GROUPED here rather than rejected:
+
+      same spelling, another source   corroboration. Counted, and the
+                                      count is the point — a word seen on
+                                      three posters is stronger evidence
+                                      than one seen once.
+      a different spelling            a conflict, and both are kept as
+                                      alternates. Nothing is overwritten,
+                                      ever. Two sources disagreeing is a
+                                      finding about the script, and
+                                      deleting one of them destroys it.
+
+    The record still carries `ipa`, so the lookup chain is unchanged:
+    `count`, `sources`, `alternates` and `contested` are additive. The
+    rendered spelling is the most-attested one, ties broken by confidence
+    and then by the order sources are declared in — deterministic, so a
+    rebuild never reshuffles the site.
     """
     known = symbols()
     sources = data.get("sources") or {}
     errors = []
-    records = {}
+    grouped = {}
+    seen = set()
+
+    source_order = {name: i for i, name in enumerate(sources)}
 
     for entry in data.get("entries") or []:
         raw = entry.get("key", "")
@@ -125,8 +153,6 @@ def check(data):
             continue
         if key != raw:
             errors.append(f"{where}: key should be written as '{key}'")
-        if key in records:
-            errors.append(f"{where}: duplicate key")
 
         tokens = check_spelling(entry.get("spelling", ""), known, where, errors)
 
@@ -134,16 +160,42 @@ def check(data):
         if confidence not in CONFIDENCE:
             errors.append(f"{where}: confidence '{confidence}' is not one of "
                           + "/".join(CONFIDENCE))
-        if entry.get("source") not in sources:
-            errors.append(f"{where}: source '{entry.get('source')}' is not in sources")
+        source = entry.get("source")
+        if source not in sources:
+            errors.append(f"{where}: source '{source}' is not in sources")
 
-        record = {"ipa": tokens, "source": entry.get("source"),
-                  "confidence": confidence}
-        if entry.get("gloss"):
-            record["gloss"] = entry["gloss"]
-        if entry.get("note"):
-            record["note"] = entry["note"]
-        records[key] = record
+        # The same word, spelled the same way, cited to the same source
+        # twice is not corroboration — it is the same observation entered
+        # twice, and counting it would inflate the evidence.
+        fingerprint = (key, source, " ".join(tokens))
+        if fingerprint in seen:
+            errors.append(f"{where}: already recorded from source "
+                          f"'{source}' with this spelling")
+            continue
+        seen.add(fingerprint)
+
+        # How many times this exact spelling appears in that one source.
+        # A word written three times on one poster is three observations
+        # of the spelling — enough to rule out a slip of the pen — so it
+        # is counted. It is NOT three sources, and the two are tracked
+        # separately for exactly that reason.
+        times = entry.get("times", 1)
+        if not isinstance(times, int) or isinstance(times, bool) or times < 1:
+            errors.append(f"{where}: times must be a whole number 1 or more, "
+                          f"not {times!r}")
+            times = 1
+
+        grouped.setdefault(key, []).append({
+            "ipa": tokens,
+            "source": source,
+            "confidence": confidence,
+            "times": times,
+            "gloss": entry.get("gloss") or "",
+            "note": entry.get("note") or "",
+        })
+
+    records = {key: compile_record(sightings, source_order)
+               for key, sightings in grouped.items()}
 
     for name, source in sources.items():
         image = source.get("image")
@@ -152,6 +204,83 @@ def check(data):
                           f"{IMAGES.relative_to(ROOT)}/")
 
     return errors, records
+
+
+def confidence_rank(value):
+    """
+    How much a sighting counts for, best first.
+
+    An unrecognised value ranks last rather than raising: `check` reports
+    it as an error but still has to finish building the records, because
+    the workbench shows what it has alongside the problems.
+    """
+    try:
+        return CONFIDENCE.index(value)
+    except ValueError:
+        return len(CONFIDENCE)
+
+
+def compile_record(sightings, source_order):
+    """
+    Every sighting of one word, folded into the record the site ships.
+
+    Sightings are bucketed by spelling; each bucket is one candidate with
+    its own count and sources. The winner is the most-attested candidate,
+    and `alternates` holds the rest — present only when they exist, so a
+    word nobody disagrees about carries no extra weight in the file.
+    """
+    buckets = {}
+    for s in sightings:
+        buckets.setdefault(" ".join(s["ipa"]), []).append(s)
+
+    candidates = []
+    for spelling, group in buckets.items():
+        best = min(group, key=lambda s: confidence_rank(s["confidence"]))
+        candidates.append({
+            "ipa": group[0]["ipa"],
+            # Every time the spelling was seen, repeats within one source
+            # included; and the distinct sources it was seen in.
+            "count": sum(s["times"] for s in group),
+            "sources": [s["source"] for s in group],
+            "confidence": best["confidence"],
+            "_order": min(source_order.get(s["source"], 10 ** 6) for s in group),
+        })
+
+    # INDEPENDENT SOURCES RANK FIRST, total sightings only after that.
+    # A word written five times on one poster is one hand agreeing with
+    # itself; written once each on two posters, it is two. Ranking by the
+    # raw total would let a single repetitive source outvote genuine
+    # corroboration, which is the failure this whole file exists to
+    # prevent. Then the most confident, then the earliest source — which
+    # is arbitrary, but stable, so a rebuild never reshuffles the site.
+    candidates.sort(key=lambda c: (-len(c["sources"]),
+                                   -c["count"],
+                                   confidence_rank(c["confidence"]),
+                                   c["_order"]))
+    for c in candidates:
+        del c["_order"]
+
+    winner, alternates = candidates[0], candidates[1:]
+    record = {
+        "ipa": winner["ipa"],
+        "count": winner["count"],
+        "sources": winner["sources"],
+        "confidence": winner["confidence"],
+        # Kept for anything still reading the old shape: the first source
+        # that attests the spelling actually being drawn.
+        "source": winner["sources"][0],
+    }
+    if alternates:
+        record["alternates"] = alternates
+        record["contested"] = True
+
+    # A gloss or note belongs to the word, not to one sighting of it.
+    for field in ("gloss", "note"):
+        values = [s[field] for s in sightings if s[field]]
+        if values:
+            record[field] = values[0] if len(values) == 1 else " · ".join(
+                dict.fromkeys(values))
+    return record
 
 
 def write_js(sources, records):
@@ -209,10 +338,18 @@ def main():
     write_js(data.get("sources") or {}, records)
     phrases = sum(1 for k in records if " " in k)
     unsure = sum(1 for v in records.values() if v["confidence"] != "certain")
-    print(f"Wrote {DST.relative_to(ROOT)} — {len(records)} entries "
+    sightings = len(data.get("entries") or [])
+    contested = [k for k, v in records.items() if v.get("contested")]
+    print(f"Wrote {DST.relative_to(ROOT)} — {len(records)} words "
+          f"from {sightings} sighting(s) "
           f"({phrases} phrase(s), {unsure} not certain) "
-          f"from {len(data.get('sources') or {})} source(s), "
+          f"across {len(data.get('sources') or {})} source(s), "
           f"{DST.stat().st_size // 1024} KB")
+    # Contested words are the interesting output of having a corpus at
+    # all, so they are named rather than counted.
+    if contested:
+        print(f"  {len(contested)} contested — sources disagree on the "
+              f"spelling: {', '.join(sorted(contested))}")
     return 0
 
 

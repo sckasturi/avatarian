@@ -75,10 +75,113 @@ class Rules(unittest.TestCase):
         data["entries"][0]["key"] = "Appa!"
         self.assert_rejects(data, "should be written as 'appa'")
 
-    def test_a_duplicate_key_is_rejected(self):
+    def test_the_same_sighting_twice_is_rejected(self):
+        # Same word, same spelling, same source is not corroboration —
+        # it is one observation entered twice, and counting it would
+        # inflate the evidence for that spelling.
         data = valid()
         data["entries"].append(copy.deepcopy(data["entries"][0]))
-        self.assert_rejects(data, "duplicate key")
+        self.assert_rejects(data, "already recorded from source")
+
+    def test_a_second_source_corroborates_rather_than_conflicting(self):
+        # A word seen twice used to be a "duplicate key" error, which
+        # meant the only way to record the second sighting was to
+        # overwrite the first. Counting it is the whole point: three
+        # posters agreeing is stronger than one.
+        data = valid()
+        data["sources"]["b-source"] = {"what": "another", "where": "elsewhere"}
+        second = copy.deepcopy(data["entries"][0])
+        second["source"] = "b-source"
+        data["entries"].append(second)
+
+        errors, records = bc.check(data)
+        self.assertEqual(errors, [])
+        self.assertEqual(records["appa"]["count"], 2)
+        self.assertEqual(records["appa"]["sources"], ["a-source", "b-source"])
+        self.assertNotIn("contested", records["appa"])
+
+    def test_sources_that_disagree_keep_both_spellings(self):
+        # The finding is the disagreement. Overwriting either side
+        # destroys it, so both are kept and the majority is what renders.
+        data = valid()
+        data["sources"]["b-source"] = {"what": "another", "where": "elsewhere"}
+        data["sources"]["c-source"] = {"what": "a third", "where": "far off"}
+        agreeing = copy.deepcopy(data["entries"][0])
+        agreeing["source"] = "b-source"
+        dissenting = copy.deepcopy(data["entries"][0])
+        dissenting["source"] = "c-source"
+        dissenting["spelling"] = "ɑ ∅ p ɑ"
+        data["entries"] += [agreeing, dissenting]
+
+        errors, records = bc.check(data)
+        self.assertEqual(errors, [])
+        record = records["appa"]
+        self.assertTrue(record["contested"])
+        # Most-attested wins; the loser survives as an alternate.
+        self.assertEqual(record["ipa"], ["ɑ", "∅", "p", "∅", "ɑ", "∅"])
+        self.assertEqual(record["count"], 2)
+        self.assertEqual(len(record["alternates"]), 1)
+        self.assertEqual(record["alternates"][0]["ipa"], ["ɑ", "∅", "p", "ɑ"])
+        self.assertEqual(record["alternates"][0]["sources"], ["c-source"])
+
+    def test_repeats_within_one_source_are_counted(self):
+        # A word written three times on one poster is three observations
+        # of that spelling. Recorded as one entry carrying `times`, since
+        # three identical entries would be the same sighting three times.
+        data = valid()
+        data["entries"][0]["times"] = 3
+        errors, records = bc.check(data)
+        self.assertEqual(errors, [])
+        self.assertEqual(records["appa"]["count"], 3)
+        self.assertEqual(records["appa"]["sources"], ["a-source"])
+
+    def test_times_must_be_a_positive_whole_number(self):
+        for bad in (0, -2, 1.5, "3"):
+            with self.subTest(times=bad):
+                data = valid()
+                data["entries"][0]["times"] = bad
+                self.assert_rejects(data, "times must be a whole number")
+
+    def test_independent_sources_outrank_repetition(self):
+        # The heart of it: one source repeating itself five times is one
+        # hand agreeing with itself, while two sources agreeing once each
+        # is genuine corroboration. Ranking on the raw total would let a
+        # repetitive source outvote real evidence.
+        data = valid()
+        data["sources"]["b-source"] = {"what": "another", "where": "elsewhere"}
+        data["sources"]["c-source"] = {"what": "a third", "where": "far off"}
+        data["entries"][0]["spelling"] = "ɑ ∅ p ɑ"
+        data["entries"][0]["times"] = 5
+        for name in ("b-source", "c-source"):
+            other = copy.deepcopy(data["entries"][0])
+            other["source"] = name
+            other["spelling"] = "ɑ ∅ p ∅ ɑ ∅"
+            other.pop("times")
+            data["entries"].append(other)
+
+        errors, records = bc.check(data)
+        self.assertEqual(errors, [])
+        record = records["appa"]
+        # Two sources beat five repetitions of one.
+        self.assertEqual(record["ipa"], ["ɑ", "∅", "p", "∅", "ɑ", "∅"])
+        self.assertEqual(record["count"], 2)
+        self.assertEqual(record["alternates"][0]["count"], 5)
+        self.assertEqual(record["alternates"][0]["sources"], ["a-source"])
+
+    def test_a_tie_is_broken_by_confidence(self):
+        data = valid()
+        data["sources"]["b-source"] = {"what": "another", "where": "elsewhere"}
+        data["entries"][0]["confidence"] = "probable"
+        other = copy.deepcopy(data["entries"][0])
+        other["source"] = "b-source"
+        other["spelling"] = "ɑ ∅ p ɑ"
+        other["confidence"] = "certain"
+        data["entries"].append(other)
+
+        errors, records = bc.check(data)
+        self.assertEqual(errors, [])
+        self.assertEqual(records["appa"]["ipa"], ["ɑ", "∅", "p", "ɑ"])
+        self.assertEqual(records["appa"]["confidence"], "certain")
 
     def test_an_unknown_source_is_rejected(self):
         data = valid()

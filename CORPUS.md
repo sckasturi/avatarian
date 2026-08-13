@@ -113,8 +113,38 @@ A corpus records all three as data instead of deriving them.
 
 ## 2. What the corpus is
 
-**One entry per attested word or phrase, recording the spelling actually
-observed, and where it was observed.**
+**One entry per *sighting*, recording the spelling actually observed, and
+where it was observed.** A word seen in three sources is three entries.
+
+*(This was originally "one entry per attested word", and a duplicate key
+was a validation error. That turned out to be exactly backwards: the only
+way to record a second sighting was to overwrite the first, so a file
+whose entire job is preserving observations was built to destroy them.
+The unique thing is `(key, source, spelling)`, not `key`.)*
+
+Entries sharing a key are grouped at build time, and which of two things
+happened matters:
+
+| | |
+| --- | --- |
+| **same spelling, another source** | **Corroboration.** Counted, and the count is the point — a word seen on three posters is stronger evidence than one seen once. This is the case the old model could not record at all. |
+| **a different spelling** | **A conflict.** Both are kept as alternates. Two sources disagreeing is a *finding about the script*, and deleting either side destroys it. |
+| same spelling, repeated *within* one source | One entry carrying **`times`**. The word really was written that many times, and three renderings rule out a slip of the pen — so it raises the count rather than being discarded. |
+| same spelling, same source, entered twice | The same observation recorded twice. Rejected — use `times`. |
+
+**Repetition is not corroboration, and the ranking says so.** A spelling
+written five times on one poster is one hand agreeing with itself; written
+once each on two posters, it is two independent witnesses. So candidates
+are ranked by **distinct sources first** and total sightings only after
+that. Ranking on the raw total would let a single repetitive source
+outvote genuine corroboration, which is the failure this file exists to
+prevent.
+
+A contested word renders as its **most-attested** spelling (ties broken by
+confidence, then by source order, so a rebuild is deterministic), and the
+generated record carries `count`, `sources`, `alternates` and `contested`
+alongside the `ipa` the lookup chain already used. The site marks such a
+word visibly rather than picking a winner in silence — see §3.
 
 The spelling is stored **in IPA**, as the finished block structure
 flattened — read the blocks left to right, each one top slot then bottom
@@ -144,6 +174,11 @@ An entry, as it appears in `corpus/attested.json`:
 
 `source` names an entry in the file's `sources` map, so the description
 of an image is written once however many words come off it.
+
+**A source's `what` holds its full reading, not just a label.** Words come
+off a source one at a time, so without somewhere to keep the whole text
+the only record of what the source *says* is scattered across its entries
+with the order lost. Describe the object and then quote it in full.
 
 Notes on the shape of this:
 
