@@ -6,8 +6,7 @@
     5,
     5
   ],
-  "flips": true,
-  "notes": "",
+  "notes": "Orientation is NOT by slot: /s/ appears both ways in the same slot, which no flip rule can produce. It mirrors above another consonant (11 of 12 attested) and nowhere else (0 of 20). See render.js TURNS_ABOVE_CLUSTER. TODO item 30.",
   "shapes": [
     {
       "kind": "path",

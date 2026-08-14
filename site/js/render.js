@@ -220,7 +220,51 @@ const UNREADABLE_SVG =
   + '<path d="M 50 78 L 50 80" stroke-width="9"/>'
   + '</svg>';
 
-function makeGlyph(token, slot) {
+/**
+ * THE APPROXIMANTS TURN INSIDE A CLUSTER. Read off the corpus: across
+ * seventeen consonants seen in a bottom slot, the only ones that ever
+ * mirror are /r l w j/ — exactly the English approximants — and they do
+ * it when the block holds two consonants, 28 times against 1.
+ *
+ * Under a VOWEL they stay upright: /r/ is plain in all six such blocks
+ * (are, ear, fire, choir, organic, warrior). So this is not the by-slot
+ * flip that æ ɑ ɪ e aɪ ə take; it depends on what shares the block.
+ *
+ * `l` is deliberately absent — it is in FLIPS already and flips by slot,
+ * where the evidence is mixed (2 flipped against 3 plain under a vowel).
+ * Changing it would trade three known exceptions for two, so it waits.
+ */
+const TURNS_IN_CLUSTER = new Set(["r", "j", "w"]);
+
+/**
+ * /s/ TURNS ON TOP OF A CLUSTER. Mirrored in 11 of the 12 blocks where
+ * it sits above another consonant, and in none of the 20 where it does
+ * not. This is why the $/% override exists at all — no by-slot rule can
+ * produce it, since /s/ takes both orientations in the same slot.
+ */
+const TURNS_ABOVE_CLUSTER = new Set(["s"]);
+
+/**
+ * Glyphs whose saved drawing is the BOTTOM-slot form rather than the top.
+ * They flip like any other, but the art is stored the other way up, so
+ * the slot test is inverted. Read off the corpus: /u/ is plain in all 18
+ * bottom slots and mirrored in 7 of its 9 top ones, /ɔ/ plain in 12
+ * bottoms and mirrored in all 3 tops.
+ */
+const DRAWN_BOTTOM_UP = new Set(["u", "ɔ"]);
+
+/** Which way round this glyph goes, before any explicit $/% override. */
+function orientationOf(sym, entry, slot, partner) {
+  if (DRAWN_BOTTOM_UP.has(sym)) return slot === "bottom" ? "top" : "bottom";
+  if (entry.flips) return slot;
+  const clustered = partner != null && !isVowelSymbol(partner)
+                    && !NULLS.has(parseSymbol(partner).sym);
+  if (clustered && slot === "bottom" && TURNS_IN_CLUSTER.has(sym)) return "bottom";
+  if (clustered && slot === "top" && TURNS_ABOVE_CLUSTER.has(sym)) return "bottom";
+  return "top";
+}
+
+function makeGlyph(token, slot, partner) {
   const { sym, forced } = parseSymbol(token);
   const span = document.createElement("span");
 
@@ -245,9 +289,8 @@ function makeGlyph(token, slot) {
   span.title = sym;
   if (entry) {
     const form = entry;
-    // An explicit $/% override wins; otherwise only flip-capable glyphs
-    // follow the slot.
-    const orientation = forced || (entry.flips ? slot : "top");
+    // An explicit $/% override wins; otherwise the glyph's own rule does.
+    const orientation = forced || orientationOf(sym, entry, slot, partner);
     if (orientation === "bottom") span.classList.add("avatarian-flipped");
     // Both drawings ride along and CSS shows one. The flat copy is the
     // same glyph re-laid-out at 4/5 height rather than a squashed copy
@@ -273,10 +316,10 @@ function makeGlyph(token, slot) {
   return span;
 }
 
-function makeSlot(ipaSymbol, slot) {
+function makeSlot(ipaSymbol, slot, partner) {
   const cell = document.createElement("span");
   cell.className = "avatarian-slot avatarian-slot-" + slot;
-  cell.appendChild(makeGlyph(ipaSymbol, slot));
+  cell.appendChild(makeGlyph(ipaSymbol, slot, partner));
   return cell;
 }
 
@@ -294,8 +337,10 @@ function renderAvatarian(ipaSeq, container) {
   resolveBlocks(ipaSeq).forEach(({ top, bottom }) => {
     const block = document.createElement("span");
     block.className = "avatarian-block";
-    block.appendChild(makeSlot(top, "top"));
-    block.appendChild(makeSlot(bottom, "bottom"));
+    // Each slot is told what shares its block: the approximants and /s/
+    // turn according to the company they keep, not the slot alone.
+    block.appendChild(makeSlot(top, "top", bottom));
+    block.appendChild(makeSlot(bottom, "bottom", top));
     container.appendChild(block);
   });
   return container;
