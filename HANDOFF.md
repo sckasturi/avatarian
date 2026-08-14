@@ -117,6 +117,47 @@ re-pointing at a word the corpus does not have.
 two consonants overlap is not, and there are now **64 attested C-C
 blocks** to measure it on. TODO B1 lists the seven best words.
 
+### What the session left, in priority order
+
+Found at the end by re-reading the documents this session did *not*
+touch, against what it changed. All four are in `TODO.md`.
+
+**Item 33 is a live bug, and it is small.** Nineteen `EXCEPTIONS` words
+are now attested. Eighteen agree and are dead weight; one does not:
+
+```
+what      EXCEPTIONS  w ʌ t        corpus  w ɑ t
+```
+
+The site is fine — the corpus wins the lookup chain — but anything
+reading `EXCEPTIONS` directly gets the wrong answer, and that includes
+`derivedLookup`, and therefore the workbench's "against the model"
+panel. A wrong hand reading there tells you canon disagrees with the
+model when it is the model that is wrong. This is `toph` all over again,
+found exactly the way item 24 said it would be.
+
+**Item 28 stopped being cosmetic.** `CONTEXT.md` still lists mid-word
+nulls and /s/ orientation as open, and still instructs the reader to
+spell /s/ by hand. `README.md`'s flip list predates the approximants.
+Those two now *contradict* `AVATARIAN.md` instead of merely lagging it.
+
+**Items 34, 35, 36** are the honest loose ends: morpheme boundaries as a
+second boundary rule (six examples, not enough to state), the six tests
+that want re-pointing off quarantined specimens, and a hand-rolled
+syllabifier that gets 234 of 244 and should eventually read CMU's stress
+marks instead.
+
+**Three attested slots disagree with the new rules and are not errors** —
+`waterproof`, `rest`, and `l`'s deliberate exemption. Recorded in TODO B1
+so nobody re-derives them.
+
+### Where to start next time
+
+1. **Item 33** — half an hour, removes a wrong answer from the model.
+2. **B1's row question** — the only thing that needs eyes on the art.
+   `please` and `new` each appear in three independent sources.
+3. **Item 28** — the two documents that now mislead.
+
 ---
 
 ## Session 10 — tests, flipped glyphs, and readable sound codes
