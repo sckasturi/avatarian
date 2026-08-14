@@ -13,11 +13,6 @@
  * having to be bypassed. */
 window.AVATARIAN_CORPUS = {
   "sources": {
-    "poster - cherries on top": {
-      "what": "Cherries on top",
-      "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=1",
-      "image": "cherries-on-top-poster.png"
-    },
     "toph-letter": {
       "what": "Hey Toph, How is the metalbending academy? Hope you're not being too hard on your students! Anyway, i found something out and it is really big! I am going to need your help. I have asked Zuko to come pick you up, then I need you all to come meet me at Mount Baihu. Please hurry. Aang",
       "where": "movie",
@@ -28,50 +23,13 @@ window.AVATARIAN_CORPUS = {
       "where": "movie",
       "image": "katara-letter.webp"
     },
-    "sad fish noodle house poster": {
-      "what": "sad fish, noodle house",
-      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
-      "image": "image-2.png"
-    },
-    "poster - still waters": {
-      "what": "still waters / trends in june",
-      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
-      "image": "image-3.png"
-    },
     "instagram-1.1": {
       "what": "still waters / trends this june / balloon festival / peeep farm / sad fish / noodle house / garden gems",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
-      "image": "image-4.png"
+      "image": "instagram-1-1.png"
     }
   },
   "words": {
-    "on": {
-      "ipa": [
-        "ɑ",
-        "n"
-      ],
-      "count": 2,
-      "sources": [
-        "poster - cherries on top",
-        "toph-letter"
-      ],
-      "confidence": "certain",
-      "source": "poster - cherries on top"
-    },
-    "top": {
-      "ipa": [
-        "t",
-        "ɑ",
-        "p",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "poster - cherries on top"
-      ],
-      "confidence": "certain",
-      "source": "poster - cherries on top"
-    },
     "aang": {
       "ipa": [
         "e",
@@ -178,15 +136,13 @@ window.AVATARIAN_CORPUS = {
         "æ",
         "t"
       ],
-      "count": 3,
+      "count": 2,
       "sources": [
         "toph-letter",
-        "katara-letter",
-        "poster - still waters"
+        "katara-letter"
       ],
       "confidence": "certain",
-      "source": "toph-letter",
-      "note": "Vowel on TOP, drawn as a cup ∪. This is the word that killed the syllable model."
+      "source": "toph-letter"
     },
     "baihu": {
       "ipa": [
@@ -495,6 +451,18 @@ window.AVATARIAN_CORPUS = {
       "sources": [
         "toph-letter",
         "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "toph-letter"
+    },
+    "on": {
+      "ipa": [
+        "ɑ",
+        "n"
+      ],
+      "count": 1,
+      "sources": [
+        "toph-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -1007,163 +975,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "katara-letter"
     },
-    "fish": {
-      "ipa": [
-        "f",
-        "ɪ",
-        "ʃ",
-        "∅"
-      ],
-      "count": 2,
-      "sources": [
-        "sad fish noodle house poster",
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "sad fish noodle house poster"
-    },
-    "house": {
-      "ipa": [
-        "h",
-        "aʊ",
-        "s",
-        "∅"
-      ],
-      "count": 2,
-      "sources": [
-        "sad fish noodle house poster",
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "sad fish noodle house poster"
-    },
-    "noodle": {
-      "ipa": [
-        "n",
-        "u",
-        "d",
-        "ə",
-        "l",
-        "∅"
-      ],
-      "count": 2,
-      "sources": [
-        "sad fish noodle house poster",
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "sad fish noodle house poster"
-    },
-    "sad": {
-      "ipa": [
-        "s",
-        "æ",
-        "d",
-        "∅"
-      ],
-      "count": 2,
-      "sources": [
-        "sad fish noodle house poster",
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "sad fish noodle house poster"
-    },
-    "cherries": {
-      "ipa": [
-        "tʃ",
-        "ɛ",
-        "r",
-        "i",
-        "z",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "poster - still waters"
-      ],
-      "confidence": "certain",
-      "source": "poster - still waters"
-    },
-    "june": {
-      "ipa": [
-        "dʒ",
-        "u",
-        "n",
-        "∅"
-      ],
-      "count": 2,
-      "sources": [
-        "poster - still waters",
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "poster - still waters"
-    },
-    "still": {
-      "ipa": [
-        "s%",
-        "t",
-        "ɪ",
-        "l"
-      ],
-      "count": 2,
-      "sources": [
-        "poster - still waters",
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "poster - still waters"
-    },
-    "this": {
-      "ipa": [
-        "ð",
-        "ɪ",
-        "s",
-        "∅"
-      ],
-      "count": 2,
-      "sources": [
-        "poster - still waters",
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "poster - still waters"
-    },
-    "trends": {
-      "ipa": [
-        "t",
-        "r",
-        "ɛ",
-        "n",
-        "d",
-        "z"
-      ],
-      "count": 2,
-      "sources": [
-        "poster - still waters",
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "poster - still waters"
-    },
-    "waters": {
-      "ipa": [
-        "w",
-        "ɔ",
-        "t",
-        "ə",
-        "r",
-        "z"
-      ],
-      "count": 2,
-      "sources": [
-        "poster - still waters",
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "poster - still waters"
-    },
     "cabbages": {
       "ipa": [
         "k",
@@ -1188,6 +999,20 @@ window.AVATARIAN_CORPUS = {
         "ɑ",
         "r",
         "m"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
+    "fish": {
+      "ipa": [
+        "f",
+        "ɪ",
+        "ʃ",
+        "∅"
       ],
       "count": 1,
       "sources": [
@@ -1242,6 +1067,50 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-1.1"
     },
+    "house": {
+      "ipa": [
+        "h",
+        "aʊ",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
+    "june": {
+      "ipa": [
+        "dʒ",
+        "u",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
+    "noodle": {
+      "ipa": [
+        "n",
+        "u",
+        "d",
+        "ə",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
     "peeep": {
       "ipa": [
         "p",
@@ -1250,6 +1119,80 @@ window.AVATARIAN_CORPUS = {
         "∅",
         "i",
         "p"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
+    "sad": {
+      "ipa": [
+        "s",
+        "æ",
+        "d",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
+    "still": {
+      "ipa": [
+        "s%",
+        "t",
+        "ɪ",
+        "l"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
+    "this": {
+      "ipa": [
+        "ð",
+        "ɪ",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
+    "trends": {
+      "ipa": [
+        "t",
+        "r",
+        "ɛ",
+        "n",
+        "d",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
+    "waters": {
+      "ipa": [
+        "w",
+        "ɔ",
+        "t",
+        "ə",
+        "r",
+        "z"
       ],
       "count": 1,
       "sources": [
