@@ -203,13 +203,16 @@ input:focus, textarea:focus, select:focus {
 
 /* --- the source view ---------------------------------------------- */
 
-.source-reading {
-  margin: 0 0 12px; padding: 9px 11px;
-  background: var(--code-bg); border-radius: 6px;
-  color: var(--muted); font-size: 0.86rem; line-height: 1.45;
-  white-space: pre-wrap;
+/* Image and description side by side. In the old right-hand rail these
+   were stacked in 320px, which gave the image too little width to read
+   glyphs off — the one thing it is there for. */
+.source-body { display: flex; gap: 14px; align-items: flex-start; }
+.source-image-col { flex: 1 1 55%; min-width: 0; }
+.source-fields-col { flex: 1 1 45%; min-width: 240px; }
+@media (max-width: 1180px) {
+  .source-body { flex-direction: column; }
+  .source-image-col, .source-fields-col { width: 100%; flex: none; }
 }
-.source-reading[hidden] { display: none; }
 
 /* A wrapping grid, not a stack. A source can hold forty words and the
    point of this view is seeing them AS a source — one per row turns a

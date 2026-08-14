@@ -139,6 +139,64 @@
   </div>
 </section>
 
+  <!-- The source itself lives in the MAIN column, beside the words read
+       off it. It was in the right-hand rail with the draw pad and the
+       palette, which are tools; this is the material. A reference image
+       squeezed into a 320px rail is also too small to read glyphs off,
+       which is the one thing it exists for.
+
+       The image and the two sentences sit side by side here, so the
+       image gets the width and the writing does not have to fight it. -->
+  <section class="panel" id="sourcePanel">
+    <div class="panel-head">
+      <h2>Source</h2>
+      <span class="fine" id="imageName"></span>
+    </div>
+
+    <div class="source-body">
+      <div class="source-image-col">
+        <!-- Provenance, not input. Nothing here reads the pixels; the
+             image is stored so that "where did this spelling come from"
+             still has an answer in a year. -->
+        <div class="dropzone" id="dropzone">
+          <img id="sourceImage" alt="" hidden />
+          <p class="dropzone-hint" id="dropHint">Drop the reference image here
+            to file it against this source.</p>
+        </div>
+        <label class="zoom-ctl">zoom
+          <input type="range" id="imageZoom" min="100" max="400" step="10" value="100" />
+        </label>
+      </div>
+
+    <div id="sourceFields" class="source-fields-col" hidden>
+      <label class="field">
+        <span class="field-label">Name <span class="fine">— how entries cite it</span></span>
+        <input type="text" id="srcName" autocomplete="off" />
+      </label>
+      <label class="field">
+        <span class="field-label">What it is <span class="fine">— and what it
+          says, in full</span></span>
+        <textarea id="srcWhat" rows="4"></textarea>
+      </label>
+      <label class="field">
+        <span class="field-label">Where it came from
+          <span class="fine">— specific enough to find again</span></span>
+        <textarea id="srcWhere" rows="2"></textarea>
+      </label>
+
+      <!-- Deleting a source has to take its entries with it: an entry
+           citing a source that is gone fails validation, so leaving them
+           behind would make the corpus unsaveable. The button says how
+           many, because that is the part you cannot undo. -->
+      <div class="source-actions">
+        <button type="button" id="deleteSource" class="small danger">delete
+          this source</button>
+        <span class="fine" id="deleteSourceNote"></span>
+      </div>
+    </div>
+    </div>
+  </section>
+
   <!-- Everything read off one source, in one place.
 
        The entry list is per WORD and the editor is per entry, so until
@@ -152,7 +210,6 @@
       <span class="fine" id="sourceViewCount"></span>
       <button type="button" id="closeSourceView" class="small">close</button>
     </div>
-    <p class="source-reading" id="sourceViewWhat"></p>
     <div class="source-words" id="sourceWords"></div>
   </section>
 
@@ -255,52 +312,6 @@ slot, so the block structure is still recorded.">?&nbsp;unreadable</button>
 
 <!-- ------------------------------------------------------------------ -->
 <aside class="col-tools">
-  <section class="panel">
-    <div class="panel-head">
-      <h2>Source</h2>
-      <span class="fine" id="imageName"></span>
-    </div>
-
-    <!-- Provenance, not input. Nothing here reads the pixels; the image
-         is stored so that "where did this spelling come from" still has
-         an answer in a year. -->
-    <div class="dropzone" id="dropzone">
-      <img id="sourceImage" alt="" hidden />
-      <p class="dropzone-hint" id="dropHint">Drop the reference image here
-        to file it against this source.</p>
-    </div>
-    <label class="zoom-ctl">zoom
-      <input type="range" id="imageZoom" min="100" max="400" step="10" value="100" />
-    </label>
-
-    <div id="sourceFields" hidden>
-      <label class="field">
-        <span class="field-label">Name <span class="fine">— how entries cite it</span></span>
-        <input type="text" id="srcName" autocomplete="off" />
-      </label>
-      <label class="field">
-        <span class="field-label">What it is <span class="fine">— and what it
-          says, in full</span></span>
-        <textarea id="srcWhat" rows="4"></textarea>
-      </label>
-      <label class="field">
-        <span class="field-label">Where it came from
-          <span class="fine">— specific enough to find again</span></span>
-        <textarea id="srcWhere" rows="2"></textarea>
-      </label>
-
-      <!-- Deleting a source has to take its entries with it: an entry
-           citing a source that is gone fails validation, so leaving them
-           behind would make the corpus unsaveable. The button says how
-           many, because that is the part you cannot undo. -->
-      <div class="source-actions">
-        <button type="button" id="deleteSource" class="small danger">delete
-          this source</button>
-        <span class="fine" id="deleteSourceNote"></span>
-      </div>
-    </div>
-  </section>
-
   <section class="panel">
     <div class="panel-head"><h2>Draw a glyph</h2></div>
     <div id="drawpad"></div>

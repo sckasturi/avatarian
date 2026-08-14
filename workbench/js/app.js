@@ -521,6 +521,10 @@ function openSourceView(name) {
   $("source").value = name;
   showSource(name);
   $("importPanel").hidden = true;
+  // Not closeImport(), which would also show the editor — but the Source
+  // panel has to come back, since the import panel hid it and showing a
+  // source without it is the whole point of this view.
+  $("sourcePanel").hidden = false;
   // The editor waits until you pick a word out of the source. Showing it
   // straight away would sit an unrelated entry under the source you just
   // opened, which is the wrong thing to invite editing.
@@ -556,9 +560,8 @@ function renderSourceView() {
     `${mine.length} word${mine.length === 1 ? "" : "s"} · `
     + `${sightings} sighting${sightings === 1 ? "" : "s"}`
     + (unread ? ` · ${unread} unread slot${unread === 1 ? "" : "s"}` : "");
-  $("sourceViewWhat").textContent = source.what || "";
-  $("sourceViewWhat").hidden = !source.what;
-
+  // The full reading is no longer repeated here: the Source panel sits
+  // directly above with the same text in an editable field.
   const box = $("sourceWords");
   box.innerHTML = "";
   if (!mine.length) {
@@ -1108,12 +1111,16 @@ function openImport() {
   if (state.sourceView) closeSourceView();
   $("importPanel").hidden = false;
   $("editor").hidden = true;
+  // The import panel carries its own name / what / where / image, so
+  // showing the Source panel too would put two of every field on screen.
+  $("sourcePanel").hidden = true;
   $("impName").focus();
 }
 
 function closeImport() {
   $("importPanel").hidden = true;
   $("editor").hidden = false;
+  $("sourcePanel").hidden = false;
 }
 
 /**
