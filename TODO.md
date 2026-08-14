@@ -547,9 +547,81 @@ The same look found a second rule nobody had: **only the approximants
 a C-C block — 28 times against 1, across seventeen consonants. That
 accounted for 19 of the 52 hand-typed overrides.
 
+**Three attested slots disagree with the rules and are not errors** —
+all checked against the art:
+
+- `waterproof` — /r/ plain in a /pr/ onset where the rule says it turns.
+  Also a morpheme-boundary word (item 34), which may be the reason.
+- `rest` — /s/ drawn above /t/ where the rule says it mirrors. From
+  `katara-letter`, one of the two hand-written sources.
+- `l` is left as a **by-slot** flip rather than moved to the approximant
+  rule, because its evidence under a vowel is mixed: 2 mirrored against
+  3 plain. Moving it would trade three known exceptions for two. Wants
+  more attested `l` in V-C blocks.
+
 **/ɔɪ/ still carries `flips: true` with nothing behind it.** Three
 sightings, all in bottom slots, none checked against the art. It is one
 image away from being settled either way.
+
+**33. `EXCEPTIONS` is now partly redundant, and one entry is wrong.**
+
+Nineteen words in `g2p.js`'s `EXCEPTIONS` are attested in the corpus.
+Eighteen agree with it, so they are dead weight sitting above the corpus
+in the lookup chain and never reached. One does not:
+
+```
+what      EXCEPTIONS  w ʌ t        corpus  w ɑ t      DISAGREE
+```
+
+The corpus wins the chain so the site is drawing the right thing, but the
+hand reading is confidently wrong and would be used by anything consulting
+`EXCEPTIONS` directly — `derivedLookup`, and therefore the workbench's
+"against the model" panel, which is exactly where a wrong reading does
+damage. This is `toph` again (item 24), found the way item 24 predicted.
+
+Per item 24's rule — a confirmed word does not get corrected in
+`EXCEPTIONS`, it **moves** — the eighteen should be deleted and `what`
+looked at against the art before deleting it too.
+
+**34. Morpheme boundaries look like a second boundary rule.** The
+syllable rule (§12.5) misses ten of 244 attested spellings, and six of
+those divide at a morpheme boundary instead:
+
+```
+something     s ʌ ∅ m θ ɪ ŋ ∅         some|thing
+humansitters  h u m ∅ n ∅ s i t ∅ ...  human|sitters
+waterproof    w ɔ t ə r ∅ p r u f      water|proof
+woong's       w u ŋ ∅ ɛ s              woong|'s
+heng's        h ɛ ŋ ∅ ɛ s              heng|'s
+anyway        ɛ n i ∅ w e              any|way
+```
+
+Six is enough to notice and not enough to state. It also needs a way to
+*find* morpheme boundaries, which is a harder problem than syllables and
+has no equivalent of maximum onset to fall back on. Worth revisiting when
+more compounds are attested.
+
+`appa` (every phoneme padded) and `mmm` are the other two misses, and
+both look like genuine oddities rather than rules.
+
+**35. Six tests fail on quarantined specimens.** Five use `appa` or
+`fanny` to test the lookup chain — machinery, not those words — and their
+evidence moved to `corpus/uncatalogued/`. The sixth asserts `katara` is
+`derived` when the corpus now attests it.
+
+None are regressions and none indicate a bug. They want re-pointing at a
+specimen the corpus does not have, and **this will keep recurring**: two
+of them broke this way earlier in the session as words became attested.
+Worth fixing properly — pick specimens from `EXCEPTIONS` that are
+unlikely ever to be attested, or build the fixture from a word the test
+inserts itself.
+
+**36. The syllabifier is hand-rolled.** `ONSET_CLUSTERS` in `g2p.js` is a
+literal list, and `same_syllable` is a heuristic with two known misses
+(`anyway`, `asked`). It gets 234 of 244, which is good enough to ship and
+not good enough to forget. CMU's stress marks are in the bundled
+dictionary and are a better source of truth than a cluster list.
+
 
 **19. Stroke-level fusion.** Canon is hand-lettered so adjacent glyphs
 interlock and share edges; this butts discrete SVGs together. Correct
@@ -641,9 +713,17 @@ so the structural rules could only be checked by building elements and
 reading them back. It is now a function, and the DOM is only what happens
 afterwards.
 
-**28. README/CONTEXT rewrite** once the 9-row model is settled. They
-currently carry inline corrections pointing at the session log rather
-than the finished model.
+**28. README/CONTEXT rewrite — now urgent, they are WRONG.** Not stale
+prose any more: `CONTEXT.md` and `README.md` state things this session
+disproved, and a reader following them would be misled.
+
+- `CONTEXT.md` still lists "mid-word nulls, /s/ orientation" as open
+  (§421) and still tells you to spell /s/ by hand with `S$`/`S%` (§303).
+  Both are derived now.
+- `README.md`'s flip list (§462) predates the approximants, and its
+  account of mid-word nulls (§198) predates the syllable rule.
+
+`AVATARIAN.md`, `CORPUS.md` and this file are current; those two are not.
 
 ---
 
