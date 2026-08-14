@@ -195,8 +195,26 @@ This is what `render.js` does: `nullFor(partner)` picks the tall `∅c`
 beside a vowel and the short `∅` beside a consonant, which is also what
 keeps a block nine rows tall whatever is in it (4+5 or 5+4). It applies
 to a null you type as well as one the renderer inserts, so `0` means "a
-null" and the sound beside it decides which — including mid-word, where
-canon puts nulls the renderer can't yet derive.
+null" and the sound beside it decides which.
+
+**Mid-word nulls are derived too, as of session 11.** A block never
+straddles a syllable boundary: sounds pair two at a time *within one
+syllable*, and where a syllable ends a null holds the leftover slot open.
+Syllables divide by maximum onset, so a consonant or a legal cluster goes
+with the vowel after it.
+
+```
+found    f aʊ n d           one block        panda   p æ n ∅ d ə
+free     f r i ∅            one block        frozen  f r oʊ ∅ z ə n ∅
+academy  ə ∅ k æ d ə m i    a-ca-de-my
+```
+
+From the sounds alone this reproduces 234 of the 244 attested spellings
+exactly, nulls and all — `padToBlocks` in `g2p.js`, stated in full in
+`AVATARIAN.md` §12.5. Before it, 45 of the 51 attested mid-word nulls had
+no account at all. The ten it misses divide at a **morpheme** boundary as
+well (`some|thing`, `water|proof`), which is probably the same principle
+on a second kind of boundary and is on too few examples to state.
 
 Blocks pack tight with no borders; word spacing separates words.
 
@@ -494,9 +512,34 @@ glyph's design and the build reads it back, so the evidence and the flag
 get recorded in the same sitting rather than one of them being forgotten
 in a Python set.
 
-**/s/ is the exception**: "students" writes both of its /s/ in top slots and
-uses a different orientation for each, so no slot rule can select them. Use
-the `$` / `%` override there.
+**Two rules turn a glyph by what SHARES its block, not by the slot**, and
+neither is in `FLIPS`. Both were read off the corpus in session 11 and
+live in `render.js`:
+
+* **The approximants turn inside a cluster.** /r l w j/ — exactly the
+  English approximants — mirror in the bottom of a block holding two
+  consonants, 28 times against 1. Under a vowel they stay upright: /r/ is
+  plain in all six such blocks (*are, ear, fire, choir, organic,
+  warrior*). Across seventeen consonants ever seen in a bottom slot,
+  those four are the only ones that ever mirror. `TURNS_IN_CLUSTER` is
+  `{r, j, w}`; **`l` stays a by-slot flip on purpose**, because its
+  evidence under a vowel is mixed — 2 mirrored against 3 plain — and
+  moving it would trade three known exceptions for two.
+* **/s/ turns on top of a cluster** — mirrored in 11 of the 12 blocks
+  where it sits above another consonant, and in none of the 20 where it
+  does not.
+
+**That last one settles the old /s/ exception.** "students" writes both
+of its /s/ in top slots with a different orientation for each, which no
+by-slot rule can produce — and that is the point: /s/ takes both
+orientations in the *same* slot, so what decides is the glyph beneath it.
+The `$` / `%` override is no longer needed to spell it. (`designs/s.json`
+also carried a `flips: true` that was an undocumented by-slot override
+and wrong for the same reason; it is gone.)
+
+Two glyphs, **u** and **ɔ**, are stored as their bottom-slot drawing
+rather than their top one, so the slot test is inverted for them rather
+than the art redone.
 
 ### The sounds syntax
 
@@ -509,8 +552,8 @@ It is **ASCII-first, typeable on a plain QWERTY keyboard**. Sounds are
 separated by spaces, words by `/`:
 
 ```
-S$ T UW 0 D AX N T S 0   /   M EH T AX L 0 B EH N D IH NG
-students                     metalbending
+s t oo 0 d uh n t s 0   /   m eh t uh l 0 b eh n d ih ng
+students                    metalbending
 ```
 
 * **Readable codes** are the primary spelling — the respelling keys
@@ -527,8 +570,11 @@ students                     metalbending
   been written in capitals. See TODO item 29.
 * **IPA is accepted too**, plus aliases: `eɪ` for `e`, `ɝ`/`ɜr` for `ɜ`.
 * **`0`** (or `_`, `-`) is the `∅` empty-slot filler.
-* **`$` / `%`** suffixes force a glyph's top or bottom orientation — `S$`.
-  Needed where the slot doesn't decide it, currently only /s/.
+* **`$` / `%`** suffixes force a glyph's top or bottom orientation —
+  `s$`, `r%`. They win over the derived orientation. Since session 11
+  derives /s/ and the approximants, nothing needs one to be *drawn*
+  correctly; they are how a corpus entry records what a source actually
+  shows, including the three attested `l$` the rules do not reproduce.
 * **`(parentheses)`** caption a word rather than being read as sounds, so
   `M EH T AX L 0 B EH N D IH NG (metalbending)` draws captioned. Converting
   from English emits these automatically, and since the label is part of the
@@ -612,15 +658,11 @@ parameter is the answer there. It *does* load the corpus, which is a few
 KB and is the layer the wiki most needs — an article writing "Appa"
 should write it the way canon does.
 
-The rule layer, for reference — it is still what handles anything the
-other two miss: A small hand-written
-exception dictionary (`EXCEPTIONS` in `g2p.js`) already covers a few
-Avatar-relevant words (world, water, fire, earth, avatar...) — extend that
-list first for anything that comes out wrong. For production-grade
-accuracy, swap it for a bundled CMU Pronouncing Dictionary lookup (the
-ARPAbet→IPA table is already included in `g2p.js` as `ARPABET_TO_IPA`,
-ready for that upgrade) — that's a v2 item too, since a full dictionary is
-a few MB and worth deciding on deliberately rather than shipping by default.
+So on the wiki the chain is corpus → `EXCEPTIONS` → rules, with the
+dictionary layer missing. `EXCEPTIONS` is what covers the Avatar
+vocabulary there (`waterbender`, `Kyoshi`, `Omashu`) — extend it for
+anything that comes out wrong, remembering that a word somebody has *seen
+written* belongs in the corpus instead, which the gadget does load.
 
 The template also accepts an explicit `ipa=` parameter for exactly this
 reason — use it whenever you already know the correct pronunciation and
@@ -640,15 +682,25 @@ don't want to rely on the guesser.
 - /x/ has no glyph yet; six others were drawn and shipped without a
   recorded source (see above).
 - ~~Positional vowel variants ("top/bottom" forms) are not implemented.~~
-  Implemented: six glyphs mirror by slot, and the draw pad recognises a
-  bottom-slot form and reports it as such.
-- Punctuation (comma, question mark, apostrophe) is stripped, not rendered,
-  though the key chart documents how each should behave.
+  Implemented: seven glyphs mirror by slot (`FLIPS_BASE`), /s/ and the
+  approximants mirror by what shares their block, and the draw pad
+  recognises a bottom-slot form and reports it as such.
+- ~~Punctuation (comma, question mark, apostrophe) is stripped, not
+  rendered.~~ `. , ! ?` are drawn as of session 11 — one lattice column
+  wide and nine rows tall, standing beside the writing rather than in a
+  slot, and breaking the pairing so the sounds either side of a mark pair
+  among themselves (`AVATARIAN.md` §12.7a). They are inline SVG in
+  `render.js`, not designer glyphs: a 1×9 lattice is a third height class
+  the designer does not have (TODO item 32). The apostrophe is still
+  stripped.
 - ~~Reverse decode (clicked IPA → English) only matches the built-in
   exception dictionary.~~ Fixed by `js/reverse.js` — fuzzy phoneme edit
   distance against the corpus, `EXCEPTIONS` and the whole CMU dictionary.
   Any word you build by hand gets suggestions under the sounds box.
 
-*(The rest of this README predates the corpus and the readable sound
-codes in places. TODO item 28 is the rewrite; it waits on the C-C
-question so the 9-row model can be stated whole.)*
+*(Session 12 brought the parts that had gone WRONG back into line with
+`AVATARIAN.md` — mid-word nulls, orientation, punctuation, the lookup
+chain on the wiki. The prose elsewhere is older than the corpus in
+places, but it no longer contradicts the spec. The one thing still
+stated as unknown that a measurement would settle is the C-C row
+overlap: TODO B1.)*

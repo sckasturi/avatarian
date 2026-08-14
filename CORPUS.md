@@ -68,10 +68,12 @@ them from fact.
 
 ### The pronunciation can be wrong
 
-`toph` is in `EXCEPTIONS` in `g2p.js` as `t oʊ f` — the natural English
+`toph` was in `EXCEPTIONS` in `g2p.js` as `t oʊ f` — the natural English
 reading, rhyming with "loaf". **The reference material shows `T AA F`**
-(/t ɑ f/), rhyming with "off". The tool is confidently wrong, and there
-was no way to know without checking a source.
+(/t ɑ f/), rhyming with "off". The tool was confidently wrong, and there
+was no way to know without checking a source. (It has since moved to the
+corpus, as this section argues it should; `what` went the same way in
+session 12, `w ʌ t` against canon's `w ɑ t`.)
 
 This will not be the only one. Every in-world name is a guess unless
 someone has seen it written.
@@ -96,18 +98,26 @@ of a corpus is that we do not need to know why in order to be right.
 
 ### The same unknown, elsewhere
 
-The two other long-standing open questions are the same shape:
+The two other long-standing open questions were the same shape:
 
 - **Mid-word nulls.** `students` = `(s,t)(u,∅)(d,ə)(n,t)(s,∅)` and
   `metalbending` = `(m,ɛ)(t,ə)(l,∅)(b,ɛ)(n,d)(ɪ,ŋ)`. Both split into two
-  units, each padded independently. What decides the split is unknown —
-  it is not morpheme boundaries and not syllables (`CONTEXT.md` has the
-  full argument).
+  units, each padded independently. What decided the split was unknown —
+  and the argument recorded here for two sessions, that it is *not*
+  syllables, was wrong: it used dictionary hyphenation rather than
+  phonological syllabification.
 - **/s/ orientation.** "students" writes both of its /s/ in top slots
   with different orientations, so no slot rule can select them. The
-  `S$`/`S%` override exists purely to spell this out by hand.
+  `S$`/`S%` override existed purely to spell this out by hand.
 
-A corpus records all three as data instead of deriving them.
+A corpus records all three as data instead of deriving them — which is
+the argument for building one, and it did not stop there. **Both of these
+were answered in session 11, by reading the corpus back.** A block never
+straddles a syllable boundary (`AVATARIAN.md` §12.5), and /s/ mirrors on
+top of a cluster (§12.6). Neither answer came from reasoning about the
+script; both came from having 255 sightings in one file to count.
+
+`appa` is still unexplained, and still drawn correctly.
 
 ---
 

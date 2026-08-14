@@ -254,12 +254,35 @@ survived so long, and disagreed on everything else. It is also what made
 /ɑ/ look inverted between "katara" and "appa" — different slots, and /ɑ/
 is one of the glyphs that takes a different form in each.
 
-An odd phoneme count leaves the last bottom slot empty and a **null filler**
-is written into it. It is part of the spelling — five of the sample's words
-carry it. There are two nulls, `null_v` (a rounded ∪) and `null_c` (a
-squared ∪, type `null_consonant`). **Neither is a sound.** (Session 4 rename:
-these were `glot_v`/`glot`, and `glot` was mistakenly documented as /ʔ/, a
-glottal stop — it never was.)
+**Pairs, but never across a syllable boundary.** Sounds are taken two at
+a time *within one syllable*; where a syllable ends the block ends, and a
+null holds the leftover slot open. Syllables divide by **maximum onset**
+— a consonant, or a cluster English allows at the start of a syllable,
+goes with the vowel that *follows* it:
+
+```
+found    f aʊ n d             /nd/ closes one syllable      one block
+panda    p æ n ∅ d ə          pan-da: the same pair, split  two
+free     f r i ∅              /fr/ opens one syllable       one block
+academy  ə ∅ k æ d ə m i      a-ca-de-my
+```
+
+Read off 255 attested spellings, this reproduces 234 of them exactly,
+nulls and all, from the sounds alone. `padToBlocks` in `g2p.js`; full
+statement in `AVATARIAN.md` §12.5. Before it, 45 of the 51 attested
+mid-word nulls had no account at all.
+
+Note `festival` is *fe-sti-val*, not *fes-ti-val*: maximum onset is
+phonological, not dictionary hyphenation, and that is why its /s/ and /t/
+share a block. Reasoning from hyphenation is what kept this rule wrong
+for two sessions.
+
+An odd phoneme count leaves the last bottom slot empty and the same
+**null filler** is written into it. It is part of the spelling — five of
+the sample's words carry it. There are two nulls, `null_v` (a rounded ∪)
+and `null_c` (a squared ∪, type `null_consonant`). **Neither is a sound.**
+(Session 4 rename: these were `glot_v`/`glot`, and `glot` was mistakenly
+documented as /ʔ/, a glottal stop — it never was.)
 
 **Which null is used is picked by what it's paired with**, not by the
 null's own height class: **a vowel paired with a null takes the 5-height
@@ -276,7 +299,10 @@ mirrored vertically when they land in a bottom slot — `avatarian-flipped`
 in `render.js`, a `scaleY(-1)` in the CSS. Everything else keeps one
 orientation in both slots.
 
-| flips | evidence |
+`FLIPS_BASE` is **æ ɑ l ɪ e aɪ ə**, and every one of them turns on the
+slot alone:
+
+| flips by slot | evidence |
 | --- | --- |
 | æ | "at" (top, cup ∪) vs "mad" (bottom, cap ∩) |
 | ɑ | "appa" (top, proper Y) vs "katara" (bottom, stem up) |
@@ -284,6 +310,33 @@ orientation in both slots.
 | ɪ | "metalbending" |
 | e | "Aang" (top) vs "wake" (bottom) |
 | aɪ | key chart (rule above, dots below) vs "fire" (dots above the rule) |
+| ə | one letter with ɜ; `nurse` was its top form and `schwa` its bottom |
+
+**But the slot is not the only thing that turns a glyph, and that is why
+this list never quite fit.** Two rules were read off the corpus in
+session 11 and are in `render.js`, not in `FLIPS`:
+
+* **The approximants turn inside a CLUSTER.** /r l w j/ — exactly the
+  English approximants, and no other consonant — mirror in the bottom of
+  a block that holds **two consonants**, 28 times against 1. Under a
+  vowel they stay upright: /r/ is plain in all six such blocks (*are,
+  ear, fire, choir, organic, warrior*). Of seventeen consonants ever seen
+  in a bottom slot, those four are the only ones that ever mirror.
+  `TURNS_IN_CLUSTER` is `{r, j, w}` — **`l` is deliberately left in
+  `FLIPS` instead**, because its evidence under a vowel is mixed (2
+  mirrored against 3 plain) and moving it would trade three known
+  exceptions for two. It wants more attested `l` in V-C blocks.
+* **/s/ turns on top of a cluster** — mirrored in 11 of the 12 blocks
+  where it sits above another consonant, and in none of the 20 where it
+  does not. `TURNS_ABOVE_CLUSTER`.
+
+Both are read from what SHARES the block, which is why `makeSlot` is
+handed the other slot's symbol.
+
+Two glyphs, **u** and **ɔ**, are stored as their bottom-slot drawing
+rather than their top one — /u/ is plain in all 18 of its bottom slots
+and mirrored in 7 of its 9 top ones. The slot test is inverted for them;
+the art was not redone.
 
 /aɪ/ is worth spelling out because it is the cleanest case in the set.
 "fire" is /f aɪ ə r/, so pairing puts aɪ at index 1 — a **bottom** slot —
@@ -303,9 +356,20 @@ Two things to hold on to:
   wrong: most glyphs hold one orientation. Only add a sound on the
   strength of a word that actually shows it flipped.
 
-**/s/ is not slot-driven** and is why the `$`/`%` override exists:
-"students" writes both of its /s/ in TOP slots with a different
-orientation for each. Spell those `S$` and `S%`.
+**You no longer spell /s/ by hand.** The rule above derives it, including
+for "students" — both /s/ in TOP slots with a different orientation for
+each, the word the override was built for. `designs/s.json` carried
+`flips: true` as an undocumented by-slot override; that could not have
+been right for a glyph taking both orientations in one slot, and the flag
+is gone.
+
+`$`/`%` still exist and still win over the derivation, but they are now a
+**recording** tool rather than a spelling one. A corpus entry writes what
+the source shows; the site's sounds box needs no marker to draw a word
+correctly. Checked: of the 53 markers in `corpus/attested.json`, the
+derivation reproduces 50. The three misses are all `l$` — `school`,
+`stillness`, `always` — which is the known `l` exemption above, and no
+/s/ marker disagrees.
 
 **Heights are the script's native units — always on, no toggle** (as of
 session 4). Consonants render 52×52, vowels 52×41.6 — 5 units tall against
@@ -418,15 +482,33 @@ own numbered list, which drifted out of step with the one in `HANDOFF.md`
 and made item numbers ambiguous.
 
 Questions about the *script* rather than the code stay in `AVATARIAN.md`
-§10: mid-word nulls, /s/ orientation, the remaining positional variants,
-the unassigned mark in the key.
+§10, and the settled answers in §12. **Mid-word nulls and /s/ orientation
+are no longer among the open ones** — the corpus answered both in session
+11 (§12.5, §12.6). What is still open there: /x/ has no glyph, why `appa`
+takes three blocks, the remaining positional variants (ɪ and u), the
+unassigned mark in the key, and — the one thing that needs eyes on the
+art rather than more code — **how far two consonants overlap in a C-C
+block**, which is TODO B1.
 
 ## Testing
 
-There's no test suite. Verification so far has been Playwright driving
-headless Chromium against `file://site/index.html`, checking for console
-errors and asserting glyph//block counts per tab. Worth formalising if you
-keep iterating. Quick manual check — this sentence should transcribe as:
+`python3 tools/run_tests.py` runs everything: the geometry cross-check,
+the Python corpus builder tests, and the Node suite over the site's own
+JS (`tests/*.test.js`, loaded through `tests/harness.js`, which stubs
+just enough DOM). `tests/recognise.html` is opened by hand — Node cannot
+do SVG geometry.
+
+Read `tests/README.md` before adding one. Two things that bite:
+
+* **A test that names a real word will break when that word becomes
+  attested**, because the corpus wins the lookup chain and the tier
+  changes under it. Six currently fail exactly this way (TODO item 35).
+  Pick a specimen the corpus is unlikely ever to hold, or have the test
+  insert its own fixture.
+* The suite loads the real 1.6 MB `lexicon.js` where it needs it. A test
+  asserting the dictionary layer against a stub is asserting the stub.
+
+Quick manual check — this sentence should transcribe as:
 
 ```
 katara please do not be mad

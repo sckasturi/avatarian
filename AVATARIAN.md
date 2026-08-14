@@ -562,8 +562,12 @@ notes in `CONTEXT.md`.
    it closes the question of whether the sounds syntax needs a way to
    write the tall null. It doesn't.
 
-4. **/s/ orientation** (§6) — rotates, but not by slot. Four observations
-   (both /s/ in "students", plus "some") that no single slot rule satisfies.
+4. ~~**/s/ orientation**~~ **Answered.** /s/ mirrors when it sits on top
+   of another consonant — 11 of the 12 such blocks, and 0 of the 20 where
+   it does not. "students" was the case no slot rule satisfied precisely
+   because /s/ takes both orientations in the *same* slot; what decides is
+   the glyph beneath it. The approximants /r l w j/ turn the same way, in
+   the bottom of a two-consonant block. See §12.6.
 
 5. **The remaining positional variants.** æ, l, e are settled (§6). ɪ and u
    are numbered as pairs in the source but only one form each is drawn, so
@@ -574,14 +578,18 @@ notes in `CONTEXT.md`.
    above the vowel-block null; `CELLS` maps it to `None` (skipped) pending a
    source.
 
-7. **Punctuation.** Comma, question mark, and apostrophe are documented in the
-   key chart (comma at the bottom next to the word; apostrophe treated like a
-   vowel; question mark centred) but are currently stripped, not rendered.
+7. **Punctuation.** ~~Stripped, not rendered.~~ `. , ! ?` are drawn as of
+   session 11 — a third height class, one lattice column wide and nine
+   rows tall (§12.7a). The **apostrophe** is still stripped, and the key
+   chart's note that it is treated like a vowel is untested: `woong's` and
+   `heng's` are attested and both write the possessive as sounds (`ɛ s`),
+   with no mark at all.
 
-8. **G2P accuracy.** Rule-based, not dictionary-grade. Unstressed-vowel
-   reduction isn't modelled ("metalbending" → `/m ɛ t æ l …/` where canon
-   reduces to `/m ɛ t ə l …/`). Upgrade path: bundle a CMU Pronouncing
-   Dictionary; the ARPAbet→IPA table is already in `g2p.js`.
+8. ~~**G2P accuracy.**~~ **Addressed in session 7.** `js/lexicon.js`
+   bundles the CMU Pronouncing Dictionary ahead of the rules, and reading
+   its stress marks gives the unstressed-vowel reduction this asked for —
+   "metalbending" comes out `/m ɛ t ə l …/`. The rules are now the
+   fallback; the corpus and `EXCEPTIONS` still sit above the dictionary.
 
 ---
 
