@@ -27,43 +27,50 @@ a shared row. The last piece of the 9-row model (item 3); everything else
 in that model is implemented. Session 5's working guess was a one-row
 overlap, unconfirmed.
 
-**Deliberately deferred until the corpus exists (20).** Rather than
-reason about it from one or two samples, the plan is to build the corpus
-first and then *look* — with attested spellings machine-readable, every
-C-C block in the material can be pulled up at once and the answer read
-off real examples. So this is not waiting on a decision so much as
-waiting on 20, and item 3 is downstream of both.
-
-**The list now prints itself.** `python3 tools/run_tests.py` reports
-every attested C-C block as a diagnostic (item 27), because the nine-row
-invariant can't assert an answer nobody has. Today it is four:
+**No longer waiting on the corpus — the evidence has arrived.** The plan
+was always to build the corpus first and then *look*, rather than reason
+from one or two samples. That has now happened. `python3
+tools/run_tests.py` prints every attested C-C block as a diagnostic (item
+27), and the list went from four to **fifteen** in a single session of
+transcribing:
 
 ```
-please: (p,l)   students: (s%,t)   students: (n,t)   metalbending: (n,d)
+asked: (k,t)     found: (n,d)      hard: (r,d)     help: (l,p)
+metalbending: (n,d)   mount: (n,t)   please: (p,l)  rest: (s,t)
+farm: (r,m)      free: (f,r)       gems: (m,z)     still: (s%,t)
+trends: (t,r)    trends: (d,z)     waters: (r,z)
 ```
 
-Four is not many to generalise from, which is the same reason this is
-still deferred — but the instrument exists, and every source transcribed
-in the workbench adds to it without anyone maintaining a list.
+**This is the thing to pick up next.** Fifteen blocks across three
+independent sources is enough to read the answer off rather than guess
+it: measure the row count of each of those blocks in its source image and
+see whether two consonants total ten rows or overlap into nine. Session
+5's working guess was a one-row overlap, and it has never been checked
+against anything.
 
-**B2. What reference material exists, and where.** Needed for the corpus
-(20–24) and the catalogue page (7). An inventory of the images, and what
-words each contains.
+Item 3 is downstream, and so is a chunk of item 30 — `still: (s%,t)`
+is a bottom-slot /s/ in attested material, which is exactly the evidence
+that item was deferred waiting for.
 
-**The top blocker, and now the only one that costs you anything** — but
-it has started moving. **One source of eight is catalogued**: the
-"cherries on top" poster, filed through the workbench with its image and
-an Instagram URL for `where`. That is the first entry in this project's
-history whose provenance survives the session it was read in.
+~~**B2. What reference material exists, and where.**~~ **Answered for the
+live corpus.** Every source in `corpus/attested.json` now carries its
+image and can be re-checked. This was the top blocker for four sessions;
+it is not one any more.
 
-The other seven still say "Not yet catalogued — see TODO B2", covering
-23 of the 26 entries. The spellings are right and nobody can re-check
-them.
+What broke the deadlock was giving up on retrofitting. The 22 entries
+whose provenance had been lost were **moved to `corpus/uncatalogued/`**,
+which nothing reads — `build_corpus` opens one hard-coded path, so a
+sibling folder is inert. They are kept in the same file shape so a block
+goes back verbatim once its image is filed. Then the corpus was rebuilt
+from material that had an image from the start.
 
-**There is a tool for it now** (item 23). Start the workbench, pick a
-source, drop its image on it, and write the two sentences saying what it
-is and where it came from. That is per *source*, not per word — seven
-more images clears the rest of the corpus.
+**The quarantine is what is left of B2.** 22 entries from 7 sources:
+`wake-up-note` (11), `name-references` (4), `fanny-poster` (3),
+`students`, `metalbending`, `appa-art`, `fire-photo`. The spellings are
+right; nobody can check them. Two of those are probably recoverable
+cheaply — `katara-letter` in the live corpus looks like the same wake-up
+note those eleven came off, so they may be able to move back with real
+provenance rather than being re-typed.
 
 ~~**B3. Does `appa` show tall-short-tall nulls?**~~ **Answered in session
 10: yes.** The art shows **mixed null heights** — tall beside the vowels,
@@ -105,33 +112,49 @@ workstream — and also the **prerequisite for item 3 and B1**, since the
 C-C question is going to be answered by looking at attested blocks
 rather than by reasoning from a couple of samples.
 
-**The file exists and 26 entries are in it**, from 8 sources. Twenty-three
-came from the docs in session 8 — the twelve words of the wake-up note,
-`students`, `metalbending`, `appa`, the four names, the poster sentence
-and `fire`. Three more (`cherries`, `on`, `top`) were transcribed through
-the workbench in session 10, and are the first with a citable source.
+**82 words from 94 sightings across 3 sources**, every one of them filed
+with its image:
+
+```
+toph-letter     46      katara-letter   33      instagram-1.1   15
+```
+
+**An entry is a SIGHTING, not a word.** That changed during the session
+and it is the model everything else now assumes. A word seen in two
+sources is two entries; the unique thing is `(key, source, spelling)`.
+Same spelling from another source is corroboration and is counted; a
+different spelling is a conflict and both are kept as alternates; a
+repeat inside one source raises that entry's `times`. **Independent
+sources rank above repetition** when picking what renders — five
+writings on one poster is one hand agreeing with itself. `CORPUS.md` §2
+has the reasoning; `tools/build_corpus.py` enforces it.
 
 Adding a word is a row in `corpus/attested.json` and a re-run of
-`tools/build_corpus.py`, or a pass through the workbench. What is left is
-the material this repo does not have — **which is B2, not a design
-problem.**
+`tools/build_corpus.py`, or a pass through the workbench.
 
-Seven of the eight sources still end in "Not yet catalogued — see TODO
-B2". That is the honest state and it is deliberately loud: the spellings
-are right, but a year from now nobody will be able to re-check them.
+**What this bought, immediately:** B1's C-C inventory went from four
+blocks to fifteen, and B2 stopped being a blocker. The corpus is also the
+test fixture, so transcribing a source gives the suite more evidence with
+no test written — one long-standing failure fixed itself this way.
 
-**Next up, per the user: water, earth and air**, added with images. Those
-three are worth more than their count — the reference material supplies
-IPA *alongside* Avatarian for all four elements, which is what proved the
-ɜ/ə merge, and none of that evidence is in the corpus yet.
+**Still wanted: water, earth and air, with images.** Worth more than
+their count — the reference material supplies IPA *alongside* Avatarian
+for all four elements, which is what proved the ɜ/ə merge, and none of
+that evidence is in the corpus yet.
 
-~~**21. Show confidence in the UI.**~~ **Plumbing done in session 8**;
-the display is still open and still blocked on B4. `lookupWord()`
-returns `{ipa, tier, entry}` and `sentenceToIPA` carries it onto every
-word, so the page knows which of attested / derived / guessed each word
-is, plus source and confidence for the attested ones. **Nothing shows it
-yet** — that is the judgement call in `CORPUS.md` §3, and it wants
-looking at with real content rather than deciding cold.
+**21. Show confidence in the UI.** Plumbing done in session 8;
+`lookupWord()` returns `{ipa, tier, entry}` and `sentenceToIPA` carries
+it onto every word. The full attested / derived / guessed display is
+**still open and still blocked on B4** — that one has to mark nearly
+every word on the page, which is the judgement B4 is about.
+
+**One narrow slice of it shipped**: a word whose sources *disagree* is
+marked `contested` on the site, with the counts and sources in its
+tooltip. That needed no B4 decision because it is rare by construction —
+it marks the handful genuinely in dispute rather than the whole page.
+Note it is looked up in `renderWords` rather than read off `w.entry`,
+because `draw()` renders from the sounds box and those word objects carry
+no corpus entry.
 
 ~~**22. Make the corpus win in the lookup chain.**~~ **Done in session
 8.** `corpus/attested.json` → `tools/build_corpus.py` → `site/js/corpus.js`,
@@ -172,6 +195,33 @@ The transcription box takes the site's own sounds syntax, so nothing new
 had to be invented: `/` splits words and `(brackets)` name one you
 already know. A line you could paste into the main site is a line you can
 paste here.
+
+**Added since, and the reason the corpus quadrupled in a day:**
+
+- **English in.** Type the line as you read it and get a first draft of
+  the sounds, so a poster is transcribed by *correcting* a draft rather
+  than spelling every word from nothing. A seeded spelling is an
+  inference, so every word it fills in starts **unconfirmed and
+  unsaveable**: saving one unchecked would file the model's own
+  prediction as evidence, and the "against the model" panel would then
+  show perfect agreement — the model validated against itself. Correct
+  it, or tick that it already agrees; either way a human compared it
+  with the image. Mid-word nulls are deliberately not guessed.
+- **The spelling is editable in the row**, not only in the transcription
+  box, and edits sync back so the two never drift.
+- **Repeats are counted, not dropped** — a word written three times in
+  one line raises that entry's `times`.
+- **The entry list is one row per word**, showing how many times it has
+  been seen rather than a block count you can read off the preview.
+  Opening a word lists **every sourcing**, each with its own glyphs,
+  repeat count and confidence.
+- **Sources can be deleted**, taking their entries with them (an entry
+  citing a missing source fails validation, so they cannot be orphaned).
+  Words attested elsewhere stay, and the confirmation says which.
+- **Images are named after the source.** `tools/rename_images.py` fixes
+  ones filed before that; it reports orphans and never deletes them.
+- The tools column is sticky, and the palette and draw pad insert into
+  whichever sounds field you last touched.
 
 ```
 F AE N IY / IH Z / M IH S IH NG 0            three entries, words suggested
@@ -468,13 +518,18 @@ the designer silently overrides the documented table — so this is also a
 question about whether that override should be able to add a flip nobody
 recorded evidence for.
 
-**Deliberately deferred until the corpus is built (20)** — same reasoning
-as B1. `CORPUS.md` §4: every attested glyph in a known slot is evidence
-for or against a `FLIPS` entry, and the current table cites one or two
-words per glyph from memory. Rather than argue /s/ and /ɔɪ/ from the
-docs, transcribe the material and read every orientation off it at once.
-The answer arrives with the corpus instead of being litigated ahead of
-it.
+**The corpus now has something to say about /s/.** This was deferred
+waiting on 20, on the same reasoning as B1: every attested glyph in a
+known slot is evidence for or against a `FLIPS` entry, and the current
+table cites one or two words per glyph from memory. The material is now
+transcribed, and `still: (s%,t)` is a **bottom-slot /s/ in attested
+material** — read off a source image rather than argued from the docs.
+
+Both /s/ forms appearing in the same slot is what no flip rule can
+produce, so the question is still whether `designs/s.json`'s `flips: true`
+should be able to override a documented table that deliberately excludes
+it. But it can now be settled by looking. /ɔɪ/ still has no evidence in
+either direction.
 
 **19. Stroke-level fusion.** Canon is hand-lettered so adjacent glyphs
 interlock and share edges; this butts discrete SVGs together. Correct
@@ -601,10 +656,12 @@ Kept for reference; numbers are not reused.
 Kept separate because it is nearly done and blocked on one question.
 
 Implemented: V-C layout, the 3-row/4-row split, null selection by
-pairing partner. **Outstanding: C-C (B1), which is deferred until the
-corpus (20) can show every attested C-C block at once.** Once that lands, the model
-can be stated whole in `glyphspec.py` and `designer/js/geom.js` — run
-`check_geom.py` after — and it likely wants the designer's lattice
-reworked so a block's two glyphs share a coordinate space, which is what
-the "vowel and consonant merge into one glyph" case in 4-row C-V blocks
-needs.
+pairing partner. **Outstanding: C-C (B1) — and B1 is no longer waiting
+on anything.** The corpus now shows fifteen attested C-C blocks across
+three sources, which is what this was deferred for. Measure their rows in
+the source images and the last piece of the model can be stated whole in
+`glyphspec.py` and `designer/js/geom.js` — run `check_geom.py` after.
+
+It likely also wants the designer's lattice reworked so a block's two
+glyphs share a coordinate space, which is what the "vowel and consonant
+merge into one glyph" case in 4-row C-V blocks needs.
