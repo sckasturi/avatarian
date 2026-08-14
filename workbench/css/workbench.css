@@ -211,23 +211,29 @@ input:focus, textarea:focus, select:focus {
 }
 .source-reading[hidden] { display: none; }
 
-.source-words { display: flex; flex-direction: column; gap: 6px; }
+/* A wrapping grid, not a stack. A source can hold forty words and the
+   point of this view is seeing them AS a source — one per row turns a
+   poster into a scroll. Cards size to their content so a long word gets
+   the room it needs and "at" does not. */
+.source-words {
+  display: flex; flex-wrap: wrap; gap: 7px; align-items: flex-start;
+}
 .source-word {
-  display: flex; align-items: center; gap: 12px;
-  width: 100%; padding: 7px 9px; text-align: left;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 7px 9px 5px;
   background: var(--card); border: 1px solid var(--line); border-radius: 6px;
   cursor: pointer;
 }
 .source-word:hover { background: var(--hover); }
-.source-word.is-active { border-color: var(--accent); }
-.source-word-art {
-  --glyph-size: 22px; flex: none; max-width: 45%; overflow-x: auto;
+.source-word.is-active { border-color: var(--accent); background: var(--hover); }
+.source-word-art { --glyph-size: 20px; }
+.source-word-key {
+  display: flex; align-items: baseline; gap: 5px;
+  font-size: 0.85rem; color: var(--ink); white-space: nowrap;
 }
-.source-word-key { font-size: 0.95rem; color: var(--ink); }
-.source-word-meta {
-  margin-left: auto; text-align: right; flex: none;
-  font-size: 0.75rem; color: var(--faint);
-}
+/* Marks rather than sentences — "3× ◌ +2" fits under a word, the words
+   for it live in the tooltip. */
+.source-word-meta { font-size: 0.68rem; color: var(--faint); }
 .source-words .empty { color: var(--faint); font-size: 0.85rem; }
 .entry-key { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .entry-blocks { font-size: 0.75rem; color: var(--faint); font-variant-numeric: tabular-nums; }

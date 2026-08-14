@@ -37,6 +37,11 @@ window.AVATARIAN_CORPUS = {
       "what": "evil seagull / save beaverfish / fresh from my garden / bao pie / looking for humansitters / miao / warrior within / courage in every step",
       "where": "https://www.instagram.com/mmara_art/p/DboCKbiDL_v/?img_index=1",
       "image": "instagram-3.1.png"
+    },
+    "instagram-1.2": {
+      "what": "sula's baking class / frozen cream cakes / bending performacnce / ignite / cancel school / panda ballet / balance / catfish meal card",
+      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=2",
+      "image": "image-5.png"
     }
   },
   "words": {
@@ -1689,6 +1694,282 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "instagram-3.1"
+    },
+    "baking": {
+      "ipa": [
+        "b",
+        "e",
+        "ɪ",
+        "∅",
+        "k",
+        "ɪ",
+        "ŋ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "balance": {
+      "ipa": [
+        "b",
+        "æ",
+        "l",
+        "ə",
+        "n",
+        "s$"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "ballet": {
+      "ipa": [
+        "b",
+        "æ",
+        "l",
+        "e",
+        "ɪ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "bending": {
+      "ipa": [
+        "b",
+        "ɛ",
+        "n",
+        "∅",
+        "d",
+        "ɪ",
+        "ŋ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "cakes": {
+      "ipa": [
+        "k",
+        "e",
+        "ɪ",
+        "k",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "cancel": {
+      "ipa": [
+        "k",
+        "æ",
+        "n",
+        "∅",
+        "s",
+        "ə",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "card": {
+      "ipa": [
+        "k",
+        "ɑ",
+        "r",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "catfish": {
+      "ipa": [
+        "k",
+        "æ",
+        "t",
+        "∅",
+        "f",
+        "ɪ",
+        "ʃ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "class": {
+      "ipa": [
+        "k",
+        "l",
+        "æ",
+        "s$"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "cream": {
+      "ipa": [
+        "k",
+        "r%",
+        "i",
+        "m"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "frozen": {
+      "ipa": [
+        "f",
+        "r%",
+        "oʊ",
+        "∅",
+        "z",
+        "ə",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "ignite": {
+      "ipa": [
+        "ɪ",
+        "g",
+        "n",
+        "aɪ",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "meal": {
+      "ipa": [
+        "m",
+        "i",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "panda": {
+      "ipa": [
+        "p",
+        "æ",
+        "n",
+        "∅",
+        "d",
+        "ə"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "performance": {
+      "ipa": [
+        "p",
+        "ə",
+        "r",
+        "∅",
+        "f",
+        "∅",
+        "r",
+        "∅",
+        "m",
+        "ə",
+        "n",
+        "s$"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "school": {
+      "ipa": [
+        "s%",
+        "k",
+        "u",
+        "l$"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "sula's": {
+      "ipa": [
+        "s",
+        "u",
+        "l",
+        "s$"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
     }
   }
 };

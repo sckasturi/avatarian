@@ -521,6 +521,9 @@ function openSourceView(name) {
   $("source").value = name;
   showSource(name);
   $("importPanel").hidden = true;
+  // The editor waits until you pick a word out of the source. Showing it
+  // straight away would sit an unrelated entry under the source you just
+  // opened, which is the wrong thing to invite editing.
   $("editor").hidden = true;
   $("sourceView").hidden = false;
   renderSourceView();
@@ -578,24 +581,40 @@ function renderSourceView() {
     label.className = "source-word-key";
     label.textContent = entry.gloss || entry.key || "(unnamed)";
 
-    const meta = document.createElement("span");
-    meta.className = "source-word-meta";
-    const bits = [];
-    if ((entry.times || 1) > 1) bits.push(`${entry.times}×`);
-    if ((entry.confidence || "certain") !== "certain") bits.push(entry.confidence);
-    if (tokens.includes("?")) bits.push("partly unread");
-    // A word this source shares with another one — the corroboration is
-    // the interesting part, so it is worth seeing from here.
+    // Compact, so the flags are marks rather than sentences — the full
+    // wording is in the tooltip. A grid of forty words is only readable
+    // if each one is the size of a word.
+    const marks = [], said = [];
+    if ((entry.times || 1) > 1) {
+      marks.push(`${entry.times}×`);
+      said.push(`written ${entry.times} times here`);
+    }
+    if ((entry.confidence || "certain") !== "certain") {
+      marks.push("~");
+      said.push(entry.confidence);
+    }
+    if (tokens.includes("?")) { marks.push("◌"); said.push("partly unread"); }
+    // A word this source shares with another is where corroboration
+    // lives, so it stays visible even in the compact form.
     const others = state.entries.filter(
       e => e.source !== name && corpusKey(e.key) === corpusKey(entry.key)).length;
-    if (others) bits.push(`also in ${others} other source${others === 1 ? "" : "s"}`);
-    meta.textContent = bits.join(" · ");
+    if (others) {
+      marks.push(`+${others}`);
+      said.push(`also attested in ${others} other source${others === 1 ? "" : "s"}`);
+    }
+    if (marks.length) {
+      const meta = document.createElement("span");
+      meta.className = "source-word-meta";
+      meta.textContent = marks.join(" ");
+      label.appendChild(meta);
+    }
+    btn.title = [entry.key, ...said].join(" — ");
 
-    btn.append(art, label, meta);
-    btn.addEventListener("click", () => {
-      closeSourceView();
-      openEntry(index);
-    });
+    btn.append(art, label);
+    // The source view STAYS. Opening a word out of it should not throw
+    // away the thing you were reading — you are working through a source,
+    // and the editor is a detail of that, not a replacement for it.
+    btn.addEventListener("click", () => openEntry(index));
     box.appendChild(btn);
   }
 }
@@ -668,13 +687,16 @@ function applyZoom() {
 function openEntry(i, commit = true) {
   if (commit) commitEditor();
   // Picking an entry means you want to refine it, so leave the import
-  // panel and the source view rather than hiding the thing you just
-  // asked to see behind them.
+  // panel rather than hiding the thing you just asked to see.
   closeImport();
-  if (state.sourceView) closeSourceView();
   state.index = i;
+  $("editor").hidden = false;
   writeEditor(state.entries[i]);
   renderEntryList();
+  // The source view stays open above the editor when there is one: you
+  // are working THROUGH a source, and the word you opened is a detail of
+  // it. Re-rendered so the word you just picked shows as active.
+  if (state.sourceView) renderSourceView();
 }
 
 function newEntry() {
@@ -695,16 +717,19 @@ function deleteEntry() {
   markDirty();
 }
 
+/**
+ * A new source is an import.
+ *
+ * This used to make an empty source called "source-3" and put the cursor
+ * in a name field on the far side of the screen, which left a nameless
+ * husk in the file if you wandered off — and a source with no entries is
+ * not a thing anyone wants. Importing is what you were going to do
+ * anyway: name it, describe it, drop the image, transcribe it, in one
+ * panel and one pass.
+ */
 function newSource() {
-  let name = "source";
-  let n = 2;
-  while (state.sources[name]) name = "source-" + n++;
-  state.sources[name] = { what: "", where: "" };
-  renderSourceList();
-  renderSourceOptions(name);
-  markDirty();
-  $("srcName").focus();
-  $("srcName").select();
+  openImport();
+  $("impName").focus();
 }
 
 /**
