@@ -140,7 +140,7 @@ test("every attested block is nine rows — except C-C, which is open", (t) => {
       // not a reading — counting it here would put slots nobody could
       // make out into B1's evidence, and B1 is about to be settled by
       // measuring exactly these blocks.
-      if (block.top === "?" || block.bottom === "?") {
+      if (block.top === "*" || block.bottom === "*") {
         unread.push(where);
         continue;
       }
@@ -187,7 +187,7 @@ test("every symbol in the corpus has a glyph, or is an unread one", () => {
       // filled in the source but could not be made out. It has to be
       // exempt in the same breath as build_corpus exempts it, or the two
       // validators disagree about what a legal spelling is.
-      if (sym === "?") { unread++; continue; }
+      if (sym === "*") { unread++; continue; }
       assert.ok(glyphs[sym], `${entry.key}: no glyph for '${sym}'`);
     }
   }

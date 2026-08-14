@@ -257,12 +257,12 @@ function renderPreview(ipa) {
   const blocks = blocksOf(ipa);
   const odd = ipa.length % 2 === 1;
   const bodies = ipa.map(t => splitOverride(t).body);
-  const unread = bodies.filter(sym => sym === "?").length;
+  const unread = bodies.filter(sym => sym === "*").length;
   // `?` is excluded: it has no glyph deliberately, and both validators
   // accept it. Flagging it as a missing glyph would put a red warning on
   // a spelling that is going to save perfectly well.
   const unknown = [...new Set(bodies.filter(
-    sym => sym !== "?" && !(window.AVATARIAN_GLYPHS || {})[sym]))];
+    sym => sym !== "*" && !(window.AVATARIAN_GLYPHS || {})[sym]))];
 
   const note = $("previewNote");
   const bits = [`${ipa.length} symbols, ${blocks.length} blocks`];
@@ -315,7 +315,7 @@ function renderComparison(ipa) {
   const gaps = [];
   if (ipa.length === derived.tokens.length) {
     for (let i = 0; i < ipa.length; i++) {
-      if (splitOverride(ipa[i]).body === "?") gaps.push(i);
+      if (splitOverride(ipa[i]).body === "*") gaps.push(i);
     }
   }
   const readableAgrees = gaps.length && ipa.every((t, i) =>
@@ -553,7 +553,7 @@ function renderSourceView() {
   });
   const sightings = mine.reduce((n, m) => n + (m.entry.times || 1), 0);
   const unread = mine.reduce((n, m) =>
-    n + (m.entry.spelling || "").split(" ").filter(t => t === "?").length, 0);
+    n + (m.entry.spelling || "").split(" ").filter(t => t === "*").length, 0);
 
   $("sourceViewTitle").textContent = name;
   $("sourceViewCount").textContent =
@@ -596,7 +596,7 @@ function renderSourceView() {
       marks.push("~");
       said.push(entry.confidence);
     }
-    if (tokens.includes("?")) { marks.push("◌"); said.push("partly unread"); }
+    if (tokens.includes("*")) { marks.push("◌"); said.push("partly unread"); }
     // A word this source shares with another is where corroboration
     // lives, so it stays visible even in the compact form.
     const others = state.entries.filter(

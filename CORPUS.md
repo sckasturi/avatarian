@@ -175,6 +175,24 @@ An entry, as it appears in `corpus/attested.json`:
 `source` names an entry in the file's `sources` map, so the description
 of an image is written once however many words come off it.
 
+**A glyph you cannot read is written `*`.** It fills a slot, so the block
+structure is still recorded where the letter is not: `t ɑ * ∅` says four
+slots, two blocks, third one unreadable. Guessing the letter would file an
+inference as an observation; leaving the word out would lose the blocks
+with it. A spelling of nothing but `*` is rejected — that is a block count,
+not a reading.
+
+A partly-unreadable spelling **folds into a readable one it agrees with**,
+and counts as corroboration: somebody who could not make a glyph out and
+somebody who could are not in conflict about the glyphs they both read.
+It only stays separate when two readable spellings both fit, because that
+ambiguity is real. A readable spelling always outranks a partly unreadable
+one, so the site never draws `*` where some source read the letter.
+
+**Punctuation is written as itself** — `, . ? !` — and is not a slot: a
+mark is one column wide and nine rows tall, so it stands beside the
+writing and does not count toward the whole-blocks rule.
+
 **A source's `what` holds its full reading, not just a label.** Words come
 off a source one at a time, so without somewhere to keep the whole text
 the only record of what the source *says* is scattered across its entries

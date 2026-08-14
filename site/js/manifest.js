@@ -268,9 +268,9 @@ window.AVATARIAN_GLYPHS = {
     "name": "au",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 30 A 25.33 31.67 0 0 0 42 50 A 25.33 31.67 0 0 0 82 70\"/><circle cx=\"26\" cy=\"30\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"26\" cy=\"70\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 50 A 20 25 0 0 0 42 50 A 20 25 0 0 0 82 50\"/><circle cx=\"26\" cy=\"30\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"26\" cy=\"70\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "rows": 4,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 24 A 25.33 25.34 0 0 0 42 40 A 25.33 25.34 0 0 0 82 56\"/><circle cx=\"26\" cy=\"24\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"26\" cy=\"56\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 40 A 20 20 0 0 0 42 40 A 20 20 0 0 0 82 40\"/><circle cx=\"26\" cy=\"24\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"26\" cy=\"56\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "ɔɪ": {
     "name": "oi",

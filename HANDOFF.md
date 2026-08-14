@@ -7,6 +7,118 @@ what to do next.
 
 ---
 
+## Session 11 — the corpus started answering questions
+
+The corpus went from 26 entries to **255 sightings of 209 words across 11
+sources**, every one filed with its image. At that size it stopped being a
+record and became an instrument: three rules fell out of it that nobody
+had stated, and two of them had been open questions for six sessions.
+
+### A block never straddles a syllable boundary
+
+The big one. From a word's sounds alone this reproduces **234 of 244**
+attested spellings exactly, nulls and all.
+
+Everything the old model said about nulls is a special case:
+
+  * two consonants share a block only inside one syllable — `fou-nd`,
+    `fr-ee`, `be-st` do; `ben-ding`, `pan-da`, `gar-den` do not;
+  * a vowel does not pair with a consonant that starts the next syllable,
+    which is why canon writes `academy` as `ə ∅ k æ d ə m i`;
+  * V-V never shares, which was already known.
+
+Before this, **45 of the 51 attested mid-word nulls had no account at
+all** — "a null substitutes for a missing second vowel" covered six.
+
+`AVATARIAN.md` §10.2 had recorded the opposite for two sessions: "it is
+not syllables, because that would force extra nulls canon doesn't have."
+That was wrong because it used dictionary hyphenation. Phonological
+syllabification is **maximum onset**, which makes `festival` *fe-sti-val*
+rather than *fes-ti-val* — and therefore puts its /s/ and /t/ in one
+block, which is what the art shows. I predicted a null there and the user
+checked the poster and found none. The rule survived, for a different
+reason than I gave it.
+
+Implemented as `padToBlocks` in `g2p.js`. `lookupWord` now returns a
+finished SPELLING rather than a bare phoneme list, so all three tiers
+hand back the same kind of thing; the corpus tier always did.
+
+### Only the approximants turn, and only in company
+
+Across seventeen consonants seen in a bottom slot, the only ones that
+ever mirror are **/r l w j/** — exactly the English approximants — and
+they do it in the bottom of a C-C block, 28 times against 1. Under a
+vowel they stay upright: /r/ is plain in all six such blocks.
+
+**/s/ mirrors on top of a cluster** — 11 of 12 blocks where it sits above
+another consonant, 0 of 20 elsewhere. That closes TODO item 30. The
+`flips: true` in `designs/s.json` was an undocumented override and it was
+wrong: /s/ takes both orientations in the *same* slot, which no by-slot
+rule can produce. Flag removed.
+
+**`u` and `ɔ` are saved upside-down** — the stored art is their
+bottom-slot form. The slot test is inverted for them rather than the
+drawings redone.
+
+Together these reproduce canon in **993 of 1000** attested slots, and
+they account for 19 of the 52 overrides that had been typed by hand.
+
+### The FACE vowel is two letters
+
+All eleven attested /eɪ/ words write it `e` then `ɪ`. There is no single
+glyph for it in the manifest, so every such word came out a slot short
+and a block wrong. `spellSounds` expands it.
+
+The four exceptions — `take`, `wake`, `hey`, `anyway` — are exactly the
+two hand-written letters, against eleven from printed sources. Whether
+that is the script or the reading is open (§12.8).
+
+### `*` for a glyph you cannot read; `, . ? !` for punctuation
+
+`*` fills a slot, so the block structure is recorded where the letter is
+not. It folds into a readable spelling it agrees with and counts as
+corroboration — two people who could not make out the same glyph are not
+in conflict about the ones they both read.
+
+Punctuation is a **new height class**: one lattice column wide, nine rows
+tall, standing beside the writing rather than in a slot. It started as
+`?` for unreadable and `*?` for the question mark, and was swapped when
+the user pointed out that `*` for unreadable frees `?` for the mark
+everyone already knows. Eleven entries were migrated.
+
+**The four marks are not in the designer** — inline SVG in `render.js`,
+because a `1×9` lattice is a third height class the designer does not
+have. TODO item 32 lists exactly what adding it touches.
+
+### Traps worth remembering
+
+**`corpus_server.py` imports `build_corpus` once, at startup.** Editing
+the validator does nothing until the server restarts, and the failure
+looks like your data being rejected. This cost the user two rounds of
+"nothing was written" — first on the sightings model, then on `*`.
+
+**The preview browser caches `file://` JavaScript hard.** A reload is not
+enough; the tab has to be closed and reopened. Three separate "the code
+did not take effect" investigations were this.
+
+**`rename_images.py` had a real bug**, found by running it: it planned
+against the filesystem as it stood, so a name about to be vacated still
+looked occupied, and a cyclic plan would have destroyed a file. It now
+plans collisions against the plan and renames via temporaries.
+
+### Where it stands
+
+`51 pass / 6 fail`. The six are all the quarantine: five use `appa` or
+`fanny` as their specimen for the lookup chain, and one asserts `katara`
+is derived when it is now attested. None are regressions, and all want
+re-pointing at a word the corpus does not have.
+
+**B1 is half answered.** *When* a C-C block forms is settled; how far the
+two consonants overlap is not, and there are now **64 attested C-C
+blocks** to measure it on. TODO B1 lists the seven best words.
+
+---
+
 ## Session 10 — tests, flipped glyphs, and readable sound codes
 
 Items **27**, **29**, **4**, **9**, **8**, the flipped-glyph half of

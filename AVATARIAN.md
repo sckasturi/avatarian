@@ -531,16 +531,19 @@ notes in `CONTEXT.md`.
 1. **/x/ has no glyph** (§8), and six sounds that had none were drawn and
    shipped without a recorded source — provenance needed, not guesses.
 
-2. **Mid-word nulls.** Nulls appear inside words, not only at odd ends, and
-   the renderer can't currently produce these. Two confirmed spellings:
-   ```
-   students      (s,t)(u,∅)(d,ə)(n,t)(s,∅)
-   metalbending  (m,ɛ)(t,ə)(l,∅)(b,ɛ)(n,d)(ɪ,ŋ)
-   ```
-   Each divides into **two units**, paired independently, each padded with a
-   trailing null if odd. **What determines the split is unknown** — it's not
-   morpheme boundaries (`stu|dents` isn't one) and not syllables (would force
-   extra nulls canon doesn't have). Needs more multi-null words.
+2. ~~**Mid-word nulls.**~~ **Answered.** A block never straddles a
+   syllable boundary; a null holds the leftover slot open. Syllables
+   divide by maximum onset, which is what makes `festival` *fe-sti-val*
+   and lets its /s/ and /t/ share a block. From a word's sounds alone
+   this reproduces 234 of 244 attested spellings exactly — see §12.5 and
+   `padToBlocks` in `g2p.js`.
+
+   The guess recorded here for two sessions — "it's not syllables,
+   because that would force extra nulls canon doesn't have" — was wrong
+   because it used dictionary hyphenation rather than phonological
+   syllabification. The ten remaining misses divide at a **morpheme**
+   boundary too (`some|thing`, `water|proof`, `woong|'s`), which is
+   likely the same principle on a second kind of boundary.
 
 3. **"appa" breaks the pairing model.** Canon writes it as **three** blocks
    (Y, /p/, Y each over a null) where pairing predicts two, `(ɑ,p)(ɑ,∅)`. Not
@@ -660,8 +663,9 @@ the slot it fills:**
 This is what keeps every block the same height whatever is in it.
 
 Nulls occur at the end of a word with an odd sound count, and also
-**inside** words. Mid-word nulls are attested but the rule that places
-them is not determined — see §12.8.
+**inside** words, where they are placed by the rule in §12.5: a null
+holds a slot open so that the block above it does not run past the end
+of a syllable.
 
 ### 12.4 Heights
 
@@ -692,7 +696,7 @@ C-V, 4-row vowel:   1-5 consonant        · 6-9 vowel
 A 4-row vowel touches its partner directly and reads as one merged
 figure. A 3-row vowel does not touch it.
 
-### 12.5 Block types
+### 12.5 Block types, and where the blocks divide
 
 Three combinations occur: **V-C**, **C-V** and **C-C**. **V-V does not
 occur** — where two vowels would meet, a null takes the second slot.
@@ -700,6 +704,31 @@ occur** — where two vowels would meet, a null takes the second slot.
 C-C is the one case whose layout is not determined: two consonants are
 ten rows of content in a nine-row block, so they overlap, and by how much
 is unresolved (§12.8).
+
+**A BLOCK NEVER STRADDLES A SYLLABLE BOUNDARY.** Sounds are taken two at
+a time, but only within one syllable; where a syllable ends, the block
+ends, and a null fills the slot left over.
+
+Syllables divide by **maximum onset**: a consonant, or a cluster English
+allows at the start of a syllable, belongs to the vowel that *follows*
+it rather than the one before.
+
+```
+found     f aʊ n d              /nd/ closes one syllable — one block
+panda     p æ n ∅ d ə           pan-da: the same pair, divided
+free      f r i ∅               /fr/ opens one syllable — one block
+academy   ə ∅ k æ d ə m i       a-ca-de-my: the vowel closes its syllable
+frozen    f r oʊ ∅ z ə n ∅      fro-zen: likewise
+festival  f ɛ s t ə ∅ v ə l ∅   fe-sti-val, NOT fes-ti-val — /st/ is a
+                                legal onset, so it goes with the vowel
+                                after it, and s and t share a block
+```
+
+Read off 255 attested spellings, this reproduces 234 of them exactly.
+The words it does not reproduce divide at a **morpheme** boundary as well
+as a syllable one — `some|thing`, `human|sitters`, `water|proof`,
+`woong|'s` — which looks like the same principle applied to a second kind
+of boundary, on too few examples to state as a rule.
 
 ### 12.6 Orientation
 
@@ -709,11 +738,25 @@ a bottom slot — æ's cup becomes a cap, ɑ's Y inverts.
 
 The glyphs that mirror by slot are **æ ɑ l ɪ e aɪ ə**.
 
-Two glyphs do not follow the slot at all. **/s/ takes different
-orientations in the same slot**, so its orientation is part of the
-spelling and must be written explicitly rather than derived. (The shipped
-glyph set also mirrors /s/ and /ɔɪ/ by slot; whether it should is under
-review — §12.8.)
+**The approximants mirror by company, not by slot.** /r l w j/ — and no
+other consonant — turn when they sit in the bottom of a block that holds
+two consonants. Under a vowel they stay upright: /r/ is plain in all six
+such blocks (*are, ear, fire, choir, organic, warrior*). Across seventeen
+consonants seen in a bottom slot, these four are the only ones that ever
+mirror, 28 times against 1.
+
+**/s/ mirrors on top of a cluster** — in 11 of the 12 blocks where it
+sits above another consonant, and in none of the 20 where it does not.
+This is why no slot rule ever worked for it: /s/ takes both orientations
+in the *same* slot, and what decides is the glyph beneath it.
+
+Two glyphs, **u** and **ɔ**, are stored as their bottom-slot drawing
+rather than their top one. They mirror like anything else; only the
+saved art is the other way up.
+
+*(/ɔɪ/ is mirrored by slot in the shipped glyph set with no evidence
+either way — three sightings, all in bottom slots, none checked. See
+§12.8.)*
 
 ### 12.7 The lattice
 
@@ -730,17 +773,37 @@ scales uniformly — vowels are drawn at their own proportions rather than
 being squashed copies of a square drawing, so stroke weight is identical
 across the set and dots stay round.
 
+### 12.7a Punctuation
+
+A mark is **one lattice column wide and nine rows tall** — the height of
+a whole block rather than of a slot — so it stands beside the writing
+rather than inside it, and it is not paired with anything.
+
+| | | |
+| --- | --- | --- |
+| `.` | a dot on the bottom row | period |
+| `,` | a stroke through the bottom two rows | comma |
+| `!` | a stroke over a dot | exclamation |
+| `?` | the same stroke, broken by one row | question |
+
+Marks do not count toward the whole-blocks rule, and they break the
+pairing: the sounds either side of a mark pair among themselves.
+
 ### 12.8 What is not determined
 
-Four things. Each is a genuine gap, not a simplification:
+1. **How much two consonants overlap** in a C-C block. Ten rows of
+   content in a nine-row block. **72 attested C-C blocks are now
+   available to measure** — see TODO B1 for the list.
+2. **Whether /ɔɪ/ mirrors by slot.** The shipped glyph set says it does,
+   with nothing behind it: three sightings, all in bottom slots, none
+   checked against the art.
+3. **Whether /x/ has a glyph.** No source shows one.
+4. **Whether the FACE vowel is ever one letter.** Every printed source
+   writes it `e` then `ɪ`; the two hand-written letters use a bare `e`
+   (*take, wake, hey, anyway*). Whether that is the script or the reading
+   is open.
 
-1. **Where mid-word nulls go.** They are attested inside words, and the
-   words that carry them divide into units that are paired independently.
-   What decides the division is unknown: it is not morpheme boundaries
-   and not syllables.
-2. **How much two consonants overlap** in a C-C block.
-3. **What selects /s/'s orientation.** It is not the slot.
-4. **Whether /x/ has a glyph.** No source shows one.
+One mark in the reference key is still unassigned.
 
 One further sound, /x/, is written as a placeholder box; and one mark in
 the reference key is unassigned.

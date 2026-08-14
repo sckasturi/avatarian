@@ -35,7 +35,7 @@
     "toph-letter": {
       "what": "Hey Toph, How is the metalbending academy? Hope you're not being too hard on your students! Anyway, i found something out and it is really big! I am going to need your help. I have asked Zuko to come pick you up, then I need you all to come meet me at Mount Baihu. Please hurry. Aang",
       "where": "movie",
-      "image": "toph-letter.webp"
+      "image": "toph-letter.jpg"
     },
     "katara-letter": {
       "what": "Katara, Please do not be mad at me when you wake up, but I did not (unknown) I found out what the denied are after, (unknown) can (unknown) I (unknown)  you take Appa and Momo and gather up the rest of the team. I will be Aang (unknown) Aang",
@@ -677,7 +677,7 @@
     },
     {
       "key": "biggest",
-      "spelling": "b ɪ g ə ? t",
+      "spelling": "b ɪ g ə * t",
       "source": "instagram-2.1",
       "confidence": "certain"
     },
@@ -689,19 +689,19 @@
     },
     {
       "key": "contest",
-      "spelling": "k ɑ n ∅ t ɛ ? t",
+      "spelling": "k ɑ n ∅ t ɛ * t",
       "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "draw",
-      "spelling": "d ? ɔ% ∅",
+      "spelling": "d * ɔ% ∅",
       "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "fav",
-      "spelling": "f ? v ∅",
+      "spelling": "f * v ∅",
       "source": "instagram-2.1",
       "confidence": "certain"
     },
@@ -761,7 +761,7 @@
     },
     {
       "key": "salon",
-      "spelling": "s ə l ? n ∅",
+      "spelling": "s ə l * n ∅",
       "gloss": "salon",
       "confidence": "certain",
       "source": "instagram-2.1"
@@ -864,13 +864,13 @@
     },
     {
       "key": "warrior",
-      "spelling": "w ɔ r ? ə r",
+      "spelling": "w ɔ r * ə r",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
     {
       "key": "within",
-      "spelling": "w ɪ ð ? n ∅",
+      "spelling": "w ɪ ð * n ∅",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
@@ -1369,7 +1369,7 @@
     },
     {
       "key": "always",
-      "spelling": "? l$ w e ɪ z",
+      "spelling": "* l$ w e ɪ z",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1418,7 +1418,7 @@
     },
     {
       "key": "discounts",
-      "spelling": "d ? s% ? aʊ n t s",
+      "spelling": "d * s% * aʊ n t s",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1448,13 +1448,13 @@
     },
     {
       "key": "fresh",
-      "spelling": "f ? ɛ ʃ",
+      "spelling": "f * ɛ ʃ",
       "confidence": "certain",
       "source": "instagram-3.3"
     },
     {
       "key": "freshly",
-      "spelling": "f r% ɛ ʃ ? ? i ∅",
+      "spelling": "f r% ɛ ʃ * * i ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },

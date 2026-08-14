@@ -195,7 +195,7 @@ function slotRows(token) {
  * filled by drawing the glyph. This one is a gap in the READING, and no
  * amount of work here closes it — only a better look at the source.
  */
-const UNREADABLE = "?";
+const UNREADABLE = "*";
 
 /**
  * The mark for a slot that could not be read.
@@ -215,9 +215,12 @@ const UNREADABLE_SVG =
   + ' stroke="currentColor" stroke-linecap="square" stroke-linejoin="miter">'
   + '<rect x="7" y="7" width="86" height="86" stroke-width="4"'
   + ' stroke-dasharray="11 9" opacity="0.75"/>'
-  + '<path d="M 27 38 L 27 25 L 73 25 L 73 52 L 50 52 L 50 66"'
-  + ' stroke-width="9"/>'
-  + '<path d="M 50 78 L 50 80" stroke-width="9"/>'
+  // A six-pointed asterisk, matching the `*` you type. It was a question
+  // mark until `?` became the punctuation and `*` took this job over —
+  // a box holding the wrong character is worse than no character.
+  + '<path d="M 50 30 L 50 70" stroke-width="9"/>'
+  + '<path d="M 32.7 40 L 67.3 60" stroke-width="9"/>'
+  + '<path d="M 32.7 60 L 67.3 40" stroke-width="9"/>'
   + '</svg>';
 
 /**
@@ -331,19 +334,82 @@ function renderAvatarian(ipaSeq, container) {
   container.innerHTML = "";
   container.classList.add("avatarian-word");
 
-  // Which symbol lands in which slot — nulls and all — is decided by
-  // resolveBlocks. Everything from here down is only turning that into
-  // elements.
-  resolveBlocks(ipaSeq).forEach(({ top, bottom }) => {
-    const block = document.createElement("span");
-    block.className = "avatarian-block";
-    // Each slot is told what shares its block: the approximants and /s/
-    // turn according to the company they keep, not the slot alone.
-    block.appendChild(makeSlot(top, "top", bottom));
-    block.appendChild(makeSlot(bottom, "bottom", top));
-    container.appendChild(block);
-  });
+  // PUNCTUATION IS NOT PAIRED. A mark is one column wide and nine rows
+  // tall — the height of a whole block, not of a slot — so it stands
+  // beside the writing rather than inside it. It also breaks the run:
+  // the blocks either side of it pair among themselves, or a comma in
+  // the middle of a word would drag the sounds after it into the wrong
+  // slots.
+  let run = [];
+  const flush = () => {
+    resolveBlocks(run).forEach(({ top, bottom }) => {
+      const block = document.createElement("span");
+      block.className = "avatarian-block";
+      // Each slot is told what shares its block: the approximants and /s/
+      // turn according to the company they keep, not the slot alone.
+      block.appendChild(makeSlot(top, "top", bottom));
+      block.appendChild(makeSlot(bottom, "bottom", top));
+      container.appendChild(block);
+    });
+    run = [];
+  };
+
+  for (const token of ipaSeq) {
+    if (PUNCTUATION[parseSymbol(token).sym]) {
+      flush();
+      container.appendChild(makeMark(parseSymbol(token).sym));
+    } else {
+      run.push(token);
+    }
+  }
+  flush();
   return container;
+}
+
+/**
+ * The punctuation marks: one lattice column wide, nine rows tall.
+ *
+ * A NEW HEIGHT CLASS. Every letter is five rows (consonant) or four
+ * (vowel), and they stack to nine. A mark is the whole nine on its own,
+ * which is why it cannot live in a slot.
+ *
+ * They are written as themselves — `,` `.` `?` `!`. The unreadable-glyph
+ * marker moved to `*` to free `?` up for the one people already know.
+ *
+ * Drawn in the script's geometry: a 16-unit column with the same 10 units
+ * of margin the letters get, 9 rows of 16 running from y=10 to y=154.
+ * Row centres are therefore 2 + 16n.
+ */
+const MARK_BOX = 'viewBox="0 0 36 164" fill="none" stroke="currentColor"'
+  + ' stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"';
+
+const PUNCTUATION = {
+  // A dot on the baseline — the bottom row, beside the word's last block.
+  ".": { name: "period",
+         d: '<path d="M 18 146 L 18 146.5"/>' },
+  // A stroke through the bottom two rows: the same weight as the period,
+  // given length rather than a tail, which one column has no room for.
+  ",": { name: "comma",
+         d: '<path d="M 18 122 L 18 146"/>' },
+  // A full stroke over a dot, the shape everyone already reads as this.
+  "!": { name: "exclamation",
+         d: '<path d="M 18 18 L 18 98"/><path d="M 18 146 L 18 146.5"/>' },
+  // The same, broken: a question is an interrupted statement. The gap is
+  // one row, which is the smallest the lattice can say anything with.
+  "?": { name: "question",
+         d: '<path d="M 18 18 L 18 50"/><path d="M 18 82 L 18 98"/>'
+            + '<path d="M 18 146 L 18 146.5"/>' },
+};
+
+function makeMark(sym) {
+  const mark = PUNCTUATION[sym];
+  const span = document.createElement("span");
+  span.className = "avatarian-mark avatarian-mark-" + mark.name;
+  span.title = mark.name;
+  span.dataset.glyph = mark.name;
+  span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" ${MARK_BOX}>`
+    + mark.d + "</svg>";
+  return span;
 }
 
 if (typeof module !== "undefined") {

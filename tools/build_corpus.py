@@ -58,7 +58,14 @@ OVERRIDES = ("$", "%")
 # "t ɑ ? ∅" says something true and checkable: four slots, two blocks,
 # third one unreadable. Guessing the letter would put an inference in the
 # corpus, and omitting the word would lose the block structure with it.
-UNREADABLE = "?"
+UNREADABLE = "*"
+
+# Punctuation. A mark is one lattice column wide and NINE rows tall — the
+# height of a whole block rather than of a slot — so it stands beside the
+# writing instead of inside it, and it does not count toward the
+# whole-blocks rule. Written as itself; `*` took over the unreadable
+# marker so that `?` could be the one everybody already knows.
+PUNCTUATION = (",", ".", "?", "!")
 
 HEADER = """/* Auto-generated — do not edit by hand.
  * Source: corpus/attested.json    Regenerate: python3 tools/build_corpus.py
@@ -104,13 +111,20 @@ def check_spelling(spelling, known, where, errors):
     if not tokens:
         errors.append(f"{where}: empty spelling")
         return tokens
-    if len(tokens) % 2:
+
+    # Punctuation is not a slot, so it is not counted into the blocks —
+    # a comma in the middle of a line would otherwise make every spelling
+    # containing one fail the even-count rule.
+    slots = [t for t in tokens if t not in PUNCTUATION]
+    if len(slots) % 2:
         errors.append(
-            f"{where}: {len(tokens)} symbols — a spelling is whole blocks, so "
+            f"{where}: {len(slots)} symbols — a spelling is whole blocks, so "
             f"the count must be even. Write the null out (a trailing "
             f"'∅' is usually what's missing)."
         )
     for token in tokens:
+        if token in PUNCTUATION:
+            continue
         body = token[:-1] if token[-1:] in OVERRIDES else token
         if body == UNREADABLE:
             continue

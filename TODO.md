@@ -13,8 +13,10 @@ commit messages refer to these by number.
 Two things deliberately live elsewhere, because they are questions about
 the *script* rather than work to be done:
 
-- **Open decoding questions** → `AVATARIAN.md` §10. Mid-word nulls, /s/
-  orientation, the remaining positional variants, the unassigned mark.
+- **Open decoding questions** → `AVATARIAN.md` §10 and §12.8. What is
+  left: how far two consonants overlap in a C-C block, whether /ɔɪ/
+  mirrors by slot, /x/'s missing glyph, whether the FACE vowel is ever
+  written as one letter, and the unassigned mark.
 - **The corpus design** → `CORPUS.md`. Items 20–24 below are its
   execution; the reasoning is there, not repeated here.
 
@@ -28,25 +30,34 @@ in that model is implemented. Session 5's working guess was a one-row
 overlap, unconfirmed.
 
 **No longer waiting on the corpus — the evidence has arrived.** The plan
-was always to build the corpus first and then *look*, rather than reason
-from one or two samples. That has now happened. `python3
-tools/run_tests.py` prints every attested C-C block as a diagnostic (item
-27), and the list went from four to **fifteen** in a single session of
-transcribing:
+was always to build the corpus first and then *look*. That has happened:
+`python3 tools/run_tests.py` prints every attested C-C block, and the
+list went from four to **72**.
+
+**Half of B1 is now answered.** When a C-C block forms is settled — two
+consonants share a block exactly when they are in the same syllable
+(AVATARIAN.md §12.5), which is implemented and reproduces 234 of 244
+attested spellings. What is left is only the row question: two consonants
+are ten rows of content in a nine-row block, so they overlap, and by how
+much is still unmeasured. Session 5's guess was one row and it has never
+been checked against anything.
+
+**To settle it, measure these.** Short words where every block is
+unambiguous, so the total height decides it:
 
 ```
-asked: (k,t)     found: (n,d)      hard: (r,d)     help: (l,p)
-metalbending: (n,d)   mount: (n,t)   please: (p,l)  rest: (s,t)
-farm: (r,m)      free: (f,r)       gems: (m,z)     still: (s%,t)
-trends: (t,r)    trends: (d,z)     waters: (r,z)
+please   p l i z     block 1 = (p,l)   toph-letter.webp, katara-letter.webp
+new      n j% u ∅    block 1 = (n,j)   instagram-1-3/-1-4/-3-2.png
+still    s% t ɪ l    block 1 = (s,t)   instagram-1-1.png
+class    k l æ s     block 1 = (k,l)   instagram-1-2.png
+cream    k r% i m    block 1 = (k,r)   instagram-1-2.png
+bloom    b l u m     block 1 = (b,l)   instagram-1-4.png
+try      t r% aɪ ∅   block 1 = (t,r)   instagram-3-3.png
 ```
 
-**This is the thing to pick up next.** Fifteen blocks across three
-independent sources is enough to read the answer off rather than guess
-it: measure the row count of each of those blocks in its source image and
-see whether two consonants total ten rows or overlap into nine. Session
-5's working guess was a one-row overlap, and it has never been checked
-against anything.
+`please` and `new` each appear in three independent sources, so a
+measurement can be cross-checked rather than trusted once. The full 72
+are printed by the test suite.
 
 Item 3 is downstream, and so is a chunk of item 30 — `still: (s%,t)`
 is a bottom-slot /s/ in attested material, which is exactly the evidence
@@ -112,12 +123,8 @@ workstream — and also the **prerequisite for item 3 and B1**, since the
 C-C question is going to be answered by looking at attested blocks
 rather than by reasoning from a couple of samples.
 
-**82 words from 94 sightings across 3 sources**, every one of them filed
-with its image:
-
-```
-toph-letter     46      katara-letter   33      instagram-1.1   15
-```
+**209 words from 255 sightings across 11 sources**, every one of them
+filed with its image, and every image named after its source.
 
 **An entry is a SIGHTING, not a word.** That changed during the session
 and it is the model everything else now assumes. A word seen in two
@@ -132,10 +139,12 @@ has the reasoning; `tools/build_corpus.py` enforces it.
 Adding a word is a row in `corpus/attested.json` and a re-run of
 `tools/build_corpus.py`, or a pass through the workbench.
 
-**What this bought, immediately:** B1's C-C inventory went from four
-blocks to fifteen, and B2 stopped being a blocker. The corpus is also the
-test fixture, so transcribing a source gives the suite more evidence with
-no test written — one long-standing failure fixed itself this way.
+**What this bought.** B1's C-C inventory went from four blocks to 72;
+B2 stopped being a blocker; and the corpus turned out to be keeping three
+rules nobody had stated — the syllable rule (§12.5), the approximant
+turn, and /s/ above a cluster (§12.6). None of them could have been seen
+at 26 entries. The corpus is also the test fixture, so transcribing gives
+the suite more evidence with no test written.
 
 **Still wanted: water, earth and air, with images.** Worth more than
 their count — the reference material supplies IPA *alongside* Avatarian
@@ -468,10 +477,38 @@ this project has produced and it is only visible to somebody who clones
 the repo and reads JSON. It is also the part other people could
 contribute to, and they cannot contribute to what they cannot see.
 
-**16. Punctuation.** Comma, question mark and apostrophe are documented
-in the key chart — comma at the bottom beside the word, apostrophe
-treated like a vowel, question mark centred — but are stripped rather
-than rendered.
+~~**16. Punctuation.**~~ **Rendering done.** `, . ? !` are written as
+themselves in the sounds box and drawn beside the word.
+
+**A mark is a new height class: one lattice column wide, nine rows tall**
+— the height of a whole block rather than of a slot. So it is not paired
+with anything, it does not count toward the whole-blocks rule, and it
+breaks the pairing: the sounds either side of a mark pair among
+themselves.
+
+The unreadable-glyph marker moved from `?` to **`*`** to free the
+question mark up. Eleven corpus entries were migrated.
+
+Apostrophe is still stripped. It is documented as being treated like a
+vowel, i.e. as a *slot*, which is a different thing from these four and
+wants its own look at the art.
+
+**32. The punctuation marks are not in the designer.** They are inline
+SVG in `site/js/render.js`, and can only be changed by editing that file.
+
+Everything else in the glyph set is drawn in the designer and shipped
+through `build_glyphs.py`; these four are the exception, because the
+designer only knows two height classes — consonant `5×5` and vowel `5×4`
+— and a mark is `1×9`. Adding the class means touching:
+
+- `tools/glyphspec.py` — `TALL_KINDS`, `frame_for`, a `mark_full` type
+- `designer/js/geom.js` — the same, kept in step with the Python
+- the designer UI — a lattice that is 1 wide and 9 tall
+- `tools/build_glyphs.py` and `tools/promote.py` — so a mark can ship
+
+Worth doing before anyone wants to *change* a mark, and worth doing at
+all because the current four were drawn by eye rather than on the
+lattice. Not urgent: they render correctly and are pinned by tests.
 
 ### Glyphs
 
@@ -494,42 +531,25 @@ rewrite four hand-written comments — including the one explaining the
 **18. `/x/` has no glyph** and renders as a dashed box. The only
 remaining placeholder, and it needs source material rather than a guess.
 
-**30. Two glyphs flip that the docs say don't.** `designs/s.json` and
-`designs/oi.json` both carry `flips: true`, so the shipped manifest
-mirrors /s/ and /ɔɪ/ by slot — but `FLIPS_BASE` in `build_glyphs.py` is
-`{æ, ɑ, l, ɪ, e, aɪ, ə}` and `AVATARIAN.md` §6 states outright that
-**/s/ is deliberately NOT in the list**, which is the entire reason the
-`$`/`%` override exists. /ɔɪ/ is in neither the table nor any evidence
-note.
+~~**30. Two glyphs flip that the docs say don't.**~~ **/s/ answered;
+/ɔɪ/ still open.**
 
-**Session 10 added ə to `FLIPS_BASE` and that is relevant evidence, not
-noise.** ə got there because its two drawings turned out to be an exact
-mirror pair, and a mirror pair is what a slot flip looks like — the
-project had read the same fact as proof of two separate letters and been
-wrong for two sessions. So "these two shapes are mirrors" is now a known
-argument FOR a flip. Whether it applies to /s/ is a different question,
-since /s/'s problem is that both forms appear in the *same* slot, which
-no flip rule can produce.
+`designs/s.json` carried `flips: true`, an undocumented override of a
+table that deliberately excludes /s/ — and the corpus says it was wrong.
+**/s/ takes both orientations in the same slot**, which no by-slot rule
+can produce. What decides is the glyph beneath it: /s/ mirrors on top of
+another consonant in 11 of 12 attested blocks, and in none of the 20
+where it sits above a vowel or a null. The flag is removed and the rule
+is in `render.js` as `TURNS_ABOVE_CLUSTER`.
 
-Found while writing the `students` corpus entry, which spells both its
-/s/ by hand precisely because no slot rule works. Since session 6 moved
-`flips` into the designs and made them the authority, a checkbox tick in
-the designer silently overrides the documented table — so this is also a
-question about whether that override should be able to add a flip nobody
-recorded evidence for.
+The same look found a second rule nobody had: **only the approximants
+/r l w j/ ever mirror in a bottom slot**, and they do it in the bottom of
+a C-C block — 28 times against 1, across seventeen consonants. That
+accounted for 19 of the 52 hand-typed overrides.
 
-**The corpus now has something to say about /s/.** This was deferred
-waiting on 20, on the same reasoning as B1: every attested glyph in a
-known slot is evidence for or against a `FLIPS` entry, and the current
-table cites one or two words per glyph from memory. The material is now
-transcribed, and `still: (s%,t)` is a **bottom-slot /s/ in attested
-material** — read off a source image rather than argued from the docs.
-
-Both /s/ forms appearing in the same slot is what no flip rule can
-produce, so the question is still whether `designs/s.json`'s `flips: true`
-should be able to override a documented table that deliberately excludes
-it. But it can now be settled by looking. /ɔɪ/ still has no evidence in
-either direction.
+**/ɔɪ/ still carries `flips: true` with nothing behind it.** Three
+sightings, all in bottom slots, none checked against the art. It is one
+image away from being settled either way.
 
 **19. Stroke-level fusion.** Canon is hand-lettered so adjacent glyphs
 interlock and share edges; this butts discrete SVGs together. Correct

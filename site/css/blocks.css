@@ -122,5 +122,21 @@
    Dimmed rather than coloured as a warning — it is an honest record, not
    an error, and a word full of red marks reads as broken when it is
    simply partly unread. */
+/* Punctuation: one lattice column wide, nine rows tall — the height of a
+   whole block rather than of a slot, which is why it sits beside the
+   writing instead of in it.
+
+   The box is 36x164 units against a letter's 100x100, and it is scaled
+   by the same units-per-pixel, so the stroke weight and the row pitch
+   come out identical to the letters standing next to it. */
+.avatarian-mark {
+  display: inline-block; line-height: 0; color: var(--ink);
+  align-self: stretch;
+  height: calc(var(--av-size) * 1.64);
+  aspect-ratio: 36 / 164;
+  flex: none;
+}
+.avatarian-mark svg { display: block; width: 100%; height: 100%; }
+
 .avatarian-unreadable { opacity: 0.68; }
 .avatarian-unreadable svg { transform: none !important; }

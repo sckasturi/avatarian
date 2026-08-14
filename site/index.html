@@ -120,10 +120,20 @@ and made-up words too.</p>
           is <em>father</em>.</p>
         <p>Anything in <code>(brackets)</code> is a label for that word, not a
           sound — that is how the English caption under each word gets there.</p>
-        <p><code>0</code> fills an empty slot at the end of a word with an odd
-          number of sounds. Adding <code>$</code> or <code>%</code> after a
-          sound forces its top or bottom form, which is only needed for
-          <code>S</code>, where the rule still isn't known.</p>
+        <p><code>0</code> fills an empty slot — at the end of a word with an
+          odd number of sounds, and inside a word wherever a syllable ends,
+          since a block never runs across a syllable boundary.</p>
+        <p>Punctuation is written as itself: <code>, . ? !</code>. A mark is
+          a tall thin column drawn beside the word rather than inside a
+          block.</p>
+        <p><code>*</code> marks a glyph you can see in a source but cannot
+          make out. It fills a slot, so the block structure is still
+          recorded even where the letter isn't.</p>
+        <p class="fine">Adding <code>$</code> or <code>%</code> after a sound
+          forces its top or bottom form. You should rarely need it now: the
+          glyphs that turn do it on their own — <code>r l w j</code> when
+          they sit under another consonant, <code>s</code> when it sits over
+          one.</p>
       </div>
     </details>
   </div>
@@ -416,9 +426,10 @@ function reportUnknown(words) {
   const unknown = [...new Set(
     words.flatMap(w => w.ipa)
       .map(t => splitOverride(t).body)
-      // `?` has no glyph on purpose — it marks a slot in a source that
-      // could not be read, and corpus entries legitimately contain it.
-      .filter(sym => sym !== "?" && !GLYPH_SET[sym])
+      // Two things have no glyph on purpose: `*`, a slot in a source that
+      // could not be read, and the punctuation marks, which are drawn
+      // beside the writing rather than in a slot.
+      .filter(sym => sym !== "*" && !PUNCTUATION[sym] && !GLYPH_SET[sym])
   )];
   $("soundsHint").textContent = unknown.length
     ? "not a known sound: " + unknown.join(" ")

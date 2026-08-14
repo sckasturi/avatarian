@@ -16,7 +16,7 @@ window.AVATARIAN_CORPUS = {
     "toph-letter": {
       "what": "Hey Toph, How is the metalbending academy? Hope you're not being too hard on your students! Anyway, i found something out and it is really big! I am going to need your help. I have asked Zuko to come pick you up, then I need you all to come meet me at Mount Baihu. Please hurry. Aang",
       "where": "movie",
-      "image": "toph-letter.webp"
+      "image": "toph-letter.jpg"
     },
     "katara-letter": {
       "what": "Katara, Please do not be mad at me when you wake up, but I did not (unknown) I found out what the denied are after, (unknown) can (unknown) I (unknown)  you take Appa and Momo and gather up the rest of the team. I will be Aang (unknown) Aang",
@@ -1348,7 +1348,7 @@ window.AVATARIAN_CORPUS = {
         "ɪ",
         "g",
         "ə",
-        "?",
+        "*",
         "t"
       ],
       "count": 1,
@@ -1382,7 +1382,7 @@ window.AVATARIAN_CORPUS = {
         "∅",
         "t",
         "ɛ",
-        "?",
+        "*",
         "t"
       ],
       "count": 1,
@@ -1395,7 +1395,7 @@ window.AVATARIAN_CORPUS = {
     "draw": {
       "ipa": [
         "d",
-        "?",
+        "*",
         "ɔ%",
         "∅"
       ],
@@ -1409,7 +1409,7 @@ window.AVATARIAN_CORPUS = {
     "fav": {
       "ipa": [
         "f",
-        "?",
+        "*",
         "v",
         "∅"
       ],
@@ -1549,7 +1549,7 @@ window.AVATARIAN_CORPUS = {
         "s",
         "ə",
         "l",
-        "?",
+        "*",
         "n",
         "∅"
       ],
@@ -1745,7 +1745,7 @@ window.AVATARIAN_CORPUS = {
         "w",
         "ɔ",
         "r",
-        "?",
+        "*",
         "ə",
         "r"
       ],
@@ -1761,7 +1761,7 @@ window.AVATARIAN_CORPUS = {
         "w",
         "ɪ",
         "ð",
-        "?",
+        "*",
         "n",
         "∅"
       ],
@@ -2768,7 +2768,7 @@ window.AVATARIAN_CORPUS = {
     },
     "always": {
       "ipa": [
-        "?",
+        "*",
         "l$",
         "w",
         "e",
@@ -2829,9 +2829,9 @@ window.AVATARIAN_CORPUS = {
     "discounts": {
       "ipa": [
         "d",
-        "?",
+        "*",
         "s%",
-        "?",
+        "*",
         "aʊ",
         "n",
         "t",
@@ -2918,8 +2918,8 @@ window.AVATARIAN_CORPUS = {
         "r%",
         "ɛ",
         "ʃ",
-        "?",
-        "?",
+        "*",
+        "*",
         "i",
         "∅"
       ],

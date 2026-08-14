@@ -141,7 +141,7 @@ function soundsOnly(tokens) {
   const out = [];
   for (const t of tokens) {
     const body = t.slice(-1) === "$" || t.slice(-1) === "%" ? t.slice(0, -1) : t;
-    if (body === "∅" || body === "∅c" || body === "?" || !body) continue;
+    if (body === "∅" || body === "∅c" || body === "*" || !body) continue;
     out.push(body);
   }
   return out;
