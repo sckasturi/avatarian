@@ -191,7 +191,44 @@ input:focus, textarea:focus, select:focus {
   background: none; border: 1px solid transparent; padding: 5px 8px;
 }
 .entry-btn:hover, .source-btn:hover { background: var(--hover); }
-.entry-btn.is-active { border-color: var(--accent); background: var(--hover); }
+.entry-btn.is-active, .source-btn.is-active {
+  border-color: var(--accent); background: var(--hover);
+}
+/* The selected source is the one filling the main column, so it gets a
+   heavier marker than a hover — you should be able to glance at the list
+   and know what you are looking at. */
+.source-btn.is-active {
+  border-left-width: 3px; font-weight: 600;
+}
+
+/* --- the source view ---------------------------------------------- */
+
+.source-reading {
+  margin: 0 0 12px; padding: 9px 11px;
+  background: var(--code-bg); border-radius: 6px;
+  color: var(--muted); font-size: 0.86rem; line-height: 1.45;
+  white-space: pre-wrap;
+}
+.source-reading[hidden] { display: none; }
+
+.source-words { display: flex; flex-direction: column; gap: 6px; }
+.source-word {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 7px 9px; text-align: left;
+  background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+  cursor: pointer;
+}
+.source-word:hover { background: var(--hover); }
+.source-word.is-active { border-color: var(--accent); }
+.source-word-art {
+  --glyph-size: 22px; flex: none; max-width: 45%; overflow-x: auto;
+}
+.source-word-key { font-size: 0.95rem; color: var(--ink); }
+.source-word-meta {
+  margin-left: auto; text-align: right; flex: none;
+  font-size: 0.75rem; color: var(--faint);
+}
+.source-words .empty { color: var(--faint); font-size: 0.85rem; }
 .entry-key { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .entry-blocks { font-size: 0.75rem; color: var(--faint); font-variant-numeric: tabular-nums; }
 .entry-flag { font-size: 0.7rem; color: var(--accent); }

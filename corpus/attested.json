@@ -47,7 +47,7 @@
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
       "image": "image-4.png"
     },
-    "instagram-1.2": {
+    "instagram-2.1": {
       "what": "joyful journey / salon / looking for hair models / biggest hand contest / ages 0-7 draw your fav animal / mama / cherries on top",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=2",
       "image": "image-4.png"
@@ -641,13 +641,13 @@
     {
       "key": "ages",
       "spelling": "e ∅ ɪ ∅ dʒ ə z ∅",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "animal",
       "spelling": "æ ∅ n ə m ə l ∅",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
@@ -655,90 +655,90 @@
       "spelling": "b aɪ h u",
       "gloss": "Baihu",
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     {
       "key": "biggest",
       "spelling": "b ɪ g ə ? t",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "cherries",
       "spelling": "tʃ ɛ r i z ∅",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "contest",
       "spelling": "k ɑ n ∅ t ɛ ? t",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "draw",
       "spelling": "d ? ɔ% ∅",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "fav",
       "spelling": "f ? v ∅",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "for",
       "spelling": "f ɔ r ∅",
-      "source": "instagram-1.2",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "instagram-2.1"
     },
     {
       "key": "hair",
       "spelling": "h ɛ r ∅",
-      "source": "instagram-1.2",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "instagram-2.1"
     },
     {
       "key": "hand",
       "spelling": "h æ n d",
-      "source": "instagram-1.2",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "instagram-2.1"
     },
     {
       "key": "journey",
       "spelling": "dʒ ə r ∅ n i",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "joyful",
       "spelling": "dʒ ɔɪ f ə l ∅",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "looking",
       "spelling": "l ʊ k ɪ ŋ ∅",
-      "source": "instagram-1.2",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "instagram-2.1"
     },
     {
       "key": "mama",
       "spelling": "m ɑ m ə",
-      "source": "instagram-1.2",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "instagram-2.1"
     },
     {
       "key": "models",
       "spelling": "m ɑ d ə l z",
-      "source": "instagram-1.2",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "instagram-2.1"
     },
     {
       "key": "on",
       "spelling": "ɑ n",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
@@ -746,18 +746,18 @@
       "spelling": "s ə l ? n ∅",
       "gloss": "salon",
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     {
       "key": "top",
       "spelling": "t ɑ p ∅",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {
       "key": "your",
       "spelling": "j ɔ r ∅",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "confidence": "certain"
     },
     {

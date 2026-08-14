@@ -139,6 +139,23 @@
   </div>
 </section>
 
+  <!-- Everything read off one source, in one place.
+
+       The entry list is per WORD and the editor is per entry, so until
+       this there was no way to see a source as the thing it actually is:
+       a line, a caption, a poster that somebody read in one sitting. It
+       is also how you check a transcription — the words in the order
+       they were written, beside the image they came off. -->
+  <section class="panel" id="sourceView" hidden>
+    <div class="panel-head">
+      <h2 id="sourceViewTitle"></h2>
+      <span class="fine" id="sourceViewCount"></span>
+      <button type="button" id="closeSourceView" class="small">close</button>
+    </div>
+    <p class="source-reading" id="sourceViewWhat"></p>
+    <div class="source-words" id="sourceWords"></div>
+  </section>
+
   <section class="panel" id="editor">
     <div class="panel-head">
       <h2 id="editorTitle">New entry</h2>

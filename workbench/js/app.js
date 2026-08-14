@@ -30,6 +30,7 @@ const state = {
   sources: {},
   entries: [],
   index: -1,        // which entry is open; -1 is a new, unsaved one
+  sourceView: null, // which source is being browsed, if any
   dirty: false,
 };
 
@@ -490,17 +491,112 @@ function renderSourceList() {
     const li = document.createElement("li");
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "source-btn";
+    btn.className = "source-btn" + (name === state.sourceView ? " is-active" : "");
     const used = state.entries.filter(e => e.source === name).length;
     btn.innerHTML = '<span class="entry-key"></span><span class="entry-blocks"></span>';
     btn.querySelector(".entry-key").textContent = name;
     btn.querySelector(".entry-blocks").textContent = used;
-    btn.addEventListener("click", () => {
-      $("source").value = name;
-      showSource(name);
-    });
+    btn.addEventListener("click", () => openSourceView(name));
     li.appendChild(btn);
     list.appendChild(li);
+  }
+}
+
+/**
+ * Show everything read off one source.
+ *
+ * The entry list is per word and the editor is per entry, so a source —
+ * which is what a sitting of work actually produces — had no view of its
+ * own. This is also how a transcription gets checked: the words in the
+ * order they were recorded, beside the image on the right.
+ *
+ * It takes over the main column rather than opening beside the editor,
+ * because the editor edits ONE entry and having both visible invites
+ * editing the wrong one.
+ */
+function openSourceView(name) {
+  if (!state.sources[name]) return;
+  commitEditor();
+  state.sourceView = name;
+  $("source").value = name;
+  showSource(name);
+  $("importPanel").hidden = true;
+  $("editor").hidden = true;
+  $("sourceView").hidden = false;
+  renderSourceView();
+  renderSourceList();
+  renderEntryList();
+}
+
+function closeSourceView() {
+  state.sourceView = null;
+  $("sourceView").hidden = true;
+  $("editor").hidden = false;
+  renderSourceList();
+}
+
+function renderSourceView() {
+  const name = state.sourceView;
+  const source = state.sources[name];
+  if (!source) return closeSourceView();
+
+  const mine = [];
+  state.entries.forEach((entry, index) => {
+    if (entry.source === name) mine.push({ entry, index });
+  });
+  const sightings = mine.reduce((n, m) => n + (m.entry.times || 1), 0);
+  const unread = mine.reduce((n, m) =>
+    n + (m.entry.spelling || "").split(" ").filter(t => t === "?").length, 0);
+
+  $("sourceViewTitle").textContent = name;
+  $("sourceViewCount").textContent =
+    `${mine.length} word${mine.length === 1 ? "" : "s"} · `
+    + `${sightings} sighting${sightings === 1 ? "" : "s"}`
+    + (unread ? ` · ${unread} unread slot${unread === 1 ? "" : "s"}` : "");
+  $("sourceViewWhat").textContent = source.what || "";
+  $("sourceViewWhat").hidden = !source.what;
+
+  const box = $("sourceWords");
+  box.innerHTML = "";
+  if (!mine.length) {
+    box.innerHTML = '<p class="empty">Nothing has been read off this source '
+      + 'yet. Use <b>+ import a source</b> to transcribe it.</p>';
+    return;
+  }
+
+  for (const { entry, index } of mine) {
+    const tokens = (entry.spelling || "").split(" ").filter(Boolean);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "source-word" + (index === state.index ? " is-active" : "");
+
+    const art = document.createElement("span");
+    art.className = "source-word-art";
+    renderAvatarian(tokens, art);
+
+    const label = document.createElement("span");
+    label.className = "source-word-key";
+    label.textContent = entry.gloss || entry.key || "(unnamed)";
+
+    const meta = document.createElement("span");
+    meta.className = "source-word-meta";
+    const bits = [];
+    if ((entry.times || 1) > 1) bits.push(`${entry.times}×`);
+    if ((entry.confidence || "certain") !== "certain") bits.push(entry.confidence);
+    if (tokens.includes("?")) bits.push("partly unread");
+    // A word this source shares with another one — the corroboration is
+    // the interesting part, so it is worth seeing from here.
+    const others = state.entries.filter(
+      e => e.source !== name && corpusKey(e.key) === corpusKey(entry.key)).length;
+    if (others) bits.push(`also in ${others} other source${others === 1 ? "" : "s"}`);
+    meta.textContent = bits.join(" · ");
+
+    btn.append(art, label, meta);
+    btn.addEventListener("click", () => {
+      closeSourceView();
+      openEntry(index);
+    });
+    box.appendChild(btn);
   }
 }
 
@@ -572,8 +668,10 @@ function applyZoom() {
 function openEntry(i, commit = true) {
   if (commit) commitEditor();
   // Picking an entry means you want to refine it, so leave the import
-  // panel rather than hiding the thing you just asked to see.
+  // panel and the source view rather than hiding the thing you just
+  // asked to see behind them.
   closeImport();
+  if (state.sourceView) closeSourceView();
   state.index = i;
   writeEditor(state.entries[i]);
   renderEntryList();
@@ -678,6 +776,8 @@ function deleteSource() {
   state.entries = state.entries.filter(e => e.source !== name);
   delete state.sources[name];
   state.index = -1;
+  // The view of a source that no longer exists has nothing to show.
+  if (state.sourceView === name) closeSourceView();
   // Put the button back before anything re-renders. Clearing only the
   // pending name would leave it looking armed at the NEXT source you
   // select, and showSource's guard cannot catch that — there is no
@@ -720,6 +820,7 @@ function renameSource(from, to) {
   for (const entry of state.entries) {
     if (entry.source === from) entry.source = to;
   }
+  if (state.sourceView === from) state.sourceView = to;
   return true;
 }
 
@@ -979,6 +1080,7 @@ function deriveFromEnglish() {
 }
 
 function openImport() {
+  if (state.sourceView) closeSourceView();
   $("importPanel").hidden = false;
   $("editor").hidden = true;
   $("impName").focus();
@@ -1667,6 +1769,7 @@ function wire() {
   $("deleteEntry").addEventListener("click", deleteEntry);
   $("newSource").addEventListener("click", newSource);
   $("deleteSource").addEventListener("click", deleteSource);
+  $("closeSourceView").addEventListener("click", closeSourceView);
   $("saveBtn").addEventListener("click", save);
 
   document.querySelectorAll(".sound-tools [data-insert]").forEach((b) => {

@@ -28,7 +28,7 @@ window.AVATARIAN_CORPUS = {
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
       "image": "image-4.png"
     },
-    "instagram-1.2": {
+    "instagram-2.1": {
       "what": "joyful journey / salon / looking for hair models / biggest hand contest / ages 0-7 draw your fav animal / mama / cherries on top",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=2",
       "image": "image-4.png"
@@ -153,21 +153,6 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "toph-letter"
-    },
-    "baihu": {
-      "ipa": [
-        "b",
-        "aɪ",
-        "h",
-        "u"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-1.2"
-      ],
-      "confidence": "certain",
-      "source": "instagram-1.2",
-      "gloss": "Baihu"
     },
     "being": {
       "ipa": [
@@ -473,7 +458,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "toph-letter",
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -681,7 +666,7 @@ window.AVATARIAN_CORPUS = {
           ],
           "count": 1,
           "sources": [
-            "instagram-1.2"
+            "instagram-2.1"
           ],
           "confidence": "certain"
         }
@@ -1242,10 +1227,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "animal": {
       "ipa": [
@@ -1260,10 +1245,25 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
+    },
+    "baihu": {
+      "ipa": [
+        "b",
+        "aɪ",
+        "h",
+        "u"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.1",
+      "gloss": "Baihu"
     },
     "biggest": {
       "ipa": [
@@ -1276,10 +1276,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "cherries": {
       "ipa": [
@@ -1292,10 +1292,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "contest": {
       "ipa": [
@@ -1310,10 +1310,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "draw": {
       "ipa": [
@@ -1324,10 +1324,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "fav": {
       "ipa": [
@@ -1338,10 +1338,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "for": {
       "ipa": [
@@ -1352,11 +1352,11 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 2,
       "sources": [
-        "instagram-1.2",
+        "instagram-2.1",
         "instagram-3.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "hair": {
       "ipa": [
@@ -1367,10 +1367,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "hand": {
       "ipa": [
@@ -1381,10 +1381,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "journey": {
       "ipa": [
@@ -1397,10 +1397,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "joyful": {
       "ipa": [
@@ -1413,10 +1413,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "looking": {
       "ipa": [
@@ -1429,11 +1429,11 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 2,
       "sources": [
-        "instagram-1.2",
+        "instagram-2.1",
         "instagram-3.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "mama": {
       "ipa": [
@@ -1444,10 +1444,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "models": {
       "ipa": [
@@ -1460,10 +1460,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
     "salon": {
       "ipa": [
@@ -1476,10 +1476,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2",
+      "source": "instagram-2.1",
       "gloss": "salon"
     },
     "top": {
@@ -1491,18 +1491,30 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-1.2"
+        "instagram-2.1"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-2.1"
     },
-    "evil": {
+    "bao": {
       "ipa": [
-        "i",
-        "∅",
-        "v",
+        "b",
+        "aʊ"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.1"
+    },
+    "courage": {
+      "ipa": [
+        "k",
         "ə",
-        "l",
+        "r",
+        "ə",
+        "dʒ",
         "∅"
       ],
       "count": 1,
@@ -1512,12 +1524,12 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-3.1"
     },
-    "seagull": {
+    "evil": {
       "ipa": [
-        "s",
         "i",
-        "g",
-        "æ",
+        "∅",
+        "v",
+        "ə",
         "l",
         "∅"
       ],
@@ -1556,10 +1568,22 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-3.1"
     },
-    "my": {
+    "humansitters": {
       "ipa": [
+        "h",
+        "u",
         "m",
-        "aɪ"
+        "∅",
+        "n",
+        "∅",
+        "s",
+        "i",
+        "t",
+        "∅",
+        "t",
+        "e",
+        "r",
+        "z"
       ],
       "count": 1,
       "sources": [
@@ -1568,10 +1592,22 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-3.1"
     },
-    "bao": {
+    "in": {
       "ipa": [
-        "b",
-        "aʊ"
+        "e",
+        "n"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.1"
+    },
+    "my": {
+      "ipa": [
+        "m",
+        "aɪ"
       ],
       "count": 1,
       "sources": [
@@ -1592,22 +1628,28 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-3.1"
     },
-    "humansitters": {
+    "seagull": {
       "ipa": [
-        "h",
-        "u",
-        "m",
-        "∅",
-        "n",
-        "∅",
         "s",
         "i",
+        "g",
+        "æ",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.1"
+    },
+    "step": {
+      "ipa": [
+        "s%",
         "t",
-        "∅",
-        "t",
-        "e",
-        "r",
-        "z"
+        "ɛ",
+        "p"
       ],
       "count": 1,
       "sources": [
@@ -1640,48 +1682,6 @@ window.AVATARIAN_CORPUS = {
         "?",
         "n",
         "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-3.1"
-      ],
-      "confidence": "certain",
-      "source": "instagram-3.1"
-    },
-    "courage": {
-      "ipa": [
-        "k",
-        "ə",
-        "r",
-        "ə",
-        "dʒ",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-3.1"
-      ],
-      "confidence": "certain",
-      "source": "instagram-3.1"
-    },
-    "in": {
-      "ipa": [
-        "e",
-        "n"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-3.1"
-      ],
-      "confidence": "certain",
-      "source": "instagram-3.1"
-    },
-    "step": {
-      "ipa": [
-        "s%",
-        "t",
-        "ɛ",
-        "p"
       ],
       "count": 1,
       "sources": [
