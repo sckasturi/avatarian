@@ -90,6 +90,97 @@ const EXCEPTIONS = {
   "unagi": "u n ɑ g i", "agni": "ɑ g n i", "sifu": "ʃ i f u",
 };
 
+// ---------------------------------------------------------------------
+// Syllables, and where the nulls go
+// ---------------------------------------------------------------------
+//
+// A BLOCK NEVER STRADDLES A SYLLABLE BOUNDARY. Read off 255 attested
+// spellings: this one rule reproduces 233 of them exactly, nulls and all,
+// from nothing but the sounds. Everything the old model said about nulls
+// is a special case of it —
+//
+//   two consonants share a block only inside one syllable
+//     fou-nd, fr-ee, be-st       share        ben-ding, gar-den    do not
+//   a vowel does not pair with a consonant that starts the next syllable
+//     a-ca-de-my  ->  ə ∅ k æ d ə m i        fro-zen -> f r oʊ ∅ z ə n
+//   V-V never shares, which was already known
+//
+// Before this, 45 of the 51 attested mid-word nulls had no account at all
+// — "a null substitutes for a missing second vowel" covered only 6.
+//
+// Syllabification is MAXIMUM ONSET: a consonant, or a legal cluster,
+// belongs to the vowel that follows it rather than the one before. That
+// is what makes `festival` fe-sti-val rather than fes-ti-val, and it is
+// why its /s/ and /t/ share a block — a fact read off the art first and
+// only then explained.
+
+const NULL_SYMBOL = "∅";
+
+/**
+ * The vowels, kept here rather than borrowed from render.js: this file
+ * loads first, and a spelling decision should not depend on the module
+ * that draws it.
+ */
+const SYLLABIC = new Set([
+  "i", "ɪ", "e", "ɛ", "æ", "ɑ", "ɔ", "oʊ", "ʊ", "u", "ʌ", "ə",
+  "aɪ", "aʊ", "ɔɪ",
+]);
+function isVowel(sym) {
+  return SYLLABIC.has(sym);
+}
+
+/** Consonant clusters English allows at the start of a syllable. */
+const ONSET_CLUSTERS = new Set([
+  "pl", "pr", "bl", "br", "tr", "dr", "kl", "kr", "gl", "gr",
+  "tw", "dw", "kw", "gw", "θw", "sw",
+  "fl", "fr", "θr", "ʃr", "sl", "sm", "sn", "sp", "st", "sk", "sf",
+  "hj", "kj", "pj", "bj", "fj", "vj", "mj", "nj", "lj",
+  "spl", "spr", "str", "skr", "skw",
+]);
+
+/**
+ * Are these two sounds in the same syllable?
+ *
+ * The lookahead is the whole trick: a consonant only belongs to the NEXT
+ * syllable if there is a vowel there for it to attach to. `asked` keeps
+ * /s k/ together because nothing follows the /k/ but /t/ — there is no
+ * next syllable to onset.
+ */
+function sameSyllable(seq, i) {
+  const a = seq[i], b = seq[i + 1];
+  if (b === undefined) return false;
+  const av = isVowel(a), bv = isVowel(b);
+  if (av && bv) return false;                 // V-V never shares a block
+  if (!av && bv) return true;                 // an onset and its vowel
+  const after = seq[i + 2];
+  if (av) {                                   // V + C
+    if (isVowel(after)) return false;         // C onsets the next syllable
+    if (after && ONSET_CLUSTERS.has(b + after) && isVowel(seq[i + 3])) {
+      return false;                           // so does the whole cluster
+    }
+    return true;                              // C closes this syllable
+  }
+  // C + C: together only as a legal onset, or when they close a syllable.
+  if (ONSET_CLUSTERS.has(a + b) && isVowel(after)) return true;
+  return !isVowel(after);
+}
+
+/**
+ * A phoneme list, padded with nulls into whole blocks.
+ *
+ * The null is not decoration: it holds a slot open so the block above it
+ * stays inside one syllable. `resolveBlocks` in render.js then picks
+ * which null — tall or short — from the sound it is paired with.
+ */
+function padToBlocks(seq) {
+  const out = [];
+  for (let i = 0; i < seq.length; ) {
+    if (sameSyllable(seq, i)) { out.push(seq[i], seq[i + 1]); i += 2; }
+    else { out.push(seq[i], NULL_SYMBOL); i += 1; }
+  }
+  return out;
+}
+
 /**
  * Ordered grapheme → phoneme rules, longest first.
  * A trailing "$" means the grapheme only matches at end of word.
@@ -254,12 +345,16 @@ function lookupWord(word) {
   const w = normaliseWord(word);
   if (!w) return { ipa: [], tier: "guessed" };
 
+  // An attested spelling already IS the finished blocks, nulls written
+  // out. Padding it again would be second-guessing the observation.
   const attested = corpusWords()[w];
   if (attested) return { ipa: attested.ipa.slice(), tier: "attested", entry: attested };
 
   // EXCEPTIONS next: it carries the Avatar vocabulary and the hand
   // corrections, which should win over a general dictionary.
-  if (EXCEPTIONS[w]) return { ipa: EXCEPTIONS[w].split(" "), tier: "derived" };
+  if (EXCEPTIONS[w]) {
+    return { ipa: spellSounds(EXCEPTIONS[w].split(" ")), tier: "derived" };
+  }
 
   // Then the bundled dictionary, which knows ~126k words and — because
   // it reads CMU's stress marks — reduces unstressed vowels to schwa,
@@ -268,10 +363,34 @@ function lookupWord(word) {
   if (packed) {
     const out = [];
     for (const ch of packed) out.push(PHONE_OF[ch]);
-    return { ipa: out, tier: "derived" };
+    return { ipa: spellSounds(out), tier: "derived" };
   }
 
-  return { ipa: rulesToIPA(w), tier: "guessed" };
+  return { ipa: spellSounds(rulesToIPA(w)), tier: "guessed" };
+}
+
+/**
+ * Sounds in, a finished spelling out: the FACE vowel written as canon
+ * writes it, then padded into whole blocks along the syllables.
+ *
+ * THE FACE VOWEL IS TWO LETTERS. Every one of the eleven attested words
+ * containing /eɪ/ writes it `e` then `ɪ` — ages, baking, ballet, cakes,
+ * brave, available, raise, always, baked, made, today — and there is no
+ * single glyph for it in the manifest. The tool wrote one letter, so
+ * every such word came out a slot short and a block wrong.
+ *
+ * (`take`, `wake`, `hey` and `anyway` use a bare `e`, and all four are
+ * from the two hand-written letters rather than the printed sources.
+ * Whether that is a real difference in the script or a difference in how
+ * carefully those two were read is still open — see AVATARIAN.md §10.)
+ */
+function spellSounds(seq) {
+  const spelt = [];
+  for (const sym of seq) {
+    if (sym === "e") spelt.push("e", "ɪ");
+    else spelt.push(sym);
+  }
+  return padToBlocks(spelt);
 }
 
 function wordToIPA(word) {

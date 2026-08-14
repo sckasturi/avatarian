@@ -21,7 +21,7 @@ const { loadSite, entries, plain } = require("./harness.js");
 
 const ctx = loadSite({ lexicon: true });
 const { lookupWord, derivedLookup, wordToIPA, sentenceToIPA, normaliseWord,
-        EXCEPTIONS, hasLexicon } = ctx;
+        EXCEPTIONS, hasLexicon, padToBlocks } = ctx;
 
 test("the bundled dictionary actually loaded", () => {
   // Every "derived" assertion below is worthless if it didn't.
@@ -58,9 +58,44 @@ test("EXCEPTIONS wins over the dictionary", () => {
 
 test("the dictionary wins over the rules", () => {
   // The rules alone gave /θ æ t/ for "that" and /g u d/ for "good".
+  //
+  // The lookup now returns a finished SPELLING rather than a bare
+  // phoneme list — nulls written out, blocks closed along the syllables
+  // (see padToBlocks). All three tiers therefore hand back the same kind
+  // of thing, which they did not before: the corpus returned blocks
+  // while everything under it returned phonemes, and the caller had to
+  // know which. `soundsOnly` strips the nulls again for anything that
+  // wants the sounds.
   assert.equal(lookupWord("that").tier, "derived");
-  assert.deepEqual(plain(wordToIPA("that")), ["ð", "æ", "t"]);
-  assert.deepEqual(plain(wordToIPA("good")), ["g", "ʊ", "d"]);
+  assert.deepEqual(plain(wordToIPA("that")), ["ð", "æ", "t", "∅"]);
+  assert.deepEqual(plain(wordToIPA("good")), ["g", "ʊ", "d", "∅"]);
+});
+
+test("a block never straddles a syllable boundary", () => {
+  // Tested on the padding function directly rather than through
+  // lookupWord: every word worth naming here is now IN the corpus, so the
+  // lookup hands back the attested spelling and the derivation never
+  // runs. Feeding the sounds in keeps this a test of the rule.
+  //
+  // The rule reproduces 234 of the 244 attested spellings exactly, nulls
+  // and all, from nothing but the sounds.
+  const spell = (s) => padToBlocks(s.split(" ")).join(" ");
+
+  assert.equal(spell("ə k æ d ə m i"), "ə ∅ k æ d ə m i",
+    "a vowel does not pair with a consonant that onsets the next syllable");
+  assert.equal(spell("f r oʊ z ə n"), "f r oʊ ∅ z ə n ∅");
+  assert.equal(spell("f aʊ n d"), "f aʊ n d",
+    "a coda cluster shares a block");
+  assert.equal(spell("p æ n d ə"), "p æ n ∅ d ə",
+    "the same cluster across a boundary does not");
+  assert.equal(spell("p l i z"), "p l i z",
+    "an onset cluster shares a block");
+  assert.equal(spell("æ s k t"), "æ s k t",
+    "sk stays together with no vowel after it to onset");
+
+  for (const s of ["ə k æ d ə m i", "f r oʊ z ə n", "p æ n d ə"]) {
+    assert.equal(padToBlocks(s.split(" ")).length % 2, 0, `${s} is whole blocks`);
+  }
 });
 
 test("a word nothing knows falls through to the rules", () => {
