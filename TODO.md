@@ -42,6 +42,24 @@ are ten rows of content in a nine-row block, so they overlap, and by how
 much is still unmeasured. Session 5's guess was one row and it has never
 been checked against anything.
 
+**Both candidate answers are already in the repo, disagreeing** — found
+in session 12, and it makes the question much smaller than it looks:
+
+```
+render.js        each consonant gets 4.5 of the 9 rows — 9/10 scale,
+                 lighter stroke to match, no shared row
+AVATARIAN.md §4  both consonants keep their 5 rows and share one
+                 lattice row (session 5's guess, never checked)
+```
+
+So this is not "what might a C-C block be" but "which of these two, or
+neither". **The discriminator needs no ruler:** in a word with a C-C
+block beside a V-C one, is the consonant in the C-C block the same size
+as the consonant beside it? Same size → they overlap. Visibly smaller
+(9/10) → they shrink, and the site is already right. A C-C block that is
+simply *taller* than its neighbour is a third answer neither document
+has.
+
 **To settle it, measure these.** Short words where every block is
 unambiguous, so the total height decides it:
 
