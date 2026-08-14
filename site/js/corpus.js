@@ -26,53 +26,50 @@ window.AVATARIAN_CORPUS = {
     "instagram-1.1": {
       "what": "still waters / trends this june / balloon festival / peeep farm / sad fish / noodle house / garden gems",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
-      "image": "image-4.png"
+      "image": "instagram-1-1.png"
     },
     "instagram-2.1": {
       "what": "joyful journey / salon / looking for hair models / biggest hand contest / ages 0-7 draw your fav animal / mama / cherries on top",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=2",
-      "image": "image-4.png"
+      "image": "instagram-2-1.png"
     },
     "instagram-3.1": {
       "what": "evil seagull / save beaverfish / fresh from my garden / bao pie / looking for humansitters / miao / warrior within / courage in every step",
       "where": "https://www.instagram.com/mmara_art/p/DboCKbiDL_v/?img_index=1",
-      "image": "instagram-3.1.png"
+      "image": "instagram-3-1.png"
     },
     "instagram-1.2": {
       "what": "sula's baking class / frozen cream cakes / bending performacnce / ignite / cancel school / panda ballet / balance / catfish meal card",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=2",
-      "image": "image-5.png"
+      "image": "instagram-1-2.png"
     },
     "instagram-1.3": {
       "what": "the republic city post / woong's seaweed soup / organic, gluten free and vegan food / new menu item / fanny is missing / 20,000",
       "where": "",
-      "image": "instagram-1.3.png"
+      "image": "instagram-1-3.png"
     },
     "instagram-1.4": {
       "what": "stillness / year of the tiger / enjoy / journey / be brave / courage / night / quiet",
       "where": "",
-      "image": "instagram-1.3-2.png"
+      "image": "instagram-1-4.png"
+    },
+    "instagram-2.2": {
+      "what": "ear to ear mute choir / no sound just listen / new pet fish available / raise your energies / bloom wanted criminals",
+      "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=2",
+      "image": "instagram-2-2.png"
+    },
+    "instagram-3.2": {
+      "what": "let's talk / free stickers / cabbage kids / lost my mind / you too? / new fire tomato",
+      "where": "https://www.instagram.com/p/DboCKbiDL_v/?img_index=2",
+      "image": "instagram-3-2.png"
+    },
+    "instagram-3.3": {
+      "what": "joy's baked goods / the best / no phone number / always freshly baked / narrok's seaweed noodlery / hand pulled / heng's foot wear / warm and cozy!!! / come and get your pair now! / yue jewelery / timeless waterproof treasures / at every pond / white lotus festival / please come / fresh fruit forever / i don't do discounts / try today / melon milk / mmm / mak made",
+      "where": "",
+      "image": "instagram-3-3.png"
     }
   },
   "words": {
-    "academy": {
-      "ipa": [
-        "ə",
-        "∅",
-        "k",
-        "æ",
-        "d",
-        "ə",
-        "m",
-        "i"
-      ],
-      "count": 1,
-      "sources": [
-        "toph-letter"
-      ],
-      "confidence": "certain",
-      "source": "toph-letter"
-    },
     "all": {
       "ipa": [
         "ɔ%",
@@ -104,11 +101,12 @@ window.AVATARIAN_CORPUS = {
         "d",
         "∅"
       ],
-      "count": 4,
+      "count": 5,
       "sources": [
         "toph-letter",
         "katara-letter",
-        "instagram-1.3"
+        "instagram-1.3",
+        "instagram-3.3"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -148,10 +146,11 @@ window.AVATARIAN_CORPUS = {
         "æ",
         "t"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "toph-letter",
-        "katara-letter"
+        "katara-letter",
+        "instagram-3.3"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -191,12 +190,29 @@ window.AVATARIAN_CORPUS = {
         "m",
         "∅"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "instagram-3.3"
       ],
       "confidence": "certain",
-      "source": "toph-letter"
+      "source": "toph-letter",
+      "alternates": [
+        {
+          "ipa": [
+            "k",
+            "ə",
+            "m",
+            "∅"
+          ],
+          "count": 1,
+          "sources": [
+            "instagram-3.3"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true
     },
     "found": {
       "ipa": [
@@ -500,10 +516,11 @@ window.AVATARIAN_CORPUS = {
         "i",
         "z"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "toph-letter",
-        "katara-letter"
+        "katara-letter",
+        "instagram-3.3"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -546,12 +563,13 @@ window.AVATARIAN_CORPUS = {
         "ð",
         "ə"
       ],
-      "count": 6,
+      "count": 7,
       "sources": [
         "toph-letter",
         "katara-letter",
         "instagram-1.3",
-        "instagram-1.4"
+        "instagram-1.4",
+        "instagram-3.3"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -575,9 +593,10 @@ window.AVATARIAN_CORPUS = {
         "t",
         "u"
       ],
-      "count": 3,
+      "count": 4,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "instagram-2.2"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -587,9 +606,10 @@ window.AVATARIAN_CORPUS = {
         "t",
         "u"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "instagram-3.2"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -626,10 +646,11 @@ window.AVATARIAN_CORPUS = {
         "j",
         "u"
       ],
-      "count": 4,
+      "count": 5,
       "sources": [
         "toph-letter",
-        "katara-letter"
+        "katara-letter",
+        "instagram-3.2"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -651,27 +672,29 @@ window.AVATARIAN_CORPUS = {
     "your": {
       "ipa": [
         "j",
-        "oʊ",
+        "ɔ",
         "r",
         "∅"
       ],
-      "count": 1,
+      "count": 3,
       "sources": [
-        "toph-letter"
+        "instagram-2.1",
+        "instagram-2.2",
+        "instagram-3.3"
       ],
       "confidence": "certain",
-      "source": "toph-letter",
+      "source": "instagram-2.1",
       "alternates": [
         {
           "ipa": [
             "j",
-            "ɔ",
+            "oʊ",
             "r",
             "∅"
           ],
           "count": 1,
           "sources": [
-            "instagram-2.1"
+            "toph-letter"
           ],
           "confidence": "certain"
         }
@@ -701,7 +724,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "katara-letter",
-        "instagram-2.1"
+        "instagram-3.2"
       ],
       "confidence": "certain",
       "source": "katara-letter",
@@ -1060,9 +1083,10 @@ window.AVATARIAN_CORPUS = {
         "ʃ",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-1.1"
+        "instagram-1.1",
+        "instagram-2.2"
       ],
       "confidence": "certain",
       "source": "instagram-1.1"
@@ -1070,13 +1094,14 @@ window.AVATARIAN_CORPUS = {
     "free": {
       "ipa": [
         "f",
-        "r",
+        "r%",
         "i",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-1.1"
+        "instagram-1.1",
+        "instagram-3.2"
       ],
       "confidence": "certain",
       "source": "instagram-1.1",
@@ -1237,7 +1262,7 @@ window.AVATARIAN_CORPUS = {
     "trends": {
       "ipa": [
         "t",
-        "r",
+        "r%",
         "ɛ",
         "n",
         "d",
@@ -1431,9 +1456,10 @@ window.AVATARIAN_CORPUS = {
         "n",
         "d"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-2.1"
+        "instagram-2.1",
+        "instagram-3.3"
       ],
       "confidence": "certain",
       "source": "instagram-2.1"
@@ -1601,9 +1627,10 @@ window.AVATARIAN_CORPUS = {
         "ɛ",
         "ʃ"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-3.1"
+        "instagram-3.1",
+        "instagram-3.3"
       ],
       "confidence": "certain",
       "source": "instagram-3.1"
@@ -1663,9 +1690,10 @@ window.AVATARIAN_CORPUS = {
         "m",
         "aɪ"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-3.1"
+        "instagram-3.1",
+        "instagram-3.2"
       ],
       "confidence": "certain",
       "source": "instagram-3.1"
@@ -2131,13 +2159,15 @@ window.AVATARIAN_CORPUS = {
     "new": {
       "ipa": [
         "n",
-        "?",
-        "ʊ%",
+        "j%",
+        "u%",
         "∅"
       ],
-      "count": 1,
+      "count": 3,
       "sources": [
-        "instagram-1.3"
+        "instagram-1.3",
+        "instagram-2.2",
+        "instagram-3.2"
       ],
       "confidence": "certain",
       "source": "instagram-1.3"
@@ -2201,9 +2231,10 @@ window.AVATARIAN_CORPUS = {
         "d",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-1.3"
+        "instagram-1.3",
+        "instagram-3.3"
       ],
       "confidence": "certain",
       "source": "instagram-1.3"
@@ -2361,6 +2392,919 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "instagram-1.4"
+    },
+    "available": {
+      "ipa": [
+        "ə",
+        "∅",
+        "v",
+        "e",
+        "ɪ",
+        "∅",
+        "l",
+        "ə",
+        "b",
+        "ə",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "bloom": {
+      "ipa": [
+        "b",
+        "l",
+        "u%",
+        "m"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "choir": {
+      "ipa": [
+        "k",
+        "w%",
+        "aɪ",
+        "∅",
+        "ə",
+        "r"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "criminals": {
+      "ipa": [
+        "k",
+        "r%",
+        "ɪ",
+        "∅",
+        "m",
+        "ə",
+        "n",
+        "ə",
+        "l",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "ear": {
+      "ipa": [
+        "i",
+        "r"
+      ],
+      "count": 2,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "energies": {
+      "ipa": [
+        "ɛ",
+        "∅",
+        "n",
+        "ə",
+        "r",
+        "∅",
+        "dʒ",
+        "i",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "just": {
+      "ipa": [
+        "dʒ",
+        "ə",
+        "s%",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "listen": {
+      "ipa": [
+        "l",
+        "ɪ",
+        "s",
+        "ə",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "mute": {
+      "ipa": [
+        "m",
+        "j%",
+        "ʊ",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "no": {
+      "ipa": [
+        "n",
+        "oʊ"
+      ],
+      "count": 2,
+      "sources": [
+        "instagram-2.2",
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "pet": {
+      "ipa": [
+        "p",
+        "ɛ",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "raise": {
+      "ipa": [
+        "r",
+        "e",
+        "ɪ",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "sound": {
+      "ipa": [
+        "s",
+        "aʊ",
+        "n",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "wanted": {
+      "ipa": [
+        "w",
+        "ɔ",
+        "n",
+        "∅",
+        "t",
+        "ɪ",
+        "d",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-2.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-2.2"
+    },
+    "cabbage": {
+      "ipa": [
+        "k",
+        "æ",
+        "b",
+        "ə",
+        "dʒ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.2"
+    },
+    "fire": {
+      "ipa": [
+        "f",
+        "aɪ",
+        "ə",
+        "r"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.2"
+    },
+    "kids": {
+      "ipa": [
+        "k",
+        "ɪ",
+        "d",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.2"
+    },
+    "let's": {
+      "ipa": [
+        "l",
+        "ɛ",
+        "t",
+        "s$"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.2"
+    },
+    "lost": {
+      "ipa": [
+        "l",
+        "ɔ",
+        "s%",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.2"
+    },
+    "mind": {
+      "ipa": [
+        "m",
+        "aɪ",
+        "n",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.2"
+    },
+    "stickers": {
+      "ipa": [
+        "s%",
+        "t",
+        "ɪ",
+        "∅",
+        "k",
+        "ə",
+        "r",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.2"
+    },
+    "talk": {
+      "ipa": [
+        "t",
+        "ɔ",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.2"
+    },
+    "tomato": {
+      "ipa": [
+        "t",
+        "ə",
+        "m",
+        "ɑ",
+        "t",
+        "oʊ"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.2"
+    },
+    "academy": {
+      "ipa": [
+        "ə",
+        "∅",
+        "k",
+        "æ",
+        "d",
+        "ə",
+        "m",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "always": {
+      "ipa": [
+        "?",
+        "l$",
+        "w",
+        "e",
+        "ɪ",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "baked": {
+      "ipa": [
+        "b",
+        "e",
+        "ɪ",
+        "k",
+        "t",
+        "∅"
+      ],
+      "count": 2,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "best": {
+      "ipa": [
+        "b",
+        "ɛ",
+        "s%",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "cozy": {
+      "ipa": [
+        "k",
+        "oʊ",
+        "z",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "discounts": {
+      "ipa": [
+        "d",
+        "?",
+        "s%",
+        "?",
+        "aʊ",
+        "n",
+        "t",
+        "s"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "every": {
+      "ipa": [
+        "ɛ",
+        "∅",
+        "v",
+        "ə",
+        "r",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "festival": {
+      "ipa": [
+        "f",
+        "ɛ",
+        "s%",
+        "t",
+        "ə",
+        "∅",
+        "v",
+        "ə",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "foot": {
+      "ipa": [
+        "f",
+        "ʊ",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "forever": {
+      "ipa": [
+        "f",
+        "ə",
+        "r",
+        "ɛ",
+        "v",
+        "ə",
+        "r",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "freshly": {
+      "ipa": [
+        "f",
+        "r%",
+        "ɛ",
+        "ʃ",
+        "?",
+        "?",
+        "i",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "fruit": {
+      "ipa": [
+        "f",
+        "r%",
+        "u%",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "get": {
+      "ipa": [
+        "g",
+        "ɛ",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "goods": {
+      "ipa": [
+        "g",
+        "ʊ",
+        "d",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "heng's": {
+      "ipa": [
+        "h",
+        "ɛ",
+        "ŋ",
+        "∅",
+        "ɛ",
+        "s$"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "joy's": {
+      "ipa": [
+        "dʒ",
+        "ɔɪ",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "lotus": {
+      "ipa": [
+        "l",
+        "oʊ",
+        "t",
+        "ə",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "made": {
+      "ipa": [
+        "m",
+        "e",
+        "ɪ",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "mak": {
+      "ipa": [
+        "m",
+        "æ",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "melon": {
+      "ipa": [
+        "m",
+        "ɛ",
+        "l",
+        "ə",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "milk": {
+      "ipa": [
+        "m",
+        "ɪ",
+        "l",
+        "k"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "mmm": {
+      "ipa": [
+        "m",
+        "∅",
+        "m",
+        "∅",
+        "m",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "now": {
+      "ipa": [
+        "n",
+        "aʊ"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "number": {
+      "ipa": [
+        "n",
+        "ʌ",
+        "m",
+        "∅",
+        "b",
+        "ə",
+        "r",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "pair": {
+      "ipa": [
+        "p",
+        "ɛ",
+        "r",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "phone": {
+      "ipa": [
+        "f",
+        "oʊ",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "pond": {
+      "ipa": [
+        "p",
+        "ɑ",
+        "n",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "pulled": {
+      "ipa": [
+        "p",
+        "ʊ",
+        "l",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "timeless": {
+      "ipa": [
+        "t",
+        "aɪ",
+        "m",
+        "∅",
+        "l",
+        "ə",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "today": {
+      "ipa": [
+        "t",
+        "ə",
+        "d",
+        "e",
+        "ɪ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "treasures": {
+      "ipa": [
+        "t",
+        "r%",
+        "ɛ",
+        "∅",
+        "ʒ",
+        "ə",
+        "r",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "try": {
+      "ipa": [
+        "t",
+        "r%",
+        "aɪ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "warm": {
+      "ipa": [
+        "w",
+        "ɔ",
+        "r",
+        "m"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "waterproof": {
+      "ipa": [
+        "w",
+        "ɔ",
+        "t",
+        "ə",
+        "r",
+        "∅",
+        "p",
+        "r",
+        "u",
+        "f"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "wear": {
+      "ipa": [
+        "w",
+        "ɛ",
+        "r",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
+    "white": {
+      "ipa": [
+        "w",
+        "aɪ",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
     }
   }
 };

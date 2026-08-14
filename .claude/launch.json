@@ -19,7 +19,8 @@
       "runtimeArgs": [
         "tools/designer_server.py"
       ],
-      "port": 8792
+      "port": 8792,
+      "autoPort": false
     },
     {
       "name": "avatarian-workbench",
@@ -27,7 +28,8 @@
       "runtimeArgs": [
         "tools/corpus_server.py"
       ],
-      "port": 8793
+      "port": 8793,
+      "autoPort": false
     }
   ]
 }

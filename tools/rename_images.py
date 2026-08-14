@@ -76,15 +76,27 @@ def plan(data):
         wanted = target_name(name, current)
         if wanted == current:
             continue
-        # Never write over a different picture. If the name is taken,
-        # number it rather than silently replacing what is there.
+        renames.append((name, current, wanted))
+        referenced.add(wanted)
+
+    # A name can be occupied by a file that is ITSELF about to move — the
+    # sources were named after each other's images often enough that this
+    # is the normal case, not a corner. Only a name still held after every
+    # rename is a real collision, so the check runs against the plan
+    # rather than against the filesystem as it stands.
+    vacating = {current for _, current, _ in renames}
+    taken = {p.name for p in IMAGES.iterdir()
+             if p.is_file() and not p.name.startswith(".")} - vacating
+    settled, claimed = [], set()
+    for name, current, wanted in renames:
         final, n = wanted, 2
-        while (IMAGES / final).exists() and (IMAGES / final) != (IMAGES / current):
-            stem = pathlib.Path(wanted).stem
-            final = f"{stem}-{n}{pathlib.Path(wanted).suffix}"
+        while final in taken or final in claimed:
+            stem, suf = pathlib.Path(wanted).stem, pathlib.Path(wanted).suffix
+            final = f"{stem}-{n}{suf}"
             n += 1
-        renames.append((name, current, final))
-        referenced.add(final)
+        claimed.add(final)
+        settled.append((name, current, final))
+    renames = settled
 
     orphans = sorted(
         p.name for p in IMAGES.iterdir()
@@ -130,8 +142,16 @@ def main():
             print("  " + e, file=sys.stderr)
         return 1
 
-    for name, current, wanted in renames:
-        (IMAGES / current).rename(IMAGES / wanted)
+    # Two phases, via temporary names. A plan can contain a cycle — A wants
+    # B's name while B wants A's — and renaming in order would destroy one
+    # of them. Moving everything aside first makes any permutation safe.
+    staged = []
+    for i, (name, current, wanted) in enumerate(renames):
+        tmp = IMAGES / f".renaming-{i}{pathlib.Path(current).suffix}"
+        (IMAGES / current).rename(tmp)
+        staged.append((name, tmp, wanted))
+    for name, tmp, wanted in staged:
+        tmp.rename(IMAGES / wanted)
         data["sources"][name]["image"] = wanted
 
     SRC.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n",
