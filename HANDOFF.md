@@ -1,9 +1,103 @@
 # Avatarian — session handoff
 
 Read `README.md` for architecture and `CONTEXT.md` for the decoding rules
-and open questions. Both are current. This file covers what changed across
+and open questions. Both are current — session 12 made them so; they had
+been contradicting `AVATARIAN.md`. This file covers what changed across
 the sessions that built the designer, plus sessions 4, 5 and 6 below, and
 what to do next.
+
+---
+
+## Session 12 — the last hand reading, and the documents
+
+A small session by design: two closures and one question that needs eyes
+rather than code.
+
+### `what` was the nineteenth word, and the wrong one
+
+Nineteen `EXCEPTIONS` words were attested. Eighteen agreed with the
+corpus and were unreachable dead weight; `what` read `w ʌ t` where canon
+writes `w ɑ t`. **Checked against the art before deleting it** — the
+block glossed "what" in `katara-letter.webp` is `w` over /ɑ/'s
+three-stroke Y, beside `(t, ∅)` with the U-shaped null a consonant
+partner takes. /ʌ/ is four dashes; it is not in the word. The letter is
+the only source with "what" in it.
+
+All nineteen are gone, per item 24's rule that a confirmed word *moves*
+rather than being corrected. Nothing the site draws changed — the corpus
+already won for all of them. What changed is `derivedLookup`, and so the
+workbench's "against the model" panel, which had been handed a wrong hand
+reading and was reporting it as the model's. It now gets CMU's, which for
+`what` is *still* `w ʌ t` — but that is a real disagreement between canon
+and the dictionary, which is what the panel is for.
+
+`metalbending` went too, against a comment asking to keep it as a
+fallback for `corpus.js` failing to load. A second copy that can drift is
+the failure mode item 24 exists to prevent, and it was never the whole
+answer anyway: canon's null after the `l` cannot live in a phoneme list.
+
+### The documents had started contradicting the spec
+
+Item 28, which stopped being cosmetic in session 11. `CONTEXT.md` and
+`README.md` now state the syllable rule, the approximant turn, /s/ above
+a cluster, and — the part that reads like an oversight and is not —
+**`l` being left as a by-slot flip on purpose**, because its evidence
+under a vowel is mixed and moving it trades three exceptions for two.
+
+Neither document tells you to spell /s/ by hand any more. `$`/`%` are
+described as a **recording** tool: of the 53 markers in the corpus the
+derivation reproduces 50, and all three misses are `l$` — `school`,
+`stillness`, `always`. No /s/ marker disagrees.
+
+Four more contradictions turned up in the same read, none of them looked
+for: `README.md` said punctuation is stripped (four marks have been drawn
+since session 11); it told the reader to bundle the CMU dictionary three
+paragraphs after describing the bundled CMU dictionary; its sounds
+example was ARPAbet directly under a line calling readable codes primary;
+and `CONTEXT.md` said there is no test suite, which stopped being true in
+session 10.
+
+**`AVATARIAN.md` and `CORPUS.md` were not current either**, though item
+28 said they were. §10 listed /s/ orientation as open against its own
+§12.6, still called punctuation unrendered, and still proposed the
+dictionary that shipped in session 7. `CORPUS.md` §1 argued for a corpus
+from three unknowns, two of which the corpus has since answered — the
+section makes a better case in the past tense. Worth remembering: **a
+document can contradict itself between sections**, and these did it in
+the sections a reader starts from.
+
+### B1 is a question with two answers already in the repo
+
+Nobody had noticed that the two candidate C-C layouts are *both*
+written down, disagreeing:
+
+```
+site (render.js)     each consonant gets 4.5 of the 9 rows — 9/10 scale
+AVATARIAN.md §4      both keep 5 rows and share one lattice row
+```
+
+So B1 is not "what might it be" but "which of these two, or neither".
+Session 12 drew `please` under both, at one scale, and asked the user to
+hold it against the art. The discriminator needs no ruler: **is the `p`
+in the C-C block the same size as the `z` in the block beside it?** Same
+size means overlap; visibly smaller means shrink; and a C-C block that is
+simply *taller* than its neighbour is a third answer neither document
+has.
+
+### Where to start next time
+
+1. **B1's row answer**, if the measurement came back — it unblocks item 3
+   and settles the 9-row model whole.
+2. **Item 35**, the six failing tests. Session 12 re-pointed one of them
+   (`derivedLookup still uses everything below the corpus` → `bloodbending`,
+   in `EXCEPTIONS`, not in CMU, unlikely ever to be attested). That is the
+   shape the other five want. Note `EXCEPTIONS wins over the dictionary`
+   now has a *second* stale specimen: its line 56 reads `EXCEPTIONS["of"]`,
+   which no longer exists, so fixing line 54 alone turns an assertion
+   failure into a TypeError.
+3. **Item 34**, morpheme boundaries, if more compounds get transcribed.
+
+Suite unchanged at **51 pass / 6 fail** — the same six as session 11.
 
 ---
 
