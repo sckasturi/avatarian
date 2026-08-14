@@ -38,17 +38,37 @@ const ARPABET_TO_IPA = {
   Y: "j", Z: "z", ZH: "ʒ",
 };
 
+// A CONFIRMED WORD LEAVES THIS TABLE. It does not get corrected here —
+// it lives in corpus/attested.json, which records the spelling somebody
+// SAW rather than a reading of it, and which wins above this table
+// anyway. Nineteen words were removed this way (session 12, TODO 33):
+//
+//   the of to and you your are is have when come do no be me
+//   what katara bending metalbending
+//
+// Eighteen of them agreed with the corpus and were unreachable dead
+// weight. `what` did not — this table read it /w ʌ t/ and canon writes
+// `w ɑ t` (katara-letter, checked against the art). The site drew the
+// right thing because the corpus wins, but `derivedLookup` reads this
+// table directly and so the workbench's "against the model" panel was
+// being told canon disagreed with the model when the wrong reading was
+// the model's. That is `toph` again (TODO item 24).
+//
+// The model's honest answer for those words is now CMU's, one layer
+// down, which is what the panel should have been comparing against all
+// along. Where CMU has never heard of the word — `katara`,
+// `metalbending` — the model falls to the letter-to-sound rules and says
+// so, which is a true statement about the model rather than a hand
+// reading dressed up as one.
 const EXCEPTIONS = {
-  "the": "ð ə", "a": "ə", "of": "ʌ v", "to": "t u", "and": "æ n d",
-  "one": "w ʌ n", "two": "t u", "said": "s ɛ d", "says": "s ɛ z",
-  "you": "j u", "your": "j ɔ r", "are": "ɑ r", "is": "ɪ z",
-  "was": "w ʌ z", "were": "w ə r", "have": "h æ v", "has": "h æ z",
+  "a": "ə", "one": "w ʌ n", "two": "t u", "said": "s ɛ d", "says": "s ɛ z",
+  "was": "w ʌ z", "were": "w ə r", "has": "h æ z",
   "here": "h ɪ r", "there": "ð ɛ r", "they": "ð e", "their": "ð ɛ r",
-  "what": "w ʌ t", "who": "h u", "where": "w ɛ r", "when": "w ɛ n",
-  "some": "s ʌ m", "come": "k ʌ m", "done": "d ʌ n", "gone": "g ɔ n",
-  "do": "d u", "does": "d ʌ z", "go": "g oʊ", "so": "s oʊ", "no": "n oʊ",
+  "who": "h u", "where": "w ɛ r",
+  "some": "s ʌ m", "done": "d ʌ n", "gone": "g ɔ n",
+  "does": "d ʌ z", "go": "g oʊ", "so": "s oʊ",
   // Short words ending in -e: the vowel is /i/, NOT a silent e
-  "be": "b i", "he": "h i", "she": "ʃ i", "we": "w i", "me": "m i",
+  "he": "h i", "she": "ʃ i", "we": "w i",
   "hello": "h ɛ l oʊ", "people": "p i p ə l", "again": "ə g ɛ n",
   // -ough is famously irregular; the rule table can only pick one reading
   "through": "θ r u", "though": "ð oʊ", "thought": "θ ɔ t",
@@ -64,22 +84,21 @@ const EXCEPTIONS = {
   // table. See CORPUS.md.
   "world": "w ə r l d", "water": "w ɔ t ə r",
   "earth": "ə r θ", "air": "ɛ r", "avatar": "æ v ə t ɑ r",
-  "katara": "k ə t ɑ r ə", "sokka": "s ɑ k ə",
+  "sokka": "s ɑ k ə",
   "korra": "k ɔ r ə", "iroh": "aɪ r oʊ", "azula": "ə z u l ə",
-  "bending": "b ɛ n d ɪ ŋ",
-  // Coined compounds, so no general dictionary has them. The -bending
-  // ones all reduce the linking vowel to schwa, which is the reading
-  // canon shows for "metalbending".
+  // `katara`, `bending` and `metalbending` were here and are ATTESTED,
+  // so they left with the other sixteen. `metalbending` had been kept
+  // deliberately as a fallback for corpus.js failing to load; that is
+  // not worth a second copy that can drift, and it was never the whole
+  // answer anyway — canon puts a null after the `l` that a phoneme list
+  // cannot express, so the corpus entry is what got drawn regardless.
   //
-  // `metalbending` itself is ATTESTED and lives in the corpus, which
-  // wins over this entry. It stays here as the fallback if corpus.js
-  // hasn't loaded, and because it is the model the others copy — but
-  // note it is only the right SOUNDS. Canon puts a null after the `l`
-  // that this list cannot express, so the corpus entry is what actually
-  // gets drawn.
+  // Coined compounds below, so no general dictionary has them. The
+  // -bending ones all reduce the linking vowel to schwa, which is the
+  // reading canon shows for `metalbending` — the one member of the
+  // family anybody has seen written, and now the corpus's to state.
   "airbending": "ɛ r b ɛ n d ɪ ŋ", "waterbending": "w ɔ t ə r b ɛ n d ɪ ŋ",
   "earthbending": "ə r θ b ɛ n d ɪ ŋ", "firebending": "f aɪ ə r b ɛ n d ɪ ŋ",
-  "metalbending": "m ɛ t ə l b ɛ n d ɪ ŋ",
   "bloodbending": "b l ʌ d b ɛ n d ɪ ŋ",
   "airbender": "ɛ r b ɛ n d ə r", "waterbender": "w ɔ t ə r b ɛ n d ə r",
   "earthbender": "ə r θ b ɛ n d ə r", "firebender": "f aɪ ə r b ɛ n d ə r",

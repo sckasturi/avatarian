@@ -563,25 +563,39 @@ all checked against the art:
 sightings, all in bottom slots, none checked against the art. It is one
 image away from being settled either way.
 
-**33. `EXCEPTIONS` is now partly redundant, and one entry is wrong.**
-
-Nineteen words in `g2p.js`'s `EXCEPTIONS` are attested in the corpus.
-Eighteen agree with it, so they are dead weight sitting above the corpus
-in the lookup chain and never reached. One does not:
+~~**33. `EXCEPTIONS` is now partly redundant, and one entry is wrong.**~~
+**Done in session 12.** All nineteen attested words are out of
+`EXCEPTIONS`:
 
 ```
-what      EXCEPTIONS  w ʌ t        corpus  w ɑ t      DISAGREE
+the of to and you your are is have when come do no be me
+what katara bending metalbending
 ```
 
-The corpus wins the chain so the site is drawing the right thing, but the
-hand reading is confidently wrong and would be used by anything consulting
-`EXCEPTIONS` directly — `derivedLookup`, and therefore the workbench's
-"against the model" panel, which is exactly where a wrong reading does
-damage. This is `toph` again (item 24), found the way item 24 predicted.
+`what` was checked against the art before it went. **The corpus is
+right**: the block glossed "what" in `katara-letter.webp` is `w` over
+/ɑ/'s three-stroke Y, beside `(t, ∅)` with the U-shaped null a consonant
+partner takes. /ʌ/ is four dashes and is not in the word. (The letter is
+the only source that has "what" — `instagram-3-3.png` does not contain
+it.)
 
-Per item 24's rule — a confirmed word does not get corrected in
-`EXCEPTIONS`, it **moves** — the eighteen should be deleted and `what`
-looked at against the art before deleting it too.
+What changed, and what did not:
+
+- **Nothing the site draws.** All nineteen are attested, so the corpus
+  answered for them before and answers for them now.
+- **The workbench's "against the model" panel** now gets CMU's reading
+  instead of a hand assertion. For `what` that is still `w ʌ t` — but it
+  is now a real disagreement between canon and the dictionary, which is
+  what the panel is for, rather than the model being handed a wrong
+  answer and blamed for it.
+- `katara` and `metalbending` are not in CMU, so the model's honest
+  answer for them is now `guessed` from the letter-to-sound rules. That
+  is a true statement about the model.
+- `metalbending`'s comment had argued it should stay as a fallback for
+  `corpus.js` failing to load. It went anyway: a second copy that can
+  drift is the whole failure mode item 24 exists to prevent, and it was
+  never the full answer — canon's null after the `l` cannot be written
+  in a phoneme list.
 
 **34. Morpheme boundaries look like a second boundary rule.** The
 syllable rule (§12.5) misses ten of 244 attested spellings, and six of
@@ -615,6 +629,17 @@ of them broke this way earlier in the session as words became attested.
 Worth fixing properly — pick specimens from `EXCEPTIONS` that are
 unlikely ever to be attested, or build the fixture from a word the test
 inserts itself.
+
+**Session 12 note.** Item 33 emptied nineteen words out of `EXCEPTIONS`,
+which makes two of these staler than they look. `derivedLookup still
+uses everything below the corpus` was passing and would have broken, so
+it was re-pointed at `bloodbending` — in `EXCEPTIONS`, not in CMU, and a
+coined compound the corpus is unlikely to attest. That is the shape the
+other five want. `EXCEPTIONS wins over the dictionary` still fails at its
+first assertion, but note its *second* one now reads `EXCEPTIONS["of"]`,
+which no longer exists: whoever fixes line 54 will get a TypeError on
+line 56 unless both specimens move together. `though` is the "in both
+CMU and the hand list" replacement.
 
 **36. The syllabifier is hand-rolled.** `ONSET_CLUSTERS` in `g2p.js` is a
 literal list, and `same_syllable` is a heuristic with two known misses

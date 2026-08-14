@@ -150,8 +150,14 @@ test("derivedLookup skips the corpus", () => {
 });
 
 test("derivedLookup still uses everything below the corpus", () => {
-  assert.deepEqual(plain(derivedLookup("katara").ipa),
-    plain(EXCEPTIONS["katara"].split(" ")));
+  // `bloodbending` rather than `katara`: this needs a word that is in
+  // EXCEPTIONS and NOT in CMU, so only the hand list can be what
+  // answered — and one the corpus is unlikely ever to attest, since an
+  // attested specimen is exactly how this test broke before (item 35).
+  // A coined compound from one line of dialogue is a safer bet than a
+  // main character's name.
+  assert.deepEqual(plain(derivedLookup("bloodbending").ipa),
+    plain(EXCEPTIONS["bloodbending"].split(" ")));
   assert.equal(derivedLookup("that").tier, "derived");
   assert.equal(derivedLookup("zzblrf").tier, "guessed");
 });
