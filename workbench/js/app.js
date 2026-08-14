@@ -605,15 +605,41 @@ function deleteSource() {
   const citing = state.entries.filter(e => e.source === name);
   const sightings = citing.reduce((n, e) => n + (e.times || 1), 0);
 
+  // ONLY THIS SOURCE'S SIGHTINGS GO. A word attested somewhere else keeps
+  // that other entry and stays in the corpus — which is the point of an
+  // entry being a sighting rather than a word. Worth saying out loud,
+  // because "4 entries go too" reads like four words disappearing, and
+  // the difference between losing a word and losing one attestation of
+  // it is exactly what you want to know before clicking.
+  const keys = [...new Set(citing.map(e => corpusKey(e.key)))];
+  const elsewhere = new Set(
+    state.entries.filter(e => e.source !== name).map(e => corpusKey(e.key)));
+  const surviving = keys.filter(k => elsewhere.has(k));
+  const losing = keys.filter(k => !elsewhere.has(k));
+
   if (citing.length && pendingSourceDelete !== name) {
     pendingSourceDelete = name;
     $("deleteSource").textContent = `really delete "${name}"`;
     $("deleteSource").classList.add("is-armed");
-    $("deleteSourceNote").textContent =
+
+    const bits = [
       `${citing.length} entr${citing.length === 1 ? "y" : "ies"} `
-      + `(${sightings} sighting${sightings === 1 ? "" : "s"}) cite it and go `
-      + `too. Click again to confirm.`
-      + (source.image ? ` ${source.image} stays on disk.` : "");
+      + `(${sightings} sighting${sightings === 1 ? "" : "s"}) cite it.`,
+    ];
+    bits.push(losing.length
+      ? `${losing.length} word${losing.length === 1 ? "" : "s"} leave${
+          losing.length === 1 ? "s" : ""} the corpus`
+        + (losing.length <= 5 ? `: ${losing.join(", ")}.` : ".")
+      : `No word leaves the corpus.`);
+    if (surviving.length) {
+      bits.push(`${surviving.length} stay${surviving.length === 1 ? "s" : ""}, `
+        + `attested elsewhere`
+        + (surviving.length <= 5 ? `: ${surviving.join(", ")}.` : "."));
+    }
+    bits.push("Click again to confirm.");
+    if (source.image) bits.push(`${source.image} stays on disk.`);
+
+    $("deleteSourceNote").textContent = bits.join(" ");
     return;
   }
 
@@ -634,6 +660,10 @@ function deleteSource() {
   setStatus(
     `deleted "${name}"`
     + (citing.length ? ` and ${citing.length} entries` : "")
+    + (surviving.length
+        ? `; ${surviving.length} word${surviving.length === 1 ? "" : "s"} kept, `
+          + `attested elsewhere`
+        : "")
     + " — not saved yet", "is-dirty");
 }
 
