@@ -13,48 +13,33 @@
  * having to be bypassed. */
 window.AVATARIAN_CORPUS = {
   "sources": {
-    "cherries on top poster": {
+    "poster - cherries on top": {
       "what": "Cherries on top",
       "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=1",
-      "image": "image-3.png"
+      "image": "cherries-on-top-poster.png"
     },
     "toph-letter": {
       "what": "Hey Toph, How is the metalbending academy? Hope you're not being too hard on your students! Anyway, i found something out and it is really big! I am going to need your help. I have asked Zuko to come pick you up, then I need you all to come meet me at Mount Baihu. Please hurry. Aang",
       "where": "movie",
-      "image": "new-avatar-the-last-airbender-conscript-v0-clrg6ebgx8vg1-4.webp"
+      "image": "toph-letter.webp"
+    },
+    "katara-letter": {
+      "what": "Katara, Please do not be mad at me when you wake up, but I did not (unknown) I found out what the denied are after, (unknown) can (unknown) I (unknown)  you take Appa and Momo and gather up the rest of the team. I will be Aang (unknown) Aang",
+      "where": "movie",
+      "image": "katara-letter.webp"
+    },
+    "sad fish noodle house poster": {
+      "what": "sad fish, noodle house",
+      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
+      "image": "image-2.png"
+    },
+    "poster - still waters": {
+      "what": "still waters / trends in june",
+      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
+      "image": "image-3.png"
     }
   },
   "words": {
-    "at": {
-      "ipa": [
-        "æ",
-        "t"
-      ],
-      "count": 2,
-      "sources": [
-        "cherries on top poster",
-        "toph-letter"
-      ],
-      "confidence": "certain",
-      "source": "cherries on top poster",
-      "note": "Vowel on TOP, drawn as a cup ∪. This is the word that killed the syllable model."
-    },
-    "cherries": {
-      "ipa": [
-        "tʃ",
-        "ɛ",
-        "r",
-        "i",
-        "z",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "cherries on top poster"
-      ],
-      "confidence": "certain",
-      "source": "cherries on top poster"
-    },
     "on": {
       "ipa": [
         "ɑ",
@@ -62,11 +47,11 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 2,
       "sources": [
-        "cherries on top poster",
+        "poster - cherries on top",
         "toph-letter"
       ],
       "confidence": "certain",
-      "source": "cherries on top poster"
+      "source": "poster - cherries on top"
     },
     "top": {
       "ipa": [
@@ -77,22 +62,24 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "cherries on top poster"
+        "poster - cherries on top"
       ],
       "confidence": "certain",
-      "source": "cherries on top poster"
+      "source": "poster - cherries on top"
     },
     "aang": {
       "ipa": [
         "e",
         "ŋ"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
-      "source": "toph-letter"
+      "source": "toph-letter",
+      "gloss": "Aang"
     },
     "academy": {
       "ipa": [
@@ -143,9 +130,10 @@ window.AVATARIAN_CORPUS = {
         "d",
         "∅"
       ],
-      "count": 1,
+      "count": 3,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -179,6 +167,21 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "toph-letter"
+    },
+    "at": {
+      "ipa": [
+        "æ",
+        "t"
+      ],
+      "count": 3,
+      "sources": [
+        "toph-letter",
+        "katara-letter",
+        "poster - still waters"
+      ],
+      "confidence": "certain",
+      "source": "toph-letter",
+      "note": "Vowel on TOP, drawn as a cup ∪. This is the word that killed the syllable model."
     },
     "baihu": {
       "ipa": [
@@ -244,9 +247,10 @@ window.AVATARIAN_CORPUS = {
         "n",
         "d"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -364,12 +368,14 @@ window.AVATARIAN_CORPUS = {
         "aɪ",
         "∅"
       ],
-      "count": 4,
+      "count": 8,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
-      "source": "toph-letter"
+      "source": "toph-letter",
+      "gloss": "I"
     },
     "is": {
       "ipa": [
@@ -400,9 +406,10 @@ window.AVATARIAN_CORPUS = {
         "m",
         "i"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -479,9 +486,10 @@ window.AVATARIAN_CORPUS = {
         "t",
         "∅"
       ],
-      "count": 1,
+      "count": 3,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -491,9 +499,10 @@ window.AVATARIAN_CORPUS = {
         "aʊ",
         "t"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -519,12 +528,14 @@ window.AVATARIAN_CORPUS = {
         "i",
         "z"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
-      "source": "toph-letter"
+      "source": "toph-letter",
+      "gloss": "Please"
     },
     "really": {
       "ipa": [
@@ -563,9 +574,10 @@ window.AVATARIAN_CORPUS = {
         "ð",
         "ə"
       ],
-      "count": 1,
+      "count": 4,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -627,9 +639,10 @@ window.AVATARIAN_CORPUS = {
         "ʌ",
         "p"
       ],
-      "count": 1,
+      "count": 3,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -639,9 +652,10 @@ window.AVATARIAN_CORPUS = {
         "j",
         "u"
       ],
-      "count": 2,
+      "count": 4,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -688,6 +702,453 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "toph-letter",
       "gloss": "Zuko"
+    },
+    "after": {
+      "ipa": [
+        "æ",
+        "f",
+        "t",
+        "ə",
+        "r",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "appa": {
+      "ipa": [
+        "æ",
+        "∅",
+        "p",
+        "∅",
+        "ə",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter",
+      "gloss": "Appa"
+    },
+    "are": {
+      "ipa": [
+        "ɑ",
+        "r"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "be": {
+      "ipa": [
+        "b",
+        "i"
+      ],
+      "count": 2,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "but": {
+      "ipa": [
+        "b",
+        "ʌ",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "can": {
+      "ipa": [
+        "k",
+        "æ",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "denied": {
+      "ipa": [
+        "d",
+        "e",
+        "n",
+        "aɪ",
+        "d",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "did": {
+      "ipa": [
+        "d",
+        "ɪ",
+        "d",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "do": {
+      "ipa": [
+        "d",
+        "u"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "gather": {
+      "ipa": [
+        "g",
+        "æ",
+        "ð",
+        "ə",
+        "r",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "katara": {
+      "ipa": [
+        "k",
+        "ə",
+        "t",
+        "ɑ",
+        "r",
+        "ə"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter",
+      "gloss": "Katara"
+    },
+    "mad": {
+      "ipa": [
+        "m",
+        "æ",
+        "d",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "momo": {
+      "ipa": [
+        "m",
+        "oʊ",
+        "m",
+        "oʊ"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter",
+      "gloss": "Momo"
+    },
+    "of": {
+      "ipa": [
+        "ʌ",
+        "v"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "rest": {
+      "ipa": [
+        "r",
+        "ɛ",
+        "s",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "take": {
+      "ipa": [
+        "t",
+        "e",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "team": {
+      "ipa": [
+        "t",
+        "i",
+        "m",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "wake": {
+      "ipa": [
+        "w",
+        "e",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "what": {
+      "ipa": [
+        "w",
+        "ɑ",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "when": {
+      "ipa": [
+        "w",
+        "ɛ",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "will": {
+      "ipa": [
+        "w",
+        "ɪ",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "fish": {
+      "ipa": [
+        "f",
+        "ɪ",
+        "ʃ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sad fish noodle house poster"
+      ],
+      "confidence": "certain",
+      "source": "sad fish noodle house poster"
+    },
+    "house": {
+      "ipa": [
+        "h",
+        "aʊ",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sad fish noodle house poster"
+      ],
+      "confidence": "certain",
+      "source": "sad fish noodle house poster"
+    },
+    "noodle": {
+      "ipa": [
+        "n",
+        "u",
+        "d",
+        "ə",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sad fish noodle house poster"
+      ],
+      "confidence": "certain",
+      "source": "sad fish noodle house poster"
+    },
+    "sad": {
+      "ipa": [
+        "s",
+        "æ",
+        "d",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sad fish noodle house poster"
+      ],
+      "confidence": "certain",
+      "source": "sad fish noodle house poster"
+    },
+    "cherries": {
+      "ipa": [
+        "tʃ",
+        "ɛ",
+        "r",
+        "i",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "poster - still waters"
+      ],
+      "confidence": "certain",
+      "source": "poster - still waters"
+    },
+    "june": {
+      "ipa": [
+        "dʒ",
+        "u",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "poster - still waters"
+      ],
+      "confidence": "certain",
+      "source": "poster - still waters"
+    },
+    "still": {
+      "ipa": [
+        "s%",
+        "t",
+        "ɪ",
+        "l"
+      ],
+      "count": 1,
+      "sources": [
+        "poster - still waters"
+      ],
+      "confidence": "certain",
+      "source": "poster - still waters"
+    },
+    "this": {
+      "ipa": [
+        "ð",
+        "ɪ",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "poster - still waters"
+      ],
+      "confidence": "certain",
+      "source": "poster - still waters"
+    },
+    "trends": {
+      "ipa": [
+        "t",
+        "r",
+        "ɛ",
+        "n",
+        "d",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "poster - still waters"
+      ],
+      "confidence": "certain",
+      "source": "poster - still waters"
+    },
+    "waters": {
+      "ipa": [
+        "w",
+        "ɔ",
+        "t",
+        "ə",
+        "r",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "poster - still waters"
+      ],
+      "confidence": "certain",
+      "source": "poster - still waters"
     }
   }
 };

@@ -32,41 +32,43 @@
     "Then run: python3 tools/build_corpus.py"
   ],
   "sources": {
-    "cherries on top poster": {
+    "poster - cherries on top": {
       "what": "Cherries on top",
       "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=1",
-      "image": "image-3.png"
+      "image": "cherries-on-top-poster.png"
     },
     "toph-letter": {
       "what": "Hey Toph, How is the metalbending academy? Hope you're not being too hard on your students! Anyway, i found something out and it is really big! I am going to need your help. I have asked Zuko to come pick you up, then I need you all to come meet me at Mount Baihu. Please hurry. Aang",
       "where": "movie",
-      "image": "new-avatar-the-last-airbender-conscript-v0-clrg6ebgx8vg1-4.webp"
+      "image": "toph-letter.webp"
+    },
+    "katara-letter": {
+      "what": "Katara, Please do not be mad at me when you wake up, but I did not (unknown) I found out what the denied are after, (unknown) can (unknown) I (unknown)  you take Appa and Momo and gather up the rest of the team. I will be Aang (unknown) Aang",
+      "where": "movie",
+      "image": "katara-letter.webp"
+    },
+    "sad fish noodle house poster": {
+      "what": "sad fish, noodle house",
+      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
+      "image": "image-2.png"
+    },
+    "poster - still waters": {
+      "what": "still waters / trends in june",
+      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
+      "image": "image-3.png"
     }
   },
   "entries": [
     {
-      "key": "at",
-      "spelling": "æ t",
-      "confidence": "certain",
-      "source": "cherries on top poster",
-      "note": "Vowel on TOP, drawn as a cup ∪. This is the word that killed the syllable model."
-    },
-    {
-      "key": "cherries",
-      "spelling": "tʃ ɛ r i z ∅",
-      "source": "cherries on top poster",
-      "confidence": "certain"
-    },
-    {
       "key": "on",
       "spelling": "ɑ n",
-      "source": "cherries on top poster",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "poster - cherries on top"
     },
     {
       "key": "top",
       "spelling": "t ɑ p ∅",
-      "source": "cherries on top poster",
+      "source": "poster - cherries on top",
       "confidence": "certain"
     },
     {
@@ -354,6 +356,284 @@
       "source": "toph-letter",
       "confidence": "certain",
       "gloss": "Zuko"
+    },
+    {
+      "key": "aang",
+      "spelling": "e ŋ",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "gloss": "Aang"
+    },
+    {
+      "key": "after",
+      "spelling": "æ f t ə r ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "and",
+      "spelling": "æ n d ∅",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "appa",
+      "spelling": "æ ∅ p ∅ ə ∅",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "gloss": "Appa"
+    },
+    {
+      "key": "are",
+      "spelling": "ɑ r",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "at",
+      "spelling": "æ t",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "be",
+      "spelling": "b i",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "but",
+      "spelling": "b ʌ t ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "can",
+      "spelling": "k æ n ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "denied",
+      "spelling": "d e n aɪ d ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "did",
+      "spelling": "d ɪ d ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "do",
+      "spelling": "d u",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "found",
+      "spelling": "f aʊ n d",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "gather",
+      "spelling": "g æ ð ə r ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "i",
+      "spelling": "aɪ ∅",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "gloss": "I",
+      "times": 4
+    },
+    {
+      "key": "katara",
+      "spelling": "k ə t ɑ r ə",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "gloss": "Katara"
+    },
+    {
+      "key": "mad",
+      "spelling": "m æ d ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "me",
+      "spelling": "m i",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "momo",
+      "spelling": "m oʊ m oʊ",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "gloss": "Momo"
+    },
+    {
+      "key": "not",
+      "spelling": "n ɑ t ∅",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "of",
+      "spelling": "ʌ v",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "out",
+      "spelling": "aʊ t",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "please",
+      "spelling": "p l i z",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "gloss": "Please"
+    },
+    {
+      "key": "rest",
+      "spelling": "r ɛ s t",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "take",
+      "spelling": "t e k ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "team",
+      "spelling": "t i m ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "the",
+      "spelling": "ð ə",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "times": 3
+    },
+    {
+      "key": "up",
+      "spelling": "ʌ p",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "wake",
+      "spelling": "w e k ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "what",
+      "spelling": "w ɑ t ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "when",
+      "spelling": "w ɛ n ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "will",
+      "spelling": "w ɪ l ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "you",
+      "spelling": "j u",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "fish",
+      "spelling": "f ɪ ʃ ∅",
+      "source": "sad fish noodle house poster",
+      "confidence": "certain"
+    },
+    {
+      "key": "house",
+      "spelling": "h aʊ s ∅",
+      "source": "sad fish noodle house poster",
+      "confidence": "certain"
+    },
+    {
+      "key": "noodle",
+      "spelling": "n u d ə l ∅",
+      "source": "sad fish noodle house poster",
+      "confidence": "certain"
+    },
+    {
+      "key": "sad",
+      "spelling": "s æ d ∅",
+      "source": "sad fish noodle house poster",
+      "confidence": "certain"
+    },
+    {
+      "key": "at",
+      "spelling": "æ t",
+      "confidence": "certain",
+      "source": "poster - still waters",
+      "note": "Vowel on TOP, drawn as a cup ∪. This is the word that killed the syllable model."
+    },
+    {
+      "key": "cherries",
+      "spelling": "tʃ ɛ r i z ∅",
+      "confidence": "certain",
+      "source": "poster - still waters"
+    },
+    {
+      "key": "june",
+      "spelling": "dʒ u n ∅",
+      "source": "poster - still waters",
+      "confidence": "certain"
+    },
+    {
+      "key": "still",
+      "spelling": "s% t ɪ l",
+      "source": "poster - still waters",
+      "confidence": "certain"
+    },
+    {
+      "key": "this",
+      "spelling": "ð ɪ s ∅",
+      "source": "poster - still waters",
+      "confidence": "certain"
+    },
+    {
+      "key": "trends",
+      "spelling": "t r ɛ n d z",
+      "confidence": "certain",
+      "source": "poster - still waters"
+    },
+    {
+      "key": "waters",
+      "spelling": "w ɔ t ə r z",
+      "source": "poster - still waters",
+      "confidence": "certain"
     }
   ]
 }
