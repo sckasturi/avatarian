@@ -255,9 +255,13 @@ function renderPreview(ipa) {
 
   const blocks = blocksOf(ipa);
   const odd = ipa.length % 2 === 1;
-  const unknown = [...new Set(ipa
-    .map(t => splitOverride(t).body)
-    .filter(sym => !(window.AVATARIAN_GLYPHS || {})[sym]))];
+  const bodies = ipa.map(t => splitOverride(t).body);
+  const unread = bodies.filter(sym => sym === "?").length;
+  // `?` is excluded: it has no glyph deliberately, and both validators
+  // accept it. Flagging it as a missing glyph would put a red warning on
+  // a spelling that is going to save perfectly well.
+  const unknown = [...new Set(bodies.filter(
+    sym => sym !== "?" && !(window.AVATARIAN_GLYPHS || {})[sym]))];
 
   const note = $("previewNote");
   const bits = [`${ipa.length} symbols, ${blocks.length} blocks`];
@@ -266,6 +270,8 @@ function renderPreview(ipa) {
   if (odd) bits.push("odd count — the last block is half empty, so a "
                      + "null is missing");
   if (unknown.length) bits.push("no glyph for: " + unknown.join(" "));
+  // Stated, not warned about — an honest gap in the reading.
+  if (unread) bits.push(`${unread} unread slot${unread === 1 ? "" : "s"}`);
   note.textContent = bits.join(" · ");
   note.className = "preview-note" + (odd || unknown.length ? " is-warn" : "");
 }
@@ -295,8 +301,34 @@ function renderComparison(ipa) {
   const derivedStr = derived.tokens.join(" ");
   const sameSounds = soundsOnly(ipa).join(" ") === soundsOnly(derived.tokens).join(" ");
 
+  // AN UNREAD SLOT IS NOT A DISAGREEMENT. `?` means the reader could not
+  // make the glyph out, so it says nothing about the model — and because
+  // soundsOnly() drops it, the two would otherwise compare as different
+  // sounds and accuse the pronunciation of being wrong when it is not.
+  //
+  // Where the rest lines up, the model's symbol for the gap is worth
+  // saying out loud: it is the best available candidate for the glyph you
+  // could not read. Offered as information, never written in — filling
+  // the gap from the model is exactly the inference the corpus must not
+  // record as an observation.
+  const gaps = [];
+  if (ipa.length === derived.tokens.length) {
+    for (let i = 0; i < ipa.length; i++) {
+      if (splitOverride(ipa[i]).body === "?") gaps.push(i);
+    }
+  }
+  const readableAgrees = gaps.length && ipa.every((t, i) =>
+    gaps.includes(i) || t === derived.tokens[i]);
+
   let verdict, cls = "";
-  if (attestedStr === derivedStr) {
+  if (readableAgrees) {
+    const guessed = gaps.map(i => soundToCode(derived.tokens[i]));
+    verdict = `Agrees everywhere you could read it. The model reads the `
+            + `${gaps.length === 1 ? "gap" : "gaps"} as `
+            + `${guessed.join(", ")} — a candidate for what you could not `
+            + `make out, not evidence. Leave the ? unless you can see it.`;
+    cls = " is-same";
+  } else if (attestedStr === derivedStr) {
     verdict = "The model already gets this right. Worth recording anyway — "
             + "agreements say where it works.";
     cls = " is-same";

@@ -129,12 +129,19 @@ function byLength() {
  * This is exactly the information the corpus keeps and the dictionary
  * throws away, which is why the block structure has to be preserved in
  * the entry even though it plays no part in finding the word.
+ *
+ * An unreadable glyph comes off too, and for a different reason: it is a
+ * sound, but nobody knows which one. Left in, it would be compared as the
+ * literal character `?` and score a mismatch against every real phoneme,
+ * so a word with one gap in it could never find itself. Dropped, the
+ * readable part still searches — "d r ? ∅" looks for /d r/ and the edit
+ * distance treats the gap as the one missing sound it is.
  */
 function soundsOnly(tokens) {
   const out = [];
   for (const t of tokens) {
     const body = t.slice(-1) === "$" || t.slice(-1) === "%" ? t.slice(0, -1) : t;
-    if (body === "∅" || body === "∅c" || !body) continue;
+    if (body === "∅" || body === "∅c" || body === "?" || !body) continue;
     out.push(body);
   }
   return out;

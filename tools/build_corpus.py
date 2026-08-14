@@ -48,6 +48,18 @@ DST = ROOT / "site" / "js" / "corpus.js"
 CONFIDENCE = ("certain", "probable", "unclear")
 OVERRIDES = ("$", "%")
 
+# A glyph that is there in the source but could not be made out — damaged,
+# obscured, too small, or simply unclear. It fills a slot like any other
+# symbol, so the block structure is still recorded even where the letter
+# is not.
+#
+# This is deliberately NOT the same as a sound with no glyph drawn yet
+# (item 18's /x/), and not the same as leaving the word out. Recording
+# "t ɑ ? ∅" says something true and checkable: four slots, two blocks,
+# third one unreadable. Guessing the letter would put an inference in the
+# corpus, and omitting the word would lose the block structure with it.
+UNREADABLE = "?"
+
 HEADER = """/* Auto-generated — do not edit by hand.
  * Source: corpus/attested.json    Regenerate: python3 tools/build_corpus.py
  * Or edit it in the workbench: python3 tools/corpus_server.py
@@ -100,8 +112,18 @@ def check_spelling(spelling, known, where, errors):
         )
     for token in tokens:
         body = token[:-1] if token[-1:] in OVERRIDES else token
+        if body == UNREADABLE:
+            continue
         if body not in known:
             errors.append(f"{where}: no glyph for '{body}' (in '{token}')")
+
+    # A spelling of nothing but unreadable slots records a block count and
+    # no letters. That is not an observation of a word, and it would sit
+    # in the corpus matching everything.
+    if tokens and all(
+            (t[:-1] if t[-1:] in OVERRIDES else t) == UNREADABLE for t in tokens):
+        errors.append(f"{where}: every symbol is '{UNREADABLE}' — nothing was "
+                      f"actually read")
     return tokens
 
 
@@ -220,6 +242,52 @@ def confidence_rank(value):
         return len(CONFIDENCE)
 
 
+def compatible(partial, complete):
+    """
+    Does a spelling with unreadable slots agree with a fuller one?
+
+    Same length, and every slot the reader COULD make out matches. `?`
+    matches anything, which is the whole point of writing it.
+    """
+    a, b = partial.split(), complete.split()
+    if len(a) != len(b):
+        return False
+    seen_gap = False
+    for x, y in zip(a, b):
+        if (x[:-1] if x[-1:] in OVERRIDES else x) == UNREADABLE:
+            seen_gap = True
+            continue
+        if x != y:
+            return False
+    return seen_gap
+
+
+def fold_unreadable(buckets):
+    """
+    Fold a partly-unreadable spelling into the readable one it agrees with.
+
+    Somebody who could not make out one glyph, and somebody who could,
+    are not in conflict — they agree on everything either of them read.
+    Left as separate spellings they would report the word as contested and
+    put a false disagreement on the site, which is the opposite of what
+    writing `?` was for: it records a gap in the reading, not a variant.
+
+    Only folded when exactly ONE readable spelling fits. If two do, the
+    `?` genuinely cannot tell them apart and it stays on its own — that
+    ambiguity is real and hiding it would be a guess.
+    """
+    complete = [s for s in buckets if UNREADABLE not in s.split()]
+    folded = {}
+    for spelling, group in buckets.items():
+        if UNREADABLE in spelling.split():
+            fits = [c for c in complete if compatible(spelling, c)]
+            if len(fits) == 1:
+                folded.setdefault(fits[0], []).extend(group)
+                continue
+        folded.setdefault(spelling, []).extend(group)
+    return folded
+
+
 def compile_record(sightings, source_order):
     """
     Every sighting of one word, folded into the record the site ships.
@@ -233,11 +301,19 @@ def compile_record(sightings, source_order):
     for s in sightings:
         buckets.setdefault(" ".join(s["ipa"]), []).append(s)
 
+    buckets = fold_unreadable(buckets)
+
     candidates = []
     for spelling, group in buckets.items():
         best = min(group, key=lambda s: confidence_rank(s["confidence"]))
+        gaps = sum(1 for t in spelling.split()
+                   if (t[:-1] if t[-1:] in OVERRIDES else t) == UNREADABLE)
         candidates.append({
-            "ipa": group[0]["ipa"],
+            # From the bucket key, not from a member: folding can put an
+            # unreadable sighting first, and its spelling is not the one
+            # this bucket stands for.
+            "ipa": spelling.split(),
+            "_gaps": gaps,
             # Every time the spelling was seen, repeats within one source
             # included; and the distinct sources it was seen in.
             "count": sum(s["times"] for s in group),
@@ -253,12 +329,21 @@ def compile_record(sightings, source_order):
     # corroboration, which is the failure this whole file exists to
     # prevent. Then the most confident, then the earliest source — which
     # is arbitrary, but stable, so a rebuild never reshuffles the site.
+    # A READABLE SPELLING OUTRANKS A PARTLY UNREADABLE ONE, just below
+    # corroboration. `?` records that a slot could not be made out, which
+    # is worth keeping but says nothing about the script — so it must
+    # never be what the site draws when some source actually read the
+    # letter. (Compatible ones have already been folded together, so a
+    # gap surviving to here means two readings genuinely differ and the
+    # `?` cannot tell them apart.)
     candidates.sort(key=lambda c: (-len(c["sources"]),
+                                   c["_gaps"],
                                    -c["count"],
                                    confidence_rank(c["confidence"]),
                                    c["_order"]))
     for c in candidates:
         del c["_order"]
+        del c["_gaps"]
 
     winner, alternates = candidates[0], candidates[1:]
     record = {

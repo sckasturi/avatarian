@@ -45,21 +45,31 @@
     "instagram-1.1": {
       "what": "still waters / trends this june / balloon festival / peeep farm / sad fish / noodle house / garden gems",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
-      "image": "instagram-1-1.png"
+      "image": "image-4.png"
+    },
+    "instagram-1.2": {
+      "what": "joyful journey / salon / looking for hair models / biggest hand contest / ages 0-7 draw your fav animal / mama / cherries on top",
+      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=2",
+      "image": "image-4.png"
+    },
+    "instagram-3.1": {
+      "what": "evil seagull / save beaverfish / fresh from my garden / bao pie / looking for humansitters / miao / warrior within / courage in every step",
+      "where": "https://www.instagram.com/mmara_art/p/DboCKbiDL_v/?img_index=1",
+      "image": "instagram-3.1.png"
     }
   },
   "entries": [
     {
       "key": "aang",
       "spelling": "e ŋ",
-      "source": "toph-letter",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "toph-letter"
     },
     {
       "key": "academy",
       "spelling": "ə ∅ k æ d ə m i",
-      "source": "toph-letter",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "toph-letter"
     },
     {
       "key": "all",
@@ -94,15 +104,8 @@
     {
       "key": "at",
       "spelling": "æ t",
-      "source": "toph-letter",
-      "confidence": "certain"
-    },
-    {
-      "key": "baihu",
-      "spelling": "b aɪ h u",
-      "source": "toph-letter",
       "confidence": "certain",
-      "gloss": "Baihu"
+      "source": "toph-letter"
     },
     {
       "key": "being",
@@ -324,9 +327,8 @@
     {
       "key": "your",
       "spelling": "j oʊ r ∅",
-      "source": "toph-letter",
       "confidence": "certain",
-      "times": 2
+      "source": "toph-letter"
     },
     {
       "key": "zuko",
@@ -338,9 +340,9 @@
     {
       "key": "aang",
       "spelling": "e ŋ",
-      "source": "katara-letter",
+      "gloss": "Aang",
       "confidence": "certain",
-      "gloss": "Aang"
+      "source": "katara-letter"
     },
     {
       "key": "after",
@@ -634,6 +636,224 @@
       "key": "waters",
       "spelling": "w ɔ t ə r z",
       "source": "instagram-1.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "ages",
+      "spelling": "e ∅ ɪ ∅ dʒ ə z ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "animal",
+      "spelling": "æ ∅ n ə m ə l ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "baihu",
+      "spelling": "b aɪ h u",
+      "gloss": "Baihu",
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    {
+      "key": "biggest",
+      "spelling": "b ɪ g ə ? t",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "cherries",
+      "spelling": "tʃ ɛ r i z ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "contest",
+      "spelling": "k ɑ n ∅ t ɛ ? t",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "draw",
+      "spelling": "d ? ɔ% ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "fav",
+      "spelling": "f ? v ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "for",
+      "spelling": "f ɔ r ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "hair",
+      "spelling": "h ɛ r ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "hand",
+      "spelling": "h æ n d",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "journey",
+      "spelling": "dʒ ə r ∅ n i",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "joyful",
+      "spelling": "dʒ ɔɪ f ə l ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "looking",
+      "spelling": "l ʊ k ɪ ŋ ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "mama",
+      "spelling": "m ɑ m ə",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "models",
+      "spelling": "m ɑ d ə l z",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "on",
+      "spelling": "ɑ n",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "salon",
+      "spelling": "s ə l ? n ∅",
+      "gloss": "salon",
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    {
+      "key": "top",
+      "spelling": "t ɑ p ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "your",
+      "spelling": "j ɔ r ∅",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "bao",
+      "spelling": "b aʊ",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "courage",
+      "spelling": "k ə r ə dʒ ∅",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "evil",
+      "spelling": "i ∅ v ə l ∅",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "for",
+      "spelling": "f ɔ r ∅",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "fresh",
+      "spelling": "f r% ɛ ʃ",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "from",
+      "spelling": "f r% ə m",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "garden",
+      "spelling": "g ɑ r ∅ d ə n ∅",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "humansitters",
+      "spelling": "h u m ∅ n ∅ s i t ∅ t e r z",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "in",
+      "spelling": "e n",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "looking",
+      "spelling": "l ʊ k ɪ ŋ ∅",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "my",
+      "spelling": "m aɪ",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "pie",
+      "spelling": "p aɪ",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "seagull",
+      "spelling": "s i g æ l ∅",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "step",
+      "spelling": "s% t ɛ p",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "warrior",
+      "spelling": "w ɔ r ? ə r",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "within",
+      "spelling": "w ɪ ð ? n ∅",
+      "source": "instagram-3.1",
       "confidence": "certain"
     }
   ]

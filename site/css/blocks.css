@@ -113,3 +113,14 @@
 
 .avatarian-placeholder { opacity: 0.5; }
 .avatarian-missing { font-size: 13px; color: var(--warn); line-height: 1; }
+
+/* A glyph that IS in the source but could not be made out. Deliberately
+   unlike .avatarian-missing, which means this tool has no drawing yet:
+   that is a gap someone can close by drawing a glyph, this one is a gap
+   in the reading and only a better look at the source closes it.
+
+   Dimmed rather than coloured as a warning — it is an honest record, not
+   an error, and a word full of red marks reads as broken when it is
+   simply partly unread. */
+.avatarian-unreadable { opacity: 0.68; }
+.avatarian-unreadable svg { transform: none !important; }

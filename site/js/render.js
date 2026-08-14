@@ -187,9 +187,55 @@ function slotRows(token) {
   return VOWELS.has(sym) ? 4 : 5;
 }
 
+/**
+ * A glyph that is in the source but could not be made out.
+ *
+ * Distinct from a sound with no glyph drawn yet (`avatarian-missing`,
+ * which is item 18's /x/): that one is a gap in THIS TOOL, and it will be
+ * filled by drawing the glyph. This one is a gap in the READING, and no
+ * amount of work here closes it — only a better look at the source.
+ */
+const UNREADABLE = "?";
+
+/**
+ * The mark for a slot that could not be read.
+ *
+ * Drawn here rather than added to the glyph manifest, on purpose: the
+ * manifest is letters of the script, and this is not one. Both validators
+ * exempt `?` precisely because it has no glyph, so giving it one would
+ * make them contradict themselves.
+ *
+ * It borrows the script's geometry — 100x100 box, square caps, miter
+ * joins — so it sits in a word without looking pasted in, but the dashed
+ * frame belongs to no letter in the alphabet and is meant to read as "a
+ * glyph is here and nobody knows which" at a glance.
+ */
+const UNREADABLE_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"'
+  + ' stroke="currentColor" stroke-linecap="square" stroke-linejoin="miter">'
+  + '<rect x="7" y="7" width="86" height="86" stroke-width="4"'
+  + ' stroke-dasharray="11 9" opacity="0.75"/>'
+  + '<path d="M 27 38 L 27 25 L 73 25 L 73 52 L 50 52 L 50 66"'
+  + ' stroke-width="9"/>'
+  + '<path d="M 50 78 L 50 80" stroke-width="9"/>'
+  + '</svg>';
+
 function makeGlyph(token, slot) {
   const { sym, forced } = parseSymbol(token);
   const span = document.createElement("span");
+
+  if (sym === UNREADABLE) {
+    // Consonant-height, because it is the taller slot and an unread glyph
+    // could be either — a block that is too tall reads as a gap, one that
+    // is too short reads as a vowel it may not be.
+    span.className = "avatarian-glyph avatarian-consonant avatarian-unreadable";
+    span.title = "A glyph is here in the source but could not be made out";
+    span.innerHTML = UNREADABLE_SVG;
+    span.querySelector("svg").classList.add("g-square");
+    span.dataset.glyph = "unreadable";
+    return span;
+  }
+
   const entry = GLYPHS[sym];
   const kind = entry
     ? entry.type || (VOWELS.has(sym) ? "vowel" : "consonant")

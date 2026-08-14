@@ -416,7 +416,9 @@ function reportUnknown(words) {
   const unknown = [...new Set(
     words.flatMap(w => w.ipa)
       .map(t => splitOverride(t).body)
-      .filter(sym => !GLYPH_SET[sym])
+      // `?` has no glyph on purpose — it marks a slot in a source that
+      // could not be read, and corpus entries legitimately contain it.
+      .filter(sym => sym !== "?" && !GLYPH_SET[sym])
   )];
   $("soundsHint").textContent = unknown.length
     ? "not a known sound: " + unknown.join(" ")

@@ -130,11 +130,21 @@ test("every attested block is nine rows — except C-C, which is open", (t) => {
   // inventing one.
   const cc = [];
   const vv = [];
+  const unread = [];
 
   for (const entry of entries(ctx)) {
     for (const block of resolveBlocks(entry.ipa)) {
-      const rows = slotRows(block.top) + slotRows(block.bottom);
       const where = `${entry.key}: (${block.top},${block.bottom})`;
+      // A `?` slot has NO KNOWN HEIGHT. `slotRows` gives it consonant
+      // height so it can be laid out, but that is a rendering default and
+      // not a reading — counting it here would put slots nobody could
+      // make out into B1's evidence, and B1 is about to be settled by
+      // measuring exactly these blocks.
+      if (block.top === "?" || block.bottom === "?") {
+        unread.push(where);
+        continue;
+      }
+      const rows = slotRows(block.top) + slotRows(block.bottom);
       if (rows === 10) { cc.push(where); continue; }
       if (rows === 8) { vv.push(where); continue; }
       assert.equal(rows, 9, `${where} is ${rows} rows, expected 9`);
@@ -149,6 +159,11 @@ test("every attested block is nine rows — except C-C, which is open", (t) => {
 
   t.diagnostic(`${cc.length} attested C-C blocks (TODO B1 — unresolved):`);
   for (const block of cc) t.diagnostic(`  ${block}`);
+  if (unread.length) {
+    t.diagnostic(`${unread.length} block(s) hold an unreadable glyph and are `
+      + `not counted either way:`);
+    for (const block of unread) t.diagnostic(`  ${block}`);
+  }
 });
 
 test("every corpus entry has an even symbol count", () => {
@@ -162,12 +177,19 @@ test("every corpus entry has an even symbol count", () => {
   }
 });
 
-test("every symbol in the corpus has a glyph", () => {
+test("every symbol in the corpus has a glyph, or is an unread one", () => {
   const glyphs = ctx.window.AVATARIAN_GLYPHS || {};
+  let unread = 0;
   for (const entry of entries(ctx)) {
     for (const token of entry.ipa) {
       const sym = ctx.parseSymbol(token).sym;
+      // `?` is the one symbol with no glyph on purpose: a slot that is
+      // filled in the source but could not be made out. It has to be
+      // exempt in the same breath as build_corpus exempts it, or the two
+      // validators disagree about what a legal spelling is.
+      if (sym === "?") { unread++; continue; }
       assert.ok(glyphs[sym], `${entry.key}: no glyph for '${sym}'`);
     }
   }
+  assert.ok(unread >= 0);
 });
