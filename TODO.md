@@ -738,17 +738,32 @@ so the structural rules could only be checked by building elements and
 reading them back. It is now a function, and the DOM is only what happens
 afterwards.
 
-**28. README/CONTEXT rewrite — now urgent, they are WRONG.** Not stale
-prose any more: `CONTEXT.md` and `README.md` state things this session
-disproved, and a reader following them would be misled.
+~~**28. README/CONTEXT rewrite — they had gone WRONG.**~~ **Done in
+session 12.** Both documents now agree with `AVATARIAN.md` on the three
+session-11 rules: the syllable boundary and mid-word nulls, the
+approximants turning inside a cluster, /s/ turning above one, and `l`
+being a by-slot flip on purpose rather than by oversight. Neither tells
+you to spell /s/ by hand any more — `$`/`%` are described as a recording
+tool, since the derivation reproduces 50 of the corpus's 53 markers and
+the three misses are the known `l$` cases.
 
-- `CONTEXT.md` still lists "mid-word nulls, /s/ orientation" as open
-  (§421) and still tells you to spell /s/ by hand with `S$`/`S%` (§303).
-  Both are derived now.
-- `README.md`'s flip list (§462) predates the approximants, and its
-  account of mid-word nulls (§198) predates the syllable rule.
+Four more contradictions turned up in the same read and went with them:
+`README.md` said punctuation is stripped (four marks have been drawn
+since session 11); it told the reader to bundle the CMU dictionary three
+paragraphs after describing the bundled CMU dictionary — that passage was
+really about the wiki gadget, which is the one place with no dictionary,
+and now says so; its sounds example was ARPAbet directly under a line
+calling readable codes primary; and `CONTEXT.md` said there is no test
+suite, which stopped being true in session 10.
 
-`AVATARIAN.md`, `CORPUS.md` and this file are current; those two are not.
+**`AVATARIAN.md` §10 and `CORPUS.md` §1 were not current either**, though
+item 28 said they were. §10 listed /s/ orientation as open against its
+own §12.6, still said punctuation was stripped, and still proposed the
+dictionary that shipped in session 7; `CORPUS.md` §1 argued for building
+a corpus from three unknowns, two of which the corpus has since answered.
+Both fixed. The lesson is worth keeping: **a document can contradict
+itself between sections**, and this one did it in the two places a reader
+is most likely to start.
 
 ---
 
