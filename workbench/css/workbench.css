@@ -145,6 +145,15 @@ button.primary { background: var(--accent); border-color: var(--accent);
 button.primary:hover { filter: brightness(1.1); }
 button.small { font-size: 0.78rem; padding: 3px 8px; }
 button.danger { color: var(--warn); border-color: var(--warn); }
+/* Armed: the second click is the one that destroys observations, so it
+   should not look like the first. */
+button.is-armed { background: var(--warn); color: var(--paper); font-weight: 600; }
+
+.source-actions {
+  display: flex; flex-direction: column; gap: 5px;
+  margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line);
+}
+.source-actions .fine { color: var(--warn); line-height: 1.35; }
 
 input[type="text"], input[type="search"], textarea, select {
   font: inherit; width: 100%;

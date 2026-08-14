@@ -494,6 +494,9 @@ function renderSourceOptions(selected) {
 /** Show a source's fields and its stored image. */
 function showSource(name) {
   const source = state.sources[name];
+  // An armed delete must never survive a change of selection — the whole
+  // point of the two clicks is that they mean the same source.
+  if (pendingSourceDelete && pendingSourceDelete !== name) disarmSourceDelete();
   $("sourceFields").hidden = !source;
   if (!source) {
     $("sourceImage").hidden = true;
@@ -572,6 +575,76 @@ function newSource() {
   markDirty();
   $("srcName").focus();
   $("srcName").select();
+}
+
+/**
+ * Delete the selected source, and every entry that cites it.
+ *
+ * The entries CANNOT be kept. `build_corpus.check` rejects an entry whose
+ * source is not in `sources`, so orphaning them would leave a corpus that
+ * will not save at all — worse than the deletion you asked for, and you
+ * would find out at save time with no obvious way back.
+ *
+ * Two steps, because this is the one action here that destroys attested
+ * observations. The first click says exactly what will go; the second
+ * does it. A source with no entries deletes on the first click, since
+ * there is nothing to lose.
+ *
+ * The image file is left on disk. It is the evidence, it is not in git,
+ * and deciding it is rubbish is a separate judgement from deciding this
+ * source record is — `tools/rename_images.py` lists whatever ends up
+ * unreferenced.
+ */
+let pendingSourceDelete = null;
+
+function deleteSource() {
+  const name = $("source").value;
+  const source = state.sources[name];
+  if (!source) return;
+
+  const citing = state.entries.filter(e => e.source === name);
+  const sightings = citing.reduce((n, e) => n + (e.times || 1), 0);
+
+  if (citing.length && pendingSourceDelete !== name) {
+    pendingSourceDelete = name;
+    $("deleteSource").textContent = `really delete "${name}"`;
+    $("deleteSource").classList.add("is-armed");
+    $("deleteSourceNote").textContent =
+      `${citing.length} entr${citing.length === 1 ? "y" : "ies"} `
+      + `(${sightings} sighting${sightings === 1 ? "" : "s"}) cite it and go `
+      + `too. Click again to confirm.`
+      + (source.image ? ` ${source.image} stays on disk.` : "");
+    return;
+  }
+
+  state.entries = state.entries.filter(e => e.source !== name);
+  delete state.sources[name];
+  state.index = -1;
+  // Put the button back before anything re-renders. Clearing only the
+  // pending name would leave it looking armed at the NEXT source you
+  // select, and showSource's guard cannot catch that — there is no
+  // pending name left for it to compare against.
+  disarmSourceDelete();
+
+  writeEditor(blankEntry());
+  renderSourceList();
+  renderSourceOptions();
+  renderEntryList();
+  markDirty();
+  setStatus(
+    `deleted "${name}"`
+    + (citing.length ? ` and ${citing.length} entries` : "")
+    + " — not saved yet", "is-dirty");
+}
+
+/** Put the delete button back to its unarmed state. */
+function disarmSourceDelete() {
+  pendingSourceDelete = null;
+  const btn = $("deleteSource");
+  if (!btn) return;
+  btn.textContent = "delete this source";
+  btn.classList.remove("is-armed");
+  $("deleteSourceNote").textContent = "";
 }
 
 /** Rename a source, carrying every entry that cites it along. */
@@ -1531,6 +1604,7 @@ function wire() {
   $("newEntry").addEventListener("click", newEntry);
   $("deleteEntry").addEventListener("click", deleteEntry);
   $("newSource").addEventListener("click", newSource);
+  $("deleteSource").addEventListener("click", deleteSource);
   $("saveBtn").addEventListener("click", save);
 
   document.querySelectorAll(".sound-tools [data-insert]").forEach((b) => {
