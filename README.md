@@ -700,7 +700,7 @@ don't want to rely on the guesser.
 
 *(Session 12 brought the parts that had gone WRONG back into line with
 `AVATARIAN.md` — mid-word nulls, orientation, punctuation, the lookup
-chain on the wiki. The prose elsewhere is older than the corpus in
-places, but it no longer contradicts the spec. The one thing still
-stated as unknown that a measurement would settle is the C-C row
-overlap: TODO B1.)*
+chain on the wiki. It also settled B1, the last open piece of the 9-row
+model: a C-C block is two full-size consonants overlapping by one lattice
+row, measured off the art. The prose elsewhere is older than the corpus
+in places, but it no longer contradicts the spec.)*

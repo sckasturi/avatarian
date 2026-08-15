@@ -24,62 +24,24 @@ the *script* rather than work to be done:
 
 ## Blocked — needs a decision or material from the user
 
-**B1. C-C block layout.** Whether two consonants in one block overlap by
-a shared row. The last piece of the 9-row model (item 3); everything else
-in that model is implemented. Session 5's working guess was a one-row
-overlap, unconfirmed.
+~~**B1. C-C block layout.**~~ **Settled in session 12: one lattice row of
+overlap.** The user measured the art and gave the answer directly — the
+two consonants are **full size** and the bottom row of the top glyph is
+the top row of the bottom one, so ten rows of content total the block's
+nine. Session 5's guess was right; the shrink model the site had been
+using (each consonant at 4.5 rows / 9/10 scale) was wrong.
 
-**No longer waiting on the corpus — the evidence has arrived.** The plan
-was always to build the corpus first and then *look*. That has happened:
-`python3 tools/run_tests.py` prints every attested C-C block, and the
-list went from four to **72**.
+Implemented as the bottom-slot pull-up in `blocks.css` — a C-C block uses
+`margin-top: -0.36 × av-size` (the clearance sum plus one full lattice
+row) instead of scaling the glyphs. Wiki CSS in step (`-0.45em`). Verified
+in the browser against the site's own `render.js`: the two consonant
+boxes overlap by exactly one lattice row (box overlap = one row + both
+clearance margins), the consonants render at full `av-size`, and the C-C
+block's ink lines up with the V-C block beside it to within a pixel.
 
-**Half of B1 is now answered.** When a C-C block forms is settled — two
-consonants share a block exactly when they are in the same syllable
-(AVATARIAN.md §12.5), which is implemented and reproduces 234 of 244
-attested spellings. What is left is only the row question: two consonants
-are ten rows of content in a nine-row block, so they overlap, and by how
-much is still unmeasured. Session 5's guess was one row and it has never
-been checked against anything.
-
-**Both candidate answers are already in the repo, disagreeing** — found
-in session 12, and it makes the question much smaller than it looks:
-
-```
-render.js        each consonant gets 4.5 of the 9 rows — 9/10 scale,
-                 lighter stroke to match, no shared row
-AVATARIAN.md §4  both consonants keep their 5 rows and share one
-                 lattice row (session 5's guess, never checked)
-```
-
-So this is not "what might a C-C block be" but "which of these two, or
-neither". **The discriminator needs no ruler:** in a word with a C-C
-block beside a V-C one, is the consonant in the C-C block the same size
-as the consonant beside it? Same size → they overlap. Visibly smaller
-(9/10) → they shrink, and the site is already right. A C-C block that is
-simply *taller* than its neighbour is a third answer neither document
-has.
-
-**To settle it, measure these.** Short words where every block is
-unambiguous, so the total height decides it:
-
-```
-please   p l i z     block 1 = (p,l)   toph-letter.webp, katara-letter.webp
-new      n j% u ∅    block 1 = (n,j)   instagram-1-3/-1-4/-3-2.png
-still    s% t ɪ l    block 1 = (s,t)   instagram-1-1.png
-class    k l æ s     block 1 = (k,l)   instagram-1-2.png
-cream    k r% i m    block 1 = (k,r)   instagram-1-2.png
-bloom    b l u m     block 1 = (b,l)   instagram-1-4.png
-try      t r% aɪ ∅   block 1 = (t,r)   instagram-3-3.png
-```
-
-`please` and `new` each appear in three independent sources, so a
-measurement can be cross-checked rather than trusted once. The full 72
-are printed by the test suite.
-
-Item 3 is downstream, and so is a chunk of item 30 — `still: (s%,t)`
-is a bottom-slot /s/ in attested material, which is exactly the evidence
-that item was deferred waiting for.
+This closes item 3 (the 9-row model) entirely. What remains is only
+**stroke-level fusion** (item 19): the rows coincide, but the inks butt
+rather than truly interlock the way hand-lettered canon does.
 
 ~~**B2. What reference material exists, and where.**~~ **Answered for the
 live corpus.** Every source in `corpus/attested.json` now carries its
@@ -809,17 +771,21 @@ Kept for reference; numbers are not reused.
 
 ---
 
-## Item 3 — the 9-row block model
-
-Kept separate because it is nearly done and blocked on one question.
+## Item 3 — the 9-row block model ~~(DONE, session 12)~~
 
 Implemented: V-C layout, the 3-row/4-row split, null selection by
-pairing partner. **Outstanding: C-C (B1) — and B1 is no longer waiting
-on anything.** The corpus now shows fifteen attested C-C blocks across
-three sources, which is what this was deferred for. Measure their rows in
-the source images and the last piece of the model can be stated whole in
-`glyphspec.py` and `designer/js/geom.js` — run `check_geom.py` after.
+pairing partner, and now **C-C (B1): two full-size consonants overlapping
+by one lattice row** — the last piece. The site renders it via
+`blocks.css` (a C-C block's bottom slot pulls up `-0.36 × av-size`), and
+the model is stated whole in `AVATARIAN.md` §12.4/§12.5/§12.8.
 
-It likely also wants the designer's lattice reworked so a block's two
-glyphs share a coordinate space, which is what the "vowel and consonant
-merge into one glyph" case in 4-row C-V blocks needs.
+Two follow-ons that are NOT part of the height model and stay open:
+
+- **Stroke-level fusion (item 19).** The overlapping rows coincide but the
+  inks butt rather than interlock. This is the texture, not the layout.
+- **The designer's lattice** could be reworked so a block's two glyphs
+  share one coordinate space — what the 4-row C-V "merge into one glyph"
+  case wants, and what would let the C-C overlap be previewed there rather
+  than only on the site. `glyphspec.py` / `designer/js/geom.js` draw one
+  glyph at a time today; the overlap lives in CSS, not in them, so
+  `check_geom.py` is unaffected.

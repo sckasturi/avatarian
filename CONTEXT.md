@@ -384,10 +384,11 @@ row line IS the vowel's top row line. But each SVG carries a clearance
 margin outside its lattice (10svg on a 100 box = 5.2px for a consonant,
 8svg on an 80 box = 4.16px for a flat vowel), so stacking the boxes flush
 would leave both margins as a visible gap. `.avatarian-slot-bottom {
-margin-top: -9.36px }` pulls the bottom slot up by the two margins' sum so
-the lattices actually meet (`-0.225em` in the wiki CSS — keep them in
-step). The 4.5-unit C+C shrink keeps that sum constant across the common
-pairings, so one constant covers them.
+margin-top: -9.36px }` (`-0.18 × av-size`) pulls the bottom slot up by the
+two margins' sum so the lattices actually meet (`-0.225em` in the wiki CSS
+— keep them in step). A **C-C** block overrides this: its bottom slot uses
+`-0.36 × av-size`, the clearance sum plus one full lattice row, because
+its two consonants overlap by a row (see below).
 
 **Residual gap for 4-row vowels is a DESIGN issue, not a rendering one.**
 After the margin fix, T+ɑ still shows ~8.3px (one lattice row) between the
@@ -483,11 +484,16 @@ size). The proportional block is 93.6px so a unit is exactly 10.4px, and
 the default mode's 1px slot overlap is zeroed there — handed to the flex
 algorithm it would skew the 5:4 split and with it the scale.
 
-**Known consequence:** a consonant sharing a block with another consonant
-gets 4.5 units rather than 5, so it renders at 9/10 scale with a
-correspondingly lighter stroke. That follows directly from the rule that a
-C+C block must total the same height as a V+C block.
-It is a design question, not a bug.
+**C-C blocks overlap by one row (B1, settled session 12).** Two
+consonants in a block are full size and share one lattice row — the top
+glyph's bottom row is the bottom glyph's top row — so their ten rows
+total nine. This replaced an earlier reading that **shrank** each
+consonant to 4.5 rows (9/10 scale, lighter stroke) to make the sum nine;
+shrinking kept the arithmetic but thinned the stroke and never matched
+the art, where the glyphs interlock at full weight. In CSS it is the
+bottom-slot pull-up above, `-0.36 × av-size` for a C-C block, not a size
+change. Stroke-level fusion of the shared edges is still TODO item 19 —
+the rows coincide, the inks butt rather than truly interlock.
 
 ## Open work
 
@@ -496,13 +502,13 @@ own numbered list, which drifted out of step with the one in `HANDOFF.md`
 and made item numbers ambiguous.
 
 Questions about the *script* rather than the code stay in `AVATARIAN.md`
-§10, and the settled answers in §12. **Mid-word nulls and /s/ orientation
-are no longer among the open ones** — the corpus answered both in session
-11 (§12.5, §12.6). What is still open there: /x/ has no glyph, why `appa`
-takes three blocks, the remaining positional variants (ɪ and u), the
-unassigned mark in the key, and — the one thing that needs eyes on the
-art rather than more code — **how far two consonants overlap in a C-C
-block**, which is TODO B1.
+§10, and the settled answers in §12. **Mid-word nulls, /s/ orientation
+and the C-C row overlap are no longer among the open ones** — the corpus
+answered the first two in session 11 (§12.5, §12.6), and B1's one-row
+overlap was measured off the art in session 12. What is still open there:
+/x/ has no glyph, why `appa` takes three blocks, the remaining positional
+variants (ɪ and u), whether /ɔɪ/ mirrors by slot, and the unassigned mark
+in the key.
 
 ## Testing
 

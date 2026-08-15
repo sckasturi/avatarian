@@ -226,15 +226,18 @@ parts still unconfirmed, marked):
 - **C-V**, **4-row vowel**: rows 1–5 consonant, rows 6–9 vowel — they
   **touch**, and should visually merge into one glyph rather than read as two
   touching shapes.
-- **C-C**: working guess is the two consonants **overlap by one shared row**
-  (10 rows of content in 9). *Unconfirmed — needs reference examples.*
+- **C-C**: the two consonants **overlap by one shared row** — the bottom
+  row of the top glyph and the top row of the bottom glyph are the same
+  row, so 10 rows of content total 9. Both stay **full size**.
+  *Confirmed against the art in session 12; the session-5 guess was
+  right.*
 
 **Resolved, and implemented.** V-C blocks get the same 3-row/4-row split C-V
 blocks do. The vowel sits flush against the block's outer edge and the gap,
 when there is one, falls on its inner side — so a 3-row vowel on top never
 leaves dead space at the very top of the block. Since a 3-row vowel is drawn
 bottom-aligned in its box (correct for the bottom slot), `blocks.css` pulls it
-up one row in the top slot. **C-C remains open.**
+up one row in the top slot. **C-C is now settled too** — see below.
 
 ### 4-row vs 3-row vowels
 
@@ -262,12 +265,22 @@ A 4-row vowel's ink spans lattice y **0.5–3.5**; a 3-row vowel's spans
 **1.5–3.5**. `glyphspec.validate` checks the declaration against the drawing —
 the top row runs y=0 to y=1, so ink resting exactly on y=1 has not entered it.
 
-### Known consequence: C+C blocks shrink
+### C+C blocks overlap by one row (settled session 12)
 
-A consonant sharing a block with another consonant gets 4.5 units instead of
-5, rendering at 9/10 scale with a correspondingly lighter stroke. That follows
-directly from the rule that a C+C block must total the same height as a V+C
-block. It is a design consequence, not a bug.
+Two consonants in a block are **full size** and **overlap by one lattice
+row**: the bottom row of the top glyph is the top row of the bottom one,
+so ten rows of content total the nine a V-C block has. This is B1, the
+last open piece of the 9-row model, confirmed against the art — the
+session-5 guess was right.
+
+It supersedes an earlier reading in which each consonant was **shrunk**
+to 4.5 rows (9/10 scale, lighter stroke) to make the sum nine. Shrinking
+kept the height arithmetic but thinned the stroke and never matched the
+art, where the two glyphs interlock at full weight. `blocks.css` now
+pulls the bottom slot up by `0.36 × av-size` — the clearance gap plus one
+lattice row — instead of scaling the glyphs. (Stroke-level *fusion* of
+the overlapping edges is still TODO item 19; the rows coincide, the inks
+butt rather than truly interlock.)
 
 ### ⚠️ Open: the residual one-row gap
 
@@ -716,9 +729,11 @@ the block's baseline, not floating a row above it.
 Three combinations occur: **V-C**, **C-V** and **C-C**. **V-V does not
 occur** — where two vowels would meet, a null takes the second slot.
 
-C-C is the one case whose layout is not determined: two consonants are
-ten rows of content in a nine-row block, so they overlap, and by how much
-is unresolved (§12.8).
+In a C-C block the two consonants are full size and **overlap by one
+lattice row** — the bottom row of the top glyph is the top row of the
+bottom one — so their ten rows of content total the block's nine. (Where
+the two blocks divide is the syllable rule below; the overlap is only how
+a C-C block is laid out once it forms.)
 
 **A BLOCK NEVER STRADDLES A SYLLABLE BOUNDARY.** Sounds are taken two at
 a time, but only within one syllable; where a syllable ends, the block
@@ -806,9 +821,10 @@ pairing: the sounds either side of a mark pair among themselves.
 
 ### 12.8 What is not determined
 
-1. **How much two consonants overlap** in a C-C block. Ten rows of
-   content in a nine-row block. **72 attested C-C blocks are now
-   available to measure** — see TODO B1 for the list.
+1. ~~**How much two consonants overlap** in a C-C block.~~ **Settled
+   session 12: one lattice row** (§12.5). Full-size glyphs, the top's
+   bottom row shared with the bottom's top row. The last open piece of
+   the 9-row model.
 2. **Whether /ɔɪ/ mirrors by slot.** The shipped glyph set says it does,
    with nothing behind it: three sightings, all in bottom slots, none
    checked against the art.

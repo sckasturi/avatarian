@@ -66,11 +66,21 @@
 .avatarian-glyph.avatarian-null {
   width: var(--av-size); height: calc(var(--av-size) * 0.8);
 }
-/* A block of two consonants: 4.5 units each instead of 5, so it totals
-   the same 9 units as a vowel+consonant block. */
+/* A block of two consonants (B1, settled session 12). Two consonants are
+   ten lattice rows of content in a nine-row block, and they resolve it by
+   OVERLAPPING one row: the bottom row of the top glyph and the top row of
+   the bottom glyph are the same row. Both stay FULL size — no shrink, so
+   stroke weight matches the rest of the writing — and the extra row is
+   swallowed by the overlap rather than by scaling.
+
+   The pull-up below does it. A consonant box carries 10% clearance top
+   and bottom (10svg on a 100 box), so two boxes stacked flush leave a
+   0.2-unit gap between their lattices; closing that AND overlapping one
+   more lattice row (16svg = 0.16 units) is 0.2 + 0.16 = 0.36. This
+   replaces, not adds to, the -0.18 the V-C bottom slot uses. */
 .avatarian-block:not(:has(.avatarian-vowel)):not(:has(.avatarian-null)):not(:has(.avatarian-null_consonant))
-  .avatarian-glyph.avatarian-consonant {
-  width: calc(var(--av-size) * 0.9); height: calc(var(--av-size) * 0.9);
+  .avatarian-slot-bottom {
+  margin-top: calc(var(--av-size) * -0.36);
 }
 
 /* A 3-row vowel is drawn BOTTOM-ALIGNED in its 4-row box: ink in the
