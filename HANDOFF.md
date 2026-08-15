@@ -8,10 +8,35 @@ what to do next.
 
 ---
 
-## Session 12 — the last hand reading, and the documents
+## Session 12 — the last hand reading, the documents, and B1
 
-A small session by design: two closures and one question that needs eyes
-rather than code.
+Started small — two closures and one question that needed the user's
+eyes — and the question got answered, so the 9-row block model is now
+complete. Also fixed a rendering bug (flipped 3-row vowels floating off
+the baseline) that surfaced along the way.
+
+### B1 is settled: C-C blocks overlap by one row
+
+The last open piece of the 9-row model. Digging into it turned up that
+both candidate answers were already in the repo, disagreeing — the site
+*shrank* each consonant to 4.5 rows, `AVATARIAN.md` §4 *overlapped* two
+full ones. The user measured the art and gave the answer: **one lattice
+row of overlap, full-size glyphs** — the bottom row of the top glyph is
+the top row of the bottom one. Session 5's guess was right; the site was
+wrong. `blocks.css` now pulls a C-C bottom slot up `-0.36 × av-size`
+(clearance sum + one row) instead of scaling. Verified in-browser against
+`render.js`, wiki CSS in step, item 3 and B1 both closed. Only
+stroke-level fusion (item 19) remains, and that is texture, not layout.
+
+### The eye glyph floated; so did every flipped 3-row vowel
+
+`fire` /f aɪ ə r/ drew aɪ a full lattice row high, bar mid-slot. A 3-row
+vowel is drawn bottom-aligned, and `scaleY(-1)` mirrors that to
+top-aligned, dumping the empty row on the block's outer edge. The top
+slot had always had the counterpart pull-up; the flipped bottom slot
+never got its push-down. One CSS rule (`translateY(20%)` on the span)
+fixes aɪ, æ and ə alike — verified on `fire` and on the 19 bottom-slot æ
+sightings in the corpus.
 
 ### `what` was the nineteenth word, and the wrong one
 
@@ -66,36 +91,24 @@ section makes a better case in the past tense. Worth remembering: **a
 document can contradict itself between sections**, and these did it in
 the sections a reader starts from.
 
-### B1 is a question with two answers already in the repo
-
-Nobody had noticed that the two candidate C-C layouts are *both*
-written down, disagreeing:
-
-```
-site (render.js)     each consonant gets 4.5 of the 9 rows — 9/10 scale
-AVATARIAN.md §4      both keep 5 rows and share one lattice row
-```
-
-So B1 is not "what might it be" but "which of these two, or neither".
-Session 12 drew `please` under both, at one scale, and asked the user to
-hold it against the art. The discriminator needs no ruler: **is the `p`
-in the C-C block the same size as the `z` in the block beside it?** Same
-size means overlap; visibly smaller means shrink; and a C-C block that is
-simply *taller* than its neighbour is a third answer neither document
-has.
+(B1's full closure is at the top of this session's notes. It was found
+by noticing both candidate answers were already written down and
+disagreeing — the site shrank, `AVATARIAN.md` §4 overlapped — so the work
+was to draw `please` both ways and let the user's measurement pick. The
+answer was overlap.)
 
 ### Where to start next time
 
-1. **B1's row answer**, if the measurement came back — it unblocks item 3
-   and settles the 9-row model whole.
-2. **Item 35**, the six failing tests. Session 12 re-pointed one of them
+1. **Item 35**, the six failing tests. Session 12 re-pointed one of them
    (`derivedLookup still uses everything below the corpus` → `bloodbending`,
    in `EXCEPTIONS`, not in CMU, unlikely ever to be attested). That is the
    shape the other five want. Note `EXCEPTIONS wins over the dictionary`
    now has a *second* stale specimen: its line 56 reads `EXCEPTIONS["of"]`,
    which no longer exists, so fixing line 54 alone turns an assertion
    failure into a TypeError.
-3. **Item 34**, morpheme boundaries, if more compounds get transcribed.
+2. **Item 34**, morpheme boundaries, if more compounds get transcribed.
+3. **Item 19**, stroke-level fusion — now the most visible thing left in
+   the block model, since B1 made C-C glyphs overlap but not interlock.
 
 Suite unchanged at **51 pass / 6 fail** — the same six as session 11.
 
