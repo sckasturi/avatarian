@@ -256,15 +256,41 @@ const TURNS_ABOVE_CLUSTER = new Set(["s"]);
  */
 const DRAWN_BOTTOM_UP = new Set(["u", "ɔ"]);
 
+/** True when the block partner is another consonant — i.e. a C-C block. */
+function isClusterPartner(partner) {
+  return partner != null && !isVowelSymbol(partner)
+         && !NULLS.has(parseSymbol(partner).sym);
+}
+
 /** Which way round this glyph goes, before any explicit $/% override. */
 function orientationOf(sym, entry, slot, partner) {
   if (DRAWN_BOTTOM_UP.has(sym)) return slot === "bottom" ? "top" : "bottom";
   if (entry.flips) return slot;
-  const clustered = partner != null && !isVowelSymbol(partner)
-                    && !NULLS.has(parseSymbol(partner).sym);
+  const clustered = isClusterPartner(partner);
   if (clustered && slot === "bottom" && TURNS_IN_CLUSTER.has(sym)) return "bottom";
   if (clustered && slot === "top" && TURNS_ABOVE_CLUSTER.has(sym)) return "bottom";
   return "top";
+}
+
+/**
+ * /s/ IN A CLUSTER PULLS ITS VERTEX IN ONE ROW.
+ *
+ * /s/ is a full five-row caret whose sharp point sits on the lattice
+ * edge. In a C-C block the one-row overlap (blocks.css) brings the
+ * neighbour up to that edge, so the point is the one scrap of ink in the
+ * shared row and it reads as poking through the glyph beside it — the
+ * flat-topped consonants fuse there instead. Insetting the apex by one
+ * lattice row (y 18 → 31) lands the point on the block boundary rather
+ * than across it.
+ *
+ * Done to the stored top-slot caret, so the flip carries the inset to
+ * whichever side faces the overlap: point-down on top of a cluster
+ * (`still`), point-up on the bottom of one (`balance`, `sula's`). A
+ * non-cluster /s/ — the final /s/ in `class`, sitting under a vowel — is
+ * left full length. See AVATARIAN.md §12.6.
+ */
+function clusterS(svg) {
+  return svg.replace("L 50 18 L", "L 50 31 L");
 }
 
 function makeGlyph(token, slot, partner) {
@@ -295,6 +321,9 @@ function makeGlyph(token, slot, partner) {
     // An explicit $/% override wins; otherwise the glyph's own rule does.
     const orientation = forced || orientationOf(sym, entry, slot, partner);
     if (orientation === "bottom") span.classList.add("avatarian-flipped");
+    // /s/'s point overshoots the neighbour in a C-C block; shorten it there.
+    const svg = sym === "s" && isClusterPartner(partner)
+      ? clusterS(form.svg) : form.svg;
     // Both drawings ride along and CSS shows one. The flat copy is the
     // same glyph re-laid-out at 4/5 height rather than a squashed copy
     // of the square one, so stroke weight and dots match exactly in
@@ -303,7 +332,7 @@ function makeGlyph(token, slot, partner) {
     // The <svg> elements are tagged directly rather than wrapped: a
     // wrapper <span> is inline, cannot take a height, and collapses the
     // SVG inside it to nothing.
-    span.innerHTML = form.svg + (form.flat || "");
+    span.innerHTML = svg + (form.flat || "");
     const drawings = span.querySelectorAll("svg");
     drawings[0].classList.add("g-square");
     if (drawings[1]) drawings[1].classList.add("g-flat");
