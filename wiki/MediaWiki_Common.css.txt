@@ -49,6 +49,15 @@
    top-to-bottom. On the SVG, so it composes with the row shift above
    rather than overwriting it. */
 .avatarian-glyph.avatarian-flipped svg { transform: scaleY(-1); }
+/* A 3-row vowel that also flips (ae, schwa, ai) is drawn bottom-aligned
+   with its empty row on top; mirroring it for the bottom slot pushes that
+   row to the block's outer edge, so the ink floats up off the baseline.
+   Shift it back down one lattice row — the counterpart of the top-slot
+   pull-up above. On the span, so it composes with the SVG's scaleY(-1). */
+.avatarian-slot-bottom .avatarian-glyph.avatarian-vowel.avatarian-flipped:not(.avatarian-4row),
+.avatarian-slot-bottom .avatarian-glyph.avatarian-null.avatarian-flipped:not(.avatarian-4row) {
+  transform: translateY(20%);
+}
 /* Vowels ship a square (100x100) and a flat (100x80) SVG; use the flat
    one. Consonants have only the square, so :not(:only-of-type) leaves it. */
 .avatarian-glyph svg.g-square:not(:only-of-type) { display: none; }

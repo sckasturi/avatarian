@@ -704,6 +704,13 @@ C-V, 4-row vowel:   1-5 consonant        · 6-9 vowel
 A 4-row vowel touches its partner directly and reads as one merged
 figure. A 3-row vowel does not touch it.
 
+The gap is always on the vowel's **inner** side, whichever slot it lands
+in — including when the vowel is one that mirrors (§12.6). A flipping
+3-row vowel (æ, ə, aɪ) in a bottom slot is drawn upside-down, which would
+carry its empty row to the block's outer edge; it is shifted back so the
+gap stays inner. "fire" /f aɪ ə r/ is the visible case — aɪ's bar sits on
+the block's baseline, not floating a row above it.
+
 ### 12.5 Block types, and where the blocks divide
 
 Three combinations occur: **V-C**, **C-V** and **C-C**. **V-V does not

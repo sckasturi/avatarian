@@ -107,6 +107,19 @@
    the two compose instead of overwriting each other. */
 .avatarian-glyph.avatarian-flipped svg { transform: scaleY(-1); }
 
+/* A 3-row vowel that ALSO flips (æ, ə, aɪ) needs the row shift too, and
+   in the bottom slot rather than the top. The drawing is bottom-aligned
+   with its empty row on top; mirroring it for the bottom slot moves that
+   empty row to the block's outer edge, so the ink floats up toward the
+   consonant and the inner gap vanishes — "fire"'s aɪ sat a full row high,
+   bar mid-slot instead of on the baseline. Push it back down one lattice
+   row, the exact counterpart of the top-slot pull-up above. On the span,
+   so it composes with the SVG's scaleY(-1) rather than fighting it. */
+.avatarian-slot-bottom .avatarian-glyph.avatarian-vowel.avatarian-flipped:not(.avatarian-4row),
+.avatarian-slot-bottom .avatarian-glyph.avatarian-null.avatarian-flipped:not(.avatarian-4row) {
+  transform: translateY(20%);
+}
+
 /* Vowels carry both a square (100×100) and flat (100×80) SVG; always
    use the flat form. Consonants have only the square one. */
 .avatarian-glyph svg.g-square:not(:only-of-type) { display: none; }

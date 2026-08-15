@@ -420,10 +420,24 @@ wants — the empty row is the gap under the consonant. In the top slot
 that same drawing puts the empty row at the block's outer edge as dead
 space and leaves the vowel flush against the consonant with no gap. The
 V-C rule is rows 1-3 vowel, row 4 gap, rows 5-9 consonant, so
-`blocks.css` shifts it with `translateY(-25%)` — 25% of a 4-row box is
-exactly one row, so it holds at any size. Only the ink moves; the row it
-vacates was empty, so nothing overflows. 4-row vowels are excluded: they
-fill their box and abut directly, which is right in either slot.
+`blocks.css` shifts it with `translateY(-20%)` — one lattice row is 20%
+of the 80-unit viewBox (64 of lattice plus 16 of margin), not 25%, so it
+holds at any size. Only the ink moves; the row it vacates was empty, so
+nothing overflows. 4-row vowels are excluded: they fill their box and
+abut directly, which is right in either slot.
+
+**A 3-row vowel that also FLIPS needs the same shift in the BOTTOM slot,
+and it was missing until session 12.** The flipping 3-row vowels are æ,
+ə and aɪ. The flip is `scaleY(-1)` on the SVG, which mirrors the
+bottom-aligned drawing into a top-aligned one — so the empty row lands on
+the block's outer (bottom) edge and the ink floats up off the baseline,
+flush against the consonant. "fire" showed it plainly: /f aɪ ə r/ has aɪ
+in a flipped bottom slot, and its bar sat mid-slot with a full empty row
+beneath instead of on the baseline. The fix is the exact counterpart of
+the top-slot pull-up — `translateY(20%)` on the span (so it composes with
+the SVG's `scaleY(-1)` rather than fighting it), pushing the ink back
+down one row so the gap returns to the inner side. Verified: aɪ's bar now
+lands at the same baseline as a plain 3-row vowel like /i/.
 
 **`flips` and `rows` are per-design now.** Both are set from the designer
 (checkbox and row toggle) into `designs/<name>.json`, and
