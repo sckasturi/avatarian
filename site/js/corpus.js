@@ -67,6 +67,11 @@ window.AVATARIAN_CORPUS = {
       "what": "joy's baked goods / the best / no phone number / always freshly baked / narrok's seaweed noodlery / hand pulled / heng's foot wear / warm and cozy!!! / come and get your pair now! / yue jewelery / timeless waterproof treasures / at every pond / white lotus festival / please come / fresh fruit forever / i don't do discounts / try today / melon milk / mmm / mak made",
       "where": "",
       "image": "instagram-3-3.png"
+    },
+    "zuko-stamp": {
+      "what": "zuko's stamp - by royal decree of fire lord zuko",
+      "where": "https://www.instagram.com/p/DcBlbbJlHWB?img_index=1",
+      "image": "zuko-stamp.png"
     }
   },
   "words": {
@@ -708,9 +713,10 @@ window.AVATARIAN_CORPUS = {
         "k",
         "oʊ"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "zuko-stamp"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -925,9 +931,10 @@ window.AVATARIAN_CORPUS = {
         "ʌ",
         "v"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "katara-letter"
+        "katara-letter",
+        "zuko-stamp"
       ],
       "confidence": "certain",
       "source": "katara-letter",
@@ -2637,9 +2644,10 @@ window.AVATARIAN_CORPUS = {
         "ə",
         "r"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-3.2"
+        "instagram-3.2",
+        "zuko-stamp"
       ],
       "confidence": "certain",
       "source": "instagram-3.2"
@@ -3305,6 +3313,62 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "instagram-3.3"
+    },
+    "by": {
+      "ipa": [
+        "b",
+        "aɪ"
+      ],
+      "count": 1,
+      "sources": [
+        "zuko-stamp"
+      ],
+      "confidence": "certain",
+      "source": "zuko-stamp"
+    },
+    "decree": {
+      "ipa": [
+        "d",
+        "ɪ",
+        "k",
+        "r",
+        "i",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "zuko-stamp"
+      ],
+      "confidence": "certain",
+      "source": "zuko-stamp"
+    },
+    "lord": {
+      "ipa": [
+        "l",
+        "ɔ",
+        "r",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "zuko-stamp"
+      ],
+      "confidence": "certain",
+      "source": "zuko-stamp"
+    },
+    "royal": {
+      "ipa": [
+        "r",
+        "ɔɪ",
+        "ə",
+        "l$"
+      ],
+      "count": 1,
+      "sources": [
+        "zuko-stamp"
+      ],
+      "confidence": "certain",
+      "source": "zuko-stamp"
     }
   }
 };

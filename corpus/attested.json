@@ -86,6 +86,11 @@
       "what": "joy's baked goods / the best / no phone number / always freshly baked / narrok's seaweed noodlery / hand pulled / heng's foot wear / warm and cozy!!! / come and get your pair now! / yue jewelery / timeless waterproof treasures / at every pond / white lotus festival / please come / fresh fruit forever / i don't do discounts / try today / melon milk / mmm / mak made",
       "where": "",
       "image": "instagram-3-3.png"
+    },
+    "zuko-stamp": {
+      "what": "zuko's stamp - by royal decree of fire lord zuko",
+      "where": "https://www.instagram.com/p/DcBlbbJlHWB?img_index=1",
+      "image": "zuko-stamp.png"
     }
   },
   "entries": [
@@ -487,8 +492,8 @@
     {
       "key": "of",
       "spelling": "ʌ v",
-      "source": "katara-letter",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "katara-letter"
     },
     {
       "key": "out",
@@ -1129,8 +1134,8 @@
     {
       "key": "of",
       "spelling": "ə v",
-      "source": "instagram-1.4",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "instagram-1.4"
     },
     {
       "key": "quiet",
@@ -1642,6 +1647,48 @@
       "key": "your",
       "spelling": "j ɔ r ∅",
       "source": "instagram-3.3",
+      "confidence": "certain"
+    },
+    {
+      "key": "by",
+      "spelling": "b aɪ",
+      "source": "zuko-stamp",
+      "confidence": "certain"
+    },
+    {
+      "key": "decree",
+      "spelling": "d ɪ k r i ∅",
+      "source": "zuko-stamp",
+      "confidence": "certain"
+    },
+    {
+      "key": "fire",
+      "spelling": "f aɪ ə r",
+      "source": "zuko-stamp",
+      "confidence": "certain"
+    },
+    {
+      "key": "lord",
+      "spelling": "l ɔ r d",
+      "source": "zuko-stamp",
+      "confidence": "certain"
+    },
+    {
+      "key": "of",
+      "spelling": "ʌ v",
+      "source": "zuko-stamp",
+      "confidence": "certain"
+    },
+    {
+      "key": "royal",
+      "spelling": "r ɔɪ ə l$",
+      "source": "zuko-stamp",
+      "confidence": "certain"
+    },
+    {
+      "key": "zuko",
+      "spelling": "z u k oʊ",
+      "source": "zuko-stamp",
       "confidence": "certain"
     }
   ]
