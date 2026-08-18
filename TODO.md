@@ -633,6 +633,20 @@ interlock and share edges; this butts discrete SVGs together. Correct
 structure, wrong texture. Would need connection points designed into each
 glyph — a real type-design project.
 
+Session 12 surfaced this in the C-C overlap: a glyph's full-height edge
+line (l/r/j right, d left, z centre) rides one row into its neighbour and
+reads as a stray line where the neighbour is empty there — `please`,
+`hard`, `card`, `new`, `menu`, `models`, `waters` — while fusing cleanly
+where it isn't (`class`, `cream`, the `k`/`f` tops). `/s/`'s point was the
+one clean case and is fixed (its vertex insets in a cluster). For the
+lines, a "the overlap row belongs to the top glyph" clip was prototyped:
+it removed the protrusions and left `class`/`cream` pixel-identical, **but
+the user reviewed it and chose to keep the current rendering** — the
+lines stay as they are. So this is untouched by design for now, not
+forgotten; revisit only as part of the real fusion pass, and don't
+re-propose the clip without asking. (`help` is the mirror case — the line
+belongs to the top glyph poking down — and was never handled.)
+
 ### Docs and process
 
 ~~**9. A public-facing spec section at the end of `AVATARIAN.md`.**~~
