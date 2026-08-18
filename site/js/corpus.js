@@ -72,6 +72,11 @@ window.AVATARIAN_CORPUS = {
       "what": "zuko's stamp - by royal decree of fire lord zuko",
       "where": "https://www.instagram.com/p/DcBlbbJlHWB?img_index=1",
       "image": "zuko-stamp.png"
+    },
+    "sdcc-1": {
+      "what": "Avatarian: The Unique Written Language of the Avatar World",
+      "where": "",
+      "image": "image.png"
     }
   },
   "words": {
@@ -577,7 +582,22 @@ window.AVATARIAN_CORPUS = {
         "instagram-3.3"
       ],
       "confidence": "certain",
-      "source": "toph-letter"
+      "source": "toph-letter",
+      "alternates": [
+        {
+          "ipa": [
+            "ð",
+            "i"
+          ],
+          "count": 2,
+          "sources": [
+            "sdcc-1"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true,
+      "gloss": "The"
     },
     "then": {
       "ipa": [
@@ -931,10 +951,11 @@ window.AVATARIAN_CORPUS = {
         "ʌ",
         "v"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "katara-letter",
-        "zuko-stamp"
+        "zuko-stamp",
+        "sdcc-1"
       ],
       "confidence": "certain",
       "source": "katara-letter",
@@ -3369,6 +3390,118 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "zuko-stamp"
+    },
+    "avatar": {
+      "ipa": [
+        "æ",
+        "v",
+        "ə",
+        "∅",
+        "t",
+        "ɑ",
+        "r",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-1"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-1",
+      "gloss": "Avatar"
+    },
+    "avatarian": {
+      "ipa": [
+        "æ",
+        "v",
+        "ə",
+        "∅",
+        "t",
+        "ɑ",
+        "r",
+        "∅",
+        "i",
+        "∅",
+        "ə",
+        "n"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-1"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-1",
+      "gloss": "Avatarian"
+    },
+    "language": {
+      "ipa": [
+        "l",
+        "e",
+        "ŋ",
+        "∅",
+        "g",
+        "w",
+        "ə",
+        "dʒ"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-1"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-1",
+      "gloss": "Language"
+    },
+    "unique": {
+      "ipa": [
+        "j",
+        "u",
+        "n",
+        "i",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-1"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-1",
+      "gloss": "Unique"
+    },
+    "world": {
+      "ipa": [
+        "w",
+        "ə",
+        "r",
+        "l",
+        "d",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-1"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-1",
+      "gloss": "World"
+    },
+    "written": {
+      "ipa": [
+        "r",
+        "ɪ",
+        "t",
+        "ə",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-1"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-1",
+      "gloss": "Written"
     }
   }
 };

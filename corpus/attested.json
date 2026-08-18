@@ -91,6 +91,11 @@
       "what": "zuko's stamp - by royal decree of fire lord zuko",
       "where": "https://www.instagram.com/p/DcBlbbJlHWB?img_index=1",
       "image": "zuko-stamp.png"
+    },
+    "sdcc-1": {
+      "what": "Avatarian: The Unique Written Language of the Avatar World",
+      "where": "",
+      "image": "image.png"
     }
   },
   "entries": [
@@ -1690,6 +1695,62 @@
       "spelling": "z u k oʊ",
       "source": "zuko-stamp",
       "confidence": "certain"
+    },
+    {
+      "key": "avatar",
+      "spelling": "æ v ə ∅ t ɑ r ∅",
+      "source": "sdcc-1",
+      "confidence": "certain",
+      "gloss": "Avatar"
+    },
+    {
+      "key": "avatarian",
+      "spelling": "æ v ə ∅ t ɑ r ∅ i ∅ ə n",
+      "source": "sdcc-1",
+      "confidence": "certain",
+      "gloss": "Avatarian"
+    },
+    {
+      "key": "language",
+      "spelling": "l e ŋ ∅ g w ə dʒ",
+      "source": "sdcc-1",
+      "confidence": "certain",
+      "gloss": "Language"
+    },
+    {
+      "key": "of",
+      "spelling": "ʌ v",
+      "source": "sdcc-1",
+      "confidence": "certain"
+    },
+    {
+      "key": "the",
+      "spelling": "ð i",
+      "source": "sdcc-1",
+      "confidence": "certain",
+      "gloss": "The",
+      "times": 2
+    },
+    {
+      "key": "unique",
+      "spelling": "j u n i k ∅",
+      "source": "sdcc-1",
+      "confidence": "certain",
+      "gloss": "Unique"
+    },
+    {
+      "key": "world",
+      "spelling": "w ə r l d ∅",
+      "source": "sdcc-1",
+      "confidence": "certain",
+      "gloss": "World"
+    },
+    {
+      "key": "written",
+      "spelling": "r ɪ t ə n ∅",
+      "source": "sdcc-1",
+      "confidence": "certain",
+      "gloss": "Written"
     }
   ]
 }
