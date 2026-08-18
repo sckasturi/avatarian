@@ -190,6 +190,10 @@ CONSONANTS = {
           + path("M 50 18 L 50 42")
           + path("M 18 82 A 36.22 36.22 0 0 1 50 42 A 36.22 36.22 0 0 1 82 82"),
     "dh": path("M 18 18 L 82 18 L 82 82 A 64 64 0 0 1 18 18 Z") + dot(18, 82),
+    # Orientation is NOT by slot: /s/ appears both ways in the same slot, which
+    # no flip rule can produce. It mirrors above another consonant (11 of 12
+    # attested) and nowhere else (0 of 20). See render.js TURNS_ABOVE_CLUSTER.
+    # TODO item 30.
     "s": path("M 18 82 L 50 18 L 82 82") + dot(50, 66),
     "z": path("M 50 18 L 50 50")
          + path("M 18 82 A 32 32 0 0 1 82 82")
@@ -201,8 +205,12 @@ CONSONANTS = {
                 "A 24 24 0 0 1 26 50 A 24 24 0 0 1 50 26 Z"),
     "w": path("M 50 42 A 52 52 0 0 0 18 18 L 18 82 L 82 82")
          + path("M 82 58 A 42 42 0 0 1 50 42"),
-    "l": path("M 18 82 L 18 18 L 82 18") + path("M 82 18 A 84 84 0 0 1 50 82"),
-    "r": path("M 82 82 L 82 18 L 18 18") + path("M 18 18 A 84 84 0 0 0 50 82"),
+    # One unbroken stroke each: the segments are already continuous, so
+    # drawing them as a single path replaces the square-capped joins
+    # between separate <path>s (which left a little tick, visible flipped)
+    # with clean miter joins.
+    "l": path("M 82 82 L 82 18 L 18 18 L 18 58 A 28.28 28.28 0 0 0 50 82"),
+    "r": path("M 82 82 L 82 18 L 18 18 L 18 50 A 35.04 35.04 0 0 0 50 82"),
     "y": path("M 50 34 A 42 42 0 0 1 82 18 L 82 82 L 18 82")
          + path("M 18 58 A 36.46 36.46 0 0 0 50 34"),
     "sh": path("M 18 50 L 50 18 L 82 50") + path("M 18 82 L 50 50 L 82 82"),
@@ -230,21 +238,6 @@ VOWELS = {
           + path("M 18 40 L 34 40")
           + path("M 66 40 L 82 40")
           + path("M 66 80 L 82 80"),
-    # ə, drawn in its TOP-slot form. The bottom form is this mirrored,
-    # which the renderer derives — see FLIPS_BASE.
-    #
-    # AVATARIAN MERGES ɜ AND ə INTO ONE LETTER. The reference material
-    # gives IPA alongside Avatarian for water, earth, fire and air, and
-    # earth's first glyph is fire's third — the same glyph, where the
-    # supplied IPA reads ɜ for one and ə for the other. English spells
-    # them apart; this script does not.
-    #
-    # This shape therefore used to ship TWICE, as `schwa` and `nurse`.
-    # The two drawings are point-for-point mirrors, dots included — they
-    # were one letter in its two slot orientations all along, `nurse`
-    # being the top form and `schwa` the bottom. The top form is kept
-    # and the bottom is derived, exactly as for every other flipping
-    # glyph.
     "schwa": path("M 82 80 A 25.3 31.62 0 0 1 50 60 A 25.3 31.62 0 0 0 18 40")
              + dot(82, 40)
              + dot(18, 80),
