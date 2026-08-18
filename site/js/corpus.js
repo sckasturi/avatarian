@@ -75,8 +75,8 @@ window.AVATARIAN_CORPUS = {
     },
     "sdcc-1": {
       "what": "Avatarian: The Unique Written Language of the Avatar World",
-      "where": "",
-      "image": "image.png"
+      "where": "San Diego Comic-Con",
+      "image": "sdcc-1.png"
     }
   },
   "words": {
