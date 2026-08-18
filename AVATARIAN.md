@@ -790,6 +790,11 @@ the stored (point-up) caret, so the flip carries it to whichever side
 faces the overlap. A non-cluster /s/ — the final /s/ of `class`, under a
 vowel — keeps its full length.
 
+**/z/ drops its dots in a cluster.** Its two corner dots sit in the top
+row, which the C-C overlap rides up into the glyph above; in a C-C block
+they are dropped and only /z/'s line and bowl remain (`goods`, `trends`,
+`models`). A /z/ next to a vowel — `is`, `cheese` — keeps them.
+
 Two glyphs, **u** and **ɔ**, are stored as their bottom-slot drawing
 rather than their top one. They mirror like anything else; only the
 saved art is the other way up.

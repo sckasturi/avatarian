@@ -273,24 +273,29 @@ function orientationOf(sym, entry, slot, partner) {
 }
 
 /**
- * /s/ IN A CLUSTER PULLS ITS VERTEX IN ONE ROW.
+ * SOME GLYPHS ARE DRAWN DIFFERENTLY IN A C-C BLOCK, where the one-row
+ * overlap (blocks.css) crowds them against their neighbour.
  *
  * /s/ is a full five-row caret whose sharp point sits on the lattice
- * edge. In a C-C block the one-row overlap (blocks.css) brings the
- * neighbour up to that edge, so the point is the one scrap of ink in the
- * shared row and it reads as poking through the glyph beside it — the
- * flat-topped consonants fuse there instead. Insetting the apex by one
- * lattice row (y 18 → 31) lands the point on the block boundary rather
- * than across it.
+ * edge; the overlap brings the neighbour up to that edge, so the point is
+ * the one scrap of ink in the shared row and reads as poking through the
+ * glyph beside it (flat-topped consonants fuse there instead). Its vertex
+ * insets one lattice row (y 18 → 31) so the point lands on the block
+ * boundary. Applied to the stored point-up caret, so the flip carries the
+ * inset to whichever side faces the overlap — point-down on top of a
+ * cluster (`still`), point-up on the bottom of one (`balance`, `sula's`).
  *
- * Done to the stored top-slot caret, so the flip carries the inset to
- * whichever side faces the overlap: point-down on top of a cluster
- * (`still`), point-up on the bottom of one (`balance`, `sula's`). A
- * non-cluster /s/ — the final /s/ in `class`, sitting under a vowel — is
- * left full length. See AVATARIAN.md §12.6.
+ * /z/'s two corner dots sit in its top row, which the overlap rides up
+ * into the glyph above; in a cluster they are dropped and only /z/'s line
+ * and bowl remain (`goods`, `trends`, `models`).
+ *
+ * A non-cluster /s/ or /z/ — sitting under or over a vowel — is left
+ * whole. See AVATARIAN.md §12.6.
  */
-function clusterS(svg) {
-  return svg.replace("L 50 18 L", "L 50 31 L");
+function clusterForm(sym, svg) {
+  if (sym === "s") return svg.replace("L 50 18 L", "L 50 31 L");
+  if (sym === "z") return svg.replace(/<circle[^>]*>/g, "");
+  return svg;
 }
 
 function makeGlyph(token, slot, partner) {
@@ -321,9 +326,9 @@ function makeGlyph(token, slot, partner) {
     // An explicit $/% override wins; otherwise the glyph's own rule does.
     const orientation = forced || orientationOf(sym, entry, slot, partner);
     if (orientation === "bottom") span.classList.add("avatarian-flipped");
-    // /s/'s point overshoots the neighbour in a C-C block; shorten it there.
-    const svg = sym === "s" && isClusterPartner(partner)
-      ? clusterS(form.svg) : form.svg;
+    // A few glyphs redraw in a C-C block (see clusterForm): /s/'s point
+    // insets, /z/ drops its dots.
+    const svg = isClusterPartner(partner) ? clusterForm(sym, form.svg) : form.svg;
     // Both drawings ride along and CSS shows one. The flat copy is the
     // same glyph re-laid-out at 4/5 height rather than a squashed copy
     // of the square one, so stroke weight and dots match exactly in

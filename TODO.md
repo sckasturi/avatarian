@@ -637,12 +637,17 @@ Session 12 surfaced this in the C-C overlap: a glyph's full-height edge
 line (l/r/j right, d left, z centre) rides one row into its neighbour and
 reads as a stray line where the neighbour is empty there — `please`,
 `hard`, `card`, `new`, `menu`, `models`, `waters` — while fusing cleanly
-where it isn't (`class`, `cream`, the `k`/`f` tops). `/s/`'s point was the
-one clean case and is fixed (its vertex insets in a cluster). For the
-lines, a "the overlap row belongs to the top glyph" clip was prototyped:
-it removed the protrusions and left `class`/`cream` pixel-identical, **but
-the user reviewed it and chose to keep the current rendering** — the
-lines stay as they are. So this is untouched by design for now, not
+where it isn't (`class`, `cream`, the `k`/`f` tops).
+
+Two glyphs got a targeted per-cluster redraw (`render.js` `clusterForm`),
+which is the clean case for each: **/s/**'s point insets one row so it
+stops at the boundary, and **/z/** drops its two corner dots (they rode
+up into the glyph above). Both leave the non-cluster form alone.
+
+The **edge lines** are the part left as-is. A "the overlap row belongs to
+the top glyph" clip was prototyped: it removed the protrusions and left
+`class`/`cream` pixel-identical, **but the user reviewed it and chose to
+keep the current rendering** — the lines stay. Untouched by design, not
 forgotten; revisit only as part of the real fusion pass, and don't
 re-propose the clip without asking. (`help` is the mirror case — the line
 belongs to the top glyph poking down — and was never handled.)
