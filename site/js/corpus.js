@@ -45,12 +45,12 @@ window.AVATARIAN_CORPUS = {
     },
     "instagram-1.3": {
       "what": "the republic city post / woong's seaweed soup / organic, gluten free and vegan food / new menu item / fanny is missing / 20,000",
-      "where": "",
+      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=3",
       "image": "instagram-1-3.png"
     },
     "instagram-1.4": {
       "what": "stillness / year of the tiger / enjoy / journey / be brave / courage / night / quiet",
-      "where": "",
+      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=4",
       "image": "instagram-1-4.png"
     },
     "instagram-2.2": {
@@ -65,7 +65,7 @@ window.AVATARIAN_CORPUS = {
     },
     "instagram-3.3": {
       "what": "joy's baked goods / the best / no phone number / always freshly baked / narrok's seaweed noodlery / hand pulled / heng's foot wear / warm and cozy!!! / come and get your pair now! / yue jewelery / timeless waterproof treasures / at every pond / white lotus festival / please come / fresh fruit forever / i don't do discounts / try today / melon milk / mmm / mak made",
-      "where": "",
+      "where": "https://www.instagram.com/p/DboCKbiDL_v/?img_index=3",
       "image": "instagram-3-3.png"
     },
     "zuko-stamp": {
@@ -80,10 +80,16 @@ window.AVATARIAN_CORPUS = {
     }
   },
   "words": {
-    "all": {
+    "academy": {
       "ipa": [
-        "ɔ%",
-        "l"
+        "ə",
+        "∅",
+        "k",
+        "æ",
+        "d",
+        "ə",
+        "m",
+        "i"
       ],
       "count": 1,
       "sources": [
@@ -2777,23 +2783,17 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-3.2"
     },
-    "academy": {
+    "all": {
       "ipa": [
-        "ə",
-        "∅",
-        "k",
-        "æ",
-        "d",
-        "ə",
-        "m",
-        "i"
+        "ɔ%",
+        "l"
       ],
       "count": 1,
       "sources": [
-        "toph-letter"
+        "instagram-3.3"
       ],
       "confidence": "certain",
-      "source": "toph-letter"
+      "source": "instagram-3.3"
     },
     "always": {
       "ipa": [
