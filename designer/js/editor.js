@@ -47,10 +47,12 @@ const Editor = {
 
   get design() { return Store.design; },
   get kind() { return (this.design && this.design.type) || "consonant"; },
-  get grid() { return GEOM.gridFor(this.kind); },
+  /** The design's own grid where it has one — a full-height mark may be
+   *  wider than the default 1×9 — falling back to the kind's fixed grid. */
+  get grid() { return (this.design && this.design.grid) || GEOM.gridFor(this.kind); },
   /** Vowel-height glyphs are drawn natively, i.e. in the flat frame. */
   get form() { return GEOM.isTall(this.kind) ? "square" : "flat"; },
-  get frame() { return GEOM.frameFor(this.kind, this.form); },
+  get frame() { return GEOM.frameFor(this.kind, this.form, this.grid[0]); },
 
   gx(x) { const f = this.frame; return f.ox + x * f.sx; },
   gy(y) { const f = this.frame; return f.oy + y * f.sy; },

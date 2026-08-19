@@ -298,6 +298,12 @@ body:not(.has-flat) .flat-only { display: none; }
 body:not(.has-rows) .rows-only { display: none; }
 .rowbtn { font-size: 12px; padding: 2px 9px; }
 
+/* Only a full-height mark chooses a width — a question mark may want two
+   or three columns where a period needs one. */
+.cols-only { display: inline-flex; align-items: center; gap: 5px; }
+body:not(.has-cols) .cols-only { display: none; }
+.colbtn { font-size: 12px; padding: 2px 9px; }
+
 /* ── the live preview ────────────────────────────────────────────── */
 /* Laid out by site/css/blocks.css, linked in the head. Nothing here
    touches block geometry — only the frame around it — or the preview

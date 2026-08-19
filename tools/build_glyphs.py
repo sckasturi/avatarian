@@ -160,6 +160,13 @@ def path(d):
     return f'<path d="{d}"/>'
 
 
+def mark(cols, body):
+    """A full-height punctuation mark and the number of lattice columns it
+    spans. Most marks are one column; a wider one (a question mark) sets a
+    higher count, which decides its viewBox width when it is emitted."""
+    return {"cols": cols, "body": body}
+
+
 # ---------------------------------------------------------------------------
 # CONSONANTS
 # ---------------------------------------------------------------------------
@@ -297,23 +304,26 @@ NULL_C_IPA = "∅c"  # manifest key for the consonant-height filler
 
 MARKS_FULL = {
     # A dot on the baseline (bottom row), beside the word's last block.
-    "period": path("M 18 146 L 18 146.5"),
+    "period": mark(1, path("M 18 146 L 18 146.5")),
     # A stroke through the bottom two rows — the period given length rather
     # than a tail, which a single column has no room for.
-    "comma": path("M 18 122 L 18 146"),
+    "comma": mark(1, path("M 18 122 L 18 146")),
     # A full stroke over a dot: the shape everyone already reads as this.
-    "exclamation": path("M 18 18 L 18 98") + path("M 18 146 L 18 146.5"),
+    "exclamation": mark(1, path("M 18 18 L 18 98") + path("M 18 146 L 18 146.5")),
     # The same, broken one row: a question is an interrupted statement.
-    "question": (path("M 18 18 L 18 50") + path("M 18 82 L 18 98")
-                 + path("M 18 146 L 18 146.5")),
+    "question": mark(1, path("M 18 18 L 18 50") + path("M 18 82 L 18 98")
+                     + path("M 18 146 L 18 146.5")),
 }
 
 # The character you type -> the mark's name, i.e. its manifest key -> stem.
 # Kept beside IPA_TO_NAME (spread into it below) so every consumer that
 # walks that map — the manifest, the designer catalogue — sees the marks.
 PUNCT_TO_NAME = {".": "period", ",": "comma", "?": "question", "!": "exclamation"}
-MARK_FULL_BOX = 164  # viewBox height for a 1x9 mark (9*16 + 2*10)
-MARK_FULL_W = 36     # viewBox width (1*16 + 2*10)
+MARK_FULL_BOX = 164   # viewBox height, every mark (9*16 + 2*10)
+MARK_FULL_UNIT = 16   # one lattice column
+MARK_FULL_MARGIN = 10  # clearance either side
+def mark_width(cols):  # viewBox width for a mark that many columns wide
+    return cols * MARK_FULL_UNIT + 2 * MARK_FULL_MARGIN
 
 
 # Glyphs whose source is NOT reference/avatarian_key.svg, so the key tab
@@ -516,10 +526,13 @@ def main():
     for name, body in {**CONSONANTS, **MARKS_CONSONANT}.items():
         (OUT / f"{name}.svg").write_text(svg(body), encoding="utf-8")
         drawn[name] = True
-    # Full-height punctuation marks: their own 36x164 box, one form only.
-    for name, body in MARKS_FULL.items():
+    # Full-height punctuation marks: a tall box, one form only, as many
+    # lattice columns wide as the mark declares (period 1, a question mark
+    # perhaps 2 or 3).
+    for name, m in MARKS_FULL.items():
         (OUT / f"{name}.svg").write_text(
-            svg(body, box=MARK_FULL_BOX, w=MARK_FULL_W), encoding="utf-8")
+            svg(m["body"], box=MARK_FULL_BOX, w=mark_width(m["cols"])),
+            encoding="utf-8")
         drawn[name] = True
     # Vowels and vowel-height marks ship twice: the square drawing for
     # equal-height mode, and a geometrically flattened 100x80 copy for

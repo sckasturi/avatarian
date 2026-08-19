@@ -48,13 +48,18 @@ GEO.TALL_KINDS = ["consonant", "mark_consonant"];
 
 const isTall = (kind) => GEO.TALL_KINDS.includes(kind);
 
+/** How many lattice columns a full-height mark spans (default 1). */
+function markCols(design) {
+  return ((design && design.grid) || GEO.MARK_FULL_GRID)[0];
+}
+
 /** How lattice coordinates land in a viewBox. sx !== sy only for the
  *  stretched square form of a vowel. `w` is the box width (100 for a
- *  letter, 36 for a full-height mark). */
-function frameFor(kind, form) {
+ *  letter; a full-height mark is `cols` columns wide). */
+function frameFor(kind, form, cols = 1) {
   if (kind === "mark_full") {
     return { sx: GEO.UNIT, sy: GEO.UNIT, ox: GEO.MARGIN_X, oy: GEO.MARGIN_Y_SQUARE,
-             h: GEO.MARK_FULL_BOX_H, w: GEO.MARK_FULL_BOX_W };
+             h: GEO.MARK_FULL_BOX_H, w: cols * GEO.UNIT + 2 * GEO.MARGIN_X };
   }
   if (isTall(kind)) {
     return { sx: GEO.UNIT, sy: GEO.UNIT, ox: GEO.MARGIN_X, oy: GEO.MARGIN_Y_SQUARE, h: 100, w: 100 };
@@ -254,14 +259,14 @@ function dotSVG(shape, f) {
 }
 
 function body(design, form = "square") {
-  const f = frameFor(design.type || "consonant", form);
+  const f = frameFor(design.type || "consonant", form, markCols(design));
   return (design.shapes || [])
     .map((s) => (s.kind === "dot" ? dotSVG(s, f) : (pathD(s, f) ? `<path d="${pathD(s, f)}"/>` : "")))
     .join("");
 }
 
 function toSVG(design, form = "square") {
-  const f = frameFor(design.type || "consonant", form);
+  const f = frameFor(design.type || "consonant", form, markCols(design));
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${num(f.w)} ${num(f.h)}" ` +
     `fill="none" stroke="currentColor" stroke-width="${GEO.SW}" ` +
@@ -282,6 +287,6 @@ function editorPath(shape, scale) {
 }
 
 window.GEOM = {
-  GEO, isTall, frameFor, gridFor, toSVG, body, pathD, dotSVG, formsFor,
+  GEO, isTall, frameFor, gridFor, markCols, toSVG, body, pathD, dotSVG, formsFor,
   editorPath, arcParams, segmentsOf, tangentAt, num,
 };

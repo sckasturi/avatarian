@@ -159,10 +159,13 @@ const App = {
     // Only a real vowel has a 3-row/4-row form. The nulls are marks:
     // each is written at one height and there is nothing to choose.
     document.body.classList.toggle("has-rows", s.type === "vowel");
+    // A full-height mark is the one glyph whose width is a choice: a
+    // question mark may want two or three columns where a period needs one.
+    document.body.classList.toggle("has-cols", s.type === "mark_full");
 
     $("#now").innerHTML =
       `<b class="ipa">${s.ipa || "∅"}</b> ${s.name}` +
-      `<span class="fine"> · ${s.type} · ${s.grid[0]}×${s.grid[1]} grid` +
+      `<span class="fine"> · ${s.type} · <span id="now-grid">${s.grid[0]}×${s.grid[1]}</span> grid` +
       (s.arpabet ? ` · ${s.arpabet}` : "") +
       (s.placeholder ? " · no glyph in the set yet" : "") + "</span>";
     $("#notes").value = Store.design.notes || "";
@@ -193,6 +196,14 @@ const App = {
       Store.commit((d) => { d.rows = Number(b.dataset.rows); });
       this.syncAttrs();
     }));
+    // Changing a mark's width rewrites its grid and reshapes the lattice,
+    // so the canvas has to redraw — unlike the row toggle, which only
+    // changes how the same lattice is read.
+    $$(".colbtn").forEach((b) => b.addEventListener("click", () => {
+      Store.commit((d) => { d.grid = [Number(b.dataset.cols), (d.grid && d.grid[1]) || 9]; });
+      this.syncAttrs();
+      Editor.render();
+    }));
   },
 
   /** The design wins where it says something; the build's current value
@@ -207,12 +218,22 @@ const App = {
     return d.rows || (Store.current || {}).rows || 3;
   },
 
+  colsNow() {
+    const d = Store.design || {};
+    return (d.grid && d.grid[0]) || 1;
+  },
+
   syncAttrs() {
     const flips = this.flipsNow();
     const rows = this.rowsNow();
+    const cols = this.colsNow();
     $("#a-flips").checked = flips;
     $$(".rowbtn").forEach((b) =>
       b.classList.toggle("on", Number(b.dataset.rows) === rows));
+    $$(".colbtn").forEach((b) =>
+      b.classList.toggle("on", Number(b.dataset.cols) === cols));
+    const gridEl = document.querySelector("#now-grid");
+    if (gridEl) gridEl.textContent = `${Editor.grid[0]}×${Editor.grid[1]}`;
     $("#pv-bot-cap").textContent = flips ? "bottom slot (flipped)" : "bottom slot";
     $("#pv-bot").classList.toggle("flip", flips);
   },

@@ -507,6 +507,24 @@ shape as editable nodes. The four current shapes are unchanged (the
 `MARKS_FULL` bodies equal the old inline ones) — what changed is that they
 can now be *redrawn* on the lattice instead of by eye.
 
+**37. The apostrophe as a mark.** `'` is currently stripped, and the
+attested possessives write it as *sounds* (`woong's`, `heng's` →
+`ɛ s`, no mark), so adding it as a punctuation mark conflicts with that
+evidence. It is documented as being treated "like a vowel, i.e. a slot,"
+which is a different thing from the four `mark_full` marks and wants its
+own look at the art before it is added. When picked up: decide whether it
+is a `mark_full` mark, a slot-filling glyph, or stays as sounds; if a
+mark, it needs a shape with no source (the natural default is a raised
+comma — the comma's stroke through the *top* two rows rather than the
+bottom). Do not wire English conversion of possessives to emit `'`; those
+go through g2p as sounds and are attested that way.
+
+~~**38. Marks need variable width.**~~ **In progress (session 13).** The
+`?` doesn't fit a 1-column mark — it wants **2×9 or 3×9** (to be decided
+by drawing it). So `mark_full` can no longer be a fixed 1×9: the width has
+to be a per-mark property the designer can set, threaded through the
+geometry and the ship path. See the build below.
+
 ### Glyphs
 
 ~~**17. Five designs differ from the glyph they ship.**~~ **Checked in

@@ -217,16 +217,27 @@ class Frame:
         return self.x(node["x"]), self.y(node["y"])
 
 
-def frame_for(kind, form):
-    """kind: any of TALL_KINDS, else vowel-height.  form: square | flat.
+def mark_cols(design):
+    """How many lattice columns a full-height mark spans (its grid width),
+    defaulting to one. Meaningful only for `mark_full`; harmless
+    elsewhere, since frame_for ignores `cols` for every other kind."""
+    return (design.get("grid") or MARK_FULL_GRID)[0]
+
+
+def frame_for(kind, form, cols=1):
+    """kind: any of TALL_KINDS, `mark_full`, else vowel-height.
+    form: square | flat.  cols: mark_full width in lattice columns.
 
     The vowel-height null shares a vowel's frames; the consonant-height
     one shares a consonant's.
     """
     if kind == "mark_full":
-        # 1x9, unit-square like a consonant, in its own narrow tall box.
+        # cols x 9, unit-square like a consonant, in its own tall box. A
+        # mark is at least one column wide (period, comma); a wider one (a
+        # question mark may want two or three) sets `cols` from its grid.
+        box_w = cols * UNIT + 2 * MARGIN_X
         return Frame(UNIT, UNIT, MARGIN_X, MARGIN_Y_SQUARE,
-                     MARK_FULL_BOX_H, MARK_FULL_BOX_W)
+                     MARK_FULL_BOX_H, box_w)
     if is_tall(kind):
         return Frame(UNIT, UNIT, MARGIN_X, MARGIN_Y_SQUARE, 100)
     if form == "flat":
@@ -459,7 +470,7 @@ def dot_svg(shape, frame):
 
 def body(design, form="square"):
     """The inside of the <svg> for one design, in the requested form."""
-    frame = frame_for(design.get("type", "consonant"), form)
+    frame = frame_for(design.get("type", "consonant"), form, mark_cols(design))
     out = []
     for shape in design.get("shapes", []):
         if shape.get("kind") == "dot":
@@ -472,7 +483,7 @@ def body(design, form="square"):
 
 
 def to_svg(design, form="square"):
-    frame = frame_for(design.get("type", "consonant"), form)
+    frame = frame_for(design.get("type", "consonant"), form, mark_cols(design))
     return (HEADER.format(sw=SW, w=num(frame.box_w), h=num(frame.box_h))
             + body(design, form) + "</svg>")
 
@@ -502,7 +513,8 @@ def to_python(design):
     the square body is emitted — same as every hand-authored glyph.
     """
     name = design.get("name", "?")
-    frame = frame_for(design.get("type", "consonant"), "square")
+    kind = design.get("type", "consonant")
+    frame = frame_for(kind, "square", mark_cols(design))
 
     calls = []          # (kind, payload) — payload is a path `d` or dot args
     for shape in design.get("shapes", []):
@@ -522,6 +534,15 @@ def to_python(design):
         lines.append(f"    # {line}")
     if not calls:
         lines.append(f'    # "{name}": nothing drawn yet')
+        return "\n".join(lines)
+
+    # A full-height mark carries its width, so build_glyphs emits the right
+    # viewBox: the entry is `mark(cols, <body>)`. Marks are short (a stroke
+    # or two and a dot), so a single line always fits.
+    if kind == "mark_full":
+        parts = " + ".join(f'path("{d}")' if k == "path" else f"dot({d})"
+                           for k, d in calls)
+        lines.append(f'    "{name}": mark({mark_cols(design)}, {parts}),')
         return "\n".join(lines)
 
     head = f'    "{name}": '
@@ -590,7 +611,9 @@ def validate(design):
     """
     problems = []
     kind = design.get("type", "consonant")
-    gw, gh = grid_for(kind)
+    # The design's own grid where it has one (a mark_full may be wider than
+    # the default 1×9); grid_for is the fallback.
+    gw, gh = design.get("grid") or grid_for(kind)
     tops = []
     for i, shape in enumerate(design.get("shapes", [])):
         where = f"shape {i + 1}"

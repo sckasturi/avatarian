@@ -442,11 +442,18 @@ function makeMark(sym) {
   // The mark now ships through the glyph manifest like every letter, so
   // it can be redrawn in the designer. Prefer that; the inline copy below
   // is the fallback for a page with no manifest (the wiki gadget) or a
-  // build that hasn't run. Both are the same 36x164 mark_full box.
+  // build that hasn't run.
   const fromManifest = GLYPHS[sym];
-  span.innerHTML = (fromManifest && fromManifest.svg)
+  const svg = (fromManifest && fromManifest.svg)
     ? fromManifest.svg
     : `<svg xmlns="http://www.w3.org/2000/svg" ${MARK_BOX}>` + mark.d + "</svg>";
+  span.innerHTML = svg;
+  // A mark is nine rows tall but may be more than one column wide (a
+  // question mark). The CSS assumes a 1-column 36×164; set the real
+  // aspect ratio from the viewBox so a wider mark keeps its proportions
+  // instead of being squeezed into one column's width.
+  const vb = /viewBox="0 0 ([\d.]+) ([\d.]+)/.exec(svg);
+  if (vb) span.style.aspectRatio = `${vb[1]} / ${vb[2]}`;
   return span;
 }
 

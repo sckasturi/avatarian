@@ -57,7 +57,8 @@ def cases():
 
     for kind, grid in (("consonant", [5, 5]), ("vowel", [5, 3]),
                        ("mark", [5, 3]), ("mark_consonant", [5, 5]),
-                       ("mark_full", [1, 9])):
+                       ("mark_full", [1, 9]), ("mark_full", [2, 9]),
+                       ("mark_full", [3, 9])):
         for i in range(40):
             segs = ["line", "arc", "curve"]
             nodes = [node()]

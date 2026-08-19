@@ -143,7 +143,12 @@ def catalog():
             "key": ipa,
             "type": kind,
             "group": "mark" if kind.startswith("mark") else kind,
-            "grid": glyphspec.grid_for(kind),
+            # A full-height mark opens at whatever width it ships (the
+            # question mark may be wider than one column); every other
+            # glyph has a fixed grid.
+            "grid": ([bg.MARKS_FULL[name]["cols"], 9]
+                     if kind == "mark_full" and name in bg.MARKS_FULL
+                     else glyphspec.grid_for(kind)),
             "arpabet": arpa.get(ipa),
             "example": EXAMPLES.get(name),
             "placeholder": name in bg.PLACEHOLDERS,
