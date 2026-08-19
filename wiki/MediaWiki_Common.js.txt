@@ -1,105 +1,44 @@
-/* Avatarian renderer. Credits and sources: see AVATARIAN.md in the project repo. */
+/* Avatarian renderer — loader. Credits and sources: see AVATARIAN.md. */
 /*
- * Avatarian renderer gadget for Fandom / MediaWiki:Common.js
+ * Avatarian gadget loader for Fandom / MediaWiki:Common.js
+ *
+ * SELF-CONTAINED: the whole renderer lives on THIS wiki, so nothing is
+ * fetched from an outside server. This snippet just loads the bundle
+ * ([[MediaWiki:Avatarian.js]]) from the wiki itself, and only on pages
+ * that actually use {{Avatarian}} — so ordinary pages pay nothing.
  *
  * SETUP (one-time):
- *   1. Deploy the /site folder to GitHub Pages or Cloudflare Pages
- *      (see project README).
- *   2. Replace AVATARIAN_SITE_BASE below with that site's public URL
- *      (must end in a slash), e.g. "https://yourname.github.io/avatarian/"
- *   3. Paste this whole file into [[MediaWiki:Common.js]].
- *   4. Paste MediaWiki_Common.css.txt into [[MediaWiki:Common.css]].
- *   5. Create Template:Avatarian, then use it in articles — either
- *      {{Avatarian|k uh t ah r uh|Katara}}  (sounds + label, exact) or
- *      {{Avatarian|en=katara}}              (English, approximate).
+ *   1. Build the bundle:  python3 tools/build_wiki_bundle.py
+ *   2. Paste wiki/MediaWiki_Avatarian.js.txt into [[MediaWiki:Avatarian.js]].
+ *   3. Paste wiki/MediaWiki_Common.css.txt into [[MediaWiki:Common.css]].
+ *   4. Paste THIS file into [[MediaWiki:Common.js]].
+ *   5. Create Template:Avatarian from wiki/Template_Avatarian.wiki, then use
+ *        {{Avatarian|k uh t ah r uh|Katara}}   (sounds + label, exact) or
+ *        {{Avatarian|en=katara}}               (English, approximate).
  *
- * The glyphs are inline SVG embedded in manifest.js, so this loads a few
- * small scripts and no images at all — nothing to upload to the wiki, and
- * glyphs inherit the surrounding text colour and size. If the scripts
- * fail to load, the plain label stays visible, so it degrades gracefully.
+ * Whenever a bundled module changes, re-run build_wiki_bundle.py and paste
+ * the new bundle into [[MediaWiki:Avatarian.js]] again.
  *
- * corpus.js carries the words somebody has actually seen written in
- * Avatarian and tops the lookup chain, so an article rendering "Appa"
- * draws it the way canon does. sounds.js parses the readable/ARPAbet/IPA
- * codes the sounds parameter takes. The 1.6 MB pronunciation dictionary
- * is deliberately NOT loaded: too heavy for a page that may draw one
- * word, and the rules cover the en= case.
+ * The bundle is ~150 KB (inline-SVG glyphs and the attested corpus, no
+ * images to host). The 1.6 MB pronunciation dictionary is left out; the
+ * template's sounds parameter is the way to spell a word exactly without
+ * it, and g2p's rules cover the en= form.
  */
 (function () {
-  var AVATARIAN_SITE_BASE = "https://REPLACE-ME.github.io/avatarian/"; // <-- set this
-
-  function loadScript(src) {
-    return new Promise(function (resolve, reject) {
-      var s = document.createElement("script");
-      s.src = src;
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
+  function boot() {
+    // Only load the renderer on pages that use it.
+    if (!document.querySelector("span.avatarian-word")) return;
+    // Fetch the bundle from THIS wiki via action=raw — no outside server.
+    // wgScript is the wiki's index.php entry point, so the URL is
+    // wiki-relative and works on any MediaWiki/Fandom install.
+    var url = mw.config.get("wgScript") +
+      "?title=MediaWiki:Avatarian.js&action=raw&ctype=text/javascript";
+    mw.loader.load(url);
   }
 
-  function init() {
-    // Order matters: sounds.js reads g2p.js's ARPAbet table, and render.js
-    // reads the manifest and corpus. Same order the standalone site uses.
-    loadScript(AVATARIAN_SITE_BASE + "js/manifest.js")
-      .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/corpus.js"); })
-      .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/g2p.js"); })
-      .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/sounds.js"); })
-      .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/render.js"); })
-      .then(renderAllSpans)
-      .catch(function (e) { console.warn("Avatarian gadget failed to load:", e); });
-  }
-
-  // Flatten a list of parsed words into one IPA sequence.
-  function ipaOf(words) {
-    var seq = [];
-    words.forEach(function (w) { seq = seq.concat(w.ipa); });
-    return seq;
-  }
-
-  // The IPA to show in the tooltip: drop the nulls (∅, ∅c), the $/%
-  // orientation overrides, and the punctuation marks — all spelling
-  // machinery, not pronunciation.
-  function cleanIpa(seq) {
-    return seq
-      .filter(function (t) { return t !== "∅" && t !== "∅c" && !/^[.,?!]$/.test(t); })
-      .map(function (t) { return t.replace(/[$%]/g, ""); })
-      .join(" ");
-  }
-
-  function renderAllSpans() {
-    var spans = document.querySelectorAll("span.avatarian-word");
-    Array.prototype.forEach.call(spans, function (span) {
-      var en = (span.getAttribute("data-avatarian-en") || "").trim();
-      var sounds = (span.getAttribute("data-avatarian-sounds") || "").trim();
-      var label = (span.getAttribute("data-avatarian-label") || "").trim();
-
-      var ipaSeq, caption;
-      if (en) {
-        // English -> the same approximate conversion the translator uses.
-        ipaSeq = ipaOf(sentenceToIPA(en));
-        caption = en;
-      } else {
-        // Sounds -> exactly the spelling given. The label is parameter 2,
-        // or any (caption) written inside the sounds, or nothing.
-        var words = soundTextToWords(sounds);
-        ipaSeq = ipaOf(words);
-        caption = label || words.map(function (w) { return w.word; })
-          .filter(Boolean).join(" ");
-      }
-
-      // Nothing to draw (an empty or unparseable parameter) — leave the
-      // plain fallback text the template put in the span.
-      if (!ipaSeq.length) return;
-
-      renderAvatarian(ipaSeq, span);
-      span.title = (caption ? caption + " " : "") + "/" + cleanIpa(ipaSeq) + "/";
-    });
-  }
-
-  if (document.readyState === "complete" || document.readyState === "interactive") {
-    init();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
   } else {
-    document.addEventListener("DOMContentLoaded", init);
+    boot();
   }
 })();

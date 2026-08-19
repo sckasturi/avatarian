@@ -76,6 +76,7 @@ tools/
   designer_server.py    serves designer/ and writes designs/ (port 8792)
   corpus_server.py      serves workbench/ and writes corpus/ (port 8793)
   build_corpus.py       validates corpus/attested.json -> js/corpus.js
+  build_wiki_bundle.py  bundles the JS into one self-hosted wiki page
   run_tests.py          the whole suite, one command
 
   designs_to_svg.py     a design -> SVG, or -> a build_glyphs.py entry
@@ -88,9 +89,12 @@ tests/           <- no dependencies; see tests/README.md
   test_*.py        the corpus validator and its save path
   recognise.html   draw-to-recognise accuracy (browser only)
 
-wiki/            <- paste these into the Fandom wiki, once
+wiki/            <- paste these into the Fandom wiki, once. SELF-HOSTED:
+                    the whole renderer lives on the wiki, no outside server.
   Template_Avatarian.wiki       wikitext for {{Avatarian|k uh t ah r uh|Katara}}
-  MediaWiki_Common.js.txt       renders every {{avatarian}} on the page
+  MediaWiki_Common.js.txt       tiny loader: pulls the bundle from THIS wiki
+  MediaWiki_Avatarian.js.txt    generated bundle (all the JS in one file)
+  gadget.js                     source for the render step (bundled in)
   MediaWiki_Common.css.txt      sizing/positioning for the glyphs
 
 ```
@@ -143,24 +147,38 @@ output directory to `site`. Done.
 
 ## Hooking up the wiki
 
-1. Deploy `site/` first and copy its public URL.
-2. Open `wiki/MediaWiki_Common.js.txt`, replace the placeholder URL at the
-   top with your deployed site's URL, then paste the whole file into
-   **MediaWiki:Common.js** on Avatar Wiki (needs wiki-admin/JS-editor rights).
-3. Paste `wiki/MediaWiki_Common.css.txt` into **MediaWiki:Common.css**.
-4. Create **Template:Avatarian** using `wiki/Template_Avatarian.wiki`.
-5. Use it in any article. Two forms, mirroring the translator:
+**Self-hosted — nothing is fetched from an outside server.** The whole
+renderer is bundled into one page the wiki serves itself; `Common.js` is a
+tiny loader that pulls it from **this** wiki, and only on pages that
+actually use `{{Avatarian}}`. (You still need `site/` as the *source* the
+bundle is built from, but it does not have to be deployed anywhere.)
+
+1. Build the bundle: `python3 tools/build_wiki_bundle.py` — writes
+   `wiki/MediaWiki_Avatarian.js.txt` (~190 KB: inline-SVG glyphs + the
+   corpus + the logic).
+2. Paste `wiki/MediaWiki_Avatarian.js.txt` into **MediaWiki:Avatarian.js**
+   on Avatar Wiki (needs wiki-admin/JS-editor rights).
+3. Paste `wiki/MediaWiki_Common.js.txt` into **MediaWiki:Common.js**.
+4. Paste `wiki/MediaWiki_Common.css.txt` into **MediaWiki:Common.css**.
+5. Create **Template:Avatarian** using `wiki/Template_Avatarian.wiki`.
+6. Use it in any article. Two forms, mirroring the translator:
    - `{{Avatarian|k uh t ah r uh|Katara}}` — spell the word in **sounds**
      (readable codes, ARPAbet in CAPS, or IPA) with an English **label**;
      draws exactly that spelling, hover shows *Katara /k ə t ɑ r ə/*.
    - `{{Avatarian|en=katara}}` — hand it the **English** and let the same
      approximate converter the translator uses guess the sounds.
 
-No font upload, no Lua/Scribunto module, no server needed — the template
-just tags the text, and the wiki's Common.js renders the real glyphs
-client-side using the same code as the standalone site (it loads
-`manifest.js`, `corpus.js`, `g2p.js`, `sounds.js` and `render.js`). If a
-reader has JavaScript off, they see the plain label instead of nothing.
+Whenever a bundled module (`manifest.js`, `corpus.js`, `g2p.js`,
+`sounds.js`, `render.js`, or `wiki/gadget.js`) changes, re-run
+`build_wiki_bundle.py` and paste the new bundle into **MediaWiki:Avatarian.js**
+again.
+
+No font upload, no Lua/Scribunto module, no external server, no image
+hosting — the template just tags the text, and the bundle renders the real
+glyphs client-side using the same code as the standalone site. If a reader
+has JavaScript off, they see the plain label instead of nothing. The
+1.6 MB pronunciation dictionary is left out of the bundle; the sounds
+parameter is how you spell a word exactly without it.
 
 ## Why this isn't a literal font
 
