@@ -24,6 +24,12 @@
   margin: 0 0.3em 0 0;
   font-size: calc(1em / 2.05);
 }
+/* No flash of English before the glyphs: hide the plain fallback text
+   until the gadget has drawn a word (it sets data-avatarian-done on each).
+   Scoped to .client-js — MediaWiki adds that to <html> before first paint,
+   so a reader with JavaScript OFF still sees the text, and the loader
+   reveals anything still undrawn after a few seconds as a safety net. */
+html.client-js .avatarian-word:not([data-avatarian-done]) { visibility: hidden; }
 /* The glyphs are SVG, which the browser's text selection never highlights,
    so a word caught in a selection would sit un-tinted between highlighted
    words. The gadget adds this class to any word the selection touches; a
