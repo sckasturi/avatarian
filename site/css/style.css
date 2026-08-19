@@ -182,12 +182,14 @@ button.primary:hover { opacity: 0.9; }
   text-underline-offset: 3px; text-decoration-thickness: 1px;
 }
 .avatarian-caption .cap-ipa { font-size: 0.72rem; color: var(--muted-2); }
-/* Rare by design — only when two sources actually disagree. Small enough
-   not to shout, distinct enough that it is never mistaken for the IPA. */
-.avatarian-caption .cap-contested {
-  font-size: 0.62rem; letter-spacing: 0.04em; text-transform: uppercase;
-  color: var(--accent); border: 1px solid currentColor; border-radius: 3px;
-  padding: 0 4px; margin-top: 2px; cursor: help;
+/* A word whose sources are roughly evenly split on its spelling gets an
+   asterisk — "your*" — rather than a badge. inline-block so the attested
+   underline on the word doesn't draw through the mark; accent so it reads
+   as a note without shouting. Rare by design (only a near-even split
+   qualifies), so it never clutters a line. */
+.avatarian-caption .cap-star {
+  display: inline-block; margin-left: 1px; color: var(--accent);
+  font-weight: 700; cursor: help;
 }
 /* Block layout lives in blocks.css — the site, the wiki gadget and the
    designer's live preview all have to agree on it, so it is one file
