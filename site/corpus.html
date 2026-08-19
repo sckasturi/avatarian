@@ -25,24 +25,50 @@
   .legend { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
   .legend u { text-decoration-color: var(--accent); text-underline-offset: 3px; }
 
+  /* Cards flow and each sizes to its word, so a long word gets a wider
+     card (spanning what would be several columns) and always stays on
+     ONE line rather than wrapping. */
   .word-grid {
-    display: grid; gap: 16px; margin-top: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    display: flex; flex-wrap: wrap; gap: 14px;
+    align-items: flex-start; margin-top: 20px;
   }
   .word-card {
+    flex: 0 0 auto; min-width: 92px; position: relative;
     background: var(--card); border: 1px solid var(--line);
-    border-radius: 10px; padding: 16px 12px 12px; text-align: center;
+    border-radius: 10px; padding: 16px 16px 12px; text-align: center;
     display: flex; flex-direction: column; align-items: center; gap: 8px;
+    transition: border-color 0.12s, box-shadow 0.12s;
   }
-  /* Long words wrap to the next line instead of overflowing the card —
-     Avatarian runs left to right, so wrapping reads like any script. */
-  .word-card .avatarian-word {
-    --av-size: 40px; margin: 0; max-width: 100%;
-    flex-wrap: wrap; justify-content: center; align-content: flex-start;
-    row-gap: 6px;
+  .word-card:hover, .word-card:focus-visible {
+    border-color: var(--accent); box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+    outline: none;
   }
+  .word-card .avatarian-word { --av-size: 40px; margin: 0; }
   .word-card .draw { min-height: calc(40px * 1.8); display: flex;
-    align-items: center; justify-content: center; width: 100%; }
+    align-items: center; justify-content: center; }
+
+  /* The source preview that appears on hover/focus — a floating panel so
+     it is never clipped by a card edge or the grid. */
+  #pop {
+    position: fixed; z-index: 50; display: none; max-width: 300px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 11px;
+    text-align: left;
+  }
+  #pop.show { display: block; }
+  #pop .pop-title { font-weight: 700; margin-bottom: 8px; }
+  #pop .pop-src { display: flex; gap: 10px; align-items: flex-start; }
+  #pop .pop-src + .pop-src {
+    margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line);
+  }
+  #pop img {
+    width: 132px; height: 132px; object-fit: cover; flex: 0 0 auto;
+    border-radius: 6px; border: 1px solid var(--line);
+    display: block; background: var(--hover);
+  }
+  #pop .pop-name { font-weight: 600; }
+  #pop .pop-where { color: var(--muted-2); font-size: 0.74rem; }
+  #pop .pop-what { color: var(--muted); font-size: 0.76rem; margin-top: 4px; }
   /* B4 (decided): a line under attested words. Everything here is
      attested, so this doubles as the legend for the mark the translator
      uses. */
@@ -85,8 +111,9 @@ everything here was read off a real source.</p>
   <span class="corpus-count" id="count"></span>
 </div>
 <p class="legend"><u>Underlined</u> means attested — a word the corpus has
-seen. Cards outlined in colour are <span class="tag">contested</span>: the
-sources disagree on the spelling, and the most-attested one is shown.</p>
+seen. <strong>Hover a word</strong> (or tab to it) to see the source it was
+read off. Cards outlined in colour are <span class="tag">contested</span>:
+the sources disagree on the spelling, and the most-attested one is shown.</p>
 
 <div class="word-grid" id="grid"></div>
 <p class="empty" id="empty" hidden>No words match.</p>
@@ -169,14 +196,77 @@ function sourceHref(id) {
   return null;
 }
 
-function sourceEl(id) {
-  const href = sourceHref(id);
-  const el = document.createElement(href ? "a" : "span");
-  el.textContent = id;
-  el.title = sourceTitle(id);
-  if (href) { el.href = href; el.target = "_blank"; el.rel = "noopener"; }
-  return el;
+// --- the hover source preview ------------------------------------------
+// One floating panel, filled and positioned for whichever card is hovered
+// or focused. A shared panel (rather than one per card) keeps it out of
+// the grid's flow, so it is never clipped, and only ever loads the images
+// of the source you are actually looking at.
+const pop = document.createElement("div");
+pop.id = "pop";
+document.body.appendChild(pop);
+let hideTimer = null;
+
+function buildPop(w) {
+  pop.innerHTML = "";
+  const title = document.createElement("div");
+  title.className = "pop-title";
+  title.textContent = w.label;
+  pop.appendChild(title);
+  for (const id of allSourcesOf(w)) {
+    const s = SOURCES[id] || {};
+    const row = document.createElement("div");
+    row.className = "pop-src";
+    if (s.image) {
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.src = "sources/" + encodeURIComponent(s.image);
+      img.alt = "reference for " + id;
+      row.appendChild(img);
+    }
+    const info = document.createElement("div");
+    const href = sourceHref(id);
+    const name = document.createElement(href ? "a" : "div");
+    name.className = "pop-name";
+    name.textContent = id;
+    if (href) { name.href = href; name.target = "_blank"; name.rel = "noopener"; }
+    info.appendChild(name);
+    if (s.where) {
+      const where = document.createElement("div");
+      where.className = "pop-where";
+      where.textContent = /^https?:\/\//.test(s.where) ? "open the post ↗" : s.where;
+      info.appendChild(where);
+    }
+    if (s.what) {
+      const what = document.createElement("div");
+      what.className = "pop-what";
+      what.textContent = s.what.length > 110 ? s.what.slice(0, 110) + "…" : s.what;
+      info.appendChild(what);
+    }
+    row.appendChild(info);
+    pop.appendChild(row);
+  }
 }
+
+function placePop(card) {
+  pop.classList.add("show");            // show first so it can be measured
+  const r = card.getBoundingClientRect();
+  const pw = pop.offsetWidth, ph = pop.offsetHeight;
+  let left = r.left + r.width / 2 - pw / 2;
+  left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+  let top = r.bottom + 8;
+  if (top + ph > window.innerHeight - 8) top = r.top - ph - 8;   // flip up
+  top = Math.max(8, top);
+  pop.style.left = left + "px";
+  pop.style.top = top + "px";
+}
+
+function showPop(card, w) { clearTimeout(hideTimer); buildPop(w); placePop(card); }
+function hidePop() { hideTimer = setTimeout(() => pop.classList.remove("show"), 140); }
+
+// Keep it open while the pointer is on the panel itself, so a link in it
+// is clickable.
+pop.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+pop.addEventListener("mouseleave", hidePop);
 
 // Populate the source filter, each with how many words cite it.
 (function fillSourceFilter() {
@@ -201,6 +291,7 @@ function card(w) {
   el.dataset.label = w.label.toLowerCase();
   el.dataset.key = w.key;
   el.dataset.sources = allSourcesOf(w).join(" ");
+  el.tabIndex = 0;   // focusable, so the source preview works off the keyboard too
 
   const draw = document.createElement("div");
   draw.className = "draw";
@@ -216,14 +307,13 @@ function card(w) {
   en.title = "/" + soundsOf(w.ipa) + "/";
   el.appendChild(en);
 
+  // The sources themselves live in the hover preview; the card just says
+  // how much it has been seen.
   const meta = document.createElement("div");
   meta.className = "word-meta";
   const times = w.count === 1 ? "seen once" : `seen ${w.count}×`;
-  meta.append(times + " · ");
-  allSourcesOf(w).forEach((id, i) => {
-    if (i) meta.append(", ");
-    meta.appendChild(sourceEl(id));
-  });
+  const nSrc = allSourcesOf(w).length;
+  meta.textContent = nSrc === 1 ? times : `${times} · ${nSrc} sources`;
   el.appendChild(meta);
 
   if (w.confidence && w.confidence !== "certain") {
@@ -240,6 +330,11 @@ function card(w) {
       + w.alternates.map(a => soundsOf(a.ipa)).join("/, /") + "/";
     el.appendChild(alt);
   }
+
+  el.addEventListener("mouseenter", () => showPop(el, w));
+  el.addEventListener("mouseleave", hidePop);
+  el.addEventListener("focus", () => showPop(el, w));
+  el.addEventListener("blur", hidePop);
   return el;
 }
 
