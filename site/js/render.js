@@ -381,6 +381,13 @@ function renderAvatarian(ipaSeq, container) {
       // turn according to the company they keep, not the slot alone.
       block.appendChild(makeSlot(top, "top", bottom));
       block.appendChild(makeSlot(bottom, "bottom", top));
+      // Mark a two-consonant block so CSS can give it the deeper C-C
+      // pull-up with a plain class instead of a :has() selector — :has()
+      // isn't in older browsers and MediaWiki's CSS linter rejects it.
+      // Same condition :has() checked: the block holds no vowel or null.
+      if (!block.querySelector(".avatarian-vowel, .avatarian-null, .avatarian-null_consonant")) {
+        block.classList.add("avatarian-cc");
+      }
       container.appendChild(block);
     });
     run = [];

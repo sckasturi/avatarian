@@ -35,9 +35,12 @@
    Both stay full size, so stroke weight matches the rest. Two 1.25em
    boxes stacked flush leave a 0.25em gap between their lattices (0.125em
    clearance each); closing it and overlapping one more row (0.2em) is
-   0.45em. Replaces the -0.225em the V-C bottom slot uses. */
-.avatarian-block:not(:has(.avatarian-vowel)):not(:has(.avatarian-null)):not(:has(.avatarian-null_consonant))
-  .avatarian-slot-bottom { margin-top: -0.45em; }
+   0.45em. Replaces the -0.225em the V-C bottom slot uses.
+
+   render.js tags a two-consonant block `avatarian-cc`, so this is a plain
+   class rather than a :has() selector — :has() isn't in older browsers
+   and MediaWiki's CSS linter rejects it. */
+.avatarian-block.avatarian-cc .avatarian-slot-bottom { margin-top: -0.45em; }
 /* A 3-row vowel is drawn bottom-aligned in its 4-row box, which is right
    in the bottom slot and wrong in the top: there the empty row lands at
    the block's outer edge as dead space and the vowel sits flush against
@@ -66,23 +69,24 @@
 }
 /* Vowels ship a square (100x100) and a flat (100x80) SVG; use the flat
    one. Consonants have only the square, so :not(:only-of-type) leaves it. */
-.avatarian-glyph svg.g-square:not(:only-of-type) { display: none; }
+.avatarian-glyph .g-square:not(:only-of-type) { display: none; }
 .avatarian-placeholder { opacity: 0.5; }
 .avatarian-missing { font-size: 0.6em; color: #b32; line-height: 1; }
 /* Punctuation marks: a THIRD height class — one lattice column wide (a
    question mark is two) and nine rows tall, standing beside the writing
    rather than in a slot. The box is 36x164 units (52x164 for the wide
    question mark) against a letter's 100x100, so a mark is 164/100 = 1.64
-   of a consonant's height. render.js sets each mark's real aspect-ratio
-   inline from its viewBox, so a wider mark keeps its proportions; the
-   36/164 here is only the default. Keep in step with site/css/blocks.css. */
+   of a consonant's height. render.js sets each mark's aspect-ratio inline
+   from its own viewBox, so only the height is fixed here and a wider mark
+   keeps its true proportions. Keep in step with site/css/blocks.css. */
 .avatarian-mark {
   display: inline-block; line-height: 0; color: currentColor;
   align-self: stretch;
   height: calc(1.25em * 1.64);
-  aspect-ratio: 36 / 164;
 }
 .avatarian-mark svg { display: block; width: 100%; height: 100%; }
-/* The "*" unreadable-glyph marker: dimmed, and never flipped. */
+/* The "*" unreadable-glyph marker: dimmed, and never flipped. Two classes
+   + svg matches the flip rule's specificity and comes later, so it wins
+   without !important. */
 .avatarian-unreadable { opacity: 0.68; }
-.avatarian-unreadable svg { transform: none !important; }
+.avatarian-glyph.avatarian-unreadable svg { transform: none; }
