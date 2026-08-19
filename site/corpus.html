@@ -91,19 +91,35 @@
   /* A contested word flags its other spellings inline in the meta line;
      the hover preview is where you see how each source actually drew it. */
   .word-meta .alt-flag { color: var(--accent); }
-  /* Contested preview: one group per distinct spelling — drawn, its count,
-     and the sources that used it as thumbnails. */
+  /* Contested preview: one group per distinct spelling — the spelling
+     drawn with its count on the LEFT, the sources that used it as
+     thumbnails on the RIGHT. Hover a thumbnail for its detail (#pop2). */
+  #pop .pop-group { display: flex; gap: 12px; align-items: flex-start; }
   #pop .pop-group + .pop-group {
     margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line);
   }
-  #pop .pop-spelling { --av-size: 30px; margin: 2px 0 5px; }
-  #pop .pop-gmeta { color: var(--muted-2); font-size: 0.74rem; margin-bottom: 6px; }
-  #pop .pop-thumbs { display: flex; flex-wrap: wrap; gap: 6px; }
+  #pop .pop-gleft { flex: 0 0 auto; text-align: center; }
+  #pop .pop-spelling { --av-size: 30px; margin: 2px auto 4px; }
+  #pop .pop-gmeta { color: var(--muted-2); font-size: 0.72rem; white-space: nowrap; }
+  #pop .pop-thumbs { display: flex; flex-wrap: wrap; gap: 6px; flex: 1 1 auto; padding-top: 2px; }
   #pop .pop-thumb { display: block; line-height: 0; }
   #pop .pop-thumb img {
-    width: 46px; height: 46px; object-fit: cover;
+    width: 42px; height: 42px; object-fit: cover;
     border-radius: 4px; border: 1px solid var(--line); background: var(--hover);
   }
+  #pop .pop-thumb:hover img { border-color: var(--accent); }
+
+  /* The second tooltip: a source's detail, over a thumbnail. */
+  #pop2 {
+    position: fixed; z-index: 60; display: none; width: 232px; pointer-events: none;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.32); padding: 9px 11px;
+    text-align: left;
+  }
+  #pop2.show { display: block; }
+  #pop2 .p2-name { font-weight: 600; }
+  #pop2 .p2-where { color: var(--muted-2); font-size: 0.74rem; }
+  #pop2 .p2-what { color: var(--muted); font-size: 0.78rem; margin-top: 4px; }
   .empty { color: var(--muted); margin-top: 24px; }
 </style>
 </head>
@@ -225,6 +241,47 @@ pop.id = "pop";
 document.body.appendChild(pop);
 let hideTimer = null;
 
+// A second, smaller tooltip: hovering a source thumbnail in the contested
+// preview shows that source's name and the text slice around the word.
+// pointer-events:none in CSS, so it never steals the hover from the thumb.
+const pop2 = document.createElement("div");
+pop2.id = "pop2";
+document.body.appendChild(pop2);
+let hide2Timer = null;
+
+function showPop2(thumb, id, w) {
+  clearTimeout(hide2Timer);
+  clearTimeout(hideTimer);          // moving onto a thumb keeps the main preview open
+  const s = SOURCES[id] || {};
+  pop2.innerHTML = "";
+  const name = document.createElement("div");
+  name.className = "p2-name";
+  name.textContent = id;
+  pop2.appendChild(name);
+  if (s.where) {
+    const where = document.createElement("div");
+    where.className = "p2-where";
+    where.textContent = /^https?:\/\//.test(s.where) ? "open the post ↗" : s.where;
+    pop2.appendChild(where);
+  }
+  if (s.what) {
+    const what = document.createElement("div");
+    what.className = "p2-what";
+    fillWhat(what, s.what, w.key);
+    pop2.appendChild(what);
+  }
+  pop2.classList.add("show");
+  const r = thumb.getBoundingClientRect();
+  const pw = pop2.offsetWidth, ph = pop2.offsetHeight;
+  let left = r.left + r.width / 2 - pw / 2;
+  left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+  let top = r.bottom + 6;
+  if (top + ph > window.innerHeight - 8) top = r.top - ph - 6;
+  pop2.style.left = left + "px";
+  pop2.style.top = Math.max(8, top) + "px";
+}
+function hidePop2() { hide2Timer = setTimeout(() => pop2.classList.remove("show"), 100); }
+
 // Show the slice of a source's text AROUND the word — "…found something
 // out and it is really big!…" — rather than always the opening. Falls
 // back to the start if the word isn't in the text verbatim (some sources
@@ -259,12 +316,11 @@ function spellingGroups(w) {
 }
 
 // A source as a small clickable thumbnail of its reference image.
-function sourceThumb(id) {
+function sourceThumb(id, w) {
   const s = SOURCES[id] || {};
   const href = sourceHref(id);
   const el = document.createElement(href ? "a" : "span");
   el.className = "pop-thumb";
-  el.title = sourceTitle(id);
   if (href) { el.href = href; el.target = "_blank"; el.rel = "noopener"; }
   if (s.image) {
     const img = document.createElement("img");
@@ -275,6 +331,9 @@ function sourceThumb(id) {
   } else {
     el.textContent = id;
   }
+  // Second hover: the source's name and the text around the word.
+  el.addEventListener("mouseenter", () => showPop2(el, id, w));
+  el.addEventListener("mouseleave", hidePop2);
   return el;
 }
 
@@ -291,17 +350,22 @@ function buildPop(w) {
     for (const g of spellingGroups(w)) {
       const grp = document.createElement("div");
       grp.className = "pop-group";
+      // Left: the spelling drawn, with its count. Right: the sources that
+      // used it, as thumbnails — hover one for its detail.
+      const left = document.createElement("div");
+      left.className = "pop-gleft";
       const sp = document.createElement("div");
       sp.className = "avatarian-word pop-spelling";
       renderAvatarian(g.ipa, sp);
-      grp.appendChild(sp);
+      left.appendChild(sp);
       const meta = document.createElement("div");
       meta.className = "pop-gmeta";
       meta.textContent = g.count === 1 ? "seen once" : `seen ${g.count}×`;
-      grp.appendChild(meta);
+      left.appendChild(meta);
+      grp.appendChild(left);
       const thumbs = document.createElement("div");
       thumbs.className = "pop-thumbs";
-      for (const id of g.sources) thumbs.appendChild(sourceThumb(id));
+      for (const id of g.sources) thumbs.appendChild(sourceThumb(id, w));
       grp.appendChild(thumbs);
       pop.appendChild(grp);
     }
@@ -364,7 +428,7 @@ function hidePop() { hideTimer = setTimeout(() => pop.classList.remove("show"), 
 // Keep it open while the pointer is on the panel itself, so a link in it
 // is clickable.
 pop.addEventListener("mouseenter", () => clearTimeout(hideTimer));
-pop.addEventListener("mouseleave", hidePop);
+pop.addEventListener("mouseleave", () => { hidePop(); hidePop2(); });
 
 // Populate the source filter, each with how many words cite it.
 (function fillSourceFilter() {
