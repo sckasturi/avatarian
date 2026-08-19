@@ -88,10 +88,49 @@ page is *for* — worth a scan of the other cards for the same pattern.
   (`state.sources = body.sources`) and saves sources wholesale, editing
   fields in place, so a future workbench edit won't drop it.
 
+### Item 32 — punctuation is a designable glyph class now
+
+`, . ? !` were hand-authored inline SVG in `render.js`, outside the
+designer. They are now a **third height class — `mark_full`, a 1×9 lattice
+in a 36×164 box** — carried through the whole stack, so a mark is drawn,
+validated, shipped and rendered like a letter and can be edited in the
+designer on its own tall lattice.
+
+- Geometry: `glyphspec.py` + `geom.js` gained a `mark_full` frame; `Frame`
+  now carries a box **width** (the viewBox width was hardcoded 100), and
+  `check_geom` covers it (283 cases). The designer canvas (`editor.js`)
+  had width 100 hardcoded in three spots — now driven by the frame, with
+  aspect-aware sizing so a 1×9 mark fits by height, not the 280px floor.
+- Ship path: `build_glyphs.py` `MARKS_FULL` holds the four bodies
+  (identical to the old inline ones), emits 36×164 SVGs, and adds the
+  marks to `IPA_TO_NAME` **keyed by the character** — so the manifest and
+  the designer catalogue pick them up with no special-casing. `promote.py`
+  routes `mark_full` to `MARKS_FULL`. `render.js` `makeMark` reads the
+  mark from the manifest, inline copy as fallback.
+- **Restart the designer server after editing `build_glyphs.py`** — it
+  imports the module once at startup (same trap as `corpus_server`).
+- The four shapes are unchanged; what changed is they can be *redrawn* on
+  the lattice. Verified: designer opens each on a 1×9 grid, "use it" loads
+  the shape as editable nodes, the site draws them from the manifest.
+
+### AVATARIAN.md rewritten as a present-tense knowledgebase
+
+On the user's instruction: no timeline, just what is known now. The doc
+carried the same knowledge twice — a working reference (§1–11, full of
+"we thought X, then corrected it") and a history-free spec (§12) — plus a
+**stale inventory** (§8 still listed `/ɜ/` and marked `tʃ dʒ ʃ ʒ ʊ ɔɪ`
+placeholders). Merged into one present-tense reference, 858 → 496 lines,
+history dropped (it lives in `DECIPHERMENT.md` + git), inventory
+regenerated from `build_glyphs`. **Section numbers changed** (old §12.x
+folded into the body): live pointers in TODO/README/CONTEXT/CORPUS were
+repointed; HANDOFF's own session-log references to old numbers are left
+as accurate records of what the doc said then.
+
 ### Traps / notes
 
-- **Cache-bust bumped `v=31 → v=32 → v=33`** across `index.html`,
-  `corpus.html` and `sources.html` (two `style.css` changes this session).
+- **Cache-bust bumped `v=31 → v=34`** across `index.html`, `corpus.html`
+  and `sources.html` (three `style.css` changes + the item-32 render/
+  manifest change this session).
 - The Browser-pane **screenshot/scroll desynced repeatedly** after JS
   scrolls on the tall desktop layout — blank frames. Functional checks via
   `javascript_tool` (class lists, computed styles, filtered counts) were
@@ -100,7 +139,8 @@ page is *for* — worth a scan of the other cards for the same pattern.
 
 ### Where to start next time
 
-Items 21 and 7 close the display backlog. What is genuinely open:
+Items 21, 7 and 32 are closed this session, along with the AVATARIAN.md
+rewrite. What is genuinely open:
 
 1. **Item 19** — stroke-level fusion, now the most visible thing left in
    the block model. Read the item carefully first: `/s/` and `/z/` got
@@ -108,6 +148,11 @@ Items 21 and 7 close the display backlog. What is genuinely open:
    **deliberately left** — don't re-propose the clip or the pentagon.
 2. **Items 34/36** — morpheme boundaries and the hand-rolled syllabifier,
    both waiting on more attested compounds / a rainy day.
+
+Now that item 32 shipped, the four marks *can* be redrawn on the lattice
+— the user may want to actually design them (they were drawn by eye). The
+designer is the tool for it: open a mark, "use it" to start from the
+current shape, edit, ship it.
 
 Suite is **57 pass / 0 fail**. `main == origin/main`.
 
