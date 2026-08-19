@@ -483,22 +483,29 @@ Apostrophe is still stripped. It is documented as being treated like a
 vowel, i.e. as a *slot*, which is a different thing from these four and
 wants its own look at the art.
 
-**32. The punctuation marks are not in the designer.** They are inline
-SVG in `site/js/render.js`, and can only be changed by editing that file.
+~~**32. The punctuation marks are not in the designer.**~~ **Done in
+session 13.** `, . ? !` are now a third height class — **`mark_full`, a
+1×9 lattice in a 36×164 box** — drawn, validated, shipped and rendered
+exactly like a letter, and editable in the designer.
 
-Everything else in the glyph set is drawn in the designer and shipped
-through `build_glyphs.py`; these four are the exception, because the
-designer only knows two height classes — consonant `5×5` and vowel `5×4`
-— and a mark is `1×9`. Adding the class means touching:
+- `tools/glyphspec.py` + `designer/js/geom.js`: `mark_full` frame/grid/
+  forms; `Frame` gained a box width and the viewBox width is now a field
+  (100 for a letter, 36 for a mark). Parity holds — `check_geom` is 283
+  cases.
+- `tools/build_glyphs.py`: `MARKS_FULL` holds the four bodies; they emit
+  their own 36×164 SVGs and enter `IPA_TO_NAME` keyed by the character,
+  so the manifest and the designer catalogue pick them up automatically.
+- `tools/promote.py`: `mark_full` ships into `MARKS_FULL`.
+- `designer/js/editor.js`: the canvas width (hardcoded 100 in three
+  spots) is driven by the frame, and the fit math is aspect-aware so a
+  tall 1×9 mark fits by height. `app.js` needed nothing.
+- `site/js/render.js`: `makeMark` reads the mark from the manifest, with
+  its old inline copy left as a fallback for a page with no manifest.
 
-- `tools/glyphspec.py` — `TALL_KINDS`, `frame_for`, a `mark_full` type
-- `designer/js/geom.js` — the same, kept in step with the Python
-- the designer UI — a lattice that is 1 wide and 9 tall
-- `tools/build_glyphs.py` and `tools/promote.py` — so a mark can ship
-
-Worth doing before anyone wants to *change* a mark, and worth doing at
-all because the current four were drawn by eye rather than on the
-lattice. Not urgent: they render correctly and are pinned by tests.
+The designer opens each mark on a 1×9 lattice; "use it" loads the shipped
+shape as editable nodes. The four current shapes are unchanged (the
+`MARKS_FULL` bodies equal the old inline ones) — what changed is that they
+can now be *redrawn* on the lattice instead of by eye.
 
 ### Glyphs
 
