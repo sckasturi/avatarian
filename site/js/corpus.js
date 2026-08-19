@@ -15,7 +15,7 @@ window.AVATARIAN_CORPUS = {
   "sources": {
     "toph-letter": {
       "what": "Hey Toph, How is the metalbending academy? Hope you're not being too hard on your students! Anyway, i found something out and it is really big! I am going to need your help. I have asked Zuko to come pick you up, then I need you all to come meet me at Mount Baihu. Please hurry. Aang",
-      "where": "movie",
+      "where": "https://www.reddit.com/r/neography/comments/1slqce2/comment/og9guty/",
       "image": "toph-letter.jpg"
     },
     "katara-letter": {
