@@ -538,6 +538,12 @@ katara please do not be mad
 
 ## Wiki deployment
 
-`wiki/MediaWiki_Common.js.txt` has a placeholder URL at the top that must
-be replaced with the deployed site URL before pasting into
-`MediaWiki:Common.js`. Requires wiki-admin / JS-editor rights on Fandom.
+**Self-hosted — no outside server.** `tools/build_wiki_bundle.py` bundles
+the glyphs + the sounds/render code into one ~60 KB file that lives on the
+wiki as `MediaWiki:Avatarian.js`; `wiki/MediaWiki_Common.js.txt` is a tiny
+loader that pulls it from the same wiki via `wgScript + action=raw`, only
+on pages that use `{{Avatarian}}`. The template is sounds-only
+(`{{Avatarian|k uh t ah r uh|Katara}}`), so no dictionary/corpus/converter
+is bundled. Site-wide install needs wiki-admin / JS-editor rights; test it
+from a personal account first — see `wiki/TESTING.md`. Re-run the bundle
+tool and re-paste whenever a bundled module changes.

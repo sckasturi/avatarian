@@ -1,7 +1,8 @@
 # Glyph designs
 
 One file per character, `<name>.json`, drawn on the script's own lattice
-— **5×5** cells for a consonant, **5×4** for a vowel — in the designer:
+— **5×5** cells for a consonant, **5×4** for a vowel, **1×9** (or **2×9**)
+for a punctuation mark — in the designer:
 
 ```bash
 python3 tools/designer_server.py     # http://localhost:8792/
@@ -29,8 +30,9 @@ every glyph rather than needing 40 paths re-authored.
 {
   "name": "m",
   "ipa": "m",                 // null for a mark
-  "type": "consonant",        // consonant | vowel | mark
-  "grid": [5, 5],             // [w, h] — 5×5 consonant, 5×4 vowel
+  "type": "consonant",        // consonant | vowel | mark | mark_consonant | mark_full
+  "grid": [5, 5],             // [w, h] — 5×5 consonant, 5×4 vowel,
+                              //   1×9 (or 2×9) mark_full punctuation
   "notes": "ring, dot centred",
   "shapes": [
     {
@@ -80,9 +82,9 @@ python3 tools/designs_to_svg.py m --python     # a build_glyphs.py entry
 
 The last one is the handoff, and it is deliberately a copy-paste rather
 than an automatic rebuild: a design is the drawing as it came off the
-grid, and promoting it into `CONSONANTS` / `VOWELS` / `MARKS` is a
-decision — usually after smoothing something the lattice couldn't say
-precisely. `build_glyphs.py` stays the one place the shipped set is
+grid, and promoting it into `CONSONANTS` / `VOWELS` / `MARKS_VOWEL` /
+`MARKS_CONSONANT` / `MARKS_FULL` (by height class) is a decision — usually
+after smoothing something the lattice couldn't say precisely. `build_glyphs.py` stays the one place the shipped set is
 defined, exactly as before.
 
 Vowels are drawn **once**, in their native 5×4 form. The square 100×100

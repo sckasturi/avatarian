@@ -394,18 +394,20 @@ the writing rather than in a slot, is not paired with anything, and does
 not count toward the whole-blocks rule — the sounds either side of a mark
 pair among themselves.
 
-| | shape | name |
+| | width | name |
 | --- | --- | --- |
-| `.` | a dot on the bottom row | period |
-| `,` | a stroke through the bottom two rows | comma |
-| `!` | a stroke over a dot | exclamation |
-| `?` | the same stroke, broken by one row | question |
+| `.` | one column — a dot | period |
+| `,` | one column — a short stroke | comma |
+| `!` | one column — a stroke over a dot | exclamation |
+| `?` | **two columns** — a curl | question |
 
-Marks are drawn on the 1×9 lattice, edited in the designer, and shipped
-through the manifest exactly like a letter (`MARKS_FULL` in
-`build_glyphs.py`; keyed in the manifest by the character). `render.js`
-draws them from the manifest, with an inline copy as the fallback for a
-page that carries no manifest.
+Marks are drawn on the mark lattice (one column wide, or two for the
+question mark) in the designer, and shipped through the manifest exactly
+like a letter (`MARKS_FULL` in `build_glyphs.py`, keyed by the character;
+each entry records its column count). `render.js` draws each from the
+manifest and takes its aspect ratio from the SVG's own viewBox, so a wider
+mark keeps its proportions; an inline copy is the fallback for a page that
+carries no manifest. The exact shapes live in `build_glyphs.py`.
 
 The apostrophe is still stripped; `woong's` and `heng's` are attested and
 write the possessive as sounds (`ɛ s`) with no mark.

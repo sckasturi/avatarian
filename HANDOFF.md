@@ -8,11 +8,15 @@ what to do next.
 
 ---
 
-## Session 13 — the two display items: the underline and the catalogue
+## Session 13 — display, designable marks, the doc rewrite, and the wiki
 
-Two clean builds off session 12's backlog, both verified in-browser and
-pushed. Nothing structural moved; these are the UI catching up with
-decisions already made.
+A long session. It started as two display builds off session 12's backlog
+(the attested underline, the source catalogue), then went further:
+punctuation became a designable — and variable-width — glyph class and the
+four marks were redrawn; `AVATARIAN.md` was rewritten as a present-tense
+knowledgebase; the hand-lettered tracings were pulled off the translator;
+and the wiki gadget was made self-hosted and sounds-only (188 KB → 59 KB).
+Everything below is verified in-browser and pushed.
 
 ### Item 21 — B4's underline in the translator output
 
@@ -126,21 +130,61 @@ folded into the body): live pointers in TODO/README/CONTEXT/CORPUS were
 repointed; HANDOFF's own session-log references to old numbers are left
 as accurate records of what the doc said then.
 
+### Item 38 — marks can be more than one column wide, and were redrawn
+
+The `?` didn't fit a one-column mark. So `mark_full` is no longer fixed at
+1×9: the width is a per-mark property (`grid[0]`), threaded through
+`glyphspec`/`geom` (box width from the grid), the designer (a **columns**
+control, `data-cols`), and `build_glyphs` (`MARKS_FULL` entries are now
+`mark(cols, body)`). `render.js` `makeMark` takes each mark's aspect ratio
+inline from its viewBox, so a wider mark keeps its proportions instead of
+being squeezed. The user then **redrew all four marks on the lattice and
+shipped them** — they have designs in `designs/` now, and the `?` is a
+**two-column** mark (52×164). `check_geom` covers `mark_full` (283 cases).
+
+### The hand-lettered tracings are gone from the translator
+
+The glyph reference used to pair each drawn glyph with the traced
+hand-lettered "key" shape, behind a checkbox, plus an "In the key, not in
+the set" section. All removed (the user asked): the reference is now clean
+drawn glyphs only, still click-to-insert. `AVATARIAN_REFERENCE` still
+ships in `manifest.js` for the designer's key-tracing underlay — just not
+shown on the site.
+
+### The wiki gadget is self-hosted and sounds-only now
+
+Two changes, on the user's instruction:
+
+- **Self-hosted.** The gadget no longer loads scripts from a deployed
+  site. `tools/build_wiki_bundle.py` concatenates the modules into ONE
+  page, `MediaWiki:Avatarian.js`; `Common.js` is a tiny loader that pulls
+  it from **this** wiki via `wgScript + action=raw`, only on pages with an
+  `.avatarian-word` span. No outside server, no external images (glyphs are
+  inline SVG). `wiki/gadget.js` is the render step.
+- **Sounds-only, ~60 KB.** The template is `{{Avatarian|k uh t ah r
+  uh|Katara}}` — sounds + English label, drawn exactly; `en=` (English
+  auto-convert) was dropped. Because the word is spelled out, the bundle
+  drops `corpus.js`, all of `g2p.js` bar a 0.4 KB ARPAbet shim, and the
+  48 KB of reference tracings stripped from the manifest — **188 KB →
+  59 KB**. `wiki/TESTING.md` is the personal-account test walkthrough;
+  the loader has a `BUNDLE_PAGE` var to point at a user subpage first.
+
 ### Traps / notes
 
-- **Cache-bust bumped `v=31 → v=34`** across `index.html`, `corpus.html`
-  and `sources.html` (three `style.css` changes + the item-32 render/
-  manifest change this session).
+- **Cache-bust reached `v=37`** on `index.html`/`corpus.html`/`sources.html`
+  (several `style.css`/render/manifest changes this session).
+- **Restart `designer_server.py` after editing `build_glyphs.py`** — it
+  imports the module once at startup (same trap as `corpus_server`).
 - The Browser-pane **screenshot/scroll desynced repeatedly** after JS
   scrolls on the tall desktop layout — blank frames. Functional checks via
   `javascript_tool` (class lists, computed styles, filtered counts) were
-  the reliable verification; the mobile viewport (output pinned to top)
-  gave the one clean visual of the underline.
+  the reliable verification.
 
 ### Where to start next time
 
-Items 21, 7 and 32 are closed this session, along with the AVATARIAN.md
-rewrite. What is genuinely open:
+Items 21, 7, 32, 38 are closed, the AVATARIAN.md rewrite is done, the
+marks are redrawn and shipped, and the wiki gadget is self-hosted and
+lean. What is genuinely open:
 
 1. **Item 19** — stroke-level fusion, now the most visible thing left in
    the block model. Read the item carefully first: `/s/` and `/z/` got
@@ -148,11 +192,8 @@ rewrite. What is genuinely open:
    **deliberately left** — don't re-propose the clip or the pentagon.
 2. **Items 34/36** — morpheme boundaries and the hand-rolled syllabifier,
    both waiting on more attested compounds / a rainy day.
-
-Now that item 32 shipped, the four marks *can* be redrawn on the lattice
-— the user may want to actually design them (they were drawn by eye). The
-designer is the tool for it: open a mark, "use it" to start from the
-current shape, edit, ship it.
+3. **Item 37** — the apostrophe as a mark, parked pending a look at the
+   art (the attested possessives write it as sounds, not a mark).
 
 Suite is **57 pass / 0 fail**. `main == origin/main`.
 

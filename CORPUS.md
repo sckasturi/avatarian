@@ -301,11 +301,16 @@ what it even sounds like.
 
 **The plumbing is built.** `lookupWord()` in `g2p.js` returns
 `{ ipa, tier, entry }`, and `sentenceToIPA` carries both onto every word
-group, so the page already knows the tier of every word it draws — plus
-the source and confidence for an attested one. **Nothing displays it
-yet**, because which of the two treatments below reads better is a
-judgement about how the page feels with real content (TODO B4), and the
-answer wants looking at rather than deciding.
+group, so the page knows the tier of every word it draws — plus the
+source and confidence for an attested one.
+
+**Resolved and shipped (B4).** The decision below — mark the exception,
+not the rule — is live: an **attested** word gets an accent **underline**
+in the translator output and on the corpus page (`site/corpus.html`).
+Separately, a **contested** word (sources disagreeing on the spelling)
+gets a small **asterisk** on the translator, but only when the split is
+roughly even — see `TODO.md` item 21. Nothing marks the derived/guessed
+majority.
 
 ### Mark the exception, not the rule
 
@@ -635,7 +640,8 @@ visible in the file.
 ## 8. Open questions
 
 **Tracked in `TODO.md`** — the corpus work is items 20–24, the
-handwriting work 25–26, and the decisions it is waiting on are B2
-(what reference material exists), B3 (does `appa` show tall-short-tall
-nulls) and B4 (squiggle or badge). The reasoning for each is above; the
-scheduling lives there.
+handwriting work 25–26. The decisions this doc once waited on are all
+resolved: B2 (reference material — every live source now carries its
+image), B3 (`appa` does show mixed null heights), and B4 (mark the
+attested exception — the underline, plus the contested asterisk). The
+reasoning for each is above; the outcomes are in `TODO.md`.

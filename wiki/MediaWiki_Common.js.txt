@@ -23,14 +23,20 @@
  * the English converter and the 1.6 MB dictionary are all left out.
  */
 (function () {
+  // Which page holds the bundle. Site-wide: "MediaWiki:Avatarian.js".
+  // To TEST from your own account first, put the bundle at a personal
+  // JS subpage — e.g. "User:YourName/Avatarian.js" — and set this to that
+  // in your Special:MyPage/common.js before touching MediaWiki:Common.js.
+  var BUNDLE_PAGE = "MediaWiki:Avatarian.js";
+
   function boot() {
     // Only load the renderer on pages that use it.
     if (!document.querySelector("span.avatarian-word")) return;
     // Fetch the bundle from THIS wiki via action=raw — no outside server.
     // wgScript is the wiki's index.php entry point, so the URL is
     // wiki-relative and works on any MediaWiki/Fandom install.
-    var url = mw.config.get("wgScript") +
-      "?title=MediaWiki:Avatarian.js&action=raw&ctype=text/javascript";
+    var url = mw.config.get("wgScript") + "?title=" +
+      encodeURIComponent(BUNDLE_PAGE) + "&action=raw&ctype=text/javascript";
     mw.loader.load(url);
   }
 

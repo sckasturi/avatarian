@@ -93,9 +93,10 @@ wiki/            <- paste these into the Fandom wiki, once. SELF-HOSTED:
                     the whole renderer lives on the wiki, no outside server.
   Template_Avatarian.wiki       wikitext for {{Avatarian|k uh t ah r uh|Katara}}
   MediaWiki_Common.js.txt       tiny loader: pulls the bundle from THIS wiki
-  MediaWiki_Avatarian.js.txt    generated bundle (all the JS in one file)
+  MediaWiki_Avatarian.js.txt    generated bundle (~60 KB, all the JS in one file)
   gadget.js                     source for the render step (bundled in)
   MediaWiki_Common.css.txt      sizing/positioning for the glyphs
+  TESTING.md                    how to test on a personal account first
 
 ```
 
@@ -675,22 +676,17 @@ manifest is: `fetch()` is CORS-blocked on `file://`. The index is built
 lazily on the first word converted — ~60 ms once, then ~0.0002 ms a
 lookup — so a visitor who never converts anything never pays for it.
 
-**The wiki gadget does not load it.** 1.6 MB on every article that uses
-`{{Avatarian}}` is not a reasonable trade; the template's **sounds**
-parameter is the answer there — spell the word yourself and no dictionary
-is needed. It *does* load the corpus, which is a few KB and is the layer
-the wiki most needs — an article writing "Appa" should write it the way
-canon does.
+**The wiki gadget loads none of the lookup chain.** The `{{Avatarian}}`
+template takes the word already spelled in **sounds**, so the wiki never
+turns English into IPA at all — no dictionary, no corpus, no `EXCEPTIONS`,
+no rules. That is why its bundle is ~60 KB: only the glyphs and the code
+that draws them (see "Hooking up the wiki"). You get the sounds from the
+translator — type the word, copy what appears in its Sounds box — and
+paste them into the template.
 
-So on the wiki the chain is corpus → `EXCEPTIONS` → rules, with the
-dictionary layer missing. `EXCEPTIONS` is what covers the Avatar
-vocabulary there (`waterbender`, `Kyoshi`, `Omashu`) — extend it for
-anything that comes out wrong, remembering that a word somebody has *seen
-written* belongs in the corpus instead, which the gadget does load.
-
-The template also accepts an explicit `ipa=` parameter for exactly this
-reason — use it whenever you already know the correct pronunciation and
-don't want to rely on the guesser.
+`EXCEPTIONS`, the corpus and the dictionary all still matter, but on the
+**translator**, which is where English becomes sounds in the first place.
+The wiki just draws exactly what you hand it.
 
 ## Known limitations (v1)
 
@@ -699,7 +695,7 @@ don't want to rely on the guesser.
 - G2P is rule-based, not dictionary-grade. It now handles the full canon
   sentence correctly (`katara please do not be mad` →
   /k ə t ɑ r ə/ /p l i z/ /d u/ /n ɑ t/ /b i/ /m æ d/), but unusual words
-  and names still need `ipa=` or an EXCEPTIONS entry.
+  and names still need a hand-edit in the Sounds box or an EXCEPTIONS entry.
 - ~~Unstressed-vowel reduction isn't modelled.~~ Fixed by the bundled
   dictionary, which reads CMU's stress marks — see above. "metalbending"
   now comes out /m ɛ t ə l .../, and is in the corpus besides.
