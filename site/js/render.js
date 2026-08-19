@@ -205,16 +205,14 @@ const UNREADABLE = "*";
  * exempt `?` precisely because it has no glyph, so giving it one would
  * make them contradict themselves.
  *
- * It borrows the script's geometry — 100x100 box, square caps, miter
- * joins — so it sits in a word without looking pasted in, but the dashed
- * frame belongs to no letter in the alphabet and is meant to read as "a
- * glyph is here and nobody knows which" at a glance.
+ * A six-pointed asterisk in the script's geometry — 100x100 box, square
+ * caps, miter joins — so it sits in a word without looking pasted in, and
+ * reads as "a glyph is here and nobody knows which" on its own. (It once
+ * carried a dashed frame too; removed as visual noise.)
  */
 const UNREADABLE_SVG =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"'
   + ' stroke="currentColor" stroke-linecap="square" stroke-linejoin="miter">'
-  + '<rect x="7" y="7" width="86" height="86" stroke-width="4"'
-  + ' stroke-dasharray="11 9" opacity="0.75"/>'
   // A six-pointed asterisk, matching the `*` you type. It was a question
   // mark until `?` became the punctuation and `*` took this job over —
   // a box holding the wrong character is worse than no character.

@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Corpus</title>
-<link rel="stylesheet" href="css/blocks.css?v=29" />
-<link rel="stylesheet" href="css/style.css?v=29" />
+<link rel="stylesheet" href="css/blocks.css?v=30" />
+<link rel="stylesheet" href="css/style.css?v=30" />
 <style>
   /* Corpus page only. Everything structural is in style.css / blocks.css;
      this is the grid of words and its controls. */
@@ -53,7 +53,8 @@
   /* The source preview that appears on hover/focus — a floating panel so
      it is never clipped by a card edge or the grid. */
   #pop {
-    position: fixed; z-index: 50; display: none; max-width: 300px;
+    position: fixed; z-index: 50; display: none; width: 280px;
+    max-height: min(72vh, 540px); overflow-y: auto;
     background: var(--surface); border: 1px solid var(--line);
     border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 11px;
     text-align: left;
@@ -65,7 +66,7 @@
     margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line);
   }
   #pop img {
-    width: 132px; height: 132px; object-fit: cover; flex: 0 0 auto;
+    width: 88px; height: 88px; object-fit: cover; flex: 0 0 auto;
     border-radius: 6px; border: 1px solid var(--line);
     display: block; background: var(--hover);
   }
@@ -87,12 +88,11 @@
     text-transform: uppercase; color: var(--accent);
     border: 1px solid var(--accent); border-radius: 999px; padding: 1px 7px;
   }
-  /* A contested word just flags that it has other spellings; the hover
-     preview is where you see how each source actually drew it. */
-  .alt-note { color: var(--muted-2); font-size: 0.72rem; font-style: italic;
-    margin-top: 2px; }
+  /* A contested word flags its other spellings inline in the meta line;
+     the hover preview is where you see how each source actually drew it. */
+  .word-meta .alt-flag { color: var(--accent); }
   /* The spelling a given source used, drawn small, inside the preview. */
-  #pop .pop-spelling { --av-size: 24px; margin: 5px 0 2px; }
+  #pop .pop-spelling { --av-size: 24px; margin: 4px 0 2px; }
   .empty { color: var(--muted); margin-top: 24px; }
 </style>
 </head>
@@ -135,11 +135,11 @@ the sources disagree on the spelling, and the most-attested one is shown.</p>
   <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=29"></script>
+<script src="js/manifest.js?v=30"></script>
 <!-- The corpus itself. Already loaded on every page (it tops the lookup
      chain in g2p.js); here it is the whole content. -->
-<script src="js/corpus.js?v=29"></script>
-<script src="js/render.js?v=29"></script>
+<script src="js/corpus.js?v=30"></script>
+<script src="js/render.js?v=30"></script>
 <script>
 "use strict";
 
@@ -362,7 +362,16 @@ function card(w) {
   meta.className = "word-meta";
   const times = w.count === 1 ? "seen once" : `seen ${w.count}×`;
   const nSrc = allSourcesOf(w).length;
-  meta.textContent = nSrc === 1 ? times : `${times} · ${nSrc} sources`;
+  meta.append(times);
+  if (w.contested) {
+    meta.append(" · ");
+    const flag = document.createElement("span");
+    flag.className = "alt-flag";
+    flag.textContent = "alternate spellings";
+    meta.appendChild(flag);
+  } else if (nSrc > 1) {
+    meta.append(` · ${nSrc} sources`);
+  }
   el.appendChild(meta);
 
   if (w.confidence && w.confidence !== "certain") {
@@ -370,13 +379,6 @@ function card(w) {
     t.className = "tag";
     t.textContent = w.confidence;
     el.appendChild(t);
-  }
-
-  if (w.contested) {
-    const note = document.createElement("div");
-    note.className = "alt-note";
-    note.textContent = "alternate spellings";
-    el.appendChild(note);
   }
 
   el.addEventListener("mouseenter", () => showPop(el, w));
