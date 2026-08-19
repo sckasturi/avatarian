@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Corpus</title>
-<link rel="stylesheet" href="css/blocks.css?v=28" />
-<link rel="stylesheet" href="css/style.css?v=28" />
+<link rel="stylesheet" href="css/blocks.css?v=29" />
+<link rel="stylesheet" href="css/style.css?v=29" />
 <style>
   /* Corpus page only. Everything structural is in style.css / blocks.css;
      this is the grid of words and its controls. */
@@ -34,9 +34,15 @@
     border-radius: 10px; padding: 16px 12px 12px; text-align: center;
     display: flex; flex-direction: column; align-items: center; gap: 8px;
   }
-  .word-card .avatarian-word { --av-size: 44px; margin: 0; }
-  .word-card .draw { min-height: calc(44px * 1.8); display: flex;
-    align-items: center; justify-content: center; }
+  /* Long words wrap to the next line instead of overflowing the card —
+     Avatarian runs left to right, so wrapping reads like any script. */
+  .word-card .avatarian-word {
+    --av-size: 40px; margin: 0; max-width: 100%;
+    flex-wrap: wrap; justify-content: center; align-content: flex-start;
+    row-gap: 6px;
+  }
+  .word-card .draw { min-height: calc(40px * 1.8); display: flex;
+    align-items: center; justify-content: center; width: 100%; }
   /* B4 (decided): a line under attested words. Everything here is
      attested, so this doubles as the legend for the mark the translator
      uses. */
@@ -94,11 +100,11 @@ sources disagree on the spelling, and the most-attested one is shown.</p>
   <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=28"></script>
+<script src="js/manifest.js?v=29"></script>
 <!-- The corpus itself. Already loaded on every page (it tops the lookup
      chain in g2p.js); here it is the whole content. -->
-<script src="js/corpus.js?v=28"></script>
-<script src="js/render.js?v=28"></script>
+<script src="js/corpus.js?v=29"></script>
+<script src="js/render.js?v=29"></script>
 <script>
 "use strict";
 
@@ -153,6 +159,25 @@ function sourceTitle(id) {
   return bits.join(" — ") || id;
 }
 
+// Where clicking a source takes you: the original post if the source
+// recorded a URL, otherwise the reference image the corpus was read off
+// (shipped under site/sources/). Null if there is nothing to open.
+function sourceHref(id) {
+  const s = SOURCES[id] || {};
+  if (s.where && /^https?:\/\//.test(s.where)) return s.where;
+  if (s.image) return "sources/" + encodeURIComponent(s.image);
+  return null;
+}
+
+function sourceEl(id) {
+  const href = sourceHref(id);
+  const el = document.createElement(href ? "a" : "span");
+  el.textContent = id;
+  el.title = sourceTitle(id);
+  if (href) { el.href = href; el.target = "_blank"; el.rel = "noopener"; }
+  return el;
+}
+
 // Populate the source filter, each with how many words cite it.
 (function fillSourceFilter() {
   const sel = document.getElementById("sourceFilter");
@@ -194,12 +219,11 @@ function card(w) {
   const meta = document.createElement("div");
   meta.className = "word-meta";
   const times = w.count === 1 ? "seen once" : `seen ${w.count}×`;
-  const srcs = (w.sources || []);
-  const srcText = srcs.length === 1
-    ? srcs[0]
-    : `${srcs.length} sources`;
-  meta.textContent = `${times} · ${srcText}`;
-  meta.title = srcs.map(sourceTitle).join("\n");
+  meta.append(times + " · ");
+  allSourcesOf(w).forEach((id, i) => {
+    if (i) meta.append(", ");
+    meta.appendChild(sourceEl(id));
+  });
   el.appendChild(meta);
 
   if (w.confidence && w.confidence !== "certain") {
