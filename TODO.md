@@ -530,9 +530,10 @@ has a **COLUMNS** control (beside the vowel row toggle, shown only for
 catalogue grid) and `render.js` (the mark span's aspect-ratio comes off
 its viewBox). `check_geom` covers 2- and 3-wide marks (363 cases).
 
-**Still open: the `?`'s actual width.** All four shipped marks are still
-1 column. The `?` wants 2 or 3 — draw it in the designer (open `?`, set
-COLUMNS to 2 or 3, draw, ship it) to decide.
+All four marks were then **redrawn on the lattice and shipped** (they now
+have designs in `designs/`). The `?` was the reason for this item: it is a
+**2-column** `mark_full` (52×164), decided by drawing it. period, comma
+and exclamation stayed one column.
 
 ### Glyphs
 
