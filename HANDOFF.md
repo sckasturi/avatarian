@@ -55,16 +55,16 @@ step; reads `window.AVATARIAN_CORPUS`. Light and dark verified.
 showing everything). Word chips link to `corpus.html?q=<word>`, and a
 `Sources →` nav link was added to the corpus page.
 
-### A discrepancy the catalogue surfaced — for the user, not fixed
+### A discrepancy the catalogue surfaced — and fixed
 
-`academy` cites `instagram-3.3` in `attested.json`, but that poster's
-transcription contains no "academy" — the word is in the **toph-letter**
-("metalbending academy"). It looks like a mis-attributed source. **Not
-touched**: it is a reading/data question for the workbench, the corpus
-files may be in flux from a parallel session, and surfacing exactly this
-kind of thing is part of what a source-catalogue page is *for*. Worth a
-look next time the corpus is open — is `academy`'s source wrong, or does
-the `what` transcription just not list every word on the image?
+`academy` cited `instagram-3.3` in `attested.json`, but that poster
+contains no "academy" — the word is in the **toph-letter** ("metalbending
+academy"). The catalogue made the mismatch obvious (a word listed under a
+source whose transcription doesn't hold it); the user confirmed the
+mis-attribution, so its `source` was changed to `toph-letter` and
+`corpus.js` rebuilt (`python3 tools/build_corpus.py`, suite still 57/0).
+Surfacing exactly this kind of thing is part of what a source-catalogue
+page is *for* — worth a scan of the other cards for the same pattern.
 
 ### Traps / notes
 
@@ -86,8 +86,6 @@ Items 21 and 7 close the display backlog. What is genuinely open:
    **deliberately left** — don't re-propose the clip or the pentagon.
 2. **Items 34/36** — morpheme boundaries and the hand-rolled syllabifier,
    both waiting on more attested compounds / a rainy day.
-3. The `academy`/`instagram-3.3` source question above, if the corpus is
-   being edited anyway.
 
 Suite is **57 pass / 0 fail**. `main == origin/main`.
 

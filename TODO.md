@@ -691,13 +691,12 @@ Cross-linked with the corpus page both ways: word chips link to
 Reads `window.AVATARIAN_CORPUS` — no server, no build step. Light/dark
 verified.
 
-**A discrepancy it surfaced, left for the user:** `academy` cites
-`instagram-3.3` in `attested.json`, but that poster's transcription has
-no "academy" in it (the word is in the toph-letter, "metalbending
-academy"). Looks like a mis-attributed source. Not touched — it is a
-reading/data question for the workbench, not a code one, and the corpus
-files may be in flux. The catalogue makes this kind of thing visible,
-which is part of its point.
+**A discrepancy it surfaced, and fixed:** `academy` had cited
+`instagram-3.3` in `attested.json`, but that poster has no "academy" —
+the word is in the toph-letter ("metalbending academy"). The user
+confirmed the mis-attribution; its `source` was corrected to
+`toph-letter` and `corpus.js` rebuilt. The catalogue making this kind of
+thing visible is part of its point.
 
 ~~**6. Consolidate credits.**~~ **Done in session 7.** `AVATARIAN.md`
 § Credit is the one place they are maintained; `README.md` and

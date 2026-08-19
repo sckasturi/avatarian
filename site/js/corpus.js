@@ -2790,10 +2790,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "instagram-3.3"
+        "toph-letter"
       ],
       "confidence": "certain",
-      "source": "instagram-3.3"
+      "source": "toph-letter"
     },
     "always": {
       "ipa": [
