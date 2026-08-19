@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Avatarian Sources</title>
+<link rel="stylesheet" href="css/blocks.css?v=32" />
+<link rel="stylesheet" href="css/style.css?v=32" />
+<style>
+  /* Sources page only. The inverse of corpus.html: that page is
+     word-primary (a grid of words, each pointing back to its sources);
+     this one is source-primary (a card per reference image, listing the
+     words read off it). Everything structural is in style.css/blocks.css. */
+  .backlink { font-weight: bold; font-size: 0.95rem; }
+  .corpus-controls {
+    display: flex; gap: 10px 14px; flex-wrap: wrap; align-items: center;
+    margin: 18px 0 2px;
+  }
+  .corpus-controls input[type="search"] {
+    font: inherit; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+    min-width: 12rem; flex: 1 1 12rem;
+  }
+  .corpus-count { color: var(--muted); font-size: 0.9rem; }
+  .legend { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
+
+  .source-list { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+  .source-card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 16px; display: flex; gap: 16px;
+    align-items: flex-start;
+  }
+  .source-card[hidden] { display: none; }
+  /* The reference image. Links to the original post, or to the full image
+     if there is no post URL. */
+  .source-thumb {
+    flex: 0 0 auto; display: block; line-height: 0;
+    width: 132px; height: 132px;
+  }
+  .source-thumb img {
+    width: 132px; height: 132px; object-fit: cover;
+    border-radius: 8px; border: 1px solid var(--line); background: var(--hover);
+  }
+  .source-thumb:hover img { border-color: var(--accent); }
+  .source-noimg {
+    width: 132px; height: 132px; border-radius: 8px;
+    border: 1px dashed var(--line); background: var(--hover);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted-2); font-size: 0.78rem; text-align: center; padding: 8px;
+  }
+  .source-body { flex: 1 1 auto; min-width: 0; }
+  .source-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; }
+  .source-id { font-weight: 700; font-size: 1.02rem; }
+  .source-where a { color: var(--accent); font-size: 0.85rem; }
+  .source-where span { color: var(--muted-2); font-size: 0.85rem; }
+  .source-count { color: var(--muted); font-size: 0.82rem; margin-left: auto; white-space: nowrap; }
+  /* The transcription the corpus was read off. Italic so it reads as a
+     quotation of the image rather than as the page's own prose. */
+  .source-what {
+    color: var(--muted); font-size: 0.82rem; font-style: italic;
+    margin: 6px 0 12px; line-height: 1.5;
+  }
+  /* The words themselves, each drawn in the spelling THIS source used —
+     which is the thing the corpus page hides except in the contested
+     hover. A chip links to that word on the corpus page. */
+  .source-words { display: flex; flex-wrap: wrap; gap: 10px; }
+  .source-word {
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    text-decoration: none; color: inherit;
+    border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px 7px;
+    background: var(--surface); transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .source-word:hover, .source-word:focus-visible {
+    border-color: var(--accent); box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    outline: none;
+  }
+  .source-word .avatarian-word { --av-size: 26px; margin: 0; }
+  .source-word .sw-en { font-size: 0.8rem; color: var(--ink); }
+  /* A word this source only contributed a losing spelling of — the corpus
+     draws a different, more-attested one. Flagged so the drawn glyph isn't
+     mistaken for the canonical spelling. */
+  .source-word .sw-en.is-alt { color: var(--accent); }
+  .source-word .sw-en.is-alt::after { content: " ∗"; }
+  .source-empty { color: var(--muted-2); font-size: 0.82rem; font-style: italic; }
+  .empty { color: var(--muted); margin-top: 24px; }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Avatarian Sources</h1>
+  <a class="backlink" href="corpus.html">← Corpus</a>
+  <span class="spacer"></span>
+  <button class="theme-toggle" id="themeToggle" type="button"></button>
+</div>
+
+<p class="subtitle">Every reference image the corpus was read from — the
+letters, posters and stamps where Avatarian actually appears. Each card
+shows the source, what it says, and every word <strong>read off it</strong>,
+drawn in the spelling <em>that source</em> used.</p>
+
+<div class="corpus-controls">
+  <input type="search" id="search" placeholder="Filter sources…"
+         autocomplete="off" aria-label="Filter sources" />
+  <span class="corpus-count" id="count"></span>
+</div>
+<p class="legend">Click a word to see it on the corpus page. A word marked
+<span style="color:var(--accent)">∗</span> is one this source spells
+differently from the corpus's most-attested form.</p>
+
+<div class="source-list" id="list"></div>
+<p class="empty" id="empty" hidden>No sources match.</p>
+
+<footer>
+  <p class="footer-by">
+    Built by
+    <a href="https://avatar.fandom.com/wiki/User:TechFilmer"
+       target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
+  </p>
+  <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
+</footer>
+
+<script src="js/manifest.js?v=32"></script>
+<script src="js/corpus.js?v=32"></script>
+<script src="js/render.js?v=32"></script>
+<script>
+"use strict";
+
+// --- theme toggle (same behaviour as the other two pages) ---------------
+const themeBtn = document.getElementById("themeToggle");
+const THEME_LABELS = { auto: "◐ Theme: auto", light: "☀ Theme: light", dark: "☾ Theme: dark" };
+const THEME_ORDER = ["auto", "light", "dark"];
+function applyTheme(mode) {
+  if (mode === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", mode);
+  themeBtn.textContent = THEME_LABELS[mode];
+  themeBtn.setAttribute("aria-label", "Colour theme: " + mode + ". Click to change.");
+}
+let themeMode = localStorage.getItem("avatarian-theme") || "auto";
+if (!THEME_ORDER.includes(themeMode)) themeMode = "auto";
+applyTheme(themeMode);
+themeBtn.addEventListener("click", () => {
+  themeMode = THEME_ORDER[(THEME_ORDER.indexOf(themeMode) + 1) % THEME_ORDER.length];
+  if (themeMode === "auto") localStorage.removeItem("avatarian-theme");
+  else localStorage.setItem("avatarian-theme", themeMode);
+  applyTheme(themeMode);
+});
+
+// --- the corpus ---------------------------------------------------------
+const CORPUS = window.AVATARIAN_CORPUS || { words: {}, sources: {} };
+const SOURCES = CORPUS.sources || {};
+
+// Where clicking a source takes you: the original post if it recorded a
+// URL, otherwise the reference image itself (shipped under site/sources/).
+// Same rule as corpus.html so the two pages agree on what a source links to.
+function sourceHref(id) {
+  const s = SOURCES[id] || {};
+  if (s.where && /^https?:\/\//.test(s.where)) return s.where;
+  if (s.image) return "sources/" + encodeURIComponent(s.image);
+  return null;
+}
+
+// Every source that cites a word — the winning spelling's sources, plus
+// any a contested alternate came from.
+function allSourcesOf(w) {
+  const set = new Set(w.sources || []);
+  for (const a of (w.alternates || [])) for (const s of (a.sources || [])) set.add(s);
+  return [...set];
+}
+
+// The spelling a particular source contributed to a word. For an
+// uncontested word that is just w.ipa; for a contested one the source may
+// have written a losing alternate, and showing what IT wrote — rather than
+// the corpus's winner — is the whole point of a per-source view.
+function spellingInSource(w, id) {
+  if ((w.sources || []).includes(id)) return { ipa: w.ipa, alt: false };
+  for (const a of (w.alternates || [])) {
+    if ((a.sources || []).includes(id)) return { ipa: a.ipa, alt: true };
+  }
+  return { ipa: w.ipa, alt: false };
+}
+
+// Invert the corpus: source id -> the words read off it. A word can carry
+// a `gloss` distinct from its key; label by that where present.
+const bySource = {};
+for (const id of Object.keys(SOURCES)) bySource[id] = [];
+for (const [key, w] of Object.entries(CORPUS.words || {})) {
+  const label = w.gloss || key;
+  for (const id of allSourcesOf(w)) {
+    (bySource[id] || (bySource[id] = [])).push({ key, label, ...spellingInSource(w, id) });
+  }
+}
+for (const id of Object.keys(bySource)) {
+  bySource[id].sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
+}
+
+// Richest sources first — the letters and busy posters lead, matching the
+// order the corpus page's source dropdown uses.
+const ORDER = Object.keys(SOURCES).sort(
+  (a, b) => bySource[b].length - bySource[a].length || a.localeCompare(b)
+);
+
+// --- render -------------------------------------------------------------
+function sourceCard(id) {
+  const s = SOURCES[id] || {};
+  const words = bySource[id] || [];
+
+  const el = document.createElement("div");
+  el.className = "source-card";
+  // Filter target: the id, the venue/URL, and the transcription text, so
+  // searching "festival" or "instagram" or a venue name all work.
+  el.dataset.hay = (id + " " + (s.where || "") + " " + (s.what || "")).toLowerCase();
+
+  const href = sourceHref(id);
+  if (s.image) {
+    const a = document.createElement("a");
+    a.className = "source-thumb";
+    if (href) { a.href = href; a.target = "_blank"; a.rel = "noopener"; }
+    const img = document.createElement("img");
+    img.src = "sources/" + encodeURIComponent(s.image);
+    img.alt = "Reference image: " + id;
+    img.loading = "lazy";
+    a.appendChild(img);
+    el.appendChild(a);
+  } else {
+    const ph = document.createElement("div");
+    ph.className = "source-noimg";
+    ph.textContent = "no image";
+    el.appendChild(ph);
+  }
+
+  const body = document.createElement("div");
+  body.className = "source-body";
+
+  const head = document.createElement("div");
+  head.className = "source-head";
+  const idEl = document.createElement("span");
+  idEl.className = "source-id";
+  idEl.textContent = id;
+  head.appendChild(idEl);
+
+  if (s.where) {
+    const where = document.createElement("span");
+    where.className = "source-where";
+    if (/^https?:\/\//.test(s.where)) {
+      const a = document.createElement("a");
+      a.href = s.where; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = "original post ↗";
+      where.appendChild(a);
+    } else {
+      const sp = document.createElement("span");
+      sp.textContent = s.where;
+      where.appendChild(sp);
+    }
+    head.appendChild(where);
+  }
+
+  const cnt = document.createElement("span");
+  cnt.className = "source-count";
+  cnt.textContent = words.length === 1 ? "1 word" : words.length + " words";
+  head.appendChild(cnt);
+  body.appendChild(head);
+
+  if (s.what) {
+    const what = document.createElement("p");
+    what.className = "source-what";
+    what.textContent = "“" + s.what + "”";
+    body.appendChild(what);
+  }
+
+  if (words.length) {
+    const grid = document.createElement("div");
+    grid.className = "source-words";
+    for (const w of words) {
+      const chip = document.createElement("a");
+      chip.className = "source-word";
+      chip.href = "corpus.html?q=" + encodeURIComponent(w.label);
+      chip.title = w.alt
+        ? `“${w.label}” — this source's spelling differs from the corpus's most-attested one`
+        : w.label;
+
+      const drawn = document.createElement("div");
+      drawn.className = "avatarian-word";
+      renderAvatarian(w.ipa, drawn);
+      chip.appendChild(drawn);
+
+      const en = document.createElement("span");
+      en.className = "sw-en" + (w.alt ? " is-alt" : "");
+      en.textContent = w.label;
+      chip.appendChild(en);
+
+      grid.appendChild(chip);
+    }
+    body.appendChild(grid);
+  } else {
+    const none = document.createElement("p");
+    none.className = "source-empty";
+    none.textContent = "No words catalogued from this source yet.";
+    body.appendChild(none);
+  }
+
+  el.appendChild(body);
+  return el;
+}
+
+const list = document.getElementById("list");
+const frag = document.createDocumentFragment();
+ORDER.forEach(id => frag.appendChild(sourceCard(id)));
+list.appendChild(frag);
+
+// --- filtering ----------------------------------------------------------
+const search = document.getElementById("search");
+const countEl = document.getElementById("count");
+const emptyEl = document.getElementById("empty");
+const cards = [...list.children];
+
+function applyFilter() {
+  const q = search.value.trim().toLowerCase();
+  let shown = 0;
+  for (const el of cards) {
+    const show = !q || el.dataset.hay.includes(q);
+    el.hidden = !show;
+    if (show) shown++;
+  }
+  emptyEl.hidden = shown > 0;
+  const total = cards.length;
+  countEl.textContent = shown === total
+    ? `${total} sources`
+    : `${shown} of ${total} sources`;
+}
+search.addEventListener("input", applyFilter);
+applyFilter();
+</script>
+</body>
+</html>

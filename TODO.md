@@ -131,20 +131,25 @@ their count — the reference material supplies IPA *alongside* Avatarian
 for all four elements, which is what proved the ɜ/ə merge, and none of
 that evidence is in the corpus yet.
 
-**21. Show confidence in the UI.** Plumbing done in session 8;
-`lookupWord()` returns `{ipa, tier, entry}` and `sentenceToIPA` carries
-it onto every word. **B4 is now decided: underline attested words, leave
-the rest unmarked** — so the display is unblocked. What is left is the
-build: underline the `attested` tier wherever words render (the main
-output and the item-31 corpus page), and nothing on `derived`/`guessed`.
+~~**21. Show confidence in the UI.**~~ **Done in session 13.** B4's mark
+— an underline under an attested word, nothing on the rest — now shows in
+the translator output as well as the corpus page. `corpus.html`
+(`.word-en`) was the working example and its legend; the same mark is a
+new `.cap-en.is-attested` rule in `style.css`, applied in `renderWords`.
 
-**One narrow slice of it shipped**: a word whose sources *disagree* is
-marked `contested` on the site, with the counts and sources in its
-tooltip. That needed no B4 decision because it is rare by construction —
-it marks the handful genuinely in dispute rather than the whole page.
-Note it is looked up in `renderWords` rather than read off `w.entry`,
-because `draw()` renders from the sounds box and those word objects carry
-no corpus entry.
+The signal is the word's presence in the corpus, read off the caption
+rather than off `w.tier` — `draw()` always renders from the SOUNDS BOX,
+so these word objects come from `soundTextToWords` and carry no tier or
+entry. That is the same reason the `contested` slice already looked words
+up by caption, so the two now share one lookup, lifted above the caption:
+the underline marks every attested word, the badge the disputed handful.
+They coexist (`the`/`come` render underlined + `contested`; `cat` plain).
+Verified in-browser; cache-bust `v=31 → v=32`.
+
+**The `contested` slice shipped earlier (session 8)** and is unchanged: a
+word whose sources *disagree* gets a `contested` badge with counts and
+sources in its tooltip. It needed no B4 decision because it is rare by
+construction — the handful genuinely in dispute, not the whole page.
 
 ~~**22. Make the corpus win in the lookup chain.**~~ **Done in session
 8.** `corpus/attested.json` → `tools/build_corpus.py` → `site/js/corpus.js`,

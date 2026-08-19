@@ -128,6 +128,7 @@
 <div class="page-head">
   <h1>Avatarian Corpus</h1>
   <a class="backlink" href="index.html">← Translator</a>
+  <a class="backlink" href="sources.html">Sources →</a>
   <span class="spacer"></span>
   <button class="theme-toggle" id="themeToggle" type="button"></button>
 </div>
@@ -532,6 +533,22 @@ function applyFilters() {
 }
 search.addEventListener("input", applyFilters);
 sourceFilter.addEventListener("change", applyFilters);
+
+// Deep links from the source catalogue (sources.html): `?source=<id>`
+// opens the grid filtered to one source, `?q=<word>` to one word. Applied
+// before the first render so arriving here already shows the filtered set.
+// `?source` only takes if that id is a real option, so a stale link falls
+// back to showing everything rather than an empty grid.
+(function fromQuery() {
+  const p = new URLSearchParams(location.search);
+  const src = p.get("source");
+  if (src && [...sourceFilter.options].some(o => o.value === src)) {
+    sourceFilter.value = src;
+  }
+  const q = p.get("q");
+  if (q) search.value = q;
+})();
+
 applyFilters();
 </script>
 </body>
