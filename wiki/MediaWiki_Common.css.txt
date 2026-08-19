@@ -36,6 +36,14 @@
 .avatarian-slot-bottom { margin-top: -0.225em; }
 .avatarian-glyph { display: inline-block; line-height: 0; color: currentColor; }
 .avatarian-glyph svg { display: block; width: 100%; height: 100%; }
+/* Scaled down to the font size, the default stroke (9 of 100 lattice units)
+   renders around a pixel wide and reads faint. Thicken it — the lattice is
+   the same scale for letters and marks (80 units per em), so one value
+   fits both. 13 is a readable balance; raise for bolder, but too high and
+   adjacent strokes start to merge. Wiki only; the standalone site draws
+   glyphs large enough that 9 is fine. */
+.avatarian-glyph svg,
+.avatarian-mark svg { stroke-width: 13; }
 .avatarian-glyph.avatarian-consonant { width: 1.25em; height: 1.25em; }
 .avatarian-glyph.avatarian-null_consonant { width: 1.25em; height: 1.25em; }
 .avatarian-glyph.avatarian-vowel { width: 1.25em; height: 1em; }

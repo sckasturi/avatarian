@@ -46,20 +46,43 @@
 
       var caption = label || words.map(function (w) { return w.word; })
         .filter(Boolean).join(" ");
+      var ipa = cleanIpa(ipaSeq);
       renderAvatarian(ipaSeq, span);
       // One tooltip for the WHOLE word (like the {{Chinese}} template), not
       // one per glyph. render.js puts a title on each glyph; strip those so
       // the word-level title below shows on hover anywhere in the word.
       Array.prototype.forEach.call(span.querySelectorAll("[title]"),
         function (el) { el.removeAttribute("title"); });
-      span.title = (caption ? caption + " " : "") + "/" + cleanIpa(ipaSeq) + "/";
+      span.title = (caption ? caption + " " : "") + "/" + ipa + "/";
+      // The glyphs are inline SVG and copy as nothing, so stash the IPA for
+      // the copy handler below to substitute when this word is selected.
+      span.setAttribute("data-avatarian-ipa", "/" + ipa + "/");
       span.setAttribute("data-avatarian-done", "1");
     });
+  }
+
+  // Copy: when a selection includes rendered words, put their IPA into the
+  // clipboard text — the SVG glyphs themselves copy as nothing, so without
+  // this you'd get blanks where the Avatarian was. Selections with no
+  // Avatarian in them are left completely alone.
+  function onCopy(e) {
+    var sel = window.getSelection();
+    if (!sel || !sel.rangeCount || sel.isCollapsed) return;
+    var frag = sel.getRangeAt(0).cloneContents();
+    if (!frag.querySelector || !frag.querySelector("span.avatarian-word")) return;
+    Array.prototype.forEach.call(frag.querySelectorAll("span.avatarian-word"),
+      function (w) {
+        var ipa = w.getAttribute("data-avatarian-ipa") || "";
+        w.parentNode.replaceChild(document.createTextNode(ipa), w);
+      });
+    (e.clipboardData || window.clipboardData).setData("text/plain", frag.textContent);
+    e.preventDefault();
   }
 
   // The loader in Common.js only fetches this bundle once a span is on the
   // page and the DOM is ready, so it can run straight away; the guard is
   // belt-and-suspenders.
+  document.addEventListener("copy", onCopy);
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", renderAllSpans);
   } else {
