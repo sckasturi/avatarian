@@ -428,29 +428,33 @@ bucketing the lexicon by pronunciation length is what fixed it.
 
 ~~**31. A public corpus page on the site.**~~ **Built, session 12** —
 `site/corpus.html`, a read-only second page linked from the translator
-("Corpus →", and "← Translator" back). Every attested word: its spelling
-drawn in real Avatarian, its display form, how many times and from how
-many sources it was seen, and — for the five contested words — the
-alternate spelling and an accent outline. A live text filter and a
-source filter (each source listed with its word count). It reads
-`window.AVATARIAN_CORPUS`, already on every page, so no server, no build
-step, nothing new to deploy. Theme toggle and light/dark verified.
+("Corpus →", and "← Translator" back). Every attested word, its spelling
+drawn in real Avatarian, on a card sized to the word (flex-wrap, so a
+long word gets a wider card and stays one line). A live text filter, a
+source filter, and B4's underline used as the page's own legend. It reads
+`window.AVATARIAN_CORPUS`, already on every page — no server, no build
+step. Light/dark verified.
 
-How the three open questions landed:
+It went through a long UX arc with the user; where it landed:
 
-- **B4's mark is here as the legend.** Every word is underlined
-  (attested), and the page says so — so it doubles as the key for the
-  underline the translator will use (item 21). Decided B4: a line under
-  attested words.
-- **The source filter is item 7 as a filter,** the option the item
-  itself offered. It counts every source that cites a word, winning
-  spelling or contested alternate, so a source that only lost a dispute
-  still surfaces its words. A standalone source-catalogue page (item 7
-  proper) is still open if wanted.
-- **Images stayed out.** `corpus/sources/` is gitignored provenance, so
-  the page cites sources by name, not thumbnail — still the licensing
-  call `.gitignore` defers. The word cards carry each source's
-  description in a tooltip, which is the most a name-only citation can do.
+- **Hover a word for its source(s)** (`#pop`, a fixed floating panel so a
+  card edge never clips it, capped height + scroll). Uncontested words
+  show each source's image and the text slice around the word, bolded.
+- **Contested words collapse to one row per distinct spelling** — the
+  glyph and count on the left, that spelling's sources as thumbnails on
+  the right — so `the` is two rows, not six. A **second hover** on a
+  thumbnail (`#pop2`) shows that source's name and snippet. "alternate
+  spellings" is flagged inline on the card's meta line.
+- **The source images are now published** (item 31's open question,
+  resolved by the user). `corpus/sources/` stays the workbench's dir;
+  `build_corpus.py` `sync_images()` copies them into `site/sources/`
+  (committed, served); the corpus page links each source to its post URL
+  or its image. See the `.gitignore` note.
+- **The source filter is item 7 as a filter** — it counts every source
+  that cites a word, winning spelling or losing alternate. A standalone
+  source-catalogue page (item 7 proper) is still open if wanted.
+- **B4 decided: a line under attested words.** The page is the working
+  example; applying the same mark in the translator output is item 21.
 
 ~~**16. Punctuation.**~~ **Rendering done.** `, . ? !` are written as
 themselves in the sounds box and drawn beside the word.
@@ -647,6 +651,12 @@ keep the current rendering** — the lines stay. Untouched by design, not
 forgotten; revisit only as part of the real fusion pass, and don't
 re-propose the clip without asking. (`help` is the mirror case — the line
 belongs to the top glyph poking down — and was never handled.)
+
+**/p/ was the third point-overshoot case and stays as-is.** Its diamond
+tip pokes into the neighbour like /s/'s did, but insetting a single
+vertex made a lopsided pentagon, and a compressed-symmetric-diamond
+version the user also disliked. Both were reverted. Don't re-propose
+either; if revisited, it needs a genuinely different idea.
 
 ### Docs and process
 

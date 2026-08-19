@@ -97,20 +97,96 @@ disagreeing — the site shrank, `AVATARIAN.md` §4 overlapped — so the work
 was to draw `please` both ways and let the user's measurement pick. The
 answer was overlap.)
 
+### Then B1 surfaced the cluster glyph rules
+
+Once C-C blocks overlapped, glyphs began colliding at the shared row, and
+the user validated the whole corpus against the art. The overlap itself
+was confirmed right; three sharp cases got per-cluster fixes in
+`render.js` (`clusterForm`), applied only when a glyph is in a C-C block:
+
+- **/s/**'s five-row caret point overshot the neighbour → its vertex
+  insets one row (`still`, `balance`).
+- **/z/** drops its two corner dots, which the overlap rode up into the
+  glyph above (`goods`, `trends`).
+- **/p/** was tried (the diamond's point insets) and **reverted** — a
+  single-vertex inset made a lopsided pentagon, and a compressed-diamond
+  version the user also rejected. Left as-is. Don't re-propose those.
+
+The **edge-line protrusions** (l/r/j/d/z strokes poking into an empty
+neighbour) the user chose to **leave** — a global clip fixed them but
+un-fused the good cases like `class`. Recorded under item 19.
+
+### /r/ and /l/ became one unbroken stroke
+
+The user had redesigned /r/ and /l/ (in a parallel session's uncommitted
+`build_glyphs.py`); each was drawn as separate `<path>` pieces whose
+square end-caps left a little tick where they met. Merged each into one
+continuous path (miter joins), rebuilt. **Trap:** that parallel session
+also had corpus and glyph edits in the working tree the whole time — see
+the collision note below.
+
+### Item 35 is done — the suite is 57/0
+
+The six failing tests broke because `appa`, `katara`, `fanny`, `of` all
+became attested. Fixed the way item 35 asked: checks that can drift read
+from the corpus (`appa`'s spelling/source via `entries(ctx)`), and
+derived-tier specimens moved to words the corpus will not attest
+(`bloodbending`, `though`). A main character was the wrong choice — it is
+exactly what kept getting attested.
+
+### Item 31 — the public corpus page (`site/corpus.html`)
+
+A read-only second page, linked both ways with the translator, showing
+every attested word drawn in real Avatarian. It reads the
+`window.AVATARIAN_CORPUS` already on every page, so it is one static file
+— no server, no build step. It went through a long UX arc with the user:
+
+- **Layout:** flex-wrap, each card sized to its word, so a long word gets
+  a wider card and stays on one line (not wrapped).
+- **Sources are now published.** `corpus/sources/*` was gitignored
+  provenance; the user made the licensing call to publish. Canonical copy
+  stays `corpus/sources/` (the workbench's dir); `build_corpus.py`'s
+  `sync_images()` copies them into `site/sources/` (committed, served),
+  and its image check accepts either. ~16 MB in the repo.
+- **Hover preview** (`#pop`): the source(s) a word came from. For
+  **contested** words it collapses to one row per distinct spelling —
+  glyph + count on the left, that spelling's sources as thumbnails on the
+  right — and a **second hover** on a thumbnail (`#pop2`) shows its name
+  and the text slice around the word, bolded.
+- Search (had to beat `.word-card`'s `display:flex` with
+  `.word-card[hidden]`), a source filter, B4's underline as the page's
+  own legend, "alternate spellings" flagged inline on contested cards.
+
+The unreadable **`*`** also lost its dashed frame and was enlarged to
+fill its slot (both site-wide in `render.js`).
+
+### A trap that ran the whole session
+
+**A parallel Claude session was editing the same repo** — corpus
+transcriptions (`attested.json`, `corpus.js`) and glyph redesigns
+(`build_glyphs.py`, `manifest.js`) sat uncommitted in the working tree
+throughout. Committing anything meant carefully staging only this
+session's files, and one rebuild swept the parallel session's r/l
+redesign into a commit (intended — the user said don't worry). If the
+working tree has changes you didn't make, they are probably the other
+session's. Stage by path, never `git add -A`.
+
 ### Where to start next time
 
-1. **Item 35**, the six failing tests. Session 12 re-pointed one of them
-   (`derivedLookup still uses everything below the corpus` → `bloodbending`,
-   in `EXCEPTIONS`, not in CMU, unlikely ever to be attested). That is the
-   shape the other five want. Note `EXCEPTIONS wins over the dictionary`
-   now has a *second* stale specimen: its line 56 reads `EXCEPTIONS["of"]`,
-   which no longer exists, so fixing line 54 alone turns an assertion
-   failure into a TypeError.
-2. **Item 34**, morpheme boundaries, if more compounds get transcribed.
-3. **Item 19**, stroke-level fusion — now the most visible thing left in
-   the block model, since B1 made C-C glyphs overlap but not interlock.
+Most of the backlog is now closed or parked (see `TODO.md`, refreshed
+this session). What is genuinely open:
 
-Suite unchanged at **51 pass / 6 fail** — the same six as session 11.
+1. **Item 21** — apply B4's underline in the *translator* output too. The
+   decision is made (underline attested words); it is just the build, and
+   the corpus page is the working example of the mark.
+2. **Item 7** — a standalone source-catalogue page. The corpus page's
+   source filter covers most of it; a per-source view is the rest.
+3. **Item 19** — stroke-level fusion, the real texture work, now the most
+   visible thing left in the block model.
+4. **Item 34/36** — morpheme boundaries and the hand-rolled syllabifier,
+   both waiting on more data / a rainy day.
+
+Suite is **57 pass / 0 fail** — the quarantine is gone.
 
 ---
 
