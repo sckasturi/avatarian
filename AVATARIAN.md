@@ -1,51 +1,48 @@
 # Avatarian — the script, in one place
 
-This is the reference for **Avatarian itself** — how the writing system
-works, everything the project currently knows about it, and everything it
-doesn't. It gathers what was scattered across `README.md` (architecture),
-`CONTEXT.md` (rules + open questions), and `HANDOFF.md` (session history)
-into one document about the script rather than the code.
+This is the reference for **Avatarian itself**: how the writing system
+works, and everything the project currently knows about it, stated in the
+present tense as one knowledgebase. Where the script is not yet fully
+determined, the open question is named (§13).
 
-- **The rules, stated once with no history** → §12 at the end of this file
 - **How the script was worked out, as an article** → `DECIPHERMENT.md`
 - **What still needs doing** → `TODO.md`
-- **Attested spellings, and the plan for a confirmed dictionary** → `CORPUS.md`
+- **Attested spellings — the confirmed dictionary** → `CORPUS.md`
 - **How the tool is built and deployed** → `README.md`
-- **Non-obvious code decisions and the running open questions** → `CONTEXT.md`
-- **What changed session to session** → `HANDOFF.md`
-- **The glyph design/lattice format** → `designs/README.md`
+- **Non-obvious code decisions** → `CONTEXT.md`
+- **The glyph design / lattice format** → `designs/README.md`
 
-When this document and the code disagree, the code wins — `tools/build_glyphs.py`
-is the single definition of the shipped glyph set, and `tools/glyphspec.py`
-is the authority on geometry. Treat the tables here as a readable snapshot,
-regenerated from those files.
+When this document and the code disagree, the code wins:
+`tools/build_glyphs.py` is the single definition of the shipped glyph
+set, and `tools/glyphspec.py` is the authority on geometry. Treat the
+tables here as a readable snapshot of those files.
 
 ---
 
 ## 1. What Avatarian is
 
-Avatarian is the **conscript** (constructed script) introduced for the new
-*Avatar: The Last Airbender* film. It is **phonetic**: it encodes IPA
+Avatarian is the **conscript** (constructed script) introduced for the
+new *Avatar: The Last Airbender* film. It is **phonetic**: it encodes IPA
 *sounds*, not English letters. "Katara" is written from its pronunciation
 /k ə t ɑ r ə/, and any spelling that sounds the same is written the same.
 
-Everything in this project's pipeline is IPA-first — English is only ever an
-input convenience that gets converted to IPA before anything is drawn.
+Everything in this project's pipeline is IPA-first; English is an input
+convenience that is converted to IPA before anything is drawn.
 
-This is a **community decipherment**, not official documentation. The reading
-of the script below is assembled from labelled writing samples and a
-hand-lettered key chart; the parts that are solid and the parts that are still
-guesses are both called out.
+This is a **community decipherment**, not official documentation. The
+reading below is assembled from labelled writing samples and a
+hand-lettered key chart. What is solid and what is still a guess are both
+called out.
 
 ### Credit
 
-**This is the one place credits are maintained.** They used to be
-duplicated in `README.md` and `CONTEXT.md`, which drifted; those now
-point here.
+**This is the one place credits are maintained.** The site footer carries
+the tool's own byline and the wiki files carry a one-line pointer back
+here; the decipherment credits live here and nowhere else, so do not
+re-add them to the site.
 
-Avatarian is a **community decipherment**. The reference material this
-project encodes — the key chart, the writing samples, the structural
-readings — comes from:
+The reference material this project encodes — the key chart, the writing
+samples, the structural readings — comes from:
 
 - **BokerBigBanana** on Avatar Wiki — <https://avatar.fandom.com/wiki/User:BokerBigBanana>
 - **u/DepressionDokkebi**, "Avatarian decipherment so far" — <https://www.reddit.com/r/TheLastAirbender/comments/1v4yalr/avatarian_decipherment_so_far/>
@@ -55,657 +52,103 @@ readings — comes from:
 <https://avatar.fandom.com/wiki/User:TechFilmer>.
 
 Pronunciations come from the **CMU Pronouncing Dictionary** (BSD-style
-licence) — <https://github.com/cmusphinx/cmudict>. See
-`tools/build_lexicon.py` for how it is mapped onto this project's
-phoneme set.
-
-The code renders that decipherment work; **the script itself is not this
-project's research.**
-
-#### The markdown files are the only copy
-
-The site footer and the wiki files used to carry the decipherment credits
-too. They were **stripped on purpose** — the credits live here and will be
-published somewhere of their own later. What remains on the site is the
-tool's own byline, nothing else; the wiki files carry a one-line pointer
-back to this document.
-
-So if you are wondering where the attribution went: here, and only here.
-Don't re-add it to the site expecting to be helpful.
+licence) — <https://github.com/cmusphinx/cmudict>; `tools/build_lexicon.py`
+maps it onto this project's phoneme set. The code renders the decipherment
+work — **the script itself is not this project's research.**
 
 ---
 
-## 2. The writing model: blocks are PAIRS, not syllables
+## 2. The writing model: blocks are pairs
 
-This is the single most important structural fact, and it took a wrong model
-being discarded to find it.
+**Sounds are written two to a block, in strict order: the first sound in
+the top slot, the second in the bottom slot. Blocks run left to right.**
+Words are separated by a space; blocks within a word are packed tight.
 
-**Phonemes are written in strict order, two to a block, top slot then bottom
-slot, with blocks running left to right.** Nothing about the layout depends on
-a sound being a consonant or a vowel — a block is just the *next two sounds*
-in the word.
+Nothing about the layout depends on a sound being a consonant or a vowel.
+A block is simply the *next two sounds* in the word.
 
 ```
 please  /p l i z/    (p,l) (i,z)
-at      /æ t/        (æ,t)          <- vowel on TOP
-up      /ʌ p/        (ʌ,p)          <- vowel on TOP
+at      /æ t/        (æ,t)          vowel on top
+up      /ʌ p/        (ʌ,p)          vowel on top
 me      /m i/        (m,i)
 not     /n ɑ t/      (n,ɑ) (t,∅)
 mad     /m æ d/      (m,æ) (d,∅)
-wake    /w eɪ k/     (w,eɪ) (k,∅)
+wake    /w eɪ k/     (w,e) (ɪ,k)
 ```
 
-Read off a labelled writing sample — *"please do not be mad at me when you
-wake up, but"* — and it holds for all twelve of its words.
-
-### Why the old model was wrong
-
-The earlier reading was a **syllable model**: consonants clustered on top, the
-vowel beneath. It agreed with the pairing model on simple CV words like
-"katara", which is why it survived so long, and disagreed on essentially
-everything else. It's also what made /ɑ/ look "inverted" between "katara" and
-"appa" — it wasn't inverting arbitrarily, it was landing in different *slots*
-(and /ɑ/ is one of the glyphs that flips by slot; see §6).
-
-**Do not reintroduce the syllable model.**
-
-### The null filler
-
-An odd number of phonemes leaves the final bottom slot empty. It is not left
-blank — a **null filler** is written into it, and it is part of the spelling,
-not padding. Five of the sample's words carry one (`not`, `mad`, `when`,
-`wake`, `but` — every word with an odd phoneme count).
-
-There are **two** nulls, by height (see §7). Neither is a sound. Which one is
-used is picked by the null's **pairing partner**, not its own slot (§7).
+This is a pairing model, not a syllable model: consonants do **not**
+cluster on top with the vowel beneath. The two agree on simple CV words
+like "katara" and disagree on almost everything else.
 
 ---
 
-## 3. The lattice and the geometry
-
-Every glyph is **drawn, not traced** — constructed from geometric primitives
-(arcs, straight segments, dots) on a shared grid with one stroke weight, so
-the set reads as a single coherent script rather than scanned handwriting.
-They are clean canonical interpretations of the key chart, not facsimiles.
-
-The script's native design surface is a **lattice**:
-
-| | grid | rendered box |
-| --- | --- | --- |
-| consonant | 5 × 5 cells | 100 × 100 |
-| vowel | 5 × 4 cells | 100 × 80 (flat) |
-
-Constants (in `tools/glyphspec.py` / `tools/build_glyphs.py`, kept in step):
-
-- `UNIT = 16` — svg units per lattice cell.
-- `SW = 9` — stroke width, every glyph, `square` caps + `miter` joins.
-- `DOT = UNIT / 2 = 8` — a dot is a filled circle whose **diameter fills one
-  grid cell**. A dot is the same visual weight as a stroke; this was measured
-  off the /aɪ/ reference photo, where the rule and the dots beside it are the
-  same thickness to the pixel. (Dots were once authored per-glyph at 6.5–8
-  radius against a 9 stroke — nearly double weight, reading as beads on top of
-  the writing. Don't reintroduce a per-glyph radius without a reference that
-  actually shows a heavier dot. `s`/`l` size classes exist as an escape hatch;
-  reach for `m` unless a source makes you.)
-- Margin: the lattice is centred in its box with a 10-unit (consonant) /
-  8-unit (flat vowel) margin, so a stroke on the outermost row isn't clipped.
-  **This margin is drawing clearance, not writing space** — see §5.
-
-Glyphs are **inlined into `site/js/manifest.js`** (~71 KB for the whole set),
-not loaded as image files. That is deliberate: `fetch()` is CORS-blocked on
-`file://` origins, so double-clicking `index.html` would fail with only
-console errors; inlining also lets the wiki gadget run with no image hosting,
-and lets glyphs inherit text colour via `currentColor`.
-
-### Two geometry implementations
-
-- `tools/glyphspec.py` — Python, **the authority**. The design format, frame
-  system, curve fitting, SVG output.
-- `designer/js/geom.js` — a JS **port**, for the designer's live canvas
-  (round-tripping every pointer-move through the server would feel awful).
-
-Anything the designer hands back to a human or a build script goes through the
-Python. `python3 tools/check_geom.py` renders ~200 generated designs through
-both and diffs them — run it after touching either file; they must not drift.
-
----
-
-## 4. Height model — 9-row blocks (always on)
-
-Sizing follows the **sound, not the slot**. A consonant is 5 units tall, a
-vowel 4, and they stack flush, so a consonant-over-vowel block is **9 rows**
-tall. At 52px per consonant that's 10.4px a row, so a vowel renders 41.6px.
-
-A vowel in the *top* slot is still short — which happens whenever a word
-starts with a vowel ("at", "up").
-
-The ratio is **height only**. Vowels keep the full block width, because canon
-draws them wide and flat, spanning their partner. They get that shape by
-swapping to a **separately generated 100×80 drawing**, not by being squashed
-at render time — so every glyph is scaled *uniformly*, stroke weight is
-identical everywhere, and dots stay round. (An earlier version stretched a
-square drawing with `preserveAspectRatio="none"` and patched the weight back
-in CSS; it distorted everything the scale touched. Don't reintroduce it.)
-
-> **History:** this used to be an off-by-default "Proportional heights"
-> checkbox. As of the session that produced this doc, **it is the only mode** —
-> the checkbox and the `avatarian-proportional` body class are gone, the
-> proportional values are the base CSS, and the flat vowel SVG is always shown.
-> The ratio itself has moved four times during decipherment (1:4 → 1:1 → 3:5 →
-> 4:5); **4:5 is the current reading**, encoded in `FLAT` (build_glyphs.py),
-> `VOWEL_GRID` (glyphspec.py), `style.css`, and the wiki CSS. Change them
-> together or the flat drawings stop matching their boxes.
-
-### Two glyphs in a block share a lattice edge
-
-A consonant's bottom lattice line *is* the vowel's top lattice line. But each
-SVG carries its clearance margin *outside* the lattice, so stacking the boxes
-flush leaves both margins as a visible gap. The bottom slot is pulled up by
-the sum of the two margins:
-
-- site: `.avatarian-slot-bottom { margin-top: -9.36px }`
-- wiki: `-0.225em` (keep the two in step)
-
-The 4.5-unit C+C shrink (below) keeps that sum constant across the common
-pairings, so one constant covers them.
-
-### Block types and the gap/touch rule
-
-Only **three** block types occur — **V-C**, **C-V**, **C-C**. A block of two
-vowels (**V-V**) never happens: a null substitutes for the missing second
-vowel (see §7). Within the 9-row grid (from the Session 5 design discussion;
-parts still unconfirmed, marked):
-
-- **V-C**, **3-row vowel**: rows 1–3 vowel, row 4 empty (**gap**), rows 5–9
-  consonant — the empty row sits between the two glyphs, not at the block's
-  top edge.
-- **V-C**, **4-row vowel**: rows 1–4 vowel, rows 5–9 consonant — they
-  **touch**. *(Symmetric completion of the rule above; inferred, not stated.)*
-- **C-V**, **3-row vowel**: rows 1–5 consonant, row 6 empty (**gap**), rows
-  7–9 vowel — they do **not** touch.
-- **C-V**, **4-row vowel**: rows 1–5 consonant, rows 6–9 vowel — they
-  **touch**, and should visually merge into one glyph rather than read as two
-  touching shapes.
-- **C-C**: the two consonants **overlap by one shared row** — the bottom
-  row of the top glyph and the top row of the bottom glyph are the same
-  row, so 10 rows of content total 9. Both stay **full size**.
-  *Confirmed against the art in session 12; the session-5 guess was
-  right.*
-
-**Resolved, and implemented.** V-C blocks get the same 3-row/4-row split C-V
-blocks do. The vowel sits flush against the block's outer edge and the gap,
-when there is one, falls on its inner side — so a 3-row vowel on top never
-leaves dead space at the very top of the block. Since a 3-row vowel is drawn
-bottom-aligned in its box (correct for the bottom slot), `blocks.css` pulls it
-up one row in the top slot. **C-C is now settled too** — see below.
-
-### 4-row vs 3-row vowels
-
-A vowel is **4-row** (fills the top lattice row, connects upward) or **3-row**
-(leaves the top row empty, sits with a gap). The confirmed set:
-
-> **Confirmed 4-row set, in ARPAbet: AA, AW, EY, IH, OY, UH, UW** —
-> /ɑ, aʊ, e, ɪ, ɔɪ, ʊ, u/. Every other vowel is 3-row.
-
-⚠️ **Read those as ARPAbet codes, not file stems.** The stems do not track the
-codes, and reading the list as stems flips two of the seven — in both
-directions:
-
-| ARPAbet | IPA | stem | rows |  | stem | IPA | is ARPAbet | rows |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **UH** | ʊ | `oo` | 4 | but | `uh` | ʌ | **AH** | 3 |
-| **AW** | aʊ | `au` | 4 | but | `aw` | ɔ | **AO** | 3 |
-
-Every vowel design carries an explicit `rows`, set from the designer's row
-toggle; `build_glyphs.py` reads it, and `VOWEL_4ROW_BASE` is only the fallback
-for a vowel with no design. 4-row vowels carry `rows: 4` through the manifest
-and get an `avatarian-4row` class in the DOM.
-
-A 4-row vowel's ink spans lattice y **0.5–3.5**; a 3-row vowel's spans
-**1.5–3.5**. `glyphspec.validate` checks the declaration against the drawing —
-the top row runs y=0 to y=1, so ink resting exactly on y=1 has not entered it.
-
-### C+C blocks overlap by one row (settled session 12)
-
-Two consonants in a block are **full size** and **overlap by one lattice
-row**: the bottom row of the top glyph is the top row of the bottom one,
-so ten rows of content total the nine a V-C block has. This is B1, the
-last open piece of the 9-row model, confirmed against the art — the
-session-5 guess was right.
-
-It supersedes an earlier reading in which each consonant was **shrunk**
-to 4.5 rows (9/10 scale, lighter stroke) to make the sum nine. Shrinking
-kept the height arithmetic but thinned the stroke and never matched the
-art, where the two glyphs interlock at full weight. `blocks.css` now
-pulls the bottom slot up by `0.36 × av-size` — the clearance gap plus one
-lattice row — instead of scaling the glyphs. (Stroke-level *fusion* of
-the overlapping edges is still TODO item 19; the rows coincide, the inks
-butt rather than truly interlock.)
-
-### ⚠️ Open: the residual one-row gap
-
-After the margin fix, a block like **T + ɑ** still shows ~8.3px — *exactly one
-lattice row* — between the two inks. This is **built into the designs, not the
-rendering**: the consonant's ink ends at lattice `y=4.5` (half a row above its
-bottom edge) and a 4-row vowel's connecting stroke reaches only `y=0.5` (half
-a row below the vowel's top edge). Half + half = one full row, even with the
-lattices flush.
-
-Closing it is a **design-convention decision**: move a 4-row vowel's
-connecting edge to `y=0`, or a consonant's bottom edge to `y=5`, then re-promote
-the affected designs. Full write-up under "THE OPEN ISSUE" in `HANDOFF.md`.
-
----
-
-## 5. Sizing lives in CSS (two stylesheets, kept in step)
-
-The same `render.js` drives both the standalone site and the wiki gadget, so
-sizing is duplicated and must match:
-
-- `site/css/style.css`
-- `wiki/MediaWiki_Common.css.txt`
-
-The site sizes in px (52 / 41.6); the wiki sizes in `em` (1.25em / 1em) so
-Avatarian scales with the surrounding wiki text. Both encode the same 5:4
-ratio, the same margin-collapse, and the same "show the flat vowel SVG" rule.
-
----
-
-## 6. Orientation — some glyphs flip by slot
-
-A glyph is drawn **once**, in its top-slot form. Some glyphs mirror
-top-to-bottom when they land in a bottom slot; `render.js` applies a
-`scaleY(-1)` (class `avatarian-flipped`) rather than shipping a second
-drawing. **Most glyphs do not flip** — this is a list, not a blanket rule.
-
-`FLIPS = {æ, ɑ, l, ɪ, e, aɪ}`
-
-| sound | evidence |
-| --- | --- |
-| æ  | "at" (top, cup ∪) vs "mad" (bottom, cap ∩) |
-| ɑ  | "appa" (top, proper Y) vs "katara" (bottom, stem up) |
-| l  | "please" (bottom); the key chart draws both orientations |
-| ɪ  | "metalbending" |
-| e  | "Aang" (top) vs "wake" (bottom) |
-| aɪ | key chart (rule above, dots below) vs "fire" (dots above the rule) |
-
-/aɪ/ is the cleanest case: "fire" is /f aɪ ə r/, so aɪ is the second phoneme
-and lands in a **bottom** slot, where canon writes it as the vertical mirror
-of the chart's citation form. Both forms attested in known slots — that is the
-bar for adding anything to `FLIPS`.
-
-**Why a glyph flips (Session 5, unconfirmed as a general rule):** a flipping
-glyph's connecting stem should point toward whatever it touches. For **ɪ**: in
-a V-C block (vowel on top) the stem points down toward the consonant below; in
-a C-V block (vowel on bottom) it points up toward the consonant above. Whether
-"stem points at neighbour" generalises to every `FLIPS` entry or is specific
-to ɪ is unverified — check each entry against it before assuming.
-
-**/s/ is deliberately NOT in the list**, and is why the `$`/`%` override
-exists. "students" writes *both* of its /s/ in top slots and uses a different
-orientation for each (∨ first, ∧ last), so no slot rule can select them. Spell
-those `S$` and `S%`. Any rule for /s/ must explain all observed cases at once,
-not just one.
-
----
-
-## 7. The nulls
-
-Two fillers, distinguished by height. **Neither is a sound.**
-
-| name | shape | height | manifest type | design type | manifest key |
-| --- | --- | --- | --- | --- | --- |
-| `null_v` | rounded ∪ | vowel-height (3-row) | `null` | `mark` | `∅` (code `0`) |
-| `null_c` | squared ∪ | consonant-height (5-row) | `null_consonant` | `mark_consonant` | `∅c` |
-
-**Which null is used is decided by the pairing PARTNER, not the empty slot's
-own height** (confirmed, Session 5):
-
-- a **vowel** paired with a null takes the **5-row** (consonant-height) null;
-- a **consonant** paired with a null takes the **3-row** (vowel-height) null.
-
-This is what `render.js` does (`nullFor`): any null, whether auto-inserted
-into a trailing empty slot or typed as `0` mid-word, takes its height from
-the sound beside it. It is also what keeps every block **nine rows** tall —
-4 + 5 for a vowel and its null, 5 + 4 for a consonant and its null. The
-renderer used to write the cup into every empty slot regardless, which left
-a vowel-plus-null block eight rows tall.
-
-The two differ by **height class**, which is what `type` means in a design:
-`mark_consonant` takes a consonant's 5×5 lattice, `mark` a vowel's 5×4 (see
-§3). Routing both through the vowel frame — which is what happened before
-the split — draws the taller null on the wrong lattice.
-
-> **History / correction:** these were called `glot_v` and `glot`, and `glot`
-> was mistakenly documented as **/ʔ/, a glottal stop**. It never was — it is
-> just the taller null filler. The `Q` code for /ʔ/ was removed from the
-> input syntax. If you find "glot", "⊓ = /ʔ/", or "Q → ʔ" anywhere, it is
-> stale — including any description of `null_c` as a ⊓ gate, which it is not.
-> The design files were renamed to `null_c.json` / `null_v.json` with
-> matching fields.
-
----
-
-## 8. The glyph inventory
-
-Snapshot of `tools/build_glyphs.py`. **CODE** is the ARPAbet code you type in
-the app; **STEM** is the SVG file stem in `site/assets/glyphs/`. Regenerate
-this table from the build script rather than trusting it blind.
-
-### Consonants (5×5)
-
-| IPA | CODE | stem | status | notes |
-| --- | --- | --- | --- | --- |
-| p  | P  | p  | drawn | |
-| b  | B  | b  | drawn | |
-| t  | T  | t  | drawn | |
-| d  | D  | d  | drawn | |
-| k  | K  | k  | drawn | |
-| g  | G  | g  | drawn | |
-| m  | M  | m  | drawn | |
-| n  | N  | n  | drawn | |
-| ŋ  | NG | ng | drawn | |
-| f  | F  | f  | drawn | designed from a reference photo (bowed X, high crossing) |
-| v  | V  | v  | drawn | |
-| θ  | TH | th | drawn | |
-| ð  | DH | dh | drawn | |
-| s  | S  | s  | drawn | flips, but NOT by slot — use `S$`/`S%` (see §6) |
-| z  | Z  | z  | drawn | |
-| h  | HH | h  | drawn | |
-| w  | W  | w  | drawn | |
-| j  | Y  | y  | drawn | |
-| r  | R  | r  | drawn | |
-| l  | L  | l  | drawn | **flips** by slot |
-| tʃ | CH | ch | **placeholder** | was drawn from no source; demoted |
-| dʒ | JH | j_dz | **placeholder** | |
-| ʃ  | SH | sh | **placeholder** | |
-| ʒ  | ZH | zh | **placeholder** | e.g. the /ʒ/ in "treasure" |
-| x  | —  | kh | **placeholder** | ARPAbet has no /x/ code |
-
-### Vowels (5×4)
-
-| IPA | CODE | stem | status | flips | 4-row | notes |
-| --- | --- | --- | --- | --- | --- | --- |
-| i  | IY | i     | drawn | | | |
-| ɪ  | IH | ih    | drawn | ✓ | ✓ | |
-| e  | EY | ei    | drawn | ✓ | ✓ | alias `eɪ`/`ej` |
-| ɛ  | EH | eh    | drawn | | | |
-| æ  | AE | ae    | drawn | ✓ | | |
-| ʌ  | AH | uh    | drawn | | | four dots, two-by-two (not four rules) |
-| ə  | AX | schwa | drawn | | | recurve **descends** L→R, two dots |
-| u  | UW | uu    | drawn | | ✓ | |
-| oʊ | OW | ow    | drawn | | | |
-| ɔ  | AO | aw    | drawn | | | from source **outside** the key chart |
-| ɑ  | AA | ah    | drawn | ✓ | ✓ | from source **outside** the key chart |
-| aɪ | AY | ai    | drawn | ✓ | | cleanest attested flip pair |
-| aʊ | AW | au    | drawn | | | |
-| ɜ  | ER | nurse | drawn | | | descending recurve, dot below-left |
-| ʊ  | UH | oo    | **placeholder** | | | the vowel in "good" |
-| ɔɪ | OY | oi    | **placeholder** | | | the vowel in "toy" |
-
-Notes worth holding onto:
-
-- **The "4-row" column above may lag the designs** — `rows` now lives in
-  `designs/<name>.json` and the build reads it from there. The confirmed set
-  is ARPAbet AA, AW, EY, IH, OY, UH, UW; see §4 on why that must not be read
-  as file stems.
-- **/ə/ vs /ʌ/ were once backwards.** /ə/ (schwa) is the recurve-with-two-dots
-  and its recurve *descends* L→R; /ʌ/ is the four dots, two-by-two. The set had
-  them swapped and /ʌ/ drawn as four short *rules* until the key was traced.
-  Don't swap them back on the strength of older material.
-- **/ɜ/ is not ARPAbet's ER.** ARPAbet's ER is r-coloured /ɝ/, but `g2p.js`
-  emits /ɜ/ with /r/ as a *separate* segment ("bird" → `ɜ r`), so the vowel
-  carries no r-colouring. Named `nurse` for its lexical set, the way ə is
-  `schwa`. `ɝ`/`ɜr` are accepted as aliases.
-- **/ɑ/ and /ɔ/ have no key tracing** — they came from material outside the
-  chart, so they're listed in `SOURCE_NOTES` and the key tab explains why they
-  have nothing to compare against.
-
-### Placeholders (no glyph anywhere yet)
-
-**/x/** is the only sound still rendering as a dashed "?" box. Draw it in the
-designer and press **ship it** to fill it in.
-
-The other six — tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ — have since been drawn and shipped
-from **source material outside the key chart**. That is why they appear
-nowhere in the chart and have no tracing to compare against, and they are
-listed in `SOURCE_NOTES` alongside `/ɑ/` and `/ɔ/` so the key tab says so.
-Nothing in the set is invented: /x/ is still a placeholder precisely because
-no source for it has been found.
-
----
-
-## 9. The sounds syntax (how you type it)
-
-The app is one page: type English and convert, or type sounds directly into
-the **sounds box**, which is what actually gets drawn and is always editable
-(`g2p.js` is rule-based and gets words wrong — you fix the sounds, not the
-English). It is **ASCII-first**, typeable on a plain QWERTY keyboard.
-
-**The readable codes** are the primary spelling: `k uh t ah r uh` is *Katara*.
-They are the respelling keys dictionaries use for laypeople, which is the one
-notation for English sounds that ordinary readers already know how to read.
-
-| | | | | | | | |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| `a` | c**a**t | `ah` | f**a**ther | `ee` | s**ee** | `ow` | m**ou**th |
-| `e` | b**e**d | `oh` | g**o**at | `oo` | s**oo**n | `aw` | th**ou**ght |
-| `i` | s**i**t | `uh` | comm**a** | `uu` | f**oo**t | `oy` | ch**oi**ce |
-| `u` | c**u**t | `ey` | f**a**ce | `eye` | pr**i**ce | | |
-
-`uh` also covers the vowel of *nurse* and *bird*: **Avatarian writes one
-letter where English dictionaries write two** (see §12.1), so `er`, `ur`
-and `ir` all land on it.
-
-Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*), `dh`
-(*this*), `zh` (*vision*), `j` (*jam*), `y` (*yes*) and `kh` (/x/).
-
-- **ARPAbet still works, in CAPITALS**: `K AX T AA R AX`. Four codes mean
-  different things in the two schemes — `ah uh ow aw` — and they are exactly
-  the cluster ARPAbet is worst at, so case is what tells them apart:
-  lowercase `ah` is *father*, shouted `AH` is *cut*. Everything else is
-  case-insensitive, so the split is invisible unless you hit one of the four.
-  **Nothing written before this change needs migrating**, because ARPAbet has
-  always been written in capitals.
-- **Why the change.** `AH` is /ʌ/ (STRUT) while `AA` is /ɑ/ (PALM), so the
-  code that looks like "ah" is not the "ah" sound. That is not theoretical:
-  this document, the site's placeholder and the site's help text all carried
-  `K AH T AA R AH` as the spelling of *Katara* until session 9. It gives
-  /k ʌ t ɑ r ʌ/. Three places, written by people who knew the table.
-- **IPA is accepted too**, plus aliases: `eɪ`→`e`, `ɝ`/`ɜr`→`ɜ`, `ɑː`→`ɑ`,
-  `iː`→`i`, `uː`→`u`. The corpus is stored in IPA for this reason — it does
-  not move when the ASCII layer does, which is why item 29 could land after
-  the corpus rather than before it.
-- **Sounds are separated by spaces, words by `/`.**
-- **`0`** (or `_`, `-`) is the `∅` empty-slot filler. The consonant-height
-  null `∅c` has no code at all: the renderer picks the height from the
-  pairing partner. Confirmed against the art in session 10 (TODO B3), so
-  no code is needed: `0` plus the sound beside it says everything.
-- **`$` / `%`** suffixes force a glyph's top or bottom orientation (`s$`),
-  for glyphs whose variant rule isn't known — currently only /s/.
-- **`(parentheses)`** caption a word instead of being read as sounds:
-  `m e t uh l 0 b e n d i ng (metalbending)`. Converting from English emits
-  these automatically, and since the label is part of the text it survives
-  hand-editing.
-
-The drawing updates live as you type (debounced 120ms) — no draw button.
-**Insert sounds** *appends* the conversion rather than replacing the box, so a
-line can be assembled a piece at a time. Anything mapping to no glyph is named
-in a warning rather than silently dropped. The glyph reference doubles as a
-palette — click a cell to append its code.
-
----
-
-## 10. Open decoding questions
-
-These are the live unknowns about the *script*, roughly by priority. Fuller
-notes in `CONTEXT.md`.
-
-1. **/x/ has no glyph** (§8), and six sounds that had none were drawn and
-   shipped without a recorded source — provenance needed, not guesses.
-
-2. ~~**Mid-word nulls.**~~ **Answered.** A block never straddles a
-   syllable boundary; a null holds the leftover slot open. Syllables
-   divide by maximum onset, which is what makes `festival` *fe-sti-val*
-   and lets its /s/ and /t/ share a block. From a word's sounds alone
-   this reproduces 234 of 244 attested spellings exactly — see §12.5 and
-   `padToBlocks` in `g2p.js`.
-
-   The guess recorded here for two sessions — "it's not syllables,
-   because that would force extra nulls canon doesn't have" — was wrong
-   because it used dictionary hyphenation rather than phonological
-   syllabification. The ten remaining misses divide at a **morpheme**
-   boundary too (`some|thing`, `water|proof`, `woong|'s`), which is
-   likely the same principle on a second kind of boundary.
-
-3. **"appa" breaks the pairing model.** Canon writes it as **three** blocks
-   (Y, /p/, Y each over a null) where pairing predicts two, `(ɑ,p)(ɑ,∅)`. Not
-   explained by phoneme count ("not" is also three and pairs normally) or by
-   intervocalic consonants ("hurry", "really" render fine).
-
-   **Why is still unresolved, but the tool now draws it correctly** — the
-   corpus records the observed spelling (`ah 0 p 0 ah 0`) rather than
-   deriving one, and nothing special-cases it. The point of a corpus is
-   that being right does not require knowing why.
-
-   Its **null heights are confirmed** against the art (session 10): mixed,
-   tall beside the vowels and short beside /p/, which is what the
-   pairing-partner rule predicts. A rule read off one sample in session 5,
-   checked against material it was not derived from, came out right — and
-   it closes the question of whether the sounds syntax needs a way to
-   write the tall null. It doesn't.
-
-4. ~~**/s/ orientation**~~ **Answered.** /s/ mirrors when it sits on top
-   of another consonant — 11 of the 12 such blocks, and 0 of the 20 where
-   it does not. "students" was the case no slot rule satisfied precisely
-   because /s/ takes both orientations in the *same* slot; what decides is
-   the glyph beneath it. The approximants /r l w j/ turn the same way, in
-   the bottom of a two-consonant block. See §12.6.
-
-5. **The remaining positional variants.** æ, l, e are settled (§6). ɪ and u
-   are numbered as pairs in the source but only one form each is drawn, so
-   they render identically in both slots. Needs words placing that vowel at
-   both an even and an odd phoneme index.
-
-6. **One unassigned mark in the key** — an unlabelled wedge sitting directly
-   above the vowel-block null; `CELLS` maps it to `None` (skipped) pending a
-   source.
-
-7. **Punctuation.** ~~Stripped, not rendered.~~ `. , ! ?` are drawn as of
-   session 11 — a third height class, one lattice column wide and nine
-   rows tall (§12.7a). The **apostrophe** is still stripped, and the key
-   chart's note that it is treated like a vowel is untested: `woong's` and
-   `heng's` are attested and both write the possessive as sounds (`ɛ s`),
-   with no mark at all.
-
-8. ~~**G2P accuracy.**~~ **Addressed in session 7.** `js/lexicon.js`
-   bundles the CMU Pronouncing Dictionary ahead of the rules, and reading
-   its stress marks gives the unstressed-vowel reduction this asked for —
-   "metalbending" comes out `/m ɛ t ə l …/`. The rules are now the
-   fallback; the corpus and `EXCEPTIONS` still sit above the dictionary.
-
----
-
-## 11. What differs from canon (and probably always will at v1)
-
-In the reference, glyphs are hand-lettered so adjacent strokes **interlock and
-share edges**, and blocks are visibly skewed and organic. This project renders
-each glyph as a discrete vector butted against its neighbours — so it
-reproduces the *structure* correctly (the pairing, the heights, the flips) but
-not the stroke-level fusion. Getting that would mean redrawing every glyph
-with defined connection points: a genuine type-design project, a v2, not a
-layout tweak.
-
----
-
-## 12. The specification
-
-Everything above is a working reference: it carries the reasoning, the
-evidence, and the record of what was believed and corrected along the
-way. This section is the other thing — **the writing system as it stands,
-stated once, in the present tense.** No history, no argument, no
-citations. If you wanted to implement Avatarian from scratch, this is the
-part to read.
-
-Where a rule is not fully determined, it says so and stops. It does not
-guess.
-
-### 12.1 What is encoded
-
-Avatarian encodes **sounds, not letters**. A word is written from its
-pronunciation, so any two words that sound alike are written alike, and
-English spelling has no bearing on the result.
-
-The sound inventory is **40 phonemes** — 25 consonants and 15 vowels —
-plus two marks that are not sounds.
-
-It is not a one-to-one map onto English IPA. **Avatarian writes /ɜ/ and
-/ə/ with a single letter** — the NURSE vowel and the schwa — where
-English transcription distinguishes them. The reference material gives
-IPA alongside Avatarian for *water*, *earth*, *fire* and *air*, and
-earth's first glyph is fire's third: one glyph, two IPA symbols. Anything
-converting English into Avatarian therefore has to collapse that
-distinction, and cannot recover it going the other way.
-
-### 12.2 Blocks
-
-Sounds are written **two to a block**, in strict order: the first into
-the top slot, the second into the bottom slot. Blocks run left to right.
-Words are separated by a space; blocks within a word are packed tight,
-with no separator.
-
-Nothing about this depends on a sound being a consonant or a vowel. A
-block is simply the next two sounds.
-
-```
-please   /p l i z/     (p,l) (i,z)
-at       /æ t/         (æ,t)          vowel on top
-me       /m i/         (m,i)
-```
-
-### 12.3 Nulls
-
-When a slot has no sound for it, a **null** is written into it. A null is
-part of the spelling, not padding, and is never omitted.
+## 3. The nulls
+
+When a slot has no sound for it, a **null** is written in. A null is part
+of the spelling, not padding, and is never omitted. Neither null is a
+sound.
 
 There are two, distinguished by height:
 
-| | | height |
-| --- | --- | --- |
-| `∅` | a rounded cup | vowel-height |
-| `∅c` | a squared cup | consonant-height |
+| key | shape | height class | design type |
+| --- | --- | --- | --- |
+| `∅` (typed `0`) | rounded cup ∪ | vowel-height (3-row) | `mark` (`null_v`) |
+| `∅c` | squared cup | consonant-height (5-row) | `mark_consonant` (`null_c`) |
 
-**Which one is written is decided by the null's pairing partner, not by
-the slot it fills:**
+**Which null is written is decided by its pairing PARTNER, not by the slot
+it fills:**
 
-- a **vowel** paired with a null takes the **consonant-height** null;
-- a **consonant** paired with a null takes the **vowel-height** null.
+- a **vowel** paired with a null takes the **consonant-height** (`∅c`) null;
+- a **consonant** paired with a null takes the **vowel-height** (`∅`) null.
 
-This is what keeps every block the same height whatever is in it.
+`render.js` (`nullFor`) applies this to any null, whether auto-inserted
+into a trailing empty slot or typed as `0` mid-word. It is also what keeps
+every block nine rows tall (§4): 4 + 5 for a vowel and its null, 5 + 4 for
+a consonant and its null.
 
-Nulls occur at the end of a word with an odd sound count, and also
-**inside** words, where they are placed by the rule in §12.5: a null
-holds a slot open so that the block above it does not run past the end
-of a syllable.
+`∅c` has no typeable code, and none is needed: `0` plus the sound beside
+it says everything a second code could.
 
-### 12.4 Heights
+Nulls occur at the end of a word with an odd sound count, and **inside**
+words wherever the syllable rule (§5) leaves a slot open.
 
-Every block is **nine rows** tall.
+---
 
-- A **consonant** occupies **5 rows**.
-- A **vowel** occupies **4 rows**.
+## 4. Heights — nine-row blocks
 
-A vowel's *drawing* fills either 3 or 4 of its 4 rows. A 3-row vowel
-leaves one row empty, and that empty row is a deliberate gap on the
-vowel's **inner** side — between the vowel and its partner, never at the
-block's outer edge.
+Every block is **nine rows** tall. A **consonant** occupies 5 rows, a
+**vowel** 4, and they stack flush. Height follows the **sound, not the
+slot** — a vowel in the top slot (a word that starts with a vowel, "at",
+"up") is still short.
 
-| | drawn rows |
+The ratio is height only: vowels keep the full block width, drawn wide and
+flat spanning their partner. A vowel is a **separately generated 100×80
+drawing** rather than a squashed square, so every glyph scales uniformly,
+stroke weight is identical everywhere, and dots stay round.
+
+### 3-row vs 4-row vowels
+
+A vowel's drawing fills either 3 or 4 of its 4 rows.
+
+| | vowels |
 | --- | --- |
-| 4-row vowels | ɪ e u ʊ ɑ aʊ ɔɪ |
-| 3-row vowels | i ɛ æ ʌ ə oʊ ɔ aɪ |
+| **4-row** (fills the top row, connects to its partner) | ɪ e u ʊ ɑ aʊ ɔɪ |
+| **3-row** (leaves the top row empty, a gap) | i ɛ æ ʌ ə oʊ ɔ aɪ |
 
-So, reading a block top to bottom:
+Every vowel design carries an explicit `rows`, read from the designer's
+row toggle; `VOWEL_4ROW_BASE` in `build_glyphs.py` is only the fallback
+for an undrawn vowel. In the DOM a 4-row vowel carries an `avatarian-4row`
+class. A 4-row vowel's ink spans lattice y **0.5–3.5**; a 3-row vowel's
+spans **1.5–3.5** (`glyphspec.validate` checks the declaration against the
+drawing).
+
+⚠️ **The 4-row set reads as ARPAbet, not file stems** — AA, AW, EY, IH,
+OY, UH, UW. The stems do not track the codes: stem `uh` is /ʌ/ (ARPAbet
+AH, 3-row) while ARPAbet UH is /ʊ/ (stem `oo`, 4-row); stem `aw` is /ɔ/
+(AO, 3-row) while ARPAbet AW is /aʊ/ (stem `au`, 4-row).
+
+### Reading a block top to bottom
 
 ```
 V-C, 3-row vowel:   1-3 vowel · 4 gap · 5-9 consonant
@@ -714,145 +157,340 @@ C-V, 3-row vowel:   1-5 consonant · 6 gap · 7-9 vowel
 C-V, 4-row vowel:   1-5 consonant        · 6-9 vowel
 ```
 
-A 4-row vowel touches its partner directly and reads as one merged
-figure. A 3-row vowel does not touch it.
+A **4-row** vowel touches its partner directly and reads as one merged
+figure; a **3-row** vowel does not. The empty row of a 3-row vowel is
+always a gap on the vowel's **inner** side — between the vowel and its
+partner, never at the block's outer edge. This holds even for a vowel that
+mirrors (§6): a flipping 3-row vowel (æ, ə, aɪ) in a bottom slot is drawn
+upside-down, which would carry its empty row to the outer edge, so it is
+shifted back one row to keep the gap inner. "fire" /f aɪ ə r/ is the
+visible case — aɪ's bar sits on the baseline, not a row above it.
 
-The gap is always on the vowel's **inner** side, whichever slot it lands
-in — including when the vowel is one that mirrors (§12.6). A flipping
-3-row vowel (æ, ə, aɪ) in a bottom slot is drawn upside-down, which would
-carry its empty row to the block's outer edge; it is shifted back so the
-gap stays inner. "fire" /f aɪ ə r/ is the visible case — aɪ's bar sits on
-the block's baseline, not floating a row above it.
+### The shared lattice edge, in CSS
 
-### 12.5 Block types, and where the blocks divide
+A consonant's bottom lattice line *is* the vowel's top lattice line, but
+each SVG carries its clearance margin (§7) outside the lattice, so
+stacking the boxes flush leaves both margins as a gap. The bottom slot is
+pulled up by the sum of the two margins:
 
-Three combinations occur: **V-C**, **C-V** and **C-C**. **V-V does not
-occur** — where two vowels would meet, a null takes the second slot.
+- site: `.avatarian-slot-bottom { margin-top: calc(var(--av-size) * -0.18) }`
+  (everything scales off `--av-size`, `52px` by default)
+- wiki: `-0.225em` (keep the two in step)
 
-In a C-C block the two consonants are full size and **overlap by one
-lattice row** — the bottom row of the top glyph is the top row of the
-bottom one — so their ten rows of content total the block's nine. (Where
-the two blocks divide is the syllable rule below; the overlap is only how
-a C-C block is laid out once it forms.)
+A **C-C block** pulls its bottom slot up further — by the clearance sum
+plus one full lattice row (`-0.36 × av-size` on the site, `-0.45em` on the
+wiki) — which produces the one-row overlap in §5.
 
-**A BLOCK NEVER STRADDLES A SYLLABLE BOUNDARY.** Sounds are taken two at
-a time, but only within one syllable; where a syllable ends, the block
-ends, and a null fills the slot left over.
+---
+
+## 5. Block types, and where blocks divide
+
+Three combinations occur: **V-C**, **C-V**, **C-C**. **V-V never occurs** —
+where two vowels would meet, a null takes the second slot.
+
+In a **C-C block** the two consonants are full size and **overlap by one
+lattice row**: the bottom row of the top glyph is the top row of the
+bottom one, so their ten rows of content total the block's nine.
+
+**A block never straddles a syllable boundary.** Sounds are taken two at a
+time, but only within one syllable; where a syllable ends the block ends,
+and a null fills any slot left over.
 
 Syllables divide by **maximum onset**: a consonant, or a cluster English
-allows at the start of a syllable, belongs to the vowel that *follows*
-it rather than the one before.
+allows at the start of a syllable, belongs to the vowel that *follows* it.
 
 ```
 found     f aʊ n d              /nd/ closes one syllable — one block
-panda     p æ n ∅ d ə           pan-da: the same pair, divided
+panda     p æ n ∅ d ə           pan-da: the same pair, divided by a null
 free      f r i ∅               /fr/ opens one syllable — one block
 academy   ə ∅ k æ d ə m i       a-ca-de-my: the vowel closes its syllable
 frozen    f r oʊ ∅ z ə n ∅      fro-zen: likewise
 festival  f ɛ s t ə ∅ v ə l ∅   fe-sti-val, NOT fes-ti-val — /st/ is a
-                                legal onset, so it goes with the vowel
-                                after it, and s and t share a block
+                                legal onset, so s and t share a block
 ```
 
-Read off 255 attested spellings, this reproduces 234 of them exactly.
-The words it does not reproduce divide at a **morpheme** boundary as well
+From a word's sounds this reproduces all but about ten of the attested
+spellings exactly. The residue divides at a **morpheme** boundary as well
 as a syllable one — `some|thing`, `human|sitters`, `water|proof`,
-`woong|'s` — which looks like the same principle applied to a second kind
-of boundary, on too few examples to state as a rule.
+`woong|'s` — which looks like the same principle on a second kind of
+boundary, on too few examples to state as a rule (`TODO.md` item 34). The
+syllabifier itself (`ONSET_CLUSTERS` / `same_syllable` in `g2p.js`) is a
+hand-rolled heuristic.
 
-### 12.6 Orientation
+---
+
+## 6. Orientation — some glyphs mirror
 
 A glyph is drawn **once**, in its top-slot form. Most glyphs are written
-the same way in either slot. Some mirror top-to-bottom when they land in
-a bottom slot — æ's cup becomes a cap, ɑ's Y inverts.
+the same way in either slot. `render.js` applies a `scaleY(-1)` (class
+`avatarian-flipped`) where a glyph mirrors, rather than shipping a second
+drawing. There are three separate reasons a glyph turns.
 
-The glyphs that mirror by slot are **æ ɑ l ɪ e aɪ ə**.
+**By slot.** These mirror top-to-bottom purely by which slot they land in
+— æ's cup becomes a cap, ɑ's Y inverts:
 
-**The approximants mirror by company, not by slot.** /r l w j/ — and no
-other consonant — turn when they sit in the bottom of a block that holds
-two consonants. Under a vowel they stay upright: /r/ is plain in all six
-such blocks (*are, ear, fire, choir, organic, warrior*). Across seventeen
-consonants seen in a bottom slot, these four are the only ones that ever
-mirror, 28 times against 1.
+> **æ ɑ l ɪ e aɪ ə**
 
-**/s/ mirrors on top of a cluster** — in 11 of the 12 blocks where it
-sits above another consonant, and in none of the 20 where it does not.
-This is why no slot rule ever worked for it: /s/ takes both orientations
-in the *same* slot, and what decides is the glyph beneath it.
+The bar for this list is both forms attested in known slots (e.g. /aɪ/:
+the chart's citation form, dots below the rule, vs "fire", dots above).
+`u` and `ɔ` also mirror by slot, but their stored drawing is the
+bottom-slot form rather than the top; only the saved art is the other way
+up. (`ɔɪ` also mirrors by slot in the shipped set, but with no evidence
+either way — see §13.)
 
-**/s/ also shortens in a cluster.** It is a full five-row caret whose
-sharp point sits on the lattice edge, and the C-C one-row overlap (§12.4)
-brings the neighbour up to that edge — so the point alone lands in the
-shared row and reads as poking through the glyph beside it, where a
-flat-topped consonant would fuse. In a C-C block its vertex is pulled in
-one row so the point stops on the block boundary. The inset is applied to
-the stored (point-up) caret, so the flip carries it to whichever side
-faces the overlap. A non-cluster /s/ — the final /s/ of `class`, under a
-vowel — keeps its full length.
+**By company — the approximants.** /r l w j/, and no other consonant, turn
+when they sit in the **bottom of a two-consonant block**. Under a vowel
+they stay upright (/r/ is plain in *are, ear, fire, choir, organic,
+warrior*). Across seventeen consonants seen in a bottom slot, these four
+are the only ones that ever mirror.
 
-**/z/ drops its dots in a cluster.** Its two corner dots sit in the top
-row, which the C-C overlap rides up into the glyph above; in a C-C block
-they are dropped and only /z/'s line and bowl remain (`goods`, `trends`,
-`models`). A /z/ next to a vowel — `is`, `cheese` — keeps them.
+**By company — /s/ above a cluster.** /s/ mirrors when it sits on **top of
+another consonant** (11 of 12 such blocks) and never above a vowel or null
+(0 of 20). No slot rule works for it because /s/ takes both orientations
+in the *same* slot; the glyph beneath decides. This is why the manual
+`$`/`%` override exists — "students" writes both its /s/ in top slots with
+a different orientation each (`S$`, `S%`), which no rule can select.
 
-Two glyphs, **u** and **ɔ**, are stored as their bottom-slot drawing
-rather than their top one. They mirror like anything else; only the
-saved art is the other way up.
+### Cluster forms
 
-*(/ɔɪ/ is mirrored by slot in the shipped glyph set with no evidence
-either way — three sightings, all in bottom slots, none checked. See
-§12.8.)*
+Two consonants are redrawn when they sit in a C-C block (`clusterForm` in
+`render.js`), because the one-row overlap changes what fits:
 
-### 12.7 The lattice
+- **/s/** is a full five-row caret whose point sits on the lattice edge;
+  the overlap brings the neighbour up to that edge, so in a C-C block its
+  vertex is pulled in one row to stop on the block boundary. A non-cluster
+  /s/ (the final /s/ of `class`, under a vowel) keeps its full length.
+- **/z/** drops its two corner dots in a C-C block — they sit in the top
+  row, which the overlap rides up into the glyph above (`goods`, `trends`,
+  `models`). A /z/ beside a vowel (`is`, `cheese`) keeps them.
 
-Glyphs are constructed on a shared grid rather than drawn freehand.
+---
 
-| | grid | box |
+## 7. The lattice and geometry
+
+Every glyph is **drawn, not traced** — constructed from arcs, straight
+segments and dots on a shared grid with one stroke weight, so the set
+reads as a single coherent script. They are clean canonical
+interpretations of the key chart, not facsimiles.
+
+| height class | grid | box |
 | --- | --- | --- |
-| consonant | 5 × 5 cells | 100 × 100 |
-| vowel | 5 × 4 cells | 100 × 80 |
+| consonant, `mark_consonant` | 5 × 5 cells | 100 × 100 |
+| vowel, `mark` | 5 × 4 cells | 100 × 80 (flat) |
+| `mark_full` (punctuation) | 1 × 9 cells | 36 × 164 |
 
-One stroke weight throughout, square caps, mitred joins. A dot is a
-filled circle whose diameter is half the stroke weight. Every glyph
-scales uniformly — vowels are drawn at their own proportions rather than
-being squashed copies of a square drawing, so stroke weight is identical
-across the set and dots stay round.
+Constants (`tools/glyphspec.py` / `tools/build_glyphs.py`, kept in step):
 
-### 12.7a Punctuation
+- `UNIT = 16` — svg units per lattice cell.
+- `SW = 9` — stroke width, every glyph, `square` caps + `miter` joins.
+- `DOT = UNIT / 2 = 8` — a dot is a filled circle whose **diameter fills
+  one grid cell**, the same visual weight as a stroke. `s`/`l` size
+  classes exist as an escape hatch for a source that shows a smaller or
+  larger mark; reach for `m` (the default) otherwise.
+- **Margin** — the lattice is centred in its box with a 10-unit (consonant
+  / mark) or 8-unit (flat vowel) margin, so a stroke on the outermost row
+  isn't clipped. This is drawing clearance, not writing space (§4).
 
-A mark is **one lattice column wide and nine rows tall** — the height of
-a whole block rather than of a slot — so it stands beside the writing
-rather than inside it, and it is not paired with anything.
+Glyphs are **inlined into `site/js/manifest.js`** (~72 KB for the whole
+set) rather than loaded as image files: `fetch()` is CORS-blocked on
+`file://`, so double-clicking `index.html` would otherwise fail; inlining
+also lets the wiki gadget run with no image hosting, and lets glyphs
+inherit text colour via `currentColor`.
 
-| | | |
+### Two implementations
+
+- `tools/glyphspec.py` — Python, **the authority**: the design format,
+  frame system, curve fitting, SVG output.
+- `designer/js/geom.js` — a JS **port** for the designer's live canvas.
+
+Anything the designer hands to a human or a build script goes through the
+Python. `python3 tools/check_geom.py` renders generated designs through
+both and diffs them byte for byte (currently 283 cases); run it after
+touching either file — they must not drift.
+
+### Sizing lives in two stylesheets
+
+The same `render.js` drives the standalone site and the wiki gadget, so
+sizing is duplicated and must match: `site/css/blocks.css` (px: 52 / 41.6)
+and `wiki/MediaWiki_Common.css.txt` (`em`: 1.25em / 1em, so Avatarian
+scales with surrounding wiki text). Both encode the same 5:4 ratio, the
+same margin-collapse, and the same "show the flat vowel SVG" rule.
+
+---
+
+## 8. The glyph inventory
+
+A snapshot of `tools/build_glyphs.py`. **CODE** is the ARPAbet code;
+**stem** is the SVG file stem in `site/assets/glyphs/`. Regenerate this
+table from the build script rather than trusting it blind.
+
+The inventory is **40 phonemes — 25 consonants and 15 vowels** — plus two
+nulls (§3) and four punctuation marks (§9). Every drawn glyph is sourced
+from reference material; nothing is invented.
+
+### Consonants (5×5)
+
+| IPA | CODE | stem | status | notes |
+| --- | --- | --- | --- | --- |
+| p | P | p | drawn | |
+| b | B | b | drawn | |
+| t | T | t | drawn | |
+| d | D | d | drawn | |
+| k | K | k | drawn | |
+| g | G | g | drawn | |
+| m | M | m | drawn | |
+| n | N | n | drawn | |
+| ŋ | NG | ng | drawn | |
+| f | F | f | drawn | bowed X, high crossing |
+| v | V | v | drawn | |
+| θ | TH | th | drawn | |
+| ð | DH | dh | drawn | |
+| s | S | s | drawn | mirrors above a cluster, not by slot — see §6 |
+| z | Z | z | drawn | drops its dots in a C-C block — see §6 |
+| h | HH | h | drawn | |
+| w | W | w | drawn | approximant — mirrors in a C-C bottom slot |
+| j | Y | y | drawn | approximant |
+| r | R | r | drawn | approximant |
+| l | L | l | drawn | mirrors by slot **and** is an approximant |
+| tʃ | CH | ch | drawn | from source outside the key chart |
+| dʒ | JH | j_dz | drawn | from source outside the key chart |
+| ʃ | SH | sh | drawn | from source outside the key chart |
+| ʒ | ZH | zh | drawn | the /ʒ/ in "treasure" |
+| x | — | kh | **placeholder** | no source shows it; ARPAbet has no /x/ |
+
+### Vowels (5×4)
+
+| IPA | CODE | stem | drawn rows | flips by slot | notes |
+| --- | --- | --- | --- | --- | --- |
+| i | IY | i | 3 | | |
+| ɪ | IH | ih | 4 | ✓ | |
+| e | EY | ei | 4 | ✓ | alias `eɪ`; the FACE vowel is written `e` then `ɪ` |
+| ɛ | EH | eh | 3 | | |
+| æ | AE | ae | 3 | ✓ | cup on top, cap on bottom |
+| ʌ | AH | uh | 3 | | four dots, two-by-two |
+| ə | AX | schwa | 3 | ✓ | recurve descends L→R, two dots; also covers NURSE |
+| u | UW | uu | 4 | | stored as its bottom-slot drawing |
+| oʊ | OW | ow | 3 | | |
+| ɔ | AO | aw | 3 | | stored as its bottom-slot drawing; source outside the chart |
+| ɑ | AA | ah | 4 | ✓ | source outside the chart |
+| aɪ | AY | ai | 3 | ✓ | cleanest attested flip pair |
+| aʊ | AW | au | 4 | | |
+| ʊ | UH | oo | 4 | | the vowel in "good" |
+| ɔɪ | OY | oi | 4 | ✓ | flip unverified — see §13 |
+
+**There is no /ɜ/.** Avatarian writes the NURSE vowel and the schwa with a
+single letter; both map to /ə/ (`nurse`). ARPAbet ER, and IPA `ɜ`/`ɝ`/`ɜr`,
+are accepted as aliases of `ə`, with /r/ emitted as a separate segment
+("bird" → `ə r`), so the vowel carries no r-colouring.
+
+---
+
+## 9. Punctuation
+
+`. , ? !` are a **third height class — `mark_full`: one lattice column
+wide and nine rows tall** (a 36×164 box), the height of a whole block. A
+mark stands beside the writing rather than in a slot, is not paired with
+anything, and does not count toward the whole-blocks rule — the sounds
+either side of a mark pair among themselves.
+
+| | shape | name |
 | --- | --- | --- |
 | `.` | a dot on the bottom row | period |
 | `,` | a stroke through the bottom two rows | comma |
 | `!` | a stroke over a dot | exclamation |
 | `?` | the same stroke, broken by one row | question |
 
-Marks do not count toward the whole-blocks rule, and they break the
-pairing: the sounds either side of a mark pair among themselves.
+Marks are drawn on the 1×9 lattice, edited in the designer, and shipped
+through the manifest exactly like a letter (`MARKS_FULL` in
+`build_glyphs.py`; keyed in the manifest by the character). `render.js`
+draws them from the manifest, with an inline copy as the fallback for a
+page that carries no manifest.
 
-### 12.8 What is not determined
+The apostrophe is still stripped; `woong's` and `heng's` are attested and
+write the possessive as sounds (`ɛ s`) with no mark.
 
-1. ~~**How much two consonants overlap** in a C-C block.~~ **Settled
-   session 12: one lattice row** (§12.5). Full-size glyphs, the top's
-   bottom row shared with the bottom's top row. The last open piece of
-   the 9-row model.
-2. **Whether /ɔɪ/ mirrors by slot.** The shipped glyph set says it does,
-   with nothing behind it: three sightings, all in bottom slots, none
-   checked against the art.
-3. **Whether /x/ has a glyph.** No source shows one.
-4. **Whether the FACE vowel is ever one letter.** Every printed source
-   writes it `e` then `ɪ`; the two hand-written letters use a bare `e`
+---
+
+## 10. The sounds syntax (how you type it)
+
+The app is one page: type English and convert, or type sounds directly
+into the **sounds box**, which is what actually gets drawn and is always
+editable (`g2p.js` is rule-based and gets words wrong — you fix the
+sounds, not the English). Input is **ASCII-first**, typeable on a plain
+QWERTY keyboard.
+
+**The readable codes** are the primary spelling — the respelling keys
+dictionaries use for laypeople. `k uh t ah r uh` is *Katara*.
+
+| | | | | | | | |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `a` | c**a**t | `ah` | f**a**ther | `ee` | s**ee** | `ow` | m**ou**th |
+| `e` | b**e**d | `oh` | g**o**at | `oo` | s**oo**n | `aw` | th**ou**ght |
+| `i` | s**i**t | `uh` | comm**a** | `uu` | f**oo**t | `oy` | ch**oi**ce |
+| `u` | c**u**t | `ey` | f**a**ce | `eye` | pr**i**ce | | |
+
+`uh` also covers the vowel of *nurse* and *bird* — Avatarian writes one
+letter where English dictionaries write two — so `er`, `ur`, `ir` all land
+on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
+`dh` (*this*), `zh` (*vision*), `j` (*jam*), `y` (*yes*), `kh` (/x/).
+
+- **ARPAbet works, in CAPITALS**: `K AX T AA R AX`. Four codes differ
+  between the two schemes — `ah uh ow aw` — so case is what tells them
+  apart: lowercase `ah` is *father*, shouted `AH` is *cut*. Everything
+  else is case-insensitive. (`AH` is /ʌ/ while `AA` is /ɑ/ — the reason
+  the readable scheme exists: the code that looks like "ah" is not the
+  "ah" sound.)
+- **IPA is accepted too**, plus aliases: `eɪ`→`e`, `ɝ`/`ɜ`/`ɜr`→`ə`,
+  `ɑː`→`ɑ`, `iː`→`i`, `uː`→`u`. The corpus is stored in IPA, so it does
+  not move when the ASCII layer changes.
+- **Sounds are separated by spaces, words by `/`.**
+- **`0`** (or `_`, `-`) is the `∅` filler. `∅c` has no code — the height
+  comes from the pairing partner (§3).
+- **`$` / `%`** force a glyph's top or bottom orientation (`s$`), for a
+  glyph whose variant rule isn't known — currently only /s/.
+- **`*`** marks a glyph visible in a source but unreadable. It fills a
+  slot, so block structure is recorded where the letter is not.
+- **`(parentheses)`** caption a word instead of being read as sounds:
+  `m e t uh l 0 b e n d i ng (metalbending)`. Converting from English
+  emits these automatically.
+
+The drawing updates live as you type. **Insert sounds** appends rather
+than replacing the box, so a line can be assembled a piece at a time.
+Anything mapping to no glyph is named in a warning rather than dropped.
+The glyph reference doubles as a palette — click a cell to append its code.
+
+---
+
+## 11. What differs from canon
+
+In the reference, glyphs are hand-lettered so adjacent strokes
+**interlock and share edges**, and blocks are visibly skewed and organic.
+This project renders each glyph as a discrete vector butted against its
+neighbours, so it reproduces the *structure* correctly — the pairing, the
+heights, the flips, the C-C overlap — but not the stroke-level fusion.
+Getting that would mean redrawing every glyph with defined connection
+points: a type-design project (`TODO.md` item 19), not a layout tweak.
+
+---
+
+## 12. What is not determined
+
+1. **/x/ has no glyph.** No source shows one; it renders as a dashed box.
+2. **Whether /ɔɪ/ mirrors by slot.** The shipped set says it does, with
+   nothing behind it: three sightings, all in bottom slots, none checked.
+3. **Whether the FACE vowel is ever one letter.** Every printed source
+   writes it `e` then `ɪ`; two hand-written letters use a bare `e`
    (*take, wake, hey, anyway*). Whether that is the script or the reading
    is open.
+4. **A morpheme-boundary rule.** The syllable rule (§5) misses about ten
+   attested spellings, most of which divide at a morpheme boundary; too
+   few to state as a rule.
+5. **One mark in the reference key is unassigned** — an unlabelled wedge
+   above the vowel null; `CELLS` maps it to nothing pending a source.
+6. **Positional variants of ɪ and u.** Both are numbered as pairs in the
+   source but only one form each is drawn, so they render identically in
+   both slots; distinguishing them needs a word placing the vowel at both
+   an even and an odd index.
 
-One mark in the reference key is still unassigned.
-
-One further sound, /x/, is written as a placeholder box; and one mark in
-the reference key is unassigned.
-
-Anything a tool derives beyond these is inference, and should be
-presented as such.
+Anything a tool derives beyond these is inference, and should be presented
+as such.
