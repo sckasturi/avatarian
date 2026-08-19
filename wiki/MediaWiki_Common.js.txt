@@ -13,16 +13,14 @@
  *   3. Paste wiki/MediaWiki_Common.css.txt into [[MediaWiki:Common.css]].
  *   4. Paste THIS file into [[MediaWiki:Common.js]].
  *   5. Create Template:Avatarian from wiki/Template_Avatarian.wiki, then use
- *        {{Avatarian|k uh t ah r uh|Katara}}   (sounds + label, exact) or
- *        {{Avatarian|en=katara}}               (English, approximate).
+ *        {{Avatarian|k uh t ah r uh|Katara}}   (sounds + English label).
  *
  * Whenever a bundled module changes, re-run build_wiki_bundle.py and paste
  * the new bundle into [[MediaWiki:Avatarian.js]] again.
  *
- * The bundle is ~150 KB (inline-SVG glyphs and the attested corpus, no
- * images to host). The 1.6 MB pronunciation dictionary is left out; the
- * template's sounds parameter is the way to spell a word exactly without
- * it, and g2p's rules cover the en= form.
+ * The bundle is ~60 KB — inline-SVG glyphs plus the code that draws them,
+ * no images to host. Because the word is spelled in sounds, the corpus,
+ * the English converter and the 1.6 MB dictionary are all left out.
  */
 (function () {
   function boot() {

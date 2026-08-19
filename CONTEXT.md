@@ -15,9 +15,9 @@ the pronunciation dictionary, and notes the two public-facing copies
 A static toolkit for **Avatarian**, the conscript introduced for the new
 Avatar: The Last Airbender film. It converts English → IPA → Avatarian
 glyphs, renders them as paired blocks, and plugs into Avatar Wiki
-(Fandom) via an `{{Avatarian|k uh t ah r uh|Katara}}` template (or
-`{{Avatarian|en=word}}` to auto-convert). No server, no build step, no
-dependencies.
+(Fandom) via an `{{Avatarian|k uh t ah r uh|Katara}}` template — the word
+spelled in sounds, drawn by a ~60 KB bundle the wiki serves itself. No
+server, no build step, no dependencies.
 
 Avatarian is **phonetic** — it encodes IPA sounds, not English letters.
 Every part of the pipeline is IPA-first; English is only ever an input

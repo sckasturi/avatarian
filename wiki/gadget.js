@@ -2,13 +2,14 @@
  * Avatarian wiki gadget — the render step.
  *
  * This is the TAIL of the bundle: tools/build_wiki_bundle.py concatenates
- * the site's manifest.js, corpus.js, g2p.js, sounds.js and render.js
- * ahead of it, so by the time this runs every global it needs
- * (renderAvatarian, soundTextToWords, sentenceToIPA) is defined.
+ * the glyph manifest, the ARPAbet table, sounds.js and render.js ahead of
+ * it, so by the time this runs the globals it needs (renderAvatarian,
+ * soundTextToWords) are defined.
  *
  * It finds every {{Avatarian}} span the template left on the page and
- * replaces it with real glyphs. Nothing here loads anything — the whole
- * bundle is one script served by the wiki itself.
+ * replaces it with real glyphs, drawing the SOUNDS the template carries.
+ * Nothing here loads anything — the whole bundle is one script served by
+ * the wiki itself.
  * ------------------------------------------------------------------ */
 (function () {
   // Flatten a list of parsed words into one IPA sequence.
@@ -32,27 +33,19 @@
     var spans = document.querySelectorAll("span.avatarian-word");
     Array.prototype.forEach.call(spans, function (span) {
       if (span.getAttribute("data-avatarian-done")) return;   // idempotent
-      var en = (span.getAttribute("data-avatarian-en") || "").trim();
+
+      // The word is given in SOUNDS — exactly the spelling to draw. The
+      // label is parameter 2, or any (caption) written inside the sounds.
       var sounds = (span.getAttribute("data-avatarian-sounds") || "").trim();
       var label = (span.getAttribute("data-avatarian-label") || "").trim();
-
-      var ipaSeq, caption;
-      if (en) {
-        // English -> the same approximate conversion the translator uses.
-        ipaSeq = ipaOf(sentenceToIPA(en));
-        caption = en;
-      } else {
-        // Sounds -> exactly the spelling given. The label is parameter 2,
-        // or any (caption) written inside the sounds, or nothing.
-        var words = soundTextToWords(sounds);
-        ipaSeq = ipaOf(words);
-        caption = label || words.map(function (w) { return w.word; })
-          .filter(Boolean).join(" ");
-      }
+      var words = soundTextToWords(sounds);
+      var ipaSeq = ipaOf(words);
 
       // Nothing to draw — leave the plain fallback text the template set.
       if (!ipaSeq.length) return;
 
+      var caption = label || words.map(function (w) { return w.word; })
+        .filter(Boolean).join(" ");
       renderAvatarian(ipaSeq, span);
       span.title = (caption ? caption + " " : "") + "/" + cleanIpa(ipaSeq) + "/";
       span.setAttribute("data-avatarian-done", "1");

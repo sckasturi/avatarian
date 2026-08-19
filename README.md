@@ -154,30 +154,30 @@ actually use `{{Avatarian}}`. (You still need `site/` as the *source* the
 bundle is built from, but it does not have to be deployed anywhere.)
 
 1. Build the bundle: `python3 tools/build_wiki_bundle.py` — writes
-   `wiki/MediaWiki_Avatarian.js.txt` (~190 KB: inline-SVG glyphs + the
-   corpus + the logic).
+   `wiki/MediaWiki_Avatarian.js.txt` (~60 KB: inline-SVG glyphs + the code
+   that draws them).
 2. Paste `wiki/MediaWiki_Avatarian.js.txt` into **MediaWiki:Avatarian.js**
    on Avatar Wiki (needs wiki-admin/JS-editor rights).
 3. Paste `wiki/MediaWiki_Common.js.txt` into **MediaWiki:Common.js**.
 4. Paste `wiki/MediaWiki_Common.css.txt` into **MediaWiki:Common.css**.
 5. Create **Template:Avatarian** using `wiki/Template_Avatarian.wiki`.
-6. Use it in any article. Two forms, mirroring the translator:
-   - `{{Avatarian|k uh t ah r uh|Katara}}` — spell the word in **sounds**
-     (readable codes, ARPAbet in CAPS, or IPA) with an English **label**;
-     draws exactly that spelling, hover shows *Katara /k ə t ɑ r ə/*.
-   - `{{Avatarian|en=katara}}` — hand it the **English** and let the same
-     approximate converter the translator uses guess the sounds.
+6. Use it in any article: `{{Avatarian|k uh t ah r uh|Katara}}` — spell the
+   word in **sounds** (readable codes, ARPAbet in CAPS, or IPA) with an
+   English **label**. It draws exactly that spelling; hover shows
+   *Katara /k ə t ɑ r ə/*. To get the sounds for a word, type it into the
+   translator and copy what appears in its "Sounds" box.
 
-Whenever a bundled module (`manifest.js`, `corpus.js`, `g2p.js`,
-`sounds.js`, `render.js`, or `wiki/gadget.js`) changes, re-run
+Whenever a bundled module (`manifest.js`, `sounds.js`, `render.js`,
+g2p's ARPAbet table, or `wiki/gadget.js`) changes, re-run
 `build_wiki_bundle.py` and paste the new bundle into **MediaWiki:Avatarian.js**
 again.
 
 No font upload, no Lua/Scribunto module, no external server, no image
 hosting — the template just tags the text, and the bundle renders the real
-glyphs client-side using the same code as the standalone site. If a reader
-has JavaScript off, they see the plain label instead of nothing. The
-1.6 MB pronunciation dictionary is left out of the bundle; the sounds
+glyphs client-side using the same render code as the standalone site. If a
+reader has JavaScript off, they see the plain label instead of nothing.
+Because the word is spelled in sounds, the corpus, the English converter
+and the 1.6 MB pronunciation dictionary are all left out; the sounds
 parameter is how you spell a word exactly without it.
 
 ## Why this isn't a literal font
