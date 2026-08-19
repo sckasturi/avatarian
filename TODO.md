@@ -13,10 +13,10 @@ commit messages refer to these by number.
 Two things deliberately live elsewhere, because they are questions about
 the *script* rather than work to be done:
 
-- **Open decoding questions** → `AVATARIAN.md` §10 and §12.8. What is
-  left: how far two consonants overlap in a C-C block, whether /ɔɪ/
-  mirrors by slot, /x/'s missing glyph, whether the FACE vowel is ever
-  written as one letter, and the unassigned mark.
+- **Open decoding questions** → `AVATARIAN.md` §12. What is left: whether
+  /ɔɪ/ mirrors by slot, /x/'s missing glyph, whether the FACE vowel is
+  ever written as one letter, a morpheme-boundary rule, and the
+  unassigned mark.
 - **The corpus design** → `CORPUS.md`. Items 20–24 below are its
   execution; the reasoning is there, not repeated here.
 

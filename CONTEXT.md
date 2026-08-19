@@ -269,7 +269,7 @@ academy  ə ∅ k æ d ə m i      a-ca-de-my
 
 Read off 255 attested spellings, this reproduces 234 of them exactly,
 nulls and all, from the sounds alone. `padToBlocks` in `g2p.js`; full
-statement in `AVATARIAN.md` §12.5. Before it, 45 of the 51 attested
+statement in `AVATARIAN.md` §5. Before it, 45 of the 51 attested
 mid-word nulls had no account at all.
 
 Note `festival` is *fe-sti-val*, not *fes-ti-val*: maximum onset is

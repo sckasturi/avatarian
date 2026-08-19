@@ -211,7 +211,7 @@ academy  ə ∅ k æ d ə m i    a-ca-de-my
 
 From the sounds alone this reproduces 234 of the 244 attested spellings
 exactly, nulls and all — `padToBlocks` in `g2p.js`, stated in full in
-`AVATARIAN.md` §12.5. Before it, 45 of the 51 attested mid-word nulls had
+`AVATARIAN.md` §5. Before it, 45 of the 51 attested mid-word nulls had
 no account at all. The ten it misses divide at a **morpheme** boundary as
 well (`some|thing`, `water|proof`), which is probably the same principle
 on a second kind of boundary and is on too few examples to state.
@@ -689,10 +689,10 @@ don't want to rely on the guesser.
   rendered.~~ `. , ! ?` are drawn as of session 11 — one lattice column
   wide and nine rows tall, standing beside the writing rather than in a
   slot, and breaking the pairing so the sounds either side of a mark pair
-  among themselves (`AVATARIAN.md` §12.7a). They are inline SVG in
-  `render.js`, not designer glyphs: a 1×9 lattice is a third height class
-  the designer does not have (TODO item 32). The apostrophe is still
-  stripped.
+  among themselves (`AVATARIAN.md` §9). They are a third height class —
+  `mark_full`, a 1×9 lattice — drawn in the designer and shipped through
+  the manifest like any letter (TODO item 32), with an inline copy in
+  `render.js` as a fallback. The apostrophe is still stripped.
 - ~~Reverse decode (clicked IPA → English) only matches the built-in
   exception dictionary.~~ Fixed by `js/reverse.js` — fuzzy phoneme edit
   distance against the corpus, `EXCEPTIONS` and the whole CMU dictionary.

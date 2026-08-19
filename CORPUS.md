@@ -113,8 +113,8 @@ The two other long-standing open questions were the same shape:
 A corpus records all three as data instead of deriving them — which is
 the argument for building one, and it did not stop there. **Both of these
 were answered in session 11, by reading the corpus back.** A block never
-straddles a syllable boundary (`AVATARIAN.md` §12.5), and /s/ mirrors on
-top of a cluster (§12.6). Neither answer came from reasoning about the
+straddles a syllable boundary (`AVATARIAN.md` §5), and /s/ mirrors on
+top of a cluster (§6). Neither answer came from reasoning about the
 script; both came from having 255 sightings in one file to count.
 
 `appa` is still unexplained, and still drawn correctly.
