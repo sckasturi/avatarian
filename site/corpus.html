@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Corpus</title>
-<link rel="stylesheet" href="css/blocks.css?v=30" />
-<link rel="stylesheet" href="css/style.css?v=30" />
+<link rel="stylesheet" href="css/blocks.css?v=31" />
+<link rel="stylesheet" href="css/style.css?v=31" />
 <style>
   /* Corpus page only. Everything structural is in style.css / blocks.css;
      this is the grid of words and its controls. */
@@ -91,8 +91,19 @@
   /* A contested word flags its other spellings inline in the meta line;
      the hover preview is where you see how each source actually drew it. */
   .word-meta .alt-flag { color: var(--accent); }
-  /* The spelling a given source used, drawn small, inside the preview. */
-  #pop .pop-spelling { --av-size: 24px; margin: 4px 0 2px; }
+  /* Contested preview: one group per distinct spelling — drawn, its count,
+     and the sources that used it as thumbnails. */
+  #pop .pop-group + .pop-group {
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line);
+  }
+  #pop .pop-spelling { --av-size: 30px; margin: 2px 0 5px; }
+  #pop .pop-gmeta { color: var(--muted-2); font-size: 0.74rem; margin-bottom: 6px; }
+  #pop .pop-thumbs { display: flex; flex-wrap: wrap; gap: 6px; }
+  #pop .pop-thumb { display: block; line-height: 0; }
+  #pop .pop-thumb img {
+    width: 46px; height: 46px; object-fit: cover;
+    border-radius: 4px; border: 1px solid var(--line); background: var(--hover);
+  }
   .empty { color: var(--muted); margin-top: 24px; }
 </style>
 </head>
@@ -135,11 +146,11 @@ the sources disagree on the spelling, and the most-attested one is shown.</p>
   <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=30"></script>
+<script src="js/manifest.js?v=31"></script>
 <!-- The corpus itself. Already loaded on every page (it tops the lookup
      chain in g2p.js); here it is the whole content. -->
-<script src="js/corpus.js?v=30"></script>
-<script src="js/render.js?v=30"></script>
+<script src="js/corpus.js?v=31"></script>
+<script src="js/render.js?v=31"></script>
 <script>
 "use strict";
 
@@ -235,15 +246,36 @@ function fillWhat(el, text, word) {
   el.append(text.slice(m.index + m[0].length, end) + (end < text.length ? "…" : ""));
 }
 
-// Which spelling each source actually used: the winning one for the
-// sources behind it, each alternate for the sources behind it. Lets a
-// contested word show, on hover, that these sources drew it one way and
-// those drew it another.
-function spellingBySource(w) {
-  const map = {};
-  for (const s of (w.sources || [])) map[s] = w.ipa;
-  for (const a of (w.alternates || [])) for (const s of (a.sources || [])) map[s] = a.ipa;
-  return map;
+// The distinct spellings of a word, each with the sources behind it — the
+// winning one first, then the alternates. A contested word's preview
+// collapses to these, so `the` is two rows (two spellings), not six.
+function spellingGroups(w) {
+  const altTotal = (w.alternates || []).reduce((n, a) => n + (a.count || 0), 0);
+  const groups = [{ ipa: w.ipa, sources: w.sources || [], count: (w.count || 0) - altTotal }];
+  for (const a of (w.alternates || [])) {
+    groups.push({ ipa: a.ipa, sources: a.sources || [], count: a.count || 0 });
+  }
+  return groups;
+}
+
+// A source as a small clickable thumbnail of its reference image.
+function sourceThumb(id) {
+  const s = SOURCES[id] || {};
+  const href = sourceHref(id);
+  const el = document.createElement(href ? "a" : "span");
+  el.className = "pop-thumb";
+  el.title = sourceTitle(id);
+  if (href) { el.href = href; el.target = "_blank"; el.rel = "noopener"; }
+  if (s.image) {
+    const img = document.createElement("img");
+    img.loading = "lazy";
+    img.src = "sources/" + encodeURIComponent(s.image);
+    img.alt = id;
+    el.appendChild(img);
+  } else {
+    el.textContent = id;
+  }
+  return el;
 }
 
 function buildPop(w) {
@@ -252,9 +284,32 @@ function buildPop(w) {
   title.className = "pop-title";
   title.textContent = w.label;
   pop.appendChild(title);
-  // Only worth drawing per-source when the sources disagree; otherwise it
-  // is just the spelling already shown big on the card, once per source.
-  const spelling = w.contested ? spellingBySource(w) : null;
+
+  // Contested: collapse to one row per DISTINCT spelling — the spelling
+  // drawn, how many times, and the sources that used it as thumbnails.
+  if (w.contested) {
+    for (const g of spellingGroups(w)) {
+      const grp = document.createElement("div");
+      grp.className = "pop-group";
+      const sp = document.createElement("div");
+      sp.className = "avatarian-word pop-spelling";
+      renderAvatarian(g.ipa, sp);
+      grp.appendChild(sp);
+      const meta = document.createElement("div");
+      meta.className = "pop-gmeta";
+      meta.textContent = g.count === 1 ? "seen once" : `seen ${g.count}×`;
+      grp.appendChild(meta);
+      const thumbs = document.createElement("div");
+      thumbs.className = "pop-thumbs";
+      for (const id of g.sources) thumbs.appendChild(sourceThumb(id));
+      grp.appendChild(thumbs);
+      pop.appendChild(grp);
+    }
+    return;
+  }
+
+  // Uncontested: one row per source — its reference image and the text
+  // slice around the word.
   for (const id of allSourcesOf(w)) {
     const s = SOURCES[id] || {};
     const row = document.createElement("div");
@@ -273,12 +328,6 @@ function buildPop(w) {
     name.textContent = id;
     if (href) { name.href = href; name.target = "_blank"; name.rel = "noopener"; }
     info.appendChild(name);
-    if (spelling && spelling[id]) {
-      const sp = document.createElement("div");
-      sp.className = "avatarian-word pop-spelling";
-      renderAvatarian(spelling[id], sp);
-      info.appendChild(sp);
-    }
     if (s.where) {
       const where = document.createElement("div");
       where.className = "pop-where";

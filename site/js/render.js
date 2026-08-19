@@ -216,9 +216,9 @@ const UNREADABLE_SVG =
   // A six-pointed asterisk, matching the `*` you type. It was a question
   // mark until `?` became the punctuation and `*` took this job over —
   // a box holding the wrong character is worse than no character.
-  + '<path d="M 50 30 L 50 70" stroke-width="9"/>'
-  + '<path d="M 32.7 40 L 67.3 60" stroke-width="9"/>'
-  + '<path d="M 32.7 60 L 67.3 40" stroke-width="9"/>'
+  + '<path d="M 50 20 L 50 80" stroke-width="9"/>'
+  + '<path d="M 24 35 L 76 65" stroke-width="9"/>'
+  + '<path d="M 24 65 L 76 35" stroke-width="9"/>'
   + '</svg>';
 
 /**
