@@ -24,6 +24,11 @@
   margin: 0 0.3em 0 0;
   font-size: calc(1em / 2.05);
 }
+/* The glyphs are SVG, which the browser's text selection never highlights,
+   so a word caught in a selection would sit un-tinted between highlighted
+   words. The gadget adds this class to any word the selection touches; a
+   translucent blue reads as "selected" on a light or dark background. */
+.avatarian-word.avatarian-selected { background: rgba(51, 144, 255, 0.32); }
 .avatarian-block { display: inline-flex; flex-direction: column; align-items: center; margin-right: 0.05em; }
 .avatarian-slot { display: flex; justify-content: center; }
 /* The two glyphs in a block share a lattice edge (glyphspec.py: "stack

@@ -1226,10 +1226,30 @@ if (typeof module !== "undefined") {
     e.preventDefault();
   }
 
+  // Show a word as selected. The glyphs are SVG, and the browser's native
+  // selection highlight only paints text, so a word caught in a selection
+  // otherwise stays un-highlighted while the words around it turn blue.
+  // Give any word the selection touches a highlight class instead.
+  function onSelectionChange() {
+    var sel = window.getSelection();
+    var ranges = [];
+    if (sel && !sel.isCollapsed) {
+      for (var i = 0; i < sel.rangeCount; i++) ranges.push(sel.getRangeAt(i));
+    }
+    // Range.intersectsNode is reliable here where Selection.containsNode is
+    // not — the latter misses a word whose only content is SVG.
+    Array.prototype.forEach.call(document.querySelectorAll("span.avatarian-word"),
+      function (w) {
+        var hit = ranges.some(function (r) { return r.intersectsNode(w); });
+        w.classList.toggle("avatarian-selected", hit);
+      });
+  }
+
   // The loader in Common.js only fetches this bundle once a span is on the
   // page and the DOM is ready, so it can run straight away; the guard is
   // belt-and-suspenders.
   document.addEventListener("copy", onCopy);
+  document.addEventListener("selectionchange", onSelectionChange);
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", renderAllSpans);
   } else {
