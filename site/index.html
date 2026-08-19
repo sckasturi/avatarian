@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=36" />
-<link rel="stylesheet" href="css/style.css?v=36" />
+<link rel="stylesheet" href="css/blocks.css?v=37" />
+<link rel="stylesheet" href="css/style.css?v=37" />
 </head>
 <body>
 
@@ -186,10 +186,6 @@ and made-up words too.</p>
   <h2>Glyph reference</h2>
   <p class="subtitle">Every sound in the script. Click one to add it to the
     sounds box.</p>
-  <div class="render-opts">
-    <label><input type="checkbox" id="showKeyTracings">
-      Show the hand-lettered original beside each glyph</label>
-  </div>
   <div id="keyGrid"></div>
 </section>
 </div>
@@ -204,31 +200,30 @@ and made-up words too.</p>
   <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=36"></script>
+<script src="js/manifest.js?v=37"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=36"></script>
+<script src="js/corpus.js?v=37"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=36"></script>
-<script src="js/g2p.js?v=36"></script>
+<script src="js/lexicon.js?v=37"></script>
+<script src="js/g2p.js?v=37"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=36"></script>
-<script src="js/render.js?v=36"></script>
+<script src="js/sounds.js?v=37"></script>
+<script src="js/render.js?v=37"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=36"></script>
-<script src="js/draw.js?v=36"></script>
+<script src="js/recognise.js?v=37"></script>
+<script src="js/draw.js?v=37"></script>
 <!-- Sounds -> likely English. Searches the corpus, then EXCEPTIONS, then
      the whole bundled dictionary, so it only earns its keep on a page
      that already loads lexicon.js — which this one does. -->
-<script src="js/reverse.js?v=36"></script>
+<script src="js/reverse.js?v=37"></script>
 <script>
-const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
 
 const $ = (id) => document.getElementById(id);
@@ -832,41 +827,18 @@ function deleteToken() {
 // ---------------------------------------------------------------------
 // Glyph reference — also the input palette
 // ---------------------------------------------------------------------
-// Each cell pairs the DRAWN glyph with the shape traced out of the
-// hand-lettered key (manifest.js -> AVATARIAN_REFERENCE). The tracings
-// are hidden by default and revealed by a checkbox, so the reference
-// reads as a plain chart until you want to compare against the source.
+// Each cell shows a glyph in the script; clicking it appends its code to
+// the sounds box, so the chart doubles as a palette.
 
-function refByIPA() {
-  const byIPA = {};
-  Object.entries(REFERENCE).forEach(([name, info]) => {
-    if (info.ipa) byIPA[info.ipa] = { name, ...info };
-  });
-  return byIPA;
-}
-
-function keyArt(svg, isRef) {
+function keyArt(svg) {
   const art = document.createElement("div");
-  art.className = "key-art" + (isRef ? " is-ref" : "");
+  art.className = "key-art";
   if (svg) art.innerHTML = svg;
   else art.classList.add("is-empty");
   return art;
 }
 
-function keySide(label, svg, isRef) {
-  const side = document.createElement("div");
-  side.className = "key-side" + (isRef ? " key-side-ref" : "");
-  const cap = document.createElement("div");
-  cap.className = "key-side-lab";
-  cap.textContent = label;
-  side.appendChild(cap);
-  side.appendChild(keyArt(svg, isRef));
-  return side;
-}
-
-function keyCell({ code, title, subtitle, drawn, ref, note, cls }) {
-  // Clickable when it stands for something typeable; the leftover marks
-  // from the key have no code and stay inert.
+function keyCell({ code, title, subtitle, drawn, note, cls }) {
   const cell = document.createElement(code ? "button" : "div");
   cell.className = "key-cell" + (cls ? " " + cls : "") + (code ? " is-clickable" : "");
   if (code) {
@@ -875,11 +847,7 @@ function keyCell({ code, title, subtitle, drawn, ref, note, cls }) {
     cell.addEventListener("click", () => appendSound(code));
   }
 
-  const pair = document.createElement("div");
-  pair.className = "key-pair";
-  pair.appendChild(keySide("drawn", drawn, false));
-  pair.appendChild(keySide("key", ref, true));
-  cell.appendChild(pair);
+  cell.appendChild(keyArt(drawn));
 
   const lab = document.createElement("div");
   lab.className = "key-lab";
@@ -928,8 +896,6 @@ function buildKeyGrid() {
 
   const wrap = document.createElement("div");
   wrap.className = "key-grid";
-  const byIPA = refByIPA();
-  const used = new Set();
 
   const SECTIONS = {
     consonant: ["Consonants", null],
@@ -946,38 +912,16 @@ function buildKeyGrid() {
 
     entries.forEach(([ipa, info]) => {
       const code = IPA_TO_CODE[ipa] || ipa;
-      // Pair by sound, falling back to the stem name — the ∅ filler has
-      // a tracing but no IPA to match on.
-      const ref = byIPA[ipa] || REFERENCE[info.name];
-      if (ref) used.add(ref.name || info.name);
       wrap.appendChild(keyCell({
         code,
         title: "/" + ipa + "/",
         subtitle: info.name,
         drawn: info.status === "PLACEHOLDER" ? null : info.svg,
-        ref: ref ? ref.svg : null,
         note: info.status === "PLACEHOLDER" ? "no glyph anywhere yet" : null,
-        cls: ref ? (info.status === "PLACEHOLDER" ? "is-placeholder" : "")
-                 : "no-ref",
+        cls: info.status === "PLACEHOLDER" ? "is-placeholder" : "",
       }));
     });
   });
-
-  const extras = Object.entries(REFERENCE).filter(([name]) => !used.has(name));
-  if (extras.length) {
-    keySection(wrap, "In the key, not in the set",
-               "marks traced from the chart but not yet assigned a sound");
-    extras.forEach(([name, info]) => {
-      wrap.appendChild(keyCell({
-        code: null,
-        title: info.ipa ? "/" + info.ipa + "/" : "—",
-        subtitle: name,
-        drawn: null,
-        ref: info.svg,
-        cls: "no-ref",
-      }));
-    });
-  }
 
   grid.appendChild(wrap);
 }
@@ -1011,13 +955,6 @@ themeBtn.addEventListener("click", () => {
   else localStorage.setItem("avatarian-theme", themeMode);
   applyTheme(themeMode);
 });
-
-const keyBox = document.getElementById("showKeyTracings");
-function applyKeyTracings() {
-  document.body.classList.toggle("show-key-tracings", keyBox.checked);
-}
-keyBox.addEventListener("change", applyKeyTracings);
-applyKeyTracings();
 
 buildKeyGrid();
 

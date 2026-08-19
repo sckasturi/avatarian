@@ -15,7 +15,6 @@
   --code-bg: #f3e7d2;
   --warn: #bb3322;
   --tint-placeholder: #fdf4ec;
-  --tint-noref: #fdf1f1;
   color-scheme: light;
 }
 
@@ -36,7 +35,6 @@
     --code-bg: #2f2619;
     --warn: #ff9080;
     --tint-placeholder: #251e15;
-    --tint-noref: #2b1d1a;
     color-scheme: dark;
   }
 }
@@ -54,7 +52,6 @@
   --code-bg: #2f2619;
   --warn: #ff9080;
   --tint-placeholder: #251e15;
-  --tint-noref: #2b1d1a;
   color-scheme: dark;
 }
 
@@ -338,8 +335,6 @@ button.primary:hover { opacity: 0.9; }
 .syntax-details > summary { cursor: pointer; color: var(--muted-2); }
 .syntax-details .syntax-help p { margin: 8px 0; }
 
-.render-opts { margin-top: 10px; font-size: 0.85rem; color: var(--muted-2); }
-.render-opts label { display: inline-flex; align-items: center; gap: 6px; }
 .ipa-hint { margin-left: 10px; font-size: 0.8rem; color: var(--warn); }
 
 /* --- the drawing pad (js/draw.js) ---------------------------------- */
@@ -420,15 +415,7 @@ footer p { margin: 4px 0; }
 .key-cell.is-clickable:active { transform: translateY(1px); }
 .key-cell.is-clickable:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .key-cell.is-placeholder { background: var(--tint-placeholder); }
-/* "no tracing to compare against" is only meaningful while the tracings
-   are on screen, so the tint is scoped to that mode rather than colouring
-   cells in what is otherwise just a palette. */
-body.show-key-tracings .key-cell.no-ref { background: var(--tint-noref); }
-.key-pair { display: flex; justify-content: center; align-items: flex-start; gap: 4px; }
-.key-side { flex: 1; min-width: 0; }
-.key-side-lab { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--faint); }
 .key-art { color: var(--accent); width: 52px; height: 52px; margin: 0 auto; }
-.key-art.is-ref { color: var(--ink); }
 .key-art svg { width: 100%; height: 100%; display: block; }
 .key-art.is-empty { border: 1px dashed var(--line); border-radius: 6px; box-sizing: border-box; }
 .key-lab { font-size: 13px; color: var(--ink); margin-top: 6px; }
@@ -441,14 +428,4 @@ body.show-key-tracings .key-cell.no-ref { background: var(--tint-noref); }
 .key-note { font-size: 11px; color: var(--accent); margin-top: 3px; }
 .key-section { grid-column: 1 / -1; font-weight: bold; font-size: 0.9rem; color: var(--muted); margin-top: 10px; }
 .key-section span { font-weight: normal; font-size: 0.82rem; color: var(--faint); }
-
-/* Overlay mode — reference behind, drawn on top, to spot drift. */
-/* The traced key shapes are a comparison aid, not the point of the
-   chart, so they stay hidden until the checkbox asks for them. Both
-   sides' labels are pointless when only one side is showing. */
-.key-side-ref { display: none; }
-.key-side-lab { display: none; }
-body.show-key-tracings .key-side-ref { display: block; }
-body.show-key-tracings .key-side-lab { display: block; }
-.key-grid.overlay .key-art.is-empty { border: none; }
 
