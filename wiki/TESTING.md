@@ -4,6 +4,15 @@ Try the whole thing under **your own account** before it touches the
 site-wide `MediaWiki:Common.js`. Nothing here needs admin rights: personal
 JS/CSS subpages and a user sandbox are enough, and they only affect you.
 
+> ⚠️ **Two different pages — the capital letter is the whole difference.**
+> `MediaWiki:Common.js` (capital `C`, `MediaWiki:` namespace) is the
+> **site-wide** script for everyone, and needs admin rights — that is the
+> *go-live* page, **not** for testing. Your personal script is
+> `Special:MyPage/common.js` (lowercase `c`, which is
+> `User:YourName/common.js`) and runs only for you. Put the testing loader
+> there. Same for CSS: `Special:MyPage/common.css`, not
+> `MediaWiki:Common.css`.
+
 The pieces you'll paste are all in this `wiki/` folder. Build the bundle
 first so it's current:
 
@@ -70,6 +79,12 @@ Open the browser console (F12 → Console) and reload:
   subpage exactly, case included: `User:YourName/Avatarian.js`.
 - **Glyphs render but look wrong-sized** — the CSS didn't take. Re-check
   `Special:MyPage/common.css` and hard-refresh.
+- **No change at all, no console sign the bundle loaded** — the loader is
+  probably on the wrong page. It must be your personal
+  `Special:MyPage/common.js`, **not** the site-wide `MediaWiki:Common.js`
+  (see the warning up top). Ad-blocker noise in the console
+  (`ERR_BLOCKED_BY_CLIENT` for Fandom's tracking/ad scripts) is normal and
+  unrelated — none of it is Avatarian.
 - **No change at all** — MediaWiki caches personal JS/CSS hard. Hard-refresh
   again, or append `?debug=true` to the page URL, or give it a minute.
 - **Still plain text and no console errors** — confirm the span actually
