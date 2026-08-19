@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=31" />
-<link rel="stylesheet" href="css/style.css?v=31" />
+<link rel="stylesheet" href="css/blocks.css?v=32" />
+<link rel="stylesheet" href="css/style.css?v=32" />
 </head>
 <body>
 
@@ -204,29 +204,29 @@ and made-up words too.</p>
   <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=31"></script>
+<script src="js/manifest.js?v=32"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=31"></script>
+<script src="js/corpus.js?v=32"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=31"></script>
-<script src="js/g2p.js?v=31"></script>
+<script src="js/lexicon.js?v=32"></script>
+<script src="js/g2p.js?v=32"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=31"></script>
-<script src="js/render.js?v=31"></script>
+<script src="js/sounds.js?v=32"></script>
+<script src="js/render.js?v=32"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=31"></script>
-<script src="js/draw.js?v=31"></script>
+<script src="js/recognise.js?v=32"></script>
+<script src="js/draw.js?v=32"></script>
 <!-- Sounds -> likely English. Searches the corpus, then EXCEPTIONS, then
      the whole bundled dictionary, so it only earns its keep on a page
      that already loads lexicon.js — which this one does. -->
-<script src="js/reverse.js?v=31"></script>
+<script src="js/reverse.js?v=32"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
@@ -276,11 +276,25 @@ function renderWords(words) {
     renderAvatarian(w.ipa, wordEl);
     unit.appendChild(wordEl);
 
+    // The corpus record for this word, if it has one. Looked up here
+    // rather than carried on `w`, because `draw()` renders from the SOUNDS
+    // BOX: these word objects come out of `soundTextToWords` and have no
+    // corpus entry attached. The caption is the only thing that names the
+    // word, so it is what gets looked up — and it drives two marks below,
+    // the attested underline and the contested badge.
+    const record = w.word ? corpusWords()[normaliseWord(w.word)] : null;
+
     const cap = document.createElement("span");
     cap.className = "avatarian-caption";
     if (w.word) {
       const en = document.createElement("span");
       en.className = "cap-en";
+      // B4 / item 21: underline a word the corpus has actually seen
+      // written. Its presence in the corpus IS the attested tier — the
+      // same signal lookupWord() reports, read straight off the caption
+      // because these word objects carry no tier. corpus.html is the
+      // working example of the mark and doubles as its legend.
+      if (record) en.classList.add("is-attested");
       en.textContent = w.word;
       cap.appendChild(en);
     }
@@ -292,18 +306,9 @@ function renderWords(words) {
     // A contested word is one the sources themselves disagree about. The
     // corpus draws the most-attested spelling, but saying so out loud is
     // the point — two pieces of canon disagreeing is a fact about the
-    // script, and silently picking a winner would hide it.
-    //
-    // Looked up here rather than carried on `w`, because `draw()` renders
-    // from the SOUNDS BOX: these word objects come out of
-    // `soundTextToWords` and have no corpus entry attached. The caption
-    // is the only thing that names the word, so it is what gets looked up.
-    //
-    // Deliberately narrower than the attested/derived/guessed display
-    // (item 21, blocked on B4): that one has to mark almost every word on
-    // the page, which is the judgement call B4 is about. This marks the
-    // handful genuinely in dispute, so it does not need that decision.
-    const record = w.word ? corpusWords()[normaliseWord(w.word)] : null;
+    // script, and silently picking a winner would hide it. Narrower than
+    // the underline above: that marks every attested word, this marks only
+    // the handful genuinely in dispute.
     if (record && record.contested) {
       const alts = (record.alternates || []).length;
       const mark = document.createElement("span");
