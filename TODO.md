@@ -80,15 +80,15 @@ Two things follow, and both are closures rather than new work:
   generic `∅`, so the entries never encoded an interpretation and do not
   move now that the interpretation is confirmed.
 
-**B4. Squiggle or badge?** How to mark unattested spellings (item 21).
-`CORPUS.md` §3 argues for marking the *attested* exception rather than
-squiggling the unattested majority, since almost everything anyone types
-will be unattested and a page of squiggles teaches people to ignore them.
-Wants a look at real content before committing.
+~~**B4. Squiggle or badge?**~~ **Decided (session 12): mark the
+attested word, with an underline.** Confirms `CORPUS.md` §3 — badge the
+rare attested word rather than squiggle the unattested majority. So
+item 21's display is: an **underline under attested words**, nothing on
+the rest. Unblocks item 21 and the confidence rendering on item 31.
 
 **B5. Extra credits links.** Contributors plus source material read or
-transcribed. Item 6 is done, so these just get added to `AVATARIAN.md`
-§ Credit when they arrive.
+transcribed. The user will supply everything needed **at ship time**;
+until then there is nothing to add. Goes into `AVATARIAN.md` § Credit.
 
 ---
 
@@ -133,9 +133,10 @@ that evidence is in the corpus yet.
 
 **21. Show confidence in the UI.** Plumbing done in session 8;
 `lookupWord()` returns `{ipa, tier, entry}` and `sentenceToIPA` carries
-it onto every word. The full attested / derived / guessed display is
-**still open and still blocked on B4** — that one has to mark nearly
-every word on the page, which is the judgement B4 is about.
+it onto every word. **B4 is now decided: underline attested words, leave
+the rest unmarked** — so the display is unblocked. What is left is the
+build: underline the `attested` tier wherever words render (the main
+output and the item-31 corpus page), and nothing on `derived`/`guessed`.
 
 **One narrow slice of it shipped**: a word whose sources *disagree* is
 marked `contested` on the site, with the counts and sources in its
@@ -248,14 +249,16 @@ What it gives you beyond a form:
   `python3 tools/build_corpus.py` would reject, and a rejected save
   writes nothing at all.
 
-**24. Audit `EXCEPTIONS` against reference material.** Every in-world
-name is a guess until checked. Two of the first four checked were wrong
-(`toph`, `aang`), so expect more: `katara`, `sokka`, `iroh`, `azula`,
-`korra`, `omashu`, `kyoshi`, `sozin`, `roku`, `ozai`, `suki`, `yue`,
-`haru`. The file now says so in a comment above them, and the two halves
-of the old table are properly separated: `EXCEPTIONS` is *readings* and
-all of it is provisional, the corpus is *observations* and none of it is.
-A confirmed name does not get corrected in `EXCEPTIONS` — it moves.
+~~**24. Audit `EXCEPTIONS` against reference material.**~~ **Closed by
+decision (session 12): the corpus is essentially complete, and any name
+not in it has no source to check against.** The audit was "check each
+guessed name against art"; with no more art coming, the remaining names
+(`sokka`, `iroh`, `azula`, `korra`, `omashu`, `kyoshi`, `sozin`, `roku`,
+`ozai`, `suki`, `yue`, `haru`) stay provisional readings, and that is the
+final state — `EXCEPTIONS` is *readings*, all provisional; the corpus is
+*observations*, none of it is. The mechanism is settled and proven: a
+name that ever does get attested **moves** to the corpus rather than
+being corrected in place (this is how `what`/`toph`/`aang`/`katara` went).
 
 ### Handwriting input
 
@@ -509,7 +512,10 @@ rewrite four hand-written comments — including the one explaining the
 ɜ/ə merge — with shorter design notes, for no change to any glyph.
 
 **18. `/x/` has no glyph** and renders as a dashed box. The only
-remaining placeholder, and it needs source material rather than a guess.
+remaining placeholder. **Parked by decision (session 12): no glyph is
+known, and none is coming — do not raise this again.** It stays a
+placeholder; the dashed box is the honest rendering of "no source shows
+this."
 
 ~~**30. Two glyphs flip that the docs say don't.**~~ **/s/ answered;
 /ɔɪ/ still open.**
@@ -540,8 +546,10 @@ all checked against the art:
   more attested `l` in V-C blocks.
 
 **/ɔɪ/ still carries `flips: true` with nothing behind it.** Three
-sightings, all in bottom slots, none checked against the art. It is one
-image away from being settled either way.
+sightings, all in bottom slots, none checked against the art. **Decision
+(session 12): presume no answer until something in the corpus settles
+it.** Leave the flag as the shipped default; do not chase it. If a
+top-slot /ɔɪ/ ever turns up attested, revisit then.
 
 ~~**33. `EXCEPTIONS` is now partly redundant, and one entry is wrong.**~~
 **Done in session 12.** All nineteen attested words are out of
@@ -598,28 +606,24 @@ more compounds are attested.
 `appa` (every phoneme padded) and `mmm` are the other two misses, and
 both look like genuine oddities rather than rules.
 
-**35. Six tests fail on quarantined specimens.** Five use `appa` or
-`fanny` to test the lookup chain — machinery, not those words — and their
-evidence moved to `corpus/uncatalogued/`. The sixth asserts `katara` is
-`derived` when the corpus now attests it.
+~~**35. Six tests fail on quarantined specimens.**~~ **Fixed, session 12.
+Suite is 57/0.** The six broke because `appa`, `katara`, `fanny` and
+`of` all became attested (or, for `of`, left `EXCEPTIONS`), so tests that
+pinned their tier/spelling/source went stale.
 
-None are regressions and none indicate a bug. They want re-pointing at a
-specimen the corpus does not have, and **this will keep recurring**: two
-of them broke this way earlier in the session as words became attested.
-Worth fixing properly — pick specimens from `EXCEPTIONS` that are
-unlikely ever to be attested, or build the fixture from a word the test
-inserts itself.
+Fixed two ways, following the shape this item asked for:
 
-**Session 12 note.** Item 33 emptied nineteen words out of `EXCEPTIONS`,
-which makes two of these staler than they look. `derivedLookup still
-uses everything below the corpus` was passing and would have broken, so
-it was re-pointed at `bloodbending` — in `EXCEPTIONS`, not in CMU, and a
-coined compound the corpus is unlikely to attest. That is the shape the
-other five want. `EXCEPTIONS wins over the dictionary` still fails at its
-first assertion, but note its *second* one now reads `EXCEPTIONS["of"]`,
-which no longer exists: whoever fixes line 54 will get a TypeError on
-line 56 unless both specimens move together. `though` is the "in both
-CMU and the hand list" replacement.
+- **Where the value can drift, read it from the corpus.** `appa`'s
+  three-block check and its source/confidence check now look the entry up
+  via `entries(ctx)` instead of hardcoding `ɑ…ɑ` / `appa-art` — appa had
+  since been re-transcribed to `æ…ə` off `katara-letter`, and a pinned
+  check just breaks again.
+- **Derived-tier specimens moved to words the corpus will not attest.**
+  `bloodbending` (in `EXCEPTIONS`, not CMU, a coined compound) and
+  `though` (in both), replacing the main-character names. A main
+  character is exactly what got attested before, so it was the wrong
+  choice; the user has since confirmed the corpus is essentially
+  complete, which makes these stable.
 
 **36. The syllabifier is hand-rolled.** `ONSET_CLUSTERS` in `g2p.js` is a
 literal list, and `same_syllable` is a heuristic with two known misses

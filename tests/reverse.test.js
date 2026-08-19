@@ -17,7 +17,7 @@ const assert = require("node:assert/strict");
 const { loadSite, entries, plain } = require("./harness.js");
 
 const ctx = loadSite({ lexicon: true, reverse: true });
-const { suggestWords, soundsOnly, editDistance } = ctx;
+const { suggestWords, soundsOnly, editDistance, EXCEPTIONS } = ctx;
 
 // ---------------------------------------------------------------------
 // Stripping
@@ -101,9 +101,12 @@ test("an attested word is marked as coming from the corpus", () => {
 });
 
 test("the Avatar vocabulary is reachable, which CMU alone would not be", () => {
-  // CMU has never heard of Katara.
-  const hits = suggestWords(["k", "ə", "t", "ɑ", "r", "ə"], 5);
-  assert.equal(hits[0].word, "katara");
+  // CMU has never heard of bloodbending. `katara` was the specimen here
+  // and became attested, so it now reverse-decodes with source "corpus";
+  // bloodbending is Avatar vocab the corpus will not attest (item 35),
+  // which keeps this a test of the EXCEPTIONS layer being reachable.
+  const hits = suggestWords(EXCEPTIONS["bloodbending"].split(" "), 5);
+  assert.equal(hits[0].word, "bloodbending");
   assert.equal(hits[0].source, "exceptions");
 });
 

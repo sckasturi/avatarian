@@ -43,17 +43,30 @@ test("the corpus wins over everything below it", () => {
 
 test("appa keeps its three-block spelling through the chain", () => {
   // The one entry that cannot be expressed as a phoneme list, so the one
-  // that proves the corpus is being consulted rather than approximated.
-  assert.deepEqual(plain(wordToIPA("appa")), ["ɑ", "∅", "p", "∅", "ɑ", "∅"]);
+  // that proves the corpus is consulted rather than approximated. Read
+  // the spelling FROM the corpus rather than hardcoding it: appa's vowels
+  // and source have both been re-transcribed since (æ…ə off katara-letter,
+  // was ɑ…ɑ off appa-art), and a check that pins them just breaks again.
+  const appa = entries(ctx).find((e) => e.key === "appa");
+  assert.ok(appa, "appa should be in the corpus");
+  assert.equal(appa.ipa.length, 6, "three blocks");
+  assert.deepEqual(plain(wordToIPA("appa")), plain(appa.ipa),
+    "the corpus spelling comes back");
+  assert.notDeepEqual(plain(wordToIPA("appa")), plain(derivedLookup("appa").ipa),
+    "and it is not the two-block spelling the chain would derive");
 });
 
 test("EXCEPTIONS wins over the dictionary", () => {
-  // "katara" is in EXCEPTIONS and not in CMU, and "of" is in both — the
-  // hand reading has to win for the Avatar vocabulary to mean anything.
-  const katara = lookupWord("katara");
-  assert.equal(katara.tier, "derived");
-  assert.deepEqual(plain(katara.ipa), ["k", "ə", "t", "ɑ", "r", "ə"]);
-  assert.deepEqual(plain(wordToIPA("of")), plain(EXCEPTIONS["of"].split(" ")));
+  // "bloodbending" is in EXCEPTIONS and not in CMU, and "though" is in
+  // both — the hand reading has to win for the Avatar vocabulary to mean
+  // anything. Both are specimens the corpus will not attest, so they stay
+  // `derived`; a main-character name would not (item 35: katara used to
+  // be here and became attested).
+  const bb = lookupWord("bloodbending");
+  assert.equal(bb.tier, "derived");
+  assert.deepEqual(plain(bb.ipa).filter((s) => !s.startsWith("∅")),
+    EXCEPTIONS["bloodbending"].split(" "));
+  assert.deepEqual(plain(wordToIPA("though")), plain(EXCEPTIONS["though"].split(" ")));
 });
 
 test("the dictionary wins over the rules", () => {
@@ -116,22 +129,24 @@ test("the chain never throws, whatever it is handed", () => {
 
 test("the tier says which layer answered", () => {
   assert.equal(lookupWord("appa").tier, "attested");
-  assert.equal(lookupWord("katara").tier, "derived");
+  assert.equal(lookupWord("bloodbending").tier, "derived");
   assert.equal(lookupWord("that").tier, "derived");
   assert.equal(lookupWord("zzblrf").tier, "guessed");
 });
 
 test("an attested answer carries its source and confidence", () => {
   // This is item 21's plumbing. Nothing displays it yet, but the page
-  // cannot show what the lookup doesn't return.
+  // cannot show what the lookup doesn't return. Source/confidence come
+  // from the corpus entry, so read them off it rather than hardcoding.
+  const appa = entries(ctx).find((e) => e.key === "appa");
   const got = lookupWord("appa");
   assert.ok(got.entry, "no entry attached");
-  assert.equal(got.entry.source, "appa-art");
-  assert.equal(got.entry.confidence, "certain");
+  assert.equal(got.entry.source, appa.source);
+  assert.equal(got.entry.confidence, appa.confidence);
 });
 
 test("sentenceToIPA carries the tier onto every word", () => {
-  const words = sentenceToIPA("appa katara zzblrf");
+  const words = sentenceToIPA("appa bloodbending zzblrf");
   assert.deepEqual(plain(words.map(w => w.tier)),
     ["attested", "derived", "guessed"]);
 });
