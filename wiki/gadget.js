@@ -47,12 +47,23 @@
       var caption = label || words.map(function (w) { return w.word; })
         .filter(Boolean).join(" ");
       var ipa = cleanIpa(ipaSeq);
-      renderAvatarian(ipaSeq, span);
-      // One tooltip for the WHOLE word (like the {{Chinese}} template), not
-      // one per glyph. render.js puts a title on each glyph; strip those so
-      // the word-level title below shows on hover anywhere in the word.
-      Array.prototype.forEach.call(span.querySelectorAll("[title]"),
-        function (el) { el.removeAttribute("title"); });
+
+      // Draw each `/`-separated word as its own group, so words keep a
+      // space between them — one renderAvatarian call over the whole line
+      // would butt them together. The outer span stays THE word: it carries
+      // the size, the title, the copy IPA and the selection highlight;
+      // each part just rows its own blocks.
+      span.innerHTML = "";
+      words.forEach(function (w) {
+        var part = document.createElement("span");
+        renderAvatarian(w.ipa, part);           // this tags `part` .avatarian-word
+        part.className = "avatarian-word-part";  // ...replace so size isn't doubled
+        // One tooltip for the whole line (like {{Chinese}}), not one per
+        // glyph: render.js titles each glyph, so strip them.
+        Array.prototype.forEach.call(part.querySelectorAll("[title]"),
+          function (el) { el.removeAttribute("title"); });
+        span.appendChild(part);
+      });
       span.title = (caption ? caption + " " : "") + "/" + ipa + "/";
       // The glyphs are inline SVG and copy as nothing, so stash the IPA for
       // the copy handler below to substitute when this word is selected.

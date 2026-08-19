@@ -29,6 +29,12 @@
    words. The gadget adds this class to any word the selection touches; a
    translucent blue reads as "selected" on a light or dark background. */
 .avatarian-word.avatarian-selected { background: rgba(51, 144, 255, 0.32); }
+/* Each `/`-separated word in one {{Avatarian}} is drawn as its own part,
+   so words keep a gap between them (the outer span rows the parts;
+   inline-flex here rows each part's blocks). The gap reads as a word
+   space at the scaled size. */
+.avatarian-word-part { display: inline-flex; align-items: flex-start; }
+.avatarian-word-part + .avatarian-word-part { margin-left: 0.5em; }
 .avatarian-block { display: inline-flex; flex-direction: column; align-items: center; margin-right: 0.05em; }
 .avatarian-slot { display: flex; justify-content: center; }
 /* The two glyphs in a block share a lattice edge (glyphspec.py: "stack

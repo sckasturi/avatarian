@@ -156,6 +156,7 @@ and made-up words too.</p>
     <button type="button" id="copyBtn" title="Copy the drawing as an image">Copy</button>
     <button type="button" id="pngBtn" title="Download as a PNG image">PNG</button>
     <button type="button" id="svgBtn" title="Download as an SVG, which stays sharp at any size">SVG</button>
+    <button type="button" id="wikitextBtn" title="Copy the {{Avatarian}} template markup to paste into a wiki article">Wikitext</button>
   </div>
 
   <div class="avatarian-output" id="avatarianOutput"></div>
@@ -575,7 +576,29 @@ function fileStem() {
 }
 
 function setExportEnabled(on) {
-  ["copyBtn", "pngBtn", "svgBtn"].forEach((id) => { $(id).disabled = !on; });
+  ["copyBtn", "pngBtn", "svgBtn", "wikitextBtn"].forEach((id) => { $(id).disabled = !on; });
+}
+
+/**
+ * The {{Avatarian}} template markup for the current text, to paste into a
+ * wiki article. ONE template for the whole line: parameter 1 is the words'
+ * sounds separated by ` / ` (the same word break the sounds box uses),
+ * parameter 2 is the English captions joined with spaces. The sounds are
+ * the readable codes the box shows, nulls and overrides included, so it
+ * draws exactly what's on screen — whether you typed English or built the
+ * sounds by hand.
+ */
+function toWikitext() {
+  const words = soundTextToWords($("soundsInput").value)
+    .filter((w) => w.ipa.length);
+  if (!words.length) return "";
+  const sounds = words
+    .map((w) => w.ipa.map(soundToCode).join(" "))
+    .join(" / ");
+  const label = words.map((w) => (w.word || "").trim()).filter(Boolean).join(" ");
+  return label
+    ? `{{Avatarian|${sounds}|${label}}}`
+    : `{{Avatarian|${sounds}}}`;
 }
 
 function flash(btn, text) {
@@ -759,6 +782,24 @@ $("copyBtn").addEventListener("click", async (e) => {
     } catch (err2) {
       exportFailed(btn, "copy", err2);
     }
+  }
+});
+
+$("wikitextBtn").addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  const wikitext = toWikitext();
+  if (!wikitext) { flash(btn, "Nothing"); return; }
+  try {
+    await navigator.clipboard.writeText(wikitext);
+    flash(btn, "Copied");
+    $("outHint").textContent =
+      "Wikitext copied — paste it into an article on a wiki that has the "
+      + "Avatarian gadget.";
+  } catch (err) {
+    // No clipboard (e.g. file://): show the markup so it can still be
+    // selected and copied by hand.
+    $("outHint").textContent = "Copy this: " + wikitext;
+    flash(btn, "See below");
   }
 });
 
