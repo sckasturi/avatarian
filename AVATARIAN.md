@@ -277,7 +277,7 @@ interpretations of the key chart, not facsimiles.
 | --- | --- | --- |
 | consonant, `mark_consonant` | 5 × 5 cells | 100 × 100 |
 | vowel, `mark` | 5 × 4 cells | 100 × 80 (flat) |
-| `mark_full` (punctuation) | 1 × 9 cells | 36 × 164 |
+| `mark_full` (punctuation) | 1–3 × 9 cells | 36–68 × 164 |
 
 Constants (`tools/glyphspec.py` / `tools/build_glyphs.py`, kept in step):
 
@@ -387,11 +387,12 @@ are accepted as aliases of `ə`, with /r/ emitted as a separate segment
 
 ## 9. Punctuation
 
-`. , ? !` are a **third height class — `mark_full`: one lattice column
-wide and nine rows tall** (a 36×164 box), the height of a whole block. A
-mark stands beside the writing rather than in a slot, is not paired with
-anything, and does not count toward the whole-blocks rule — the sounds
-either side of a mark pair among themselves.
+`. , ? !` are a **third height class — `mark_full`: nine rows tall and
+one or more lattice columns wide** (a period is one column, a 36×164 box;
+a mark may be wider), the height of a whole block. A mark stands beside
+the writing rather than in a slot, is not paired with anything, and does
+not count toward the whole-blocks rule — the sounds either side of a mark
+pair among themselves.
 
 | | shape | name |
 | --- | --- | --- |

@@ -519,11 +519,20 @@ comma — the comma's stroke through the *top* two rows rather than the
 bottom). Do not wire English conversion of possessives to emit `'`; those
 go through g2p as sounds and are attested that way.
 
-~~**38. Marks need variable width.**~~ **In progress (session 13).** The
-`?` doesn't fit a 1-column mark — it wants **2×9 or 3×9** (to be decided
-by drawing it). So `mark_full` can no longer be a fixed 1×9: the width has
-to be a per-mark property the designer can set, threaded through the
-geometry and the ship path. See the build below.
+~~**38. Marks need variable width.**~~ **Done in session 13.** `mark_full`
+is no longer a fixed 1×9 — a mark's column count is a per-mark property
+(its grid width), so a mark can be 1, 2 or 3 columns wide. The designer
+has a **COLUMNS** control (beside the vowel row toggle, shown only for
+`mark_full`) that reshapes the canvas; the width threads through
+`glyphspec`/`geom` (`frame_for(kind, form, cols)`), the ship path
+(`MARKS_FULL` entries are `mark(cols, body)`; `to_python` emits
+`mark(cols, …)`; `designer_server` reports the shipped width as the
+catalogue grid) and `render.js` (the mark span's aspect-ratio comes off
+its viewBox). `check_geom` covers 2- and 3-wide marks (363 cases).
+
+**Still open: the `?`'s actual width.** All four shipped marks are still
+1 column. The `?` wants 2 or 3 — draw it in the designer (open `?`, set
+COLUMNS to 2 or 3, draw, ship it) to decide.
 
 ### Glyphs
 
