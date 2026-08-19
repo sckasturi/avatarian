@@ -1,0 +1,29 @@
+{
+  "name": "question",
+  "ipa": "?",
+  "type": "mark_full",
+  "grid": [
+    2,
+    9
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 1.5,
+          "y": 4
+        },
+        {
+          "x": 1.5,
+          "y": 5,
+          "seg": "arc",
+          "bulge": -1
+        }
+      ]
+    }
+  ],
+  "updated": "2026-08-19T15:33:52Z"
+}

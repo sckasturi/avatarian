@@ -304,15 +304,10 @@ NULL_C_IPA = "∅c"  # manifest key for the consonant-height filler
 
 MARKS_FULL = {
     # A dot on the baseline (bottom row), beside the word's last block.
-    "period": mark(1, path("M 18 146 L 18 146.5")),
-    # A stroke through the bottom two rows — the period given length rather
-    # than a tail, which a single column has no room for.
-    "comma": mark(1, path("M 18 122 L 18 146")),
-    # A full stroke over a dot: the shape everyone already reads as this.
-    "exclamation": mark(1, path("M 18 18 L 18 98") + path("M 18 146 L 18 146.5")),
-    # The same, broken one row: a question is an interrupted statement.
-    "question": mark(1, path("M 18 18 L 18 50") + path("M 18 82 L 18 98")
-                     + path("M 18 146 L 18 146.5")),
+    "period": mark(1, dot(18, 114)),
+    "comma": mark(1, path("M 18 114 L 18 146")),
+    "exclamation": mark(1, dot(18, 82) + path("M 18 18 L 18 58") + path("M 18 146 L 18 106")),
+    "question": mark(2, path("M 34 74 A 10 10 0 1 0 34 90")),
 }
 
 # The character you type -> the mark's name, i.e. its manifest key -> stem.

@@ -1,0 +1,49 @@
+{
+  "name": "exclamation",
+  "ipa": "!",
+  "type": "mark_full",
+  "grid": [
+    1,
+    9
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "dot",
+      "x": 0.5,
+      "y": 4.5,
+      "size": "m"
+    },
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.5,
+          "y": 3,
+          "seg": "line"
+        }
+      ]
+    },
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 8.5
+        },
+        {
+          "x": 0.5,
+          "y": 6,
+          "seg": "line"
+        }
+      ]
+    }
+  ],
+  "updated": "2026-08-19T15:32:34Z"
+}

@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=35" />
-<link rel="stylesheet" href="css/style.css?v=35" />
+<link rel="stylesheet" href="css/blocks.css?v=36" />
+<link rel="stylesheet" href="css/style.css?v=36" />
 </head>
 <body>
 
@@ -204,29 +204,29 @@ and made-up words too.</p>
   <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=35"></script>
+<script src="js/manifest.js?v=36"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=35"></script>
+<script src="js/corpus.js?v=36"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=35"></script>
-<script src="js/g2p.js?v=35"></script>
+<script src="js/lexicon.js?v=36"></script>
+<script src="js/g2p.js?v=36"></script>
 <!-- the sounds syntax; loads after g2p.js, which it reads
      ARPABET_TO_IPA from. Shared with the glyph designer. -->
-<script src="js/sounds.js?v=35"></script>
-<script src="js/render.js?v=35"></script>
+<script src="js/sounds.js?v=36"></script>
+<script src="js/render.js?v=36"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=35"></script>
-<script src="js/draw.js?v=35"></script>
+<script src="js/recognise.js?v=36"></script>
+<script src="js/draw.js?v=36"></script>
 <!-- Sounds -> likely English. Searches the corpus, then EXCEPTIONS, then
      the whole bundled dictionary, so it only earns its keep on a page
      that already loads lexicon.js — which this one does. -->
-<script src="js/reverse.js?v=35"></script>
+<script src="js/reverse.js?v=36"></script>
 <script>
 const REFERENCE = window.AVATARIAN_REFERENCE || {};
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};

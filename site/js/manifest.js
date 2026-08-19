@@ -299,25 +299,25 @@ window.AVATARIAN_GLYPHS = {
     "name": "period",
     "status": "drawn",
     "type": "mark_full",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 146 L 18 146.5\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"18\" cy=\"114\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   ",": {
     "name": "comma",
     "status": "drawn",
     "type": "mark_full",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 122 L 18 146\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 114 L 18 146\"/></svg>"
   },
   "?": {
     "name": "question",
     "status": "drawn",
     "type": "mark_full",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 18 50\"/><path d=\"M 18 82 L 18 98\"/><path d=\"M 18 146 L 18 146.5\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 52 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 34 74 A 10 10 0 1 0 34 90\"/></svg>"
   },
   "!": {
     "name": "exclamation",
     "status": "drawn",
     "type": "mark_full",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 18 98\"/><path d=\"M 18 146 L 18 146.5\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"18\" cy=\"82\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 18 18 L 18 58\"/><path d=\"M 18 146 L 18 106\"/></svg>"
   }
 };
 

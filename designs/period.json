@@ -1,0 +1,19 @@
+{
+  "name": "period",
+  "ipa": ".",
+  "type": "mark_full",
+  "grid": [
+    1,
+    9
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "dot",
+      "x": 0.5,
+      "y": 6.5,
+      "size": "m"
+    }
+  ],
+  "updated": "2026-08-19T15:32:37Z"
+}

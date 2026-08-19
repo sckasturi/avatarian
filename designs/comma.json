@@ -1,0 +1,28 @@
+{
+  "name": "comma",
+  "ipa": ",",
+  "type": "mark_full",
+  "grid": [
+    1,
+    9
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 6.5
+        },
+        {
+          "x": 0.5,
+          "y": 8.5,
+          "seg": "line"
+        }
+      ]
+    }
+  ],
+  "updated": "2026-08-19T15:32:22Z"
+}
