@@ -127,12 +127,17 @@ test("every glyph has a readable code, and it round-trips", (t) => {
     // written with mixed null heights exactly as the rule predicts, so
     // `0` plus the partner says everything a code could say.
     if (ipa === "∅c") continue;
+    // Punctuation (mark_full) glyphs — , . ? ! — are drawn like every
+    // other glyph and ship through the manifest so the designer can edit
+    // them, but they are typed as THEMSELVES, not via a phoneme code, so
+    // they have no entry in IPA_TO_CODE and none is wanted.
+    if (glyphs[ipa].type === "mark_full") continue;
     const code = ctx.IPA_TO_CODE[ipa];
     assert.ok(code, `no code for ${ipa}`);
     assert.equal(normaliseSound(code), ipa,
       `${ipa} displays as '${code}', which reads back as something else`);
   }
-  t.diagnostic("∅c has no typeable code — deliberate, and settled by B3");
+  t.diagnostic("∅c and the punctuation marks have no typeable code — by design");
 });
 
 // ---------------------------------------------------------------------

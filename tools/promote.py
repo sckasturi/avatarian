@@ -60,6 +60,7 @@ DICT_FOR = {
     "vowel": "VOWELS",
     "mark": "MARKS_VOWEL",
     "mark_consonant": "MARKS_CONSONANT",
+    "mark_full": "MARKS_FULL",
 }
 
 

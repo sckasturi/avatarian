@@ -32,23 +32,35 @@ GEO.MARGIN_X = (100 - GEO.CONS_GRID[0] * GEO.UNIT) / 2;              // 10
 GEO.MARGIN_Y_SQUARE = (100 - GEO.CONS_GRID[1] * GEO.UNIT) / 2;       // 10
 GEO.MARGIN_Y_FLAT = (100 * GEO.FLAT - GEO.VOWEL_GRID[1] * GEO.UNIT) / 2;  // 8
 
+// A full-height mark (punctuation): 1x9, its own narrow tall box, same
+// 10-unit clearance margins as a letter. Mirrors MARK_FULL_* in
+// glyphspec.py; neither consonant nor vowel, handled explicitly below.
+GEO.MARK_FULL_GRID = [1, 9];
+GEO.MARK_FULL_BOX_W = GEO.MARK_FULL_GRID[0] * GEO.UNIT + 2 * GEO.MARGIN_X;   // 36
+GEO.MARK_FULL_BOX_H = GEO.MARK_FULL_GRID[1] * GEO.UNIT + 2 * GEO.MARGIN_Y_SQUARE;  // 164
+
 // Which `type` values are written at a consonant's height; everything
 // else takes the vowel's shorter lattice and its flat form. A mark
 // stands for no sound but is still written at one of the two heights —
 // the rounded ∪ null is vowel-height, the squared ∪ consonant-height.
-// Mirrors TALL_KINDS in glyphspec.py.
+// Mirrors TALL_KINDS in glyphspec.py. `mark_full` is neither.
 GEO.TALL_KINDS = ["consonant", "mark_consonant"];
 
 const isTall = (kind) => GEO.TALL_KINDS.includes(kind);
 
 /** How lattice coordinates land in a viewBox. sx !== sy only for the
- *  stretched square form of a vowel. */
+ *  stretched square form of a vowel. `w` is the box width (100 for a
+ *  letter, 36 for a full-height mark). */
 function frameFor(kind, form) {
+  if (kind === "mark_full") {
+    return { sx: GEO.UNIT, sy: GEO.UNIT, ox: GEO.MARGIN_X, oy: GEO.MARGIN_Y_SQUARE,
+             h: GEO.MARK_FULL_BOX_H, w: GEO.MARK_FULL_BOX_W };
+  }
   if (isTall(kind)) {
-    return { sx: GEO.UNIT, sy: GEO.UNIT, ox: GEO.MARGIN_X, oy: GEO.MARGIN_Y_SQUARE, h: 100 };
+    return { sx: GEO.UNIT, sy: GEO.UNIT, ox: GEO.MARGIN_X, oy: GEO.MARGIN_Y_SQUARE, h: 100, w: 100 };
   }
   if (form === "flat") {
-    return { sx: GEO.UNIT, sy: GEO.UNIT, ox: GEO.MARGIN_X, oy: GEO.MARGIN_Y_FLAT, h: 100 * GEO.FLAT };
+    return { sx: GEO.UNIT, sy: GEO.UNIT, ox: GEO.MARGIN_X, oy: GEO.MARGIN_Y_FLAT, h: 100 * GEO.FLAT, w: 100 };
   }
   return {
     sx: GEO.UNIT,
@@ -56,10 +68,12 @@ function frameFor(kind, form) {
     ox: GEO.MARGIN_X,
     oy: GEO.MARGIN_Y_FLAT / GEO.FLAT,
     h: 100,
+    w: 100,
   };
 }
 
 function gridFor(kind) {
+  if (kind === "mark_full") return [...GEO.MARK_FULL_GRID];
   return isTall(kind) ? [...GEO.CONS_GRID] : [...GEO.VOWEL_GRID];
 }
 
@@ -249,14 +263,15 @@ function body(design, form = "square") {
 function toSVG(design, form = "square") {
   const f = frameFor(design.type || "consonant", form);
   return (
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 ${num(f.h)}" ` +
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${num(f.w)} ${num(f.h)}" ` +
     `fill="none" stroke="currentColor" stroke-width="${GEO.SW}" ` +
     `stroke-linecap="square" stroke-linejoin="miter">${body(design, form)}</svg>`
   );
 }
 
 function formsFor(design) {
-  return isTall(design.type || "consonant") ? ["square"] : ["square", "flat"];
+  const kind = design.type || "consonant";
+  return (kind !== "mark_full" && !isTall(kind)) ? ["square", "flat"] : ["square"];
 }
 
 /** The lattice-space path for the editor's own overlay, at a given

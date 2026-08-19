@@ -294,6 +294,30 @@ window.AVATARIAN_GLYPHS = {
     "status": "drawn",
     "type": "null_consonant",
     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 18 82 L 82 82 L 82 18\"/></svg>"
+  },
+  ".": {
+    "name": "period",
+    "status": "drawn",
+    "type": "mark_full",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 146 L 18 146.5\"/></svg>"
+  },
+  ",": {
+    "name": "comma",
+    "status": "drawn",
+    "type": "mark_full",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 122 L 18 146\"/></svg>"
+  },
+  "?": {
+    "name": "question",
+    "status": "drawn",
+    "type": "mark_full",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 18 50\"/><path d=\"M 18 82 L 18 98\"/><path d=\"M 18 146 L 18 146.5\"/></svg>"
+  },
+  "!": {
+    "name": "exclamation",
+    "status": "drawn",
+    "type": "mark_full",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 18 98\"/><path d=\"M 18 146 L 18 146.5\"/></svg>"
   }
 };
 

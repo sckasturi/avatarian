@@ -52,15 +52,16 @@ DOT = UNIT / 2  # circle fills one grid square
 VOWEL_SW = SW
 
 HEADER = (
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 {h}" '
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" '
     'fill="none" stroke="currentColor" stroke-width="{sw}" '
     'stroke-linecap="square" stroke-linejoin="miter">'
 )
 
 
-def svg(body, sw=SW, box=100):
-    """Serialise a glyph body into a 100-wide viewBox `box` units tall."""
-    return HEADER.format(sw=sw, h=box) + body + "</svg>"
+def svg(body, sw=SW, box=100, w=100):
+    """Serialise a glyph body into a `w`-wide viewBox `box` units tall.
+    Letters are 100 wide; a full-height punctuation mark is 36."""
+    return HEADER.format(sw=sw, w=w, h=box) + body + "</svg>"
 
 
 # ---------------------------------------------------------------------------
@@ -283,6 +284,37 @@ MARKS_VOWEL = {
 NULL_IPA = "∅"    # manifest key for the vowel-height filler
 NULL_C_IPA = "∅c"  # manifest key for the consonant-height filler
 
+# ---------------------------------------------------------------------------
+# MARKS_FULL — punctuation. A THIRD height class: one lattice column wide,
+# nine rows tall (mark_full, 36x164), standing beside the writing rather
+# than in a slot. Drawn on the 1x9 lattice like every other glyph — the
+# designer can edit them — and keyed in the manifest by the character you
+# type, the way the nulls are keyed by ∅. render.js reads them from the
+# manifest, falling back to its own copy only if the build hasn't run.
+#
+# 9 rows of 16 run y=10..154; row centres are 18 + 16n.
+# ---------------------------------------------------------------------------
+
+MARKS_FULL = {
+    # A dot on the baseline (bottom row), beside the word's last block.
+    "period": path("M 18 146 L 18 146.5"),
+    # A stroke through the bottom two rows — the period given length rather
+    # than a tail, which a single column has no room for.
+    "comma": path("M 18 122 L 18 146"),
+    # A full stroke over a dot: the shape everyone already reads as this.
+    "exclamation": path("M 18 18 L 18 98") + path("M 18 146 L 18 146.5"),
+    # The same, broken one row: a question is an interrupted statement.
+    "question": (path("M 18 18 L 18 50") + path("M 18 82 L 18 98")
+                 + path("M 18 146 L 18 146.5")),
+}
+
+# The character you type -> the mark's name, i.e. its manifest key -> stem.
+# Kept beside IPA_TO_NAME (spread into it below) so every consumer that
+# walks that map — the manifest, the designer catalogue — sees the marks.
+PUNCT_TO_NAME = {".": "period", ",": "comma", "?": "question", "!": "exclamation"}
+MARK_FULL_BOX = 164  # viewBox height for a 1x9 mark (9*16 + 2*10)
+MARK_FULL_W = 36     # viewBox width (1*16 + 2*10)
+
 
 # Glyphs whose source is NOT reference/avatarian_key.svg, so the key tab
 # can say why they have nothing to compare against. Without this they look
@@ -381,6 +413,8 @@ IPA_TO_NAME = {
     "ɑ": "ah", "aɪ": "ai", "aʊ": "au", "ɔɪ": "oi",
     NULL_IPA: "null_v",
     NULL_C_IPA: "null_c",
+    # Punctuation, keyed by the character. mark_full height class.
+    **PUNCT_TO_NAME,
 }
 
 VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
@@ -388,6 +422,8 @@ VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
 
 
 def glyph_type(ipa):
+    if ipa in PUNCT_TO_NAME:
+        return "mark_full"
     if ipa == NULL_IPA:
         return "null"
     if ipa == NULL_C_IPA:
@@ -480,6 +516,11 @@ def main():
     for name, body in {**CONSONANTS, **MARKS_CONSONANT}.items():
         (OUT / f"{name}.svg").write_text(svg(body), encoding="utf-8")
         drawn[name] = True
+    # Full-height punctuation marks: their own 36x164 box, one form only.
+    for name, body in MARKS_FULL.items():
+        (OUT / f"{name}.svg").write_text(
+            svg(body, box=MARK_FULL_BOX, w=MARK_FULL_W), encoding="utf-8")
+        drawn[name] = True
     # Vowels and vowel-height marks ship twice: the square drawing for
     # equal-height mode, and a geometrically flattened 100x80 copy for
     # proportional mode.
@@ -500,7 +541,7 @@ def main():
     # Sweep out SVGs this run didn't write. Renaming a glyph otherwise
     # leaves the old stem behind, and a ghost file looks exactly like a
     # live one when you go looking for why a shape didn't change.
-    all_marks = {**MARKS_CONSONANT, **MARKS_VOWEL}
+    all_marks = {**MARKS_CONSONANT, **MARKS_VOWEL, **MARKS_FULL}
     current = {f"{n}.svg" for n in {**CONSONANTS, **VOWELS, **all_marks}} \
         | {f"{n}{FLAT_SUFFIX}.svg" for n in {**VOWELS, **MARKS_VOWEL}} \
         | {f"{n}.svg" for n in PLACEHOLDERS} | {"unknown.svg"}

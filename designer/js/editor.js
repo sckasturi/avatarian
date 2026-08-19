@@ -59,7 +59,7 @@ const Editor = {
   at(e, raw = false) {
     const f = this.frame;
     const r = this.el.getBoundingClientRect();
-    const [w, h] = [100, f.h];
+    const [w, h] = [f.w, f.h];
     const sx = ((e.clientX - r.left) / r.width) * w;
     const sy = ((e.clientY - r.top) / r.height) * h;
     let x = (sx - f.ox) / f.sx;
@@ -465,20 +465,28 @@ const Editor = {
     if (!this.el || !this.design) return;
     const f = this.frame;
     const [gw, gh] = this.grid;
-    this.el.setAttribute("viewBox", `0 0 100 ${f.h}`);
+    this.el.setAttribute("viewBox", `0 0 ${f.w} ${f.h}`);
     // Sized in pixels rather than left to CSS: an inline SVG with a
-    // viewBox fills its box and would letterbox, and a vowel's 100x80
-    // wants a different box from a consonant's square. Measuring is
-    // exact, and the pane is the only constraint that matters.
+    // viewBox fills its box and would letterbox, and each height class
+    // wants a different box — a consonant's square, a vowel's 100x80, a
+    // punctuation mark's tall-narrow 36x164. Measuring is exact, and the
+    // pane is the only constraint that matters.
     const wrap = this.el.parentElement;
     const pad = 32;
     const avail = {
       w: (wrap.clientWidth || 620) - pad,
       h: (wrap.clientHeight || 620) - pad,
     };
-    const px = Math.max(280, Math.min(760, avail.w, (avail.h * 100) / f.h));
-    this.el.setAttribute("width", px);
-    this.el.setAttribute("height", (px * f.h) / 100);
+    // Fit the box within the pane preserving aspect: size the LONG side to
+    // whichever of width/height binds, floored so a narrow mark stays
+    // usable and capped so a big glyph doesn't overflow. A 1x9 mark is
+    // bound by height and comes out tall and thin, not stretched to 280.
+    const box = Math.max(f.w, f.h);
+    const longPx = Math.max(280, Math.min(760, (avail.w * box) / f.w,
+                                          (avail.h * box) / f.h));
+    const scale = longPx / box;
+    this.el.setAttribute("width", f.w * scale);
+    this.el.setAttribute("height", f.h * scale);
     this.el.setAttribute("class", this.tool);
 
     const out = [];

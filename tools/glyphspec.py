@@ -153,11 +153,17 @@ DEFAULT_DOT = "m"
 
 CONS_GRID = (5, 5)
 VOWEL_GRID = (5, 4)
+# A full-height mark (punctuation): one lattice column wide, nine rows
+# tall — the height of a whole block rather than a slot, so it stands
+# beside the writing and pairs with nothing. Its own geometry, neither
+# consonant nor vowel; frame_for and grid_for special-case it.
+MARK_FULL_GRID = (1, 9)
 
 # Which `type` values are written at a consonant's height. Everything
 # else takes the vowel's shorter lattice and its flat form. See "Height
 # classes" in the module docstring: `mark` and `mark_consonant` are both
 # soundless fillers, and the only thing separating them is this.
+# `mark_full` is neither — it is handled explicitly, not through is_tall.
 TALL_KINDS = {"consonant", "mark_consonant"}
 
 
@@ -174,10 +180,17 @@ MARGIN_X = (100 - CONS_GRID[0] * UNIT) / 2                  # 10
 MARGIN_Y_SQUARE = (100 - CONS_GRID[1] * UNIT) / 2           # 10
 MARGIN_Y_FLAT = (100 * FLAT - VOWEL_GRID[1] * UNIT) / 2     # 8
 
+# A full-height mark keeps the same 10-unit clearance margins as a letter,
+# so a 1x9 lattice sits in a 36x164 box (16 + 20 wide, 144 + 20 tall).
+MARK_FULL_BOX_W = MARK_FULL_GRID[0] * UNIT + 2 * MARGIN_X   # 36
+MARK_FULL_BOX_H = MARK_FULL_GRID[1] * UNIT + 2 * MARGIN_Y_SQUARE  # 164
+
 EPS = 1e-9
 
+# Width is a template field too: a letter is 100 wide, a full-height mark
+# only 36. Everything before was 100, so the field defaults to it below.
 HEADER = (
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 {h}" '
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" '
     'fill="none" stroke="currentColor" stroke-width="{sw}" '
     'stroke-linecap="square" stroke-linejoin="miter">'
 )
@@ -190,8 +203,9 @@ class Frame:
     sits. sx != sy only for the stretched square form of a vowel.
     """
 
-    def __init__(self, sx, sy, ox, oy, box_h):
-        self.sx, self.sy, self.ox, self.oy, self.box_h = sx, sy, ox, oy, box_h
+    def __init__(self, sx, sy, ox, oy, box_h, box_w=100):
+        self.sx, self.sy, self.ox, self.oy = sx, sy, ox, oy
+        self.box_h, self.box_w = box_h, box_w
 
     def x(self, gx):
         return self.ox + gx * self.sx
@@ -209,6 +223,10 @@ def frame_for(kind, form):
     The vowel-height null shares a vowel's frames; the consonant-height
     one shares a consonant's.
     """
+    if kind == "mark_full":
+        # 1x9, unit-square like a consonant, in its own narrow tall box.
+        return Frame(UNIT, UNIT, MARGIN_X, MARGIN_Y_SQUARE,
+                     MARK_FULL_BOX_H, MARK_FULL_BOX_W)
     if is_tall(kind):
         return Frame(UNIT, UNIT, MARGIN_X, MARGIN_Y_SQUARE, 100)
     if form == "flat":
@@ -218,6 +236,8 @@ def frame_for(kind, form):
 
 
 def grid_for(kind):
+    if kind == "mark_full":
+        return list(MARK_FULL_GRID)
     return list(CONS_GRID if is_tall(kind) else VOWEL_GRID)
 
 
@@ -453,14 +473,17 @@ def body(design, form="square"):
 
 def to_svg(design, form="square"):
     frame = frame_for(design.get("type", "consonant"), form)
-    return HEADER.format(sw=SW, h=num(frame.box_h)) + body(design, form) + "</svg>"
+    return (HEADER.format(sw=SW, w=num(frame.box_w), h=num(frame.box_h))
+            + body(design, form) + "</svg>")
 
 
 def forms_for(design):
     """Which forms this design ships. Vowel-height glyphs ride along
-    flat as well; consonant-height ones have only the square box."""
-    return ["square"] if is_tall(design.get("type", "consonant")) \
-        else ["square", "flat"]
+    flat as well; consonant-height ones (and full-height marks) have only
+    the square box."""
+    kind = design.get("type", "consonant")
+    return ["square", "flat"] if (kind != "mark_full" and not is_tall(kind)) \
+        else ["square"]
 
 
 # --- emitting source for build_glyphs.py -----------------------------------

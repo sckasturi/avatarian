@@ -247,5 +247,25 @@
     "file": "null_c.svg",
     "status": "drawn",
     "type": "null_consonant"
+  },
+  ".": {
+    "file": "period.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  ",": {
+    "file": "comma.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "?": {
+    "file": "question.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "!": {
+    "file": "exclamation.svg",
+    "status": "drawn",
+    "type": "mark_full"
   }
 }
