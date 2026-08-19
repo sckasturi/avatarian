@@ -66,10 +66,32 @@ mis-attribution, so its `source` was changed to `toph-letter` and
 Surfacing exactly this kind of thing is part of what a source-catalogue
 page is *for* — worth a scan of the other cards for the same pattern.
 
+### Follow-on tweaks (same session, after the two builds)
+
+- **Contested words in the translator: badge → asterisk, and gated.** The
+  `contested` mark in the translator output is now a small accent asterisk
+  on the word (`your*`), not a badge — and it only shows when the sources
+  are **roughly evenly split**: the runner-up spelling must be at least
+  half the leader (`minor*2 >= major`). `your`/`come`/`free`/`of` (2–1,
+  1–1) qualify; `the` (5–2) does not. The counts come off `record.count`
+  minus the `alternates` counts (the winner) versus each alternate. The
+  corpus page's contested handling is untouched — this was translator-only.
+- **Sources can carry named `links`.** New optional field on a source:
+  `links: [{text, url}]`. `where` was doing double duty (a URL renders as
+  a link, a plain string as a label); a source whose `where` is a *label*
+  (the movie letters) had no way to also link out. `toph-letter` now keeps
+  `where: "movie"` (so its thumbnail links to the reference image) plus a
+  `links` entry "reddit transcription" → the r/neography post. Rendered on
+  both the corpus hover and the sources page. **The field is safe through
+  the pipeline**: `build_corpus` ignores unknown source keys and
+  `write_js` passes the whole source dict through; the workbench loads
+  (`state.sources = body.sources`) and saves sources wholesale, editing
+  fields in place, so a future workbench edit won't drop it.
+
 ### Traps / notes
 
-- **Cache-bust bumped `v=31 → v=32`** across `index.html` and
-  `corpus.html` (I changed `style.css`). `sources.html` ships at `v=32`.
+- **Cache-bust bumped `v=31 → v=32 → v=33`** across `index.html`,
+  `corpus.html` and `sources.html` (two `style.css` changes this session).
 - The Browser-pane **screenshot/scroll desynced repeatedly** after JS
   scrolls on the tall desktop layout — blank frames. Functional checks via
   `javascript_tool` (class lists, computed styles, filtered counts) were

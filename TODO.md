@@ -146,10 +146,15 @@ the underline marks every attested word, the badge the disputed handful.
 They coexist (`the`/`come` render underlined + `contested`; `cat` plain).
 Verified in-browser; cache-bust `v=31 → v=32`.
 
-**The `contested` slice shipped earlier (session 8)** and is unchanged: a
-word whose sources *disagree* gets a `contested` badge with counts and
-sources in its tooltip. It needed no B4 decision because it is rare by
-construction — the handful genuinely in dispute, not the whole page.
+**The `contested` slice** (a word whose sources *disagree* on the
+spelling) is marked separately from the underline, and in session 13 its
+translator display changed twice over: from a "contested" badge to a
+small asterisk on the word (`your*`), **and gated to a near-even split** —
+the runner-up spelling must be at least half the leader (`minor*2 >=
+major`). So `your`/`come`/`free`/`of` (2–1, 1–1) mark; `the` (5–2) does
+not, because a lopsided split is one spelling with stragglers, not a real
+dispute. This is translator-only; the corpus page keeps its own contested
+handling (the `is-contested` border, the collapsed-by-spelling hover).
 
 ~~**22. Make the corpus win in the lookup chain.**~~ **Done in session
 8.** `corpus/attested.json` → `tools/build_corpus.py` → `site/js/corpus.js`,
