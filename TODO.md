@@ -456,8 +456,9 @@ It went through a long UX arc with the user; where it landed:
   (committed, served); the corpus page links each source to its post URL
   or its image. See the `.gitignore` note.
 - **The source filter is item 7 as a filter** — it counts every source
-  that cites a word, winning spelling or losing alternate. A standalone
-  source-catalogue page (item 7 proper) is still open if wanted.
+  that cites a word, winning spelling or losing alternate. The standalone
+  source-catalogue page (item 7 proper) shipped in session 13 as
+  `sources.html`.
 - **B4 decided: a line under attested words.** The page is the working
   example; applying the same mark in the translator output is item 21.
 
@@ -676,8 +677,27 @@ implement it. §12 is the other thing — present tense, no history, no
 citations, no argument. Where a rule isn't determined it says so and
 stops rather than guessing.
 
-**7. Reference material catalogue page.** An index of every reference
-image and what it contains. Overlaps B2 — the inventory is the input.
+~~**7. Reference material catalogue page.**~~ **Done in session 13** —
+`site/sources.html`, the inverse of the corpus page. A card per reference
+image (letter, poster, stamp) showing the image, its provenance link, the
+transcription, and every word read off it — each drawn in the spelling
+*that source* used (the corpus page only reveals per-source spellings in
+the contested hover), with a `∗` on any word this source spells
+differently from the corpus's most-attested form. Sorted richest-first.
+
+Cross-linked with the corpus page both ways: word chips link to
+`corpus.html?q=<word>`, a "Sources →" nav link was added, and
+`corpus.html` now honours `?source=<id>` / `?q=<word>` to pre-filter.
+Reads `window.AVATARIAN_CORPUS` — no server, no build step. Light/dark
+verified.
+
+**A discrepancy it surfaced, left for the user:** `academy` cites
+`instagram-3.3` in `attested.json`, but that poster's transcription has
+no "academy" in it (the word is in the toph-letter, "metalbending
+academy"). Looks like a mis-attributed source. Not touched — it is a
+reading/data question for the workbench, not a code one, and the corpus
+files may be in flux. The catalogue makes this kind of thing visible,
+which is part of its point.
 
 ~~**6. Consolidate credits.**~~ **Done in session 7.** `AVATARIAN.md`
 § Credit is the one place they are maintained; `README.md` and

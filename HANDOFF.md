@@ -8,6 +8,91 @@ what to do next.
 
 ---
 
+## Session 13 — the two display items: the underline and the catalogue
+
+Two clean builds off session 12's backlog, both verified in-browser and
+pushed. Nothing structural moved; these are the UI catching up with
+decisions already made.
+
+### Item 21 — B4's underline in the translator output
+
+The corpus page already underlined attested words (as its own legend);
+this puts the same mark in the main translator output. A new
+`.cap-en.is-attested` rule in `style.css` (the accent underline, matching
+`corpus.html`'s `.word-en`), applied in `renderWords`.
+
+The one thing worth knowing: **the signal is read off the caption, not
+off `w.tier`.** `draw()` always renders from the SOUNDS BOX — even when
+you convert from English, that path fills the sounds box and then draws it
+— so the word objects come from `soundTextToWords` and carry no tier or
+entry. That is exactly why the existing `contested` slice already looked
+words up by caption in `corpusWords()`. So I lifted that one lookup above
+the caption and it now drives both marks: the underline for every attested
+word, the `contested` badge for the disputed handful. They coexist —
+`the`/`come` render underlined **and** contested; `cat` plain.
+
+### Item 7 — the standalone source catalogue (`site/sources.html`)
+
+The inverse of `corpus.html`. That page is word-primary (a grid of words,
+each hovering to its sources); this is source-primary — a card per
+reference image, showing the image, its provenance link, the
+transcription, and **every word read off it drawn in the spelling THAT
+source used**. The corpus page only reveals per-source spellings in the
+contested hover; the catalogue shows them for every source. A word a
+source spells differently from the corpus's most-attested form is flagged
+`∗` (via `spellingInSource`, which checks the winning `sources` then the
+`alternates`).
+
+It reuses the corpus page's conventions verbatim — the `sources/<image>`
+path, the `where → post-URL-or-image` link rule, `allSourcesOf` so a
+source that only contributed a losing alternate still lists the word — so
+the two pages can't disagree about what a source is or links to. Sorted
+richest-first, matching the corpus source dropdown. No server, no build
+step; reads `window.AVATARIAN_CORPUS`. Light and dark verified.
+
+**Cross-linked both ways.** `corpus.html` now honours `?source=<id>` and
+`?q=<word>`, applied before first render (a stale source id falls back to
+showing everything). Word chips link to `corpus.html?q=<word>`, and a
+`Sources →` nav link was added to the corpus page.
+
+### A discrepancy the catalogue surfaced — for the user, not fixed
+
+`academy` cites `instagram-3.3` in `attested.json`, but that poster's
+transcription contains no "academy" — the word is in the **toph-letter**
+("metalbending academy"). It looks like a mis-attributed source. **Not
+touched**: it is a reading/data question for the workbench, the corpus
+files may be in flux from a parallel session, and surfacing exactly this
+kind of thing is part of what a source-catalogue page is *for*. Worth a
+look next time the corpus is open — is `academy`'s source wrong, or does
+the `what` transcription just not list every word on the image?
+
+### Traps / notes
+
+- **Cache-bust bumped `v=31 → v=32`** across `index.html` and
+  `corpus.html` (I changed `style.css`). `sources.html` ships at `v=32`.
+- The Browser-pane **screenshot/scroll desynced repeatedly** after JS
+  scrolls on the tall desktop layout — blank frames. Functional checks via
+  `javascript_tool` (class lists, computed styles, filtered counts) were
+  the reliable verification; the mobile viewport (output pinned to top)
+  gave the one clean visual of the underline.
+
+### Where to start next time
+
+Items 21 and 7 close the display backlog. What is genuinely open:
+
+1. **Item 19** — stroke-level fusion, now the most visible thing left in
+   the block model. Read the item carefully first: `/s/` and `/z/` got
+   per-cluster fixes, and the edge-line protrusions and `/p/`'s tip were
+   **deliberately left** — don't re-propose the clip or the pentagon.
+2. **Items 34/36** — morpheme boundaries and the hand-rolled syllabifier,
+   both waiting on more attested compounds / a rainy day.
+3. The `academy`/`instagram-3.3` source question above, if the corpus is
+   being edited anyway.
+
+Suite is **57 pass / 0 fail**. `main == origin/main`.
+
+---
+
 ## Session 12 — the last hand reading, the documents, and B1
 
 Started small — two closures and one question that needed the user's
