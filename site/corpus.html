@@ -43,6 +43,9 @@
     border-color: var(--accent); box-shadow: 0 4px 14px rgba(0,0,0,0.14);
     outline: none;
   }
+  /* `display:flex` above would otherwise beat the [hidden] attribute's
+     display:none, so filtering set the flag but never hid the card. */
+  .word-card[hidden] { display: none; }
   .word-card .avatarian-word { --av-size: 40px; margin: 0; }
   .word-card .draw { min-height: calc(40px * 1.8); display: flex;
     align-items: center; justify-content: center; }
@@ -206,6 +209,27 @@ pop.id = "pop";
 document.body.appendChild(pop);
 let hideTimer = null;
 
+// Show the slice of a source's text AROUND the word — "…found something
+// out and it is really big!…" — rather than always the opening. Falls
+// back to the start if the word isn't in the text verbatim (some sources
+// describe their contents rather than quote them). The match is bolded.
+function fillWhat(el, text, word) {
+  const esc = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const m = new RegExp("\\b" + esc + "\\b", "i").exec(text);
+  if (!m) {
+    el.textContent = text.length > 120 ? text.slice(0, 120) + "…" : text;
+    return;
+  }
+  const pad = 42;
+  const start = Math.max(0, m.index - pad);
+  const end = Math.min(text.length, m.index + m[0].length + pad);
+  el.append((start > 0 ? "…" : "") + text.slice(start, m.index));
+  const hit = document.createElement("strong");
+  hit.textContent = text.slice(m.index, m.index + m[0].length);
+  el.appendChild(hit);
+  el.append(text.slice(m.index + m[0].length, end) + (end < text.length ? "…" : ""));
+}
+
 function buildPop(w) {
   pop.innerHTML = "";
   const title = document.createElement("div");
@@ -239,7 +263,7 @@ function buildPop(w) {
     if (s.what) {
       const what = document.createElement("div");
       what.className = "pop-what";
-      what.textContent = s.what.length > 110 ? s.what.slice(0, 110) + "…" : s.what;
+      fillWhat(what, s.what, w.key);
       info.appendChild(what);
     }
     row.appendChild(info);
