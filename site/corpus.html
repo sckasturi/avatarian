@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Corpus</title>
-<link rel="stylesheet" href="css/blocks.css?v=32" />
-<link rel="stylesheet" href="css/style.css?v=32" />
+<link rel="stylesheet" href="css/blocks.css?v=33" />
+<link rel="stylesheet" href="css/style.css?v=33" />
 <style>
   /* Corpus page only. Everything structural is in style.css / blocks.css;
      this is the grid of words and its controls. */
@@ -163,11 +163,11 @@ the sources disagree on the spelling, and the most-attested one is shown.</p>
   <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
 </footer>
 
-<script src="js/manifest.js?v=32"></script>
+<script src="js/manifest.js?v=33"></script>
 <!-- The corpus itself. Already loaded on every page (it tops the lookup
      chain in g2p.js); here it is the whole content. -->
-<script src="js/corpus.js?v=32"></script>
-<script src="js/render.js?v=32"></script>
+<script src="js/corpus.js?v=33"></script>
+<script src="js/render.js?v=33"></script>
 <script>
 "use strict";
 
@@ -398,6 +398,18 @@ function buildPop(w) {
       where.className = "pop-where";
       where.textContent = /^https?:\/\//.test(s.where) ? "open the post ↗" : s.where;
       info.appendChild(where);
+    }
+    // Extra named links (schema: `links: [{text, url}]`) — for a source
+    // whose `where` is a label, not a URL, so it still has a way out.
+    for (const lk of (s.links || [])) {
+      if (!lk || !lk.url) continue;
+      const l = document.createElement("div");
+      l.className = "pop-where";
+      const a = document.createElement("a");
+      a.href = lk.url; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = (lk.text || "link") + " ↗";
+      l.appendChild(a);
+      info.appendChild(l);
     }
     if (s.what) {
       const what = document.createElement("div");
