@@ -12,7 +12,18 @@
    same render.js.
    Sized in em so Avatarian scales with the surrounding wiki text,
    and coloured via currentColor so it matches link/body text. */
-.avatarian-word { display: inline-flex; align-items: flex-start; vertical-align: middle; margin: 0 0.3em 0 0; }
+/* A nine-row block is 1.64 x a consonant (1.25em) = 2.05em tall, so at
+   the surrounding text size it stands about twice as tall as the words
+   around it. Scaling the whole word's font-size by 1/2.05 makes the whole
+   glyph STACK equal the font size — the block sits on the text line
+   instead of towering over it. Everything inside is sized in em, so this
+   one knob scales it all. Want the glyphs a little bigger or smaller?
+   lower or raise the 2.05 (e.g. / 1.6 for taller, / 2.5 for shorter). */
+.avatarian-word {
+  display: inline-flex; align-items: flex-start; vertical-align: middle;
+  margin: 0 0.3em 0 0;
+  font-size: calc(1em / 2.05);
+}
 .avatarian-block { display: inline-flex; flex-direction: column; align-items: center; margin-right: 0.05em; }
 .avatarian-slot { display: flex; justify-content: center; }
 /* The two glyphs in a block share a lattice edge (glyphspec.py: "stack

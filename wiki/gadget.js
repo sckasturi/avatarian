@@ -47,6 +47,11 @@
       var caption = label || words.map(function (w) { return w.word; })
         .filter(Boolean).join(" ");
       renderAvatarian(ipaSeq, span);
+      // One tooltip for the WHOLE word (like the {{Chinese}} template), not
+      // one per glyph. render.js puts a title on each glyph; strip those so
+      // the word-level title below shows on hover anywhere in the word.
+      Array.prototype.forEach.call(span.querySelectorAll("[title]"),
+        function (el) { el.removeAttribute("title"); });
       span.title = (caption ? caption + " " : "") + "/" + cleanIpa(ipaSeq) + "/";
       span.setAttribute("data-avatarian-done", "1");
     });
