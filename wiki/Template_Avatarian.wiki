@@ -1,21 +1,32 @@
 <!-- Avatarian reference material and decipherment by [[User:BokerBigBanana]], u/DepressionDokkebi (reddit.com/r/TheLastAirbender/comments/1v4yalr) and u/arienzio (reddit.com/r/neography/comments/1slqce2). Tool designed by [[User:TechFilmer]]. -->
 <noinclude>
 == Usage ==
+Two ways to write a word:
 <pre>
-{{avatarian|hello}}
-{{avatarian|hello|ipa=h ɛ l oʊ}}
+{{Avatarian|k uh t ah r uh|Katara}}
+{{Avatarian|en=katara}}
 </pre>
-* First parameter: English text to auto-convert (uses the same
-  approximate G2P as the standalone translator — good for common words,
-  rougher on names/loanwords).
-* Optional <code>ipa=</code> parameter: give the exact IPA yourself
-  (space-separated symbols) to bypass the English guesser entirely —
-  use this whenever you already know the right pronunciation.
 
-This template does not draw anything by itself. It just marks the
-text; a script loaded from [[MediaWiki:Common.js]] finds every
-<code>.avatarian-word</code> span on the page after it loads and
-replaces it with the real glyphs, using the exact same rendering code
-as the standalone translator site. If JavaScript is disabled, the
-raw English text is shown instead (never a blank space).
-</noinclude><includeonly><span class="avatarian-word" data-avatarian-text="{{{1|}}}" data-avatarian-ipa="{{{ipa|}}}">{{{1}}}</span></includeonly>
+'''By sounds (recommended).''' The first parameter is the word spelled in
+'''sounds''' — the same readable codes the translator's "Sounds" box
+takes: <code>k uh t ah r uh</code> is ''Katara'' (ARPAbet in CAPITALS and
+raw IPA both work too). The second parameter is the English '''label'''.
+This draws '''exactly''' the spelling you give, so use it whenever you
+know the pronunciation.
+
+'''By English.''' <code>en=</code> hands the English word to the same
+'''approximate''' converter the translator uses — good for common words,
+rougher on names and loanwords.
+
+Hovering the glyphs shows the label and the IPA, e.g. ''Katara /k ə t ɑ r ə/''.
+
+This template does not draw anything by itself. It just marks the text; a
+script loaded from [[MediaWiki:Common.js]] finds every
+<code>.avatarian-word</code> span after the page loads and replaces it
+with the real glyphs, using the same rendering code as the standalone
+translator. With JavaScript off, the plain label (or the sounds, or the
+English) is shown instead of a blank.
+
+The sound-code table is in the translator's "How to write sounds" panel,
+and in <code>AVATARIAN.md</code> §10 in the project repo.
+</noinclude><includeonly>{{#if:{{{en|}}}|<span class="avatarian-word" data-avatarian-en="{{{en}}}">{{{en}}}</span>|<span class="avatarian-word" data-avatarian-sounds="{{{1|}}}" data-avatarian-label="{{{2|}}}">{{{2|{{{1|}}}}}}</span>}}</includeonly>

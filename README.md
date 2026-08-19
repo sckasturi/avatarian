@@ -89,7 +89,7 @@ tests/           <- no dependencies; see tests/README.md
   recognise.html   draw-to-recognise accuracy (browser only)
 
 wiki/            <- paste these into the Fandom wiki, once
-  Template_Avatarian.wiki       wikitext for {{avatarian|hello}}
+  Template_Avatarian.wiki       wikitext for {{Avatarian|k uh t ah r uh|Katara}}
   MediaWiki_Common.js.txt       renders every {{avatarian}} on the page
   MediaWiki_Common.css.txt      sizing/positioning for the glyphs
 
@@ -149,13 +149,18 @@ output directory to `site`. Done.
    **MediaWiki:Common.js** on Avatar Wiki (needs wiki-admin/JS-editor rights).
 3. Paste `wiki/MediaWiki_Common.css.txt` into **MediaWiki:Common.css**.
 4. Create **Template:Avatarian** using `wiki/Template_Avatarian.wiki`.
-5. Use it in any article: `{{avatarian|hello}}` or, when you already know
-   the exact pronunciation, `{{avatarian|hello|ipa=h ɛ l oʊ}}`.
+5. Use it in any article. Two forms, mirroring the translator:
+   - `{{Avatarian|k uh t ah r uh|Katara}}` — spell the word in **sounds**
+     (readable codes, ARPAbet in CAPS, or IPA) with an English **label**;
+     draws exactly that spelling, hover shows *Katara /k ə t ɑ r ə/*.
+   - `{{Avatarian|en=katara}}` — hand it the **English** and let the same
+     approximate converter the translator uses guess the sounds.
 
 No font upload, no Lua/Scribunto module, no server needed — the template
 just tags the text, and the wiki's Common.js renders the real glyphs
-client-side using the same code as the standalone site. If a reader has
-JavaScript off, they see the plain English text instead of nothing.
+client-side using the same code as the standalone site (it loads
+`manifest.js`, `corpus.js`, `g2p.js`, `sounds.js` and `render.js`). If a
+reader has JavaScript off, they see the plain label instead of nothing.
 
 ## Why this isn't a literal font
 
@@ -653,10 +658,11 @@ lazily on the first word converted — ~60 ms once, then ~0.0002 ms a
 lookup — so a visitor who never converts anything never pays for it.
 
 **The wiki gadget does not load it.** 1.6 MB on every article that uses
-`{{avatarian}}` is not a reasonable trade; the template's `ipa=`
-parameter is the answer there. It *does* load the corpus, which is a few
-KB and is the layer the wiki most needs — an article writing "Appa"
-should write it the way canon does.
+`{{Avatarian}}` is not a reasonable trade; the template's **sounds**
+parameter is the answer there — spell the word yourself and no dictionary
+is needed. It *does* load the corpus, which is a few KB and is the layer
+the wiki most needs — an article writing "Appa" should write it the way
+canon does.
 
 So on the wiki the chain is corpus → `EXCEPTIONS` → rules, with the
 dictionary layer missing. `EXCEPTIONS` is what covers the Avatar

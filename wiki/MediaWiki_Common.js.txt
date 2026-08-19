@@ -9,20 +9,21 @@
  *      (must end in a slash), e.g. "https://yourname.github.io/avatarian/"
  *   3. Paste this whole file into [[MediaWiki:Common.js]].
  *   4. Paste MediaWiki_Common.css.txt into [[MediaWiki:Common.css]].
- *   5. Create Template:Avatarian, then use {{avatarian|word}} in articles.
+ *   5. Create Template:Avatarian, then use it in articles — either
+ *      {{Avatarian|k uh t ah r uh|Katara}}  (sounds + label, exact) or
+ *      {{Avatarian|en=katara}}              (English, approximate).
  *
- * The glyphs are inline SVG embedded in manifest.js, so this loads
- * four small scripts and no images at all — nothing to upload to the
- * wiki, and glyphs inherit the surrounding text colour and size.
- * If the scripts fail to load, the original English text stays
- * visible, so this always degrades gracefully.
+ * The glyphs are inline SVG embedded in manifest.js, so this loads a few
+ * small scripts and no images at all — nothing to upload to the wiki, and
+ * glyphs inherit the surrounding text colour and size. If the scripts
+ * fail to load, the plain label stays visible, so it degrades gracefully.
  *
  * corpus.js carries the words somebody has actually seen written in
- * Avatarian, and is the one file here the wiki most needs to be right —
- * an article rendering "Appa" should render it the way canon does. The
- * 1.6 MB pronunciation dictionary is deliberately NOT loaded: it is far
- * too heavy for a page that may only draw one word, and the rules cover
- * that case.
+ * Avatarian and tops the lookup chain, so an article rendering "Appa"
+ * draws it the way canon does. sounds.js parses the readable/ARPAbet/IPA
+ * codes the sounds parameter takes. The 1.6 MB pronunciation dictionary
+ * is deliberately NOT loaded: too heavy for a page that may draw one
+ * word, and the rules cover the en= case.
  */
 (function () {
   var AVATARIAN_SITE_BASE = "https://REPLACE-ME.github.io/avatarian/"; // <-- set this
@@ -38,30 +39,61 @@
   }
 
   function init() {
+    // Order matters: sounds.js reads g2p.js's ARPAbet table, and render.js
+    // reads the manifest and corpus. Same order the standalone site uses.
     loadScript(AVATARIAN_SITE_BASE + "js/manifest.js")
       .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/corpus.js"); })
       .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/g2p.js"); })
+      .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/sounds.js"); })
       .then(function () { return loadScript(AVATARIAN_SITE_BASE + "js/render.js"); })
       .then(renderAllSpans)
       .catch(function (e) { console.warn("Avatarian gadget failed to load:", e); });
   }
 
+  // Flatten a list of parsed words into one IPA sequence.
+  function ipaOf(words) {
+    var seq = [];
+    words.forEach(function (w) { seq = seq.concat(w.ipa); });
+    return seq;
+  }
+
+  // The IPA to show in the tooltip: drop the nulls (∅, ∅c), the $/%
+  // orientation overrides, and the punctuation marks — all spelling
+  // machinery, not pronunciation.
+  function cleanIpa(seq) {
+    return seq
+      .filter(function (t) { return t !== "∅" && t !== "∅c" && !/^[.,?!]$/.test(t); })
+      .map(function (t) { return t.replace(/[$%]/g, ""); })
+      .join(" ");
+  }
+
   function renderAllSpans() {
     var spans = document.querySelectorAll("span.avatarian-word");
     Array.prototype.forEach.call(spans, function (span) {
-      var explicitIpa = span.getAttribute("data-avatarian-ipa");
-      var text = span.getAttribute("data-avatarian-text") || span.textContent;
-      var ipaSeq;
-      if (explicitIpa && explicitIpa.trim()) {
-        ipaSeq = explicitIpa.trim().split(/\s+/);
+      var en = (span.getAttribute("data-avatarian-en") || "").trim();
+      var sounds = (span.getAttribute("data-avatarian-sounds") || "").trim();
+      var label = (span.getAttribute("data-avatarian-label") || "").trim();
+
+      var ipaSeq, caption;
+      if (en) {
+        // English -> the same approximate conversion the translator uses.
+        ipaSeq = ipaOf(sentenceToIPA(en));
+        caption = en;
       } else {
-        ipaSeq = [];
-        sentenceToIPA(text).forEach(function (w) {
-          ipaSeq = ipaSeq.concat(w.ipa);
-        });
+        // Sounds -> exactly the spelling given. The label is parameter 2,
+        // or any (caption) written inside the sounds, or nothing.
+        var words = soundTextToWords(sounds);
+        ipaSeq = ipaOf(words);
+        caption = label || words.map(function (w) { return w.word; })
+          .filter(Boolean).join(" ");
       }
+
+      // Nothing to draw (an empty or unparseable parameter) — leave the
+      // plain fallback text the template put in the span.
+      if (!ipaSeq.length) return;
+
       renderAvatarian(ipaSeq, span);
-      span.title = text + "  /" + ipaSeq.join(" ") + "/";
+      span.title = (caption ? caption + " " : "") + "/" + cleanIpa(ipaSeq) + "/";
     });
   }
 
