@@ -12,10 +12,10 @@ __pycache__/
 *.pyc
 
 # Reference images filed by the workbench. They are PROVENANCE — the
-# corpus cites them by filename and tools/build_corpus.py checks each one
-# is present — but they are other people's screenshots and stills, so
-# whether they belong in a public repo is a licensing question, not a
-# technical one. Kept locally until that is decided; the `sources` map in
-# corpus/attested.json describes each one in words either way.
+# corpus cites each by filename. corpus/sources/ is the workbench's
+# WORKING directory and stays local; the committed, deployed copy lives
+# in site/sources/ (build_corpus.py's sync_images() keeps it in step), so
+# the public corpus page can link to a source. Publishing the images was
+# a deliberate call — the licensing question this file used to defer.
 corpus/sources/*
 !corpus/sources/.gitkeep

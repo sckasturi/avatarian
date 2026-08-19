@@ -37,11 +37,17 @@ no way to write an entry through the UI that the CLI would reject.
 
 import json
 import pathlib
+import shutil
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "corpus" / "attested.json"
 IMAGES = ROOT / "corpus" / "sources"
+# The deployed, committed copy of the source images. `corpus/sources/` is
+# the workbench's working directory and may be empty on a fresh clone;
+# `site/sources/` is what ships, so the public corpus page can link to a
+# source. sync_images() keeps it in step.
+SITE_IMAGES = ROOT / "site" / "sources"
 MANIFEST = ROOT / "site" / "assets" / "glyph_manifest.json"
 DST = ROOT / "site" / "js" / "corpus.js"
 
@@ -235,9 +241,13 @@ def check(data):
 
     for name, source in sources.items():
         image = source.get("image")
-        if image and not (IMAGES / image).exists():
+        # Either location counts: the workbench writes corpus/sources/,
+        # and a fresh clone has only the committed site/sources/ copy.
+        if image and not ((IMAGES / image).exists()
+                          or (SITE_IMAGES / image).exists()):
             errors.append(f"source '{name}': image '{image}' is not in "
-                          f"{IMAGES.relative_to(ROOT)}/")
+                          f"{IMAGES.relative_to(ROOT)}/ or "
+                          f"{SITE_IMAGES.relative_to(ROOT)}/")
 
     return errors, records
 
@@ -401,6 +411,25 @@ def order_entries(data):
                                  normalise_key(e.get("key", ""))))
 
 
+def sync_images():
+    """Copy filed reference images into the deployed site (site/sources/)
+    so the public corpus page can link to a source.
+
+    Additive: it never deletes, so running on a fresh clone — where
+    corpus/sources/ is empty but site/sources/ holds the committed images
+    — leaves the shipped copies untouched.
+    """
+    if not IMAGES.exists():
+        return
+    SITE_IMAGES.mkdir(parents=True, exist_ok=True)
+    for src in IMAGES.iterdir():
+        if not src.is_file() or src.name == ".gitkeep":
+            continue
+        dst = SITE_IMAGES / src.name
+        if not dst.exists() or src.stat().st_mtime > dst.stat().st_mtime:
+            shutil.copy2(src, dst)
+
+
 def save(data):
     """
     Validate, then write both the JSON and the generated JS. Writes
@@ -421,6 +450,7 @@ def save(data):
     SRC.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n",
                    encoding="utf-8")
     write_js(out["sources"], records)
+    sync_images()
     return [], records
 
 
@@ -435,6 +465,7 @@ def main():
         return 1
 
     write_js(data.get("sources") or {}, records)
+    sync_images()
     phrases = sum(1 for k in records if " " in k)
     unsure = sum(1 for v in records.values() if v["confidence"] != "certain")
     sightings = len(data.get("entries") or [])
