@@ -87,7 +87,12 @@
     text-transform: uppercase; color: var(--accent);
     border: 1px solid var(--accent); border-radius: 999px; padding: 1px 7px;
   }
-  .alt { color: var(--muted-2); font-size: 0.72rem; margin-top: 2px; }
+  /* A contested word just flags that it has other spellings; the hover
+     preview is where you see how each source actually drew it. */
+  .alt-note { color: var(--muted-2); font-size: 0.72rem; font-style: italic;
+    margin-top: 2px; }
+  /* The spelling a given source used, drawn small, inside the preview. */
+  #pop .pop-spelling { --av-size: 24px; margin: 5px 0 2px; }
   .empty { color: var(--muted); margin-top: 24px; }
 </style>
 </head>
@@ -230,12 +235,26 @@ function fillWhat(el, text, word) {
   el.append(text.slice(m.index + m[0].length, end) + (end < text.length ? "…" : ""));
 }
 
+// Which spelling each source actually used: the winning one for the
+// sources behind it, each alternate for the sources behind it. Lets a
+// contested word show, on hover, that these sources drew it one way and
+// those drew it another.
+function spellingBySource(w) {
+  const map = {};
+  for (const s of (w.sources || [])) map[s] = w.ipa;
+  for (const a of (w.alternates || [])) for (const s of (a.sources || [])) map[s] = a.ipa;
+  return map;
+}
+
 function buildPop(w) {
   pop.innerHTML = "";
   const title = document.createElement("div");
   title.className = "pop-title";
   title.textContent = w.label;
   pop.appendChild(title);
+  // Only worth drawing per-source when the sources disagree; otherwise it
+  // is just the spelling already shown big on the card, once per source.
+  const spelling = w.contested ? spellingBySource(w) : null;
   for (const id of allSourcesOf(w)) {
     const s = SOURCES[id] || {};
     const row = document.createElement("div");
@@ -254,6 +273,12 @@ function buildPop(w) {
     name.textContent = id;
     if (href) { name.href = href; name.target = "_blank"; name.rel = "noopener"; }
     info.appendChild(name);
+    if (spelling && spelling[id]) {
+      const sp = document.createElement("div");
+      sp.className = "avatarian-word pop-spelling";
+      renderAvatarian(spelling[id], sp);
+      info.appendChild(sp);
+    }
     if (s.where) {
       const where = document.createElement("div");
       where.className = "pop-where";
@@ -347,12 +372,11 @@ function card(w) {
     el.appendChild(t);
   }
 
-  if (w.contested && Array.isArray(w.alternates)) {
-    const alt = document.createElement("div");
-    alt.className = "alt";
-    alt.textContent = "also written /"
-      + w.alternates.map(a => soundsOf(a.ipa)).join("/, /") + "/";
-    el.appendChild(alt);
+  if (w.contested) {
+    const note = document.createElement("div");
+    note.className = "alt-note";
+    note.textContent = "alternate spellings";
+    el.appendChild(note);
   }
 
   el.addEventListener("mouseenter", () => showPop(el, w));
