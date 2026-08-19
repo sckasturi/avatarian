@@ -117,6 +117,7 @@ body {
 
 .page-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .page-head h1 { margin-bottom: 0; }
+.backlink { font-weight: bold; font-size: 0.95rem; white-space: nowrap; }
 .theme-toggle {
   margin-left: auto; padding: 6px 12px; font-family: inherit;
   font-size: 0.82rem; cursor: pointer; color: var(--muted);

@@ -426,39 +426,31 @@ Performance: ~58 ms a query after a 220 ms index build, debounced 250 ms.
 The naive version was 500 ms — reusing the edit-distance rows and
 bucketing the lexicon by pronunciation length is what fixed it.
 
-**31. A public corpus page on the site.** Read-only, a second page
-alongside the translator: every attested word, its spelling rendered in
-real Avatarian, which source it came from, and the confidence. **Not the
-workbench** — that stays local and stays the only thing that writes.
+~~**31. A public corpus page on the site.**~~ **Built, session 12** —
+`site/corpus.html`, a read-only second page linked from the translator
+("Corpus →", and "← Translator" back). Every attested word: its spelling
+drawn in real Avatarian, its display form, how many times and from how
+many sources it was seen, and — for the five contested words — the
+alternate spelling and an accent outline. A live text filter and a
+source filter (each source listed with its word count). It reads
+`window.AVATARIAN_CORPUS`, already on every page, so no server, no build
+step, nothing new to deploy. Theme toggle and light/dark verified.
 
-Cheap, because the data already ships. `site/js/corpus.js` is generated
-into the deployed folder and loaded on every page load already, since it
-sits at the top of the lookup chain — so this is one more static HTML
-file reading a global that is on the page anyway. No server, no build
-step, nothing new to deploy.
+How the three open questions landed:
 
-Three things to decide when it is picked up:
-
-- **The images are the open question, not the data.** `corpus/sources/`
-  is gitignored, so nothing that would let a reader *check* an entry is
-  currently deployed. Publishing the spellings without them is still
-  worth doing — it is what the corpus says — but "source: a poster,
-  season 1 episode 4" reads very differently from a thumbnail you can
-  click. Whether other people's screenshots and stills can go in a public
-  repo is a licensing call, not a technical one, and it is the same call
-  `.gitignore` is currently deferring.
-- **It overlaps item 7** (reference material catalogue). A page listing
-  every source with what it contains, and a page listing every word with
-  where it came from, are two views of one table. Build them together or
-  build one and let the other be a filter.
-- **It wants item 21's tiers**, or at least the vocabulary — attested
-  against derived is the distinction the whole page exists to make
-  visible, and B4 is the judgement about how to show it.
-
-The reason to want it: right now the corpus is the most interesting thing
-this project has produced and it is only visible to somebody who clones
-the repo and reads JSON. It is also the part other people could
-contribute to, and they cannot contribute to what they cannot see.
+- **B4's mark is here as the legend.** Every word is underlined
+  (attested), and the page says so — so it doubles as the key for the
+  underline the translator will use (item 21). Decided B4: a line under
+  attested words.
+- **The source filter is item 7 as a filter,** the option the item
+  itself offered. It counts every source that cites a word, winning
+  spelling or contested alternate, so a source that only lost a dispute
+  still surfaces its words. A standalone source-catalogue page (item 7
+  proper) is still open if wanted.
+- **Images stayed out.** `corpus/sources/` is gitignored provenance, so
+  the page cites sources by name, not thumbnail — still the licensing
+  call `.gitignore` defers. The word cards carry each source's
+  description in a tooltip, which is the most a name-only citation can do.
 
 ~~**16. Punctuation.**~~ **Rendering done.** `, . ? !` are written as
 themselves in the sounds box and drawn beside the word.

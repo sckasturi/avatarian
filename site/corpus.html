@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Avatarian Corpus</title>
+<link rel="stylesheet" href="css/blocks.css?v=28" />
+<link rel="stylesheet" href="css/style.css?v=28" />
+<style>
+  /* Corpus page only. Everything structural is in style.css / blocks.css;
+     this is the grid of words and its controls. */
+  .backlink { font-weight: bold; font-size: 0.95rem; }
+  .corpus-controls {
+    display: flex; gap: 10px 14px; flex-wrap: wrap; align-items: center;
+    margin: 18px 0 2px;
+  }
+  .corpus-controls input[type="search"],
+  .corpus-controls select {
+    font: inherit; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+  }
+  .corpus-controls input[type="search"] { min-width: 12rem; flex: 1 1 12rem; }
+  .corpus-count { color: var(--muted); font-size: 0.9rem; }
+
+  .legend { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
+  .legend u { text-decoration-color: var(--accent); text-underline-offset: 3px; }
+
+  .word-grid {
+    display: grid; gap: 16px; margin-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .word-card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; padding: 16px 12px 12px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .word-card .avatarian-word { --av-size: 44px; margin: 0; }
+  .word-card .draw { min-height: calc(44px * 1.8); display: flex;
+    align-items: center; justify-content: center; }
+  /* B4 (decided): a line under attested words. Everything here is
+     attested, so this doubles as the legend for the mark the translator
+     uses. */
+  .word-en {
+    font-weight: 600; color: var(--ink);
+    text-decoration: underline; text-decoration-color: var(--accent);
+    text-underline-offset: 3px; text-decoration-thickness: 1px;
+  }
+  .word-meta { color: var(--muted); font-size: 0.76rem; line-height: 1.5; }
+  .word-card.is-contested { border-color: var(--accent); }
+  .tag {
+    display: inline-block; font-size: 0.68rem; letter-spacing: 0.03em;
+    text-transform: uppercase; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 999px; padding: 1px 7px;
+  }
+  .alt { color: var(--muted-2); font-size: 0.72rem; margin-top: 2px; }
+  .empty { color: var(--muted); margin-top: 24px; }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Avatarian Corpus</h1>
+  <a class="backlink" href="index.html">← Translator</a>
+  <span class="spacer"></span>
+  <button class="theme-toggle" id="themeToggle" type="button"></button>
+</div>
+
+<p class="subtitle">Every word someone has actually <em>seen written</em> in
+Avatarian, drawn from its recorded spelling. These are <strong>observations,
+not guesses</strong> — the translator derives anything it hasn't seen, but
+everything here was read off a real source.</p>
+
+<div class="corpus-controls">
+  <input type="search" id="search" placeholder="Filter words…"
+         autocomplete="off" aria-label="Filter words" />
+  <select id="sourceFilter" aria-label="Filter by source">
+    <option value="">All sources</option>
+  </select>
+  <span class="corpus-count" id="count"></span>
+</div>
+<p class="legend"><u>Underlined</u> means attested — a word the corpus has
+seen. Cards outlined in colour are <span class="tag">contested</span>: the
+sources disagree on the spelling, and the most-attested one is shown.</p>
+
+<div class="word-grid" id="grid"></div>
+<p class="empty" id="empty" hidden>No words match.</p>
+
+<footer>
+  <p class="footer-by">
+    Built by
+    <a href="https://avatar.fandom.com/wiki/User:TechFilmer"
+       target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
+  </p>
+  <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
+</footer>
+
+<script src="js/manifest.js?v=28"></script>
+<!-- The corpus itself. Already loaded on every page (it tops the lookup
+     chain in g2p.js); here it is the whole content. -->
+<script src="js/corpus.js?v=28"></script>
+<script src="js/render.js?v=28"></script>
+<script>
+"use strict";
+
+// --- theme toggle (same behaviour as the translator) --------------------
+const themeBtn = document.getElementById("themeToggle");
+const THEME_LABELS = { auto: "◐ Theme: auto", light: "☀ Theme: light", dark: "☾ Theme: dark" };
+const THEME_ORDER = ["auto", "light", "dark"];
+function applyTheme(mode) {
+  if (mode === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", mode);
+  themeBtn.textContent = THEME_LABELS[mode];
+  themeBtn.setAttribute("aria-label", "Colour theme: " + mode + ". Click to change.");
+}
+let themeMode = localStorage.getItem("avatarian-theme") || "auto";
+if (!THEME_ORDER.includes(themeMode)) themeMode = "auto";
+applyTheme(themeMode);
+themeBtn.addEventListener("click", () => {
+  themeMode = THEME_ORDER[(THEME_ORDER.indexOf(themeMode) + 1) % THEME_ORDER.length];
+  if (themeMode === "auto") localStorage.removeItem("avatarian-theme");
+  else localStorage.setItem("avatarian-theme", themeMode);
+  applyTheme(themeMode);
+});
+
+// --- the corpus ---------------------------------------------------------
+const CORPUS = window.AVATARIAN_CORPUS || { words: {}, sources: {} };
+const SOURCES = CORPUS.sources || {};
+
+// One row per attested word, sorted by how it reads to a person.
+const WORDS = Object.entries(CORPUS.words)
+  .map(([key, entry]) => ({ key, label: entry.gloss || key, ...entry }))
+  .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
+
+const soundsOf = (ipa) => ipa.filter(t => t !== "∅" && t !== "∅c")
+  .map(t => t.replace(/[$%]/g, "")).join(" ");
+
+// Every source that cites this word — the winning spelling's, plus any a
+// contested alternate came from. A source that only contributed the
+// losing spelling of a contested word still cited the word, so filtering
+// by it should surface the word.
+function allSourcesOf(w) {
+  const set = new Set(w.sources || []);
+  for (const a of (w.alternates || [])) for (const s of (a.sources || [])) set.add(s);
+  return [...set];
+}
+
+// A source id -> a short human label + a description for the tooltip.
+function sourceTitle(id) {
+  const s = SOURCES[id] || {};
+  const bits = [];
+  if (s.what) bits.push(s.what);
+  if (s.where) bits.push(s.where);
+  return bits.join(" — ") || id;
+}
+
+// Populate the source filter, each with how many words cite it.
+(function fillSourceFilter() {
+  const sel = document.getElementById("sourceFilter");
+  const counts = {};
+  for (const w of WORDS) for (const s of allSourcesOf(w)) counts[s] = (counts[s] || 0) + 1;
+  Object.keys(SOURCES)
+    .filter(id => counts[id])
+    .sort((a, b) => counts[b] - counts[a])
+    .forEach(id => {
+      const o = document.createElement("option");
+      o.value = id;
+      o.textContent = `${id} (${counts[id]})`;
+      o.title = sourceTitle(id);
+      sel.appendChild(o);
+    });
+})();
+
+function card(w) {
+  const el = document.createElement("div");
+  el.className = "word-card" + (w.contested ? " is-contested" : "");
+  el.dataset.label = w.label.toLowerCase();
+  el.dataset.key = w.key;
+  el.dataset.sources = allSourcesOf(w).join(" ");
+
+  const draw = document.createElement("div");
+  draw.className = "draw";
+  const word = document.createElement("div");
+  word.className = "avatarian-word";
+  renderAvatarian(w.ipa, word);
+  draw.appendChild(word);
+  el.appendChild(draw);
+
+  const en = document.createElement("div");
+  en.className = "word-en";
+  en.textContent = w.label;
+  en.title = "/" + soundsOf(w.ipa) + "/";
+  el.appendChild(en);
+
+  const meta = document.createElement("div");
+  meta.className = "word-meta";
+  const times = w.count === 1 ? "seen once" : `seen ${w.count}×`;
+  const srcs = (w.sources || []);
+  const srcText = srcs.length === 1
+    ? srcs[0]
+    : `${srcs.length} sources`;
+  meta.textContent = `${times} · ${srcText}`;
+  meta.title = srcs.map(sourceTitle).join("\n");
+  el.appendChild(meta);
+
+  if (w.confidence && w.confidence !== "certain") {
+    const t = document.createElement("span");
+    t.className = "tag";
+    t.textContent = w.confidence;
+    el.appendChild(t);
+  }
+
+  if (w.contested && Array.isArray(w.alternates)) {
+    const alt = document.createElement("div");
+    alt.className = "alt";
+    alt.textContent = "also written /"
+      + w.alternates.map(a => soundsOf(a.ipa)).join("/, /") + "/";
+    el.appendChild(alt);
+  }
+  return el;
+}
+
+const grid = document.getElementById("grid");
+const frag = document.createDocumentFragment();
+WORDS.forEach(w => frag.appendChild(card(w)));
+grid.appendChild(frag);
+
+// --- filtering ----------------------------------------------------------
+const search = document.getElementById("search");
+const sourceFilter = document.getElementById("sourceFilter");
+const countEl = document.getElementById("count");
+const emptyEl = document.getElementById("empty");
+const cards = [...grid.children];
+
+function applyFilters() {
+  const q = search.value.trim().toLowerCase();
+  const src = sourceFilter.value;
+  let shown = 0;
+  for (const el of cards) {
+    const okText = !q || el.dataset.label.includes(q) || el.dataset.key.includes(q);
+    const okSrc = !src || el.dataset.sources.split(" ").includes(src);
+    const show = okText && okSrc;
+    el.hidden = !show;
+    if (show) shown++;
+  }
+  emptyEl.hidden = shown > 0;
+  const total = cards.length;
+  countEl.textContent = shown === total
+    ? `${total} words · ${Object.keys(SOURCES).length} sources`
+    : `${shown} of ${total} words`;
+}
+search.addEventListener("input", applyFilters);
+sourceFilter.addEventListener("change", applyFilters);
+applyFilters();
+</script>
+</body>
+</html>
