@@ -422,7 +422,13 @@ function renderGlyph(code, container) {
   // letter, not shrink it to inline-text height the way a word is.
   container.classList.add("avatarian-word", "avatarian-solo");
   soundTextToWords(String(code == null ? "" : code).trim()).forEach((w) => {
-    for (const sym of w.ipa) container.appendChild(makeGlyph(sym, "top", null));
+    for (const token of w.ipa) {
+      // A mark (. , ? !) is drawn on its own path, not paired; route it
+      // there so `glyph=?` gives a real mark, not a mis-sized letter box.
+      const sym = parseSymbol(token).sym;
+      container.appendChild(
+        PUNCTUATION[sym] ? makeMark(sym) : makeGlyph(token, "top", null));
+    }
   });
   return container;
 }
