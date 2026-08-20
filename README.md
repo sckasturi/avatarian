@@ -77,6 +77,7 @@ tools/
   corpus_server.py      serves workbench/ and writes corpus/ (port 8793)
   build_corpus.py       validates corpus/attested.json -> js/corpus.js
   build_wiki_bundle.py  bundles the JS into one self-hosted wiki page
+  build_corpus_wikitable.py  the corpus as a MediaWiki table
   run_tests.py          the whole suite, one command
 
   designs_to_svg.py     a design -> SVG, or -> a build_glyphs.py entry
@@ -97,6 +98,7 @@ wiki/            <- paste these into the Fandom wiki, once. SELF-HOSTED:
   gadget.js                     source for the render step (bundled in)
   MediaWiki_Common.css.txt      sizing/positioning for the glyphs
   TESTING.md                    how to test on a personal account first
+  Corpus_table.wiki             generated: the corpus as a {{Avatarian}} table
 
 ```
 
