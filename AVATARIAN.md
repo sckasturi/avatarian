@@ -36,16 +36,17 @@ called out.
 
 ### Credit
 
-**This is the one place credits are maintained.** The site footer carries
-the tool's own byline and the wiki files carry a one-line pointer back
-here; the decipherment credits live here and nowhere else, so do not
-re-add them to the site.
+**This is the canonical credit list, mirrored on the site's Sources page**
+(`site/sources.html`, its "References & credits" section) — keep the two in
+step when either changes. The site footer carries the tool's own byline,
+and the wiki files carry a one-line pointer back here.
 
 The reference material this project encodes — the key chart, the writing
 samples, the structural readings — comes from:
 
 - **BokerBigBanana** on Avatar Wiki — <https://avatar.fandom.com/wiki/User:BokerBigBanana>
 - **u/DepressionDokkebi**, "Avatarian decipherment so far" — <https://www.reddit.com/r/TheLastAirbender/comments/1v4yalr/avatarian_decipherment_so_far/>
+- **u/DepressionDokkebi**, "The mostly full Avatarian alphabet and my translations" — <https://www.reddit.com/r/TheLastAirbender/comments/1v8aue5/the_mostly_full_avatarian_alphabet_and_my/>
 - **u/arienzio**, "New Avatar: The Last Airbender conscript" — <https://www.reddit.com/r/neography/comments/1slqce2/new_avatar_the_last_airbender_conscript/>
 
 **Tool designed by TechFilmer** on Avatar Wiki —
