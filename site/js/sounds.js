@@ -69,6 +69,7 @@ const READABLE_ALIASES = {
 /** Spellings accepted for symbols that are awkward to type. */
 const SOUND_ALIASES = {
   "0": "∅", "_": "∅", "-": "∅",   // the empty-slot filler
+  "0c": "∅c",                     // the consonant-height null, for glyph=0c
   "eɪ": "e", "ej": "e",           // key chart labels this vowel e/eɪ
   "ɝ": "ə", "ɜr": "ə", "ɜ": "ə",  // r-coloured spellings, and ɜ itself
   "ɑː": "ɑ", "iː": "i", "uː": "u",
