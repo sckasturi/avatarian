@@ -406,6 +406,26 @@ function renderAvatarian(ipaSeq, container) {
 }
 
 /**
+ * Draw ONE glyph on its own — no pairing, no null — for a chart or key
+ * where you want the bare letter, not a written block. A block always
+ * fills its empty slot with a null (that is the script), so the normal
+ * render can't show a lone letter; this bypasses pairing entirely.
+ *
+ * Takes the same sound codes the "Sounds" box does (`p`, `ee`, `ng`), so a
+ * caller writes `glyph=ng`, not IPA. Each code that resolves to a glyph is
+ * drawn in its citation (top-slot) form; a vowel shows its flat drawing.
+ * More than one code draws them side by side, still nullless.
+ */
+function renderGlyph(code, container) {
+  container.innerHTML = "";
+  container.classList.add("avatarian-word");
+  soundTextToWords(String(code == null ? "" : code).trim()).forEach((w) => {
+    for (const sym of w.ipa) container.appendChild(makeGlyph(sym, "top", null));
+  });
+  return container;
+}
+
+/**
  * The punctuation marks: one lattice column wide, nine rows tall.
  *
  * A NEW HEIGHT CLASS. Every letter is five rows (consonant) or four
@@ -466,7 +486,7 @@ function makeMark(sym) {
 
 if (typeof module !== "undefined") {
   module.exports = {
-    renderAvatarian, pairUp, resolveBlocks, slotRows, glyphSVG, VOWELS,
+    renderAvatarian, renderGlyph, pairUp, resolveBlocks, slotRows, glyphSVG, VOWELS,
     NULL_IPA, NULL_C_IPA, NULLS, nullFor, isVowelSymbol, parseSymbol,
   };
 }

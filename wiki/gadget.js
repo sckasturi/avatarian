@@ -34,6 +34,19 @@
     Array.prototype.forEach.call(spans, function (span) {
       if (span.getAttribute("data-avatarian-done")) return;   // idempotent
 
+      // A single bare glyph — {{Avatarian|glyph=ng}} — with no pairing and
+      // no null, for a chart or key. Drawn before the sounds path so a
+      // glyph= span never falls through to block rendering.
+      var glyph = (span.getAttribute("data-avatarian-glyph") || "").trim();
+      if (glyph) {
+        renderGlyph(glyph, span);
+        var gipa = cleanIpa(ipaOf(soundTextToWords(glyph)));
+        span.title = "/" + gipa + "/";
+        span.setAttribute("data-avatarian-ipa", "/" + gipa + "/");
+        span.setAttribute("data-avatarian-done", "1");
+        return;
+      }
+
       // The word is given in SOUNDS — exactly the spelling to draw. The
       // label is parameter 2, or any (caption) written inside the sounds.
       var sounds = (span.getAttribute("data-avatarian-sounds") || "").trim();

@@ -647,6 +647,15 @@ function renderAvatarian(ipaSeq, container) {
   return container;
 }
 
+function renderGlyph(code, container) {
+  container.innerHTML = "";
+  container.classList.add("avatarian-word");
+  soundTextToWords(String(code == null ? "" : code).trim()).forEach((w) => {
+    for (const sym of w.ipa) container.appendChild(makeGlyph(sym, "top", null));
+  });
+  return container;
+}
+
 const MARK_BOX = 'viewBox="0 0 36 164" fill="none" stroke="currentColor"'
   + ' stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"';
 
@@ -680,7 +689,7 @@ function makeMark(sym) {
 
 if (typeof module !== "undefined") {
   module.exports = {
-    renderAvatarian, pairUp, resolveBlocks, slotRows, glyphSVG, VOWELS,
+    renderAvatarian, renderGlyph, pairUp, resolveBlocks, slotRows, glyphSVG, VOWELS,
     NULL_IPA, NULL_C_IPA, NULLS, nullFor, isVowelSymbol, parseSymbol,
   };
 }
@@ -704,6 +713,16 @@ if (typeof module !== "undefined") {
     var spans = document.querySelectorAll("span.avatarian-word");
     Array.prototype.forEach.call(spans, function (span) {
       if (span.getAttribute("data-avatarian-done")) return;   // idempotent
+
+      var glyph = (span.getAttribute("data-avatarian-glyph") || "").trim();
+      if (glyph) {
+        renderGlyph(glyph, span);
+        var gipa = cleanIpa(ipaOf(soundTextToWords(glyph)));
+        span.title = "/" + gipa + "/";
+        span.setAttribute("data-avatarian-ipa", "/" + gipa + "/");
+        span.setAttribute("data-avatarian-done", "1");
+        return;
+      }
 
       var sounds = (span.getAttribute("data-avatarian-sounds") || "").trim();
       var label = (span.getAttribute("data-avatarian-label") || "").trim();

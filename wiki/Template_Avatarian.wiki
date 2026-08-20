@@ -7,4 +7,8 @@ Parameter 1 is the word in '''sounds''' (the readable codes the translator's
 English '''label''' shown on hover. Get the sounds by typing the word into the
 [https://REPLACE-ME translator] and copying its "Sounds" box. With JavaScript
 off, the plain label shows instead of the glyphs.
-</noinclude><includeonly><span class="avatarian-word" data-avatarian-sounds="{{{1|}}}" data-avatarian-label="{{{2|}}}">{{{2|{{{1|}}}}}}</span></includeonly>
+
+For a '''single bare glyph''' — no pairing, no null, as in an alphabet chart —
+use <code>glyph=</code> with one sound code instead of parameter 1:
+<pre>{{Avatarian|glyph=ng}}</pre>
+</noinclude><includeonly><span class="avatarian-word" data-avatarian-glyph="{{{glyph|}}}" data-avatarian-sounds="{{{1|}}}" data-avatarian-label="{{{2|}}}">{{{2|{{{1|{{{glyph|}}}}}}}}}</span></includeonly>
