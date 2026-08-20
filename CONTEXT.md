@@ -141,7 +141,7 @@ real thing. The SVG swapped in is the one `POST /api/render` returns,
 i.e. `glyphspec.py`'s, not the canvas port's.
 
 That is why `blocks.css` and `sounds.js` exist as separate files at all:
-three surfaces have to agree on block layout and on what `AX` or `S$`
+three surfaces have to agree on block layout and on what `uh` or `S$`
 means, and three copies would drift. Don't fold them back into
 `style.css` / `index.html`.
 
