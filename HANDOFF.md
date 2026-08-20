@@ -196,6 +196,13 @@ The gadget was tested on a real Fandom wiki and reads well now. In order:
 - **Published artifacts carry little documentation:** `build_wiki_bundle.py`
   strips whole-line comments (bundle now ~38 KB); `Common.js`/`Common.css`/
   `Template` hand-trimmed. The `site/js` SOURCE keeps its comments.
+- **Corpus as a MediaWiki table:** `tools/build_corpus_wikitable.py` →
+  `wiki/Corpus_table.wiki`, a sortable `{{wikitable}}` with one row per
+  attested word (Word | Avatarian via `{{Avatarian}}` | IPA | Seen). Each
+  spelling's source is a named `<ref>` (one footnote per source, reused);
+  a contested word carries a `<ref group="note">` and shows every
+  spelling. Codes verified to match `soundToCode` for all 219 words.
+  Re-run when the corpus changes.
 
 ### ARPAbet is gone (input feature only)
 
