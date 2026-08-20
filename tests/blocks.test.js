@@ -166,6 +166,30 @@ test("every attested block is nine rows — except C-C, which is open", (t) => {
   }
 });
 
+test("no attested word yields a V-V block", () => {
+  // The pairing model's core invariant (AVATARIAN.md §5): only V-C, C-V and
+  // C-C blocks occur — two vowels never share a block; where they would, a
+  // null takes the second slot. The nine-row test above already catches
+  // this as a side effect (a V-V block totals 8 rows), but that reads V-V
+  // off the row arithmetic. This asserts it directly on the vowel
+  // classification, so the invariant still holds if slotRows ever changes.
+  //
+  // Adjacent vowels DO occur in spellings — the FACE vowel is two letters
+  // (`e ɪ`), and `aɪ ə`/`ɔɪ ə` sit together in "fire"/"royal". The point is
+  // that pairing (and the odd null) always split them across blocks; the
+  // whole corpus produces zero V-V blocks, and this keeps it that way.
+  const { isVowelSymbol } = ctx;
+  const vv = [];
+  for (const entry of entries(ctx)) {
+    for (const { top, bottom } of resolveBlocks(entry.ipa)) {
+      if (isVowelSymbol(top) && isVowelSymbol(bottom)) {
+        vv.push(`${entry.key}: (${top},${bottom})`);
+      }
+    }
+  }
+  assert.deepEqual(vv, [], `V-V block(s) found: ${vv.join("; ")}`);
+});
+
 test("every corpus entry has an even symbol count", () => {
   // A spelling is whole blocks. An odd count means somebody recorded a
   // phoneme list instead — the one mistake that would quietly poison the
