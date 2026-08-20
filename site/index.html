@@ -4,20 +4,38 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Avatarian Translator</title>
-<link rel="stylesheet" href="css/blocks.css?v=39" />
-<link rel="stylesheet" href="css/style.css?v=39" />
+<meta name="description" content="Type anything and watch it written in Avatarian, the script from Avatar: The Last Airbender. Avatarian spells sounds, not letters, so it works on names and made-up words too." />
+<link rel="canonical" href="https://avatarian.techfilmer.com/" />
+<link rel="icon" href="favicon.svg?v=1" type="image/svg+xml" />
+<meta name="theme-color" content="#2a211b" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Avatarian" />
+<meta property="og:title" content="Avatarian Translator" />
+<meta property="og:description" content="Type anything and watch it written in Avatarian, the script from Avatar: The Last Airbender. It spells sounds, not letters, so it works on names and made-up words too." />
+<meta property="og:url" content="https://avatarian.techfilmer.com/" />
+<meta property="og:image" content="https://avatarian.techfilmer.com/og-image.png?v=1" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="The word Aang written in Avatarian glyphs, beside the Avatarian wordmark." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Avatarian Translator" />
+<meta name="twitter:description" content="Type anything and watch it written in Avatarian, the script from Avatar: The Last Airbender." />
+<meta name="twitter:image" content="https://avatarian.techfilmer.com/og-image.png?v=1" />
+<link rel="stylesheet" href="css/blocks.css?v=40" />
+<link rel="stylesheet" href="css/style.css?v=40" />
 </head>
 <body>
 
 <div class="page-head">
   <h1>Avatarian Translator</h1>
-  <a class="backlink" href="corpus.html">Corpus →</a>
+  <a class="backlink" href="corpus.html">Corpus</a>
+  <a class="backlink" href="sources.html">Sources</a>
   <span class="spacer"></span>
   <button class="theme-toggle" id="themeToggle" type="button"></button>
 </div>
 <p class="subtitle">Write anything in <strong>Avatarian</strong>, the script
 from <em>Avatar: The Last Airbender</em>. Type below and the glyphs appear as
-you go — Avatarian spells <em>sounds</em>, not letters, so it works on names
+you go. Avatarian spells <em>sounds</em>, not letters, so it works on names
 and made-up words too.</p>
 
 <div class="layout">
@@ -43,9 +61,9 @@ and made-up words too.</p>
   </p>
 
   <div class="sounds-part">
-    <label for="soundsInput" class="field-label">Sounds
-      <span class="fine">— this is what actually gets drawn. Edit it if a
-        word came out sounding wrong.</span></label>
+    <label for="soundsInput" class="field-label">Sounds<span class="fine">,
+        the line that actually gets drawn. Edit it if a word came out
+        sounding wrong.</span></label>
 
     <p class="tune-note" id="tuneNote" hidden>
       <span>You've edited these sounds by hand, so your text isn't changing
@@ -59,7 +77,7 @@ and made-up words too.</p>
       <button type="button" class="tool-btn" data-insert="/"
               title="End this word and start the next one">/&nbsp;word break</button>
       <button type="button" class="tool-btn" data-insert="0"
-              title="Null — fills a slot with no sound in it">0&nbsp;null</button>
+              title="Null, fills a slot with no sound in it">0&nbsp;null</button>
       <span class="spacer"></span>
       <button type="button" class="tool-btn" id="delToken"
               title="Remove the last sound">⌫</button>
@@ -114,11 +132,11 @@ and made-up words too.</p>
           <code>ch</code>, <code>sh</code>, <code>th</code> (<em>thin</em>),
           <code>dh</code> (<em>this</em>), <code>zh</code>
           (<em>vision</em>) and <code>j</code> (<em>jam</em>).</p>
-        <p class="fine">Codes are case-insensitive — <code>ah</code>,
+        <p class="fine">Codes are case-insensitive, so <code>ah</code>,
           <code>Ah</code> and <code>AH</code> all mean the same sound.</p>
         <p>Anything in <code>(brackets)</code> is a label for that word, not a
-          sound — that is how the English caption under each word gets there.</p>
-        <p><code>0</code> fills an empty slot — at the end of a word with an
+          sound. That is how the English caption under each word gets there.</p>
+        <p><code>0</code> fills an empty slot: at the end of a word with an
           odd number of sounds, and inside a word wherever a syllable ends,
           since a block never runs across a syllable boundary.</p>
         <p>Punctuation is written as itself: <code>, . ? !</code>. A mark is
@@ -129,7 +147,7 @@ and made-up words too.</p>
           recorded even where the letter isn't.</p>
         <p class="fine">Adding <code>$</code> or <code>%</code> after a sound
           forces its top or bottom form. You should rarely need it now: the
-          glyphs that turn do it on their own — <code>r l w j</code> when
+          glyphs that turn do it on their own: <code>r l w j</code> when
           they sit under another consonant, <code>s</code> when it sits over
           one.</p>
       </div>
@@ -174,7 +192,7 @@ and made-up words too.</p>
      way round. -->
 <section class="card">
   <h2>Draw a glyph</h2>
-  <p class="subtitle">Draw a shape and pick the closest match — it goes
+  <p class="subtitle">Draw a shape and pick the closest match, and it goes
     into the sounds box.</p>
   <div id="drawpad"></div>
 </section>
@@ -189,36 +207,43 @@ and made-up words too.</p>
 </div>
 
 <footer>
-  <p class="footer-by">
-    Built by
-    <a href="https://avatar.fandom.com/wiki/User:TechFilmer"
-       target="_blank" rel="noopener">TechFilmer</a> on Avatar Wiki.
-  </p>
-  <p>Static site, no server, no tracking. Glyphs are a work in progress.</p>
+  <p class="footer-by">Built by TechFilmer</p>
+  <nav class="socials" aria-label="Links and contact">
+    <a class="social" href="https://avatar.fandom.com/wiki/User:TechFilmer" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"/></svg>
+      Avatar Wiki</a>
+    <a class="social" href="https://instagram.com/videobysrij" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+      @videobysrij</a>
+    <span class="social social-static">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 0 1-.0066.1276 12.2986 12.2986 0 0 1-1.873.8914.0766.0766 0 0 0-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 0 0 .0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 0 0 .0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9459 2.4189-2.1568 2.4189z"/></svg>
+      @sckasturi</span>
+  </nav>
+  <p class="footer-note">Static site, no server, no tracking.</p>
 </footer>
 
-<script src="js/manifest.js?v=39"></script>
+<script src="js/manifest.js?v=40"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=39"></script>
+<script src="js/corpus.js?v=40"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=39"></script>
-<script src="js/g2p.js?v=39"></script>
+<script src="js/lexicon.js?v=40"></script>
+<script src="js/g2p.js?v=40"></script>
 <!-- the sounds syntax (standalone; shared with the glyph designer). -->
-<script src="js/sounds.js?v=39"></script>
-<script src="js/render.js?v=39"></script>
+<script src="js/sounds.js?v=40"></script>
+<script src="js/render.js?v=40"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=39"></script>
-<script src="js/draw.js?v=39"></script>
+<script src="js/recognise.js?v=40"></script>
+<script src="js/draw.js?v=40"></script>
 <!-- Sounds -> likely English. Searches the corpus, then EXCEPTIONS, then
      the whole bundled dictionary, so it only earns its keep on a page
      that already loads lexicon.js — which this one does. -->
-<script src="js/reverse.js?v=39"></script>
+<script src="js/reverse.js?v=40"></script>
 <script>
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
 
@@ -306,7 +331,7 @@ function renderWords(words) {
         star.className = "cap-star";
         star.textContent = "*";
         star.title = `Sources are split on how "${w.word}" is written `
-          + `(${major}–${minor}); the more-attested spelling is shown.`;
+          + `(${major} to ${minor}); the more-attested spelling is shown.`;
         en.appendChild(star);
       }
     }
@@ -399,7 +424,7 @@ function renderDecode(words) {
     // Name the word by its sounds when there is more than one pending,
     // so it is obvious which row belongs to which.
     label.textContent = pending.length > 1
-      ? w.ipa.map(soundToCode).join(" ") + " —"
+      ? w.ipa.map(soundToCode).join(" ") + ":"
       : "Sounds like";
     row.appendChild(label);
 
@@ -772,7 +797,7 @@ $("copyBtn").addEventListener("click", async (e) => {
       await navigator.clipboard.writeText(svg);
       flash(btn, "Copied SVG");
       $("outHint").textContent =
-        "Copied the SVG code instead — this browser won't accept an image "
+        "Copied the SVG code instead. This browser won't accept an image "
         + "on the clipboard here.";
     } catch (err2) {
       exportFailed(btn, "copy", err2);
@@ -788,7 +813,7 @@ $("wikitextBtn").addEventListener("click", async (e) => {
     await navigator.clipboard.writeText(wikitext);
     flash(btn, "Copied");
     $("outHint").textContent =
-      "Wikitext copied — paste it into an article on a wiki that has the "
+      "Wikitext copied. Paste it into an article on a wiki that has the "
       + "Avatarian gadget.";
   } catch (err) {
     // No clipboard (e.g. file://): show the markup so it can still be
@@ -920,7 +945,7 @@ function keySection(wrap, title, hint) {
   h.textContent = title;
   if (hint) {
     const s = document.createElement("span");
-    s.textContent = " — " + hint;
+    s.textContent = ": " + hint;
     h.appendChild(s);
   }
   wrap.appendChild(h);

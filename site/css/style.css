@@ -402,6 +402,22 @@ footer p { margin: 4px 0; }
 .footer-by { font-size: 0.9rem; color: var(--muted); }
 .footer-by a { font-weight: bold; }
 
+/* Contact row: icon + handle links, centred under the credit. Icons are
+   inline SVG in currentColor so they inherit the link's hover colour. */
+.socials {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 6px 18px; margin: 8px 0;
+}
+.social {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.85rem; color: var(--muted); text-decoration: none;
+}
+a.social:hover, a.social:focus-visible { color: var(--accent); }
+.social svg { width: 15px; height: 15px; flex: 0 0 auto; display: block; }
+/* Discord has no public profile URL, so it is a label, not a link. */
+.social-static { color: var(--muted-2); }
+.footer-note { color: var(--faint); }
+
 /* Glyph key grid — each cell pairs the drawn glyph with the traced
    shape from the hand-lettered key, so the two can be compared. */
 .key-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); gap: 7px; }

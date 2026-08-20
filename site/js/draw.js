@@ -195,7 +195,7 @@ function createDrawPad(container, options = {}) {
       btn.className = "drawpad-hit drawpad-" + quality(hit.score);
       if (i === 0) btn.classList.add("is-best");
       if (hit.flipped) btn.classList.add("is-flipped");
-      btn.title = `${code} — ${quality(hit.score)} match (${hit.score.toFixed(3)})`
+      btn.title = `${code}: ${quality(hit.score)} match (${hit.score.toFixed(3)})`
         + (hit.flipped ? ", bottom-slot form" : "");
       btn.innerHTML =
         `<span class="drawpad-hit-glyph">${entry.flat || entry.svg || ""}</span>` +
