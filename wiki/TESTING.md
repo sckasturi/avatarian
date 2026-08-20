@@ -29,7 +29,7 @@ Replace **`YourName`** below with your wiki username everywhere.
    and create it). Paste the **entire** contents of
    `wiki/MediaWiki_Avatarian.js.txt`. Save.
    *(A `User:…/….js` page is served as JavaScript and only you — or an
-   admin — can edit it. This is the ~60 KB renderer.)*
+   admin — can edit it. This is the ~40 KB renderer.)*
 
 2. **The styles → your personal CSS.**
    Go to `Special:MyPage/common.css`. Paste the entire contents of

@@ -169,31 +169,71 @@ Two changes, on the user's instruction:
   59 KB**. `wiki/TESTING.md` is the personal-account test walkthrough;
   the loader has a `BUNDLE_PAGE` var to point at a user subpage first.
 
+### The wiki gadget matured (tested live on Fandom), and got its reading polish
+
+The gadget was tested on a real Fandom wiki and reads well now. In order:
+
+- **Template is sounds + English label, ONE template per line**:
+  `{{Avatarian|k uh t ah r uh / p l ee z|Katara please}}` — `/` between
+  words. The gadget draws each `/`-word as its own `.avatarian-word-part`
+  so words keep a space (one `renderAvatarian` call butts them together);
+  the outer span stays the word and carries size/title/copy/selection.
+  Dropped `en=` (English auto-convert) entirely.
+- **Reading fixes (wiki CSS + `wiki/gadget.js`):** the 9-row block is
+  `2.05em`, so `.avatarian-word` font-size is scaled `/2.05` to sit on the
+  text line; **stroke-width bumped to 13** for legibility at that size (a
+  tunable knob); **one whole-word tooltip** (`Katara /k ə t ɑ r ə/`) — the
+  gadget strips render.js's per-glyph titles; **copy yields the IPA** (a
+  `copy` handler substitutes each word's `data-avatarian-ipa`, since the
+  SVGs copy as nothing); **selection highlight** (a `selectionchange`
+  handler tints selected words — `Range.intersectsNode`, not
+  `Selection.containsNode` which misses SVG-only spans); **no flash of
+  English** (`html.client-js .avatarian-word:not([data-avatarian-done])`
+  is `visibility:hidden`, revealed per-word as drawn; the loader has a 5s
+  safety net to show fallback text if the bundle fails).
+- **Site: a "Wikitext" button** on the translator output bar copies the
+  `{{Avatarian}}` markup for what's drawn (`toWikitext` in `index.html`).
+- **Published artifacts carry little documentation:** `build_wiki_bundle.py`
+  strips whole-line comments (bundle now ~38 KB); `Common.js`/`Common.css`/
+  `Template` hand-trimmed. The `site/js` SOURCE keeps its comments.
+
+### ARPAbet is gone (input feature only)
+
+Removed the CAPS-means-ARPAbet input: `ARPABET_TO_IPA` (g2p.js),
+`EXTRA_CODES` and the ARPAbet branches (sounds.js — now standalone, no g2p
+dep), the bundle shim, the designer's `arpabet`→`code` field, the tests,
+and the docs. Every glyph is still typeable via the readable codes;
+codes are now just case-insensitive readable + IPA. **`build_lexicon.py`
+keeps its own ARPAbet→IPA map** — the CMU dictionary is natively ARPAbet,
+so that build-time conversion stays; it is not the user-facing feature.
+
 ### Traps / notes
 
-- **Cache-bust reached `v=37`** on `index.html`/`corpus.html`/`sources.html`
-  (several `style.css`/render/manifest changes this session).
-- **Restart `designer_server.py` after editing `build_glyphs.py`** — it
-  imports the module once at startup (same trap as `corpus_server`).
-- The Browser-pane **screenshot/scroll desynced repeatedly** after JS
-  scrolls on the tall desktop layout — blank frames. Functional checks via
-  `javascript_tool` (class lists, computed styles, filtered counts) were
-  the reliable verification.
+- **Cache-bust reached `v=39`** on `index.html`/`corpus.html`/`sources.html`.
+- **Re-paste after wiki changes:** the bundle → `MediaWiki:Avatarian.js`
+  (or `User:You/Avatarian.js` for testing), the CSS → `common.css`, the
+  loader → `common.js`. `MediaWiki:Common.js` (capital C) is site-wide;
+  personal testing uses `Special:MyPage/common.js` (lowercase). See
+  `wiki/TESTING.md`.
+- **Restart `designer_server.py` after editing `build_glyphs.py`** (imports
+  it once at startup).
+- The Browser-pane **screenshot/scroll desynced repeatedly** on the tall
+  desktop layout; `javascript_tool` checks were the reliable verification.
 
 ### Where to start next time
 
-Items 21, 7, 32, 38 are closed, the AVATARIAN.md rewrite is done, the
-marks are redrawn and shipped, and the wiki gadget is self-hosted and
-lean. What is genuinely open:
+The display, the marks, the AVATARIAN.md rewrite, and the whole wiki
+gadget (self-hosted, sounds-only, tested live, polished) are done, and
+ARPAbet is stripped. What is genuinely open:
 
-1. **Item 19** — stroke-level fusion, now the most visible thing left in
-   the block model. Read the item carefully first: `/s/` and `/z/` got
-   per-cluster fixes, and the edge-line protrusions and `/p/`'s tip were
-   **deliberately left** — don't re-propose the clip or the pentagon.
+1. **Item 19** — stroke-level fusion, the most visible thing left in the
+   block model. `/s/` and `/z/` got per-cluster fixes; the edge-line
+   protrusions and `/p/`'s tip were **deliberately left** — don't
+   re-propose the clip or the pentagon.
 2. **Items 34/36** — morpheme boundaries and the hand-rolled syllabifier,
-   both waiting on more attested compounds / a rainy day.
-3. **Item 37** — the apostrophe as a mark, parked pending a look at the
-   art (the attested possessives write it as sounds, not a mark).
+   both waiting on more attested compounds.
+3. **Item 37** — the apostrophe as a mark, parked pending a look at the art
+   (attested possessives write it as sounds, not a mark).
 
 Suite is **57 pass / 0 fail**. `main == origin/main`.
 

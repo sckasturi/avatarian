@@ -16,7 +16,7 @@ A static toolkit for **Avatarian**, the conscript introduced for the new
 Avatar: The Last Airbender film. It converts English → IPA → Avatarian
 glyphs, renders them as paired blocks, and plugs into Avatar Wiki
 (Fandom) via an `{{Avatarian|k uh t ah r uh|Katara}}` template — the word
-spelled in sounds, drawn by a ~60 KB bundle the wiki serves itself. No
+spelled in sounds, drawn by a ~40 KB bundle the wiki serves itself. No
 server, no build step, no dependencies.
 
 Avatarian is **phonetic** — it encodes IPA sounds, not English letters.
@@ -538,7 +538,7 @@ katara please do not be mad
 ## Wiki deployment
 
 **Self-hosted — no outside server.** `tools/build_wiki_bundle.py` bundles
-the glyphs + the sounds/render code into one ~60 KB file that lives on the
+the glyphs + the sounds/render code into one ~40 KB file that lives on the
 wiki as `MediaWiki:Avatarian.js`; `wiki/MediaWiki_Common.js.txt` is a tiny
 loader that pulls it from the same wiki via `wgScript + action=raw`, only
 on pages that use `{{Avatarian}}`. The template is sounds-only

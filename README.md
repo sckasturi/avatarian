@@ -93,7 +93,7 @@ wiki/            <- paste these into the Fandom wiki, once. SELF-HOSTED:
                     the whole renderer lives on the wiki, no outside server.
   Template_Avatarian.wiki       wikitext for {{Avatarian|k uh t ah r uh|Katara}}
   MediaWiki_Common.js.txt       tiny loader: pulls the bundle from THIS wiki
-  MediaWiki_Avatarian.js.txt    generated bundle (~60 KB, all the JS in one file)
+  MediaWiki_Avatarian.js.txt    generated bundle (~40 KB, all the JS in one file)
   gadget.js                     source for the render step (bundled in)
   MediaWiki_Common.css.txt      sizing/positioning for the glyphs
   TESTING.md                    how to test on a personal account first
@@ -155,7 +155,7 @@ actually use `{{Avatarian}}`. (You still need `site/` as the *source* the
 bundle is built from, but it does not have to be deployed anywhere.)
 
 1. Build the bundle: `python3 tools/build_wiki_bundle.py` — writes
-   `wiki/MediaWiki_Avatarian.js.txt` (~60 KB: inline-SVG glyphs + the code
+   `wiki/MediaWiki_Avatarian.js.txt` (~40 KB: inline-SVG glyphs + the code
    that draws them).
 2. Paste `wiki/MediaWiki_Avatarian.js.txt` into **MediaWiki:Avatarian.js**
    on Avatar Wiki (needs wiki-admin/JS-editor rights).
@@ -671,7 +671,7 @@ lookup — so a visitor who never converts anything never pays for it.
 **The wiki gadget loads none of the lookup chain.** The `{{Avatarian}}`
 template takes the word already spelled in **sounds**, so the wiki never
 turns English into IPA at all — no dictionary, no corpus, no `EXCEPTIONS`,
-no rules. That is why its bundle is ~60 KB: only the glyphs and the code
+no rules. That is why its bundle is ~40 KB: only the glyphs and the code
 that draws them (see "Hooking up the wiki"). You get the sounds from the
 translator — type the word, copy what appears in its Sounds box — and
 paste them into the template.
