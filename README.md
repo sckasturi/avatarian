@@ -163,13 +163,12 @@ bundle is built from, but it does not have to be deployed anywhere.)
 4. Paste `wiki/MediaWiki_Common.css.txt` into **MediaWiki:Common.css**.
 5. Create **Template:Avatarian** using `wiki/Template_Avatarian.wiki`.
 6. Use it in any article: `{{Avatarian|k uh t ah r uh|Katara}}` — spell the
-   word in **sounds** (readable codes, ARPAbet in CAPS, or IPA) with an
+   word in **sounds** (readable codes or IPA) with an
    English **label**. It draws exactly that spelling; hover shows
    *Katara /k ə t ɑ r ə/*. To get the sounds for a word, type it into the
    translator and copy what appears in its "Sounds" box.
 
-Whenever a bundled module (`manifest.js`, `sounds.js`, `render.js`,
-g2p's ARPAbet table, or `wiki/gadget.js`) changes, re-run
+Whenever a bundled module (`manifest.js`, `sounds.js`, `render.js`, or `wiki/gadget.js`) changes, re-run
 `build_wiki_bundle.py` and paste the new bundle into **MediaWiki:Avatarian.js**
 again.
 
@@ -268,17 +267,14 @@ the two SVGs' clearance margins, or the lattices wouldn't meet. A residual
 one-row gap for 4-row vowels (e.g. T+ɑ) is a design-convention question, not
 a rendering one — see `HANDOFF.md` and `CONTEXT.md`.
 
-**4-row vs 3-row vowels:** the confirmed set, in ARPAbet, is **AA, AW,
-EY, IH, OY, UH, UW**; every other vowel is 3-row. Every vowel design now
-carries its own `rows`, set from the designer's **rows** toggle, and
-`build_glyphs.py` reads it — `VOWEL_4ROW_BASE` is only the fallback for a
-vowel with no design.
+**4-row vs 3-row vowels:** the confirmed 4-row set is **/ɪ e u ʊ ɑ aʊ ɔɪ/**;
+every other vowel is 3-row. Every vowel design now carries its own `rows`,
+set from the designer's **rows** toggle, and `build_glyphs.py` reads it —
+`VOWEL_4ROW_BASE` is only the fallback for a vowel with no design.
 
-**Read that list as ARPAbet codes, not file stems.** The two do not track
-each other and reading it wrong gets two of the seven backwards: stem
-`uh` is /ʌ/ (ARPAbet **AH**, 3-row) while ARPAbet **UH** is /ʊ/ (stem
-`oo`, 4-row); stem `aw` is /ɔ/ (ARPAbet **AO**, 3-row) while ARPAbet
-**AW** is /aʊ/ (stem `au`, 4-row).
+**Read that set as IPA, not off the file stems.** The two do not track each
+other: stem `oo` is /ʊ/ (4-row) while stem `ow` is /oʊ/ (3-row), and stem
+`uh` is /ʌ/ (3-row) — so reading the set off stems gets it wrong.
 
 A 4-row vowel's ink spans lattice `y` 0.5–3.5; a 3-row vowel's spans
 1.5–3.5. `glyphspec.validate` checks a design's declared `rows` against
@@ -587,11 +583,7 @@ students                    metalbending
   `uh` comma — which also covers *nurse* and *bird*, since Avatarian
   writes one letter where English writes two. Consonants are themselves
   plus `ng ch sh th dh zh j y kh`. The table is `READABLE` in `sounds.js`.
-* **ARPAbet still works, in CAPITALS** — `K AX T AA R AX`. Four codes
-  (`ah uh ow aw`) mean different things in the two schemes, so case is
-  what separates them; everything else stays case-insensitive. Nothing
-  written before the change needs migrating, since ARPAbet has always
-  been written in capitals. See TODO item 29.
+* **Codes are case-insensitive** — `ah`, `Ah` and `AH` all mean the same sound.
 * **IPA is accepted too**, plus aliases: `eɪ` for `e`, `ɝ`/`ɜr` for `ɜ`.
 * **`0`** (or `_`, `-`) is the `∅` empty-slot filler.
 * **`$` / `%`** suffixes force a glyph's top or bottom orientation —

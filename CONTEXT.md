@@ -400,16 +400,15 @@ nudging both design conventions to touch. See HANDOFF.md "THE OPEN ISSUE."
 
 **4-row vs 3-row vowels.** A 4-row vowel fills the top lattice row
 (ink spanning y 0.5–3.5) and carries `rows: 4` → `avatarian-4row` in the
-DOM; a 3-row vowel leaves that row empty (y 1.5–3.5). The confirmed set,
-in **ARPAbet**, is **AA, AW, EY, IH, OY, UH, UW**.
+DOM; a 3-row vowel leaves that row empty (y 1.5–3.5). The confirmed 4-row
+set is **/ɪ e u ʊ ɑ aʊ ɔɪ/**.
 
-**That list is ARPAbet codes, NOT file stems**, and the two are actively
-misleading: stem `uh` is /ʌ/ = ARPAbet **AH** (3-row), while ARPAbet
-**UH** is /ʊ/ = stem `oo` (4-row); stem `aw` is /ɔ/ = ARPAbet **AO**
-(3-row), while ARPAbet **AW** is /aʊ/ = stem `au` (4-row). Reading it as
-stems flips two of the seven, in both directions. Every vowel design now
-carries an explicit `rows`; `VOWEL_4ROW_BASE` matches the list and is
-only the fallback for a vowel with no design.
+**Read that set as IPA, NOT off the file stems** — the two are actively
+misleading: stem `oo` is /ʊ/ (4-row) while stem `ow` is /oʊ/ (3-row), and
+stem `uh` is /ʌ/ (3-row) but code `uh` is /ə/. Reading the set off stems
+gets it wrong. Every vowel design now carries an explicit `rows`;
+`VOWEL_4ROW_BASE` matches the set and is only the fallback for a vowel
+with no design.
 
 `glyphspec.validate` cross-checks declared `rows` against where the ink
 starts, so a mismatch shows up in the designer's problems panel. Note the

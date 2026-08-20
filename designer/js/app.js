@@ -103,7 +103,7 @@ const App = {
         b.innerHTML =
           `<span class="thumb" data-thumb="${s.name}"></span>` +
           `<span class="who"><span class="ipa">${s.ipa || "∅"}</span>` +
-          `<span class="meta">${[s.name, s.arpabet, s.example].filter(Boolean).join(" · ")}</span></span>` +
+          `<span class="meta">${[s.name, s.code, s.example].filter(Boolean).join(" · ")}</span></span>` +
           `<span class="tick" data-tick="${s.name}"></span>`;
         b.addEventListener("click", () => this.openSound(s.name));
         list.appendChild(b);
@@ -166,7 +166,7 @@ const App = {
     $("#now").innerHTML =
       `<b class="ipa">${s.ipa || "∅"}</b> ${s.name}` +
       `<span class="fine"> · ${s.type} · <span id="now-grid">${s.grid[0]}×${s.grid[1]}</span> grid` +
-      (s.arpabet ? ` · ${s.arpabet}` : "") +
+      (s.code ? ` · ${s.code}` : "") +
       (s.placeholder ? " · no glyph in the set yet" : "") + "</span>";
     $("#notes").value = Store.design.notes || "";
     $("#out-note").textContent = s.note ? `Source: ${s.note}.` : "";
@@ -675,7 +675,7 @@ const App = {
 
 function matches(s, q) {
   if (!q) return true;
-  return [s.name, s.ipa, s.arpabet, s.example, s.type]
+  return [s.name, s.ipa, s.code, s.example, s.type]
     .filter(Boolean).join(" ").toLowerCase().includes(q);
 }
 

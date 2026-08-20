@@ -79,9 +79,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "site" / "js" / "lexicon.js"
 G2P = ROOT / "site" / "js" / "g2p.js"
 
-# ARPAbet -> this project's IPA. Kept in step with ARPABET_TO_IPA in
-# g2p.js; the two vowels that need more than a lookup are handled in
-# `phones_to_ipa` below.
+# ARPAbet -> this project's IPA, for reading the CMU dictionary (which is
+# natively ARPAbet). Standalone — this is the only ARPAbet the project
+# keeps, at build time; the two vowels that need more than a lookup are
+# handled in `phones_to_ipa` below.
 ARPA = {
     "AA": "ɑ", "AE": "æ", "AO": "ɔ", "AW": "aʊ", "AY": "aɪ",
     "EH": "ɛ", "EY": "e", "IH": "ɪ", "IY": "i", "OW": "oʊ",

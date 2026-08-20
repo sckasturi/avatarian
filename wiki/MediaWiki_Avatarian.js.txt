@@ -320,20 +320,7 @@ window.AVATARIAN_GLYPHS = {
   }
 };
 
-/* ARPABET_TO_IPA (from g2p.js — the only bit sounds.js needs) */
-const ARPABET_TO_IPA = {
-  AA: "ɑ", AE: "æ", AH: "ʌ", AO: "ɔ", AW: "aʊ", AY: "aɪ",
-  EH: "ɛ", ER: "ə", EY: "e", IH: "ɪ", IY: "i", OW: "oʊ",
-  OY: "ɔɪ", UH: "ʊ", UW: "u",
-  B: "b", CH: "tʃ", D: "d", DH: "ð", F: "f", G: "g", HH: "h",
-  JH: "dʒ", K: "k", L: "l", M: "m", N: "n", NG: "ŋ", P: "p",
-  R: "r", S: "s", SH: "ʃ", T: "t", TH: "θ", V: "v", W: "w",
-  Y: "j", Z: "z", ZH: "ʒ",
-};
-
 /* site/js/sounds.js */
-
-const EXTRA_CODES = { "AX": "ə", "NUL": "∅" };
 
 const READABLE = {
   "a": "æ",      // trap
@@ -382,12 +369,6 @@ const IPA_TO_CODE = (() => {
   Object.entries(READABLE).forEach(([code, ipa]) => {
     if (!map[ipa]) map[ipa] = code;
   });
-  Object.entries(ARPABET_TO_IPA).forEach(([code, ipa]) => {
-    if (!map[ipa]) map[ipa] = code;
-  });
-  Object.entries(EXTRA_CODES).forEach(([code, ipa]) => {
-    if (!map[ipa]) map[ipa] = code;
-  });
   return map;
 })();
 
@@ -401,18 +382,9 @@ function splitOverride(token) {
 function normaliseSound(token) {
   const { body, suffix } = splitOverride(token);
   if (SOUND_ALIASES[body]) return SOUND_ALIASES[body] + suffix;
-
-  const upper = body.toUpperCase();
   const lower = body.toLowerCase();
-
-  if (body === upper && ARPABET_TO_IPA[upper]) return ARPABET_TO_IPA[upper] + suffix;
-  if (body === upper && EXTRA_CODES[upper]) return EXTRA_CODES[upper] + suffix;
-
   if (READABLE[lower]) return READABLE[lower] + suffix;
   if (READABLE_ALIASES[lower]) return READABLE_ALIASES[lower] + suffix;
-
-  if (ARPABET_TO_IPA[upper]) return ARPABET_TO_IPA[upper] + suffix;
-  if (EXTRA_CODES[upper]) return EXTRA_CODES[upper] + suffix;
   return body + suffix;
 }
 
@@ -485,7 +457,7 @@ function spreadCaptions(words) {
 
 if (typeof module !== "undefined") {
   module.exports = {
-    EXTRA_CODES, SOUND_ALIASES, READABLE, READABLE_ALIASES, IPA_TO_CODE,
+    SOUND_ALIASES, READABLE, READABLE_ALIASES, IPA_TO_CODE,
     splitOverride, normaliseSound, soundToCode,
     wordsToSoundText, soundTextToWords,
     splitCaption, spreadCaptions,

@@ -84,8 +84,8 @@ stop the build.
 ## Why a `vm` context and not `require`
 
 Everything in `site/js/` is a classic script, not a module, and the
-shared global scope is load-bearing: `sounds.js` reads `ARPABET_TO_IPA`
-off `g2p.js`, `reverse.js` calls `lexicon()` and `corpusWords()`.
+shared global scope is load-bearing: `render.js` reads
+`window.AVATARIAN_GLYPHS`, `reverse.js` calls `lexicon()` and `corpusWords()`.
 `require`ing them would give each file its own scope and none of it would
 resolve. A shared `vm` context reproduces the browser's arrangement,
 including the load order.

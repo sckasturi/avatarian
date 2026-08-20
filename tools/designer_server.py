@@ -61,7 +61,6 @@ SITE = ROOT / "site"
 DESIGNS = ROOT / "designs"
 REF = ROOT / "site" / "assets" / "reference"
 GLYPHS = ROOT / "site" / "assets" / "glyphs"
-G2P = ROOT / "site" / "js" / "g2p.js"
 SOUNDS = ROOT / "site" / "js" / "sounds.js"
 
 PORT = 8792
@@ -96,26 +95,20 @@ EXAMPLES = {
 
 def code_map():
     """
-    IPA -> the code to show, read out of the site's own tables so the
-    designer teaches the same scheme the main tool does.
+    IPA -> the readable code to show, read out of sounds.js's own READABLE
+    table so the designer teaches the same scheme the main tool does.
+    Reading it rather than restating it means the two can't drift.
 
-    READABLE (sounds.js) first, since that is what the site displays;
-    ARPAbet (g2p.js) only fills anything it somehow misses. Reading both
-    rather than restating them is the same rule the live preview follows
-    — a copy here would drift the moment either table changed.
-
-    Falls back to nothing if either stops being a plain object literal,
+    Falls back to nothing if READABLE stops being a plain object literal,
     which shows up as a sound list with no codes rather than wrong ones.
     """
     out = {bg.NULL_IPA: "0"}
-    for path, name in ((SOUNDS, "READABLE"), (G2P, "ARPABET_TO_IPA")):
-        try:
-            src = path.read_text(encoding="utf-8")
-        except OSError:
-            continue
-        block = re.search(name + r"\s*=\s*\{(.*?)\n\};", src, re.S)
-        if not block:
-            continue
+    try:
+        src = SOUNDS.read_text(encoding="utf-8")
+    except OSError:
+        return out
+    block = re.search(r"READABLE\s*=\s*\{(.*?)\n\};", src, re.S)
+    if block:
         for code, ipa in re.findall(r'"?([\w\']+)"?\s*:\s*"([^"]+)"', block.group(1)):
             out.setdefault(ipa, code)
     return out
@@ -129,7 +122,7 @@ def read(path):
 
 
 def catalog():
-    arpa = code_map()
+    codes = code_map()
     rows = []
     for ipa, name in bg.IPA_TO_NAME.items():
         # `type` is the design's HEIGHT CLASS (glyphspec's TALL_KINDS),
@@ -149,7 +142,7 @@ def catalog():
             "grid": ([bg.MARKS_FULL[name]["cols"], 9]
                      if kind == "mark_full" and name in bg.MARKS_FULL
                      else glyphspec.grid_for(kind)),
-            "arpabet": arpa.get(ipa),
+            "code": codes.get(ipa),
             "example": EXAMPLES.get(name),
             "placeholder": name in bg.PLACEHOLDERS,
             # Both as the BUILD currently sees them — base set overlaid

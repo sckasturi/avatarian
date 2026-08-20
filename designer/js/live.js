@@ -200,12 +200,12 @@ function glyphIsTall(kind) {
   return GEOM.isTall(kind);
 }
 
-/** How a symbol reads in a caption: its ARPAbet code where it has one. */
+/** How a symbol reads in a caption: its readable code where it has one. */
 function label(key) {
   if (key === "∅") return "0";
   if (key === "∅c") return "0c";
   const s = Store.catalog.find((x) => x.key === key);
-  return (s && (s.arpabet || s.ipa)) || key;
+  return (s && (s.code || s.ipa)) || key;
 }
 
 /**
@@ -216,10 +216,10 @@ function label(key) {
 function defaultPhrase(sound) {
   const word = sound.example;
   if (!word || word.startsWith("(")) {
-    return (sound.arpabet || sound.ipa || "0") + " 0";
+    return (sound.code || sound.ipa || "0") + " 0";
   }
   const words = sentenceToIPA(word);
-  if (!words.length) return (sound.arpabet || sound.ipa) + " 0";
+  if (!words.length) return (sound.code || sound.ipa) + " 0";
   return words.map((w) => w.ipa.map((s) => IPA_TO_CODE[s] || s).join(" ")
     + (w.word ? ` (${w.word})` : "")).join("  /  ");
 }

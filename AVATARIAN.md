@@ -143,10 +143,9 @@ class. A 4-row vowel's ink spans lattice y **0.5–3.5**; a 3-row vowel's
 spans **1.5–3.5** (`glyphspec.validate` checks the declaration against the
 drawing).
 
-⚠️ **The 4-row set reads as ARPAbet, not file stems** — AA, AW, EY, IH,
-OY, UH, UW. The stems do not track the codes: stem `uh` is /ʌ/ (ARPAbet
-AH, 3-row) while ARPAbet UH is /ʊ/ (stem `oo`, 4-row); stem `aw` is /ɔ/
-(AO, 3-row) while ARPAbet AW is /aʊ/ (stem `au`, 4-row).
+⚠️ **Read the 4-row set as IPA, never off the file stems.** The SVG stems
+don't track the sounds: stem `oo` is /ʊ/ (4-row) while stem `ow` is /oʊ/
+(3-row), and stem `uh` is /ʌ/ (3-row) — see the code/stem note in §8.
 
 ### Reading a block top to bottom
 
@@ -320,9 +319,10 @@ same margin-collapse, and the same "show the flat vowel SVG" rule.
 
 ## 8. The glyph inventory
 
-A snapshot of `tools/build_glyphs.py`. **CODE** is the ARPAbet code;
-**stem** is the SVG file stem in `site/assets/glyphs/`. Regenerate this
-table from the build script rather than trusting it blind.
+A snapshot of `tools/build_glyphs.py`. **code** is the readable code you
+type (§10); **stem** is the SVG file stem in `site/assets/glyphs/`. The two
+often differ — don't read one off the other. Regenerate this table from the
+build script rather than trusting it blind.
 
 The inventory is **40 phonemes — 25 consonants and 15 vowels** — plus two
 nulls (§3) and four punctuation marks (§9). Every drawn glyph is sourced
@@ -330,58 +330,62 @@ from reference material; nothing is invented.
 
 ### Consonants (5×5)
 
-| IPA | CODE | stem | status | notes |
+| IPA | code | stem | status | notes |
 | --- | --- | --- | --- | --- |
-| p | P | p | drawn | |
-| b | B | b | drawn | |
-| t | T | t | drawn | |
-| d | D | d | drawn | |
-| k | K | k | drawn | |
-| g | G | g | drawn | |
-| m | M | m | drawn | |
-| n | N | n | drawn | |
-| ŋ | NG | ng | drawn | |
-| f | F | f | drawn | bowed X, high crossing |
-| v | V | v | drawn | |
-| θ | TH | th | drawn | |
-| ð | DH | dh | drawn | |
-| s | S | s | drawn | mirrors above a cluster, not by slot — see §6 |
-| z | Z | z | drawn | drops its dots in a C-C block — see §6 |
-| h | HH | h | drawn | |
-| w | W | w | drawn | approximant — mirrors in a C-C bottom slot |
-| j | Y | y | drawn | approximant |
-| r | R | r | drawn | approximant |
-| l | L | l | drawn | mirrors by slot **and** is an approximant |
-| tʃ | CH | ch | drawn | from source outside the key chart |
-| dʒ | JH | j_dz | drawn | from source outside the key chart |
-| ʃ | SH | sh | drawn | from source outside the key chart |
-| ʒ | ZH | zh | drawn | the /ʒ/ in "treasure" |
-| x | — | kh | **placeholder** | no source shows it; ARPAbet has no /x/ |
+| p | p | p | drawn | |
+| b | b | b | drawn | |
+| t | t | t | drawn | |
+| d | d | d | drawn | |
+| k | k | k | drawn | |
+| g | g | g | drawn | |
+| m | m | m | drawn | |
+| n | n | n | drawn | |
+| ŋ | ng | ng | drawn | |
+| f | f | f | drawn | bowed X, high crossing |
+| v | v | v | drawn | |
+| θ | th | th | drawn | |
+| ð | dh | dh | drawn | |
+| s | s | s | drawn | mirrors above a cluster, not by slot — see §6 |
+| z | z | z | drawn | drops its dots in a C-C block — see §6 |
+| h | h | h | drawn | |
+| w | w | w | drawn | approximant — mirrors in a C-C bottom slot |
+| j | y | y | drawn | approximant |
+| r | r | r | drawn | approximant |
+| l | l | l | drawn | mirrors by slot **and** is an approximant |
+| tʃ | ch | ch | drawn | from source outside the key chart |
+| dʒ | j | j_dz | drawn | from source outside the key chart |
+| ʃ | sh | sh | drawn | from source outside the key chart |
+| ʒ | zh | zh | drawn | the /ʒ/ in "treasure" |
+| x | kh | kh | **placeholder** | no source shows it |
 
 ### Vowels (5×4)
 
-| IPA | CODE | stem | drawn rows | flips by slot | notes |
+| IPA | code | stem | drawn rows | flips by slot | notes |
 | --- | --- | --- | --- | --- | --- |
-| i | IY | i | 3 | | |
-| ɪ | IH | ih | 4 | ✓ | |
-| e | EY | ei | 4 | ✓ | alias `eɪ`; the FACE vowel is written `e` then `ɪ` |
-| ɛ | EH | eh | 3 | | |
-| æ | AE | ae | 3 | ✓ | cup on top, cap on bottom |
-| ʌ | AH | uh | 3 | | four dots, two-by-two |
-| ə | AX | schwa | 3 | ✓ | recurve descends L→R, two dots; also covers NURSE |
-| u | UW | uu | 4 | | stored as its bottom-slot drawing |
-| oʊ | OW | ow | 3 | | |
-| ɔ | AO | aw | 3 | | stored as its bottom-slot drawing; source outside the chart |
-| ɑ | AA | ah | 4 | ✓ | source outside the chart |
-| aɪ | AY | ai | 3 | ✓ | cleanest attested flip pair |
-| aʊ | AW | au | 4 | | |
-| ʊ | UH | oo | 4 | | the vowel in "good" |
-| ɔɪ | OY | oi | 4 | ✓ | flip unverified — see §13 |
+| i | ee | i | 3 | | |
+| ɪ | i | ih | 4 | ✓ | |
+| e | ey | ei | 4 | ✓ | alias `eɪ`; the FACE vowel is written `e` then `ɪ` |
+| ɛ | e | eh | 3 | | |
+| æ | a | ae | 3 | ✓ | cup on top, cap on bottom |
+| ʌ | u | uh | 3 | | four dots, two-by-two |
+| ə | uh | schwa | 3 | ✓ | recurve descends L→R, two dots; also covers NURSE |
+| u | oo | uu | 4 | | stored as its bottom-slot drawing |
+| oʊ | oh | ow | 3 | | |
+| ɔ | aw | aw | 3 | | stored as its bottom-slot drawing; source outside the chart |
+| ɑ | ah | ah | 4 | ✓ | source outside the chart |
+| aɪ | eye | ai | 3 | ✓ | cleanest attested flip pair |
+| aʊ | ow | au | 4 | | |
+| ʊ | uu | oo | 4 | | the vowel in "good" |
+| ɔɪ | oy | oi | 4 | ✓ | flip unverified — see §13 |
+
+Watch the code/stem mismatch: the SVG **stem** `oo` is /ʊ/ (4-row) while the
+**code** `oo` is /u/, and stem `ow` is /oʊ/ (3-row) while code `ow` is /aʊ/
+(4-row). Read the drawn-rows set off the IPA, never off the stems.
 
 **There is no /ɜ/.** Avatarian writes the NURSE vowel and the schwa with a
-single letter; both map to /ə/ (`nurse`). ARPAbet ER, and IPA `ɜ`/`ɝ`/`ɜr`,
-are accepted as aliases of `ə`, with /r/ emitted as a separate segment
-("bird" → `ə r`), so the vowel carries no r-colouring.
+single letter; both map to /ə/. IPA `ɜ`/`ɝ`/`ɜr` are accepted as aliases of
+`ə`, with /r/ emitted as a separate segment ("bird" → `ə r`), so the vowel
+carries no r-colouring.
 
 ---
 
@@ -437,12 +441,8 @@ letter where English dictionaries write two — so `er`, `ur`, `ir` all land
 on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
 `dh` (*this*), `zh` (*vision*), `j` (*jam*), `y` (*yes*), `kh` (/x/).
 
-- **ARPAbet works, in CAPITALS**: `K AX T AA R AX`. Four codes differ
-  between the two schemes — `ah uh ow aw` — so case is what tells them
-  apart: lowercase `ah` is *father*, shouted `AH` is *cut*. Everything
-  else is case-insensitive. (`AH` is /ʌ/ while `AA` is /ɑ/ — the reason
-  the readable scheme exists: the code that looks like "ah" is not the
-  "ah" sound.)
+- **Codes are case-insensitive** — `ah`, `Ah` and `AH` all mean the same
+  sound.
 - **IPA is accepted too**, plus aliases: `eɪ`→`e`, `ɝ`/`ɜ`/`ɜr`→`ə`,
   `ɑː`→`ɑ`, `iː`→`i`, `uː`→`u`. The corpus is stored in IPA, so it does
   not move when the ASCII layer changes.

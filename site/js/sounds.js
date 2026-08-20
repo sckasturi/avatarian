@@ -1,56 +1,24 @@
 /**
- * The sounds syntax — the ASCII spelling you type, in and out.
+ * The sounds syntax — the readable ASCII spelling you type, in and out.
  *
- * Split out of index.html because the glyph designer's live preview
- * parses the same thing: you type a test word in the designer exactly
- * as you would in the app, and get the same sequence of symbols. One
- * parser, so the two can't drift on what "AX" or "S$" means.
- *
- * The input is ASCII-first so the whole script is typeable on a plain
- * QWERTY keyboard. ARPAbet is the primary spelling (it is already the
- * table g2p.js converts through), IPA is accepted as-is for anyone who
- * prefers it, and a few stand-ins cover symbols that have no key at all.
- *
- * Loads after js/g2p.js — ARPABET_TO_IPA comes from there.
+ * Split out of index.html because the glyph designer's live preview parses
+ * the same thing, so the two can't drift on what "uh" or "S$" means. The
+ * codes are ASCII-first (typeable on a plain keyboard) and
+ * case-insensitive; IPA is accepted as-is. Standalone — no dependency on
+ * g2p.js.
  */
 
 /**
- * Codes for sounds g2p's ARPAbet table has no entry for, so every glyph
- * has something typeable. AX is standard ARPAbet for schwa; the table in
- * g2p.js only carries AH (which is ʌ), so ə would otherwise fall back to
- * showing a character you cannot type.
- */
-const EXTRA_CODES = { "AX": "ə", "NUL": "∅" };
-
-/**
- * THE READABLE CODES — what the tool now teaches and displays.
- *
- * ARPAbet was picked because it is typeable on a plain keyboard, and it
- * is: it is also close to unguessable. `AH` is /ʌ/ (STRUT) while `AA` is
- * /ɑ/ (PALM), so the code that looks like "ah" is not the "ah" sound.
- * That is not a theoretical complaint — this project shipped
- * `K AH T AA R AH` as the spelling of "Katara" in three separate places,
- * written by people who knew the table. It gives /k ʌ t ɑ r ʌ/.
- *
- * These are the **respelling keys dictionaries use for laypeople**, which
- * are the one notation for English sounds that ordinary readers already
- * know how to read. The pattern worth noticing:
+ * THE READABLE CODES — the respelling keys dictionaries use for laypeople,
+ * the one notation for English sounds ordinary readers already read:
  *
  *   a e i u        the short vowels, as in cat bed sit cut
  *   ah oh uh       the broad ones — father, goat, comma
  *   ee oo uu       fleece, goose, foot
  *   ey eye ow aw oy   the diphthongs, spelled the way they sound
  *
- * Consonants are almost all just themselves. The only ones worth
- * learning are `dh` (this) against `th` (thin), and `zh` (vision).
- *
- * WHY CASE MATTERS HERE AND NOWHERE ELSE. Four of these mean something
- * different in ARPAbet — `ah`, `uh`, `ow`, `aw` — and they are exactly
- * the cluster ARPAbet is worst at, so dodging them would give up most of
- * the benefit. Instead: **lowercase is this scheme, UPPERCASE is
- * ARPAbet.** Every document ever written for this tool keeps working
- * unchanged, because ARPAbet has always been written in capitals. One
- * sentence to learn, and nothing to migrate.
+ * Consonants are almost all just themselves; the only ones worth learning
+ * are `dh` (this) against `th` (thin), and `zh` (vision).
  */
 const READABLE = {
   // --- vowels, in the order the key chart lists them -----------------
@@ -106,23 +74,10 @@ const SOUND_ALIASES = {
   "ɑː": "ɑ", "iː": "i", "uː": "u",
 };
 
-/**
- * IPA -> the code to DISPLAY, so the UI teaches one scheme rather than
- * showing a second one it also happens to accept.
- *
- * Built from READABLE first, with ARPAbet only as the fallback for any
- * sound the readable table somehow misses — which is nothing today, and
- * is a safety net rather than a plan.
- */
+/** IPA -> the readable code to DISPLAY. `∅` shows as its `0` filler. */
 const IPA_TO_CODE = (() => {
   const map = { "∅": "0" };
   Object.entries(READABLE).forEach(([code, ipa]) => {
-    if (!map[ipa]) map[ipa] = code;
-  });
-  Object.entries(ARPABET_TO_IPA).forEach(([code, ipa]) => {
-    if (!map[ipa]) map[ipa] = code;
-  });
-  Object.entries(EXTRA_CODES).forEach(([code, ipa]) => {
     if (!map[ipa]) map[ipa] = code;
   });
   return map;
@@ -138,39 +93,15 @@ function splitOverride(token) {
 
 /**
  * One typed token -> the manifest's symbol, override suffix preserved.
- *
- * The order is the whole compatibility story:
- *
- *   1. IPA and its aliases, which are exact and never ambiguous.
- *   2. ALL-CAPS is read as ARPAbet. This is what keeps every document
- *      ever written for this tool working: `AH` is still /ʌ/, `AW` is
- *      still /aʊ/. It is checked before the readable table precisely
- *      because four codes collide.
- *   3. The readable scheme, case-insensitively — so `ah`, `Ah` and `aH`
- *      all mean /ɑ/, and only the shouted `AH` means /ʌ/.
- *   4. ARPAbet again, case-insensitively, for the codes that DON'T
- *      collide. `iy`, `ae` and `hh` keep working in lowercase, because
- *      there is no reason for them not to.
- *
- * A single-letter ARPAbet consonant like `B` is caught at step 2 and
- * `b` at step 3; both are /b/, so the split is invisible for everything
- * except the four vowels it exists for.
+ * IPA (and its aliases) first, then the readable codes case-insensitively,
+ * then the token as-is.
  */
 function normaliseSound(token) {
   const { body, suffix } = splitOverride(token);
   if (SOUND_ALIASES[body]) return SOUND_ALIASES[body] + suffix;
-
-  const upper = body.toUpperCase();
   const lower = body.toLowerCase();
-
-  if (body === upper && ARPABET_TO_IPA[upper]) return ARPABET_TO_IPA[upper] + suffix;
-  if (body === upper && EXTRA_CODES[upper]) return EXTRA_CODES[upper] + suffix;
-
   if (READABLE[lower]) return READABLE[lower] + suffix;
   if (READABLE_ALIASES[lower]) return READABLE_ALIASES[lower] + suffix;
-
-  if (ARPABET_TO_IPA[upper]) return ARPABET_TO_IPA[upper] + suffix;
-  if (EXTRA_CODES[upper]) return EXTRA_CODES[upper] + suffix;
   return body + suffix;
 }
 
@@ -187,7 +118,7 @@ function soundToCode(token) {
  *
  * The override suffix is split off before the code lookup — `s%` is not
  * a key in IPA_TO_CODE, so looking the whole token up wrote raw IPA into
- * a box that otherwise speaks ARPAbet. Nothing produced an override
+ * a box that otherwise speaks the readable codes. Nothing produced an override
  * upstream until the corpus did ("students" spells both its /s/ by
  * hand), which is why this only showed up now.
  */
@@ -311,7 +242,7 @@ function spreadCaptions(words) {
 
 if (typeof module !== "undefined") {
   module.exports = {
-    EXTRA_CODES, SOUND_ALIASES, READABLE, READABLE_ALIASES, IPA_TO_CODE,
+    SOUND_ALIASES, READABLE, READABLE_ALIASES, IPA_TO_CODE,
     splitOverride, normaliseSound, soundToCode,
     wordsToSoundText, soundTextToWords,
     splitCaption, spreadCaptions,

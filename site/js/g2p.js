@@ -28,16 +28,6 @@
  * all. That is why `appa` can live there and nowhere else. See CORPUS.md.
  */
 
-const ARPABET_TO_IPA = {
-  AA: "ɑ", AE: "æ", AH: "ʌ", AO: "ɔ", AW: "aʊ", AY: "aɪ",
-  EH: "ɛ", ER: "ə", EY: "e", IH: "ɪ", IY: "i", OW: "oʊ",
-  OY: "ɔɪ", UH: "ʊ", UW: "u",
-  B: "b", CH: "tʃ", D: "d", DH: "ð", F: "f", G: "g", HH: "h",
-  JH: "dʒ", K: "k", L: "l", M: "m", N: "n", NG: "ŋ", P: "p",
-  R: "r", S: "s", SH: "ʃ", T: "t", TH: "θ", V: "v", W: "w",
-  Y: "j", Z: "z", ZH: "ʒ",
-};
-
 // A CONFIRMED WORD LEAVES THIS TABLE. It does not get corrected here —
 // it lives in corpus/attested.json, which records the spelling somebody
 // SAW rather than a reading of it, and which wins above this table
@@ -549,6 +539,6 @@ function sentenceToIPA(text) {
 if (typeof module !== "undefined") {
   module.exports = {
     wordToIPA, lookupWord, derivedLookup, sentenceToIPA, normaliseWord,
-    ARPABET_TO_IPA, EXCEPTIONS, hasLexicon, corpusWords,
+    EXCEPTIONS, hasLexicon, corpusWords,
   };
 }

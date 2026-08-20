@@ -2,9 +2,9 @@
  * Avatarian wiki gadget — the render step.
  *
  * This is the TAIL of the bundle: tools/build_wiki_bundle.py concatenates
- * the glyph manifest, the ARPAbet table, sounds.js and render.js ahead of
- * it, so by the time this runs the globals it needs (renderAvatarian,
- * soundTextToWords) are defined.
+ * the glyph manifest, sounds.js and render.js ahead of it, so by the time
+ * this runs the globals it needs (renderAvatarian, soundTextToWords) are
+ * defined.
  *
  * It finds every {{Avatarian}} span the template left on the page and
  * replaces it with real glyphs, drawing the SOUNDS the template carries.

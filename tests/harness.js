@@ -4,9 +4,9 @@
  *
  * WHY A `vm` CONTEXT AND NOT `require`. Everything in `site/js/` is a
  * classic script, not a module: the files share one global scope, and
- * that sharing is load-bearing — `sounds.js` reads `ARPABET_TO_IPA` off
- * `g2p.js`, `reverse.js` calls `lexicon()` and `corpusWords()`, and
- * `render.js` reads `window.AVATARIAN_GLYPHS`. `require`ing them would
+ * that sharing is load-bearing — `reverse.js` calls `lexicon()` and
+ * `corpusWords()`, `g2p.js` reads `PHONE_OF`, and `render.js` reads
+ * `window.AVATARIAN_GLYPHS`. `require`ing them would
  * give each file its own scope and none of that would resolve. Running
  * them in a shared `vm` context reproduces the browser's arrangement
  * exactly, including the load ORDER, which is itself something worth not

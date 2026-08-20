@@ -373,12 +373,10 @@ FLIPS_BASE = {"æ", "ɑ", "l", "ɪ", "e", "aɪ", "ə"}
 # the gap between consonant and vowel in the 9-row block model.
 # All other vowels use only 3 rows, leaving a 1-row gap.
 #
-# The confirmed set, in ARPAbet: AA AW EY IH OY UH UW. Beware the stem
-# names, which do NOT track the codes — stem `uh` is /ʌ/ (ARPAbet AH,
-# 3-row) while ARPAbet UH is /ʊ/ (stem `oo`, 4-row), and stem `aw` is
-# /ɔ/ (ARPAbet AO, 3-row) while ARPAbet AW is /aʊ/ (stem `au`, 4-row).
-# Reading the list as stems instead of codes gets two of the seven
-# wrong, in both directions.
+# The confirmed 4-row set, in IPA: ɪ e u ʊ ɑ aʊ ɔɪ. Beware the stem
+# names, which do NOT track the sounds — stem `oo` is /ʊ/ (4-row) while
+# stem `ow` is /oʊ/ (3-row), and stem `uh` is /ʌ/ (3-row). Read the set
+# off the IPA, never off the stems.
 #
 # This is only the FALLBACK. Every vowel that has a design carries its
 # own `rows`, and that wins — see design_overrides below.

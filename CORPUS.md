@@ -33,11 +33,10 @@ and a re-run of the build script.
 **Two things came out differently from the design below**, and the
 sections are corrected in place:
 
-- **Spellings are stored in IPA, not in the sounds syntax** (§2). The
-  syntax is ARPAbet-flavoured and TODO item 29 proposes replacing it;
-  storing codes would have tied every entry to a scheme that is expected
-  to move. IPA is canonical, and the site is already IPA internally —
-  the codes are only an input and display layer.
+- **Spellings are stored in IPA, not in the sounds syntax** (§2). Storing
+  the readable codes would have tied every entry to the input/display
+  layer; IPA is canonical, and the site is already IPA internally — the
+  codes are only how you type and read the sounds.
 - **`pairUp()` does not need to be bypassed** (§2). A finished spelling
   written with its nulls always has an even token count, and pairing an
   even list two at a time reproduces the blocks exactly. The thing that
@@ -161,10 +160,10 @@ flattened — read the blocks left to right, each one top slot then bottom
 slot, with the nulls written out.
 
 *(The original plan here was to store the sounds-syntax string the box
-takes, `AA 0 P 0 AA 0`. That syntax is ARPAbet, and TODO item 29 wants to
-replace ARPAbet with something guessable; every entry would then have
-needed migrating. IPA does not move, the site is already IPA internally,
-and `wordsToSoundText` renders an entry into whatever the current codes
+takes, `a 0 p 0 a 0`. Storing the readable codes would have tied every
+entry to the input/display layer and needed migrating if it changed. IPA
+does not move, the site is already IPA internally, and `wordsToSoundText`
+renders an entry into whatever the current codes
 are — so a corpus entry is still literally a line you could paste into
 the site, it just isn't stored that way.)*
 

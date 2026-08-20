@@ -25,29 +25,21 @@ const {
 // Codes in, symbols out
 // ---------------------------------------------------------------------
 
-test("ARPAbet, IPA and the stand-ins all reach the same symbol", () => {
-  assert.equal(normaliseSound("AA"), "ɑ");
-  assert.equal(normaliseSound("aa"), "ɑ", "codes are case-insensitive");
+test("readable codes, IPA and the fillers all reach the same symbol", () => {
+  assert.equal(normaliseSound("ah"), "ɑ");
+  assert.equal(normaliseSound("AH"), "ɑ", "codes are case-insensitive");
   assert.equal(normaliseSound("ɑ"), "ɑ", "IPA passes through");
-  assert.equal(normaliseSound("AX"), "ə", "schwa has no ARPAbet code of its own");
+  assert.equal(normaliseSound("uh"), "ə");
   assert.equal(normaliseSound("0"), "∅");
   assert.equal(normaliseSound("_"), "∅");
   assert.equal(normaliseSound("-"), "∅");
 });
 
-test("AH is STRUT and AA is PALM — the trap in item 29", () => {
-  // The code that looks like "ah" is not the "ah" sound. This is not
-  // hypothetical: `K AH T AA R AH` sat in the site's own help text and
-  // in AVATARIAN.md as the spelling of "Katara" until session 9, and it
-  // gives /k ʌ t ɑ r ʌ/. Pinning it here means the next person to
-  // "correct" the example has to argue with a test.
-  assert.equal(normaliseSound("AH"), "ʌ");
-  assert.equal(normaliseSound("AA"), "ɑ");
-  assert.equal(normaliseSound("AX"), "ə");
+test("Katara spells from its readable codes", () => {
   assert.deepEqual(
-    plain(soundTextToWords("K AX T AA R AX")[0].ipa),
+    plain(soundTextToWords("k uh t ah r uh")[0].ipa),
     ["k", "ə", "t", "ɑ", "r", "ə"],
-    "K AX T AA R AX is Katara");
+    "k uh t ah r uh is Katara");
 });
 
 test("an orientation override rides on the sound", () => {
@@ -84,37 +76,15 @@ test("the readable codes read the way they look", () => {
   assert.equal(say("v i zh uh n"), "v ɪ ʒ ə n", "vision");
 });
 
-test("CAPITALS still mean ARPAbet, so old documents keep working", () => {
-  const say = (text) => soundTextToWords(text)[0].ipa.join(" ");
-  assert.equal(say("K AX T AA R AX"), "k ə t ɑ r ə");
-  assert.equal(say("HH EH L OW"), "h ɛ l oʊ");
-  assert.equal(say("AA 0 P 0 AA 0"), "ɑ ∅ p ∅ ɑ ∅");
-});
-
-test("case decides for the four codes that collide, and only those", () => {
-  // These are the whole reason case is significant. Everything else is
-  // case-insensitive, so the split is invisible unless you hit one.
-  for (const [lower, readable, upper, arpabet] of [
-    ["ah", "ɑ", "AH", "ʌ"],
-    ["uh", "ə", "UH", "ʊ"],
-    ["ow", "aʊ", "OW", "oʊ"],
-    ["aw", "ɔ", "AW", "aʊ"],
-  ]) {
-    assert.equal(normaliseSound(lower), readable, `${lower} should be ${readable}`);
-    assert.equal(normaliseSound(upper), arpabet, `${upper} should be ${arpabet}`);
-  }
-});
-
-test("everything that doesn't collide stays case-insensitive", () => {
+test("readable codes are case-insensitive", () => {
   for (const [a, b] of [["ee", "EE"], ["b", "B"], ["ng", "NG"], ["sh", "SH"],
-                        ["eye", "EYE"], ["oy", "OY"], ["er", "ER"]]) {
+                        ["eye", "EYE"], ["oy", "OY"], ["er", "ER"],
+                        // the four that once collided with ARPAbet are now
+                        // just case-insensitive like everything else
+                        ["ah", "AH"], ["uh", "UH"], ["ow", "OW"], ["aw", "AW"]]) {
     assert.equal(normaliseSound(a), normaliseSound(b), `${a} vs ${b}`);
   }
-  // ARPAbet codes with no readable twin work lowercase too — there is no
-  // reason to make somebody shout `IY`.
-  assert.equal(normaliseSound("iy"), "i");
-  assert.equal(normaliseSound("hh"), "h");
-  assert.equal(normaliseSound("jh"), "dʒ");
+  assert.equal(normaliseSound("AH"), "ɑ", "AH is now just ah, not ARPAbet's ʌ");
 });
 
 test("every glyph has a readable code, and it round-trips", (t) => {
