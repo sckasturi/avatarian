@@ -1,48 +1,15 @@
-/* Avatarian renderer — loader. Credits and sources: see AVATARIAN.md. */
-/*
- * Avatarian gadget loader for Fandom / MediaWiki:Common.js
- *
- * SELF-CONTAINED: the whole renderer lives on THIS wiki, so nothing is
- * fetched from an outside server. This snippet just loads the bundle
- * ([[MediaWiki:Avatarian.js]]) from the wiki itself, and only on pages
- * that actually use {{Avatarian}} — so ordinary pages pay nothing.
- *
- * SETUP (one-time):
- *   1. Build the bundle:  python3 tools/build_wiki_bundle.py
- *   2. Paste wiki/MediaWiki_Avatarian.js.txt into [[MediaWiki:Avatarian.js]].
- *   3. Paste wiki/MediaWiki_Common.css.txt into [[MediaWiki:Common.css]].
- *   4. Paste THIS file into [[MediaWiki:Common.js]].
- *   5. Create Template:Avatarian from wiki/Template_Avatarian.wiki, then use
- *        {{Avatarian|k uh t ah r uh|Katara}}   (sounds + English label).
- *
- * Whenever a bundled module changes, re-run build_wiki_bundle.py and paste
- * the new bundle into [[MediaWiki:Avatarian.js]] again.
- *
- * The bundle is ~60 KB — inline-SVG glyphs plus the code that draws them,
- * no images to host. Because the word is spelled in sounds, the corpus,
- * the English converter and the 1.6 MB dictionary are all left out.
- */
+/* Avatarian glyph renderer — loader. Fetches the generated bundle
+ * (MediaWiki:Avatarian.js) from this wiki and runs it only on pages that
+ * use {{Avatarian}}. Setup and testing: AVATARIAN.md / wiki/TESTING.md. */
 (function () {
-  // Which page holds the bundle. Site-wide: "MediaWiki:Avatarian.js".
-  // To TEST from your own account first, put the bundle at a personal
-  // JS subpage — e.g. "User:YourName/Avatarian.js" — and set this to that
-  // in your Special:MyPage/common.js before touching MediaWiki:Common.js.
-  var BUNDLE_PAGE = "MediaWiki:Avatarian.js";
+  var BUNDLE_PAGE = "MediaWiki:Avatarian.js";  // a User:/…​.js subpage for testing
 
   function boot() {
-    // Only load the renderer on pages that use it.
     if (!document.querySelector("span.avatarian-word")) return;
-    // Fetch the bundle from THIS wiki via action=raw — no outside server.
-    // wgScript is the wiki's index.php entry point, so the URL is
-    // wiki-relative and works on any MediaWiki/Fandom install.
     var url = mw.config.get("wgScript") + "?title=" +
       encodeURIComponent(BUNDLE_PAGE) + "&action=raw&ctype=text/javascript";
     mw.loader.load(url);
-
-    // The CSS hides each word (no flash of English) until the gadget marks
-    // it done. If the bundle never loads — blocked, 404, JS error — reveal
-    // the plain fallback text after a few seconds rather than leaving blank
-    // gaps in the article.
+    // If the bundle never loads, reveal the plain fallback text after 5s.
     setTimeout(function () {
       var pending = document.querySelectorAll(
         "span.avatarian-word:not([data-avatarian-done])");

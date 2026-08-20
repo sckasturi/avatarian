@@ -1,26 +1,10 @@
-<!-- Avatarian reference material and decipherment by [[User:BokerBigBanana]], u/DepressionDokkebi (reddit.com/r/TheLastAirbender/comments/1v4yalr) and u/arienzio (reddit.com/r/neography/comments/1slqce2). Tool designed by [[User:TechFilmer]]. -->
+<!-- Avatarian decipherment: [[User:BokerBigBanana]], u/DepressionDokkebi, u/arienzio. Tool: [[User:TechFilmer]]. Full credits: AVATARIAN.md in the project repo. -->
 <noinclude>
 == Usage ==
-<pre>
-{{Avatarian|k uh t ah r uh|Katara}}
-</pre>
-
-The first parameter is the word spelled in '''sounds''' — the same
-readable codes the translator's "Sounds" box takes: <code>k uh t ah r
-uh</code> is ''Katara'' (ARPAbet in CAPITALS and raw IPA both work too).
-The second parameter is the English '''label''' shown on hover. This
-draws '''exactly''' the spelling you give.
-
-Hovering the glyphs shows the label and the IPA, e.g. ''Katara /k ə t ɑ r ə/''.
-
-To get the sounds for a word, type it into the
-[https://REPLACE-ME translator] and copy what appears in its "Sounds" box.
-The sound-code table is in that tool's "How to write sounds" panel, and in
-<code>AVATARIAN.md</code> §10 in the project repo.
-
-This template does not draw anything by itself. It just marks the text; a
-script loaded from [[MediaWiki:Common.js]] finds every
-<code>.avatarian-word</code> span after the page loads and replaces it
-with the real glyphs. With JavaScript off, the plain label (or the sounds)
-is shown instead of a blank.
+<pre>{{Avatarian|k uh t ah r uh|Katara}}</pre>
+Parameter 1 is the word in '''sounds''' (the readable codes the translator's
+"Sounds" box takes; ARPAbet in CAPITALS or IPA also work); parameter 2 is the
+English '''label''' shown on hover. Get the sounds by typing the word into the
+[https://REPLACE-ME translator] and copying its "Sounds" box. With JavaScript
+off, the plain label shows instead of the glyphs.
 </noinclude><includeonly><span class="avatarian-word" data-avatarian-sounds="{{{1|}}}" data-avatarian-label="{{{2|}}}">{{{2|{{{1|}}}}}}</span></includeonly>
