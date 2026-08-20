@@ -418,7 +418,9 @@ function renderAvatarian(ipaSeq, container) {
  */
 function renderGlyph(code, container) {
   container.innerHTML = "";
-  container.classList.add("avatarian-word");
+  // `avatarian-solo` marks a lone glyph so CSS can size it as a display
+  // letter, not shrink it to inline-text height the way a word is.
+  container.classList.add("avatarian-word", "avatarian-solo");
   soundTextToWords(String(code == null ? "" : code).trim()).forEach((w) => {
     for (const sym of w.ipa) container.appendChild(makeGlyph(sym, "top", null));
   });

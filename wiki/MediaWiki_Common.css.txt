@@ -7,6 +7,11 @@
   margin: 0 0.3em 0 0;
   font-size: calc(1em / 2.05);
 }
+/* A lone {{Avatarian|glyph=…}} is a display letter, not inline text — skip
+ * the /2.05 inline shrink so it stands at full size on its own. A consonant
+ * lands at ~2em, a (flat) vowel ~1.6em; scale a whole chart by putting a
+ * font-size on the table. */
+.avatarian-word.avatarian-solo { font-size: 1.6em; }
 /* No flash of English before the glyphs; JS-off readers keep the text. */
 html.client-js .avatarian-word:not([data-avatarian-done]) { visibility: hidden; }
 /* SVG can't take the native selection highlight, so the gadget tints it. */
