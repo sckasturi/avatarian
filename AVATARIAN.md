@@ -238,22 +238,28 @@ bottom-slot form rather than the top; only the saved art is the other way
 up. (`ɔɪ` also mirrors by slot in the shipped set, but with no evidence
 either way — see §13.)
 
-**By company — the approximants.** /r l w j/, and no other consonant, turn
-when they sit in the **bottom of a two-consonant block**. Under a vowel
-they stay upright (/r/ is plain in *are, ear, fire, choir, organic,
-warrior*). Across seventeen consonants seen in a bottom slot, these four
-are the only ones that ever mirror.
+**By company — the approximants, and /l/ /r/'s cluster form.** In a
+two-consonant block /l/ and /r/ do **not** merely flip — they take an
+independently-drawn **cluster form** (a second body, read off the key's
+`l_b` tracing; /r/'s is /l/'s mirror). /l/ takes its cluster form in *every*
+cluster; /r/ in every cluster **except beside /l/**, where the pair splits:
+the **top** glyph keeps its base (vowel-context) form and the **bottom**
+takes the cluster form — `world` = r-base over l-cluster; a hypothetical
+`l/r` would be l-base over r-cluster. The cluster form is drawn in its
+bottom-slot orientation, so it still flips top-to-bottom when it lands in a
+**top** slot (`help`, `milk`). Under a vowel /l/ and /r/ keep their base
+form. **/w/ and /j/ have no cluster form yet** and simply mirror in the C-C
+bottom slot, the way /l/ and /r/ did before this was worked out; the
+mechanism (`CLUSTERS` in `build_glyphs.py`, `variants.cluster` in the
+manifest) is ready for them when the shapes are drawn.
 
-**By company — /s/ above a cluster.** /s/ mirrors when, and only when, it
-sits on **top of another consonant**, and stays upright everywhere else.
-Across the whole corpus this is exact: **11 of 11** blocks where /s/ is over
-a consonant flip, **0 of 19** where it is over a vowel or null, and **0 of 9**
-where it sits in a bottom slot. So the flip is fully predictable from the
-glyph beneath — `render.js` derives it (`TURNS_ABOVE_CLUSTER`), and no
-per-word `$`/`%` override is needed. ("students" — cited earlier as the
-case a rule couldn't select — is not attested, and the rule handles it
-anyway: its two /s/ are over `t` and over a null, which the rule reads as
-flip and upright.)
+**By company — /s/ above a cluster.** /s/ mirrors when it sits on **top of
+another consonant** and stays upright everywhere else — `render.js` derives
+it (`TURNS_ABOVE_CLUSTER`). The corpus bears this out (flipped over a
+consonant, upright over a vowel/null or in a bottom slot) with **one known
+exception**: `rest` in the katara-letter draws its /s/ **upright** above /t/,
+carried as an `s$` override. That word is why the flip isn't *fully*
+derivable and why the `$`/`%` override still exists for /s/.
 
 ### Cluster forms
 
@@ -456,10 +462,11 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
   comes from the pairing partner (§3).
 - **`$` / `%`** force a glyph's orientation: `$` is the top-slot form, `%`
   the bottom, for **every** glyph (the upside-down-stored u/ɔ included). The
-  only entries that still need it are **`l$` in four words** (school,
-  stillness, always, royal), where /l/'s by-slot flip is wrong; every other
-  flip is derived by rule (§6). Otherwise it is just a convenience for
-  showing both forms of a glyph, e.g. in a chart.
+  corpus still needs it in a handful of spots the rules can't derive: **`l$`**
+  in *school, stillness, always, royal* (/l/'s by-slot flip is wrong there)
+  and **`s$`** in *rest* and *humansitters* (/s/ upright above a consonant,
+  the §6 exception). Everything else is derived by rule (§6); otherwise
+  `$`/`%` is just a convenience for showing both forms, e.g. in a chart.
 - **`*`** marks a glyph visible in a source but unreadable. It fills a
   slot, so block structure is recorded where the letter is not.
 - **`(parentheses)`** caption a word instead of being read as sounds:
