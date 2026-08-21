@@ -238,10 +238,11 @@ const UNREADABLE_SVG =
 const TURNS_IN_CLUSTER = new Set(["r", "j", "w"]);
 
 /**
- * /s/ TURNS ON TOP OF A CLUSTER. Mirrored in 11 of the 12 blocks where
- * it sits above another consonant, and in none of the 20 where it does
- * not. This is why the $/% override exists at all — no by-slot rule can
- * produce it, since /s/ takes both orientations in the same slot.
+ * /s/ TURNS ON TOP OF A CLUSTER, and only there. Across the corpus this is
+ * exact — mirrored in all 11 blocks where it sits above another consonant,
+ * upright in all 19 above a vowel or null and all 9 in a bottom slot. So it
+ * is derived from the glyph beneath, not by slot; no per-word override is
+ * needed (the corpus once carried redundant s$/s% and no longer does).
  */
 const TURNS_ABOVE_CLUSTER = new Set(["s"]);
 

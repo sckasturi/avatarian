@@ -244,12 +244,16 @@ they stay upright (/r/ is plain in *are, ear, fire, choir, organic,
 warrior*). Across seventeen consonants seen in a bottom slot, these four
 are the only ones that ever mirror.
 
-**By company — /s/ above a cluster.** /s/ mirrors when it sits on **top of
-another consonant** (11 of 12 such blocks) and never above a vowel or null
-(0 of 20). No slot rule works for it because /s/ takes both orientations
-in the *same* slot; the glyph beneath decides. This is why the manual
-`$`/`%` override exists — "students" writes both its /s/ in top slots with
-a different orientation each (`S$`, `S%`), which no rule can select.
+**By company — /s/ above a cluster.** /s/ mirrors when, and only when, it
+sits on **top of another consonant**, and stays upright everywhere else.
+Across the whole corpus this is exact: **11 of 11** blocks where /s/ is over
+a consonant flip, **0 of 19** where it is over a vowel or null, and **0 of 9**
+where it sits in a bottom slot. So the flip is fully predictable from the
+glyph beneath — `render.js` derives it (`TURNS_ABOVE_CLUSTER`), and no
+per-word `$`/`%` override is needed. ("students" — cited earlier as the
+case a rule couldn't select — is not attested, and the rule handles it
+anyway: its two /s/ are over `t` and over a null, which the rule reads as
+flip and upright.)
 
 ### Cluster forms
 
@@ -450,8 +454,10 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
 - **Sounds are separated by spaces, words by `/`.**
 - **`0`** (or `_`, `-`) is the `∅` filler. `∅c` has no code — the height
   comes from the pairing partner (§3).
-- **`$` / `%`** force a glyph's top or bottom orientation (`s$`), for a
-  glyph whose variant rule isn't known — currently only /s/.
+- **`$` / `%`** force a glyph's orientation: `$` is the top-slot form, `%`
+  the bottom, for **every** glyph (the upside-down-stored u/ɔ included). No
+  corpus entry needs it any more — every flip is derivable — so it is now
+  just a convenience for showing both forms of a glyph, e.g. in a chart.
 - **`*`** marks a glyph visible in a source but unreadable. It fills a
   slot, so block structure is recorded where the letter is not.
 - **`(parentheses)`** caption a word instead of being read as sounds:

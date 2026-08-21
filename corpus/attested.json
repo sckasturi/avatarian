@@ -131,7 +131,7 @@
     },
     {
       "key": "asked",
-      "spelling": "æ s$ k t",
+      "spelling": "æ s k t",
       "source": "toph-letter",
       "confidence": "certain"
     },
@@ -650,7 +650,7 @@
     },
     {
       "key": "still",
-      "spelling": "s% t ɪ l",
+      "spelling": "s t ɪ l",
       "source": "instagram-1.1",
       "confidence": "certain"
     },
@@ -874,7 +874,7 @@
     },
     {
       "key": "step",
-      "spelling": "s% t ɛ p",
+      "spelling": "s t ɛ p",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
@@ -898,7 +898,7 @@
     },
     {
       "key": "balance",
-      "spelling": "b æ l ə n s$",
+      "spelling": "b æ l ə n s",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
@@ -940,7 +940,7 @@
     },
     {
       "key": "class",
-      "spelling": "k l æ s$",
+      "spelling": "k l æ s",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
@@ -976,19 +976,19 @@
     },
     {
       "key": "performance",
-      "spelling": "p ə r ∅ f ∅ r ∅ m ə n s$",
+      "spelling": "p ə r ∅ f ∅ r ∅ m ə n s",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
     {
       "key": "school",
-      "spelling": "s% k u l$",
+      "spelling": "s k u l$",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
     {
       "key": "sula's",
-      "spelling": "s u l s$",
+      "spelling": "s u l s",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
@@ -1066,7 +1066,7 @@
     },
     {
       "key": "post",
-      "spelling": "p oʊ s% t",
+      "spelling": "p oʊ s t",
       "source": "instagram-1.3",
       "confidence": "certain"
     },
@@ -1102,7 +1102,7 @@
     },
     {
       "key": "woong's",
-      "spelling": "w u ŋ ∅ ɛ s$",
+      "spelling": "w u ŋ ∅ ɛ s",
       "source": "instagram-1.3",
       "confidence": "certain"
     },
@@ -1156,7 +1156,7 @@
     },
     {
       "key": "stillness",
-      "spelling": "s% t ɪ l$ n ə s ∅",
+      "spelling": "s t ɪ l$ n ə s ∅",
       "source": "instagram-1.4",
       "confidence": "certain"
     },
@@ -1223,7 +1223,7 @@
     },
     {
       "key": "just",
-      "spelling": "dʒ ə s% t",
+      "spelling": "dʒ ə s t",
       "source": "instagram-2.2",
       "confidence": "certain"
     },
@@ -1319,13 +1319,13 @@
     },
     {
       "key": "let's",
-      "spelling": "l ɛ t s$",
+      "spelling": "l ɛ t s",
       "source": "instagram-3.2",
       "confidence": "certain"
     },
     {
       "key": "lost",
-      "spelling": "l ɔ s% t",
+      "spelling": "l ɔ s t",
       "source": "instagram-3.2",
       "confidence": "certain"
     },
@@ -1349,7 +1349,7 @@
     },
     {
       "key": "stickers",
-      "spelling": "s% t ɪ ∅ k ə r z",
+      "spelling": "s t ɪ ∅ k ə r z",
       "source": "instagram-3.2",
       "confidence": "certain"
     },
@@ -1410,7 +1410,7 @@
     },
     {
       "key": "best",
-      "spelling": "b ɛ s% t",
+      "spelling": "b ɛ s t",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1434,7 +1434,7 @@
     },
     {
       "key": "discounts",
-      "spelling": "d * s% * aʊ n t s",
+      "spelling": "d * s * aʊ n t s",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1446,7 +1446,7 @@
     },
     {
       "key": "festival",
-      "spelling": "f ɛ s% t ə ∅ v ə l ∅",
+      "spelling": "f ɛ s t ə ∅ v ə l ∅",
       "confidence": "certain",
       "source": "instagram-3.3"
     },
@@ -1500,7 +1500,7 @@
     },
     {
       "key": "heng's",
-      "spelling": "h ɛ ŋ ∅ ɛ s$",
+      "spelling": "h ɛ ŋ ∅ ɛ s",
       "source": "instagram-3.3",
       "confidence": "certain"
     },

@@ -152,7 +152,7 @@ window.AVATARIAN_CORPUS = {
     "asked": {
       "ipa": [
         "æ",
-        "s$",
+        "s",
         "k",
         "t"
       ],
@@ -1273,7 +1273,7 @@ window.AVATARIAN_CORPUS = {
     },
     "still": {
       "ipa": [
-        "s%",
+        "s",
         "t",
         "ɪ",
         "l"
@@ -1768,7 +1768,7 @@ window.AVATARIAN_CORPUS = {
     },
     "step": {
       "ipa": [
-        "s%",
+        "s",
         "t",
         "ɛ",
         "p"
@@ -1837,7 +1837,7 @@ window.AVATARIAN_CORPUS = {
         "l",
         "ə",
         "n",
-        "s$"
+        "s"
       ],
       "count": 1,
       "sources": [
@@ -1951,7 +1951,7 @@ window.AVATARIAN_CORPUS = {
         "k",
         "l",
         "æ",
-        "s$"
+        "s"
       ],
       "count": 1,
       "sources": [
@@ -2051,7 +2051,7 @@ window.AVATARIAN_CORPUS = {
         "m",
         "ə",
         "n",
-        "s$"
+        "s"
       ],
       "count": 1,
       "sources": [
@@ -2062,7 +2062,7 @@ window.AVATARIAN_CORPUS = {
     },
     "school": {
       "ipa": [
-        "s%",
+        "s",
         "k",
         "u",
         "l$"
@@ -2079,7 +2079,7 @@ window.AVATARIAN_CORPUS = {
         "s",
         "u",
         "l",
-        "s$"
+        "s"
       ],
       "count": 1,
       "sources": [
@@ -2234,7 +2234,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "p",
         "oʊ",
-        "s%",
+        "s",
         "t"
       ],
       "count": 1,
@@ -2316,7 +2316,7 @@ window.AVATARIAN_CORPUS = {
         "ŋ",
         "∅",
         "ɛ",
-        "s$"
+        "s"
       ],
       "count": 1,
       "sources": [
@@ -2387,7 +2387,7 @@ window.AVATARIAN_CORPUS = {
     },
     "stillness": {
       "ipa": [
-        "s%",
+        "s",
         "t",
         "ɪ",
         "l$",
@@ -2541,7 +2541,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "dʒ",
         "ə",
-        "s%",
+        "s",
         "t"
       ],
       "count": 1,
@@ -2704,7 +2704,7 @@ window.AVATARIAN_CORPUS = {
         "l",
         "ɛ",
         "t",
-        "s$"
+        "s"
       ],
       "count": 1,
       "sources": [
@@ -2717,7 +2717,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "l",
         "ɔ",
-        "s%",
+        "s",
         "t"
       ],
       "count": 1,
@@ -2743,7 +2743,7 @@ window.AVATARIAN_CORPUS = {
     },
     "stickers": {
       "ipa": [
-        "s%",
+        "s",
         "t",
         "ɪ",
         "∅",
@@ -2837,7 +2837,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "b",
         "ɛ",
-        "s%",
+        "s",
         "t"
       ],
       "count": 1,
@@ -2865,7 +2865,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "d",
         "*",
-        "s%",
+        "s",
         "*",
         "aʊ",
         "n",
@@ -2899,7 +2899,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "f",
         "ɛ",
-        "s%",
+        "s",
         "t",
         "ə",
         "∅",
@@ -3014,7 +3014,7 @@ window.AVATARIAN_CORPUS = {
         "ŋ",
         "∅",
         "ɛ",
-        "s$"
+        "s"
       ],
       "count": 1,
       "sources": [
