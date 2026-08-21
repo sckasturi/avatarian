@@ -90,6 +90,7 @@ def svg(body, sw=SW, box=100, w=100):
 FLAT = 0.8          # 4/5
 FLAT_SUFFIX = "_flat"
 FLAT_BOX = 100 * FLAT
+BOTTOM_SUFFIX = "_bottom"          # a glyph's independently-drawn bottom form
 
 _TOKEN = re.compile(r"[A-Za-z]|-?\d*\.?\d+(?:[eE][-+]?\d+)?")
 
@@ -265,6 +266,9 @@ CONSONANTS = {
 # new drawing from the designer) and /r/ is its horizontal flip, always in
 # step. Reassigning keeps /r/'s place in the dict, right after /l/.
 CONSONANTS["r"] = hflip(CONSONANTS["l"])
+
+# BOTTOMS (custom bottom-slot forms) is loaded from designs/<name>_bottom.json
+# further down, once NAME_TO_IPA exists — see load_bottoms().
 
 # ---------------------------------------------------------------------------
 # VOWELS — smaller, wider marks; they sit under the consonant
@@ -498,6 +502,32 @@ DESIGNS = ROOT / "designs"
 NAME_TO_IPA = {name: ipa for ipa, name in IPA_TO_NAME.items()}
 
 
+def load_bottoms():
+    """Custom bottom-slot forms, read from designs/<name>_bottom.json and
+    rendered through glyphspec — a glyph with one draws THIS in a bottom slot
+    instead of flipping its top form. /r/'s bottom mirrors /l/'s, keeping the
+    l/r pair. No file means the glyph auto-flips, exactly as before."""
+    import glyphspec
+    out = {}
+    if DESIGNS.is_dir():
+        for p in sorted(DESIGNS.glob(f"*{BOTTOM_SUFFIX}.json")):
+            ipa = NAME_TO_IPA.get(p.stem[:-len(BOTTOM_SUFFIX)])
+            if ipa is None:
+                continue
+            try:
+                d = json.loads(p.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            if d.get("shapes"):
+                out[ipa] = glyphspec.body(d)
+    if "l" in out:
+        out["r"] = hflip(out["l"])
+    return out
+
+
+BOTTOMS = load_bottoms()
+
+
 def design_overrides():
     """(flips, rows) read out of designs/*.json, keyed by IPA. Missing or
     unreadable designs are simply not overrides — this is a build script
@@ -539,8 +569,9 @@ FLIPS, VOWEL_4ROW = effective_flags()
 
 
 def refresh():
-    global FLIPS, VOWEL_4ROW
+    global FLIPS, VOWEL_4ROW, BOTTOMS
     FLIPS, VOWEL_4ROW = effective_flags()
+    BOTTOMS = load_bottoms()
     return FLIPS, VOWEL_4ROW
 
 
@@ -558,6 +589,11 @@ def main():
     for name, body in {**CONSONANTS, **MARKS_CONSONANT}.items():
         (OUT / f"{name}.svg").write_text(svg(body), encoding="utf-8")
         drawn[name] = True
+    # Independently-drawn bottom-slot forms (see BOTTOMS). Written as
+    # <name>_bottom.svg; render.js draws it in a bottom slot without flipping.
+    for ipa, body in BOTTOMS.items():
+        (OUT / f"{IPA_TO_NAME[ipa]}{BOTTOM_SUFFIX}.svg").write_text(
+            svg(body), encoding="utf-8")
     # Full-height punctuation marks: a tall box, one form only, as many
     # lattice columns wide as the mark declares (period 1, a question mark
     # perhaps 2 or 3).
@@ -589,6 +625,7 @@ def main():
     all_marks = {**MARKS_CONSONANT, **MARKS_VOWEL, **MARKS_FULL}
     current = {f"{n}.svg" for n in {**CONSONANTS, **VOWELS, **all_marks}} \
         | {f"{n}{FLAT_SUFFIX}.svg" for n in {**VOWELS, **MARKS_VOWEL}} \
+        | {f"{IPA_TO_NAME[i]}{BOTTOM_SUFFIX}.svg" for i in BOTTOMS} \
         | {f"{n}.svg" for n in PLACEHOLDERS} | {"unknown.svg"}
     stale = [p for p in OUT.glob("*.svg") if p.name not in current]
     for p in stale:
@@ -605,6 +642,8 @@ def main():
             manifest[ipa]["note"] = SOURCE_NOTES[name]
         if name in flat:
             manifest[ipa]["flat"] = f"{name}{FLAT_SUFFIX}.svg"
+        if ipa in BOTTOMS:
+            manifest[ipa]["variants"] = {"bottom": f"{name}{BOTTOM_SUFFIX}.svg"}
         if ipa in FLIPS:
             manifest[ipa]["flips"] = True
         if ipa in VOWEL_4ROW:

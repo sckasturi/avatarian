@@ -598,9 +598,14 @@ function makeGlyph(token, slot, partner) {
     if (forced && DRAWN_BOTTOM_UP.has(sym)) {
       orientation = forced === "top" ? "bottom" : "top";
     }
-    if (orientation === "bottom") span.classList.add("avatarian-flipped");
-    const svg = isClusterPartner(partner) ? clusterForm(sym, form.svg) : form.svg;
-    span.innerHTML = svg + (form.flat || "");
+    const bottomForm = (orientation === "bottom" && form.variants
+                        && form.variants.bottom) || null;
+    if (orientation === "bottom" && !bottomForm) {
+      span.classList.add("avatarian-flipped");
+    }
+    const base = bottomForm ? bottomForm.svg : form.svg;
+    const svg = isClusterPartner(partner) ? clusterForm(sym, base) : base;
+    span.innerHTML = svg + (bottomForm ? (bottomForm.flat || "") : (form.flat || ""));
     const drawings = span.querySelectorAll("svg");
     drawings[0].classList.add("g-square");
     if (drawings[1]) drawings[1].classList.add("g-flat");

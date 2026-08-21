@@ -331,10 +331,18 @@ function makeGlyph(token, slot, partner) {
     if (forced && DRAWN_BOTTOM_UP.has(sym)) {
       orientation = forced === "top" ? "bottom" : "top";
     }
-    if (orientation === "bottom") span.classList.add("avatarian-flipped");
+    // A glyph can ship an independently-drawn bottom-slot form (form.variants
+    // .bottom) — draw it AS-IS rather than flipping the top. Only then skip
+    // the flip class. Everything without a bottom variant flips as before.
+    const bottomForm = (orientation === "bottom" && form.variants
+                        && form.variants.bottom) || null;
+    if (orientation === "bottom" && !bottomForm) {
+      span.classList.add("avatarian-flipped");
+    }
     // A few glyphs redraw in a C-C block (see clusterForm): /s/'s point
     // insets, /z/ drops its dots.
-    const svg = isClusterPartner(partner) ? clusterForm(sym, form.svg) : form.svg;
+    const base = bottomForm ? bottomForm.svg : form.svg;
+    const svg = isClusterPartner(partner) ? clusterForm(sym, base) : base;
     // Both drawings ride along and CSS shows one. The flat copy is the
     // same glyph re-laid-out at 4/5 height rather than a squashed copy
     // of the square one, so stroke weight and dots match exactly in
@@ -343,7 +351,7 @@ function makeGlyph(token, slot, partner) {
     // The <svg> elements are tagged directly rather than wrapped: a
     // wrapper <span> is inline, cannot take a height, and collapses the
     // SVG inside it to nothing.
-    span.innerHTML = svg + (form.flat || "");
+    span.innerHTML = svg + (bottomForm ? (bottomForm.flat || "") : (form.flat || ""));
     const drawings = span.querySelectorAll("svg");
     drawings[0].classList.add("g-square");
     if (drawings[1]) drawings[1].classList.add("g-flat");
