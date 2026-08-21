@@ -8,7 +8,7 @@ English '''label''' shown on hover. Get the sounds by typing the word into the
 [https://REPLACE-ME translator] and copying its "Sounds" box. With JavaScript
 off, the plain label shows instead of the glyphs.
 
-For a '''single bare glyph''' — no pairing, no null, as in an alphabet chart —
-use <code>glyph=</code> with one sound code instead of parameter 1:
-<pre>{{Avatarian|glyph=ng}}</pre>
-</noinclude><includeonly><span class="avatarian-word" data-avatarian-glyph="{{{glyph|}}}" data-avatarian-sounds="{{{1|}}}" data-avatarian-label="{{{2|}}}">{{{2|{{{1|{{{glyph|}}}}}}}}}</span></includeonly>
+A '''single sound''' on its own — <code>{{Avatarian|r}}</code>, <code>{{Avatarian|ng}}</code> —
+renders as one bare glyph (no pairing, no null), for an alphabet chart. Add a
+space for a real block, e.g. <code>{{Avatarian|r 0}}</code> draws /r/ with its null.
+</noinclude><includeonly><span class="avatarian-word" data-avatarian-sounds="{{{1|}}}" data-avatarian-label="{{{2|}}}">{{{2|{{{1|}}}}}}</span></includeonly>
