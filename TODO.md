@@ -704,6 +704,60 @@ vertex made a lopsided pentagon, and a compressed-symmetric-diamond
 version the user also disliked. Both were reverted. Don't re-propose
 either; if revisited, it needs a genuinely different idea.
 
+**A framework for the real fusion pass (2026-08-21).** The user wants
+this done properly once the corpus is large enough to justify it — and
+the corpus *will* keep growing (we're gated on finding more source
+content, not on the model). The plan, refined from the user's own
+sketch:
+
+- **Mark, don't redraw.** Per glyph, tag the node(s) on its seam-facing
+  edge(s) as *connection nodes* rather than hand-drawing a fused body per
+  pair. Marking is O(N) over the inventory; per-pair redraws are O(N²)
+  over the cluster list and never finish. This supersedes the
+  `clusterForm` / `variants.cluster` per-pair approach as the *general*
+  mechanism — the hand-drawn cluster forms stay as the escape hatch for
+  joins that refuse to live on the grid.
+
+- **Extend to a shared rail, not to the neighbour.** The naive "drag the
+  node until it touches the other glyph" is still pairwise. Instead, every
+  connection node extends to the **C-C overlap row** (the seam line that
+  already exists in every C-C block). Two glyphs then meet *automatically*
+  for every pairing, with no per-pair work — fusion falls out
+  combinatorially.
+
+- **A node carries more than a position.** Each mark needs (a) an
+  **extension axis** — straight segments lengthen along their tangent;
+  arc endpoints must grow a straight tail, not keep arcing, or the radius
+  drifts; and (b) a **port**, i.e. one of a few canonical columns on the
+  rail (left ≈ x18, centre ≈ x50, right spine ≈ x82, matching the draw
+  grid). Two glyphs fuse into one *continuous* line iff they share a port;
+  mismatched ports stay as separate endpoints (correctly — not every pair
+  should fuse). `r`/`d` already read as fused precisely because both own
+  the right-spine port.
+
+- **Two edges, because of flips.** Glyphs flip vertically by slot, so a
+  node marked on the drawn-bottom becomes the top when flipped. A glyph
+  generally needs a seam node on each end; the flip carries a baked-in
+  node with the SVG, so this is consistent with the existing
+  `avatarian-flipped` transform.
+
+- **Fits the current architecture.** The design JSONs already hold
+  per-glyph metadata to store the marks, and `render.js` already
+  post-processes assembled block SVGs (`clusterForm`, the z-dot removal).
+  "Extend these nodes to the rail" is one more assembly-time
+  post-process — not a rewrite of the render model. The editor gains a
+  "tag connection node" mode (select a path node → axis + port) writing
+  into the design JSON; the build emits the marks into the manifest.
+
+- **The tension, recorded.** Ports force *standardisation* of where joins
+  happen, and some hand-drawn joins won't want a canonical column. For a
+  static ~31-pair corpus, hand-drawing the few that read badly is cheaper
+  than building and tuning this. The user chose the rail/ports direction
+  **because the corpus is expected to grow** (and this is the honest
+  substrate for an eventual real font), which is exactly
+  the case where O(N) marks beat an ever-growing O(N²) redraw list. Build
+  it when the pair count starts to hurt, not before.
+
 ### Docs and process
 
 ~~**9. A public-facing spec section at the end of `AVATARIAN.md`.**~~
