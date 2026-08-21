@@ -455,9 +455,11 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
 - **`0`** (or `_`, `-`) is the `∅` filler. `∅c` has no code — the height
   comes from the pairing partner (§3).
 - **`$` / `%`** force a glyph's orientation: `$` is the top-slot form, `%`
-  the bottom, for **every** glyph (the upside-down-stored u/ɔ included). No
-  corpus entry needs it any more — every flip is derivable — so it is now
-  just a convenience for showing both forms of a glyph, e.g. in a chart.
+  the bottom, for **every** glyph (the upside-down-stored u/ɔ included). The
+  only entries that still need it are **`l$` in four words** (school,
+  stillness, always, royal), where /l/'s by-slot flip is wrong; every other
+  flip is derived by rule (§6). Otherwise it is just a convenience for
+  showing both forms of a glyph, e.g. in a chart.
 - **`*`** marks a glyph visible in a source but unreadable. It fills a
   slot, so block structure is recorded where the letter is not.
 - **`(parentheses)`** caption a word instead of being read as sounds:

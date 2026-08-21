@@ -602,7 +602,7 @@
     },
     {
       "key": "free",
-      "spelling": "f r% i ∅",
+      "spelling": "f r i ∅",
       "confidence": "certain",
       "source": "instagram-1.1"
     },
@@ -662,7 +662,7 @@
     },
     {
       "key": "trends",
-      "spelling": "t r% ɛ n d z",
+      "spelling": "t r ɛ n d z",
       "confidence": "certain",
       "source": "instagram-1.1"
     },
@@ -711,7 +711,7 @@
     },
     {
       "key": "draw",
-      "spelling": "d * ɔ$ ∅",
+      "spelling": "d * ɔ ∅",
       "source": "instagram-2.1",
       "confidence": "certain"
     },
@@ -820,13 +820,13 @@
     },
     {
       "key": "fresh",
-      "spelling": "f r% ɛ ʃ",
+      "spelling": "f r ɛ ʃ",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
     {
       "key": "from",
-      "spelling": "f r% ə m",
+      "spelling": "f r ə m",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
@@ -946,13 +946,13 @@
     },
     {
       "key": "cream",
-      "spelling": "k r% i m",
+      "spelling": "k r i m",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
     {
       "key": "frozen",
-      "spelling": "f r% oʊ ∅ z ə n ∅",
+      "spelling": "f r oʊ ∅ z ə n ∅",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
@@ -1018,13 +1018,13 @@
     },
     {
       "key": "free",
-      "spelling": "f r% e ∅ e ∅",
+      "spelling": "f r e ∅ e ∅",
       "source": "instagram-1.3",
       "confidence": "certain"
     },
     {
       "key": "gluten",
-      "spelling": "g l u$ ∅ t e n ∅",
+      "spelling": "g l u ∅ t e n ∅",
       "source": "instagram-1.3",
       "confidence": "certain"
     },
@@ -1042,7 +1042,7 @@
     },
     {
       "key": "menu",
-      "spelling": "m ɛ n j% u$ ∅",
+      "spelling": "m ɛ n j u ∅",
       "source": "instagram-1.3",
       "confidence": "certain"
     },
@@ -1054,13 +1054,13 @@
     },
     {
       "key": "new",
-      "spelling": "n j% u$ ∅",
+      "spelling": "n j u ∅",
       "confidence": "certain",
       "source": "instagram-1.3"
     },
     {
       "key": "organic",
-      "spelling": "ɔ$ r g æ n ɪ k ∅",
+      "spelling": "ɔ r g æ n ɪ k ∅",
       "source": "instagram-1.3",
       "confidence": "certain"
     },
@@ -1114,7 +1114,7 @@
     },
     {
       "key": "brave",
-      "spelling": "b r% e ∅ ɪ v",
+      "spelling": "b r e ∅ ɪ v",
       "source": "instagram-1.4",
       "confidence": "certain"
     },
@@ -1150,7 +1150,7 @@
     },
     {
       "key": "quiet",
-      "spelling": "k w% aɪ ∅ ə t",
+      "spelling": "k w aɪ ∅ ə t",
       "source": "instagram-1.4",
       "confidence": "certain"
     },
@@ -1186,19 +1186,19 @@
     },
     {
       "key": "bloom",
-      "spelling": "b l u$ m",
+      "spelling": "b l u m",
       "source": "instagram-2.2",
       "confidence": "certain"
     },
     {
       "key": "choir",
-      "spelling": "k w% aɪ ∅ ə r",
+      "spelling": "k w aɪ ∅ ə r",
       "source": "instagram-2.2",
       "confidence": "certain"
     },
     {
       "key": "criminals",
-      "spelling": "k r% ɪ ∅ m ə n ə l z",
+      "spelling": "k r ɪ ∅ m ə n ə l z",
       "source": "instagram-2.2",
       "confidence": "certain"
     },
@@ -1235,13 +1235,13 @@
     },
     {
       "key": "mute",
-      "spelling": "m j% ʊ t",
+      "spelling": "m j ʊ t",
       "source": "instagram-2.2",
       "confidence": "certain"
     },
     {
       "key": "new",
-      "spelling": "n j% u$ ∅",
+      "spelling": "n j u ∅",
       "confidence": "certain",
       "source": "instagram-2.2"
     },
@@ -1307,7 +1307,7 @@
     },
     {
       "key": "free",
-      "spelling": "f r% i ∅",
+      "spelling": "f r i ∅",
       "source": "instagram-3.2",
       "confidence": "certain"
     },
@@ -1343,7 +1343,7 @@
     },
     {
       "key": "new",
-      "spelling": "n j% u$ ∅",
+      "spelling": "n j u ∅",
       "confidence": "certain",
       "source": "instagram-3.2"
     },
@@ -1379,7 +1379,7 @@
     },
     {
       "key": "all",
-      "spelling": "ɔ$ l",
+      "spelling": "ɔ l",
       "confidence": "certain",
       "source": "instagram-3.3"
     },
@@ -1470,13 +1470,13 @@
     },
     {
       "key": "freshly",
-      "spelling": "f r% ɛ ʃ * * i ∅",
+      "spelling": "f r ɛ ʃ * * i ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
     {
       "key": "fruit",
-      "spelling": "f r% u$ t",
+      "spelling": "f r u t",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1620,13 +1620,13 @@
     },
     {
       "key": "treasures",
-      "spelling": "t r% ɛ ∅ ʒ ə r z",
+      "spelling": "t r ɛ ∅ ʒ ə r z",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
     {
       "key": "try",
-      "spelling": "t r% aɪ ∅",
+      "spelling": "t r aɪ ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
