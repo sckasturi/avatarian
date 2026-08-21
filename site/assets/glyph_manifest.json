@@ -127,8 +127,7 @@
     "type": "consonant",
     "variants": {
       "cluster": "l_cluster.svg"
-    },
-    "flips": true
+    }
   },
   "x": {
     "file": "kh.svg",

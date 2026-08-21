@@ -398,7 +398,6 @@ SOURCE_NOTES = {
 #
 #   æ   "at" (top, cup ∪) vs "mad" (bottom, cap ∩)
 #   ɑ   "appa" (top, proper Y) vs "katara" (bottom, stem up)
-#   l   "please" (bottom); the key chart draws both orientations
 #   ɪ   "metalbending"
 #   e   "Aang" (top) vs "wake" (bottom)
 #   aɪ  key chart (rule above, dots below) vs "fire" (dots above the
@@ -410,7 +409,7 @@ SOURCE_NOTES = {
 # /s/ is deliberately absent: "students" writes both of its /s/ in TOP
 # slots with a different orientation for each, so the slot cannot decide
 # it. Spell those with the $/% override instead.
-FLIPS_BASE = {"æ", "ɑ", "l", "ɪ", "e", "aɪ", "ə"}
+FLIPS_BASE = {"æ", "ɑ", "ɪ", "e", "aɪ", "ə"}
 
 # Vowels whose design spans all 4 rows of the vowel grid. These bridge
 # the gap between consonant and vowel in the 9-row block model.

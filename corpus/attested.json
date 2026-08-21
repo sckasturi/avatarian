@@ -982,7 +982,7 @@
     },
     {
       "key": "school",
-      "spelling": "s k u l$",
+      "spelling": "s k u l",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
@@ -1156,7 +1156,7 @@
     },
     {
       "key": "stillness",
-      "spelling": "s t ɪ l$ n ə s ∅",
+      "spelling": "s t ɪ l n ə s ∅",
       "source": "instagram-1.4",
       "confidence": "certain"
     },
@@ -1379,13 +1379,13 @@
     },
     {
       "key": "all",
-      "spelling": "ɔ l$",
+      "spelling": "ɔ l",
       "confidence": "certain",
       "source": "toph-letter"
     },
     {
       "key": "always",
-      "spelling": "* l$ w e ɪ z",
+      "spelling": "* l w e ɪ z",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1692,7 +1692,7 @@
     },
     {
       "key": "royal",
-      "spelling": "r ɔɪ ə l$",
+      "spelling": "r ɔɪ ə l",
       "source": "zuko-stamp",
       "confidence": "certain"
     },

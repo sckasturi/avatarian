@@ -229,7 +229,11 @@ drawing. There are three separate reasons a glyph turns.
 **By slot.** These mirror top-to-bottom purely by which slot they land in
 — æ's cup becomes a cap, ɑ's Y inverts:
 
-> **æ ɑ l ɪ e aɪ ə**
+> **æ ɑ ɪ e aɪ ə**
+
+(/l/ used to be here; it turned out **not** to flip with a vowel — plain in
+school, all, lord, still — so it left the set. /l/ and /r/ change shape by
+the cluster-form rule above, not by slot.)
 
 The bar for this list is both forms attested in known slots (e.g. /aɪ/:
 the chart's citation form, dots below the rule, vs "fire", dots above).
@@ -362,7 +366,7 @@ from reference material; nothing is invented.
 | w | w | w | drawn | approximant — mirrors in a C-C bottom slot |
 | j | y | y | drawn | approximant |
 | r | r | r | drawn | approximant |
-| l | l | l | drawn | mirrors by slot **and** is an approximant |
+| l | l | l | drawn | takes a distinct cluster form in a C-C block (§6); /r/ mirrors it |
 | tʃ | ch | ch | drawn | from source outside the key chart |
 | dʒ | j | j_dz | drawn | from source outside the key chart |
 | ʃ | sh | sh | drawn | from source outside the key chart |
@@ -462,11 +466,10 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
   comes from the pairing partner (§3).
 - **`$` / `%`** force a glyph's orientation: `$` is the top-slot form, `%`
   the bottom, for **every** glyph (the upside-down-stored u/ɔ included). The
-  corpus still needs it in a handful of spots the rules can't derive: **`l$`**
-  in *school, stillness, always, royal* (/l/'s by-slot flip is wrong there)
-  and **`s$`** in *rest* and *humansitters* (/s/ upright above a consonant,
-  the §6 exception). Everything else is derived by rule (§6); otherwise
-  `$`/`%` is just a convenience for showing both forms, e.g. in a chart.
+  only spot the corpus still needs it is **`s$`** in *rest* and *humansitters*
+  (/s/ drawn upright above a consonant, the §6 exception). Everything else is
+  derived by rule (§6) — /l/ and /r/ by the cluster-form rule, the rest by
+  slot; otherwise `$`/`%` is just a convenience for showing both forms.
 - **`*`** marks a glyph visible in a source but unreadable. It fills a
   slot, so block structure is recorded where the letter is not.
 - **`(parentheses)`** caption a word instead of being read as sounds:

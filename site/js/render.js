@@ -231,9 +231,12 @@ const UNREADABLE_SVG =
  * (are, ear, fire, choir, organic, warrior). So this is not the by-slot
  * flip that æ ɑ ɪ e aɪ ə take; it depends on what shares the block.
  *
- * `l` is deliberately absent — it is in FLIPS already and flips by slot,
- * where the evidence is mixed (2 flipped against 3 plain under a vowel).
- * Changing it would trade three known exceptions for two, so it waits.
+ * `l` (and `r`) are handled instead by the CLUSTER FORM mechanism — in a
+ * two-consonant block they draw a distinct body, not a flip of the base
+ * (see the cluster-form block in makeGlyph). Neither flips by slot with a
+ * vowel: /l/ is plain in every vowel pairing (school, all, lord, still),
+ * which is why /l/ is NOT in FLIPS. So only /w/ and /j/, which have no
+ * cluster form drawn yet, still fall through to this plain C-C-bottom flip.
  */
 const TURNS_IN_CLUSTER = new Set(["r", "j", "w"]);
 

@@ -2065,7 +2065,7 @@ window.AVATARIAN_CORPUS = {
         "s",
         "k",
         "u",
-        "l$"
+        "l"
       ],
       "count": 1,
       "sources": [
@@ -2390,7 +2390,7 @@ window.AVATARIAN_CORPUS = {
         "s",
         "t",
         "ɪ",
-        "l$",
+        "l",
         "n",
         "ə",
         "s",
@@ -2792,7 +2792,7 @@ window.AVATARIAN_CORPUS = {
     "all": {
       "ipa": [
         "ɔ",
-        "l$"
+        "l"
       ],
       "count": 1,
       "sources": [
@@ -2804,7 +2804,7 @@ window.AVATARIAN_CORPUS = {
     "always": {
       "ipa": [
         "*",
-        "l$",
+        "l",
         "w",
         "e",
         "ɪ",
@@ -3388,7 +3388,7 @@ window.AVATARIAN_CORPUS = {
         "r",
         "ɔɪ",
         "ə",
-        "l$"
+        "l"
       ],
       "count": 1,
       "sources": [
