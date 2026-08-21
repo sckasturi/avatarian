@@ -2792,14 +2792,14 @@ window.AVATARIAN_CORPUS = {
     "all": {
       "ipa": [
         "ɔ",
-        "l"
+        "l$"
       ],
       "count": 1,
       "sources": [
-        "instagram-3.3"
+        "toph-letter"
       ],
       "confidence": "certain",
-      "source": "instagram-3.3"
+      "source": "toph-letter"
     },
     "always": {
       "ipa": [

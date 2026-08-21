@@ -160,6 +160,40 @@ def path(d):
     return f'<path d="{d}"/>'
 
 
+def _hflip_d(d, box=100):
+    """Mirror one path `d` horizontally (x -> box-x). M/L/A/Z only: an arc's
+    sweep flag flips and its rotation negates."""
+    toks = d.replace(",", " ").split()
+    out, i = [], 0
+    while i < len(toks):
+        c = toks[i]; i += 1
+        if c in ("M", "L"):
+            x, y = float(toks[i]), float(toks[i + 1]); i += 2
+            out += [c, _num(box - x), _num(y)]
+        elif c == "A":
+            rx, ry, rot, large, sweep, x, y = toks[i:i + 7]; i += 7
+            out += ["A", rx, ry, _num(-float(rot) or 0.0), large,
+                    str(1 - int(sweep)), _num(box - float(x)), _num(float(y))]
+        else:                                   # Z, or anything with no coords
+            out.append(c)
+    return " ".join(out)
+
+
+def hflip(body, box=100):
+    """Mirror a whole glyph body horizontally — every <path> and <circle> in
+    it. Lets /r/ be drawn as the mirror of /l/, so only /l/ is maintained: a
+    new /l/ (even multi-stroke, promoted from the designer) re-flips for free."""
+    body = re.sub(r'<path d="([^"]*)"/>',
+                  lambda m: f'<path d="{_hflip_d(m.group(1), box)}"/>', body)
+    body = re.sub(
+        r'<circle cx="([^"]*)" cy="([^"]*)" r="([^"]*)"[^/]*/>',
+        lambda m: (f'<circle cx="{_num(box - float(m.group(1)))}" '
+                   f'cy="{m.group(2)}" r="{m.group(3)}" '
+                   f'fill="currentColor" stroke="none"/>'),
+        body)
+    return body
+
+
 def mark(cols, body):
     """A full-height punctuation mark and the number of lattice columns it
     spans. Most marks are one column; a wider one (a question mark) sets a
@@ -218,7 +252,7 @@ CONSONANTS = {
     # between separate <path>s (which left a little tick, visible flipped)
     # with clean miter joins.
     "l": path("M 18 82 L 18 18 L 82 18 L 82 58 A 28.28 28.28 0 0 1 50 82"),
-    "r": path("M 82 82 L 82 18 L 18 18 L 18 50 A 35.04 35.04 0 0 0 50 82"),
+    "r": "",                            # derived below: the mirror of /l/
     "y": path("M 50 34 A 42 42 0 0 1 82 18 L 82 82 L 18 82")
          + path("M 18 58 A 36.46 36.46 0 0 0 50 34"),
     "sh": path("M 18 50 L 50 18 L 82 50") + path("M 18 82 L 50 50 L 82 82"),
@@ -226,6 +260,11 @@ CONSONANTS = {
     "j_dz": path("M 82 18 L 82 82 L 18 82 L 18 18 L 50 18 L 50 58"),
     "zh": path("M 18 82 L 18 50 A 32 32 0 0 1 82 50 L 82 82"),
 }
+
+# /l/ and /r/ are a mirror pair: draw /l/ (edit its entry above, or promote a
+# new drawing from the designer) and /r/ is its horizontal flip, always in
+# step. Reassigning keeps /r/'s place in the dict, right after /l/.
+CONSONANTS["r"] = hflip(CONSONANTS["l"])
 
 # ---------------------------------------------------------------------------
 # VOWELS — smaller, wider marks; they sit under the consonant
