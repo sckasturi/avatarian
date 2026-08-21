@@ -217,7 +217,7 @@ CONSONANTS = {
     # drawing them as a single path replaces the square-capped joins
     # between separate <path>s (which left a little tick, visible flipped)
     # with clean miter joins.
-    "l": path("M 82 82 L 82 18 L 18 18 L 18 58 A 28.28 28.28 0 0 0 50 82"),
+    "l": path("M 18 82 L 18 18 L 82 18 L 82 58 A 28.28 28.28 0 0 1 50 82"),
     "r": path("M 82 82 L 82 18 L 18 18 L 18 50 A 35.04 35.04 0 0 0 50 82"),
     "y": path("M 50 34 A 42 42 0 0 1 82 18 L 82 82 L 18 82")
          + path("M 18 58 A 36.46 36.46 0 0 0 50 34"),

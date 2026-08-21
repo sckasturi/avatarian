@@ -150,7 +150,7 @@ window.AVATARIAN_GLYPHS = {
     "name": "l",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 82 L 82 18 L 18 18 L 18 58 A 28.28 28.28 0 0 0 50 82\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 82 L 18 18 L 82 18 L 82 58 A 28.28 28.28 0 0 1 50 82\"/></svg>",
     "flips": true
   },
   "x": {
