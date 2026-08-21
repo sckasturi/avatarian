@@ -594,7 +594,10 @@ function makeGlyph(token, slot, partner) {
   span.title = sym;
   if (entry) {
     const form = entry;
-    const orientation = forced || orientationOf(sym, entry, slot, partner);
+    let orientation = forced || orientationOf(sym, entry, slot, partner);
+    if (forced && DRAWN_BOTTOM_UP.has(sym)) {
+      orientation = forced === "top" ? "bottom" : "top";
+    }
     if (orientation === "bottom") span.classList.add("avatarian-flipped");
     const svg = isClusterPartner(partner) ? clusterForm(sym, form.svg) : form.svg;
     span.innerHTML = svg + (form.flat || "");

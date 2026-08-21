@@ -322,7 +322,14 @@ function makeGlyph(token, slot, partner) {
   if (entry) {
     const form = entry;
     // An explicit $/% override wins; otherwise the glyph's own rule does.
-    const orientation = forced || orientationOf(sym, entry, slot, partner);
+    // A DRAWN_BOTTOM_UP glyph's art is stored upside-down, so a raw forced
+    // orientation would pick the opposite visual form. Invert the forced
+    // value for those, so `$` means the top-slot form and `%` the bottom
+    // one for EVERY glyph — no per-glyph swap to remember.
+    let orientation = forced || orientationOf(sym, entry, slot, partner);
+    if (forced && DRAWN_BOTTOM_UP.has(sym)) {
+      orientation = forced === "top" ? "bottom" : "top";
+    }
     if (orientation === "bottom") span.classList.add("avatarian-flipped");
     // A few glyphs redraw in a C-C block (see clusterForm): /s/'s point
     // insets, /z/ drops its dots.
