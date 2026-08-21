@@ -55,7 +55,7 @@
     },
     "instagram-2.1": {
       "what": "joyful journey / salon / looking for hair models / biggest hand contest / ages 0-7 draw your fav animal / mama / cherries on top",
-      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=2",
+      "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=1",
       "image": "instagram-2-1.png"
     },
     "instagram-3.1": {
@@ -521,7 +521,7 @@
     },
     {
       "key": "rest",
-      "spelling": "r ɛ s t",
+      "spelling": "r ɛ s$ t",
       "confidence": "certain",
       "source": "katara-letter"
     },
@@ -838,7 +838,7 @@
     },
     {
       "key": "humansitters",
-      "spelling": "h u m ∅ n ∅ s i t ∅ t e r z",
+      "spelling": "h u m ∅ n ∅ s i t ∅ t e r s$",
       "source": "instagram-3.1",
       "confidence": "certain"
     },

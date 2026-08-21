@@ -36,7 +36,7 @@ window.AVATARIAN_CORPUS = {
     },
     "instagram-2.1": {
       "what": "joyful journey / salon / looking for hair models / biggest hand contest / ages 0-7 draw your fav animal / mama / cherries on top",
-      "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=2",
+      "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=1",
       "image": "instagram-2-1.png"
     },
     "instagram-3.1": {
@@ -990,7 +990,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "r",
         "ɛ",
-        "s",
+        "s$",
         "t"
       ],
       "count": 1,
@@ -1704,7 +1704,7 @@ window.AVATARIAN_CORPUS = {
         "t",
         "e",
         "r",
-        "z"
+        "s$"
       ],
       "count": 1,
       "sources": [
