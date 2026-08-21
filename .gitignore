@@ -19,3 +19,6 @@ __pycache__/
 # a deliberate call — the licensing question this file used to defer.
 corpus/sources/*
 !corpus/sources/.gitkeep
+
+# Scratch/analysis pages served locally, not shipped
+site/_*.html
