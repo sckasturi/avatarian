@@ -284,16 +284,23 @@ function orientationOf(sym, entry, slot, partner) {
  * inset to whichever side faces the overlap — point-down on top of a
  * cluster (`still`), point-up on the bottom of one (`balance`, `sula's`).
  *
- * /z/'s two corner dots sit in its top row, which the overlap rides up
- * into the glyph above; in a cluster they are dropped and only /z/'s line
- * and bowl remain (`goods`, `trends`, `models`).
+ * /z/'s two corner dots sit in its top row, which the overlap rides up into
+ * the glyph above. Under a plain consonant BOTH drop (`goods`, `trends`,
+ * `models`). Under an approximant only one collides with the rising l_c/r_c
+ * stroke, so the OTHER survives: under /r/ the left dot stays (`waters`,
+ * `stickers`), under /l/ the right (`models`, `criminals`).
  *
  * A non-cluster /s/ or /z/ — sitting under or over a vowel — is left
  * whole. See AVATARIAN.md §12.6.
  */
-function clusterForm(sym, svg) {
+function clusterForm(sym, svg, partner) {
   if (sym === "s") return svg.replace("L 50 18 L", "L 50 31 L");
-  if (sym === "z") return svg.replace(/<circle[^>]*>/g, "");
+  if (sym === "z") {
+    const p = partner != null ? parseSymbol(partner).sym : null;
+    if (p === "r") return svg.replace(/<circle cx="74"[^>]*>/, "");  // keep left
+    if (p === "l") return svg.replace(/<circle cx="26"[^>]*>/, "");  // keep right
+    return svg.replace(/<circle[^>]*>/g, "");
+  }
   return svg;
 }
 
@@ -353,7 +360,7 @@ function makeGlyph(token, slot, partner) {
     // A few glyphs redraw in a C-C block (see clusterForm): /s/'s point
     // insets, /z/ drops its dots.
     const base = ccForm ? ccForm.svg : form.svg;
-    const svg = isClusterPartner(partner) ? clusterForm(sym, base) : base;
+    const svg = isClusterPartner(partner) ? clusterForm(sym, base, partner) : base;
     // Both drawings ride along and CSS shows one. The flat copy is the
     // same glyph re-laid-out at 4/5 height rather than a squashed copy
     // of the square one, so stroke weight and dots match exactly in

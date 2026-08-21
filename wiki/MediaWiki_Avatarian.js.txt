@@ -578,9 +578,14 @@ function orientationOf(sym, entry, slot, partner) {
   return "top";
 }
 
-function clusterForm(sym, svg) {
+function clusterForm(sym, svg, partner) {
   if (sym === "s") return svg.replace("L 50 18 L", "L 50 31 L");
-  if (sym === "z") return svg.replace(/<circle[^>]*>/g, "");
+  if (sym === "z") {
+    const p = partner != null ? parseSymbol(partner).sym : null;
+    if (p === "r") return svg.replace(/<circle cx="74"[^>]*>/, "");  // keep left
+    if (p === "l") return svg.replace(/<circle cx="26"[^>]*>/, "");  // keep right
+    return svg.replace(/<circle[^>]*>/g, "");
+  }
   return svg;
 }
 
@@ -621,7 +626,7 @@ function makeGlyph(token, slot, partner) {
       span.classList.add("avatarian-flipped");
     }
     const base = ccForm ? ccForm.svg : form.svg;
-    const svg = isClusterPartner(partner) ? clusterForm(sym, base) : base;
+    const svg = isClusterPartner(partner) ? clusterForm(sym, base, partner) : base;
     span.innerHTML = svg + (ccForm ? (ccForm.flat || "") : (form.flat || ""));
     const drawings = span.querySelectorAll("svg");
     drawings[0].classList.add("g-square");
