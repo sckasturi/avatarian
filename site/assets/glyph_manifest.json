@@ -116,12 +116,18 @@
   "r": {
     "file": "r.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "variants": {
+      "cluster": "r_cluster.svg"
+    }
   },
   "l": {
     "file": "l.svg",
     "status": "drawn",
     "type": "consonant",
+    "variants": {
+      "cluster": "l_cluster.svg"
+    },
     "flips": true
   },
   "x": {

@@ -1,0 +1,39 @@
+{
+  "name": "l_cluster",
+  "ipa": null,
+  "type": "consonant",
+  "grid": [
+    5,
+    5
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.5,
+          "y": 4.5,
+          "seg": "line"
+        },
+        {
+          "x": 4.5,
+          "y": 4.5,
+          "seg": "line"
+        },
+        {
+          "x": 2.5,
+          "y": 2.5,
+          "seg": "arc",
+          "bulge": -0.5858
+        }
+      ]
+    }
+  ],
+  "updated": "2026-08-21T04:04:05Z"
+}

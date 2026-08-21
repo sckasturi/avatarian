@@ -143,14 +143,26 @@ window.AVATARIAN_GLYPHS = {
     "name": "r",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 82 L 82 18 L 18 18 L 18 58 A 28.28 28.28 0 0 0 50 82\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 82 L 82 18 L 18 18 L 18 58 A 28.28 28.28 0 0 0 50 82\"/></svg>",
+    "variants": {
+      "cluster": {
+        "name": "r_cluster",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 18 L 82 82 L 18 82 A 32 32 0 0 1 50 50\"/></svg>"
+      }
+    }
   },
   "l": {
     "name": "l",
     "status": "drawn",
     "type": "consonant",
     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 82 L 18 18 L 82 18 L 82 58 A 28.28 28.28 0 0 1 50 82\"/></svg>",
-    "flips": true
+    "flips": true,
+    "variants": {
+      "cluster": {
+        "name": "l_cluster",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 18 82 L 82 82 A 32 32 0 0 0 50 50\"/></svg>"
+      }
+    }
   },
   "x": {
     "name": "kh",
@@ -598,14 +610,19 @@ function makeGlyph(token, slot, partner) {
     if (forced && DRAWN_BOTTOM_UP.has(sym)) {
       orientation = forced === "top" ? "bottom" : "top";
     }
-    const bottomForm = (orientation === "bottom" && form.variants
-                        && form.variants.bottom) || null;
-    if (orientation === "bottom" && !bottomForm) {
+    let ccForm = null;
+    if (isClusterPartner(partner) && form.variants && form.variants.cluster) {
+      const pSym = parseSymbol(partner).sym;
+      const rlPair = (sym === "r" || sym === "l")
+                     && (pSym === "r" || pSym === "l") && pSym !== sym;
+      if (!rlPair || slot === "bottom") ccForm = form.variants.cluster;
+    }
+    if (ccForm ? slot === "top" : orientation === "bottom") {
       span.classList.add("avatarian-flipped");
     }
-    const base = bottomForm ? bottomForm.svg : form.svg;
+    const base = ccForm ? ccForm.svg : form.svg;
     const svg = isClusterPartner(partner) ? clusterForm(sym, base) : base;
-    span.innerHTML = svg + (bottomForm ? (bottomForm.flat || "") : (form.flat || ""));
+    span.innerHTML = svg + (ccForm ? (ccForm.flat || "") : (form.flat || ""));
     const drawings = span.querySelectorAll("svg");
     drawings[0].classList.add("g-square");
     if (drawings[1]) drawings[1].classList.add("g-flat");

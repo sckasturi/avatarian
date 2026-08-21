@@ -331,17 +331,28 @@ function makeGlyph(token, slot, partner) {
     if (forced && DRAWN_BOTTOM_UP.has(sym)) {
       orientation = forced === "top" ? "bottom" : "top";
     }
-    // A glyph can ship an independently-drawn bottom-slot form (form.variants
-    // .bottom) — draw it AS-IS rather than flipping the top. Only then skip
-    // the flip class. Everything without a bottom variant flips as before.
-    const bottomForm = (orientation === "bottom" && form.variants
-                        && form.variants.bottom) || null;
-    if (orientation === "bottom" && !bottomForm) {
+    // In a two-consonant block, a glyph with an independently-drawn CLUSTER
+    // form (form.variants.cluster) draws it AS-IS, no flip — that is how /l/
+    // and /r/ change shape against a consonant. The r/l pair is the exception:
+    // its TOP glyph keeps its base form and only the BOTTOM takes the cluster
+    // form (world = r_v over l_c; a hypothetical l/r = l_v over r_c). A glyph
+    // with no cluster form behaves exactly as before.
+    let ccForm = null;
+    if (isClusterPartner(partner) && form.variants && form.variants.cluster) {
+      const pSym = parseSymbol(partner).sym;
+      const rlPair = (sym === "r" || sym === "l")
+                     && (pSym === "r" || pSym === "l") && pSym !== sym;
+      if (!rlPair || slot === "bottom") ccForm = form.variants.cluster;
+    }
+    // The cluster form is drawn in its bottom-slot orientation (the key's l_b
+    // tracing), so it STILL flips top-to-bottom when it lands in a TOP slot.
+    // A glyph with no cluster form flips by its own rule, as before.
+    if (ccForm ? slot === "top" : orientation === "bottom") {
       span.classList.add("avatarian-flipped");
     }
     // A few glyphs redraw in a C-C block (see clusterForm): /s/'s point
     // insets, /z/ drops its dots.
-    const base = bottomForm ? bottomForm.svg : form.svg;
+    const base = ccForm ? ccForm.svg : form.svg;
     const svg = isClusterPartner(partner) ? clusterForm(sym, base) : base;
     // Both drawings ride along and CSS shows one. The flat copy is the
     // same glyph re-laid-out at 4/5 height rather than a squashed copy
@@ -351,7 +362,7 @@ function makeGlyph(token, slot, partner) {
     // The <svg> elements are tagged directly rather than wrapped: a
     // wrapper <span> is inline, cannot take a height, and collapses the
     // SVG inside it to nothing.
-    span.innerHTML = svg + (bottomForm ? (bottomForm.flat || "") : (form.flat || ""));
+    span.innerHTML = svg + (ccForm ? (ccForm.flat || "") : (form.flat || ""));
     const drawings = span.querySelectorAll("svg");
     drawings[0].classList.add("g-square");
     if (drawings[1]) drawings[1].classList.add("g-flat");

@@ -166,26 +166,26 @@ def catalog():
             "currentFlat": None if name in bg.PLACEHOLDERS
             else read(GLYPHS / f"{name}{bg.FLAT_SUFFIX}.svg"),
         })
-    # Bottom-slot forms drawn independently (see BOTTOMS in build_glyphs).
-    # The key traces a distinct bottom /l/ (l_b), so it is drawn, not flipped;
-    # /r/'s bottom mirrors /l/'s, so only /l/ is editable here.
+    # Cluster (C-C) forms drawn independently (see CLUSTERS in build_glyphs).
+    # The key traces a distinct cluster /l/ (l_b), so it is drawn, not
+    # flipped; /r/'s cluster form mirrors /l/'s, so only /l/ is editable here.
     for base, ref_stem in (("l", "l_b"),):
-        name = f"{base}{bg.BOTTOM_SUFFIX}"
+        name = f"{base}{bg.CLUSTER_SUFFIX}"
         rows.append({
             "name": name, "ipa": None, "key": name,
-            "type": "consonant", "group": "flip",
+            "type": "consonant", "group": "cluster",
             "grid": glyphspec.grid_for("consonant"),
             "code": None, "example": None,
             "placeholder": not (GLYPHS / f"{name}.svg").exists(),
             "flips": False, "rows": None,
-            "note": f"bottom-slot form of /{base}/ — drawn, not flipped "
+            "note": f"cluster (C-C) form of /{base}/ — drawn, not flipped "
                     f"(/r/'s mirrors it)",
             "reference": read(REF / f"{ref_stem}.svg"),
             "current": read(GLYPHS / f"{name}.svg"),
             "currentFlat": None,
         })
 
-    order = {"consonant": 0, "vowel": 1, "mark": 2, "flip": 3}
+    order = {"consonant": 0, "vowel": 1, "mark": 2, "cluster": 3}
     rows.sort(key=lambda r: (order[r["group"]], r["name"]))
 
     # Extra tracings the key has that aren't a sound of their own — the
@@ -319,12 +319,12 @@ class Handler(SimpleHTTPRequestHandler):
         if not name:
             return self.send_json({"error": "bad name"}, 400)
         body = self.read_json() or {}
-        # A bottom-slot form isn't pasted into build_glyphs — the build reads
-        # its design (designs/<name>.json) straight off disk. So "promote" for
-        # one is just a rebuild; nothing edits the source.
-        if name.endswith(bg.BOTTOM_SUFFIX):
+        # A cluster form isn't pasted into build_glyphs — the build reads its
+        # design (designs/<name>.json) straight off disk. So "promote" for one
+        # is just a rebuild; nothing edits the source.
+        if name.endswith(bg.CLUSTER_SUFFIX):
             log = promote_mod.rebuild()
-            return self.send_json({"action": "rebuilt", "dict": "BOTTOMS",
+            return self.send_json({"action": "rebuilt", "dict": "CLUSTERS",
                                    "name": name, "log": log})
         try:
             res = promote_mod.promote(

@@ -81,7 +81,7 @@ const App = {
   renderList() {
     const filter = ($("#filter").value || "").trim().toLowerCase();
     const groups = { consonant: "consonants", vowel: "vowels", mark: "marks",
-                     flip: "flip forms" };
+                     cluster: "cluster forms" };
     // `group` is the heading; `type` is the height class, and the two
     // nulls differ on it — both are marks, at different heights.
     const groupOf = (s) => s.group || s.type;
