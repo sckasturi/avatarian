@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C-C blocks — corpus reference</title>
+<link rel="stylesheet" href="css/blocks.css">
+<style>
+  body { background:#1a1512; color:#ece0cc; font:15px/1.5 system-ui, sans-serif; margin:0; padding:24px; }
+  h1 { font-size:1.2rem; margin:0 0 4px; }
+  p.sub { color:#a8967c; margin:0 0 20px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:16px; }
+  .cell { border:1px solid #4a3d2e; border-radius:10px; padding:14px; background:#241c17;
+          display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .draw { --av-size:64px; min-height:120px; display:flex; align-items:center; }
+  .pair { font-size:1.1rem; font-weight:700; }
+  .slots { color:#a8967c; font-size:.8rem; }
+  .words { color:#d0c4ac; font-size:.82rem; text-align:center; }
+  .count { color:#d98e6d; font-size:.75rem; }
+  .flipnote { color:#8a7a5e; font-size:.72rem; }
+</style></head><body>
+<h1>C-C blocks in the corpus</h1>
+<p class="sub">Every two-consonant pair that appears, with the words it shows up in — rendered in the
+<em>current</em> glyph forms. Compare against the art to see what decides each form.
+A <b>^</b> after a glyph = the renderer is currently flipping it.</p>
+<div class="grid" id="grid"></div>
+
+<script src="js/manifest.js"></script>
+<script src="js/corpus.js"></script>
+<script src="js/lexicon.js"></script>
+<script src="js/g2p.js"></script>
+<script src="js/sounds.js"></script>
+<script src="js/render.js"></script>
+<script>
+(function () {
+  var C = window.AVATARIAN_CORPUS;
+  var words = Array.isArray(C.words) ? C.words : Object.entries(C.words).map(function(e){return {key:e[0], ipa:e[1].ipa};});
+  var baseOf = function (t) { return String(t).replace(/[$%]/g, ""); };
+  var isCons = function (s) { return !isVowelSymbol(s) && !NULLS.has(baseOf(s)) && baseOf(s) !== "*"; };
+
+  var pairs = {};   // "top / bottom" -> { words:Set, top, bottom }
+  words.forEach(function (w) {
+    if (!w.ipa) return;
+    resolveBlocks(w.ipa).forEach(function (b) {
+      if (isCons(b.top) && isCons(b.bottom)) {
+        var key = baseOf(b.top) + " / " + baseOf(b.bottom);
+        if (!pairs[key]) pairs[key] = { words: new Set(), top: b.top, bottom: b.bottom };
+        pairs[key].words.add(w.key || w.word);
+      }
+    });
+  });
+
+  var rows = Object.keys(pairs).map(function (k) { return [k, pairs[k]]; })
+    .sort(function (a, b) { return b[1].words.size - a[1].words.size; });
+
+  var grid = document.getElementById("grid");
+  rows.forEach(function (entry) {
+    var key = entry[0], p = entry[1];
+    var cell = document.createElement("div"); cell.className = "cell";
+
+    var draw = document.createElement("div"); draw.className = "draw avatarian-word";
+    renderAvatarian([p.top, p.bottom], draw);
+    // annotate which slot the renderer flipped
+    var slots = [].slice.call(draw.querySelectorAll(".avatarian-glyph")).map(function (g) {
+      return (g.getAttribute("title") || "?") + (g.classList.contains("avatarian-flipped") ? "^" : "");
+    });
+
+    var pair = document.createElement("div"); pair.className = "pair"; pair.textContent = "(" + key + ")";
+    var sl = document.createElement("div"); sl.className = "slots"; sl.textContent = "top " + slots[0] + " · bottom " + slots[1];
+    var cnt = document.createElement("div"); cnt.className = "count"; cnt.textContent = p.words.size + " word" + (p.words.size > 1 ? "s" : "");
+    var ws = document.createElement("div"); ws.className = "words"; ws.textContent = Array.from(p.words).join(", ");
+
+    cell.appendChild(draw); cell.appendChild(pair); cell.appendChild(sl); cell.appendChild(cnt); cell.appendChild(ws);
+    grid.appendChild(cell);
+  });
+
+  document.querySelector("h1").textContent = "C-C blocks in the corpus — " + rows.length + " distinct pairs";
+})();
+</script></body></html>
