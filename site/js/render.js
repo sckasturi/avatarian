@@ -118,14 +118,21 @@ function nullFor(partner) {
  * Needed where the slot doesn't decide it. /s/ is the live case:
  * "students" writes both of its /s/ in top slots yet uses a different
  * orientation for each.
+ *
+ * A `_c` suffix asks for a glyph's CLUSTER form on its own, with no
+ * consonant beside it — `l_c`, `r_c`, mainly to show it in a table. It
+ * combines with the orientation marker: bare `r_c` is bottom-oriented (as
+ * drawn), `r_c$` is top-oriented (flipped), `r_c%` is bottom. On a glyph
+ * with no cluster form the suffix is simply ignored.
  */
 const VARIANT_MARKERS = { "$": "top", "%": "bottom" };
 
 function parseSymbol(token) {
-  const marker = VARIANT_MARKERS[token.slice(-1)];
-  return marker
-    ? { sym: token.slice(0, -1), forced: marker }
-    : { sym: token, forced: null };
+  const forced = VARIANT_MARKERS[token.slice(-1)] || null;
+  let rest = forced ? token.slice(0, -1) : token;
+  let variant = null;
+  if (rest.endsWith("_c")) { variant = "cluster"; rest = rest.slice(0, -2); }
+  return { sym: rest, forced, variant };
 }
 
 /**
@@ -308,7 +315,7 @@ function clusterForm(sym, svg, partner) {
 }
 
 function makeGlyph(token, slot, partner) {
-  const { sym, forced } = parseSymbol(token);
+  const { sym, forced, variant } = parseSymbol(token);
   const span = document.createElement("span");
 
   if (sym === UNREADABLE) {
@@ -347,19 +354,34 @@ function makeGlyph(token, slot, partner) {
     // its TOP glyph keeps its base form and only the BOTTOM takes the cluster
     // form (world = r_v over l_c; a hypothetical l/r = l_v over r_c). A glyph
     // with no cluster form behaves exactly as before.
+    // A `_c` suffix (l_c, r_c) asks for the cluster body explicitly, even
+    // with no consonant beside it, so the form can be shown on its own.
+    // Otherwise the cluster body is chosen by context, as in a real block.
+    const wantCluster = variant === "cluster";
     let ccForm = null;
-    if (isClusterPartner(partner) && form.variants && form.variants.cluster) {
-      const pSym = parseSymbol(partner).sym;
-      const rlPair = (sym === "r" || sym === "l")
-                     && (pSym === "r" || pSym === "l") && pSym !== sym;
-      if (!rlPair || slot === "bottom") ccForm = form.variants.cluster;
+    if (form.variants && form.variants.cluster) {
+      if (wantCluster) {
+        ccForm = form.variants.cluster;
+      } else if (isClusterPartner(partner)) {
+        const pSym = parseSymbol(partner).sym;
+        const rlPair = (sym === "r" || sym === "l")
+                       && (pSym === "r" || pSym === "l") && pSym !== sym;
+        if (!rlPair || slot === "bottom") ccForm = form.variants.cluster;
+      }
     }
     // The cluster form is drawn in its bottom-slot orientation (the key's l_b
     // tracing), so it STILL flips top-to-bottom when it lands in a TOP slot.
-    // A glyph with no cluster form flips by its own rule, as before.
-    if (ccForm ? slot === "top" : orientation === "bottom") {
-      span.classList.add("avatarian-flipped");
+    // An explicit `_c` has no slot to read, so it shows bottom-oriented (as
+    // drawn) by default and flips only when `$` forces the top orientation:
+    // `r_c` bottom, `r_c$` top, `r_c%` bottom. A glyph with no cluster form
+    // flips by its own rule, as before.
+    let flipped;
+    if (ccForm) {
+      flipped = wantCluster ? forced === "top" : slot === "top";
+    } else {
+      flipped = orientation === "bottom";
     }
+    if (flipped) span.classList.add("avatarian-flipped");
     // A few glyphs redraw in a C-C block (see clusterForm): /s/'s point
     // insets, /z/ drops its dots.
     const base = ccForm ? ccForm.svg : form.svg;
@@ -379,7 +401,10 @@ function makeGlyph(token, slot, partner) {
     // Which form actually got written, so the rendered DOM says what it
     // chose — reading it back off the SVG is unreliable once the browser
     // has reserialised it.
-    span.dataset.glyph = form.name + (orientation === "bottom" ? "%" : "");
+    // `%` keeps its by-slot meaning for plain glyphs; a cluster form records
+    // "_c" and lets the avatarian-flipped class carry its orientation, so the
+    // marker never contradicts the `_c$`/`_c%` a caller typed.
+    span.dataset.glyph = form.name + (ccForm ? "_c" : (flipped ? "%" : ""));
     if (entry.status === "PLACEHOLDER") span.classList.add("avatarian-placeholder");
   } else {
     span.textContent = sym;

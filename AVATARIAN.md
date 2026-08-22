@@ -470,6 +470,12 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
   (/s/ drawn upright above a consonant, the §6 exception). Everything else is
   derived by rule (§6) — /l/ and /r/ by the cluster-form rule, the rest by
   slot; otherwise `$`/`%` is just a convenience for showing both forms.
+- **`_c`** asks for a glyph's cluster form on its own, with no consonant
+  beside it — `l_c`, `r_c`. Only /l/ and /r/ have one; on anything else the
+  suffix is ignored. It combines with the orientation marker: bare `r_c` is
+  bottom-oriented (as drawn), `r_c$` is top-oriented (flipped), `r_c%` is
+  bottom. Mainly for showing the cluster form in a reference table, since in
+  a real word it is chosen by context.
 - **`*`** marks a glyph visible in a source but unreadable. It fills a
   slot, so block structure is recorded where the letter is not.
 - **`(parentheses)`** caption a word instead of being read as sounds:

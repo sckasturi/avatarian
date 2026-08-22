@@ -84,12 +84,21 @@ const IPA_TO_CODE = (() => {
   return map;
 })();
 
-/** Split a token into its sound and any $/% variant override. */
+/**
+ * Split a token into its base sound and any trailing markers: a `$`/`%`
+ * orientation override and/or a `_c` cluster-form request. Both are carried
+ * through the code<->IPA lookups untouched (`r_c$` is not a key in READABLE)
+ * and may combine — `r_c$` is r's cluster form, top-oriented. The suffix
+ * keeps them in `_c` + `$`/`%` order so the token round-trips exactly.
+ */
 function splitOverride(token) {
-  const last = token.slice(-1);
-  return (last === "$" || last === "%")
-    ? { body: token.slice(0, -1), suffix: last }
-    : { body: token, suffix: "" };
+  let rest = token;
+  let override = "";
+  const last = rest.slice(-1);
+  if (last === "$" || last === "%") { override = last; rest = rest.slice(0, -1); }
+  let cluster = "";
+  if (rest.endsWith("_c")) { cluster = "_c"; rest = rest.slice(0, -2); }
+  return { body: rest, suffix: cluster + override };
 }
 
 /**

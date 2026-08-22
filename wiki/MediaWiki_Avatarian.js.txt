@@ -385,10 +385,13 @@ const IPA_TO_CODE = (() => {
 })();
 
 function splitOverride(token) {
-  const last = token.slice(-1);
-  return (last === "$" || last === "%")
-    ? { body: token.slice(0, -1), suffix: last }
-    : { body: token, suffix: "" };
+  let rest = token;
+  let override = "";
+  const last = rest.slice(-1);
+  if (last === "$" || last === "%") { override = last; rest = rest.slice(0, -1); }
+  let cluster = "";
+  if (rest.endsWith("_c")) { cluster = "_c"; rest = rest.slice(0, -2); }
+  return { body: rest, suffix: cluster + override };
 }
 
 function normaliseSound(token) {
@@ -513,10 +516,11 @@ function nullFor(partner) {
 const VARIANT_MARKERS = { "$": "top", "%": "bottom" };
 
 function parseSymbol(token) {
-  const marker = VARIANT_MARKERS[token.slice(-1)];
-  return marker
-    ? { sym: token.slice(0, -1), forced: marker }
-    : { sym: token, forced: null };
+  const forced = VARIANT_MARKERS[token.slice(-1)] || null;
+  let rest = forced ? token.slice(0, -1) : token;
+  let variant = null;
+  if (rest.endsWith("_c")) { variant = "cluster"; rest = rest.slice(0, -2); }
+  return { sym: rest, forced, variant };
 }
 
 function pairUp(ipaSeq) {
@@ -589,7 +593,7 @@ function clusterForm(sym, svg, partner) {
 }
 
 function makeGlyph(token, slot, partner) {
-  const { sym, forced } = parseSymbol(token);
+  const { sym, forced, variant } = parseSymbol(token);
   const span = document.createElement("span");
 
   if (sym === UNREADABLE) {
@@ -614,23 +618,32 @@ function makeGlyph(token, slot, partner) {
     if (forced && DRAWN_BOTTOM_UP.has(sym)) {
       orientation = forced === "top" ? "bottom" : "top";
     }
+    const wantCluster = variant === "cluster";
     let ccForm = null;
-    if (isClusterPartner(partner) && form.variants && form.variants.cluster) {
-      const pSym = parseSymbol(partner).sym;
-      const rlPair = (sym === "r" || sym === "l")
-                     && (pSym === "r" || pSym === "l") && pSym !== sym;
-      if (!rlPair || slot === "bottom") ccForm = form.variants.cluster;
+    if (form.variants && form.variants.cluster) {
+      if (wantCluster) {
+        ccForm = form.variants.cluster;
+      } else if (isClusterPartner(partner)) {
+        const pSym = parseSymbol(partner).sym;
+        const rlPair = (sym === "r" || sym === "l")
+                       && (pSym === "r" || pSym === "l") && pSym !== sym;
+        if (!rlPair || slot === "bottom") ccForm = form.variants.cluster;
+      }
     }
-    if (ccForm ? slot === "top" : orientation === "bottom") {
-      span.classList.add("avatarian-flipped");
+    let flipped;
+    if (ccForm) {
+      flipped = wantCluster ? forced === "top" : slot === "top";
+    } else {
+      flipped = orientation === "bottom";
     }
+    if (flipped) span.classList.add("avatarian-flipped");
     const base = ccForm ? ccForm.svg : form.svg;
     const svg = isClusterPartner(partner) ? clusterForm(sym, base, partner) : base;
     span.innerHTML = svg + (ccForm ? (ccForm.flat || "") : (form.flat || ""));
     const drawings = span.querySelectorAll("svg");
     drawings[0].classList.add("g-square");
     if (drawings[1]) drawings[1].classList.add("g-flat");
-    span.dataset.glyph = form.name + (orientation === "bottom" ? "%" : "");
+    span.dataset.glyph = form.name + (ccForm ? "_c" : (flipped ? "%" : ""));
     if (entry.status === "PLACEHOLDER") span.classList.add("avatarian-placeholder");
   } else {
     span.textContent = sym;
