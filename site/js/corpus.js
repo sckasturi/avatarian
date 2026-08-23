@@ -93,6 +93,11 @@ window.AVATARIAN_CORPUS = {
       "what": "Avatar / Korra / theater / shh / games / treats / festival / aquaduct / written",
       "where": "san diego comic con 2026",
       "image": "sdcc-3.png"
+    },
+    "sonam": {
+      "what": "Sonam statue",
+      "where": "movie 04:08",
+      "image": "sonam.jpg"
     }
   },
   "words": {
@@ -3674,6 +3679,22 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sdcc-3"
+    },
+    "sonam": {
+      "ipa": [
+        "s",
+        "oʊ",
+        "n",
+        "ə",
+        "m",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sonam"
+      ],
+      "confidence": "certain",
+      "source": "sonam"
     }
   }
 };

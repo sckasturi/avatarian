@@ -361,6 +361,8 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | something || {{Avatarian|s u 0 m th i ng 0|something}}<ref name="toph-letter" /> || /s ʌ m θ ɪ ŋ/ || 1
 |-
+| sonam || {{Avatarian|s oh n uh m 0|sonam}}<ref name="sonam">''sonam'' — movie 04:08</ref> || /s oʊ n ə m/ || 1
+|-
 | sound || {{Avatarian|s ow n d|sound}}<ref name="instagram-2.2" /> || /s aʊ n d/ || 1
 |-
 | soup || {{Avatarian|s oo p 0|soup}}<ref name="instagram-1.3" /> || /s u p/ || 1

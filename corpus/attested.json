@@ -112,6 +112,11 @@
       "what": "Avatar / Korra / theater / shh / games / treats / festival / aquaduct / written",
       "where": "san diego comic con 2026",
       "image": "sdcc-3.png"
+    },
+    "sonam": {
+      "what": "Sonam statue",
+      "where": "movie 04:08",
+      "image": "sonam.jpg"
     }
   },
   "entries": [
@@ -1846,6 +1851,12 @@
       "key": "written",
       "spelling": "r ɪ t ə n ∅",
       "source": "sdcc-3",
+      "confidence": "certain"
+    },
+    {
+      "key": "sonam",
+      "spelling": "s oʊ n ə m ∅",
+      "source": "sonam",
       "confidence": "certain"
     }
   ]
