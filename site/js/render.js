@@ -290,9 +290,10 @@ function orientationOf(sym, entry, slot, partner) {
  * the one scrap of ink in the shared row and reads as poking through the
  * glyph beside it (flat-topped consonants fuse there instead). Its vertex
  * insets one lattice row (y 18 → 31) so the point lands on the block
- * boundary. Applied to the stored point-up caret, so the flip carries the
- * inset to whichever side faces the overlap — point-down on top of a
- * cluster (`still`), point-up on the bottom of one (`balance`, `sula's`).
+ * boundary — but ONLY when the point faces the overlap: point-down on top of
+ * a cluster (`still`), point-up on the bottom of one (`balance`, `sula's`).
+ * Forced upright in a TOP slot (`rest`, `humansitters`), the point is at the
+ * far top edge, so it keeps full height instead of pulling down off the top.
  *
  * /z/'s two corner dots sit in its top row, which the overlap rides up into
  * the glyph above. Under a plain consonant BOTH drop (`goods`, `trends`,
@@ -303,8 +304,16 @@ function orientationOf(sym, entry, slot, partner) {
  * A non-cluster /s/ or /z/ — sitting under or over a vowel — is left
  * whole. See AVATARIAN.md §12.6.
  */
-function clusterForm(sym, svg, partner) {
-  if (sym === "s") return svg.replace("L 50 18 L", "L 50 31 L");
+function clusterForm(sym, svg, partner, slot, flipped) {
+  if (sym === "s") {
+    // Inset the vertex only when the POINT faces the one-row overlap: the
+    // bottom of a top slot (flipped point-down, `still`) or the top of a
+    // bottom slot (upright point-up, `balance`, `sula's`). Forced the other
+    // way — upright in a top slot (`rest`, `humansitters`) — the point is at
+    // the far edge and must keep full height, or it pulls off the top.
+    const pointAtOverlap = slot === "top" ? flipped : !flipped;
+    return pointAtOverlap ? svg.replace("L 50 18 L", "L 50 31 L") : svg;
+  }
   if (sym === "z") {
     const p = partner != null ? parseSymbol(partner).sym : null;
     if (p === "r") return svg.replace(/<circle cx="74"[^>]*>/, "");  // keep left
@@ -385,7 +394,7 @@ function makeGlyph(token, slot, partner) {
     // A few glyphs redraw in a C-C block (see clusterForm): /s/'s point
     // insets, /z/ drops its dots.
     const base = ccForm ? ccForm.svg : form.svg;
-    const svg = isClusterPartner(partner) ? clusterForm(sym, base, partner) : base;
+    const svg = isClusterPartner(partner) ? clusterForm(sym, base, partner, slot, flipped) : base;
     // Both drawings ride along and CSS shows one. The flat copy is the
     // same glyph re-laid-out at 4/5 height rather than a squashed copy
     // of the square one, so stroke weight and dots match exactly in
