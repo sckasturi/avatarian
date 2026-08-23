@@ -2,9 +2,14 @@
  * via currentColor. Keep in step with site/css/blocks.css. Docs: AVATARIAN.md. */
 
 /* font-size / 2.05 makes the 9-row block equal the surrounding text height;
- * the extra 1.5 raises inline Avatarian in running text to 150% of it. */
+ * the extra 1.5 raises every Avatarian word — prose and tables alike — to
+ * 150% of it. (Solo display letters set their own size, below.) */
 .avatarian-word {
   display: inline-flex; align-items: flex-start; vertical-align: middle;
+  /* Let a multi-word {{Avatarian|… / …}} wrap at its /-word boundaries
+     instead of overflowing on one line; row-gap spaces the wrapped rows.
+     Each /-word is its own inline-flex part, so a single word never splits. */
+  flex-wrap: wrap; row-gap: 0.5em;
   margin: 0 0.3em 0 0;
   font-size: calc(1.5em / 2.05);
 }
@@ -13,10 +18,6 @@
  * ~1.75em, flat vowel ~1.4em). Drop the word's right margin so it centres in
  * a table cell. Scale a whole chart by putting a font-size on the table. */
 .avatarian-word.avatarian-solo { font-size: 1.4em; margin: 0; }
-/* Inside a chart (a wikitable), keep words at text height — charts size
-   themselves, and the raise above is for running text only. Solo display
-   letters carry their own size and are left alone. */
-.wikitable .avatarian-word:not(.avatarian-solo) { font-size: calc(1em / 2.05); }
 /* No flash of English before the glyphs; JS-off readers keep the text. */
 html.client-js .avatarian-word:not([data-avatarian-done]) { visibility: hidden; }
 /* SVG can't take the native selection highlight, so the gadget tints it. */
