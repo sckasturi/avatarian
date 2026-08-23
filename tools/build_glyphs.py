@@ -327,8 +327,7 @@ MARKS_CONSONANT = {
 
 MARKS_VOWEL = {
     # 3-row null filler (vowel height) — the ∪ cup shape.
-    "null_v": path("M 18 40 L 18 60 A 42 52.5 0 0 0 50 80 "
-                   "A 42 52.5 0 0 0 82 60 L 82 40"),
+    "null_v": path("M 18 40 A 32 40 0 0 0 82 40"),
 }
 
 NULL_IPA = "∅"    # manifest key for the vowel-height filler

@@ -296,8 +296,8 @@ window.AVATARIAN_GLYPHS = {
     "name": "null_v",
     "status": "drawn",
     "type": "null",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 18 60 A 42 52.5 0 0 0 50 80 A 42 52.5 0 0 0 82 60 L 82 40\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 18 48 A 42 42 0 0 0 50 64 A 42 42 0 0 0 82 48 L 82 32\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 A 32 40 0 0 0 82 40\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 A 32 32 0 0 0 82 32\"/></svg>"
   },
   "∅c": {
     "name": "null_c",
