@@ -22,3 +22,11 @@ corpus/sources/*
 
 # Scratch/analysis pages served locally, not shipped
 site/_*.html
+
+# Internal working docs — dev process, not for publication. The session
+# handoff log, the backlog, and the "how to continue" context. Everything
+# a reader needs is in README.md, AVATARIAN.md, and DECIPHERMENT.md.
+HANDOFF.md
+TODO.md
+CONTEXT.md
+CORPUS.md

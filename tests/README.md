@@ -38,9 +38,9 @@ into the runner so there is one command rather than two.
 
 **The corpus is the fixture.** Nearly every structural assertion runs
 against `corpus/attested.json` — the words somebody has actually seen
-written — rather than examples made up to suit the code. That is what
-`CORPUS.md` §4 means by the corpus being a research instrument: a change
-to pairing, nulls or heights gets checked against every attested spelling
+written — rather than examples made up to suit the code. This makes the
+corpus a research instrument: a change to pairing, nulls or heights gets
+checked against every attested spelling
 at once, and a failure names the word it broke.
 
 It also means **the suite grows on its own.** Transcribe a source in the
@@ -58,13 +58,13 @@ after the fact earns its keep by remembering what already went wrong.
 ## Two tests that behave unusually
 
 **C-C blocks are reported, not failed on.** The nine-row invariant holds
-for V-C and C-V, but two consonants would be ten rows, and whether they
-overlap by a shared row is genuinely unresolved (TODO **B1**). Asserting
-either answer would be inventing one. So the test collects them and
-prints the inventory:
+for V-C and C-V. Two consonants would be ten rows, but they overlap by one
+shared row to total nine (`AVATARIAN.md` §5) — a geometry the node test
+runner can't measure. Rather than assert it blindly, the test collects the
+C-C blocks and prints the inventory for eyeball / browser checking:
 
 ```
-ℹ 4 attested C-C blocks (TODO B1 — unresolved):
+ℹ 4 attested C-C blocks:
 ℹ   please: (p,l)
 ℹ   students: (s%,t)
 ℹ   students: (n,t)
@@ -148,5 +148,5 @@ no match at all.
 **The scripts are loaded with a cache-busting query.** This page reported
 0/8 on a change that was actually correct, because the browser had held
 on to the previous `recognise.js`. A test that silently runs against a
-stale copy of its subject is worse than no test — and "caching lies" is
-already the first entry under Traps in `HANDOFF.md`.
+stale copy of its subject is worse than no test — "caching lies" is a
+classic testing trap.

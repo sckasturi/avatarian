@@ -1,72 +1,57 @@
-/* Avatarian gadget styling for MediaWiki:Common.css. Sized in em, coloured
- * via currentColor. Keep in step with site/css/blocks.css. Docs: AVATARIAN.md. */
+/* Avatarian gadget styles for MediaWiki:Common.css. Sized in em, coloured via
+ * currentColor. Keep in step with site/css/blocks.css. Docs: AVATARIAN.md. */
 
-/* font-size / 2.05 makes the 9-row block equal the surrounding text height;
- * the extra 1.5 raises every Avatarian word — prose and tables alike — to
- * 150% of it. (Solo display letters set their own size, below.) */
+/* font-size /2.05 = block at text height; the 1.5 raises every word to 150%. */
 .avatarian-word {
-  /* Flow as inline text, so a whole letter — one {{Avatarian}}, or several
-     with [unknown] text between them — wraps word-by-word like prose rather
-     than each template being an atomic flex box that orphans the text after
-     it. Each /-word is an inline-flex part (below) that never splits; the
-     wrap happens between parts. */
+  /* inline so multi-template letters wrap word-by-word; parts never split. */
   display: inline; vertical-align: middle;
   margin: 0 0.3em 0 0;
   font-size: calc(1.5em / 2.05);
 }
-/* A lone {{Avatarian|p}} is a display letter, not inline text — skip
- * the /2.05 inline shrink so it stands at full size on its own (consonant
- * ~1.75em, flat vowel ~1.4em). Drop the word's right margin so it centres in
- * a table cell. Scale a whole chart by putting a font-size on the table. */
+/* A lone {{Avatarian|p}} is a display letter: full size, no margin. */
 .avatarian-word.avatarian-solo { display: inline-flex; font-size: 1.4em; margin: 0; }
-/* No flash of English before the glyphs; JS-off readers keep the text. */
+/* No flash of English before the glyphs. */
 html.client-js .avatarian-word:not([data-avatarian-done]) { visibility: hidden; }
-/* SVG can't take the native selection highlight, so the gadget tints it. */
 .avatarian-word.avatarian-selected { background: rgba(51, 144, 255, 0.32); }
-/* One {{Avatarian}} draws each /-word as a part, with a gap between them.
-   The part is the atomic inline box that flows and wraps with the text. */
 .avatarian-word-part { display: inline-flex; align-items: flex-start; vertical-align: middle; }
 .avatarian-word-part + .avatarian-word-part { margin-left: 0.5em; }
 
 .avatarian-block { display: inline-flex; flex-direction: column; align-items: center; margin-right: 0.05em; }
 .avatarian-slot { display: flex; justify-content: center; }
-/* Pull the bottom slot up by both glyphs' clearance margins so they meet. */
+/* Pull the bottom slot up so the two glyphs' lattices meet. */
 .avatarian-slot-bottom { margin-top: -0.225em; }
 .avatarian-glyph { display: inline-block; line-height: 0; color: currentColor; }
 .avatarian-glyph svg { display: block; width: 100%; height: 100%; }
-/* Thicken the stroke so it reads at the small size (letters + marks). */
+/* Thicken the stroke to read at small size. */
 .avatarian-glyph svg,
 .avatarian-mark svg { stroke-width: 13; }
 .avatarian-glyph.avatarian-consonant { width: 1.25em; height: 1.25em; }
 .avatarian-glyph.avatarian-null_consonant { width: 1.25em; height: 1.25em; }
 .avatarian-glyph.avatarian-vowel { width: 1.25em; height: 1em; }
 .avatarian-glyph.avatarian-null { width: 1.25em; height: 1em; }
-/* C-C block: two consonants overlap one row (render.js tags it .avatarian-cc). */
+/* C-C block: two consonants overlap one row. */
 .avatarian-block.avatarian-cc .avatarian-slot-bottom { margin-top: -0.45em; }
-/* A 3-row vowel is drawn bottom-aligned; in the top slot shift the gap inward. */
+/* 3-row vowel in the top slot: shift the gap inward. */
 .avatarian-slot-top .avatarian-glyph.avatarian-vowel:not(.avatarian-4row),
 .avatarian-slot-top .avatarian-glyph.avatarian-null:not(.avatarian-4row) {
   transform: translateY(-20%);
 }
-/* FLIPS glyphs are mirrored top-to-bottom (on the SVG, composes with shifts). */
 .avatarian-glyph.avatarian-flipped svg { transform: scaleY(-1); }
-/* A flipped 3-row vowel in a bottom slot: shift it back to the baseline. */
+/* Flipped 3-row vowel in the bottom slot: back to the baseline. */
 .avatarian-slot-bottom .avatarian-glyph.avatarian-vowel.avatarian-flipped:not(.avatarian-4row),
 .avatarian-slot-bottom .avatarian-glyph.avatarian-null.avatarian-flipped:not(.avatarian-4row) {
   transform: translateY(20%);
 }
-/* Vowels ship a square and a flat SVG; hide the square, use the flat. */
+/* Vowels ship a square + flat SVG; use the flat. */
 .avatarian-glyph .g-square:not(:only-of-type) { display: none; }
 .avatarian-placeholder { opacity: 0.5; }
 .avatarian-missing { font-size: 0.6em; color: #b32; line-height: 1; }
-/* Punctuation: a 1x9 (or 2x9) mark, 1.64x a consonant tall; render.js sets
- * its aspect-ratio inline, so only the height is fixed here. */
+/* Punctuation mark: 1.64x a consonant tall; aspect-ratio set inline. */
 .avatarian-mark {
   display: inline-block; line-height: 0; color: currentColor;
   align-self: stretch;
   height: calc(1.25em * 1.64);
 }
 .avatarian-mark svg { display: block; width: 100%; height: 100%; }
-/* The "*" unreadable marker: dimmed, never flipped. */
 .avatarian-unreadable { opacity: 0.68; }
 .avatarian-glyph.avatarian-unreadable svg { transform: none; }

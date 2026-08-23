@@ -4,10 +4,9 @@
 images — what is known, how it is known, and what is still guesswork.*
 
 This is a write-up, not a working document. `AVATARIAN.md` §12 states the
-rules as they stand; `TODO.md` tracks what is left to do. This is the
-argument behind both: the evidence, the reasoning, and — because it
-matters more than it usually gets to — the places the reasoning went
-wrong first.
+rules as they stand; this is the argument behind them: the evidence, the
+reasoning, and — because it matters more than it usually gets to — the
+places the reasoning went wrong first.
 
 Avatarian is a **community decipherment**. The reference material is
 other people's work, credited in `AVATARIAN.md`. What is original here is

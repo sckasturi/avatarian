@@ -8,10 +8,10 @@
  * the corpus being a research instrument and not just an accuracy patch.
  *
  * The 9-row test does something a normal test doesn't: it **reports the
- * C-C blocks rather than failing on them**. C-C is the one piece of the
- * model that is genuinely unresolved (TODO B1), so a red test there would
- * be asserting an answer nobody has. Instead it prints every attested C-C
- * block, which is exactly the inventory B1 says it needs.
+ * C-C blocks rather than failing on them**. A C-C block is two full-size
+ * consonants overlapping by one lattice row (nine rows total, AVATARIAN.md
+ * §5) — a geometry this runner can't measure. So rather than assert it, the
+ * test prints every attested C-C block for eyeball / browser checking.
  */
 
 const test = require("node:test");
@@ -93,7 +93,7 @@ test("an empty trailing slot gets a null written into it", () => {
 
 test("appa is three blocks, tall-short-tall", () => {
   // Canon writes three blocks where pairing predicts two, and the null
-  // heights are CONFIRMED against the art (B3, session 10): mixed, tall
+  // heights are confirmed against the art: mixed, tall
   // beside the vowels and short beside /p/, which is what the
   // pairing-partner rule gives since ɑ is a vowel and p is a consonant.
   //
@@ -122,12 +122,11 @@ test("consonant slots are 5 rows and vowel slots 4", () => {
   assert.equal(slotRows("s%"), 5, "an override doesn't change the height");
 });
 
-test("every attested block is nine rows — except C-C, which is open", (t) => {
-  // A block is 9 rows: 5 + 4 or 4 + 5. Two consonants would be 10, which
-  // is precisely the unresolved question (B1) — session 5's guess was
-  // that they overlap by a shared row. So C-C is collected and reported
-  // rather than failed on: asserting either answer here would be
-  // inventing one.
+test("every attested block is nine rows — except C-C, measured by eye", (t) => {
+  // A block is 9 rows: 5 + 4 or 4 + 5. Two consonants would be 10, but they
+  // overlap by one shared row to total nine (AVATARIAN.md §5) — a geometry
+  // this runner can't measure. So C-C is collected and reported rather than
+  // asserted.
   const cc = [];
   const vv = [];
   const unread = [];
@@ -138,8 +137,7 @@ test("every attested block is nine rows — except C-C, which is open", (t) => {
       // A `?` slot has NO KNOWN HEIGHT. `slotRows` gives it consonant
       // height so it can be laid out, but that is a rendering default and
       // not a reading — counting it here would put slots nobody could
-      // make out into B1's evidence, and B1 is about to be settled by
-      // measuring exactly these blocks.
+      // read into the C-C inventory.
       if (block.top === "*" || block.bottom === "*") {
         unread.push(where);
         continue;
@@ -157,7 +155,7 @@ test("every attested block is nine rows — except C-C, which is open", (t) => {
   assert.deepEqual(plain(vv), [],
     "V-V blocks found; the model says a null substitutes instead");
 
-  t.diagnostic(`${cc.length} attested C-C blocks (TODO B1 — unresolved):`);
+  t.diagnostic(`${cc.length} attested C-C blocks:`);
   for (const block of cc) t.diagnostic(`  ${block}`);
   if (unread.length) {
     t.diagnostic(`${unread.length} block(s) hold an unreadable glyph and are `

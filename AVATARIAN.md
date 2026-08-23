@@ -6,10 +6,7 @@ present tense as one knowledgebase. Where the script is not yet fully
 determined, the open question is named (§13).
 
 - **How the script was worked out, as an article** → `DECIPHERMENT.md`
-- **What still needs doing** → `TODO.md`
-- **Attested spellings — the confirmed dictionary** → `CORPUS.md`
-- **How the tool is built and deployed** → `README.md`
-- **Non-obvious code decisions** → `CONTEXT.md`
+- **How the tool is built and deployed** → `DEVELOPMENT.md`
 - **The glyph design / lattice format** → `designs/README.md`
 
 When this document and the code disagree, the code wins:
@@ -213,7 +210,7 @@ From a word's sounds this reproduces all but about ten of the attested
 spellings exactly. The residue divides at a **morpheme** boundary as well
 as a syllable one — `some|thing`, `human|sitters`, `water|proof`,
 `woong|'s` — which looks like the same principle on a second kind of
-boundary, on too few examples to state as a rule (`TODO.md` item 34). The
+boundary, on too few examples to state as a rule. The
 syllabifier itself (`ONSET_CLUSTERS` / `same_syllable` in `g2p.js`) is a
 hand-rolled heuristic.
 
@@ -231,9 +228,9 @@ drawing. There are three separate reasons a glyph turns.
 
 > **æ ɑ ɪ e aɪ ə**
 
-(/l/ used to be here; it turned out **not** to flip with a vowel — plain in
-school, all, lord, still — so it left the set. /l/ and /r/ change shape by
-the cluster-form rule above, not by slot.)
+(/l/ is **not** in this set: it stays plain beside a vowel — school, all,
+lord, still. /l/ and /r/ change shape by the cluster-form rule above, not
+by slot.)
 
 The bar for this list is both forms attested in known slots (e.g. /aɪ/:
 the chart's citation form, dots below the rule, vs "fire", dots above).
@@ -497,7 +494,7 @@ This project renders each glyph as a discrete vector butted against its
 neighbours, so it reproduces the *structure* correctly — the pairing, the
 heights, the flips, the C-C overlap — but not the stroke-level fusion.
 Getting that would mean redrawing every glyph with defined connection
-points: a type-design project (`TODO.md` item 19), not a layout tweak.
+points: a type-design project, not a layout tweak.
 
 ---
 
