@@ -102,12 +102,28 @@
       "what": "Avatarian: The Unique Written Language of the Avatar World",
       "where": "San Diego Comic-Con",
       "image": "sdcc-1.png"
+    },
+    "sdcc-2": {
+      "what": "water / earth / fire / air",
+      "where": "san diego comic con 2026",
+      "image": "sdcc-2.png"
+    },
+    "sdcc-3": {
+      "what": "Avatar / Korra / theater / shh / games / treats / festival / aquaduct / written",
+      "where": "san diego comic con 2026",
+      "image": "sdcc-3.png"
     }
   },
   "entries": [
     {
       "key": "academy",
       "spelling": "ə ∅ k æ d ə m i",
+      "confidence": "certain",
+      "source": "toph-letter"
+    },
+    {
+      "key": "all",
+      "spelling": "ɔ l",
       "confidence": "certain",
       "source": "toph-letter"
     },
@@ -1378,12 +1394,6 @@
       "confidence": "certain"
     },
     {
-      "key": "all",
-      "spelling": "ɔ l",
-      "confidence": "certain",
-      "source": "toph-letter"
-    },
-    {
       "key": "always",
       "spelling": "* l w e ɪ z",
       "source": "instagram-3.3",
@@ -1757,6 +1767,86 @@
       "source": "sdcc-1",
       "confidence": "certain",
       "gloss": "Written"
+    },
+    {
+      "key": "air",
+      "spelling": "e r",
+      "source": "sdcc-2",
+      "confidence": "certain"
+    },
+    {
+      "key": "earth",
+      "spelling": "ə r θ ∅",
+      "source": "sdcc-2",
+      "confidence": "certain"
+    },
+    {
+      "key": "fire",
+      "spelling": "f aɪ ə r",
+      "source": "sdcc-2",
+      "confidence": "certain"
+    },
+    {
+      "key": "water",
+      "spelling": "w ɔ t ə r ∅",
+      "source": "sdcc-2",
+      "confidence": "certain"
+    },
+    {
+      "key": "aquaduct",
+      "spelling": "æ k w ə d ʌ k t",
+      "source": "sdcc-3",
+      "confidence": "certain"
+    },
+    {
+      "key": "avatar",
+      "spelling": "æ v ə ∅ t ɑ r ∅",
+      "source": "sdcc-3",
+      "confidence": "certain",
+      "gloss": "Avatar"
+    },
+    {
+      "key": "festival",
+      "spelling": "f ɛ s t ə v ə l",
+      "source": "sdcc-3",
+      "confidence": "certain"
+    },
+    {
+      "key": "games",
+      "spelling": "g e m z",
+      "source": "sdcc-3",
+      "confidence": "certain"
+    },
+    {
+      "key": "korra",
+      "spelling": "k oʊ r ə",
+      "source": "sdcc-3",
+      "confidence": "certain",
+      "gloss": "Korra"
+    },
+    {
+      "key": "shh",
+      "spelling": "ʃ oʊ",
+      "source": "sdcc-3",
+      "confidence": "certain"
+    },
+    {
+      "key": "theater",
+      "spelling": "θ i ə t ə r",
+      "source": "sdcc-3",
+      "confidence": "certain"
+    },
+    {
+      "key": "treats",
+      "spelling": "t r i t s ∅",
+      "source": "sdcc-3",
+      "confidence": "certain"
+    },
+    {
+      "key": "written",
+      "spelling": "r ɪ t ə n ∅",
+      "source": "sdcc-3",
+      "confidence": "certain"
     }
   ]
 }

@@ -83,6 +83,16 @@ window.AVATARIAN_CORPUS = {
       "what": "Avatarian: The Unique Written Language of the Avatar World",
       "where": "San Diego Comic-Con",
       "image": "sdcc-1.png"
+    },
+    "sdcc-2": {
+      "what": "water / earth / fire / air",
+      "where": "san diego comic con 2026",
+      "image": "sdcc-2.png"
+    },
+    "sdcc-3": {
+      "what": "Avatar / Korra / theater / shh / games / treats / festival / aquaduct / written",
+      "where": "san diego comic con 2026",
+      "image": "sdcc-3.png"
     }
   },
   "words": {
@@ -96,6 +106,18 @@ window.AVATARIAN_CORPUS = {
         "ə",
         "m",
         "i"
+      ],
+      "count": 1,
+      "sources": [
+        "toph-letter"
+      ],
+      "confidence": "certain",
+      "source": "toph-letter"
+    },
+    "all": {
+      "ipa": [
+        "ɔ",
+        "l"
       ],
       "count": 1,
       "sources": [
@@ -2677,10 +2699,11 @@ window.AVATARIAN_CORPUS = {
         "ə",
         "r"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "instagram-3.2",
-        "zuko-stamp"
+        "zuko-stamp",
+        "sdcc-2"
       ],
       "confidence": "certain",
       "source": "instagram-3.2"
@@ -2788,18 +2811,6 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "instagram-3.2"
-    },
-    "all": {
-      "ipa": [
-        "ɔ",
-        "l"
-      ],
-      "count": 1,
-      "sources": [
-        "toph-letter"
-      ],
-      "confidence": "certain",
-      "source": "toph-letter"
     },
     "always": {
       "ipa": [
@@ -2913,7 +2924,27 @@ window.AVATARIAN_CORPUS = {
         "instagram-3.3"
       ],
       "confidence": "certain",
-      "source": "instagram-3.3"
+      "source": "instagram-3.3",
+      "alternates": [
+        {
+          "ipa": [
+            "f",
+            "ɛ",
+            "s",
+            "t",
+            "ə",
+            "v",
+            "ə",
+            "l"
+          ],
+          "count": 1,
+          "sources": [
+            "sdcc-3"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true
     },
     "foot": {
       "ipa": [
@@ -3408,9 +3439,10 @@ window.AVATARIAN_CORPUS = {
         "r",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "sdcc-1"
+        "sdcc-1",
+        "sdcc-3"
       ],
       "confidence": "certain",
       "source": "sdcc-1",
@@ -3501,13 +3533,147 @@ window.AVATARIAN_CORPUS = {
         "n",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "sdcc-1"
+        "sdcc-1",
+        "sdcc-3"
       ],
       "confidence": "certain",
       "source": "sdcc-1",
       "gloss": "Written"
+    },
+    "air": {
+      "ipa": [
+        "e",
+        "r"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-2"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-2"
+    },
+    "earth": {
+      "ipa": [
+        "ə",
+        "r",
+        "θ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-2"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-2"
+    },
+    "water": {
+      "ipa": [
+        "w",
+        "ɔ",
+        "t",
+        "ə",
+        "r",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-2"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-2"
+    },
+    "aquaduct": {
+      "ipa": [
+        "æ",
+        "k",
+        "w",
+        "ə",
+        "d",
+        "ʌ",
+        "k",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-3"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-3"
+    },
+    "games": {
+      "ipa": [
+        "g",
+        "e",
+        "m",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-3"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-3"
+    },
+    "korra": {
+      "ipa": [
+        "k",
+        "oʊ",
+        "r",
+        "ə"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-3"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-3",
+      "gloss": "Korra"
+    },
+    "shh": {
+      "ipa": [
+        "ʃ",
+        "oʊ"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-3"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-3"
+    },
+    "theater": {
+      "ipa": [
+        "θ",
+        "i",
+        "ə",
+        "t",
+        "ə",
+        "r"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-3"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-3"
+    },
+    "treats": {
+      "ipa": [
+        "t",
+        "r",
+        "i",
+        "t",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sdcc-3"
+      ],
+      "confidence": "certain",
+      "source": "sdcc-3"
     }
   }
 };
