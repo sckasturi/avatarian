@@ -1661,10 +1661,14 @@ function wireImport() {
 
 /** An image dropped or pasted onto the import panel. */
 async function importDropped(file) {
-  // Name the source first if it hasn't been, so the image can be named
-  // after it rather than after whatever the screenshot was called.
-  if (!$("impName").value.trim() && file.name) {
-    $("impName").value = file.name.replace(/\.[a-z]+$/i, "");
+  // The image is filed UNDER the source, so the source needs a name first —
+  // otherwise it lands under whatever the screenshot was called (a
+  // Paramount+ URL, "image.png"). Ask for the name rather than guessing it
+  // from the file, which is exactly what wrote those junk source names.
+  if (!$("impName").value.trim()) {
+    showProblems(["Name the source first, then drop its reference image."]);
+    $("impName").focus();
+    return;
   }
   const stored = await storeImage(file, $("impName").value);
   if (!stored) return;
@@ -1702,7 +1706,9 @@ async function storeImage(file, sourceName) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      name: (sourceName || "").trim() || file.name || "source",
+      // Never the dropped file's name — a screenshot called
+      // "VS--AvatarAang…ParamountPlus.jpg" would file the source under that.
+      name: (sourceName || "").trim() || "source",
       data,
     }),
   });
