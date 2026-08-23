@@ -8,7 +8,7 @@
   margin: 0 0.3em 0 0;
   font-size: calc(1.5em / 2.05);
 }
-/* A lone {{Avatarian|glyph=…}} is a display letter, not inline text — skip
+/* A lone {{Avatarian|p}} is a display letter, not inline text — skip
  * the /2.05 inline shrink so it stands at full size on its own (consonant
  * ~1.75em, flat vowel ~1.4em). Drop the word's right margin so it centres in
  * a table cell. Scale a whole chart by putting a font-size on the table. */

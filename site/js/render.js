@@ -483,7 +483,7 @@ function renderAvatarian(ipaSeq, container) {
  * render can't show a lone letter; this bypasses pairing entirely.
  *
  * Takes the same sound codes the "Sounds" box does (`p`, `ee`, `ng`), so a
- * caller writes `glyph=ng`, not IPA. Each code that resolves to a glyph is
+ * caller writes `ng`, not IPA. Each code that resolves to a glyph is
  * drawn in its citation (top-slot) form; a vowel shows its flat drawing.
  * More than one code draws them side by side, still nullless.
  */
@@ -495,7 +495,7 @@ function renderGlyph(code, container) {
   soundTextToWords(String(code == null ? "" : code).trim()).forEach((w) => {
     for (const token of w.ipa) {
       // A mark (. , ? !) is drawn on its own path, not paired; route it
-      // there so `glyph=?` gives a real mark, not a mis-sized letter box.
+      // there so a lone `?` gives a real mark, not a mis-sized letter box.
       const sym = parseSymbol(token).sym;
       container.appendChild(
         PUNCTUATION[sym] ? makeMark(sym) : makeGlyph(token, "top", null));

@@ -37,14 +37,12 @@
       var sounds = (span.getAttribute("data-avatarian-sounds") || "").trim();
       var label = (span.getAttribute("data-avatarian-label") || "").trim();
 
-      // A single bare glyph, no pairing and no null, for a chart or key.
-      // Two ways to ask for it: explicit {{Avatarian|glyph=ng}}, or a
-      // positional arg that is ONE token — no spaces, no word break — like
-      // {{Avatarian|r}}. Anything with a space (a real word, or a sound plus
-      // its null "r 0") still draws as blocks. Handled first so a lone glyph
-      // never falls through to block rendering.
-      var glyph = (span.getAttribute("data-avatarian-glyph") || "").trim();
-      var lone = glyph || (sounds && !/[\s/]/.test(sounds) ? sounds : "");
+      // A single bare glyph, no pairing and no null, for a chart or key:
+      // a positional arg that is ONE token — no spaces, no word break —
+      // like {{Avatarian|r}}. Anything with a space (a real word, or a
+      // sound plus its null "r 0") still draws as blocks. Handled first so
+      // a lone glyph never falls through to block rendering.
+      var lone = sounds && !/[\s/]/.test(sounds) ? sounds : "";
       if (lone) {
         renderGlyph(lone, span);
         var gipa = cleanIpa(ipaOf(soundTextToWords(lone)));

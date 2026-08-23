@@ -370,7 +370,7 @@ const READABLE_ALIASES = {
 
 const SOUND_ALIASES = {
   "0": "∅", "_": "∅", "-": "∅",   // the empty-slot filler
-  "0c": "∅c",                     // the consonant-height null, for glyph=0c
+  "0c": "∅c",                     // the consonant-height null, written 0c
   "eɪ": "e", "ej": "e",           // key chart labels this vowel e/eɪ
   "ɝ": "ə", "ɜr": "ə", "ɜ": "ə",  // r-coloured spellings, and ɜ itself
   "ɑː": "ɑ", "iː": "i", "uː": "u",
@@ -767,8 +767,7 @@ if (typeof module !== "undefined") {
       var sounds = (span.getAttribute("data-avatarian-sounds") || "").trim();
       var label = (span.getAttribute("data-avatarian-label") || "").trim();
 
-      var glyph = (span.getAttribute("data-avatarian-glyph") || "").trim();
-      var lone = glyph || (sounds && !/[\s/]/.test(sounds) ? sounds : "");
+      var lone = sounds && !/[\s/]/.test(sounds) ? sounds : "";
       if (lone) {
         renderGlyph(lone, span);
         var gipa = cleanIpa(ipaOf(soundTextToWords(lone)));
