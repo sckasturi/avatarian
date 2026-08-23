@@ -73,7 +73,7 @@ const EXCEPTIONS = {
   // spelling rather than a reading of it, and which wins above this
   // table. See CORPUS.md.
   "world": "w ə r l d", "water": "w ɔ t ə r",
-  "earth": "ə r θ", "air": "ɛ r", "avatar": "æ v ə t ɑ r",
+  "earth": "ə r θ", "air": "e r", "avatar": "æ v ə t ɑ r",
   "sokka": "s ɑ k ə",
   "korra": "k ɔ r ə", "iroh": "aɪ r oʊ", "azula": "ə z u l ə",
   // `katara`, `bending` and `metalbending` were here and are ATTESTED,
@@ -97,10 +97,10 @@ const EXCEPTIONS = {
   // Don't "fix" firebending to metalbending — the family is meant to disagree
   // with that one word. (Pinning bend-ing would need explicit block structure
   // this phoneme-only table can't carry anyway.)
-  "airbending": "ɛ r b ɛ n d ɪ ŋ", "waterbending": "w ɔ t ə r b ɛ n d ɪ ŋ",
+  "airbending": "e r b ɛ n d ɪ ŋ", "waterbending": "w ɔ t ə r b ɛ n d ɪ ŋ",
   "earthbending": "ə r θ b ɛ n d ɪ ŋ", "firebending": "f aɪ ə r b ɛ n d ɪ ŋ",
   "bloodbending": "b l ʌ d b ɛ n d ɪ ŋ",
-  "airbender": "ɛ r b ɛ n d ə r", "waterbender": "w ɔ t ə r b ɛ n d ə r",
+  "airbender": "e r b ɛ n d ə r", "waterbender": "w ɔ t ə r b ɛ n d ə r",
   "earthbender": "ə r θ b ɛ n d ə r", "firebender": "f aɪ ə r b ɛ n d ə r",
   "bender": "b ɛ n d ə r", "benders": "b ɛ n d ə r z",
   "kyoshi": "k i oʊ ʃ i", "omashu": "oʊ m ɑ ʃ u",
