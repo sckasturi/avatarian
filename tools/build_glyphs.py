@@ -350,7 +350,7 @@ MARKS_FULL = {
     "period": mark(1, dot(18, 114)),
     "comma": mark(1, path("M 18 114 L 18 146")),
     "exclamation": mark(1, dot(18, 82) + path("M 18 18 L 18 58") + path("M 18 146 L 18 106")),
-    "question": mark(2, path("M 34 74 A 10 10 0 1 0 34 90")),
+    "question": mark(2, path("M 34 66 A 16 16 0 0 0 34 98")),
 }
 
 # The character you type -> the mark's name, i.e. its manifest key -> stem.

@@ -322,7 +322,7 @@ window.AVATARIAN_GLYPHS = {
     "name": "question",
     "status": "drawn",
     "type": "mark_full",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 52 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 34 74 A 10 10 0 1 0 34 90\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 52 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 34 66 A 16 16 0 0 0 34 98\"/></svg>"
   },
   "!": {
     "name": "exclamation",
