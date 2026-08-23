@@ -87,6 +87,16 @@ const EXCEPTIONS = {
   // -bending ones all reduce the linking vowel to schwa, which is the
   // reading canon shows for `metalbending` — the one member of the
   // family anybody has seen written, and now the corpus's to state.
+  //
+  // These are phoneme lists; the syllabifier divides them, and it splits the
+  // suffix BEN-DING (`n ∅ · d ɪ ŋ`), matching attested standalone `bending`
+  // and every other -ing word (looking, baking, missing). Attested
+  // `metalbending` is the lone outlier — it splits BEND-ING (`n d · ɪ ŋ`),
+  // keeping the stem whole. That divergence is DELIBERATELY not matched here
+  // (decided 2026-08-22): ben-ding is the majority, metalbending the anomaly.
+  // Don't "fix" firebending to metalbending — the family is meant to disagree
+  // with that one word. (Pinning bend-ing would need explicit block structure
+  // this phoneme-only table can't carry anyway.)
   "airbending": "ɛ r b ɛ n d ɪ ŋ", "waterbending": "w ɔ t ə r b ɛ n d ɪ ŋ",
   "earthbending": "ə r θ b ɛ n d ɪ ŋ", "firebending": "f aɪ ə r b ɛ n d ɪ ŋ",
   "bloodbending": "b l ʌ d b ɛ n d ɪ ŋ",
