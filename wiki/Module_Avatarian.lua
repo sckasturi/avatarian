@@ -329,9 +329,8 @@ function p._main(sounds, label)
   -- .av-copy is a transparent, selectable text layer that the CSS sits BEHIND the
   -- glyphs (which it lifts above and makes click-through) — so dragging over a
   -- word highlights it like normal text and copies clean text.
-  -- A token run's IPA, nulls dropped, in slashes — the copy text for a word with
-  -- no English caption, e.g. /k ə t ɑ r ə/. (A single glyph keeps its own typed
-  -- code in slashes instead, e.g. /ng/ — see the solo branch below.)
+  -- A token run's IPA, nulls dropped, in slashes — the copy text when a word (or
+  -- a single glyph) has no English caption, e.g. /k ə t ɑ r ə/ or /ŋ/.
   local function ipaText(ipa)
     local syms = {}
     for _, tok in ipairs(ipa) do
@@ -352,7 +351,7 @@ function p._main(sounds, label)
     local sym = parseSymbol(ipa)
     local inner = isMark(sym) and markSpan(sym) or glyphSpan(ipa, "top", nil)
     return '<span class="av-word av-solo"' .. title .. '>'
-      .. overlay(caption ~= "" and caption or ("/" .. sounds .. "/")) .. inner .. '</span>'
+      .. overlay(caption ~= "" and caption or ipaText({ipa})) .. inner .. '</span>'
   end
 
   if #words == 0 then return "" end

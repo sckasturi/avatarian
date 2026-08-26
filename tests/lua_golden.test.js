@@ -178,7 +178,7 @@ test("Lua p._main handles solo, multi-word and captions", { skip: !haveLua && "l
   const out = runLua(driver).split("\n");
   assert.match(out[0], /^<span class="av-word av-solo"><span class="av-copy">\/r\/<\/span><span class="av-glyph g-r av-consonant">/);
   assert.match(out[1], /g-ng av-consonant/);                       // ng -> ŋ glyph
-  assert.match(out[1], /<span class="av-copy">\/ng\/<\/span>/);     // solo, no caption -> typed code in slashes
+  assert.match(out[1], /<span class="av-copy">\/ŋ\/<\/span>/);      // solo, no caption -> IPA in slashes
   assert.match(out[2], /title="Katara"/);
   assert.match(out[2], /<span class="av-copy">Katara<\/span>/);     // caption is the copyable text
   assert.match(out[2], /av-word-part/);
