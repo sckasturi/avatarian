@@ -73,8 +73,8 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
  * (pointer-events:none), so a drag lands in .av-copy: the word highlights like
  * normal text (the selection paints behind the glyphs) and copies clean text
  * (the English caption, or the sounds) instead of nothing. */
-.av-copy{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:transparent;white-space:nowrap;overflow:hidden;font-size:1.6em;-webkit-user-select:text;user-select:text}
-.av-block,.av-slot,.av-glyph,.av-mark{position:relative;z-index:1;pointer-events:none;-webkit-user-select:none;user-select:none}
+.av-copy{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:transparent;white-space:nowrap;overflow:hidden;font-size:1.6em;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text}
+.av-block,.av-slot,.av-glyph,.av-mark{position:relative;z-index:1;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
 /* ===== glyph shapes ===== */
 """
