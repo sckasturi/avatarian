@@ -547,8 +547,7 @@ function makeMark(sym) {
   span.dataset.glyph = mark.name;
   // The mark now ships through the glyph manifest like every letter, so
   // it can be redrawn in the designer. Prefer that; the inline copy below
-  // is the fallback for a page with no manifest (the wiki gadget) or a
-  // build that hasn't run.
+  // is the fallback for a page with no manifest, or a build that hasn't run.
   const fromManifest = GLYPHS[sym];
   const svg = (fromManifest && fromManifest.svg)
     ? fromManifest.svg

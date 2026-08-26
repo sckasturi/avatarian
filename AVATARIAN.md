@@ -305,8 +305,8 @@ Constants (`tools/glyphspec.py` / `tools/build_glyphs.py`, kept in step):
 Glyphs are **inlined into `site/js/manifest.js`** (~72 KB for the whole
 set) rather than loaded as image files: `fetch()` is CORS-blocked on
 `file://`, so double-clicking `index.html` would otherwise fail; inlining
-also lets the wiki gadget run with no image hosting, and lets glyphs
-inherit text colour via `currentColor`.
+also lets the wiki render with no image hosting (the same SVGs are baked
+into its CSS masks), and lets glyphs inherit text colour via `currentColor`.
 
 ### Two implementations
 
@@ -321,11 +321,13 @@ touching either file — they must not drift.
 
 ### Sizing lives in two stylesheets
 
-The same `render.js` drives the standalone site and the wiki gadget, so
-sizing is duplicated and must match: `site/css/blocks.css` (px: 52 / 41.6)
-and `wiki/MediaWiki_Common.css.txt` (`em`: 1.25em / 1em, so Avatarian
-scales with surrounding wiki text). Both encode the same 5:4 ratio, the
-same margin-collapse, and the same "show the flat vowel SVG" rule.
+The site and the wiki draw the same blocks two ways, so sizing is duplicated
+and must match: `site/css/blocks.css` (px: 52 / 41.6, for `render.js`'s inline
+SVGs) and `wiki/Avatarian-css-only.css` (`em`: 1.25em / 1em, so Avatarian
+scales with surrounding wiki text). The wiki one is **generated** — the LAYOUT
+block in `tools/build_css_only.py` mirrors `blocks.css`. Both encode the same
+5:4 ratio, the same margin-collapse, and the same "show the flat vowel SVG"
+rule; if the block geometry changes, update both.
 
 ---
 

@@ -35,7 +35,7 @@ through the UI that `python3 tools/build_corpus.py` would then reject.
 deployed site's render.js, blocks.css and the rest straight off disk, so
 the preview beside your transcription is drawn by the product's own code.
 It also serves the 1.6 MB pronunciation dictionary, which the workbench
-loads and the wiki gadget deliberately does not — reverse-decode needs
+loads and the wiki renderer deliberately does not — reverse-decode needs
 the whole dictionary to search, and this is a tool on your own laptop.
 """
 

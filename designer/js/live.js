@@ -10,7 +10,7 @@
  *
  * So this doesn't reimplement the renderer. It loads the site's own
  * js/render.js and css/blocks.css over /site/ and calls renderAvatarian
- * exactly as index.html and the wiki gadget do. The only trick is that
+ * exactly as index.html does. The only trick is that
  * the glyph being edited is swapped into the manifest first:
  *
  *     window.AVATARIAN_GLYPHS[key] = { ...shipped, svg, flat, rows, flips }

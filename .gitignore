@@ -30,9 +30,3 @@ HANDOFF.md
 TODO.md
 CONTEXT.md
 CORPUS.md
-
-# CSS-only mobile-render exploration (see CSS_MOBILE.md). Internal WIP —
-# the generator, its note, and the generated stylesheet. Not shipped.
-CSS_MOBILE.md
-tools/build_css_only.py
-Avatarian-css-only.css

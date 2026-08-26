@@ -31,7 +31,7 @@ site/            <- deploy this folder to GitHub Pages / Cloudflare Pages
   index.html       the whole app: English↔Avatarian, glyph reference
   js/g2p.js        English -> IPA (corpus, then dictionary, then rules)
   js/sounds.js     the ASCII sounds syntax, in and out (site + designer)
-  js/render.js     IPA -> Avatarian glyphs (shared by site AND the wiki)
+  js/render.js     IPA -> Avatarian glyphs (the site; the wiki uses a Lua port)
   js/manifest.js   generated — every glyph's SVG inlined (the whole "font")
   js/corpus.js     generated — the attested corpus, top of the lookup chain
   js/recognise.js  draw a glyph -> ranked matches (samples manifest.js)
@@ -78,7 +78,8 @@ tools/
   designer_server.py    serves designer/ and writes designs/ (port 8792)
   corpus_server.py      serves workbench/ and writes corpus/ (port 8793)
   build_corpus.py       validates corpus/attested.json -> js/corpus.js
-  build_wiki_bundle.py  bundles the JS into one self-hosted wiki page
+  build_lua_module.py   the wiki renderer: Module:Avatarian (Lua port of render.js)
+  build_css_only.py     the wiki glyph styles: the av-* CSS-only stylesheet
   build_corpus_wikitable.py  the corpus as a MediaWiki table
   run_tests.py          the whole suite, one command
 
@@ -92,13 +93,12 @@ tests/           <- no dependencies; see tests/README.md
   test_*.py        the corpus validator and its save path
   recognise.html   draw-to-recognise accuracy (browser only)
 
-wiki/            <- paste these into the Fandom wiki, once. SELF-HOSTED:
-                    the whole renderer lives on the wiki, no outside server.
+wiki/            <- paste these into the Fandom wiki, once. NO JAVASCRIPT:
+                    a Lua module renders the glyphs server-side, so it works
+                    on the mobile skin (which runs no site JS). See below.
   Template_Avatarian.wiki       wikitext for {{Avatarian|k uh t ah r uh|Katara}}
-  MediaWiki_Common.js.txt       tiny loader: pulls the bundle from THIS wiki
-  MediaWiki_Avatarian.js.txt    generated bundle (~40 KB, all the JS in one file)
-  gadget.js                     source for the render step (bundled in)
-  MediaWiki_Common.css.txt      sizing/positioning for the glyphs
+  Module_Avatarian.lua          generated: Module:Avatarian, the Lua renderer
+  Avatarian-css-only.css        generated: the av-* glyph shapes + block layout
   TESTING.md                    how to test on a personal account first
   Corpus_table.wiki             generated: the corpus as a {{Avatarian}} table
 
@@ -150,45 +150,52 @@ no build step, it's plain HTML/JS.
 **Cloudflare Pages:** connect the repo, set build command to *(none)* and
 output directory to `site`. Done.
 
-## Hooking up the wiki
+## Rendering on the wiki
 
-**Self-hosted — nothing is fetched from an outside server.** The whole
-renderer is bundled into one page the wiki serves itself; `Common.js` is a
-tiny loader that pulls it from **this** wiki, and only on pages that
-actually use `{{Avatarian}}`. (You still need `site/` as the *source* the
-bundle is built from, but it does not have to be deployed anywhere.)
+**No JavaScript.** Fandom's mobile skin runs no site JS, so an earlier
+client-side gadget drew glyphs on desktop but left phone readers with plain
+English. The renderer is now server-side: a **Scribunto (Lua) module**,
+`Module:Avatarian`, turns a sounds string into the glyph markup as the page
+is built, and a **CSS-only stylesheet** draws each glyph as a `-webkit-mask`
+filled with `currentColor`. Every skin serves both, so it works on mobile.
 
-1. Build the bundle: `python3 tools/build_wiki_bundle.py` — writes
-   `wiki/MediaWiki_Avatarian.js.txt` (~40 KB: inline-SVG glyphs + the code
-   that draws them).
-2. Paste `wiki/MediaWiki_Avatarian.js.txt` into **MediaWiki:Avatarian.js**
-   on Avatar Wiki (needs wiki-admin/JS-editor rights).
-3. Paste `wiki/MediaWiki_Common.js.txt` into **MediaWiki:Common.js**.
-4. Paste `wiki/MediaWiki_Common.css.txt` into **MediaWiki:Common.css**.
-5. Create **Template:Avatarian** using `wiki/Template_Avatarian.wiki`.
-6. Use it in any article: `{{Avatarian|k uh t ah r uh|Katara}}` — spell the
-   word in **sounds** (readable codes or IPA) with an
-   English **label**. It draws exactly that spelling; hover shows
-   *Katara /k ə t ɑ r ə/*. To get the sounds for a word, type it into the
-   translator and copy what appears in its "Sounds" box.
+Both wiki artifacts are **generated from `site/`** so they can't drift from
+the app: the Lua is a port of `render.js` + `sounds.js` (data tables read
+straight from `manifest.js`), and the CSS bakes the same glyph SVGs into
+masks. A golden-file test (`tests/lua_golden.test.js`) renders every corpus
+word through both `render.js` and the Lua and asserts they're byte-identical.
 
-Whenever a bundled module (`manifest.js`, `sounds.js`, `render.js`, or `wiki/gadget.js`) changes, re-run
-`build_wiki_bundle.py` and paste the new bundle into **MediaWiki:Avatarian.js**
-again.
+**Deploy — paste four things into the wiki (needs admin/CSS+JS-editor rights):**
 
-No font upload, no Lua/Scribunto module, no external server, no image
-hosting — the template just tags the text, and the bundle renders the real
-glyphs client-side using the same render code as the standalone site. If a
-reader has JavaScript off, they see the plain label instead of nothing.
-Because the word is spelled in sounds, the corpus, the English converter
-and the 1.6 MB pronunciation dictionary are all left out; the sounds
-parameter is how you spell a word exactly without it.
+1. Generate:
+   ```bash
+   python3 tools/build_lua_module.py    # -> wiki/Module_Avatarian.lua
+   python3 tools/build_css_only.py      # -> wiki/Avatarian-css-only.css
+   ```
+2. Paste `wiki/Module_Avatarian.lua` into **Module:Avatarian**.
+3. Paste `wiki/Avatarian-css-only.css` into **BOTH** `MediaWiki:Common.css`
+   (desktop) **and** `MediaWiki:Fandommobile.css` (mobile — a separate page;
+   Common.css is desktop-only). The classes are `av-*`-prefixed.
+4. Create **Template:Avatarian** from `wiki/Template_Avatarian.wiki` — its
+   body is `{{#invoke:Avatarian|render|{{{1|}}}|{{{2|}}}}}`.
+
+Use it in any article: `{{Avatarian|k uh t ah r uh|Katara}}` — spell the word
+in **sounds** (readable codes or IPA) with an English **label** for hover. To
+get the sounds, type the word into the translator and copy its "Sounds" box.
+
+Whenever a glyph, the pairing/orientation logic (`render.js`), or the sounds
+syntax (`sounds.js`) changes, re-run both generators and re-paste the module
+and the CSS. `Module:Avatarian` is Lua 5.1 (Fandom's Scribunto) — the
+generator targets it; don't hand-edit the output.
 
 ## Why this isn't a literal font
 
 Canon reference art shows sounds composing into compact blocks, closer to
 Hangul than to an alphabet. No font format does that kind of dynamic
-composition well, so composition happens in the DOM instead.
+composition well, so composition happens in code that emits positioned
+markup — `render.js` in the DOM on the site, and the Lua port on the wiki —
+rather than in glyph outlines. (See "how easily could this be a font" in the
+project notes for the two paths a real typeface would take.)
 
 ### Blocks are pairs, not syllables
 
@@ -289,9 +296,9 @@ height", describes bands within a hand-lettered block rather than a scale
 factor; rendering it literally left vowels unreadable. Every glyph is drawn
 on one 100×100 grid, so shrinking a mark shrinks the whole thing instead of
 just its band — keep the ratio and the base size legible
-together. Sizing lives in the CSS — `site/css/style.css` and
-`wiki/MediaWiki_Common.css.txt`, which have to stay in step because both
-drive the same `render.js`.
+together. Sizing lives in the CSS — `site/css/blocks.css` (the site) and the
+generated `wiki/Avatarian-css-only.css` (the wiki), which have to stay in step
+because they draw the same blocks.
 
 **What still differs from canon:** in the reference, adjacent glyphs are
 hand-lettered so their strokes interlock and share edges, and blocks are
@@ -440,8 +447,9 @@ tools/check_geom.py` proves the two still agree.
 
 Glyphs are inlined into `js/manifest.js` (~16 KB for the whole set) rather
 than loaded as image files. That is what lets the site work over `file://`,
-lets the wiki gadget run with no image hosting at all, and lets glyphs
-inherit the surrounding text colour and scale crisply at any size.
+lets the wiki render with no image hosting at all (the same SVGs are baked
+into the CSS masks), and lets glyphs inherit the surrounding text colour and
+scale crisply at any size.
 
 ### Comparing a glyph against the key
 
@@ -662,13 +670,13 @@ manifest is: `fetch()` is CORS-blocked on `file://`. The index is built
 lazily on the first word converted — ~60 ms once, then ~0.0002 ms a
 lookup — so a visitor who never converts anything never pays for it.
 
-**The wiki gadget loads none of the lookup chain.** The `{{Avatarian}}`
-template takes the word already spelled in **sounds**, so the wiki never
-turns English into IPA at all — no dictionary, no corpus, no `EXCEPTIONS`,
-no rules. That is why its bundle is ~40 KB: only the glyphs and the code
-that draws them (see "Hooking up the wiki"). You get the sounds from the
-translator — type the word, copy what appears in its Sounds box — and
-paste them into the template.
+**The wiki loads none of the lookup chain.** The `{{Avatarian}}` template
+takes the word already spelled in **sounds**, so the wiki never turns
+English into IPA at all — no dictionary, no corpus, no `EXCEPTIONS`, no
+rules. `Module:Avatarian` only pairs the sounds into blocks and emits the
+markup (see "Rendering on the wiki"). You get the sounds from the translator
+— type the word, copy what appears in its Sounds box — and paste them into
+the template.
 
 `EXCEPTIONS`, the corpus and the dictionary all still matter, but on the
 **translator**, which is where English becomes sounds in the first place.

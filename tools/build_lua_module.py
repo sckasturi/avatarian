@@ -1,0 +1,423 @@
+#!/usr/bin/env python3
+"""
+Generate the Avatarian Scribunto (Lua) module from the glyph manifest and the
+sounds syntax. This is how {{Avatarian|sounds}} renders on the wiki: Fandom's
+mobile skin runs no site JS, so a client-side gadget shows only fallback English
+on phones (see DEVELOPMENT.md, "Rendering on the wiki"). This module renders the
+glyphs into the page HTML server-side, which every skin serves.
+
+It emits the SAME `av-*` markup that tools/build_css_only.py styles, so
+the two paths render identically. The string->markup logic (pairing, nulls,
+orientation, clusters, marks) is ported from site/js/render.js and the code
+lookups from site/js/sounds.js; the DATA tables below are read straight from
+those files so they can't drift. Guard the port with tests/lua_golden.test.js,
+which renders every corpus word through both the JS and this Lua and diffs.
+
+Run:  python3 tools/build_lua_module.py [out.lua]   (default: wiki/Module_Avatarian.lua)
+"""
+import json, re, sys, pathlib
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+MANIFEST = ROOT / "site" / "js" / "manifest.js"
+SOUNDS = ROOT / "site" / "js" / "sounds.js"
+OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "wiki" / "Module_Avatarian.lua"
+
+
+def brace_object(src, after):
+    """The first {...} literal following the marker `after`, as JSON."""
+    i = src.index("{", src.index(after))
+    depth, j = 0, i
+    while j < len(src):
+        if src[j] == "{":
+            depth += 1
+        elif src[j] == "}":
+            depth -= 1
+            if depth == 0:
+                break
+        j += 1
+    return json.loads(src[i:j + 1])
+
+
+def js_object(src, name):
+    """A `const NAME = { ... };` object literal from sounds.js, as a dict.
+
+    These are plain string:string maps with // comments and trailing commas —
+    not JSON. Strip the comments, then read the "key": "val" pairs in order.
+    """
+    i = src.index("{", src.index("const " + name))
+    depth, j = 0, i
+    while j < len(src):
+        if src[j] == "{":
+            depth += 1
+        elif src[j] == "}":
+            depth -= 1
+            if depth == 0:
+                break
+        j += 1
+    body = src[i + 1:j]
+    body = re.sub(r"//[^\n]*", "", body)
+    pairs = re.findall(r'"((?:[^"\\]|\\.)*)"\s*:\s*"((?:[^"\\]|\\.)*)"', body)
+    unescape = lambda s: s.encode().decode("unicode_escape").encode("latin1").decode("utf8")
+    return [(unescape(k), unescape(v)) for k, v in pairs]
+
+
+def lua_str(s):
+    return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def lua_map(name, pairs):
+    body = ", ".join(f"[{lua_str(k)}]={lua_str(v)}" for k, v in pairs)
+    return f"local {name} = {{{body}}}"
+
+
+def main():
+    man = MANIFEST.read_text(encoding="utf-8")
+    snd = SOUNDS.read_text(encoding="utf-8")
+    glyphs = brace_object(man, "AVATARIAN_GLYPHS")
+
+    # --- code -> IPA lookups, straight from sounds.js -------------------------
+    readable = js_object(snd, "READABLE")
+    readable_aliases = js_object(snd, "READABLE_ALIASES")
+    sound_aliases = js_object(snd, "SOUND_ALIASES")
+
+    # --- glyph metadata, only the fields the renderer reads -------------------
+    glyph_rows, wide_marks = [], []
+    for key, g in glyphs.items():
+        name, typ = g["name"], g.get("type")
+        fields = [f"name={lua_str(name)}", f"type={lua_str(typ)}"]
+        if g.get("rows") == 4:
+            fields.append("rows=4")
+        if g.get("flips"):
+            fields.append("flips=true")
+        if (g.get("variants") or {}).get("cluster"):
+            fields.append("cluster=true")
+        glyph_rows.append(f"  [{lua_str(key)}]={{{', '.join(fields)}}},")
+        # A mark whose box is wider than the 1-column 36 gets the wide class so
+        # its mask keeps proportion (only `?`, at 52). Matches makeMark's
+        # per-mark aspect-ratio in render.js, coarsened to a class.
+        if typ and typ.startswith("mark"):
+            m = re.search(r'viewBox="0 0 ([\d.]+)', g.get("svg", ""))
+            if m and float(m.group(1)) > 36:
+                wide_marks.append(key)
+
+    data = "\n".join([
+        lua_map("READABLE", readable),
+        lua_map("READABLE_ALIASES", readable_aliases),
+        lua_map("SOUND_ALIASES", sound_aliases),
+        "local MARK_WIDE = {" + ", ".join(f"[{lua_str(k)}]=true" for k in wide_marks) + "}",
+        "local GLYPH = {",
+        "\n".join(glyph_rows),
+        "}",
+    ])
+
+    OUT.write_text(LOGIC.replace("--[[DATA]]--", data), encoding="utf-8")
+    print(f"Wrote {OUT} — {len(glyph_rows)} glyphs, {round(OUT.stat().st_size / 1024, 1)} KB")
+
+
+# The renderer. Everything below the DATA marker is hand-written Lua ported from
+# site/js/render.js (pairing / nulls / orientation / clusters / marks) and
+# sounds.js (normaliseSound). It emits the av-* markup that build_css_only.py
+# styles. Kept honest by tests/lua_golden.test.js.
+LOGIC = r'''-- ===== Avatarian — Scribunto renderer (server-side, works on mobile) =========
+-- GENERATED by tools/build_lua_module.py from site/js/manifest.js and
+-- site/js/sounds.js. Do not hand-edit — regenerate. Emits the same av-* markup
+-- that wiki/Avatarian-css-only.css styles (see DEVELOPMENT.md). Ported from
+-- render.js; guarded by tests/lua_golden.test.js (JS vs Lua over the corpus).
+local p = {}
+
+--[[DATA]]--
+
+-- These are decisions of the SCRIPT, tied to specific sounds, so they live in
+-- the logic beside the code that reads them (render.js keeps them the same way).
+local NULL_V, NULL_C = "∅", "∅c"
+local DRAWN_BOTTOM_UP    = { ["u"]=true, ["ɔ"]=true }
+local TURNS_IN_CLUSTER   = { ["r"]=true, ["j"]=true, ["w"]=true }
+local TURNS_ABOVE_CLUSTER = { ["s"]=true }
+local UNREADABLE = "*"
+local HEIGHT = { consonant="av-consonant", vowel="av-vowel",
+                 null="av-null-v", null_consonant="av-null-c" }
+
+local function isNull(s) return s == NULL_V or s == NULL_C end
+
+-- Split trailing markers off a token: a $/% orientation override and/or a `_c`
+-- cluster-form request. All three are ASCII, so byte-indexing a UTF-8 token is
+-- safe here (a multibyte sound's last byte never equals $ % or the `_c` pair).
+local function parseSymbol(token)
+  local rest, forced, variant = token, nil, nil
+  local last = rest:sub(-1)
+  if last == "$" then forced, rest = "top", rest:sub(1, -2)
+  elseif last == "%" then forced, rest = "bottom", rest:sub(1, -2) end
+  if rest:sub(-2) == "_c" then variant, rest = "cluster", rest:sub(1, -3) end
+  return rest, forced, variant
+end
+
+-- One typed token -> the manifest symbol, override suffix preserved. IPA (and
+-- its aliases) first, then the readable codes case-insensitively (string.lower
+-- only touches ASCII, which is all the code keys are), then the token as-is.
+local function normaliseSound(token)
+  local rest, over = token, ""
+  local last = rest:sub(-1)
+  if last == "$" or last == "%" then over, rest = last, rest:sub(1, -2) end
+  local cluster = ""
+  if rest:sub(-2) == "_c" then cluster, rest = "_c", rest:sub(1, -3) end
+  local suffix = cluster .. over
+  if SOUND_ALIASES[rest] then return SOUND_ALIASES[rest] .. suffix end
+  local lower = rest:lower()
+  if READABLE[lower] then return READABLE[lower] .. suffix end
+  if READABLE_ALIASES[lower] then return READABLE_ALIASES[lower] .. suffix end
+  return rest .. suffix
+end
+
+local function isVowel(token)
+  if token == nil then return false end
+  local e = GLYPH[(parseSymbol(token))]
+  return e ~= nil and e.type == "vowel"
+end
+
+-- The null written beside `partner`: a vowel takes the tall (consonant-height)
+-- null, a consonant the short one. A null with no vowel partner stays short.
+local function nullFor(partner)
+  return isVowel(partner) and NULL_C or NULL_V
+end
+
+-- True when the block partner is another consonant — i.e. a C-C block.
+local function isClusterPartner(partner)
+  if partner == nil or isVowel(partner) then return false end
+  return not isNull((parseSymbol(partner)))
+end
+
+-- Which way round a glyph goes, before any explicit $/% override.
+local function orientationOf(sym, entry, slot, partner)
+  if DRAWN_BOTTOM_UP[sym] then return slot == "bottom" and "top" or "bottom" end
+  if entry.flips then return slot end
+  local clustered = isClusterPartner(partner)
+  if clustered and slot == "bottom" and TURNS_IN_CLUSTER[sym] then return "bottom" end
+  if clustered and slot == "top" and TURNS_ABOVE_CLUSTER[sym] then return "bottom" end
+  return "top"
+end
+
+-- Pair a flat sequence two-to-a-block and resolve every null (a typed null, or
+-- the empty final slot) to its tall/short form. The null is part of the
+-- spelling, so an empty bottom slot is written, never dropped.
+local function resolveBlocks(seq)
+  local blocks = {}
+  local i = 1
+  while i <= #seq do
+    local topTok, botTok = seq[i], seq[i + 1]
+    local top = isNull(topTok) and nullFor(botTok) or topTok
+    local bottom
+    if botTok == nil or isNull(botTok) then bottom = nullFor(top) else bottom = botTok end
+    blocks[#blocks + 1] = { top = top, bottom = bottom }
+    i = i + 2
+  end
+  return blocks
+end
+
+local function esc(s)
+  return (s:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub('"', "&quot;"))
+end
+
+-- One glyph span: stem class (g-name, plus _c for a cluster form), height class,
+-- av-4row, av-flipped. The cluster/flip choice mirrors makeGlyph in render.js.
+-- SVG-level tweaks it makes (/s/'s inset vertex, /z/'s dropped dots) have no
+-- CSS-only class and are intentionally not reproduced — the mask path has none.
+local function glyphSpan(token, slot, partner)
+  local sym, forced, variant = parseSymbol(token)
+  if sym == UNREADABLE then
+    return '<span class="av-glyph av-consonant g-unreadable"></span>'
+  end
+  local e = GLYPH[sym]
+  if not e then
+    return '<span class="av-glyph av-missing" title="' .. esc(sym) .. '"></span>'
+  end
+
+  local wantCluster = variant == "cluster"
+  local useCluster = false
+  if e.cluster then
+    if wantCluster then
+      useCluster = true
+    elseif isClusterPartner(partner) then
+      local pSym = parseSymbol(partner)
+      local rlPair = (sym == "r" or sym == "l") and (pSym == "r" or pSym == "l") and pSym ~= sym
+      if (not rlPair) or slot == "bottom" then useCluster = true end
+    end
+  end
+
+  local flipped
+  if useCluster then
+    flipped = wantCluster and (forced == "top") or (not wantCluster and slot == "top")
+  else
+    local orientation = forced or orientationOf(sym, e, slot, partner)
+    if forced and DRAWN_BOTTOM_UP[sym] then
+      orientation = forced == "top" and "bottom" or "top"
+    end
+    flipped = orientation == "bottom"
+  end
+
+  -- Stem class: the glyph name, plus a cluster form. /s/ and /z/ redraw in a
+  -- C-C block (clusterForm in render.js): /s/ insets its vertex when the point
+  -- faces the one-row overlap, /z/ drops the dot(s) that overlap rides up.
+  local stem = e.name .. (useCluster and "_c" or "")
+  if not useCluster and isClusterPartner(partner) then
+    if sym == "s" then
+      local pointAtOverlap
+      if slot == "top" then pointAtOverlap = flipped else pointAtOverlap = not flipped end
+      if pointAtOverlap then stem = "s_inset" end
+    elseif sym == "z" then
+      local pSym = parseSymbol(partner)
+      if pSym == "r" then stem = "z_left"      -- right dot dropped, left kept
+      elseif pSym == "l" then stem = "z_right"  -- left dot dropped, right kept
+      else stem = "z_none" end
+    end
+  end
+  local cls = "av-glyph g-" .. stem .. " " .. HEIGHT[e.type]
+  if e.rows == 4 then cls = cls .. " av-4row" end
+  if flipped then cls = cls .. " av-flipped" end
+  return '<span class="' .. cls .. '"></span>'
+end
+
+-- A punctuation mark: nine rows tall, one column (two for `?`), unpaired.
+local function markSpan(sym)
+  local m = GLYPH[sym]
+  local cls = "av-mark g-" .. m.name
+  if MARK_WIDE[sym] then cls = cls .. " av-wide" end
+  return '<span class="' .. cls .. '"></span>'
+end
+
+local function isMark(sym)
+  local e = GLYPH[sym]
+  return e ~= nil and e.type ~= nil and e.type:sub(1, 4) == "mark"
+end
+
+-- True when a slot reads as a consonant for the C-C overlap test: a real
+-- consonant, or the unreadable `*` (drawn consonant-height, like render.js).
+local function slotIsConsonant(token)
+  local sym = parseSymbol(token)
+  if sym == UNREADABLE then return true end
+  local e = GLYPH[sym]
+  return e ~= nil and e.type == "consonant"
+end
+
+-- Render one word's IPA sequence into blocks. Punctuation is NOT paired: it
+-- breaks the run so the sounds either side pair among themselves.
+local function renderWord(seq)
+  local out, run = {}, {}
+  local function flush()
+    for _, blk in ipairs(resolveBlocks(run)) do
+      local cc = slotIsConsonant(blk.top) and slotIsConsonant(blk.bottom)
+      out[#out + 1] = '<span class="av-block' .. (cc and " av-cc" or "") .. '">'
+        .. '<span class="av-slot av-slot-top">' .. glyphSpan(blk.top, "top", blk.bottom) .. '</span>'
+        .. '<span class="av-slot av-slot-bottom">' .. glyphSpan(blk.bottom, "bottom", blk.top) .. '</span>'
+        .. '</span>'
+    end
+    run = {}
+  end
+  for _, tok in ipairs(seq) do
+    if isMark((parseSymbol(tok))) then
+      flush()
+      out[#out + 1] = markSpan((parseSymbol(tok)))
+    else
+      run[#run + 1] = tok
+    end
+  end
+  flush()
+  return table.concat(out)
+end
+
+-- Testing seams for tests/lua_golden.test.js: render a resolved IPA array (as
+-- the corpus stores it) to one word's block markup, and expose the code->IPA
+-- normaliser, so both ports can be diffed against the JS directly.
+function p._renderWord(seq) return renderWord(seq) end
+function p._normaliseSound(token) return normaliseSound(token) end
+
+-- (anything in parentheses) is a caption for the word, not a sound. A
+-- depth-counting scan (not a regex) so a stray or nested bracket never reaches
+-- the tokeniser. Ported from splitCaption in sounds.js. Scanned a byte at a
+-- time — Scribunto is Lua 5.1, with no `utf8` library and no `goto` — which is
+-- exact here: `(` and `)` are ASCII, so they never fall inside a multibyte
+-- sound, and body/label reassemble those bytes in order.
+local function splitCaption(chunk)
+  local depth, body, label = 0, {}, {}
+  for i = 1, #chunk do
+    local ch = chunk:sub(i, i)
+    local skip = false
+    if ch == "(" then
+      depth = depth + 1
+      if depth == 1 then skip = true end
+    elseif ch == ")" then
+      if depth == 0 then
+        skip = true
+      else
+        depth = depth - 1
+        if depth == 0 then label[#label + 1] = " "; skip = true end
+      end
+    end
+    if not skip then
+      if depth > 0 then label[#label + 1] = ch else body[#body + 1] = ch end
+    end
+  end
+  local lab = table.concat(label):gsub("^%s+", ""):gsub("%s+$", ""):gsub("%s+", " ")
+  return table.concat(body), lab
+end
+
+local function trim(s) return (s:gsub("^%s+", ""):gsub("%s+$", "")) end
+
+-- Parse the sounds text into words: split on "/", strip each word's caption,
+-- tokenise on whitespace, normalise each token. (spreadCaptions in sounds.js
+-- only reshuffles caption text for the label; it does not touch the glyphs, so
+-- the renderer does not need it.)
+local function parseWords(text)
+  local words = {}
+  for chunk in (text .. "/"):gmatch("([^/]*)/") do
+    local body, label = splitCaption(chunk)
+    local ipa = {}
+    for tok in body:gmatch("%S+") do ipa[#ipa + 1] = normaliseSound(tok) end
+    if #ipa > 0 then words[#words + 1] = { ipa = ipa, label = label } end
+  end
+  return words
+end
+
+-- The core: sounds (+ optional English label) -> av-* markup. A lone token with
+-- no space or slash draws as one bare glyph (a chart letter); anything else
+-- draws as paired blocks, one .av-word-part per /-separated word.
+function p._main(sounds, label)
+  sounds = trim(sounds or "")
+  if sounds == "" then return "" end
+
+  local words = parseWords(sounds)
+  local caption = label and trim(label) or ""
+  if caption == "" then
+    local labs = {}
+    for _, w in ipairs(words) do if w.label ~= "" then labs[#labs + 1] = w.label end end
+    caption = table.concat(labs, " ")
+  end
+  local title = caption ~= "" and ' title="' .. esc(caption) .. '"' or ""
+
+  -- Solo: one token, no space and no slash (e.g. {{Avatarian|ng}}).
+  if not sounds:find("[%s/]") then
+    local ipa = normaliseSound(sounds)
+    local sym = parseSymbol(ipa)
+    local inner = isMark(sym) and markSpan(sym) or glyphSpan(ipa, "top", nil)
+    return '<span class="av-word av-solo"' .. title .. '>' .. inner .. '</span>'
+  end
+
+  if #words == 0 then return "" end
+  local parts = {}
+  for _, w in ipairs(words) do
+    parts[#parts + 1] = '<span class="av-word-part">' .. renderWord(w.ipa) .. '</span>'
+  end
+  return '<span class="av-word"' .. title .. '>' .. table.concat(parts) .. '</span>'
+end
+
+-- {{#invoke:Avatarian|render|<sounds>|<label>}} — the template's entry point.
+function p.render(frame)
+  local args = frame.args
+  return p._main(args[1], args[2])
+end
+
+return p
+'''
+
+
+if __name__ == "__main__":
+    main()

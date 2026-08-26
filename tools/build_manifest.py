@@ -6,7 +6,7 @@ The generated file embeds each glyph's SVG source inline, so the entire
 "font" travels as one small JS file. That means:
 
   * it works over file:// (fetch() is CORS-blocked on file:// origins);
-  * the wiki gadget needs no image hosting at all — one script tag;
+  * the wiki's CSS + Lua are generated from this one file — no image hosting;
   * glyphs inherit the surrounding text colour via currentColor and stay
     crisp at any size.
 

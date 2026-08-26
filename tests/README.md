@@ -25,8 +25,15 @@ tests/recognise.html      open it in a browser
 | `sounds.test.js` | the ASCII syntax, captions, the round trip |
 | `g2p.test.js` | the lookup chain and its order |
 | `reverse.test.js` | fuzzy reverse-decode |
+| `lua_golden.test.js` | the wiki's Lua renderer == `render.js`, over the whole corpus |
 | `test_build_corpus.py` | the corpus validator and the save path |
 | `recognise.html` | draw-to-recognise accuracy (browser only) |
+
+`lua_golden.test.js` renders every corpus word through both the shipped
+`render.js` (under a tiny DOM shim) and `wiki/Module_Avatarian.lua`, and
+asserts byte-identical markup — the guard that keeps the Lua port of the
+renderer from drifting from the JS. It also diffs `normaliseSound` over every
+code. It needs `lua` on PATH and skips with a notice if absent.
 
 `tools/check_geom.py` predates all of this and proves
 `designer/js/geom.js` still matches `tools/glyphspec.py`. It is folded

@@ -11,8 +11,7 @@ where pairing predicts two, and no phoneme list can say that.
 
 It ships as generated JS for the same reason the glyphs do: the site is
 static, works over file://, and has no server to fetch JSON from. Unlike
-the pronunciation dictionary this is small enough to load eagerly and
-small enough for the wiki gadget to carry.
+the pronunciation dictionary this is small enough to load eagerly.
 
 This module is also the validator, and it is strict on purpose — a corpus
 with a guess in it is worse than no corpus:

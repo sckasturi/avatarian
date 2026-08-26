@@ -2,7 +2,8 @@
 
 **Avatarian** is the writing system seen in the *Avatar Legends* film. This
 repo is the toolkit around it: a web translator that types English into
-Avatarian, the gadget that renders it on the [Avatar Wiki](https://avatar.fandom.com),
+Avatarian, a JavaScript-free renderer for the [Avatar Wiki](https://avatar.fandom.com)
+(a Lua module + CSS, so it works on mobile),
 an attested corpus of every word anyone has been seen to write, and the
 build tools that generate all of it from one glyph source.
 
@@ -11,14 +12,16 @@ anything and watch it appear in Avatarian. Avatarian spells *sounds*, not
 letters, so it works on names and made-up words too.
 
 Avatarian writes two sounds per stacked *block* (closer to Hangul than an
-alphabet), so composition happens in the DOM — the same `render.js` powers
-both the site and the wiki, so they draw identically.
+alphabet), so composition happens in code that emits positioned markup:
+`render.js` on the site, and a Lua port of it on the wiki. Both are generated
+from the same glyph source and checked byte-for-byte against each other, so
+they draw identically.
 
 ## What's here
 
 ```
 site/       the web app — translator, glyph reference, drawing pad (static, no server)
-wiki/       the Fandom gadget: template, loader, generated JS bundle, CSS
+wiki/       the Fandom renderer (no JS): template, Lua module, CSS — all generated
 corpus/     attested.json — words seen written, with their source images
 designs/    one JSON per glyph, as drawn on the lattice
 tools/      the build scripts and the two local editor servers
@@ -48,12 +51,13 @@ are local-only — they never deploy.
 
 ## Build
 
-The manifest, corpus, and wiki bundle are all generated from source:
+The manifest, corpus, and wiki renderer are all generated from source:
 
 ```bash
 python3 tools/build_glyphs.py && python3 tools/build_manifest.py   # glyph SVGs -> site/js/manifest.js
 python3 tools/build_corpus.py                                      # attested.json -> site/js/corpus.js
-python3 tools/build_wiki_bundle.py                                 # -> wiki/MediaWiki_Avatarian.js.txt
+python3 tools/build_lua_module.py                                  # -> wiki/Module_Avatarian.lua
+python3 tools/build_css_only.py                                    # -> wiki/Avatarian-css-only.css
 python3 tools/build_corpus_wikitable.py                            # the corpus as a wiki table
 ```
 
@@ -71,11 +75,12 @@ transcribed.
 
 - **Site** → GitHub Pages, automatically on push to `main` (`.github/workflows`
   ships `site/`). Live at avatarian.techfilmer.com.
-- **Wiki** → the `wiki/` files are pasted into the Avatar Wiki once. The whole
-  renderer is self-hosted there (no outside server, no font upload): a loader
-  in `MediaWiki:Common.js` pulls the generated bundle only on pages that use
-  `{{Avatarian}}`. See `DEVELOPMENT.md` and the on-wiki `Template:Avatarian/doc`
-  for the setup, and re-paste the bundle whenever a bundled module changes.
+- **Wiki** → the `wiki/` files are pasted into the Avatar Wiki once, with **no
+  JavaScript**: `Module:Avatarian` (Lua) renders the glyphs server-side and a
+  CSS-only stylesheet draws them, so it works on the mobile skin (which runs no
+  site JS). See `DEVELOPMENT.md` → "Rendering on the wiki" for the four-step
+  setup, and re-run the two generators whenever a glyph or the render logic
+  changes.
 
 ## Credit
 
