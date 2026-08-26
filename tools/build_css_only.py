@@ -52,8 +52,8 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
  * no site JS). -webkit-mask only (Fandom rejects unprefixed mask-*). av- prefix
  * namespaces the classes. Word ~= 125% of surrounding text. */
 .av-word{display:inline;vertical-align:middle;padding-right:.3em;color:inherit;font-size:calc(1.25em / 2.05)}
-.av-word.av-solo{display:inline-flex;font-size:1.4em;padding-right:0}
-.av-word-part{display:inline-flex;align-items:flex-start;vertical-align:middle}
+.av-word.av-solo{display:inline-flex;font-size:1.4em;padding-right:0;position:relative}
+.av-word-part{display:inline-flex;align-items:flex-start;vertical-align:middle;position:relative}
 .av-word-part+.av-word-part{margin-left:.5em}
 .av-block{display:inline-flex;flex-direction:column;align-items:center;margin-right:.05em}
 .av-slot{display:flex;justify-content:center}
@@ -67,6 +67,14 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
 .av-slot-bottom .av-vowel.av-flipped:not(.av-4row),.av-slot-bottom .av-null-v.av-flipped:not(.av-4row){transform:scaleY(-1) translateY(-20%)}
 .av-mark{display:inline-block;line-height:0;align-self:stretch;background-color:currentColor;height:calc(1.25em * 1.64);width:calc(1.25em * 1.64 / 9);-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:100% 100%}
 .av-mark.av-wide{width:calc(1.25em * 1.64 * 2 / 9)}
+/* Copy/paste: the glyph spans are empty masks, so Module:Avatarian emits the
+ * word's text in .av-copy — a transparent, selectable text layer covering the
+ * word. The glyphs sit ABOVE it (z-index) and are click-through
+ * (pointer-events:none), so a drag lands in .av-copy: the word highlights like
+ * normal text (the selection paints behind the glyphs) and copies clean text
+ * (the English caption, or the sounds) instead of nothing. */
+.av-copy{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:transparent;white-space:nowrap;overflow:hidden;font-size:1.6em;-webkit-user-select:text;user-select:text}
+.av-block,.av-slot,.av-glyph,.av-mark{position:relative;z-index:1;pointer-events:none;-webkit-user-select:none;user-select:none}
 
 /* ===== glyph shapes ===== */
 """

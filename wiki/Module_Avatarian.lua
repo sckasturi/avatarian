@@ -324,18 +324,54 @@ function p._main(sounds, label)
   end
   local title = caption ~= "" and ' title="' .. esc(caption) .. '"' or ""
 
+  -- Selectable copy text. Every glyph span is an empty CSS mask, so without this
+  -- a reader who selects a word copies nothing and sees no selection highlight.
+  -- .av-copy is a transparent, selectable text layer that the CSS sits BEHIND the
+  -- glyphs (which it lifts above and makes click-through) — so dragging over a
+  -- word highlights it like normal text and copies clean text.
+  -- A token run's IPA, nulls dropped, in slashes — the copy text for a word with
+  -- no English caption, e.g. /k ə t ɑ r ə/. (A single glyph keeps its own typed
+  -- code in slashes instead, e.g. /ng/ — see the solo branch below.)
+  local function ipaText(ipa)
+    local syms = {}
+    for _, tok in ipairs(ipa) do
+      local s = parseSymbol(tok)
+      if not isNull(s) then syms[#syms + 1] = s end
+    end
+    return "/" .. table.concat(syms, " ") .. "/"
+  end
+
+  local function overlay(text)
+    if text == "" then return "" end
+    return '<span class="av-copy">' .. esc(text) .. '</span>'
+  end
+
   -- Solo: one token, no space and no slash (e.g. {{Avatarian|ng}}).
   if not sounds:find("[%s/]") then
     local ipa = normaliseSound(sounds)
     local sym = parseSymbol(ipa)
     local inner = isMark(sym) and markSpan(sym) or glyphSpan(ipa, "top", nil)
-    return '<span class="av-word av-solo"' .. title .. '>' .. inner .. '</span>'
+    return '<span class="av-word av-solo"' .. title .. '>'
+      .. overlay(caption ~= "" and caption or ("/" .. sounds .. "/")) .. inner .. '</span>'
   end
 
   if #words == 0 then return "" end
+
+  -- Spread the caption over the /-separated parts so each word highlights and
+  -- copies its own English: one caption word per part when the counts match (the
+  -- usual case), else the whole caption rides the first part so a phrase still
+  -- copies once and clean. A leading space on later parts keeps a multi-word copy
+  -- spaced. With no caption a part copies its own sounds.
+  local capWords = {}
+  for wd in caption:gmatch("%S+") do capWords[#capWords + 1] = wd end
   local parts = {}
-  for _, w in ipairs(words) do
-    parts[#parts + 1] = '<span class="av-word-part">' .. renderWord(w.ipa) .. '</span>'
+  for i, w in ipairs(words) do
+    local text
+    if #capWords == #words then text = capWords[i]
+    elseif caption ~= "" then text = (i == 1) and caption or ""
+    else text = ipaText(w.ipa) end
+    if i > 1 and text ~= "" then text = " " .. text end
+    parts[#parts + 1] = '<span class="av-word-part">' .. overlay(text) .. renderWord(w.ipa) .. '</span>'
   end
   return '<span class="av-word"' .. title .. '>' .. table.concat(parts) .. '</span>'
 end
