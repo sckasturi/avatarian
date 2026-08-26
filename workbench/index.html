@@ -294,6 +294,16 @@ slot, so the block structure is still recorded.">*&nbsp;unreadable</button>
           <option value="unclear">unclear</option>
         </select>
       </label>
+      <!-- One entry is one (word, source, spelling); repeats in the same
+           source are counted here rather than filed as duplicate entries the
+           validator rejects. Bump this to record another sighting of a word
+           already attested from this source. -->
+      <label class="field">
+        <span class="field-label">Seen here <span class="fine">— times in
+          this source</span></span>
+        <input type="number" id="times" min="1" step="1" value="1"
+               inputmode="numeric" autocomplete="off" />
+      </label>
     </div>
 
     <label class="field">

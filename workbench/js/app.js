@@ -35,7 +35,7 @@ const state = {
 };
 
 /** Every field that, when touched, means the open entry changed. */
-const ENTRY_FIELDS = ["key", "spelling", "gloss", "confidence", "source", "note"];
+const ENTRY_FIELDS = ["key", "spelling", "gloss", "confidence", "source", "times", "note"];
 
 // ---------------------------------------------------------------------
 // Spelling <-> symbols
@@ -84,7 +84,7 @@ function derivedSpelling(word) {
 function blankEntry() {
   const firstSource = Object.keys(state.sources)[0] || "";
   return { key: "", spelling: "", gloss: "", confidence: "certain",
-           source: firstSource, note: "" };
+           source: firstSource, note: "", times: 1 };
 }
 
 function writeEditor(entry) {
@@ -92,6 +92,7 @@ function writeEditor(entry) {
   $("spelling").value = ipaToSpelling((entry.spelling || "").split(" ").filter(Boolean));
   $("gloss").value = entry.gloss || "";
   $("confidence").value = entry.confidence || "certain";
+  $("times").value = entry.times || 1;
   $("note").value = entry.note || "";
   renderSourceOptions(entry.source);
   $("editorTitle").textContent = entry.key ? entry.key : "New entry";
@@ -106,6 +107,7 @@ function readEditor() {
     gloss: $("gloss").value.trim(),
     confidence: $("confidence").value,
     source: $("source").value,
+    times: Math.max(1, parseInt($("times").value, 10) || 1),
     note: $("note").value.trim(),
   };
 }
@@ -115,6 +117,8 @@ function commitEditor() {
   const entry = readEditor();
   if (!entry.key && !entry.spelling) return;
   for (const k of ["gloss", "note"]) if (!entry[k]) delete entry[k];
+  // times: 1 is the default and stays out of the file, like the build does.
+  if (entry.times <= 1) delete entry.times;
   if (state.index < 0) {
     state.entries.push(entry);
     state.index = state.entries.length - 1;
