@@ -74,8 +74,10 @@ with your wiki username.
 ## 3. Going site-wide (admin / interface-editor rights)
 
 1. Paste `wiki/Module_Avatarian.lua` into **`Module:Avatarian`**.
-2. Paste `wiki/Avatarian-css-only.css` into **BOTH** `MediaWiki:Common.css`
-   (desktop) **and** `MediaWiki:Fandommobile.css` (mobile — a separate page).
+2. Paste `wiki/Avatarian-css-only.css` into **`MediaWiki:Avatarian.css`**, which
+   is `@import`ed into both `MediaWiki:Common.css` (desktop) and
+   `MediaWiki:Fandommobile.css` (mobile — a separate page). One page to edit;
+   the imports fan it out to both skins.
 3. Create/confirm **`Template:Avatarian`** from `wiki/Template_Avatarian.wiki`
    (its body is `{{#invoke:Avatarian|render|{{{1|}}}|{{{2|}}}}}`).
 

@@ -173,9 +173,11 @@ word through both `render.js` and the Lua and asserts they're byte-identical.
    python3 tools/build_css_only.py      # -> wiki/Avatarian-css-only.css
    ```
 2. Paste `wiki/Module_Avatarian.lua` into **Module:Avatarian**.
-3. Paste `wiki/Avatarian-css-only.css` into **BOTH** `MediaWiki:Common.css`
-   (desktop) **and** `MediaWiki:Fandommobile.css` (mobile — a separate page;
-   Common.css is desktop-only). The classes are `av-*`-prefixed.
+3. Paste `wiki/Avatarian-css-only.css` into **`MediaWiki:Avatarian.css`**, which
+   is `@import`ed into both `MediaWiki:Common.css` (desktop) and
+   `MediaWiki:Fandommobile.css` (mobile — a separate page; Common.css is
+   desktop-only). One page to edit; the imports fan it out to both skins. The
+   classes are `av-*`-prefixed.
 4. Create **Template:Avatarian** from `wiki/Template_Avatarian.wiki` — its
    body is `{{#invoke:Avatarian|render|{{{1|}}}|{{{2|}}}}}`.
 

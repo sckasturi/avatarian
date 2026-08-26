@@ -1,9 +1,10 @@
 /* ===== Avatarian — CSS-only renderer (no JavaScript) ========================
  * The wiki's glyph SHAPES + block LAYOUT, all in CSS. Paired with Module:Avatarian
  * (the Lua that builds the av-* markup from a sounds string); see DEVELOPMENT.md.
- * Paste into MediaWiki:Common.css AND MediaWiki:Fandommobile.css (mobile serves
- * no site JS). -webkit-mask only (Fandom rejects unprefixed mask-*). av- prefix
- * namespaces the classes. Word ~= 125% of surrounding text. */
+ * Paste into MediaWiki:Avatarian.css, which is @imported into both
+ * MediaWiki:Common.css and MediaWiki:Fandommobile.css (mobile is a separate page
+ * and serves no site JS). -webkit-mask only (Fandom rejects unprefixed mask-*).
+ * av- prefix namespaces the classes. Word ~= 125% of surrounding text. */
 .av-word{display:inline;vertical-align:middle;padding-right:.3em;color:inherit;font-size:calc(1.25em / 2.05)}
 .av-word.av-solo{display:inline-flex;font-size:1.4em;padding-right:0;position:relative}
 .av-word-part{display:inline-flex;align-items:flex-start;vertical-align:middle;position:relative}
