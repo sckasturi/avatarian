@@ -191,7 +191,7 @@ and made-up words too.</p>
      code — copying off a reference image, or off the key chart. Hunting
      a 42-cell grid for a shape you are looking straight at is the slow
      way round. -->
-<details class="card draw-card" open>
+<details class="card draw-card">
   <summary><h2>Draw a glyph</h2></summary>
   <p class="subtitle">Draw a shape and pick the closest match, and it goes
     into the sounds box.</p>
@@ -1026,20 +1026,6 @@ buildKeyGrid();
 // A pick goes through the same path a palette click does, so a drawn
 // glyph lands at the caret and is spaced off exactly like a typed one.
 createDrawPad($("drawpad"), { onPick: (hit) => appendSound(hit.code), limit: 5 });
-
-// The draw-a-glyph card folds away, and remembers per browser whether it
-// was left open — a drawer you tuck away should stay tucked. Defaults to
-// open; storage failures (private mode) just fall back to that.
-const drawCard = document.querySelector(".draw-card");
-if (drawCard) {
-  try {
-    if (localStorage.getItem("avatarian-draw-open") === "false") drawCard.open = false;
-  } catch (e) { /* storage blocked — leave it open */ }
-  drawCard.addEventListener("toggle", () => {
-    try { localStorage.setItem("avatarian-draw-open", String(drawCard.open)); }
-    catch (e) { /* nothing to do */ }
-  });
-}
 
 // Start with something on screen. An empty output looks like a broken
 // page, and the first thing anyone should see is what the tool does.
