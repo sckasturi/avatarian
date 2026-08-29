@@ -150,6 +150,17 @@
     text-decoration: underline; text-decoration-color: var(--accent);
     text-underline-offset: 3px; text-decoration-thickness: 1px;
   }
+  /* The pronunciation as text, under the word: the IPA the block spelling
+     encodes, and the same sounds in the translator's readable respelling. */
+  .word-ipa {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.72rem; line-height: 1.35; color: var(--ink);
+    opacity: 0.75; word-break: break-word;
+  }
+  .word-sounds {
+    font-size: 0.72rem; line-height: 1.35; color: var(--muted);
+    word-break: break-word;
+  }
   .word-meta { color: var(--muted); font-size: 0.76rem; line-height: 1.5; }
   .word-card.is-contested { border-color: var(--accent); }
   .tag {
@@ -342,6 +353,14 @@ const WORDS = Object.entries(CORPUS.words)
 
 const soundsOf = (ipa) => ipa.filter(t => t !== "∅" && t !== "∅c")
   .map(t => t.replace(/[$%]/g, "")).join(" ");
+
+// The same sounds in the translator's readable respelling (k uh t ah r
+// uh), for the card to show beside the IPA. `cqBase` (corpusquery.js)
+// drops the null and any override/cluster suffix; `soundToCode`
+// (sounds.js) is the IPA -> readable-code map the Sounds box uses.
+const codesOf = (ipa) => ipa.map(cqBase)
+  .filter(t => t !== "∅" && t !== "∅c")
+  .map(soundToCode).join(" ");
 
 // Every source that cites this word — the winning spelling's, plus any a
 // contested alternate came from. A source that only contributed the
@@ -619,8 +638,19 @@ function card(w) {
   const en = document.createElement("div");
   en.className = "word-en";
   en.textContent = w.label;
-  en.title = "/" + soundsOf(w.ipa) + "/";
   el.appendChild(en);
+
+  // The pronunciation as text: the IPA the blocks encode, and the same
+  // sounds in the readable respelling — now visible, not just a tooltip.
+  const ipaLine = document.createElement("div");
+  ipaLine.className = "word-ipa";
+  ipaLine.textContent = "/" + soundsOf(w.ipa) + "/";
+  el.appendChild(ipaLine);
+
+  const sndLine = document.createElement("div");
+  sndLine.className = "word-sounds";
+  sndLine.textContent = codesOf(w.ipa);
+  el.appendChild(sndLine);
 
   // The sources themselves live in the hover preview; the card just says
   // how much it has been seen.
