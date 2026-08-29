@@ -91,6 +91,7 @@ FLAT = 0.8          # 4/5
 FLAT_SUFFIX = "_flat"
 FLAT_BOX = 100 * FLAT
 CLUSTER_SUFFIX = "_cluster"        # a glyph's independently-drawn cluster (C-C) form
+CONNECT_SUFFIX = "_connect"        # a glyph's form with its connection stroke to the seam
 
 _TOKEN = re.compile(r"[A-Za-z]|-?\d*\.?\d+(?:[eE][-+]?\d+)?")
 
@@ -279,12 +280,10 @@ CONSONANTS["y"] = hflip(CONSONANTS["w"])
 VOWELS = {
     "i": path("M 18 40 L 82 40") + path("M 18 80 L 82 80"),
     "ih": path("M 50 80 L 50 60")
-          + path("M 18 60 L 82 60 L 82 20 L 18 20")
-          + path("M 50 80 L 50 90"),
+          + path("M 18 60 L 82 60 L 82 20 L 18 20"),
     "ei": path("M 50 80 L 50 20")
           + path("M 18 60 L 82 60")
-          + path("M 18 20 L 82 20")
-          + path("M 50 80 L 50 90"),
+          + path("M 18 20 L 82 20"),
     "eh": path("M 18 40 A 42 52.5 0 0 1 50 60 A 42 52.5 0 0 0 82 80")
           + path("M 82 40 A 42 52.5 0 0 0 50 60 A 42 52.5 0 0 1 18 80"),
     "ae": path("M 26 40 L 26 70 A 33.94 42.43 0 0 0 74 70 L 74 40")
@@ -299,8 +298,7 @@ VOWELS = {
              + dot(18, 80),
     "uu": path("M 18 40 L 18 80")
           + path("M 50 20 L 50 80")
-          + path("M 82 40 L 82 80")
-          + path("M 50 20 L 50 10"),
+          + path("M 82 40 L 82 80"),
     "ow": path("M 18 40 L 18 80 L 50 80 L 50 40 L 18 40 Z")
           + dot(74, 40)
           + dot(74, 80),
@@ -310,17 +308,29 @@ VOWELS = {
     "aw": path("M 82 40 A 32 40 0 0 1 50 80 L 18 80") + dot(26, 40),
     "ah": path("M 50 80 L 50 50")
           + path("M 18 20 L 50 50")
-          + path("M 82 20 L 50 50")
-          + path("M 50 80 L 50 90"),
+          + path("M 82 20 L 50 50"),
     "oi": path("M 18 60 L 18 20 L 82 20 L 82 60 L 18 60 Z")
-          + path("M 50 80 L 50 60")
-          + path("M 50 80 L 50 90"),
+          + path("M 50 80 L 50 60"),
     "oo": path("M 50 20 L 50 80")
           + dot(18, 40)
           + dot(18, 80)
           + dot(82, 80)
-          + dot(82, 40)
-          + path("M 50 20 L 50 10"),
+          + dot(82, 40),
+}
+
+# Connection strokes. A vowel whose design carries a `connect` node grows a
+# short stroke to the block seam — but as a VARIANT that render.js draws only
+# when the block partner is a consonant that accepts it (CONNECTS_AT_SEAM).
+# The base glyph stays plain, so it never pokes into a partner that is open at
+# the centre seam (/g/, /b/). ah/ei/ih/oi reach DOWN, oo/uu reach UP; the flip
+# machinery re-aims each toward the partner by slot (see AVATARIAN.md §11).
+VOWEL_CONNECT = {
+    "ah": path("M 50 80 L 50 90"),
+    "ei": path("M 50 80 L 50 90"),
+    "ih": path("M 50 80 L 50 90"),
+    "oi": path("M 50 80 L 50 90"),
+    "oo": path("M 50 20 L 50 10"),
+    "uu": path("M 50 20 L 50 10"),
 }
 
 # ---------------------------------------------------------------------------
@@ -419,6 +429,13 @@ SOURCE_NOTES = {
 # it. Spell those with the $/% override instead.
 FLIPS_BASE = {"æ", "ɑ", "ɪ", "e", "aɪ", "ə"}
 
+# Consonants (by IPA) with ink at the CENTRE of the block seam, so a
+# connection stroke from the block partner lands ON them rather than poking
+# into a gap. A glyph open at the seam centre — /g/, /b/ — is left out, and a
+# partner beside it stays plain. Seeded from the pairs that should fuse
+# ((l,p) (r,l) (p,l) (l,z)); extend as more shapes are checked.
+CONNECTS_AT_SEAM = {"t", "z", "p", "ɹ"}
+
 # Vowels whose design spans all 4 rows of the vowel grid. These bridge
 # the gap between consonant and vowel in the 9-row block model.
 # All other vowels use only 3 rows, leaving a 1-row gap.
@@ -516,8 +533,9 @@ def load_clusters():
     rendered through glyphspec — a glyph with one draws THIS in a two-consonant
     block instead of its base form. /r/'s cluster form mirrors /l/'s, keeping
     the l/r pair. No file means the glyph behaves as before (flip rules)."""
+    import copy
     import glyphspec
-    out = {}
+    out, conn = {}, {}
     if DESIGNS.is_dir():
         for p in sorted(DESIGNS.glob(f"*{CLUSTER_SUFFIX}.json")):
             ipa = NAME_TO_IPA.get(p.stem[:-len(CLUSTER_SUFFIX)])
@@ -527,16 +545,35 @@ def load_clusters():
                 d = json.loads(p.read_text(encoding="utf-8"))
             except (OSError, json.JSONDecodeError):
                 continue
-            if d.get("shapes"):
+            if not d.get("shapes"):
+                continue
+            # A cluster with a connect node draws plain by default, plus a
+            # "_connect" variant with its stroke to the seam — the same
+            # partner-gated fusion the vowels use (render.js). Strip the
+            # connect nodes for the plain base; keep them for the variant.
+            has_connect = any(n.get("connect")
+                              for s in d["shapes"] for n in s.get("nodes", []))
+            if has_connect:
+                conn[ipa] = glyphspec.body(d)
+                plain = copy.deepcopy(d)
+                for s in plain["shapes"]:
+                    for n in s.get("nodes", []):
+                        n.pop("connect", None)
+                out[ipa] = glyphspec.body(plain)
+            else:
                 out[ipa] = glyphspec.body(d)
     if "l" in out:
         out["ɹ"] = hflip(out["l"])
+        if "l" in conn:
+            conn["ɹ"] = hflip(conn["l"])
     if "w" in out:
         out["j"] = hflip(out["w"])      # /y/'s cluster mirrors /w/'s, as their bases do
-    return out
+        if "w" in conn:
+            conn["j"] = hflip(conn["w"])
+    return out, conn
 
 
-CLUSTERS = load_clusters()
+CLUSTERS, CLUSTER_CONNECT = load_clusters()
 
 
 def design_overrides():
@@ -580,9 +617,9 @@ FLIPS, VOWEL_4ROW = effective_flags()
 
 
 def refresh():
-    global FLIPS, VOWEL_4ROW, CLUSTERS
+    global FLIPS, VOWEL_4ROW, CLUSTERS, CLUSTER_CONNECT
     FLIPS, VOWEL_4ROW = effective_flags()
-    CLUSTERS = load_clusters()
+    CLUSTERS, CLUSTER_CONNECT = load_clusters()
     return FLIPS, VOWEL_4ROW
 
 
@@ -605,6 +642,11 @@ def main():
     for ipa, body in CLUSTERS.items():
         (OUT / f"{IPA_TO_NAME[ipa]}{CLUSTER_SUFFIX}.svg").write_text(
             svg(body), encoding="utf-8")
+    # The cluster form's own connection variant (base + stroke to the seam),
+    # drawn by render.js only when the C-C partner accepts it.
+    for ipa, body in CLUSTER_CONNECT.items():
+        (OUT / f"{IPA_TO_NAME[ipa]}{CLUSTER_SUFFIX}{CONNECT_SUFFIX}.svg").write_text(
+            svg(body), encoding="utf-8")
     # Full-height punctuation marks: a tall box, one form only, as many
     # lattice columns wide as the mark declares (period 1, a question mark
     # perhaps 2 or 3).
@@ -617,6 +659,7 @@ def main():
     # equal-height mode, and a geometrically flattened 100x80 copy for
     # proportional mode.
     flat = {}
+    connect = {}          # names that ship a "_connect" variant too
     for name, body in {**VOWELS, **MARKS_VOWEL}.items():
         (OUT / f"{name}.svg").write_text(svg(body), encoding="utf-8")
         (OUT / f"{name}{FLAT_SUFFIX}.svg").write_text(
@@ -624,6 +667,16 @@ def main():
         )
         drawn[name] = True
         flat[name] = True
+        # The connection variant: base + its stroke to the seam, in both forms.
+        # Flattening the combined body scales the stroke with the glyph, so the
+        # flat copy stays in step.
+        ext = VOWEL_CONNECT.get(name)
+        if ext:
+            (OUT / f"{name}{CONNECT_SUFFIX}.svg").write_text(
+                svg(body + ext), encoding="utf-8")
+            (OUT / f"{name}{CONNECT_SUFFIX}{FLAT_SUFFIX}.svg").write_text(
+                svg(flatten(body + ext), box=FLAT_BOX), encoding="utf-8")
+            connect[name] = True
 
     for name in PLACEHOLDERS:
         (OUT / f"{name}.svg").write_text(PLACEHOLDER_SVG, encoding="utf-8")
@@ -637,6 +690,9 @@ def main():
     current = {f"{n}.svg" for n in {**CONSONANTS, **VOWELS, **all_marks}} \
         | {f"{n}{FLAT_SUFFIX}.svg" for n in {**VOWELS, **MARKS_VOWEL}} \
         | {f"{IPA_TO_NAME[i]}{CLUSTER_SUFFIX}.svg" for i in CLUSTERS} \
+        | {f"{IPA_TO_NAME[i]}{CLUSTER_SUFFIX}{CONNECT_SUFFIX}.svg" for i in CLUSTER_CONNECT} \
+        | {f"{n}{CONNECT_SUFFIX}.svg" for n in connect} \
+        | {f"{n}{CONNECT_SUFFIX}{FLAT_SUFFIX}.svg" for n in connect} \
         | {f"{n}.svg" for n in PLACEHOLDERS} | {"unknown.svg"}
     stale = [p for p in OUT.glob("*.svg") if p.name not in current]
     for p in stale:
@@ -655,6 +711,18 @@ def main():
             manifest[ipa]["flat"] = f"{name}{FLAT_SUFFIX}.svg"
         if ipa in CLUSTERS:
             manifest[ipa]["variants"] = {"cluster": f"{name}{CLUSTER_SUFFIX}.svg"}
+        if ipa in CLUSTER_CONNECT:
+            manifest[ipa].setdefault("variants", {})["clusterConnect"] = \
+                f"{name}{CLUSTER_SUFFIX}{CONNECT_SUFFIX}.svg"
+        # The connection variant, drawn by render.js only when the block
+        # partner accepts it (acceptsConnect). Base stays plain.
+        if name in connect:
+            manifest[ipa].setdefault("variants", {})["connect"] = \
+                f"{name}{CONNECT_SUFFIX}.svg"
+            manifest[ipa].setdefault("variantsFlat", {})["connect"] = \
+                f"{name}{CONNECT_SUFFIX}{FLAT_SUFFIX}.svg"
+        if ipa in CONNECTS_AT_SEAM:
+            manifest[ipa]["acceptsConnect"] = True
         if ipa in FLIPS:
             manifest[ipa]["flips"] = True
         if ipa in VOWEL_4ROW:

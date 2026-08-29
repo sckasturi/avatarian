@@ -61,6 +61,9 @@ def main():
             out[ipa]["flips"] = True
         if info.get("rows"):
             out[ipa]["rows"] = info["rows"]
+        # A consonant a vowel's connection stroke may land on (render.js).
+        if info.get("acceptsConnect"):
+            out[ipa]["acceptsConnect"] = True
         # The flattened copy used by proportional-height mode.
         if info.get("flat"):
             fpath = GLYPHS / info["flat"]

@@ -579,10 +579,10 @@ def to_python(design):
             d = path_d(shape, frame)
             if d:
                 calls.append(("path", d))
-    # Connection strokes ride along as ordinary paths, so a promoted design
-    # keeps its fusion in build_glyphs.py exactly as it draws here.
-    for d in connection_paths(design, frame):
-        calls.append(("path", d))
+    # Connection strokes are NOT baked into the promoted base: build_glyphs.py
+    # generates a separate "_connect" variant from them (VOWEL_CONNECT /
+    # load_clusters), so the shipped base stays plain and render.js draws the
+    # stroke only when the block partner accepts it.
 
     lines = []
     for line in _fold((design.get("notes") or "").strip(), LINE - 6):

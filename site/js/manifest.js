@@ -8,7 +8,8 @@ window.AVATARIAN_GLYPHS = {
     "name": "p",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 18 50 L 50 82 L 82 50 L 66 34 L 50 18 Z\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 18 50 L 50 82 L 82 50 L 66 34 L 50 18 Z\"/></svg>",
+    "acceptsConnect": true
   },
   "b": {
     "name": "b",
@@ -20,7 +21,8 @@ window.AVATARIAN_GLYPHS = {
     "name": "t",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 82 18 L 82 82\"/><path d=\"M 18 50 L 18 82 L 50 82 L 50 50 L 18 50 Z\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 82 18 L 82 82\"/><path d=\"M 18 50 L 18 82 L 50 82 L 50 50 L 18 50 Z\"/></svg>",
+    "acceptsConnect": true
   },
   "d": {
     "name": "d",
@@ -106,7 +108,8 @@ window.AVATARIAN_GLYPHS = {
     "name": "z",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 50 50\"/><path d=\"M 18 82 A 32 32 0 0 1 82 82\"/><circle cx=\"26\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 50 50\"/><path d=\"M 18 82 A 32 32 0 0 1 82 82\"/><circle cx=\"26\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "acceptsConnect": true
   },
   "ʃ": {
     "name": "sh",
@@ -137,6 +140,10 @@ window.AVATARIAN_GLYPHS = {
       "cluster": {
         "name": "w_cluster",
         "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 58 A 52 52 0 0 1 18 82 L 18 18\"/><path d=\"M 82 42 A 42 42 0 0 0 50 58\"/></svg>"
+      },
+      "clusterConnect": {
+        "name": "w_cluster_connect",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 58 A 52 52 0 0 1 18 82 L 18 18\"/><path d=\"M 82 42 A 42 42 0 0 0 50 58\"/><path d=\"M 18 18 L 18 10\"/></svg>"
       }
     }
   },
@@ -149,6 +156,10 @@ window.AVATARIAN_GLYPHS = {
       "cluster": {
         "name": "y_cluster",
         "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 58 A 52 52 0 0 0 82 82 L 82 18\"/><path d=\"M 18 42 A 42 42 0 0 1 50 58\"/></svg>"
+      },
+      "clusterConnect": {
+        "name": "y_cluster_connect",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 58 A 52 52 0 0 0 82 82 L 82 18\"/><path d=\"M 18 42 A 42 42 0 0 1 50 58\"/><path d=\"M 82 18 L 82 10\"/></svg>"
       }
     }
   },
@@ -157,10 +168,15 @@ window.AVATARIAN_GLYPHS = {
     "status": "drawn",
     "type": "consonant",
     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 82 L 82 18 L 18 18 L 18 58 A 28.28 28.28 0 0 0 50 82\"/></svg>",
+    "acceptsConnect": true,
     "variants": {
       "cluster": {
         "name": "r_cluster",
         "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 18 L 82 82 L 18 82 A 32 32 0 0 1 50 50\"/></svg>"
+      },
+      "clusterConnect": {
+        "name": "r_cluster_connect",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 18 L 82 82 L 18 82 A 32 32 0 0 1 50 50\"/><path d=\"M 82 18 L 82 10\"/></svg>"
       }
     }
   },
@@ -173,6 +189,10 @@ window.AVATARIAN_GLYPHS = {
       "cluster": {
         "name": "l_cluster",
         "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 18 82 L 82 82 A 32 32 0 0 0 50 50\"/></svg>"
+      },
+      "clusterConnect": {
+        "name": "l_cluster_connect",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 18 82 L 82 82 A 32 32 0 0 0 50 50\"/><path d=\"M 18 18 L 18 10\"/></svg>"
       }
     }
   },
@@ -193,19 +213,33 @@ window.AVATARIAN_GLYPHS = {
     "name": "ih",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 60\"/><path d=\"M 18 60 L 82 60 L 82 20 L 18 20\"/><path d=\"M 50 80 L 50 90\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 60\"/><path d=\"M 18 60 L 82 60 L 82 20 L 18 20\"/></svg>",
     "flips": true,
     "rows": 4,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 48\"/><path d=\"M 18 48 L 82 48 L 82 16 L 18 16\"/><path d=\"M 50 64 L 50 72\"/></svg>"
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 48\"/><path d=\"M 18 48 L 82 48 L 82 16 L 18 16\"/></svg>",
+    "variants": {
+      "connect": {
+        "name": "ih_connect",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 60\"/><path d=\"M 18 60 L 82 60 L 82 20 L 18 20\"/><path d=\"M 50 80 L 50 90\"/></svg>",
+        "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 48\"/><path d=\"M 18 48 L 82 48 L 82 16 L 18 16\"/><path d=\"M 50 64 L 50 72\"/></svg>"
+      }
+    }
   },
   "e": {
     "name": "ei",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 20\"/><path d=\"M 18 60 L 82 60\"/><path d=\"M 18 20 L 82 20\"/><path d=\"M 50 80 L 50 90\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 20\"/><path d=\"M 18 60 L 82 60\"/><path d=\"M 18 20 L 82 20\"/></svg>",
     "flips": true,
     "rows": 4,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 16\"/><path d=\"M 18 48 L 82 48\"/><path d=\"M 18 16 L 82 16\"/><path d=\"M 50 64 L 50 72\"/></svg>"
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 16\"/><path d=\"M 18 48 L 82 48\"/><path d=\"M 18 16 L 82 16\"/></svg>",
+    "variants": {
+      "connect": {
+        "name": "ei_connect",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 20\"/><path d=\"M 18 60 L 82 60\"/><path d=\"M 18 20 L 82 20\"/><path d=\"M 50 80 L 50 90\"/></svg>",
+        "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 16\"/><path d=\"M 18 48 L 82 48\"/><path d=\"M 18 16 L 82 16\"/><path d=\"M 50 64 L 50 72\"/></svg>"
+      }
+    }
   },
   "ɛ": {
     "name": "eh",
@@ -241,18 +275,32 @@ window.AVATARIAN_GLYPHS = {
     "name": "uu",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 18 80\"/><path d=\"M 50 20 L 50 80\"/><path d=\"M 82 40 L 82 80\"/><path d=\"M 50 20 L 50 10\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 18 80\"/><path d=\"M 50 20 L 50 80\"/><path d=\"M 82 40 L 82 80\"/></svg>",
     "rows": 4,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 18 64\"/><path d=\"M 50 16 L 50 64\"/><path d=\"M 82 32 L 82 64\"/><path d=\"M 50 16 L 50 8\"/></svg>"
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 18 64\"/><path d=\"M 50 16 L 50 64\"/><path d=\"M 82 32 L 82 64\"/></svg>",
+    "variants": {
+      "connect": {
+        "name": "uu_connect",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 18 80\"/><path d=\"M 50 20 L 50 80\"/><path d=\"M 82 40 L 82 80\"/><path d=\"M 50 20 L 50 10\"/></svg>",
+        "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 18 64\"/><path d=\"M 50 16 L 50 64\"/><path d=\"M 82 32 L 82 64\"/><path d=\"M 50 16 L 50 8\"/></svg>"
+      }
+    }
   },
   "ʊ": {
     "name": "oo",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 20 L 50 80\"/><circle cx=\"18\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"18\" cy=\"80\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"80\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 50 20 L 50 10\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 20 L 50 80\"/><circle cx=\"18\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"18\" cy=\"80\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"80\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "note": "from source material outside the key chart",
     "rows": 4,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 16 L 50 64\"/><circle cx=\"18\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"18\" cy=\"64\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"64\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 50 16 L 50 8\"/></svg>"
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 16 L 50 64\"/><circle cx=\"18\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"18\" cy=\"64\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"64\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "variants": {
+      "connect": {
+        "name": "oo_connect",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 20 L 50 80\"/><circle cx=\"18\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"18\" cy=\"80\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"80\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 50 20 L 50 10\"/></svg>",
+        "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 16 L 50 64\"/><circle cx=\"18\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"18\" cy=\"64\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"64\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 50 16 L 50 8\"/></svg>"
+      }
+    }
   },
   "oʊ": {
     "name": "ow",
@@ -273,11 +321,18 @@ window.AVATARIAN_GLYPHS = {
     "name": "ah",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 50\"/><path d=\"M 18 20 L 50 50\"/><path d=\"M 82 20 L 50 50\"/><path d=\"M 50 80 L 50 90\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 50\"/><path d=\"M 18 20 L 50 50\"/><path d=\"M 82 20 L 50 50\"/></svg>",
     "note": "from source material outside the key chart",
     "flips": true,
     "rows": 4,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 40\"/><path d=\"M 18 16 L 50 40\"/><path d=\"M 82 16 L 50 40\"/><path d=\"M 50 64 L 50 72\"/></svg>"
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 40\"/><path d=\"M 18 16 L 50 40\"/><path d=\"M 82 16 L 50 40\"/></svg>",
+    "variants": {
+      "connect": {
+        "name": "ah_connect",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 80 L 50 50\"/><path d=\"M 18 20 L 50 50\"/><path d=\"M 82 20 L 50 50\"/><path d=\"M 50 80 L 50 90\"/></svg>",
+        "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 64 L 50 40\"/><path d=\"M 18 16 L 50 40\"/><path d=\"M 82 16 L 50 40\"/><path d=\"M 50 64 L 50 72\"/></svg>"
+      }
+    }
   },
   "aɪ": {
     "name": "ai",
@@ -299,11 +354,18 @@ window.AVATARIAN_GLYPHS = {
     "name": "oi",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 60 L 18 20 L 82 20 L 82 60 L 18 60 Z\"/><path d=\"M 50 80 L 50 60\"/><path d=\"M 50 80 L 50 90\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 60 L 18 20 L 82 20 L 82 60 L 18 60 Z\"/><path d=\"M 50 80 L 50 60\"/></svg>",
     "note": "from source material outside the key chart",
     "flips": true,
     "rows": 4,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 48 L 18 16 L 82 16 L 82 48 L 18 48 Z\"/><path d=\"M 50 64 L 50 48\"/><path d=\"M 50 64 L 50 72\"/></svg>"
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 48 L 18 16 L 82 16 L 82 48 L 18 48 Z\"/><path d=\"M 50 64 L 50 48\"/></svg>",
+    "variants": {
+      "connect": {
+        "name": "oi_connect",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 60 L 18 20 L 82 20 L 82 60 L 18 60 Z\"/><path d=\"M 50 80 L 50 60\"/><path d=\"M 50 80 L 50 90\"/></svg>",
+        "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 48 L 18 16 L 82 16 L 82 48 L 18 48 Z\"/><path d=\"M 50 64 L 50 48\"/><path d=\"M 50 64 L 50 72\"/></svg>"
+      }
+    }
   },
   "∅": {
     "name": "null_v",

@@ -378,6 +378,23 @@ function makeGlyph(token, slot, partner) {
         if (!rlPair || slot === "bottom") ccForm = form.variants.cluster;
       }
     }
+    // A cluster form that also carries a connection stroke swaps to its
+    // connect variant when the C-C partner accepts it — the same partner gate
+    // as the vowels below, but on top of the cluster body.
+    if (ccForm && form.variants.clusterConnect && partner != null) {
+      const pE = GLYPHS[parseSymbol(partner).sym];
+      if (pE && pE.acceptsConnect) ccForm = form.variants.clusterConnect;
+    }
+    // The connection variant (base + a stroke to the seam) is drawn only when
+    // the block partner is a consonant that accepts it — so the stroke lands
+    // on the partner's ink (/t/, /z/) and never pokes into one that's open at
+    // the seam (/g/, /b/). It rides the same by-slot flip as the base, which
+    // is what re-aims the stroke toward whichever slot the partner is in.
+    let connForm = null;
+    if (!ccForm && form.variants && form.variants.connect && partner != null) {
+      const pEntry = GLYPHS[parseSymbol(partner).sym];
+      if (pEntry && pEntry.acceptsConnect) connForm = form.variants.connect;
+    }
     // The cluster form is drawn in its bottom-slot orientation (the key's l_b
     // tracing), so it STILL flips top-to-bottom when it lands in a TOP slot.
     // An explicit `_c` has no slot to read, so it shows bottom-oriented (as
@@ -393,7 +410,8 @@ function makeGlyph(token, slot, partner) {
     if (flipped) span.classList.add("avatarian-flipped");
     // A few glyphs redraw in a C-C block (see clusterForm): /s/'s point
     // insets, /z/ drops its dots.
-    const base = ccForm ? ccForm.svg : form.svg;
+    const drawForm = ccForm || connForm || form;
+    const base = drawForm.svg;
     const svg = isClusterPartner(partner) ? clusterForm(sym, base, partner, slot, flipped) : base;
     // Both drawings ride along and CSS shows one. The flat copy is the
     // same glyph re-laid-out at 4/5 height rather than a squashed copy
@@ -403,7 +421,7 @@ function makeGlyph(token, slot, partner) {
     // The <svg> elements are tagged directly rather than wrapped: a
     // wrapper <span> is inline, cannot take a height, and collapses the
     // SVG inside it to nothing.
-    span.innerHTML = svg + (ccForm ? (ccForm.flat || "") : (form.flat || ""));
+    span.innerHTML = svg + (drawForm.flat || "");
     const drawings = span.querySelectorAll("svg");
     drawings[0].classList.add("g-square");
     if (drawings[1]) drawings[1].classList.add("g-flat");
