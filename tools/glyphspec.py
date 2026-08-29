@@ -499,6 +499,22 @@ def _edge_target(x, y, dx, dy, w, h):
     return (x + t * dx, y + t * dy)
 
 
+def _port_d(node, frame, w, h, vec):
+    """One port stroke's `d`. The node end is pulled IN by half the stroke
+    width so the square cap lands back exactly on the node instead of
+    overshooting it — otherwise the cap leaves a little tick past the corner
+    where the port meets the glyph's own ink. The seam end is left long, so
+    its cap still overlaps the partner."""
+    import math
+    tx, ty = _edge_target(node["x"], node["y"], vec[0], vec[1], w, h)
+    p0, p1 = frame.pt(node), (frame.x(tx), frame.y(ty))
+    dx, dy = p1[0] - p0[0], p1[1] - p0[1]
+    dist = math.hypot(dx, dy)
+    if dist > SW / 2:
+        p0 = (p0[0] + dx / dist * (SW / 2), p0[1] + dy / dist * (SW / 2))
+    return f'M {num(p0[0])} {num(p0[1])} L {num(p1[0])} {num(p1[1])}'
+
+
 def connection_paths(design, frame):
     """The extension strokes for every connect-marked node, as `d` strings."""
     w, h = grid_for(design.get("type", "consonant"))
@@ -507,13 +523,9 @@ def connection_paths(design, frame):
         if shape.get("kind") == "dot":
             continue
         for node in shape.get("nodes", []):
-            key = node.get("connect")
-            vec = CONNECT_DIRS.get(key)
-            if not vec:
-                continue
-            tx, ty = _edge_target(node["x"], node["y"], vec[0], vec[1], w, h)
-            p0, p1 = frame.pt(node), (frame.x(tx), frame.y(ty))
-            out.append(f'M {num(p0[0])} {num(p0[1])} L {num(p1[0])} {num(p1[1])}')
+            vec = CONNECT_DIRS.get(node.get("connect"))
+            if vec:
+                out.append(_port_d(node, frame, w, h, vec))
     return out
 
 
@@ -529,12 +541,9 @@ def connection_ports(design, frame):
             continue
         for node in shape.get("nodes", []):
             vec = CONNECT_DIRS.get(node.get("connect"))
-            if not vec:
-                continue
-            tx, ty = _edge_target(node["x"], node["y"], vec[0], vec[1], w, h)
-            p0, p1 = frame.pt(node), (frame.x(tx), frame.y(ty))
-            d = f'M {num(p0[0])} {num(p0[1])} L {num(p1[0])} {num(p1[1])}'
-            out.setdefault(num(node["x"]), []).append(d)
+            if vec:
+                out.setdefault(num(node["x"]), []).append(
+                    _port_d(node, frame, w, h, vec))
     return {col: " ".join(ds) for col, ds in out.items()}
 
 

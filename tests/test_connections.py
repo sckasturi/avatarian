@@ -43,9 +43,11 @@ class Body(unittest.TestCase):
 
     def test_connect_adds_the_extension_stroke(self):
         body = g.body(self._cons("down"))
-        # the drawn stroke, then the extension from the node to the edge
+        # the drawn stroke, then the extension to the edge — its node end
+        # pulled in half a stroke width (58 -> 62.5) so the square cap lands
+        # back on the node instead of ticking past the corner.
         self.assertIn('<path d="M 50 26 L 50 58"/>', body)
-        self.assertIn('<path d="M 50 58 L 50 90"/>', body)
+        self.assertIn('<path d="M 50 62.5 L 50 90"/>', body)
 
     def test_a_plain_node_adds_nothing(self):
         self.assertEqual(g.body(self._cons()).count("<path"), 1)

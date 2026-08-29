@@ -276,7 +276,9 @@ function edgeTarget(x, y, dx, dy, w, h) {
   return [x + t * dx, y + t * dy];
 }
 
-/** The extension `d` strings for every connect-marked node. */
+/** The extension `d` strings for every connect-marked node. The node end is
+ *  pulled in by half the stroke width so the square cap lands back on the
+ *  node — no tick past the corner. Mirror of glyphspec._port_d. */
 function connectionPaths(design, f) {
   const [w, h] = gridFor(design.type || "consonant");
   const out = [];
@@ -286,7 +288,14 @@ function connectionPaths(design, f) {
       const vec = CONNECT_DIRS[n.connect];
       if (!vec) continue;
       const [tx, ty] = edgeTarget(n.x, n.y, vec[0], vec[1], w, h);
-      out.push(`M ${num(fx(f, n.x))} ${num(fy(f, n.y))} L ${num(fx(f, tx))} ${num(fy(f, ty))}`);
+      let x0 = fx(f, n.x), y0 = fy(f, n.y);
+      const x1 = fx(f, tx), y1 = fy(f, ty);
+      const dx = x1 - x0, dy = y1 - y0, dist = Math.hypot(dx, dy);
+      if (dist > GEO.SW / 2) {
+        x0 += dx / dist * (GEO.SW / 2);
+        y0 += dy / dist * (GEO.SW / 2);
+      }
+      out.push(`M ${num(x0)} ${num(y0)} L ${num(x1)} ${num(y1)}`);
     }
   }
   return out;
