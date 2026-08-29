@@ -6,7 +6,6 @@
     5,
     4
   ],
-  "flips": true,
   "rows": 3,
   "notes": "ə in its TOP-slot form. The bottom form is this mirrored, and the renderer derives it. This drawing used to be called `nurse` and ship as a separate sound /ɜ/; the two turned out to be one letter in its two slot orientations, point-for-point mirrors including the dots.",
   "shapes": [
@@ -303,5 +302,6 @@
       "size": "m"
     }
   ],
-  "updated": "2026-08-29T02:04:21Z"
+  "updated": "2026-08-06T02:18:42Z",
+  "flips": true
 }
