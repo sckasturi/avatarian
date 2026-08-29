@@ -547,6 +547,9 @@ const App = {
     $("#snap").addEventListener("change", (e) => { Editor.snap = Number(e.target.value); });
     $("#undo").addEventListener("click", () => this.undo());
     $("#redo").addEventListener("click", () => this.redo());
+    // Like clear, no dialog — it's an ordinary commit, so ⌘Z restores the
+    // edits it discarded.
+    $("#revert").addEventListener("click", () => Editor.revertToShipped());
     // No confirmation dialog. Clearing is an ordinary commit, so ⌘Z
     // brings it straight back — and confirm() is auto-dismissed in some
     // embedded browsers, which silently turned this button into a

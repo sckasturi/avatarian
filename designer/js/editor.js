@@ -255,21 +255,40 @@ const Editor = {
   /** Start from the glyph the set currently ships, instead of a blank
    *  lattice. Read through the fitter, so what lands is a proper design
    *  and not a copy of the old path's coordinates. */
-  fromCurrentGlyph() {
-    // A vowel's flat copy is the one that matches the editor's frame;
-    // fall back to the square drawing, read with the square frame.
+  /** The shipped glyph read back into editable shapes, or null. A vowel's
+   *  flat copy matches the editor's frame; else the square drawing. */
+  _shippedShapes() {
     const wantFlat = !GEOM.isTall(this.kind) && !!this.underlays.curFlat;
     const src = wantFlat ? this.underlays.curFlat : this.underlays.cur;
-    if (!src) return this.onHint("this sound has no drawn glyph to start from");
-
+    if (!src) return null;
     const frame = GEOM.frameFor(this.kind, wantFlat ? "flat" : "square");
     const shapes = Fit.fromSVG(src, frame, this.fitOpts());
-    if (!shapes.length) return this.onHint("couldn't read anything off that glyph");
+    return shapes.length ? shapes : null;
+  },
 
+  fromCurrentGlyph() {
+    const shapes = this._shippedShapes();
+    if (!shapes) return this.onHint("this sound has no drawn glyph to start from");
     Store.commit((d) => { d.shapes = shapes; });
     this.selectShape(0);
     this.onHint(`read ${shapes.length} shape${shapes.length === 1 ? "" : "s"}`
       + " off the current glyph — ⌘Z to undo");
+  },
+
+  /** Throw away this design's edits and match the shipped glyph again:
+   *  its shapes reread from what the build currently draws, and the
+   *  design-carried overrides (flips, rows, connect ports) cleared. One
+   *  undo brings the edits back. */
+  revertToShipped() {
+    const shapes = this._shippedShapes();
+    if (!shapes) return this.onHint("this sound has no shipped glyph to revert to");
+    Store.commit((d) => {
+      d.shapes = shapes;
+      delete d.flips;
+      delete d.rows;
+    });
+    this.select(null);
+    this.onHint("reverted to the shipped glyph — ⌘Z to undo");
   },
 
   selectShape(i) {
