@@ -168,6 +168,10 @@ and made-up words too.</p>
     <label class="ink-ctl" title="Colour of the exported glyphs. Follows the page unless you pick one.">
       <input type="color" id="inkColour" aria-label="Glyph colour">
     </label>
+    <label class="label-ctl" title="Add the English and IPA under each word in the exported/copied image">
+      <input type="checkbox" id="labelToggle"> <span>labels</span>
+    </label>
+    <button type="button" id="shareBtn" title="Copy a link that reopens this exact transcription — the glyphs, not a picture">Share</button>
     <button type="button" id="copyBtn" title="Copy the drawing as an image">Copy</button>
     <button type="button" id="pngBtn" title="Download as a PNG image">PNG</button>
     <button type="button" id="svgBtn" title="Download as an SVG, which stays sharp at any size">SVG</button>
@@ -510,11 +514,33 @@ function exportSVG(opts) {
   const ink = (opts && opts.ink) || $("inkColour").value;
 
   const boxes = glyphs.map((g) => ({ g, r: g.getBoundingClientRect() }));
+
+  // The English + IPA labels, when the "labels" box is on. They already
+  // sit under each word in the DOM, so read them straight off the laid-out
+  // page — same principle as the glyphs, so the image matches the screen
+  // and multi-row wrapping is handled for free.
+  const wantLabels = (opts && "captions" in opts)
+    ? opts.captions
+    : !!($("labelToggle") && $("labelToggle").checked);
+  const caps = [];
+  if (wantLabels) {
+    document.querySelectorAll("#avatarianOutput .avatarian-unit .cap-en, " +
+      "#avatarianOutput .avatarian-unit .cap-ipa").forEach((el) => {
+      const txt = el.textContent.trim();
+      const r = el.getBoundingClientRect();
+      if (!txt || !r.width) return;
+      const cs = getComputedStyle(el);
+      caps.push({ txt, r, size: parseFloat(cs.fontSize) || 12,
+        family: cs.fontFamily, weight: cs.fontWeight });
+    });
+  }
+
+  const rects = boxes.map(b => b.r).concat(caps.map(c => c.r));
   const pad = 10;
-  const minX = Math.min(...boxes.map(b => b.r.left)) - pad;
-  const minY = Math.min(...boxes.map(b => b.r.top)) - pad;
-  const w = Math.max(...boxes.map(b => b.r.right)) - minX + pad;
-  const h = Math.max(...boxes.map(b => b.r.bottom)) - minY + pad;
+  const minX = Math.min(...rects.map(r => r.left)) - pad;
+  const minY = Math.min(...rects.map(r => r.top)) - pad;
+  const w = Math.max(...rects.map(r => r.right)) - minX + pad;
+  const h = Math.max(...rects.map(r => r.bottom)) - minY + pad;
 
   // Transparent background, always. The glyphs are the artwork.
   const parts = [];
@@ -546,6 +572,20 @@ function exportSVG(opts) {
         `translate(0,${(y * 2 + r.height).toFixed(2)}) scale(1,-1)`);
     }
     parts.push(el.outerHTML);
+  });
+
+  // Labels last, so they sit over the transparent background in the same
+  // ink as the glyphs. Centred under each word from its own rect; the
+  // baseline is nudged down from the top by ~0.8em, which reads right for
+  // a single line at these sizes.
+  const xmlEsc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  caps.forEach((c) => {
+    const x = (c.r.left - minX + c.r.width / 2).toFixed(2);
+    const y = (c.r.top - minY + c.size * 0.8).toFixed(2);
+    parts.push(`<text x="${x}" y="${y}" text-anchor="middle" ` +
+      `font-family="${xmlEsc(c.family)}" font-size="${c.size.toFixed(1)}" ` +
+      `font-weight="${c.weight}" fill="${ink}">${xmlEsc(c.txt)}</text>`);
   });
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${w.toFixed(0)}" ` +
@@ -762,6 +802,33 @@ function exportFailed(btn, what, err) {
 // reading it after an await gives null — which is how the PNG button
 // silently stopped reporting anything and threw an unhandled TypeError
 // inside flash() instead.
+// Share the transcription itself — the sounds, not a picture — so it
+// reopens live and editable for whoever gets the link. The sounds box
+// already carries each word's English in parentheses, so one field
+// round-trips the whole thing (see `?s=` on load below).
+function shareURL() {
+  const sounds = $("soundsInput").value.trim();
+  if (!sounds) return null;
+  return location.origin + location.pathname + "?s=" + encodeURIComponent(sounds);
+}
+$("shareBtn").addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  const url = shareURL();
+  if (!url) { $("outHint").textContent = "Nothing to share yet — type something first."; return; }
+  try {
+    await navigator.clipboard.writeText(url);
+    flash(btn, "Link copied");
+    $("outHint").textContent = "Share link copied — it reopens this transcription.";
+  } catch (err) {
+    // No clipboard (file://, or permission denied): put the link where it
+    // can be selected and copied by hand rather than failing silently.
+    $("soundsInput").value = url;
+    fitSounds();
+    $("soundsInput").select();
+    $("outHint").textContent = "Couldn't reach the clipboard — the link is in the box, copy it.";
+  }
+});
+
 $("svgBtn").addEventListener("click", (e) => {
   const btn = e.currentTarget;
   try {
@@ -1027,10 +1094,22 @@ buildKeyGrid();
 // glyph lands at the caret and is spaced off exactly like a typed one.
 createDrawPad($("drawpad"), { onPick: (hit) => appendSound(hit.code), limit: 5 });
 
-// Start with something on screen. An empty output looks like a broken
-// page, and the first thing anyone should see is what the tool does.
-$("englishInput").value = $("englishInput").value || "Katara";
-convert();
+// A shared link (`?s=<sounds>`) reopens someone else's exact
+// transcription: load the sounds straight in, mark them hand-tuned so the
+// English box can't overwrite them, and reconstruct the English caption
+// text for context. Otherwise start with something on screen — an empty
+// output looks like a broken page.
+const sharedSounds = new URLSearchParams(location.search).get("s");
+if (sharedSounds) {
+  $("soundsInput").value = sharedSounds;
+  markEdited(true);
+  const en = soundTextToWords(sharedSounds).map(w => w.word).filter(Boolean).join(" ");
+  if (en) $("englishInput").value = en;
+  draw();
+} else {
+  $("englishInput").value = $("englishInput").value || "Katara";
+  convert();
+}
 fitSounds();
 </script>
 

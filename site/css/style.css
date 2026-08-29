@@ -259,6 +259,11 @@ button.primary:hover { opacity: 0.9; }
   background: var(--hover); color: var(--ink); border-color: var(--accent);
 }
 .out-bar button:disabled { opacity: 0.4; cursor: default; }
+.out-bar .label-ctl {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.82rem; color: var(--muted); cursor: pointer; user-select: none;
+}
+.out-bar .label-ctl input { cursor: pointer; margin: 0; }
 .size-ctl { display: inline-flex; align-items: center; gap: 6px; color: var(--faint); }
 .size-ctl input { width: 92px; }
 /* Export colour. Follows the page unless explicitly picked; the accent
