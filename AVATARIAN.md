@@ -21,7 +21,7 @@ tables here as a readable snapshot of those files.
 Avatarian is the **conscript** (constructed script) introduced for the
 new *Avatar: The Last Airbender* film. It is **phonetic**: it encodes IPA
 *sounds*, not English letters. "Katara" is written from its pronunciation
-/k ə t ɑ r ə/, and any spelling that sounds the same is written the same.
+/k ə t ɑ ɹ ə/, and any spelling that sounds the same is written the same.
 
 Everything in this project's pipeline is IPA-first; English is an input
 convenience that is converted to IPA before anything is drawn.
@@ -160,7 +160,7 @@ always a gap on the vowel's **inner** side — between the vowel and its
 partner, never at the block's outer edge. This holds even for a vowel that
 mirrors (§6): a flipping 3-row vowel (æ, ə, aɪ) in a bottom slot is drawn
 upside-down, which would carry its empty row to the outer edge, so it is
-shifted back one row to keep the gap inner. "fire" /f aɪ ə r/ is the
+shifted back one row to keep the gap inner. "fire" /f aɪ ə ɹ/ is the
 visible case — aɪ's bar sits on the baseline, not a row above it.
 
 ### The shared lattice edge, in CSS
@@ -229,7 +229,7 @@ drawing. There are three separate reasons a glyph turns.
 > **æ ɑ ɪ e aɪ ə**
 
 (/l/ is **not** in this set: it stays plain beside a vowel — school, all,
-lord, still. /l/ and /r/ change shape by the cluster-form rule above, not
+lord, still. /l/ and /ɹ/ change shape by the cluster-form rule above, not
 by slot.)
 
 The bar for this list is both forms attested in known slots (e.g. /aɪ/:
@@ -239,18 +239,18 @@ bottom-slot form rather than the top; only the saved art is the other way
 up. (`ɔɪ` also mirrors by slot in the shipped set, but with no evidence
 either way — see §13.)
 
-**By company — the approximants, and /l/ /r/'s cluster form.** In a
-two-consonant block /l/ and /r/ do **not** merely flip — they take an
+**By company — the approximants, and /l/ /ɹ/'s cluster form.** In a
+two-consonant block /l/ and /ɹ/ do **not** merely flip — they take an
 independently-drawn **cluster form** (a second body, read off the key's
-`l_b` tracing; /r/'s is /l/'s mirror). /l/ takes its cluster form in *every*
-cluster; /r/ in every cluster **except beside /l/**, where the pair splits:
+`l_b` tracing; /ɹ/'s is /l/'s mirror). /l/ takes its cluster form in *every*
+cluster; /ɹ/ in every cluster **except beside /l/**, where the pair splits:
 the **top** glyph keeps its base (vowel-context) form and the **bottom**
 takes the cluster form — `world` = r-base over l-cluster; a hypothetical
 `l/r` would be l-base over r-cluster. The cluster form is drawn in its
 bottom-slot orientation, so it still flips top-to-bottom when it lands in a
-**top** slot (`help`, `milk`). Under a vowel /l/ and /r/ keep their base
+**top** slot (`help`, `milk`). Under a vowel /l/ and /ɹ/ keep their base
 form. **/w/ and /j/ have no cluster form yet** and simply mirror in the C-C
-bottom slot, the way /l/ and /r/ did before this was worked out; the
+bottom slot, the way /l/ and /ɹ/ did before this was worked out; the
 mechanism (`CLUSTERS` in `build_glyphs.py`, `variants.cluster` in the
 manifest) is ready for them when the shapes are drawn.
 
@@ -364,8 +364,8 @@ from reference material; nothing is invented.
 | h | h | h | drawn | |
 | w | w | w | drawn | approximant — mirrors in a C-C bottom slot |
 | j | y | y | drawn | approximant |
-| r | r | r | drawn | approximant |
-| l | l | l | drawn | takes a distinct cluster form in a C-C block (§6); /r/ mirrors it |
+| ɹ | r | r | drawn | approximant — IPA `ɹ`, the American-English rhotic; code/stem stay `r` |
+| l | l | l | drawn | takes a distinct cluster form in a C-C block (§6); /ɹ/ mirrors it |
 | tʃ | ch | ch | drawn | from source outside the key chart |
 | dʒ | j | j_dz | drawn | from source outside the key chart |
 | ʃ | sh | sh | drawn | from source outside the key chart |
@@ -398,8 +398,15 @@ Watch the code/stem mismatch: the SVG **stem** `oo` is /ʊ/ (4-row) while the
 
 **There is no /ɜ/.** Avatarian writes the NURSE vowel and the schwa with a
 single letter; both map to /ə/. IPA `ɜ`/`ɝ`/`ɜr` are accepted as aliases of
-`ə`, with /r/ emitted as a separate segment ("bird" → `ə r`), so the vowel
+`ə`, with /ɹ/ emitted as a separate segment ("bird" → `ə ɹ`), so the vowel
 carries no r-colouring.
+
+**The rhotic is `/ɹ/`, not `/r/`.** The characters speak American English,
+whose r is the alveolar approximant `ɹ` — strict IPA `/r/` is the alveolar
+*trill* (rolled, as in Spanish or Scots), a sound the script never encodes.
+So the phoneme is stored and transcribed as `ɹ`. The readable code and the
+SVG stem stay the plain letter `r` (you still type `r`), the same code/stem-
+vs-IPA split the vowels above use — read the phoneme off the IPA, not the code.
 
 ---
 
@@ -467,10 +474,10 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
   the bottom, for **every** glyph (the upside-down-stored u/ɔ included). The
   only spot the corpus still needs it is **`s$`** in *rest* and *humansitters*
   (/s/ drawn upright above a consonant, the §6 exception). Everything else is
-  derived by rule (§6) — /l/ and /r/ by the cluster-form rule, the rest by
+  derived by rule (§6) — /l/ and /ɹ/ by the cluster-form rule, the rest by
   slot; otherwise `$`/`%` is just a convenience for showing both forms.
 - **`_c`** asks for a glyph's cluster form on its own, with no consonant
-  beside it — `l_c`, `r_c`. Only /l/ and /r/ have one; on anything else the
+  beside it — `l_c`, `r_c`. Only /l/ and /ɹ/ have one; on anything else the
   suffix is ignored. It combines with the orientation marker: bare `r_c` is
   bottom-oriented (as drawn), `r_c$` is top-oriented (flipped), `r_c%` is
   bottom. Mainly for showing the cluster form in a reference table, since in

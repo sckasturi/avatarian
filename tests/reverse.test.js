@@ -145,7 +145,7 @@ test("a query is fast enough to run as you type", (t) => {
   suggestWords(["f", "æ", "n", "i"], 5);          // warm: builds the index
 
   const queries = [
-    ["f", "æ", "n", "i"], ["k", "ə", "t", "ɑ", "r", "ə"],
+    ["f", "æ", "n", "i"], ["k", "ə", "t", "ɑ", "ɹ", "ə"],
     ["m", "ɪ", "s", "ɪ", "ŋ"], ["b", "ɛ", "n", "d", "ɪ", "ŋ"],
     ["p", "l", "i", "z"],
   ];

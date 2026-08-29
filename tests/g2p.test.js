@@ -96,7 +96,7 @@ test("a block never straddles a syllable boundary", () => {
 
   assert.equal(spell("ə k æ d ə m i"), "ə ∅ k æ d ə m i",
     "a vowel does not pair with a consonant that onsets the next syllable");
-  assert.equal(spell("f r oʊ z ə n"), "f r oʊ ∅ z ə n ∅");
+  assert.equal(spell("f ɹ oʊ z ə n"), "f ɹ oʊ ∅ z ə n ∅");
   assert.equal(spell("f aʊ n d"), "f aʊ n d",
     "a coda cluster shares a block");
   assert.equal(spell("p æ n d ə"), "p æ n ∅ d ə",
@@ -106,7 +106,7 @@ test("a block never straddles a syllable boundary", () => {
   assert.equal(spell("æ s k t"), "æ s k t",
     "sk stays together with no vowel after it to onset");
 
-  for (const s of ["ə k æ d ə m i", "f r oʊ z ə n", "p æ n d ə"]) {
+  for (const s of ["ə k æ d ə m i", "f ɹ oʊ z ə n", "p æ n d ə"]) {
     assert.equal(padToBlocks(s.split(" ")).length % 2, 0, `${s} is whole blocks`);
   }
 });

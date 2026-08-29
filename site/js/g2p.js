@@ -16,11 +16,16 @@
  * separate output array that rules can never touch.
  *
  * Coverage strategy, best evidence first:
- *   1. CORPUS     — words somebody has SEEN written (js/corpus.js).
- *   2. EXCEPTIONS — hand dictionary for common irregular words.
- *   3. lexicon    — the bundled CMU dictionary, ~126k words.
- *   4. RULES      — ordered, longest-first grapheme → phoneme rules.
- *   5. FALLBACK   — unmatched characters are skipped, never fatal.
+ *   1. CORPUS      — words somebody has SEEN written (js/corpus.js).
+ *   2. CONVENTIONS — unsourced spellings somebody DECIDED on, finished
+ *                    blocks like the corpus but with no source (corpus.js).
+ *   3. EXCEPTIONS  — hand dictionary for common irregular words.
+ *   4. lexicon     — the bundled CMU dictionary, ~126k words.
+ *   5. RULES       — ordered, longest-first grapheme → phoneme rules.
+ *   6. FALLBACK    — unmatched characters are skipped, never fatal.
+ *
+ * Both of the first two ARE the finished block structure; the rest below
+ * them produce sounds and let pairUp() choose the blocks.
  *
  * The corpus differs from the rest IN KIND, not just in priority. The
  * others answer "what does this word sound like" and let pairUp() decide
@@ -52,16 +57,16 @@
 // reading dressed up as one.
 const EXCEPTIONS = {
   "a": "ə", "one": "w ʌ n", "two": "t u", "said": "s ɛ d", "says": "s ɛ z",
-  "was": "w ʌ z", "were": "w ə r", "has": "h æ z",
-  "here": "h ɪ r", "there": "ð ɛ r", "they": "ð e", "their": "ð ɛ r",
-  "who": "h u", "where": "w ɛ r",
+  "was": "w ʌ z", "were": "w ə ɹ", "has": "h æ z",
+  "here": "h ɪ ɹ", "there": "ð ɛ ɹ", "they": "ð e", "their": "ð ɛ ɹ",
+  "who": "h u", "where": "w ɛ ɹ",
   "some": "s ʌ m", "done": "d ʌ n", "gone": "g ɔ n",
   "does": "d ʌ z", "go": "g oʊ", "so": "s oʊ",
   // Short words ending in -e: the vowel is /i/, NOT a silent e
   "he": "h i", "she": "ʃ i", "we": "w i",
   "hello": "h ɛ l oʊ", "people": "p i p ə l", "again": "ə g ɛ n",
   // -ough is famously irregular; the rule table can only pick one reading
-  "through": "θ r u", "though": "ð oʊ", "thought": "θ ɔ t",
+  "through": "θ ɹ u", "though": "ð oʊ", "thought": "θ ɔ t",
   "enough": "ɪ n ʌ f", "cough": "k ɔ f", "bought": "b ɔ t",
 
   // --- the Avatar vocabulary, NOT YET CHECKED against any sample ---
@@ -72,10 +77,10 @@ const EXCEPTIONS = {
   // here: it moves to corpus/attested.json, which records the observed
   // spelling rather than a reading of it, and which wins above this
   // table. See CORPUS.md.
-  "world": "w ə r l d", "water": "w ɔ t ə r",
-  "earth": "ə r θ", "air": "e r", "avatar": "æ v ə t ɑ r",
+  "world": "w ə ɹ l d", "water": "w ɔ t ə ɹ",
+  "earth": "ə ɹ θ", "air": "e ɹ", "avatar": "æ v ə t ɑ ɹ",
   "sokka": "s ɑ k ə",
-  "korra": "k ɔ r ə", "iroh": "aɪ r oʊ", "azula": "ə z u l ə",
+  "korra": "k ɔ ɹ ə", "iroh": "aɪ ɹ oʊ", "azula": "ə z u l ə",
   // `katara`, `bending` and `metalbending` were here and are ATTESTED,
   // so they left with the other sixteen. `metalbending` had been kept
   // deliberately as a fallback for corpus.js failing to load; that is
@@ -97,15 +102,15 @@ const EXCEPTIONS = {
   // Don't "fix" firebending to metalbending — the family is meant to disagree
   // with that one word. (Pinning bend-ing would need explicit block structure
   // this phoneme-only table can't carry anyway.)
-  "airbending": "e r b ɛ n d ɪ ŋ", "waterbending": "w ɔ t ə r b ɛ n d ɪ ŋ",
-  "earthbending": "ə r θ b ɛ n d ɪ ŋ", "firebending": "f aɪ ə r b ɛ n d ɪ ŋ",
+  "airbending": "e ɹ b ɛ n d ɪ ŋ", "waterbending": "w ɔ t ə ɹ b ɛ n d ɪ ŋ",
+  "earthbending": "ə ɹ θ b ɛ n d ɪ ŋ", "firebending": "f aɪ ə ɹ b ɛ n d ɪ ŋ",
   "bloodbending": "b l ʌ d b ɛ n d ɪ ŋ",
-  "airbender": "e r b ɛ n d ə r", "waterbender": "w ɔ t ə r b ɛ n d ə r",
-  "earthbender": "ə r θ b ɛ n d ə r", "firebender": "f aɪ ə r b ɛ n d ə r",
-  "bender": "b ɛ n d ə r", "benders": "b ɛ n d ə r z",
+  "airbender": "e ɹ b ɛ n d ə ɹ", "waterbender": "w ɔ t ə ɹ b ɛ n d ə ɹ",
+  "earthbender": "ə ɹ θ b ɛ n d ə ɹ", "firebender": "f aɪ ə ɹ b ɛ n d ə ɹ",
+  "bender": "b ɛ n d ə ɹ", "benders": "b ɛ n d ə ɹ z",
   "kyoshi": "k i oʊ ʃ i", "omashu": "oʊ m ɑ ʃ u",
-  "sozin": "s oʊ z ɪ n", "roku": "r oʊ k u", "ozai": "oʊ z aɪ",
-  "suki": "s u k i", "yue": "j u e", "haru": "h ɑ r u",
+  "sozin": "s oʊ z ɪ n", "roku": "ɹ oʊ k u", "ozai": "oʊ z aɪ",
+  "suki": "s u k i", "yue": "j u e", "haru": "h ɑ ɹ u",
   "unagi": "u n ɑ g i", "agni": "ɑ g n i", "sifu": "ʃ i f u",
 };
 
@@ -150,11 +155,11 @@ function isVowel(sym) {
 
 /** Consonant clusters English allows at the start of a syllable. */
 const ONSET_CLUSTERS = new Set([
-  "pl", "pr", "bl", "br", "tr", "dr", "kl", "kr", "gl", "gr",
+  "pl", "pɹ", "bl", "bɹ", "tɹ", "dɹ", "kl", "kɹ", "gl", "gɹ",
   "tw", "dw", "kw", "gw", "θw", "sw",
-  "fl", "fr", "θr", "ʃr", "sl", "sm", "sn", "sp", "st", "sk", "sf",
+  "fl", "fɹ", "θɹ", "ʃɹ", "sl", "sm", "sn", "sp", "st", "sk", "sf",
   "hj", "kj", "pj", "bj", "fj", "vj", "mj", "nj", "lj",
-  "spl", "spr", "str", "skr", "skw",
+  "spl", "spɹ", "stɹ", "skɹ", "skw",
 ]);
 
 /**
@@ -215,10 +220,10 @@ const RULES = [
   ["augh", ["æ", "f"]],
   ["dge", ["dʒ"]],
   ["tch", ["tʃ"]],
-  ["air", ["ɛ", "r"]],
-  ["are$", ["ɛ", "r"]],
-  ["ire", ["aɪ", "ə", "r"]],
-  ["ure", ["j", "ʊ", "r"]],
+  ["air", ["ɛ", "ɹ"]],
+  ["are$", ["ɛ", "ɹ"]],
+  ["ire", ["aɪ", "ə", "ɹ"]],
+  ["ure", ["j", "ʊ", "ɹ"]],
   ["sch", ["s", "k"]], // must precede "ch" — otherwise "school" → /s tʃ u l/
   ["ck", ["k"]],
   ["ph", ["f"]],
@@ -229,7 +234,7 @@ const RULES = [
   ["ng", ["ŋ"]],
   ["qu", ["k", "w"]],
   ["wh", ["w"]],
-  ["wr", ["r"]],
+  ["wr", ["ɹ"]],
   ["kn", ["n"]],
   ["oo", ["u"]],
   ["ee", ["i"]],
@@ -245,11 +250,11 @@ const RULES = [
   ["oi", ["ɔɪ"]],
   ["au", ["ɔ"]],
   ["aw", ["ɔ"]],
-  ["ar", ["ɑ", "r"]],
-  ["er", ["ə", "r"]],
-  ["ir", ["ə", "r"]],
-  ["ur", ["ə", "r"]],
-  ["or", ["ɔ", "r"]],
+  ["ar", ["ɑ", "ɹ"]],
+  ["er", ["ə", "ɹ"]],
+  ["ir", ["ə", "ɹ"]],
+  ["ur", ["ə", "ɹ"]],
+  ["or", ["ɔ", "ɹ"]],
   ["o$", ["oʊ"]],
   ["y$", ["i"]],
   ["a$", ["ə"]],
@@ -265,7 +270,7 @@ const RULES = [
   ["u", ["ʌ"]],
   ["b", ["b"]], ["d", ["d"]], ["f", ["f"]], ["g", ["g"]],
   ["h", ["h"]], ["k", ["k"]], ["l", ["l"]], ["m", ["m"]],
-  ["n", ["n"]], ["p", ["p"]], ["r", ["r"]], ["s", ["s"]],
+  ["n", ["n"]], ["p", ["p"]], ["r", ["ɹ"]], ["s", ["s"]],
   ["t", ["t"]], ["v", ["v"]], ["w", ["w"]], ["z", ["z"]],
   ["'", []],
 ];
@@ -329,6 +334,20 @@ function corpusWords() {
   return (src && src.words) || {};
 }
 
+/**
+ * Conventions: spellings somebody DECIDED on rather than SAW (corpus.js,
+ * beside `words`). They are not attestations — no source, no count — so
+ * they are kept apart from the corpus here just as they are in the file,
+ * and `corpusWords()` above never returns one. But they carry finished
+ * block structure like a corpus entry, so the lookup treats a convention
+ * the same way it treats an attested word: it already IS the blocks.
+ * Empty when the file has none, which is the usual case.
+ */
+function conventionWords() {
+  const src = (typeof window !== "undefined" && window.AVATARIAN_CORPUS) || null;
+  return (src && src.conventions) || {};
+}
+
 /** Longest corpus key, in words. 1 until a phrase entry is added. */
 let CORPUS_SPAN = null;
 
@@ -368,6 +387,16 @@ function lookupWord(word) {
   // out. Padding it again would be second-guessing the observation.
   const attested = corpusWords()[w];
   if (attested) return { ipa: attested.ipa.slice(), tier: "attested", entry: attested };
+
+  // A convention is a decided spelling, not a seen one — below the
+  // attested corpus (a real sighting still wins), but above everything
+  // derived. It too already IS the blocks, so it is returned whole; its
+  // own tier keeps it honest, and its absence from corpusWords() is what
+  // stops the site marking it "attested".
+  const convention = conventionWords()[w];
+  if (convention) {
+    return { ipa: convention.ipa.slice(), tier: "convention", entry: convention };
+  }
 
   // EXCEPTIONS next: it carries the Avatar vocabulary and the hand
   // corrections, which should win over a general dictionary.
@@ -436,6 +465,20 @@ function derivedLookup(word) {
     return { ipa: out, tier: "derived" };
   }
   return { ipa: rulesToIPA(w), tier: "guessed" };
+}
+
+/**
+ * The FINISHED spelling the model would draw, ignoring both the corpus
+ * and the conventions: the model's sounds, run through the same face-vowel
+ * and whole-blocks padding a real lookup uses. `derivedLookup` gives the
+ * raw phonemes; this gives what they become on the page.
+ *
+ * The workbench's conventions editor starts from this — you type a name,
+ * get the model's spelling with its nulls in place, and change the one
+ * slot it got wrong rather than typing the whole thing out.
+ */
+function modelSpelling(word) {
+  return spellSounds(derivedLookup(word).ipa);
 }
 
 /**
@@ -548,7 +591,7 @@ function sentenceToIPA(text) {
 
 if (typeof module !== "undefined") {
   module.exports = {
-    wordToIPA, lookupWord, derivedLookup, sentenceToIPA, normaliseWord,
-    EXCEPTIONS, hasLexicon, corpusWords,
+    wordToIPA, lookupWord, derivedLookup, modelSpelling, sentenceToIPA,
+    normaliseWord, EXCEPTIONS, hasLexicon, corpusWords, conventionWords,
   };
 }

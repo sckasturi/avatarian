@@ -40,6 +40,21 @@
     </div>
     <ul class="source-list" id="sourceList"></ul>
   </div>
+
+  <!-- Spellings you've DECIDED on, not ones you've SEEN. They live in a
+       separate file (corpus/conventions.json) and save on their own, so
+       an unsourced guess can never slip into the attested corpus — it
+       spells the word your way in the tool without pretending anybody
+       read it. -->
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Conventions</h2>
+      <button type="button" id="newConvention" class="small">+ new</button>
+    </div>
+    <ul class="conv-list" id="convList"></ul>
+    <p class="fine conv-blurb">Unsourced — how you think a word is spelled.
+      Spells it your way in the tool; never enters the corpus.</p>
+  </div>
 </aside>
 
 <!-- ------------------------------------------------------------------ -->
@@ -317,6 +332,84 @@ slot, so the block structure is still recorded.">*&nbsp;unreadable</button>
         about this spelling</span></span>
       <textarea id="note" rows="3"></textarea>
     </label>
+  </section>
+
+  <!-- The conventions editor. It is deliberately NOT the entry editor with
+       the source removed: a convention has no source, no confidence, no
+       sightings and no count, because it is a decision rather than an
+       observation. It saves on its own, to its own file, so the two can
+       never be confused for one another. -->
+  <section class="panel" id="convEditor" hidden>
+    <div class="panel-head">
+      <h2 id="convTitle">New convention</h2>
+      <button type="button" id="deleteConv" class="small danger" hidden>delete</button>
+      <span class="spacer"></span>
+      <button type="button" id="closeConv" class="small">close</button>
+    </div>
+
+    <p class="fine conv-note">A spelling you've <strong>decided</strong> on —
+      no source, because nobody has seen it written. It spells the word your
+      way in the tool, but it is not an attestation and never enters the
+      corpus. One word gets one convention.</p>
+
+    <label class="field">
+      <span class="field-label">Word <span class="fine">— the English word
+        this spells</span></span>
+      <div class="english-row">
+        <input type="text" id="convKey" autocomplete="off" placeholder="kyoshi" />
+        <button type="button" id="convDerive" class="small">fill from model ↓</button>
+      </div>
+    </label>
+
+    <label class="field">
+      <span class="field-label">Avatarian spelling
+        <span class="fine">— finished blocks, two slots each, nulls written.
+          Fill it from the model, then fix the slot it got wrong.</span></span>
+      <div class="sound-tools">
+        <button type="button" class="tool-btn" data-insert="0"
+                title="Null — a slot with no sound in it">0&nbsp;null</button>
+        <button type="button" class="tool-btn" data-insert="*"
+                title="A glyph you can see but cannot make out.">*&nbsp;unreadable</button>
+        <button type="button" class="tool-btn" data-insert="$"
+                title="Force the glyph's top form">$&nbsp;top form</button>
+        <button type="button" class="tool-btn" data-insert="%"
+                title="Force the glyph's bottom form">%&nbsp;bottom form</button>
+        <span class="spacer"></span>
+        <button type="button" class="tool-btn" id="convDelToken" title="Remove the last sound">⌫</button>
+        <button type="button" class="tool-btn" id="convClear">clear</button>
+      </div>
+      <textarea id="convSpelling" rows="2" spellcheck="false"
+        placeholder="k i oh 0 sh i"></textarea>
+    </label>
+
+    <div class="preview">
+      <div class="avatarian-output" id="convPreview"></div>
+      <p class="preview-note" id="convPreviewNote"></p>
+    </div>
+
+    <!-- The point of a convention is usually that the model got one slot
+         wrong, so the model's own spelling sits right beside yours. -->
+    <div class="compare" id="convCompare" hidden>
+      <h3>Against the model</h3>
+      <div id="convCompareBody"></div>
+    </div>
+
+    <label class="field">
+      <span class="field-label">Gloss <span class="fine">— optional, how it's
+        written in English</span></span>
+      <input type="text" id="convGloss" placeholder="Kyoshi" autocomplete="off" />
+    </label>
+
+    <label class="field">
+      <span class="field-label">Note <span class="fine">— why this spelling,
+        and what the model gets wrong</span></span>
+      <textarea id="convNote" rows="3"></textarea>
+    </label>
+
+    <div class="import-actions">
+      <button type="button" id="saveConv" class="primary">save conventions</button>
+      <span class="save-state" id="convSaveState"></span>
+    </div>
   </section>
 </main>
 

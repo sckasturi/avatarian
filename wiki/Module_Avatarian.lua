@@ -5,7 +5,7 @@
 -- render.js; guarded by tests/lua_golden.test.js (JS vs Lua over the corpus).
 local p = {}
 
-local READABLE = {["a"]="æ", ["e"]="ɛ", ["i"]="ɪ", ["u"]="ʌ", ["ah"]="ɑ", ["uh"]="ə", ["ee"]="i", ["ey"]="e", ["eye"]="aɪ", ["oh"]="oʊ", ["oo"]="u", ["uu"]="ʊ", ["ow"]="aʊ", ["aw"]="ɔ", ["oy"]="ɔɪ", ["p"]="p", ["b"]="b", ["t"]="t", ["d"]="d", ["k"]="k", ["g"]="g", ["m"]="m", ["n"]="n", ["ng"]="ŋ", ["ch"]="tʃ", ["j"]="dʒ", ["f"]="f", ["v"]="v", ["th"]="θ", ["dh"]="ð", ["s"]="s", ["z"]="z", ["sh"]="ʃ", ["zh"]="ʒ", ["h"]="h", ["w"]="w", ["y"]="j", ["r"]="r", ["l"]="l", ["kh"]="x", ["nul"]="∅"}
+local READABLE = {["a"]="æ", ["e"]="ɛ", ["i"]="ɪ", ["u"]="ʌ", ["ah"]="ɑ", ["uh"]="ə", ["ee"]="i", ["ey"]="e", ["eye"]="aɪ", ["oh"]="oʊ", ["oo"]="u", ["uu"]="ʊ", ["ow"]="aʊ", ["aw"]="ɔ", ["oy"]="ɔɪ", ["p"]="p", ["b"]="b", ["t"]="t", ["d"]="d", ["k"]="k", ["g"]="g", ["m"]="m", ["n"]="n", ["ng"]="ŋ", ["ch"]="tʃ", ["j"]="dʒ", ["f"]="f", ["v"]="v", ["th"]="θ", ["dh"]="ð", ["s"]="s", ["z"]="z", ["sh"]="ʃ", ["zh"]="ʒ", ["h"]="h", ["w"]="w", ["y"]="j", ["r"]="ɹ", ["l"]="l", ["kh"]="x", ["nul"]="∅"}
 local READABLE_ALIASES = {["o"]="ɑ", ["ay"]="e", ["ai"]="e", ["au"]="ɔ", ["or"]="ɔ", ["er"]="ə", ["ur"]="ə", ["ir"]="ə", ["igh"]="aɪ", ["schwa"]="ə", ["ax"]="ə", ["sh'"]="ʃ"}
 local SOUND_ALIASES = {["0"]="∅", ["_"]="∅", ["-"]="∅", ["0c"]="∅c", ["eɪ"]="e", ["ej"]="e", ["ɝ"]="ə", ["ɜr"]="ə", ["ɜ"]="ə", ["ɑː"]="ɑ", ["iː"]="i", ["uː"]="u"}
 local MARK_WIDE = {["?"]=true}
@@ -32,7 +32,7 @@ local GLYPH = {
   ["h"]={name="h", type="consonant"},
   ["w"]={name="w", type="consonant"},
   ["j"]={name="y", type="consonant"},
-  ["r"]={name="r", type="consonant", cluster=true},
+  ["ɹ"]={name="r", type="consonant", cluster=true},
   ["l"]={name="l", type="consonant", cluster=true},
   ["x"]={name="kh", type="consonant"},
   ["i"]={name="i", type="vowel"},
@@ -62,7 +62,7 @@ local GLYPH = {
 -- the logic beside the code that reads them (render.js keeps them the same way).
 local NULL_V, NULL_C = "∅", "∅c"
 local DRAWN_BOTTOM_UP    = { ["u"]=true, ["ɔ"]=true }
-local TURNS_IN_CLUSTER   = { ["r"]=true, ["j"]=true, ["w"]=true }
+local TURNS_IN_CLUSTER   = { ["ɹ"]=true, ["j"]=true, ["w"]=true }
 local TURNS_ABOVE_CLUSTER = { ["s"]=true }
 local UNREADABLE = "*"
 local HEIGHT = { consonant="av-consonant", vowel="av-vowel",
@@ -169,7 +169,7 @@ local function glyphSpan(token, slot, partner)
       useCluster = true
     elseif isClusterPartner(partner) then
       local pSym = parseSymbol(partner)
-      local rlPair = (sym == "r" or sym == "l") and (pSym == "r" or pSym == "l") and pSym ~= sym
+      local rlPair = (sym == "ɹ" or sym == "l") and (pSym == "ɹ" or pSym == "l") and pSym ~= sym
       if (not rlPair) or slot == "bottom" then useCluster = true end
     end
   end
@@ -196,7 +196,7 @@ local function glyphSpan(token, slot, partner)
       if pointAtOverlap then stem = "s_inset" end
     elseif sym == "z" then
       local pSym = parseSymbol(partner)
-      if pSym == "r" then stem = "z_left"      -- right dot dropped, left kept
+      if pSym == "ɹ" then stem = "z_left"      -- right dot dropped, left kept
       elseif pSym == "l" then stem = "z_right"  -- left dot dropped, right kept
       else stem = "z_none" end
     end

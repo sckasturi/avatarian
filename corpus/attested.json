@@ -44,9 +44,9 @@
       "image": "toph-letter.jpg"
     },
     "katara-letter": {
-      "what": "Katara, Please do not be mad at me when you wake up, but I did not (unknown) I found out what the denied are after, (unknown) can (unknown) I (unknown)  you take Appa and Momo and gather up the rest of the team. I will be Aang (unknown) Aang",
-      "where": "movie",
-      "image": "katara-letter.webp"
+      "what": "Katara, Please do not be mad at me when you wake up, but I did not have a moment to lose. I found out what the denied are after, and (unknown) can (unknown) I (unknown)  you take Appa and Momo and gather up the rest of the team. I will be Aang (unknown) Aang",
+      "where": "movie (translation by BokerBigBanana)",
+      "image": "katara-letter-2.webp"
     },
     "instagram-1.1": {
       "what": "still waters / trends this june / balloon festival / peeep farm / sad fish / noodle house / garden gems",
@@ -121,12 +121,6 @@
   },
   "entries": [
     {
-      "key": "academy",
-      "spelling": "ə ∅ k æ d ə m i",
-      "confidence": "certain",
-      "source": "toph-letter"
-    },
-    {
       "key": "all",
       "spelling": "ɔ l",
       "confidence": "certain",
@@ -195,7 +189,7 @@
     },
     {
       "key": "hard",
-      "spelling": "h ɑ r d",
+      "spelling": "h ɑ ɹ d",
       "source": "toph-letter",
       "confidence": "certain"
     },
@@ -231,7 +225,7 @@
     },
     {
       "key": "hurry",
-      "spelling": "h ə r i",
+      "spelling": "h ə ɹ i",
       "source": "toph-letter",
       "confidence": "certain"
     },
@@ -319,7 +313,7 @@
     },
     {
       "key": "really",
-      "spelling": "r ɪ l i",
+      "spelling": "ɹ ɪ l i",
       "source": "toph-letter",
       "confidence": "certain"
     },
@@ -375,13 +369,13 @@
     },
     {
       "key": "you're",
-      "spelling": "j u r ∅",
+      "spelling": "j u ɹ ∅",
       "source": "toph-letter",
       "confidence": "certain"
     },
     {
       "key": "your",
-      "spelling": "j oʊ r ∅",
+      "spelling": "j oʊ ɹ ∅",
       "confidence": "certain",
       "source": "toph-letter"
     },
@@ -400,8 +394,14 @@
       "source": "katara-letter"
     },
     {
+      "key": "academy",
+      "spelling": "ə ∅ k æ d ə m i",
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    {
       "key": "after",
-      "spelling": "æ f t ə r ∅",
+      "spelling": "æ f t ə ɹ ∅",
       "source": "katara-letter",
       "confidence": "certain"
     },
@@ -421,7 +421,7 @@
     },
     {
       "key": "are",
-      "spelling": "ɑ r",
+      "spelling": "ɑ ɹ",
       "source": "katara-letter",
       "confidence": "certain"
     },
@@ -476,7 +476,7 @@
     },
     {
       "key": "gather",
-      "spelling": "g æ ð ə r ∅",
+      "spelling": "g æ ð ə ɹ ∅",
       "source": "katara-letter",
       "confidence": "certain"
     },
@@ -490,7 +490,7 @@
     },
     {
       "key": "katara",
-      "spelling": "k ə t ɑ r ə",
+      "spelling": "k ə t ɑ ɹ ə",
       "source": "katara-letter",
       "confidence": "certain",
       "gloss": "Katara"
@@ -542,7 +542,7 @@
     },
     {
       "key": "rest",
-      "spelling": "r ɛ s$ t",
+      "spelling": "ɹ ɛ s$ t",
       "confidence": "certain",
       "source": "katara-letter"
     },
@@ -611,7 +611,7 @@
     },
     {
       "key": "farm",
-      "spelling": "f ɑ r m",
+      "spelling": "f ɑ ɹ m",
       "source": "instagram-1.1",
       "confidence": "certain"
     },
@@ -623,13 +623,13 @@
     },
     {
       "key": "free",
-      "spelling": "f r i ∅",
+      "spelling": "f ɹ i ∅",
       "confidence": "certain",
       "source": "instagram-1.1"
     },
     {
       "key": "garden",
-      "spelling": "g ɑ r ∅ d ə n ∅",
+      "spelling": "g ɑ ɹ ∅ d ə n ∅",
       "source": "instagram-1.1",
       "confidence": "certain"
     },
@@ -683,13 +683,13 @@
     },
     {
       "key": "trends",
-      "spelling": "t r ɛ n d z",
+      "spelling": "t ɹ ɛ n d z",
       "confidence": "certain",
       "source": "instagram-1.1"
     },
     {
       "key": "waters",
-      "spelling": "w ɔ t ə r z",
+      "spelling": "w ɔ t ə ɹ z",
       "source": "instagram-1.1",
       "confidence": "certain"
     },
@@ -720,7 +720,7 @@
     },
     {
       "key": "cherries",
-      "spelling": "tʃ ɛ r i z ∅",
+      "spelling": "tʃ ɛ ɹ i z ∅",
       "source": "instagram-2.1",
       "confidence": "certain"
     },
@@ -744,13 +744,13 @@
     },
     {
       "key": "for",
-      "spelling": "f ɔ r ∅",
+      "spelling": "f ɔ ɹ ∅",
       "confidence": "certain",
       "source": "instagram-2.1"
     },
     {
       "key": "hair",
-      "spelling": "h ɛ r ∅",
+      "spelling": "h ɛ ɹ ∅",
       "confidence": "certain",
       "source": "instagram-2.1"
     },
@@ -762,7 +762,7 @@
     },
     {
       "key": "journey",
-      "spelling": "dʒ ə r ∅ n i",
+      "spelling": "dʒ ə ɹ ∅ n i",
       "source": "instagram-2.1",
       "confidence": "certain"
     },
@@ -811,7 +811,7 @@
     },
     {
       "key": "your",
-      "spelling": "j ɔ r ∅",
+      "spelling": "j ɔ ɹ ∅",
       "source": "instagram-2.1",
       "confidence": "certain"
     },
@@ -823,7 +823,7 @@
     },
     {
       "key": "courage",
-      "spelling": "k ə r ə dʒ ∅",
+      "spelling": "k ə ɹ ə dʒ ∅",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
@@ -835,31 +835,31 @@
     },
     {
       "key": "for",
-      "spelling": "f ɔ r ∅",
+      "spelling": "f ɔ ɹ ∅",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
     {
       "key": "fresh",
-      "spelling": "f r ɛ ʃ",
+      "spelling": "f ɹ ɛ ʃ",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
     {
       "key": "from",
-      "spelling": "f r ə m",
+      "spelling": "f ɹ ə m",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
     {
       "key": "garden",
-      "spelling": "g ɑ r ∅ d ə n ∅",
+      "spelling": "g ɑ ɹ ∅ d ə n ∅",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
     {
       "key": "humansitters",
-      "spelling": "h u m ∅ n ∅ s i t ∅ t e r s$",
+      "spelling": "h u m ∅ n ∅ s i t ∅ t e ɹ s$",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
@@ -901,7 +901,7 @@
     },
     {
       "key": "warrior",
-      "spelling": "w ɔ r * ə r",
+      "spelling": "w ɔ ɹ * ə ɹ",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
@@ -949,7 +949,7 @@
     },
     {
       "key": "card",
-      "spelling": "k ɑ r d",
+      "spelling": "k ɑ ɹ d",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
@@ -967,13 +967,13 @@
     },
     {
       "key": "cream",
-      "spelling": "k r i m",
+      "spelling": "k ɹ i m",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
     {
       "key": "frozen",
-      "spelling": "f r oʊ ∅ z ə n ∅",
+      "spelling": "f ɹ oʊ ∅ z ə n ∅",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
@@ -997,7 +997,7 @@
     },
     {
       "key": "performance",
-      "spelling": "p ə r ∅ f ∅ r ∅ m ə n s",
+      "spelling": "p ə ɹ ∅ f ∅ ɹ ∅ m ə n s",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
@@ -1039,7 +1039,7 @@
     },
     {
       "key": "free",
-      "spelling": "f r e ∅ e ∅",
+      "spelling": "f ɹ e ∅ e ∅",
       "source": "instagram-1.3",
       "confidence": "certain"
     },
@@ -1081,7 +1081,7 @@
     },
     {
       "key": "organic",
-      "spelling": "ɔ r g æ n ɪ k ∅",
+      "spelling": "ɔ ɹ g æ n ɪ k ∅",
       "source": "instagram-1.3",
       "confidence": "certain"
     },
@@ -1093,7 +1093,7 @@
     },
     {
       "key": "republic",
-      "spelling": "r i p ə b l ə k",
+      "spelling": "ɹ i p ə b l ə k",
       "source": "instagram-1.3",
       "confidence": "certain"
     },
@@ -1135,13 +1135,13 @@
     },
     {
       "key": "brave",
-      "spelling": "b r e ∅ ɪ v",
+      "spelling": "b ɹ e ∅ ɪ v",
       "source": "instagram-1.4",
       "confidence": "certain"
     },
     {
       "key": "courage",
-      "spelling": "k ə r ə dʒ ∅",
+      "spelling": "k ə ɹ ə dʒ ∅",
       "source": "instagram-1.4",
       "confidence": "certain"
     },
@@ -1153,7 +1153,7 @@
     },
     {
       "key": "journey",
-      "spelling": "dʒ ə r ∅ n i",
+      "spelling": "dʒ ə ɹ ∅ n i",
       "source": "instagram-1.4",
       "confidence": "certain"
     },
@@ -1189,13 +1189,13 @@
     },
     {
       "key": "tiger",
-      "spelling": "t aɪ g ə r ∅",
+      "spelling": "t aɪ g ə ɹ ∅",
       "source": "instagram-1.4",
       "confidence": "certain"
     },
     {
       "key": "year",
-      "spelling": "j ɪ r ∅",
+      "spelling": "j ɪ ɹ ∅",
       "source": "instagram-1.4",
       "confidence": "certain"
     },
@@ -1213,26 +1213,26 @@
     },
     {
       "key": "choir",
-      "spelling": "k w aɪ ∅ ə r",
+      "spelling": "k w aɪ ∅ ə ɹ",
       "source": "instagram-2.2",
       "confidence": "certain"
     },
     {
       "key": "criminals",
-      "spelling": "k r ɪ ∅ m ə n ə l z",
+      "spelling": "k ɹ ɪ ∅ m ə n ə l z",
       "source": "instagram-2.2",
       "confidence": "certain"
     },
     {
       "key": "ear",
-      "spelling": "i r",
+      "spelling": "i ɹ",
       "source": "instagram-2.2",
       "confidence": "certain",
       "times": 2
     },
     {
       "key": "energies",
-      "spelling": "ɛ ∅ n ə r ∅ dʒ i z ∅",
+      "spelling": "ɛ ∅ n ə ɹ ∅ dʒ i z ∅",
       "source": "instagram-2.2",
       "confidence": "certain"
     },
@@ -1280,7 +1280,7 @@
     },
     {
       "key": "raise",
-      "spelling": "r e ɪ z",
+      "spelling": "ɹ e ɪ z",
       "source": "instagram-2.2",
       "confidence": "certain"
     },
@@ -1304,7 +1304,7 @@
     },
     {
       "key": "your",
-      "spelling": "j ɔ r ∅",
+      "spelling": "j ɔ ɹ ∅",
       "source": "instagram-2.2",
       "confidence": "certain"
     },
@@ -1322,13 +1322,13 @@
     },
     {
       "key": "fire",
-      "spelling": "f aɪ ə r",
+      "spelling": "f aɪ ə ɹ",
       "source": "instagram-3.2",
       "confidence": "certain"
     },
     {
       "key": "free",
-      "spelling": "f r i ∅",
+      "spelling": "f ɹ i ∅",
       "source": "instagram-3.2",
       "confidence": "certain"
     },
@@ -1370,7 +1370,7 @@
     },
     {
       "key": "stickers",
-      "spelling": "s t ɪ ∅ k ə r z",
+      "spelling": "s t ɪ ∅ k ə ɹ z",
       "source": "instagram-3.2",
       "confidence": "certain"
     },
@@ -1455,7 +1455,7 @@
     },
     {
       "key": "every",
-      "spelling": "ɛ ∅ v ə r i",
+      "spelling": "ɛ ∅ v ə ɹ i",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1473,7 +1473,7 @@
     },
     {
       "key": "forever",
-      "spelling": "f ə r ɛ v ə r ∅",
+      "spelling": "f ə ɹ ɛ v ə ɹ ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1485,13 +1485,13 @@
     },
     {
       "key": "freshly",
-      "spelling": "f r ɛ ʃ * * i ∅",
+      "spelling": "f ɹ ɛ ʃ * * i ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
     {
       "key": "fruit",
-      "spelling": "f r u t",
+      "spelling": "f ɹ u t",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1575,13 +1575,13 @@
     },
     {
       "key": "number",
-      "spelling": "n ʌ m ∅ b ə r ∅",
+      "spelling": "n ʌ m ∅ b ə ɹ ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
     {
       "key": "pair",
-      "spelling": "p ɛ r ∅",
+      "spelling": "p ɛ ɹ ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1635,31 +1635,31 @@
     },
     {
       "key": "treasures",
-      "spelling": "t r ɛ ∅ ʒ ə r z",
+      "spelling": "t ɹ ɛ ∅ ʒ ə ɹ z",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
     {
       "key": "try",
-      "spelling": "t r aɪ ∅",
+      "spelling": "t ɹ aɪ ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
     {
       "key": "warm",
-      "spelling": "w ɔ r m",
+      "spelling": "w ɔ ɹ m",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
     {
       "key": "waterproof",
-      "spelling": "w ɔ t ə r ∅ p r u f",
+      "spelling": "w ɔ t ə ɹ ∅ p ɹ u f",
       "confidence": "certain",
       "source": "instagram-3.3"
     },
     {
       "key": "wear",
-      "spelling": "w ɛ r ∅",
+      "spelling": "w ɛ ɹ ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1671,7 +1671,7 @@
     },
     {
       "key": "your",
-      "spelling": "j ɔ r ∅",
+      "spelling": "j ɔ ɹ ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1683,19 +1683,19 @@
     },
     {
       "key": "decree",
-      "spelling": "d ɪ k r i ∅",
+      "spelling": "d ɪ k ɹ i ∅",
       "source": "zuko-stamp",
       "confidence": "certain"
     },
     {
       "key": "fire",
-      "spelling": "f aɪ ə r",
+      "spelling": "f aɪ ə ɹ",
       "source": "zuko-stamp",
       "confidence": "certain"
     },
     {
       "key": "lord",
-      "spelling": "l ɔ r d",
+      "spelling": "l ɔ ɹ d",
       "source": "zuko-stamp",
       "confidence": "certain"
     },
@@ -1707,7 +1707,7 @@
     },
     {
       "key": "royal",
-      "spelling": "r ɔɪ ə l",
+      "spelling": "ɹ ɔɪ ə l",
       "source": "zuko-stamp",
       "confidence": "certain"
     },
@@ -1719,14 +1719,14 @@
     },
     {
       "key": "avatar",
-      "spelling": "æ v ə ∅ t ɑ r ∅",
+      "spelling": "æ v ə ∅ t ɑ ɹ ∅",
       "source": "sdcc-1",
       "confidence": "certain",
       "gloss": "Avatar"
     },
     {
       "key": "avatarian",
-      "spelling": "æ v ə ∅ t ɑ r ∅ i ∅ ə n",
+      "spelling": "æ v ə ∅ t ɑ ɹ ∅ i ∅ ə n",
       "source": "sdcc-1",
       "confidence": "certain",
       "gloss": "Avatarian"
@@ -1761,39 +1761,39 @@
     },
     {
       "key": "world",
-      "spelling": "w ə r l d ∅",
+      "spelling": "w ə ɹ l d ∅",
       "source": "sdcc-1",
       "confidence": "certain",
       "gloss": "World"
     },
     {
       "key": "written",
-      "spelling": "r ɪ t ə n ∅",
+      "spelling": "ɹ ɪ t ə n ∅",
       "source": "sdcc-1",
       "confidence": "certain",
       "gloss": "Written"
     },
     {
       "key": "air",
-      "spelling": "e r",
+      "spelling": "e ɹ",
       "source": "sdcc-2",
       "confidence": "certain"
     },
     {
       "key": "earth",
-      "spelling": "ə r θ ∅",
+      "spelling": "ə ɹ θ ∅",
       "source": "sdcc-2",
       "confidence": "certain"
     },
     {
       "key": "fire",
-      "spelling": "f aɪ ə r",
+      "spelling": "f aɪ ə ɹ",
       "source": "sdcc-2",
       "confidence": "certain"
     },
     {
       "key": "water",
-      "spelling": "w ɔ t ə r ∅",
+      "spelling": "w ɔ t ə ɹ ∅",
       "source": "sdcc-2",
       "confidence": "certain"
     },
@@ -1805,7 +1805,7 @@
     },
     {
       "key": "avatar",
-      "spelling": "æ v ə ∅ t ɑ r ∅",
+      "spelling": "æ v ə ∅ t ɑ ɹ ∅",
       "source": "sdcc-3",
       "confidence": "certain",
       "gloss": "Avatar"
@@ -1824,7 +1824,7 @@
     },
     {
       "key": "korra",
-      "spelling": "k oʊ r ə",
+      "spelling": "k oʊ ɹ ə",
       "source": "sdcc-3",
       "confidence": "certain",
       "gloss": "Korra"
@@ -1837,19 +1837,19 @@
     },
     {
       "key": "theater",
-      "spelling": "θ i ə t ə r",
+      "spelling": "θ i ə t ə ɹ",
       "source": "sdcc-3",
       "confidence": "certain"
     },
     {
       "key": "treats",
-      "spelling": "t r i t s ∅",
+      "spelling": "t ɹ i t s ∅",
       "source": "sdcc-3",
       "confidence": "certain"
     },
     {
       "key": "written",
-      "spelling": "r ɪ t ə n ∅",
+      "spelling": "ɹ ɪ t ə n ∅",
       "source": "sdcc-3",
       "confidence": "certain"
     },

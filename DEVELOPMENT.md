@@ -548,7 +548,7 @@ neither is in `FLIPS`. Both are read off the corpus and live in `render.js`:
 
 * **The approximants turn inside a cluster.** /r l w j/ — exactly the
   English approximants — mirror in the bottom of a block holding two
-  consonants, 28 times against 1. Under a vowel they stay upright: /r/ is
+  consonants, 28 times against 1. Under a vowel they stay upright: /ɹ/ is
   plain in all six such blocks (*are, ear, fire, choir, organic,
   warrior*). Across seventeen consonants ever seen in a bottom slot,
   those four are the only ones that ever mirror. `TURNS_IN_CLUSTER` is

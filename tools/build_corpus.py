@@ -41,6 +41,16 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "corpus" / "attested.json"
+# Unsourced "conventions" — spellings somebody DECIDED on rather than SAW.
+# They are the opposite of the corpus in the one way that matters: no
+# source, because nobody has seen them written. They still carry finished
+# block structure (nulls and all, exactly like a corpus entry), so they
+# can pin a spelling the phoneme-only EXCEPTIONS table cannot express —
+# `kyoshi` with its null and its final /ɪ/. They ship so the tool spells
+# them your way, but they are NOT attestations: build keeps them under
+# their own key, apart from `words`, so nothing counts them as evidence
+# or draws the "attested" mark for them. See CONVENTIONS below.
+CONVENTIONS_SRC = ROOT / "corpus" / "conventions.json"
 IMAGES = ROOT / "corpus" / "sources"
 # The deployed, committed copy of the source images. `corpus/sources/` is
 # the workbench's working directory and may be empty on a fresh clone;
@@ -95,6 +105,17 @@ def symbols():
 
 def load():
     return json.loads(SRC.read_text(encoding="utf-8"))
+
+
+def load_conventions():
+    """The unsourced conventions file, or an empty one if it is not there.
+
+    Tolerant of absence on purpose: a fresh clone need not have decided
+    on any spellings, and the corpus builds fine without them.
+    """
+    if not CONVENTIONS_SRC.exists():
+        return {"conventions": []}
+    return json.loads(CONVENTIONS_SRC.read_text(encoding="utf-8"))
 
 
 def normalise_key(key):
@@ -251,6 +272,57 @@ def check(data):
     return errors, records
 
 
+def check_conventions(data, known=None):
+    """
+    Validate the unsourced conventions and compile them to key -> record.
+
+    The rules are the corpus's drawability and whole-blocks rules and
+    nothing else. There is deliberately NO source check — the absence of
+    one is the whole point, and it is what keeps these out of the corpus.
+    Confidence, counts and sightings have no meaning for a spelling nobody
+    has seen, so they are not carried either.
+
+    ONE WORD, ONE CONVENTION. Two sources disagreeing is a finding worth
+    keeping (that is why the corpus keeps both); YOU disagreeing with
+    yourself is just an unfinished decision, so a second convention for a
+    word is rejected rather than stored as an alternate.
+    """
+    known = known if known is not None else symbols()
+    errors = []
+    compiled = {}
+    for entry in data.get("conventions") or []:
+        raw = entry.get("key", "")
+        key = normalise_key(raw)
+        where = f"'{raw}'"
+        if not key:
+            errors.append(f"{where}: key normalises to nothing")
+            continue
+        if key != raw:
+            errors.append(f"{where}: key should be written as '{key}'")
+
+        tokens = check_spelling(entry.get("spelling", ""), known, where, errors)
+
+        if key in compiled:
+            errors.append(f"{where}: already has a convention — a word gets "
+                          f"one spelling here, not alternates")
+            continue
+
+        record = {"ipa": tokens}
+        for field in ("gloss", "note"):
+            if entry.get(field):
+                record[field] = entry[field]
+        compiled[key] = record
+
+    return errors, compiled
+
+
+def order_conventions(data):
+    """Conventions sorted by normalised key, so a save produces a small,
+    stable diff instead of reshuffling the file."""
+    return sorted(data.get("conventions") or [],
+                  key=lambda e: normalise_key(e.get("key", "")))
+
+
 def confidence_rank(value):
     """
     How much a sighting counts for, best first.
@@ -391,9 +463,14 @@ def compile_record(sightings, source_order):
     return record
 
 
-def write_js(sources, records):
-    body = json.dumps({"sources": sources, "words": records},
-                      ensure_ascii=False, indent=2)
+def write_js(sources, records, conventions=None):
+    payload = {"sources": sources, "words": records}
+    # Emitted under their own key, apart from `words`, and only when there
+    # are any — so a corpus with no conventions produces the exact same
+    # file it always did, and g2p can tell "seen" from "decided".
+    if conventions:
+        payload["conventions"] = conventions
+    body = json.dumps(payload, ensure_ascii=False, indent=2)
     DST.write_text(f"{HEADER}window.AVATARIAN_CORPUS = {body};\n", encoding="utf-8")
     return DST
 
@@ -448,9 +525,41 @@ def save(data):
     SRC.parent.mkdir(parents=True, exist_ok=True)
     SRC.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n",
                    encoding="utf-8")
-    write_js(out["sources"], records)
+    # The generated file carries the conventions too, so a corpus save
+    # never drops the spellings you have decided on. They come off disk,
+    # already validated when they were saved through save_conventions().
+    _, conventions = check_conventions(load_conventions())
+    write_js(out["sources"], records, conventions)
     sync_images()
     return [], records
+
+
+def save_conventions(conventions):
+    """
+    Validate and write the unsourced conventions, then regenerate the JS.
+
+    Like save(), it is all-or-nothing: a rejected convention leaves the
+    file exactly as it was. Writing the JS needs the attested corpus too —
+    the two live in one generated file — so this reads and compiles the
+    corpus, but does not re-validate it: a problem in attested.json is not
+    this edit's to report, and it will be caught when that file is saved.
+
+    `_readme` and other top-level keys are carried through, same as save().
+    """
+    errors, compiled = check_conventions({"conventions": conventions})
+    if errors:
+        return errors, None
+
+    out = load_conventions()
+    out["conventions"] = order_conventions({"conventions": conventions})
+    CONVENTIONS_SRC.parent.mkdir(parents=True, exist_ok=True)
+    CONVENTIONS_SRC.write_text(
+        json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    data = load() if SRC.exists() else {"sources": {}, "entries": []}
+    _, records = check(data)
+    write_js(data.get("sources") or {}, records, compiled)
+    return [], compiled
 
 
 def main():
@@ -463,7 +572,15 @@ def main():
             print("  " + e, file=sys.stderr)
         return 1
 
-    write_js(data.get("sources") or {}, records)
+    conv_errors, conventions = check_conventions(load_conventions())
+    if conv_errors:
+        print(f"{CONVENTIONS_SRC.relative_to(ROOT)} has {len(conv_errors)} "
+              f"problem(s):", file=sys.stderr)
+        for e in conv_errors:
+            print("  " + e, file=sys.stderr)
+        return 1
+
+    write_js(data.get("sources") or {}, records, conventions)
     sync_images()
     phrases = sum(1 for k in records if " " in k)
     unsure = sum(1 for v in records.values() if v["confidence"] != "certain")
@@ -474,6 +591,12 @@ def main():
           f"({phrases} phrase(s), {unsure} not certain) "
           f"across {len(data.get('sources') or {})} source(s), "
           f"{DST.stat().st_size // 1024} KB")
+    # Conventions are unsourced spellings you decided on, kept apart from
+    # the attested words. Named, because they are the one thing in the
+    # file nobody has actually seen written.
+    if conventions:
+        print(f"  {len(conventions)} unsourced convention(s): "
+              f"{', '.join(sorted(conventions))}")
     # Contested words are the interesting output of having a corpus at
     # all, so they are named rather than counted.
     if contested:

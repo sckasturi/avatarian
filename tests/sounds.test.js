@@ -38,7 +38,7 @@ test("readable codes, IPA and the fillers all reach the same symbol", () => {
 test("Katara spells from its readable codes", () => {
   assert.deepEqual(
     plain(soundTextToWords("k uh t ah r uh")[0].ipa),
-    ["k", "ə", "t", "ɑ", "r", "ə"],
+    ["k", "ə", "t", "ɑ", "ɹ", "ə"],
     "k uh t ah r uh is Katara");
 });
 
@@ -66,12 +66,12 @@ test("an override survives the trip back to codes", () => {
 
 test("the readable codes read the way they look", () => {
   const say = (text) => soundTextToWords(text)[0].ipa.join(" ");
-  assert.equal(say("k uh t ah r uh"), "k ə t ɑ r ə", "katara");
+  assert.equal(say("k uh t ah r uh"), "k ə t ɑ ɹ ə", "katara");
   assert.equal(say("ah p ah"), "ɑ p ɑ", "appa");
   assert.equal(say("p l ee z"), "p l i z", "please");
   assert.equal(say("th aw t"), "θ ɔ t", "thought");
   assert.equal(say("m ow th"), "m aʊ θ", "mouth");
-  assert.equal(say("p r eye s"), "p r aɪ s", "price");
+  assert.equal(say("p r eye s"), "p ɹ aɪ s", "price");
   assert.equal(say("f uu t"), "f ʊ t", "foot");
   assert.equal(say("v i zh uh n"), "v ɪ ʒ ə n", "vision");
 });

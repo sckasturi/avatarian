@@ -214,6 +214,54 @@ class Rules(unittest.TestCase):
         self.assertIn("ba sing se", records)
 
 
+class Conventions(unittest.TestCase):
+    """
+    The unsourced layer. It borrows the corpus's drawability and
+    whole-blocks rules and drops everything about evidence — the absence
+    of a source is what keeps a decided spelling out of the attested
+    corpus, so the one thing these tests must prove is that it is NOT
+    required, while a spelling that could not be drawn still is.
+    """
+
+    def test_a_convention_needs_no_source(self):
+        errors, compiled = bc.check_conventions({"conventions": [
+            {"key": "kyoshi", "spelling": "k i oʊ ∅ ʃ ɪ"},
+        ]})
+        self.assertEqual(errors, [])
+        self.assertEqual(compiled["kyoshi"]["ipa"],
+                         ["k", "i", "oʊ", "∅", "ʃ", "ɪ"])
+
+    def test_odd_symbol_count_is_still_rejected(self):
+        errors, _ = bc.check_conventions({"conventions": [
+            {"key": "kyoshi", "spelling": "k i oʊ"},
+        ]})
+        self.assertTrue(any("must be even" in e for e in errors))
+
+    def test_an_unknown_glyph_is_still_rejected(self):
+        errors, _ = bc.check_conventions({"conventions": [
+            {"key": "x", "spelling": "zzz ∅"},
+        ]})
+        self.assertTrue(any("no glyph" in e for e in errors))
+
+    def test_one_word_gets_one_convention(self):
+        errors, _ = bc.check_conventions({"conventions": [
+            {"key": "kyoshi", "spelling": "k i oʊ ∅ ʃ ɪ"},
+            {"key": "kyoshi", "spelling": "k i oʊ ∅ ʃ i"},
+        ]})
+        self.assertTrue(any("already has a convention" in e for e in errors))
+
+    def test_conventions_ship_apart_from_the_attested_words(self):
+        # The one line that keeps them out of the corpus: emitted under
+        # their own key, never mixed into `words`.
+        text = bc.DST.read_text(encoding="utf-8")
+        start = text.index("{", text.index("AVATARIAN_CORPUS"))
+        shipped = json.loads(text[start:text.rindex("}") + 1])
+        conv = shipped.get("conventions", {})
+        for key in conv:
+            self.assertNotIn(key, shipped["words"],
+                             f"convention '{key}' leaked into the corpus")
+
+
 class Saving(unittest.TestCase):
     """`save()` must write everything or nothing."""
 

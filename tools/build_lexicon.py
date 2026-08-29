@@ -89,7 +89,7 @@ ARPA = {
     "OY": "ɔɪ", "UH": "ʊ", "UW": "u",
     "B": "b", "CH": "tʃ", "D": "d", "DH": "ð", "F": "f", "G": "g",
     "HH": "h", "JH": "dʒ", "K": "k", "L": "l", "M": "m", "N": "n",
-    "NG": "ŋ", "P": "p", "R": "r", "S": "s", "SH": "ʃ", "T": "t",
+    "NG": "ŋ", "P": "p", "R": "ɹ", "S": "s", "SH": "ʃ", "T": "t",
     "TH": "θ", "V": "v", "W": "w", "Y": "j", "Z": "z", "ZH": "ʒ",
 }
 
@@ -112,7 +112,7 @@ def phones_to_ipa(phones):
             out.append("ə" if stress == "0" else "ʌ")
         elif base == "ER":
             # r-coloured in CMU, two segments here.
-            out.extend(("ə", "r"))
+            out.extend(("ə", "ɹ"))
         else:
             ipa = ARPA.get(base)
             if ipa is None:

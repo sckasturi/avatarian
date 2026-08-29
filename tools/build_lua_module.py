@@ -131,7 +131,7 @@ local p = {}
 -- the logic beside the code that reads them (render.js keeps them the same way).
 local NULL_V, NULL_C = "∅", "∅c"
 local DRAWN_BOTTOM_UP    = { ["u"]=true, ["ɔ"]=true }
-local TURNS_IN_CLUSTER   = { ["r"]=true, ["j"]=true, ["w"]=true }
+local TURNS_IN_CLUSTER   = { ["ɹ"]=true, ["j"]=true, ["w"]=true }
 local TURNS_ABOVE_CLUSTER = { ["s"]=true }
 local UNREADABLE = "*"
 local HEIGHT = { consonant="av-consonant", vowel="av-vowel",
@@ -238,7 +238,7 @@ local function glyphSpan(token, slot, partner)
       useCluster = true
     elseif isClusterPartner(partner) then
       local pSym = parseSymbol(partner)
-      local rlPair = (sym == "r" or sym == "l") and (pSym == "r" or pSym == "l") and pSym ~= sym
+      local rlPair = (sym == "ɹ" or sym == "l") and (pSym == "ɹ" or pSym == "l") and pSym ~= sym
       if (not rlPair) or slot == "bottom" then useCluster = true end
     end
   end
@@ -265,7 +265,7 @@ local function glyphSpan(token, slot, partner)
       if pointAtOverlap then stem = "s_inset" end
     elseif sym == "z" then
       local pSym = parseSymbol(partner)
-      if pSym == "r" then stem = "z_left"      -- right dot dropped, left kept
+      if pSym == "ɹ" then stem = "z_left"      -- right dot dropped, left kept
       elseif pSym == "l" then stem = "z_right"  -- left dot dropped, right kept
       else stem = "z_none" end
     end

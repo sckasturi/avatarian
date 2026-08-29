@@ -245,7 +245,7 @@ const UNREADABLE_SVG =
  * which is why /l/ is NOT in FLIPS. So only /w/ and /j/, which have no
  * cluster form drawn yet, still fall through to this plain C-C-bottom flip.
  */
-const TURNS_IN_CLUSTER = new Set(["r", "j", "w"]);
+const TURNS_IN_CLUSTER = new Set(["ɹ", "j", "w"]);
 
 /**
  * /s/ TURNS ON TOP OF A CLUSTER, and only there. Across the corpus this is
@@ -316,7 +316,7 @@ function clusterForm(sym, svg, partner, slot, flipped) {
   }
   if (sym === "z") {
     const p = partner != null ? parseSymbol(partner).sym : null;
-    if (p === "r") return svg.replace(/<circle cx="74"[^>]*>/, "");  // keep left
+    if (p === "ɹ") return svg.replace(/<circle cx="74"[^>]*>/, "");  // keep left
     if (p === "l") return svg.replace(/<circle cx="26"[^>]*>/, "");  // keep right
     return svg.replace(/<circle[^>]*>/g, "");
   }
@@ -373,8 +373,8 @@ function makeGlyph(token, slot, partner) {
         ccForm = form.variants.cluster;
       } else if (isClusterPartner(partner)) {
         const pSym = parseSymbol(partner).sym;
-        const rlPair = (sym === "r" || sym === "l")
-                       && (pSym === "r" || pSym === "l") && pSym !== sym;
+        const rlPair = (sym === "ɹ" || sym === "l")
+                       && (pSym === "ɹ" || pSym === "l") && pSym !== sym;
         if (!rlPair || slot === "bottom") ccForm = form.variants.cluster;
       }
     }

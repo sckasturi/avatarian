@@ -176,7 +176,7 @@ test("Lua p._main handles solo, multi-word and captions", { skip: !haveLua && "l
     `print(p._main("hh ay / th ao r (hammer of thor)", nil))\n` +
     `print(p._main("", nil))\n`;
   const out = runLua(driver).split("\n");
-  assert.match(out[0], /^<span class="av-word av-solo"><span class="av-copy">\/r\/<\/span><span class="av-glyph g-r av-consonant">/);
+  assert.match(out[0], /^<span class="av-word av-solo"><span class="av-copy">\/ɹ\/<\/span><span class="av-glyph g-r av-consonant">/);
   assert.match(out[1], /g-ng av-consonant/);                       // ng -> ŋ glyph
   assert.match(out[1], /<span class="av-copy">\/ŋ\/<\/span>/);      // solo, no caption -> IPA in slashes
   assert.match(out[2], /title="Katara"/);

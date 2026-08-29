@@ -25,9 +25,9 @@ window.AVATARIAN_CORPUS = {
       "image": "toph-letter.jpg"
     },
     "katara-letter": {
-      "what": "Katara, Please do not be mad at me when you wake up, but I did not (unknown) I found out what the denied are after, (unknown) can (unknown) I (unknown)  you take Appa and Momo and gather up the rest of the team. I will be Aang (unknown) Aang",
-      "where": "movie",
-      "image": "katara-letter.webp"
+      "what": "Katara, Please do not be mad at me when you wake up, but I did not have a moment to lose. I found out what the denied are after, and (unknown) can (unknown) I (unknown)  you take Appa and Momo and gather up the rest of the team. I will be Aang (unknown) Aang",
+      "where": "movie (translation by BokerBigBanana)",
+      "image": "katara-letter-2.webp"
     },
     "instagram-1.1": {
       "what": "still waters / trends this june / balloon festival / peeep farm / sad fish / noodle house / garden gems",
@@ -101,24 +101,6 @@ window.AVATARIAN_CORPUS = {
     }
   },
   "words": {
-    "academy": {
-      "ipa": [
-        "ə",
-        "∅",
-        "k",
-        "æ",
-        "d",
-        "ə",
-        "m",
-        "i"
-      ],
-      "count": 1,
-      "sources": [
-        "toph-letter"
-      ],
-      "confidence": "certain",
-      "source": "toph-letter"
-    },
     "all": {
       "ipa": [
         "ɔ",
@@ -296,7 +278,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "h",
         "ɑ",
-        "r",
+        "ɹ",
         "d"
       ],
       "count": 1,
@@ -376,7 +358,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "h",
         "ə",
-        "r",
+        "ɹ",
         "i"
       ],
       "count": 1,
@@ -577,7 +559,7 @@ window.AVATARIAN_CORPUS = {
     },
     "really": {
       "ipa": [
-        "r",
+        "ɹ",
         "ɪ",
         "l",
         "i"
@@ -723,7 +705,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "j",
         "u",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -737,7 +719,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "j",
         "ɔ",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 3,
@@ -753,7 +735,7 @@ window.AVATARIAN_CORPUS = {
           "ipa": [
             "j",
             "oʊ",
-            "r",
+            "ɹ",
             "∅"
           ],
           "count": 1,
@@ -795,13 +777,31 @@ window.AVATARIAN_CORPUS = {
       "source": "katara-letter",
       "gloss": "Aang"
     },
+    "academy": {
+      "ipa": [
+        "ə",
+        "∅",
+        "k",
+        "æ",
+        "d",
+        "ə",
+        "m",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
     "after": {
       "ipa": [
         "æ",
         "f",
         "t",
         "ə",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -831,7 +831,7 @@ window.AVATARIAN_CORPUS = {
     "are": {
       "ipa": [
         "ɑ",
-        "r"
+        "ɹ"
       ],
       "count": 1,
       "sources": [
@@ -929,7 +929,7 @@ window.AVATARIAN_CORPUS = {
         "æ",
         "ð",
         "ə",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -945,7 +945,7 @@ window.AVATARIAN_CORPUS = {
         "ə",
         "t",
         "ɑ",
-        "r",
+        "ɹ",
         "ə"
       ],
       "count": 1,
@@ -1015,7 +1015,7 @@ window.AVATARIAN_CORPUS = {
     },
     "rest": {
       "ipa": [
-        "r",
+        "ɹ",
         "ɛ",
         "s$",
         "t"
@@ -1133,7 +1133,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "f",
         "ɑ",
-        "r",
+        "ɹ",
         "m"
       ],
       "count": 1,
@@ -1161,7 +1161,7 @@ window.AVATARIAN_CORPUS = {
     "free": {
       "ipa": [
         "f",
-        "r",
+        "ɹ",
         "i",
         "∅"
       ],
@@ -1176,7 +1176,7 @@ window.AVATARIAN_CORPUS = {
         {
           "ipa": [
             "f",
-            "r",
+            "ɹ",
             "e",
             "∅",
             "e",
@@ -1195,7 +1195,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "g",
         "ɑ",
-        "r",
+        "ɹ",
         "∅",
         "d",
         "ə",
@@ -1329,7 +1329,7 @@ window.AVATARIAN_CORPUS = {
     "trends": {
       "ipa": [
         "t",
-        "r",
+        "ɹ",
         "ɛ",
         "n",
         "d",
@@ -1348,7 +1348,7 @@ window.AVATARIAN_CORPUS = {
         "ɔ",
         "t",
         "ə",
-        "r",
+        "ɹ",
         "z"
       ],
       "count": 1,
@@ -1429,7 +1429,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "tʃ",
         "ɛ",
-        "r",
+        "ɹ",
         "i",
         "z",
         "∅"
@@ -1491,7 +1491,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "f",
         "ɔ",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 2,
@@ -1506,7 +1506,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "h",
         "ɛ",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -1535,7 +1535,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "dʒ",
         "ə",
-        "r",
+        "ɹ",
         "∅",
         "n",
         "i"
@@ -1658,7 +1658,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "k",
         "ə",
-        "r",
+        "ɹ",
         "ə",
         "dʒ",
         "∅"
@@ -1690,7 +1690,7 @@ window.AVATARIAN_CORPUS = {
     "fresh": {
       "ipa": [
         "f",
-        "r",
+        "ɹ",
         "ɛ",
         "ʃ"
       ],
@@ -1705,7 +1705,7 @@ window.AVATARIAN_CORPUS = {
     "from": {
       "ipa": [
         "f",
-        "r",
+        "ɹ",
         "ə",
         "m"
       ],
@@ -1730,7 +1730,7 @@ window.AVATARIAN_CORPUS = {
         "∅",
         "t",
         "e",
-        "r",
+        "ɹ",
         "s$"
       ],
       "count": 1,
@@ -1811,10 +1811,10 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "w",
         "ɔ",
-        "r",
+        "ɹ",
         "*",
         "ə",
-        "r"
+        "ɹ"
       ],
       "count": 1,
       "sources": [
@@ -1945,7 +1945,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "k",
         "ɑ",
-        "r",
+        "ɹ",
         "d"
       ],
       "count": 1,
@@ -1990,7 +1990,7 @@ window.AVATARIAN_CORPUS = {
     "cream": {
       "ipa": [
         "k",
-        "r",
+        "ɹ",
         "i",
         "m"
       ],
@@ -2004,7 +2004,7 @@ window.AVATARIAN_CORPUS = {
     "frozen": {
       "ipa": [
         "f",
-        "r",
+        "ɹ",
         "oʊ",
         "∅",
         "z",
@@ -2069,11 +2069,11 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "p",
         "ə",
-        "r",
+        "ɹ",
         "∅",
         "f",
         "∅",
-        "r",
+        "ɹ",
         "∅",
         "m",
         "ə",
@@ -2242,7 +2242,7 @@ window.AVATARIAN_CORPUS = {
     "organic": {
       "ipa": [
         "ɔ",
-        "r",
+        "ɹ",
         "g",
         "æ",
         "n",
@@ -2273,7 +2273,7 @@ window.AVATARIAN_CORPUS = {
     },
     "republic": {
       "ipa": [
-        "r",
+        "ɹ",
         "i",
         "p",
         "ə",
@@ -2355,7 +2355,7 @@ window.AVATARIAN_CORPUS = {
     "brave": {
       "ipa": [
         "b",
-        "r",
+        "ɹ",
         "e",
         "∅",
         "ɪ",
@@ -2436,7 +2436,7 @@ window.AVATARIAN_CORPUS = {
         "aɪ",
         "g",
         "ə",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -2450,7 +2450,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "j",
         "ɪ",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -2503,7 +2503,7 @@ window.AVATARIAN_CORPUS = {
         "aɪ",
         "∅",
         "ə",
-        "r"
+        "ɹ"
       ],
       "count": 1,
       "sources": [
@@ -2515,7 +2515,7 @@ window.AVATARIAN_CORPUS = {
     "criminals": {
       "ipa": [
         "k",
-        "r",
+        "ɹ",
         "ɪ",
         "∅",
         "m",
@@ -2535,7 +2535,7 @@ window.AVATARIAN_CORPUS = {
     "ear": {
       "ipa": [
         "i",
-        "r"
+        "ɹ"
       ],
       "count": 2,
       "sources": [
@@ -2550,7 +2550,7 @@ window.AVATARIAN_CORPUS = {
         "∅",
         "n",
         "ə",
-        "r",
+        "ɹ",
         "∅",
         "dʒ",
         "i",
@@ -2637,7 +2637,7 @@ window.AVATARIAN_CORPUS = {
     },
     "raise": {
       "ipa": [
-        "r",
+        "ɹ",
         "e",
         "ɪ",
         "z"
@@ -2702,7 +2702,7 @@ window.AVATARIAN_CORPUS = {
         "f",
         "aɪ",
         "ə",
-        "r"
+        "ɹ"
       ],
       "count": 3,
       "sources": [
@@ -2777,7 +2777,7 @@ window.AVATARIAN_CORPUS = {
         "∅",
         "k",
         "ə",
-        "r",
+        "ɹ",
         "z"
       ],
       "count": 1,
@@ -2901,7 +2901,7 @@ window.AVATARIAN_CORPUS = {
         "∅",
         "v",
         "ə",
-        "r",
+        "ɹ",
         "i"
       ],
       "count": 1,
@@ -2969,11 +2969,11 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "f",
         "ə",
-        "r",
+        "ɹ",
         "ɛ",
         "v",
         "ə",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -2986,7 +2986,7 @@ window.AVATARIAN_CORPUS = {
     "freshly": {
       "ipa": [
         "f",
-        "r",
+        "ɹ",
         "ɛ",
         "ʃ",
         "*",
@@ -3004,7 +3004,7 @@ window.AVATARIAN_CORPUS = {
     "fruit": {
       "ipa": [
         "f",
-        "r",
+        "ɹ",
         "u",
         "t"
       ],
@@ -3183,7 +3183,7 @@ window.AVATARIAN_CORPUS = {
         "∅",
         "b",
         "ə",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -3197,7 +3197,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "p",
         "ɛ",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -3286,12 +3286,12 @@ window.AVATARIAN_CORPUS = {
     "treasures": {
       "ipa": [
         "t",
-        "r",
+        "ɹ",
         "ɛ",
         "∅",
         "ʒ",
         "ə",
-        "r",
+        "ɹ",
         "z"
       ],
       "count": 1,
@@ -3304,7 +3304,7 @@ window.AVATARIAN_CORPUS = {
     "try": {
       "ipa": [
         "t",
-        "r",
+        "ɹ",
         "aɪ",
         "∅"
       ],
@@ -3319,7 +3319,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "w",
         "ɔ",
-        "r",
+        "ɹ",
         "m"
       ],
       "count": 1,
@@ -3335,10 +3335,10 @@ window.AVATARIAN_CORPUS = {
         "ɔ",
         "t",
         "ə",
-        "r",
+        "ɹ",
         "∅",
         "p",
-        "r",
+        "ɹ",
         "u",
         "f"
       ],
@@ -3353,7 +3353,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "w",
         "ɛ",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -3394,7 +3394,7 @@ window.AVATARIAN_CORPUS = {
         "d",
         "ɪ",
         "k",
-        "r",
+        "ɹ",
         "i",
         "∅"
       ],
@@ -3409,7 +3409,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "l",
         "ɔ",
-        "r",
+        "ɹ",
         "d"
       ],
       "count": 1,
@@ -3421,7 +3421,7 @@ window.AVATARIAN_CORPUS = {
     },
     "royal": {
       "ipa": [
-        "r",
+        "ɹ",
         "ɔɪ",
         "ə",
         "l"
@@ -3441,7 +3441,7 @@ window.AVATARIAN_CORPUS = {
         "∅",
         "t",
         "ɑ",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 2,
@@ -3461,7 +3461,7 @@ window.AVATARIAN_CORPUS = {
         "∅",
         "t",
         "ɑ",
-        "r",
+        "ɹ",
         "∅",
         "i",
         "∅",
@@ -3516,7 +3516,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "w",
         "ə",
-        "r",
+        "ɹ",
         "l",
         "d",
         "∅"
@@ -3531,7 +3531,7 @@ window.AVATARIAN_CORPUS = {
     },
     "written": {
       "ipa": [
-        "r",
+        "ɹ",
         "ɪ",
         "t",
         "ə",
@@ -3550,7 +3550,7 @@ window.AVATARIAN_CORPUS = {
     "air": {
       "ipa": [
         "e",
-        "r"
+        "ɹ"
       ],
       "count": 1,
       "sources": [
@@ -3562,7 +3562,7 @@ window.AVATARIAN_CORPUS = {
     "earth": {
       "ipa": [
         "ə",
-        "r",
+        "ɹ",
         "θ",
         "∅"
       ],
@@ -3579,7 +3579,7 @@ window.AVATARIAN_CORPUS = {
         "ɔ",
         "t",
         "ə",
-        "r",
+        "ɹ",
         "∅"
       ],
       "count": 1,
@@ -3625,7 +3625,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "k",
         "oʊ",
-        "r",
+        "ɹ",
         "ə"
       ],
       "count": 1,
@@ -3655,7 +3655,7 @@ window.AVATARIAN_CORPUS = {
         "ə",
         "t",
         "ə",
-        "r"
+        "ɹ"
       ],
       "count": 1,
       "sources": [
@@ -3667,7 +3667,7 @@ window.AVATARIAN_CORPUS = {
     "treats": {
       "ipa": [
         "t",
-        "r",
+        "ɹ",
         "i",
         "t",
         "s",
@@ -3695,6 +3695,20 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sonam"
+    }
+  },
+  "conventions": {
+    "kyoshi": {
+      "ipa": [
+        "k",
+        "i",
+        "oʊ",
+        "∅",
+        "ʃ",
+        "ɪ"
+      ],
+      "gloss": "Kyoshi",
+      "note": "The model reads the final vowel as /i/ (ee); it should be /ɪ/ (i). Unsourced — no sample of the name written has turned up yet."
     }
   }
 };

@@ -201,6 +201,26 @@ input:focus, textarea:focus, select:focus {
   border-left-width: 3px; font-weight: 600;
 }
 
+/* --- conventions -------------------------------------------------- */
+
+/* The unsourced list. Same shape as the entry list, but its own accent so
+   a glance tells decided-on from seen. */
+.conv-list { list-style: none; margin: 8px 0 0; padding: 0;
+             max-height: 30vh; overflow-y: auto; }
+.conv-list li { margin-bottom: 3px; }
+.conv-btn {
+  width: 100%; text-align: left; display: flex; align-items: baseline; gap: 7px;
+  background: none; border: 1px solid transparent; padding: 5px 8px;
+}
+.conv-btn:hover { background: var(--hover); }
+.conv-btn.is-active { border-color: var(--accent); background: var(--hover); }
+.conv-key { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conv-codes { font-size: 0.75rem; color: var(--faint);
+              font-variant-numeric: tabular-nums; }
+.conv-blurb { margin: 8px 2px 0; line-height: 1.35; color: var(--faint); }
+/* The one thing the editor has to keep saying: these are not attestations. */
+.conv-note { margin: 0 0 14px; line-height: 1.4; color: var(--faint); }
+
 /* --- the source view ---------------------------------------------- */
 
 /* Image and description side by side. In the old right-hand rail these

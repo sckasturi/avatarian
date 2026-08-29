@@ -32,6 +32,12 @@ const state = {
   index: -1,        // which entry is open; -1 is a new, unsaved one
   sourceView: null, // which source is being browsed, if any
   dirty: false,
+  // Unsourced conventions live alongside the corpus but save on their own
+  // (their own file, their own button), so they are kept as their own
+  // list and dirty flag rather than folded into the entries above.
+  conventions: [],
+  convIndex: -1,    // which convention is open; -1 is a new, unsaved one
+  convDirty: false,
 };
 
 /** Every field that, when touched, means the open entry changed. */
@@ -1118,6 +1124,7 @@ function openImport() {
   // The import panel carries its own name / what / where / image, so
   // showing the Source panel too would put two of every field on screen.
   $("sourcePanel").hidden = true;
+  $("convEditor").hidden = true;
   $("impName").focus();
 }
 
@@ -1125,6 +1132,10 @@ function closeImport() {
   $("importPanel").hidden = true;
   $("editor").hidden = false;
   $("sourcePanel").hidden = false;
+  // The conventions editor stands in for these panels, so leaving import
+  // for the entry editor also leaves it. showConvPanels() calls this and
+  // then re-shows convEditor, so opening a convention is unaffected.
+  $("convEditor").hidden = true;
 }
 
 /**
@@ -1766,6 +1777,253 @@ function wireDropzone() {
 }
 
 // ---------------------------------------------------------------------
+// Conventions — unsourced spellings you've decided on
+// ---------------------------------------------------------------------
+//
+// The whole reason this is a separate editor and a separate file is the
+// one thing it must never do: let an unsourced guess into the attested
+// corpus. So a convention carries no source, no confidence, no sighting
+// count — nothing that would let it masquerade as an observation — and it
+// posts to its own endpoint. What it DOES carry is the finished block
+// structure, exactly like a corpus entry, because that is what lets it
+// pin a spelling the phoneme-only EXCEPTIONS table cannot.
+
+function convBlank() {
+  return { key: "", spelling: "", gloss: "", note: "" };
+}
+
+function markConvDirty() {
+  state.convDirty = true;
+  setConvStatus("unsaved", "is-dirty");
+}
+
+function setConvStatus(text, cls = "") {
+  const el = $("convSaveState");
+  el.textContent = text;
+  el.className = "save-state " + cls;
+}
+
+function writeConv(conv) {
+  $("convKey").value = conv.key || "";
+  $("convSpelling").value = ipaToSpelling((conv.spelling || "").split(" ").filter(Boolean));
+  $("convGloss").value = conv.gloss || "";
+  $("convNote").value = conv.note || "";
+  $("convTitle").textContent = conv.key ? conv.key : "New convention";
+  $("deleteConv").hidden = state.convIndex < 0;
+  refreshConv();
+}
+
+function readConv() {
+  return {
+    key: $("convKey").value.trim(),
+    spelling: spellingToIPA($("convSpelling").value).join(" "),
+    gloss: $("convGloss").value.trim(),
+    note: $("convNote").value.trim(),
+  };
+}
+
+/** Fold the open convention back into the list, adding it if new. */
+function commitConv() {
+  const conv = readConv();
+  if (!conv.key && !conv.spelling) return;
+  for (const k of ["gloss", "note"]) if (!conv[k]) delete conv[k];
+  if (state.convIndex < 0) {
+    state.conventions.push(conv);
+    state.convIndex = state.conventions.length - 1;
+    $("deleteConv").hidden = false;
+  } else {
+    state.conventions[state.convIndex] = conv;
+  }
+  renderConvList();
+}
+
+function refreshConv() {
+  const ipa = spellingToIPA($("convSpelling").value);
+  renderConvPreview(ipa);
+  renderConvComparison(ipa);
+}
+
+function renderConvPreview(ipa) {
+  const out = $("convPreview");
+  out.innerHTML = "";
+  const note = $("convPreviewNote");
+  if (!ipa.length) { note.textContent = ""; return; }
+
+  const word = document.createElement("span");
+  renderAvatarian(ipa, word);
+  out.appendChild(word);
+
+  const blocks = blocksOf(ipa);
+  const odd = ipa.length % 2 === 1;
+  const bodies = ipa.map(t => splitOverride(t).body);
+  const unknown = [...new Set(bodies.filter(
+    sym => sym !== "*" && !(window.AVATARIAN_GLYPHS || {})[sym]))];
+
+  const bits = [`${ipa.length} symbols, ${blocks.length} blocks`];
+  if (odd) bits.push("odd count — a null is missing");
+  if (unknown.length) bits.push("no glyph for: " + unknown.join(" "));
+  note.textContent = bits.join(" · ");
+  note.className = "preview-note" + (odd || unknown.length ? " is-warn" : "");
+}
+
+/**
+ * A convention beside the spelling the model would have drawn. Usually
+ * the two differ in exactly one slot — the reason the convention exists —
+ * so showing them together makes that slot obvious.
+ */
+function renderConvComparison(ipa) {
+  const box = $("convCompare");
+  const word = $("convKey").value.trim();
+  if (!ipa.length || !word) { box.hidden = true; return; }
+
+  const model = modelSpelling(word);
+  if (!model.length) { box.hidden = true; return; }
+
+  const yoursStr = ipa.join(" ");
+  const modelStr = model.join(" ");
+  const sameSounds = soundsOnly(ipa).join(" ") === soundsOnly(model).join(" ");
+
+  let verdict, cls = "";
+  if (yoursStr === modelStr) {
+    verdict = "This is already what the model draws — a convention only "
+            + "earns its place where it differs.";
+    cls = " is-same";
+  } else if (sameSounds) {
+    verdict = "Same sounds, different blocks — you're pinning the pairing.";
+  } else {
+    verdict = "Different sounds — you're overriding what the tool thinks "
+            + "the word sounds like.";
+  }
+
+  $("convCompareBody").innerHTML = "";
+  const rows = [
+    ["yours", ipaToSpelling(ipa), `${blocksOf(ipa).length} blocks`],
+    ["model", ipaToSpelling(model), `${blocksOf(model).length} blocks`],
+  ];
+  for (const [tag, val, count] of rows) {
+    const row = document.createElement("div");
+    row.className = "compare-row";
+    row.innerHTML = `<span class="compare-tag"></span>`
+      + `<span class="compare-val"></span><span class="compare-tag"></span>`;
+    const cells = row.querySelectorAll("span");
+    cells[0].textContent = tag;
+    cells[1].textContent = val;
+    cells[2].textContent = count;
+    $("convCompareBody").appendChild(row);
+  }
+  const v = document.createElement("p");
+  v.className = "compare-verdict" + cls;
+  v.textContent = verdict;
+  $("convCompareBody").appendChild(v);
+  box.hidden = false;
+}
+
+function renderConvList() {
+  const list = $("convList");
+  list.innerHTML = "";
+  const items = state.conventions
+    .map((conv, i) => ({ conv, i }))
+    .sort((a, b) => (a.conv.key || "").localeCompare(b.conv.key || ""));
+  for (const { conv, i } of items) {
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "conv-btn" + (i === state.convIndex ? " is-active" : "");
+    const codes = ipaToSpelling((conv.spelling || "").split(" ").filter(Boolean));
+    btn.innerHTML = `<span class="conv-key"></span><span class="conv-codes"></span>`;
+    btn.querySelector(".conv-key").textContent = conv.key || "(unnamed)";
+    btn.querySelector(".conv-codes").textContent = codes;
+    btn.addEventListener("click", () => openConvEditor(i));
+    li.appendChild(btn);
+    list.appendChild(li);
+  }
+}
+
+/** Show the conventions editor, standing in for the entry panels. */
+function showConvPanels() {
+  closeImport();
+  if (state.sourceView) closeSourceView();
+  $("editor").hidden = true;
+  $("sourcePanel").hidden = true;
+  $("importPanel").hidden = true;
+  $("convEditor").hidden = false;
+}
+
+function openConvEditor(i) {
+  commitConv();
+  showConvPanels();
+  state.convIndex = i;
+  writeConv(state.conventions[i]);
+  renderConvList();
+}
+
+function newConvention() {
+  commitConv();
+  showConvPanels();
+  state.convIndex = -1;
+  writeConv(convBlank());
+  renderConvList();
+  $("convKey").focus({ preventScroll: true });
+}
+
+function closeConvEditor() {
+  commitConv();
+  $("convEditor").hidden = true;
+  $("editor").hidden = false;
+  $("sourcePanel").hidden = false;
+  state.convIndex = -1;
+  renderConvList();
+}
+
+function deleteConvention() {
+  if (state.convIndex < 0) return;
+  state.conventions.splice(state.convIndex, 1);
+  state.convIndex = -1;
+  writeConv(convBlank());
+  renderConvList();
+  markConvDirty();
+}
+
+/** Type a word, get the model's finished spelling to start from. */
+function deriveConvSpelling() {
+  const word = $("convKey").value.trim();
+  if (!word) { $("convKey").focus(); return; }
+  const model = modelSpelling(word);
+  if (!model.length) {
+    setConvStatus("the model has no spelling for that word", "is-error");
+    return;
+  }
+  $("convSpelling").value = ipaToSpelling(model);
+  markConvDirty();
+  commitConv();
+  refreshConv();
+  $("convSpelling").focus({ preventScroll: true });
+}
+
+async function saveConventions() {
+  commitConv();
+  setConvStatus("saving…");
+  try {
+    const res = await fetch("/api/conventions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ conventions: state.conventions }),
+    });
+    const body = await res.json();
+    showProblems(body.problems || []);
+    if (body.saved) {
+      state.convDirty = false;
+      setConvStatus(`saved — ${body.count} conventions`, "is-ok");
+    } else {
+      setConvStatus("not saved — see above", "is-error");
+    }
+  } catch (e) {
+    showProblems([String(e)]);
+    setConvStatus("not saved — see above", "is-error");
+  }
+}
+
+// ---------------------------------------------------------------------
 // Boot
 // ---------------------------------------------------------------------
 
@@ -1774,9 +2032,12 @@ async function load() {
   const body = await res.json();
   state.sources = body.sources || {};
   state.entries = body.entries || [];
-  showProblems(body.problems || []);
+  state.conventions = body.conventions || [];
+  showProblems([...(body.problems || []), ...(body.conventionProblems || [])]);
   renderSourceList();
   renderEntryList();
+  renderConvList();
+  writeConv(convBlank());
   if (state.entries.length) openEntry(0);
   else writeEditor(blankEntry());
   setStatus(body.problems?.length ? "loaded with problems" : "loaded");
@@ -1801,10 +2062,40 @@ function wire() {
     }
   }
 
-  // The two standing sounds fields. A row's codes field registers itself
-  // as it is built, since rows come and go with every re-parse.
+  // The standing sounds fields. A row's codes field registers itself as
+  // it is built, since rows come and go with every re-parse.
   trackSoundField($("spelling"));
   trackSoundField($("impText"));
+  trackSoundField($("convSpelling"));
+
+  // Conventions. The word and spelling drive the preview and comparison;
+  // everything posts to /api/conventions on its own save.
+  $("convKey").addEventListener("input", () => {
+    markConvDirty();
+    commitConv();
+    $("convTitle").textContent = $("convKey").value.trim() || "New convention";
+    refreshConv();
+  });
+  $("convSpelling").addEventListener("input", () => {
+    markConvDirty();
+    commitConv();
+    refreshConv();
+  });
+  for (const id of ["convGloss", "convNote"]) {
+    $(id).addEventListener("input", () => { markConvDirty(); commitConv(); });
+  }
+  $("newConvention").addEventListener("click", newConvention);
+  $("closeConv").addEventListener("click", closeConvEditor);
+  $("deleteConv").addEventListener("click", deleteConvention);
+  $("convDerive").addEventListener("click", deriveConvSpelling);
+  $("saveConv").addEventListener("click", saveConventions);
+  $("convDelToken").addEventListener("click", deleteToken);
+  $("convClear").addEventListener("click", () => {
+    $("convSpelling").value = "";
+    markConvDirty();
+    commitConv();
+    refreshConv();
+  });
 
   $("filter").addEventListener("input", renderEntryList);
   $("newEntry").addEventListener("click", newEntry);
@@ -1863,7 +2154,7 @@ function wire() {
   });
 
   window.addEventListener("beforeunload", (e) => {
-    if (!state.dirty) return;
+    if (!state.dirty && !state.convDirty) return;
     e.preventDefault();
     e.returnValue = "";
   });

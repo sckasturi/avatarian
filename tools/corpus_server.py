@@ -20,8 +20,9 @@ that is, confirm it, save.
 
 API
 ---
-    GET  /api/corpus         sources + entries + current validation state
+    GET  /api/corpus         sources + entries + conventions + validation
     POST /api/corpus         save the lot (validates; writes nothing if bad)
+    POST /api/conventions    save the unsourced conventions (same contract)
     POST /api/image          store a reference image against a source
     GET  /images/<file>      a stored reference image
 
@@ -163,10 +164,17 @@ class Handler(SimpleHTTPRequestHandler):
     def get_corpus(self):
         data = build_corpus.load() if build_corpus.SRC.exists() else {}
         problems, records = build_corpus.check(data)
+        # Conventions ride along on the same load — they live in a separate
+        # file but are edited in the same workbench, and shipping them here
+        # saves the UI a second request.
+        conv_data = build_corpus.load_conventions()
+        conv_problems, _ = build_corpus.check_conventions(conv_data)
         return self.send_json({
             "sources": data.get("sources") or {},
             "entries": data.get("entries") or [],
+            "conventions": conv_data.get("conventions") or [],
             "problems": problems,
+            "conventionProblems": conv_problems,
             "count": len(records),
         })
 
@@ -189,6 +197,8 @@ class Handler(SimpleHTTPRequestHandler):
         try:
             if path == "/api/corpus":
                 return self.save_corpus()
+            if path == "/api/conventions":
+                return self.save_conventions()
             if path == "/api/image":
                 return self.store_image()
         except Exception as e:                       # noqa: BLE001
@@ -211,6 +221,25 @@ class Handler(SimpleHTTPRequestHandler):
             "saved": not problems,
             "problems": problems,
             "count": len(records or {}),
+        })
+
+    def save_conventions(self):
+        """
+        Validate and write the unsourced conventions.
+
+        Same all-or-nothing contract as the corpus save: a rejected
+        convention leaves both the conventions file and the generated JS
+        exactly as they were. `save_conventions` regenerates corpus.js
+        from the attested corpus plus these, so one save keeps the shipped
+        file whole.
+        """
+        body = self.read_json() or {}
+        problems, compiled = build_corpus.save_conventions(
+            body.get("conventions") or [])
+        return self.send_json({
+            "saved": not problems,
+            "problems": problems,
+            "count": len(compiled or {}),
         })
 
     def store_image(self):
