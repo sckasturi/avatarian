@@ -2,8 +2,7 @@
   "p": {
     "file": "p.svg",
     "status": "drawn",
-    "type": "consonant",
-    "acceptsConnect": true
+    "type": "consonant"
   },
   "b": {
     "file": "b.svg",
@@ -13,8 +12,7 @@
   "t": {
     "file": "t.svg",
     "status": "drawn",
-    "type": "consonant",
-    "acceptsConnect": true
+    "type": "consonant"
   },
   "d": {
     "file": "d.svg",
@@ -86,8 +84,7 @@
   "z": {
     "file": "z.svg",
     "status": "drawn",
-    "type": "consonant",
-    "acceptsConnect": true
+    "type": "consonant"
   },
   "ʃ": {
     "file": "sh.svg",
@@ -111,8 +108,10 @@
     "status": "drawn",
     "type": "consonant",
     "variants": {
-      "cluster": "w_cluster.svg",
-      "clusterConnect": "w_cluster_connect.svg"
+      "cluster": "w_cluster.svg"
+    },
+    "clusterPorts": {
+      "0.5": "w_cluster_connect_0_5.svg"
     }
   },
   "j": {
@@ -120,8 +119,10 @@
     "status": "drawn",
     "type": "consonant",
     "variants": {
-      "cluster": "y_cluster.svg",
-      "clusterConnect": "y_cluster_connect.svg"
+      "cluster": "y_cluster.svg"
+    },
+    "clusterPorts": {
+      "4.5": "y_cluster_connect_4_5.svg"
     }
   },
   "ɹ": {
@@ -129,18 +130,21 @@
     "status": "drawn",
     "type": "consonant",
     "variants": {
-      "cluster": "r_cluster.svg",
-      "clusterConnect": "r_cluster_connect.svg"
+      "cluster": "r_cluster.svg"
     },
-    "acceptsConnect": true
+    "clusterPorts": {
+      "4.5": "r_cluster_connect_4_5.svg"
+    }
   },
   "l": {
     "file": "l.svg",
     "status": "drawn",
     "type": "consonant",
     "variants": {
-      "cluster": "l_cluster.svg",
-      "clusterConnect": "l_cluster_connect.svg"
+      "cluster": "l_cluster.svg"
+    },
+    "clusterPorts": {
+      "0.5": "l_cluster_connect_0_5.svg"
     }
   },
   "x": {
@@ -159,11 +163,11 @@
     "status": "drawn",
     "type": "vowel",
     "flat": "ih_flat.svg",
-    "variants": {
-      "connect": "ih_connect.svg"
+    "ports": {
+      "2.5": "ih_connect_2_5.svg"
     },
-    "variantsFlat": {
-      "connect": "ih_connect_flat.svg"
+    "portsFlat": {
+      "2.5": "ih_connect_2_5_flat.svg"
     },
     "flips": true,
     "rows": 4
@@ -173,11 +177,11 @@
     "status": "drawn",
     "type": "vowel",
     "flat": "ei_flat.svg",
-    "variants": {
-      "connect": "ei_connect.svg"
+    "ports": {
+      "2.5": "ei_connect_2_5.svg"
     },
-    "variantsFlat": {
-      "connect": "ei_connect_flat.svg"
+    "portsFlat": {
+      "2.5": "ei_connect_2_5_flat.svg"
     },
     "flips": true,
     "rows": 4
@@ -213,11 +217,11 @@
     "status": "drawn",
     "type": "vowel",
     "flat": "uu_flat.svg",
-    "variants": {
-      "connect": "uu_connect.svg"
+    "ports": {
+      "2.5": "uu_connect_2_5.svg"
     },
-    "variantsFlat": {
-      "connect": "uu_connect_flat.svg"
+    "portsFlat": {
+      "2.5": "uu_connect_2_5_flat.svg"
     },
     "rows": 4
   },
@@ -227,11 +231,11 @@
     "type": "vowel",
     "note": "from source material outside the key chart",
     "flat": "oo_flat.svg",
-    "variants": {
-      "connect": "oo_connect.svg"
+    "ports": {
+      "2.5": "oo_connect_2_5.svg"
     },
-    "variantsFlat": {
-      "connect": "oo_connect_flat.svg"
+    "portsFlat": {
+      "2.5": "oo_connect_2_5_flat.svg"
     },
     "rows": 4
   },
@@ -254,11 +258,11 @@
     "type": "vowel",
     "note": "from source material outside the key chart",
     "flat": "ah_flat.svg",
-    "variants": {
-      "connect": "ah_connect.svg"
+    "ports": {
+      "2.5": "ah_connect_2_5.svg"
     },
-    "variantsFlat": {
-      "connect": "ah_connect_flat.svg"
+    "portsFlat": {
+      "2.5": "ah_connect_2_5_flat.svg"
     },
     "flips": true,
     "rows": 4
@@ -283,11 +287,11 @@
     "type": "vowel",
     "note": "from source material outside the key chart",
     "flat": "oi_flat.svg",
-    "variants": {
-      "connect": "oi_connect.svg"
+    "ports": {
+      "2.5": "oi_connect_2_5.svg"
     },
-    "variantsFlat": {
-      "connect": "oi_connect_flat.svg"
+    "portsFlat": {
+      "2.5": "oi_connect_2_5_flat.svg"
     },
     "flips": true,
     "rows": 4

@@ -61,9 +61,30 @@ def main():
             out[ipa]["flips"] = True
         if info.get("rows"):
             out[ipa]["rows"] = info["rows"]
-        # A consonant a vowel's connection stroke may land on (render.js).
-        if info.get("acceptsConnect"):
-            out[ipa]["acceptsConnect"] = True
+
+        # Per-column connection ports (render.js draws the one it shares with
+        # the block partner). {column: filename} -> {column: {svg[, flat]}},
+        # the flat copy folded in from portsFlat.
+        def inline_ports(field):
+            got = {}
+            for col, fname in (info.get(field) or {}).items():
+                fp = GLYPHS / fname
+                if fp.exists():
+                    got[col] = {"svg": fp.read_text(encoding="utf-8").strip()}
+                else:
+                    missing.append(fname)
+            return got
+
+        base_ports = inline_ports("ports")
+        for col, fname in (info.get("portsFlat") or {}).items():
+            fp = GLYPHS / fname
+            if col in base_ports and fp.exists():
+                base_ports[col]["flat"] = fp.read_text(encoding="utf-8").strip()
+        if base_ports:
+            out[ipa]["ports"] = base_ports
+        cluster_ports = inline_ports("clusterPorts")
+        if cluster_ports:
+            out[ipa]["clusterPorts"] = cluster_ports
         # The flattened copy used by proportional-height mode.
         if info.get("flat"):
             fpath = GLYPHS / info["flat"]

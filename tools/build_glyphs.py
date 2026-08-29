@@ -318,21 +318,6 @@ VOWELS = {
           + dot(82, 40),
 }
 
-# Connection strokes. A vowel whose design carries a `connect` node grows a
-# short stroke to the block seam — but as a VARIANT that render.js draws only
-# when the block partner is a consonant that accepts it (CONNECTS_AT_SEAM).
-# The base glyph stays plain, so it never pokes into a partner that is open at
-# the centre seam (/g/, /b/). ah/ei/ih/oi reach DOWN, oo/uu reach UP; the flip
-# machinery re-aims each toward the partner by slot (see AVATARIAN.md §11).
-VOWEL_CONNECT = {
-    "ah": path("M 50 80 L 50 90"),
-    "ei": path("M 50 80 L 50 90"),
-    "ih": path("M 50 80 L 50 90"),
-    "oi": path("M 50 80 L 50 90"),
-    "oo": path("M 50 20 L 50 10"),
-    "uu": path("M 50 20 L 50 10"),
-}
-
 # ---------------------------------------------------------------------------
 # MARKS — written like vowels (wide, flat) but standing for no sound
 # ---------------------------------------------------------------------------
@@ -429,13 +414,6 @@ SOURCE_NOTES = {
 # it. Spell those with the $/% override instead.
 FLIPS_BASE = {"æ", "ɑ", "ɪ", "e", "aɪ", "ə"}
 
-# Consonants (by IPA) with ink at the CENTRE of the block seam, so a
-# connection stroke from the block partner lands ON them rather than poking
-# into a gap. A glyph open at the seam centre — /g/, /b/ — is left out, and a
-# partner beside it stays plain. Seeded from the pairs that should fuse
-# ((l,p) (r,l) (p,l) (l,z)); extend as more shapes are checked.
-CONNECTS_AT_SEAM = {"t", "z", "p", "ɹ"}
-
 # Vowels whose design spans all 4 rows of the vowel grid. These bridge
 # the gap between consonant and vowel in the 9-row block model.
 # All other vowels use only 3 rows, leaving a 1-row gap.
@@ -528,6 +506,35 @@ DESIGNS = ROOT / "designs"
 NAME_TO_IPA = {name: ipa for ipa, name in IPA_TO_NAME.items()}
 
 
+def _design(name):
+    """A design file by stem, or None if it isn't there / won't parse."""
+    p = DESIGNS / f"{name}.json"
+    if not p.is_file():
+        return None
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def port_variants(design, base_body, form):
+    """{column: base + that port's stroke to the seam} for a design's connect
+    nodes, one variant per column. Empty when the design has none. A glyph
+    with ports on two sides (like /p/, for /l/ and /r/) gets a variant per
+    column, and render.js draws only the one its block partner shares."""
+    import glyphspec
+    if not design:
+        return {}
+    frame = glyphspec.frame_for(design.get("type", "consonant"), form,
+                                glyphspec.mark_cols(design))
+    return {col: base_body + path_wrap(d)
+            for col, d in glyphspec.connection_ports(design, frame).items()}
+
+
+def path_wrap(d):
+    return f'<path d="{d}"/>'
+
+
 def load_clusters():
     """Custom CLUSTER (C-C) forms, read from designs/<name>_cluster.json and
     rendered through glyphspec — a glyph with one draws THIS in a two-consonant
@@ -535,7 +542,7 @@ def load_clusters():
     the l/r pair. No file means the glyph behaves as before (flip rules)."""
     import copy
     import glyphspec
-    out, conn = {}, {}
+    out, ports = {}, {}
     if DESIGNS.is_dir():
         for p in sorted(DESIGNS.glob(f"*{CLUSTER_SUFFIX}.json")):
             ipa = NAME_TO_IPA.get(p.stem[:-len(CLUSTER_SUFFIX)])
@@ -547,33 +554,33 @@ def load_clusters():
                 continue
             if not d.get("shapes"):
                 continue
-            # A cluster with a connect node draws plain by default, plus a
-            # "_connect" variant with its stroke to the seam — the same
-            # partner-gated fusion the vowels use (render.js). Strip the
-            # connect nodes for the plain base; keep them for the variant.
-            has_connect = any(n.get("connect")
-                              for s in d["shapes"] for n in s.get("nodes", []))
-            if has_connect:
-                conn[ipa] = glyphspec.body(d)
-                plain = copy.deepcopy(d)
-                for s in plain["shapes"]:
-                    for n in s.get("nodes", []):
-                        n.pop("connect", None)
-                out[ipa] = glyphspec.body(plain)
-            else:
-                out[ipa] = glyphspec.body(d)
+            # Plain base with the connect nodes stripped; the ports become
+            # per-column "_connect" variants below (same as base glyphs).
+            plain = copy.deepcopy(d)
+            for s in plain["shapes"]:
+                for n in s.get("nodes", []):
+                    n.pop("connect", None)
+            out[ipa] = glyphspec.body(plain)
+            pv = port_variants(d, out[ipa], "square")
+            if pv:
+                ports[ipa] = pv
+    # /r/ and /y/ mirror /l/ and /w/ — flip the body and reflect each port's
+    # column across the grid (a left port at 0.5 becomes a right port at 4.5).
+    span = glyphspec.grid_for("consonant")[0]
+    def mirror_ports(pv):
+        return {f"{span - float(c):g}": hflip(b) for c, b in pv.items()}
     if "l" in out:
         out["ɹ"] = hflip(out["l"])
-        if "l" in conn:
-            conn["ɹ"] = hflip(conn["l"])
+        if "l" in ports:
+            ports["ɹ"] = mirror_ports(ports["l"])
     if "w" in out:
         out["j"] = hflip(out["w"])      # /y/'s cluster mirrors /w/'s, as their bases do
-        if "w" in conn:
-            conn["j"] = hflip(conn["w"])
-    return out, conn
+        if "w" in ports:
+            ports["j"] = mirror_ports(ports["w"])
+    return out, ports
 
 
-CLUSTERS, CLUSTER_CONNECT = load_clusters()
+CLUSTERS, CLUSTER_PORTS = load_clusters()
 
 
 def design_overrides():
@@ -617,9 +624,9 @@ FLIPS, VOWEL_4ROW = effective_flags()
 
 
 def refresh():
-    global FLIPS, VOWEL_4ROW, CLUSTERS, CLUSTER_CONNECT
+    global FLIPS, VOWEL_4ROW, CLUSTERS, CLUSTER_PORTS
     FLIPS, VOWEL_4ROW = effective_flags()
-    CLUSTERS, CLUSTER_CONNECT = load_clusters()
+    CLUSTERS, CLUSTER_PORTS = load_clusters()
     return FLIPS, VOWEL_4ROW
 
 
@@ -633,20 +640,39 @@ def main():
         old.unlink()
         removed += 1
 
+    # Per-column connection variants. A glyph's base and cluster forms each
+    # keep a "_connect_<col>" file per port; render.js draws one when the
+    # block partner has a port on the same column, so the two halves meet at
+    # the seam. `ports`/`ports_flat` are the base form's, `cluster_ports` the
+    # cluster form's; each maps name/ipa -> {column: filename}.
+    ports, ports_flat, cluster_ports = {}, {}, {}
+
+    def _tag(col):
+        return col.replace(".", "_").replace("-", "m")
+
+    def port_files(stem, pv, flat_form=False):
+        files = {}
+        for col, vbody in pv.items():
+            fname = f"{stem}{CONNECT_SUFFIX}_{_tag(col)}{FLAT_SUFFIX if flat_form else ''}.svg"
+            (OUT / fname).write_text(
+                svg(vbody, box=FLAT_BOX if flat_form else 100), encoding="utf-8")
+            files[col] = fname
+        return files
+
     drawn = {}
     for name, body in {**CONSONANTS, **MARKS_CONSONANT}.items():
         (OUT / f"{name}.svg").write_text(svg(body), encoding="utf-8")
         drawn[name] = True
-    # Independently-drawn cluster (C-C) forms (see CLUSTERS). Written as
-    # <name>_cluster.svg; render.js draws it in a two-consonant block.
+        pv = port_variants(_design(name), body, "square")
+        if pv:
+            ports[name] = port_files(name, pv)
+    # Independently-drawn cluster (C-C) forms (see CLUSTERS), plus their own
+    # per-column connect variants (CLUSTER_PORTS).
     for ipa, body in CLUSTERS.items():
         (OUT / f"{IPA_TO_NAME[ipa]}{CLUSTER_SUFFIX}.svg").write_text(
             svg(body), encoding="utf-8")
-    # The cluster form's own connection variant (base + stroke to the seam),
-    # drawn by render.js only when the C-C partner accepts it.
-    for ipa, body in CLUSTER_CONNECT.items():
-        (OUT / f"{IPA_TO_NAME[ipa]}{CLUSTER_SUFFIX}{CONNECT_SUFFIX}.svg").write_text(
-            svg(body), encoding="utf-8")
+    for ipa, pv in CLUSTER_PORTS.items():
+        cluster_ports[ipa] = port_files(f"{IPA_TO_NAME[ipa]}{CLUSTER_SUFFIX}", pv)
     # Full-height punctuation marks: a tall box, one form only, as many
     # lattice columns wide as the mark declares (period 1, a question mark
     # perhaps 2 or 3).
@@ -657,9 +683,8 @@ def main():
         drawn[name] = True
     # Vowels and vowel-height marks ship twice: the square drawing for
     # equal-height mode, and a geometrically flattened 100x80 copy for
-    # proportional mode.
+    # proportional mode. Connect variants ship in both forms too.
     flat = {}
-    connect = {}          # names that ship a "_connect" variant too
     for name, body in {**VOWELS, **MARKS_VOWEL}.items():
         (OUT / f"{name}.svg").write_text(svg(body), encoding="utf-8")
         (OUT / f"{name}{FLAT_SUFFIX}.svg").write_text(
@@ -667,16 +692,12 @@ def main():
         )
         drawn[name] = True
         flat[name] = True
-        # The connection variant: base + its stroke to the seam, in both forms.
-        # Flattening the combined body scales the stroke with the glyph, so the
-        # flat copy stays in step.
-        ext = VOWEL_CONNECT.get(name)
-        if ext:
-            (OUT / f"{name}{CONNECT_SUFFIX}.svg").write_text(
-                svg(body + ext), encoding="utf-8")
-            (OUT / f"{name}{CONNECT_SUFFIX}{FLAT_SUFFIX}.svg").write_text(
-                svg(flatten(body + ext), box=FLAT_BOX), encoding="utf-8")
-            connect[name] = True
+        d = _design(name)
+        pv = port_variants(d, body, "square")
+        if pv:
+            ports[name] = port_files(name, pv)
+            ports_flat[name] = port_files(
+                name, port_variants(d, flatten(body), "flat"), flat_form=True)
 
     for name in PLACEHOLDERS:
         (OUT / f"{name}.svg").write_text(PLACEHOLDER_SVG, encoding="utf-8")
@@ -687,12 +708,12 @@ def main():
     # leaves the old stem behind, and a ghost file looks exactly like a
     # live one when you go looking for why a shape didn't change.
     all_marks = {**MARKS_CONSONANT, **MARKS_VOWEL, **MARKS_FULL}
+    port_svgs = {f for m in (ports, ports_flat, cluster_ports)
+                 for files in m.values() for f in files.values()}
     current = {f"{n}.svg" for n in {**CONSONANTS, **VOWELS, **all_marks}} \
         | {f"{n}{FLAT_SUFFIX}.svg" for n in {**VOWELS, **MARKS_VOWEL}} \
         | {f"{IPA_TO_NAME[i]}{CLUSTER_SUFFIX}.svg" for i in CLUSTERS} \
-        | {f"{IPA_TO_NAME[i]}{CLUSTER_SUFFIX}{CONNECT_SUFFIX}.svg" for i in CLUSTER_CONNECT} \
-        | {f"{n}{CONNECT_SUFFIX}.svg" for n in connect} \
-        | {f"{n}{CONNECT_SUFFIX}{FLAT_SUFFIX}.svg" for n in connect} \
+        | port_svgs \
         | {f"{n}.svg" for n in PLACEHOLDERS} | {"unknown.svg"}
     stale = [p for p in OUT.glob("*.svg") if p.name not in current]
     for p in stale:
@@ -711,18 +732,15 @@ def main():
             manifest[ipa]["flat"] = f"{name}{FLAT_SUFFIX}.svg"
         if ipa in CLUSTERS:
             manifest[ipa]["variants"] = {"cluster": f"{name}{CLUSTER_SUFFIX}.svg"}
-        if ipa in CLUSTER_CONNECT:
-            manifest[ipa].setdefault("variants", {})["clusterConnect"] = \
-                f"{name}{CLUSTER_SUFFIX}{CONNECT_SUFFIX}.svg"
-        # The connection variant, drawn by render.js only when the block
-        # partner accepts it (acceptsConnect). Base stays plain.
-        if name in connect:
-            manifest[ipa].setdefault("variants", {})["connect"] = \
-                f"{name}{CONNECT_SUFFIX}.svg"
-            manifest[ipa].setdefault("variantsFlat", {})["connect"] = \
-                f"{name}{CONNECT_SUFFIX}{FLAT_SUFFIX}.svg"
-        if ipa in CONNECTS_AT_SEAM:
-            manifest[ipa]["acceptsConnect"] = True
+        # Per-column connection ports: the base form's, the cluster form's, and
+        # the base form's flat copy. render.js draws the variant on a column it
+        # shares with the block partner.
+        if name in ports:
+            manifest[ipa]["ports"] = ports[name]
+        if name in ports_flat:
+            manifest[ipa]["portsFlat"] = ports_flat[name]
+        if ipa in cluster_ports:
+            manifest[ipa]["clusterPorts"] = cluster_ports[ipa]
         if ipa in FLIPS:
             manifest[ipa]["flips"] = True
         if ipa in VOWEL_4ROW:

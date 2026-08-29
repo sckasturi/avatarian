@@ -378,22 +378,28 @@ function makeGlyph(token, slot, partner) {
         if (!rlPair || slot === "bottom") ccForm = form.variants.cluster;
       }
     }
-    // A cluster form that also carries a connection stroke swaps to its
-    // connect variant when the C-C partner accepts it — the same partner gate
-    // as the vowels below, but on top of the cluster body.
-    if (ccForm && form.variants.clusterConnect && partner != null) {
-      const pE = GLYPHS[parseSymbol(partner).sym];
-      if (pE && pE.acceptsConnect) ccForm = form.variants.clusterConnect;
-    }
-    // The connection variant (base + a stroke to the seam) is drawn only when
-    // the block partner is a consonant that accepts it — so the stroke lands
-    // on the partner's ink (/t/, /z/) and never pokes into one that's open at
-    // the seam (/g/, /b/). It rides the same by-slot flip as the base, which
-    // is what re-aims the stroke toward whichever slot the partner is in.
+    // Per-column connection ports. A glyph draws its connect variant on a
+    // column it SHARES with the block partner, so each side's half-stroke
+    // meets the other at the seam — never poking into a partner that has no
+    // ink there. The base form's ports are `ports`, the cluster form's
+    // `clusterPorts`; the partner's form is read the same way (a consonant
+    // beside me sits in a C-C block, so it uses its own cluster form if it
+    // has one). A matched cluster port replaces ccForm; a base one becomes
+    // connForm and rides the ordinary by-slot flip.
     let connForm = null;
-    if (!ccForm && form.variants && form.variants.connect && partner != null) {
+    if (partner != null) {
+      const myPorts = (ccForm ? entry.clusterPorts : entry.ports) || null;
       const pEntry = GLYPHS[parseSymbol(partner).sym];
-      if (pEntry && pEntry.acceptsConnect) connForm = form.variants.connect;
+      if (myPorts && pEntry) {
+        const meConsonant = !isVowelSymbol(sym) && !NULLS.has(sym);
+        const pCluster = meConsonant && pEntry.variants && pEntry.variants.cluster;
+        const pPorts = (pCluster ? pEntry.clusterPorts : pEntry.ports) || null;
+        const col = pPorts && Object.keys(myPorts).find((c) => c in pPorts);
+        if (col) {
+          if (ccForm) ccForm = myPorts[col];
+          else connForm = myPorts[col];
+        }
+      }
     }
     // The cluster form is drawn in its bottom-slot orientation (the key's l_b
     // tracing), so it STILL flips top-to-bottom when it lands in a TOP slot.

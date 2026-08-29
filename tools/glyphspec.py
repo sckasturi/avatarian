@@ -517,6 +517,27 @@ def connection_paths(design, frame):
     return out
 
 
+def connection_ports(design, frame):
+    """The connect strokes keyed by their node's lattice COLUMN — one entry
+    per port, so each can be baked into its own variant. Two glyphs fuse
+    where they share a column, each drawing its half to the seam. Ports on
+    the same column are joined into one string."""
+    w, h = grid_for(design.get("type", "consonant"))
+    out = {}
+    for shape in design.get("shapes", []):
+        if shape.get("kind") == "dot":
+            continue
+        for node in shape.get("nodes", []):
+            vec = CONNECT_DIRS.get(node.get("connect"))
+            if not vec:
+                continue
+            tx, ty = _edge_target(node["x"], node["y"], vec[0], vec[1], w, h)
+            p0, p1 = frame.pt(node), (frame.x(tx), frame.y(ty))
+            d = f'M {num(p0[0])} {num(p0[1])} L {num(p1[0])} {num(p1[1])}'
+            out.setdefault(num(node["x"]), []).append(d)
+    return {col: " ".join(ds) for col, ds in out.items()}
+
+
 def body(design, form="square"):
     """The inside of the <svg> for one design, in the requested form."""
     frame = frame_for(design.get("type", "consonant"), form, mark_cols(design))
