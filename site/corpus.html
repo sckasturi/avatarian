@@ -50,6 +50,47 @@
   }
   .corpus-count { color: var(--muted); font-size: 0.9rem; }
 
+  /* Structural search — a collapsible builder over the block data. The
+     three dropdowns write the query box, the box parses back to them, and
+     either one filters the grid and rings the matching blocks. */
+  .adv-search {
+    margin: 8px 0 2px; border: 1px solid var(--line);
+    border-radius: 10px; background: var(--surface);
+  }
+  .adv-search > summary {
+    cursor: pointer; padding: 9px 12px; color: var(--ink);
+    font-size: 0.92rem; user-select: none; list-style-position: inside;
+  }
+  .adv-search > summary:hover { color: var(--accent); }
+  .adv-search[open] > summary { border-bottom: 1px solid var(--line); }
+  .adv-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .adv-builder { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; }
+  .adv-builder label, .adv-query label {
+    display: flex; flex-direction: column; gap: 4px;
+    font-size: 0.78rem; color: var(--muted);
+  }
+  .adv-builder select, .adv-query input[type="text"] {
+    font: inherit; color: var(--ink); background: var(--card);
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+  }
+  .adv-query { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+  .adv-query input[type="text"] {
+    width: 100%; box-sizing: border-box;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .adv-note { margin: 0; font-size: 0.85rem; color: var(--muted); min-height: 1.15em; }
+  .adv-note.is-error { color: var(--accent); }
+  .adv-help { margin: 0; font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .adv-help code {
+    background: var(--card); padding: 1px 5px; border-radius: 5px;
+    border: 1px solid var(--line); font-size: 0.92em;
+  }
+  /* A block the current query matched — rung, not filled, so the glyphs
+     stay legible. outline keeps it out of the layout. */
+  .avatarian-block.q-hit {
+    outline: 2px solid var(--accent); outline-offset: 1px; border-radius: 4px;
+  }
+
   .legend { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
   .legend u { text-decoration-color: var(--accent); text-underline-offset: 3px; }
 
@@ -186,6 +227,48 @@ everything here was read off a real source.</p>
           title="Show only words the sources spell differently">Conflicts only</button>
   <span class="corpus-count" id="count"></span>
 </div>
+
+<details class="adv-search" id="advSearch">
+  <summary>Structural search — find a sound by the block it sits in</summary>
+  <div class="adv-body">
+    <div class="adv-builder">
+      <label>Sound
+        <select id="qPhoneme"><option value="">— any —</option></select>
+      </label>
+      <label>In a block that is
+        <select id="qContext">
+          <option value="">any shape</option>
+          <option value="cc">C–C · two consonants</option>
+          <option value="cv">C–V · consonant then vowel</option>
+          <option value="vc">V–C · vowel then consonant</option>
+          <option value="vv">V–V · two vowels</option>
+          <option value="null">has a null</option>
+        </select>
+      </label>
+      <label>In the
+        <select id="qSlot">
+          <option value="">either slot</option>
+          <option value="top">top slot</option>
+          <option value="bottom">bottom slot</option>
+        </select>
+      </label>
+    </div>
+    <div class="adv-query">
+      <label style="flex:1 1 14rem">Query
+        <input type="text" id="qString" spellcheck="false" autocomplete="off"
+               placeholder="e.g. g @cc" aria-describedby="qHelp" />
+      </label>
+      <button type="button" id="qClear" class="filter-toggle">Clear</button>
+    </div>
+    <p class="adv-note" id="qNote" role="status" aria-live="polite"></p>
+    <p class="adv-help" id="qHelp">Grammar:
+      <code>[top:|bottom:]sound [@cc @cv @vc @vv @null]</code>. Sounds read
+      like the translator — <code>sh</code>, <code>ng</code>, <code>uh</code>,
+      or raw IPA. So <code>g @cc</code> finds /g/ paired with another
+      consonant, and never /ŋ/. Matching blocks are ringed in each word.</p>
+  </div>
+</details>
+
 <p class="legend"><u>Underlined</u> means attested, a word the corpus has
 seen. <strong>Hover a word</strong> (or tab to it) to see the source it was
 read off. Cards outlined in colour are <span class="tag">contested</span>:
@@ -221,6 +304,10 @@ me</a> and I'll add them.</p>
      chain in g2p.js); here it is the whole content. -->
 <script src="js/corpus.js?v=59"></script>
 <script src="js/render.js?v=59"></script>
+<!-- sounds.js reads a typed sound (sh, ng, uh) to its IPA symbol;
+     corpusquery.js is the structural matcher and uses it. -->
+<script src="js/sounds.js?v=59"></script>
+<script src="js/corpusquery.js?v=59"></script>
 <script>
 "use strict";
 
@@ -579,18 +666,45 @@ const contestedOnly = document.getElementById("contestedOnly");
 const countEl = document.getElementById("count");
 const emptyEl = document.getElementById("empty");
 const cards = [...grid.children];
+const WORD_BY_KEY = Object.fromEntries(WORDS.map(w => [w.key, w]));
+
+// The parsed structural query, shared with applyFilters. `{ empty: true }`
+// means no structural filter, so the grid behaves exactly as before.
+let STRUCT = { empty: true };
+
+// Ring the blocks a structural query matched inside one card, and clear
+// any ring left from a previous query first. A no-op when nothing hit.
+function highlightBlocks(el, hits) {
+  el.querySelectorAll(".avatarian-block.q-hit")
+    .forEach(b => b.classList.remove("q-hit"));
+  if (!hits || !hits.length) return;
+  const blocks = el.querySelectorAll(".avatarian-word .avatarian-block");
+  for (const h of hits) {
+    if (blocks[h.block]) blocks[h.block].classList.add("q-hit");
+  }
+}
 
 function applyFilters() {
   const q = search.value.trim().toLowerCase();
   const src = sourceFilter.value;
   const onlyContested = contestedOnly.getAttribute("aria-pressed") === "true";
+  const structOn = !STRUCT.empty && !STRUCT.error;
   let shown = 0;
   for (const el of cards) {
     const okText = !q || el.dataset.label.includes(q) || el.dataset.key.includes(q);
     const okSrc = !src || el.dataset.sources.split(" ").includes(src);
     const okContested = !onlyContested || el.classList.contains("is-contested");
-    const show = okText && okSrc && okContested;
+
+    let okStruct = true, hits = null;
+    if (structOn) {
+      const w = WORD_BY_KEY[el.dataset.key];
+      const r = matchWord(w ? w.ipa : [], STRUCT);
+      okStruct = r.matched;
+      hits = r.hits;
+    }
+    const show = okText && okSrc && okContested && okStruct;
     el.hidden = !show;
+    highlightBlocks(el, show ? hits : null);
     if (show) shown++;
   }
   emptyEl.hidden = shown > 0;
@@ -607,8 +721,115 @@ contestedOnly.addEventListener("click", () => {
   applyFilters();
 });
 
+// --- structural search: the builder <-> query-string pair ---------------
+const advSearch = document.getElementById("advSearch");
+const qPhoneme = document.getElementById("qPhoneme");
+const qContext = document.getElementById("qContext");
+const qSlot = document.getElementById("qSlot");
+const qString = document.getElementById("qString");
+const qClear = document.getElementById("qClear");
+const qNote = document.getElementById("qNote");
+
+// Fill the Sound dropdown from the drawn set, each labelled with its
+// readable code and IPA — so it reads "sh (ʃ)", not a symbol you have to
+// know how to type. Consonants then vowels; nulls and punctuation are
+// not searchable sounds and are left out.
+(function fillPhonemes() {
+  const GLYPHS = window.AVATARIAN_GLYPHS || {};
+  const groups = { consonant: "Consonants", vowel: "Vowels" };
+  for (const type of ["consonant", "vowel"]) {
+    const og = document.createElement("optgroup");
+    og.label = groups[type];
+    for (const [sym, g] of Object.entries(GLYPHS)) {
+      if (g.type !== type) continue;
+      const code = soundToCode(sym);
+      const o = document.createElement("option");
+      o.value = sym;
+      o.textContent = code === sym ? sym : `${code} (${sym})`;
+      og.appendChild(o);
+    }
+    if (og.children.length) qPhoneme.appendChild(og);
+  }
+})();
+
+// A parsed query as a plain-English line, so the note confirms what the
+// tool understood ("/g/ in a C–C block") rather than echoing the syntax.
+const CTX_PHRASE = {
+  cc: "a C–C block", cv: "a C–V block", vc: "a V–C block",
+  vv: "a V–V block", null: "a block with a null",
+};
+function describeQuery(q) {
+  if (q.empty) return "";
+  const bits = ["/" + q.phoneme + "/"];
+  if (q.slot) bits.push("in the " + q.slot + " slot");
+  if (q.context) bits.push((q.slot ? "of " : "in ") + CTX_PHRASE[q.context]);
+  return bits.join(" ");
+}
+
+// Reflect the current query into `?query=` so a search is shareable, and
+// drop the param when the box is empty.
+function updateURL() {
+  const p = new URLSearchParams(location.search);
+  const v = qString.value.trim();
+  if (v) p.set("query", v); else p.delete("query");
+  const qs = p.toString();
+  history.replaceState(null, "", location.pathname + (qs ? "?" + qs : "") + location.hash);
+}
+
+// Parse whatever is in the box, filter the grid, and say what happened.
+// An error leaves the grid unfiltered (applyFilters ignores a broken
+// STRUCT) and shows the reason under the box.
+function runQuery() {
+  STRUCT = parseQuery(qString.value, normaliseSound);
+  applyFilters();
+  updateURL();
+  if (STRUCT.error) {
+    qNote.textContent = STRUCT.error;
+    qNote.classList.add("is-error");
+  } else {
+    qNote.textContent = describeQuery(STRUCT);
+    qNote.classList.remove("is-error");
+  }
+}
+
+// Builder -> string: the dropdowns are the source, write the canonical
+// query and run it.
+function syncFromBuilder() {
+  qString.value = buildQuery({
+    phoneme: qPhoneme.value || null,
+    slot: qSlot.value || null,
+    context: qContext.value || null,
+  });
+  runQuery();
+}
+
+// String -> builder: the box is the source (someone typed or pasted a
+// query). Push its parse back onto the dropdowns where it fits; a phoneme
+// with no matching option just leaves the dropdown on "any", the box
+// still driving. Setting .value programmatically fires no `change`, so
+// this never loops back into syncFromBuilder.
+function syncFromString() {
+  const q = parseQuery(qString.value, normaliseSound);
+  if (!q.error) {
+    qPhoneme.value = q.phoneme && [...qPhoneme.options].some(o => o.value === q.phoneme)
+      ? q.phoneme : "";
+    qContext.value = q.context || "";
+    qSlot.value = q.slot || "";
+  }
+  runQuery();
+}
+
+[qPhoneme, qContext, qSlot].forEach(el => el.addEventListener("change", syncFromBuilder));
+qString.addEventListener("input", syncFromString);
+qClear.addEventListener("click", () => {
+  qString.value = ""; qPhoneme.value = ""; qContext.value = ""; qSlot.value = "";
+  runQuery();
+  qString.focus();
+});
+
 // Deep links from the source catalogue (sources.html): `?source=<id>`
-// opens the grid filtered to one source, `?q=<word>` to one word. Applied
+// opens the grid filtered to one source, `?q=<word>` to one word, and
+// `?query=<expr>` opens the structural search on a saved query. Applied
 // before the first render so arriving here already shows the filtered set.
 // `?source` only takes if that id is a real option, so a stale link falls
 // back to showing everything rather than an empty grid.
@@ -620,6 +841,12 @@ contestedOnly.addEventListener("click", () => {
   }
   const q = p.get("q");
   if (q) search.value = q;
+  const structured = p.get("query");
+  if (structured) {
+    advSearch.open = true;
+    qString.value = structured;
+    syncFromString();          // parses, fills the builder, filters the grid
+  }
 })();
 
 applyFilters();

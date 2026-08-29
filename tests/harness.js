@@ -36,7 +36,7 @@ const ROOT = path.resolve(__dirname, "..");
 const SITE = path.join(ROOT, "site", "js");
 
 /** Load order matters and mirrors site/index.html. */
-const CORE = ["manifest.js", "corpus.js", "g2p.js", "sounds.js", "render.js"];
+const CORE = ["manifest.js", "corpus.js", "g2p.js", "sounds.js", "render.js", "corpusquery.js"];
 
 /**
  * Build a context with the site's scripts in it.
