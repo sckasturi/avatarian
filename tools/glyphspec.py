@@ -468,6 +468,55 @@ def dot_svg(shape, frame):
 
 # --- assembly --------------------------------------------------------------
 
+# --- connection strokes ----------------------------------------------------
+# A node may carry `"connect": "<dir>"`, one of the eight below. It grows a
+# straight stroke FROM that node in that direction to the glyph's own edge,
+# so it reaches the block seam and meets the partner glyph that reaches the
+# same seam — stroke-level fusion as one mark per node, not a redraw. The
+# direction is the compass on the page; the render layer's slot flips carry
+# it toward the partner for glyphs that reorient by slot.
+CONNECT_DIRS = {
+    "up": (0, -1), "down": (0, 1), "left": (-1, 0), "right": (1, 0),
+    "up-left": (-1, -1), "up-right": (1, -1),
+    "down-left": (-1, 1), "down-right": (1, 1),
+}
+
+
+def _edge_target(x, y, dx, dy, w, h):
+    """Where a ray from (x, y) along (dx, dy) first crosses the lattice
+    boundary [0,w] x [0,h]. Lattice units."""
+    ts = []
+    if dx > 0:
+        ts.append((w - x) / dx)
+    elif dx < 0:
+        ts.append((0 - x) / dx)
+    if dy > 0:
+        ts.append((h - y) / dy)
+    elif dy < 0:
+        ts.append((0 - y) / dy)
+    ts = [t for t in ts if t > 1e-9]
+    t = min(ts) if ts else 0.0
+    return (x + t * dx, y + t * dy)
+
+
+def connection_paths(design, frame):
+    """The extension strokes for every connect-marked node, as `d` strings."""
+    w, h = grid_for(design.get("type", "consonant"))
+    out = []
+    for shape in design.get("shapes", []):
+        if shape.get("kind") == "dot":
+            continue
+        for node in shape.get("nodes", []):
+            key = node.get("connect")
+            vec = CONNECT_DIRS.get(key)
+            if not vec:
+                continue
+            tx, ty = _edge_target(node["x"], node["y"], vec[0], vec[1], w, h)
+            p0, p1 = frame.pt(node), (frame.x(tx), frame.y(ty))
+            out.append(f'M {num(p0[0])} {num(p0[1])} L {num(p1[0])} {num(p1[1])}')
+    return out
+
+
 def body(design, form="square"):
     """The inside of the <svg> for one design, in the requested form."""
     frame = frame_for(design.get("type", "consonant"), form, mark_cols(design))
@@ -479,6 +528,8 @@ def body(design, form="square"):
             d = path_d(shape, frame)
             if d:
                 out.append(f'<path d="{d}"/>')
+    for d in connection_paths(design, frame):
+        out.append(f'<path d="{d}"/>')
     return "".join(out)
 
 
@@ -528,6 +579,10 @@ def to_python(design):
             d = path_d(shape, frame)
             if d:
                 calls.append(("path", d))
+    # Connection strokes ride along as ordinary paths, so a promoted design
+    # keeps its fusion in build_glyphs.py exactly as it draws here.
+    for d in connection_paths(design, frame):
+        calls.append(("path", d))
 
     lines = []
     for line in _fold((design.get("notes") or "").strip(), LINE - 6):

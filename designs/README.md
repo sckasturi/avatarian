@@ -62,6 +62,21 @@ made of it. Hand-placed shapes don't have one.
 `seg` describes the segment **arriving** at that node from the previous
 one, so *n* nodes carry *n−1* segments (*n* when `closed`).
 
+A node may also carry **`"connect"`** — one of `up`, `down`, `left`,
+`right`, or the four diagonals (`up-left`, `up-right`, `down-left`,
+`down-right`). It grows a straight stroke *from* that node to the glyph's
+edge in that direction, so the stroke reaches the block seam and meets the
+partner glyph reaching the same seam — stroke-level fusion as one mark per
+node, not a redraw (`connection_paths` in `glyphspec.py`, mirrored in
+`geom.js`). In the designer, select a node and pick a direction from the
+**connect** compass; the centre dot clears it.
+
+| `connect` | the extension |
+| --------- | ------------- |
+| `up` / `down` | straight to the top / bottom edge — the block seams. |
+| `left` / `right` | straight to the side edge. |
+| diagonals | at 45° to whichever edge it reaches first. |
+
 | `seg`   | what it means |
 | ------- | ------------- |
 | `line`  | straight, corner to corner. |

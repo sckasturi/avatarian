@@ -47,12 +47,18 @@ def cases():
     rnd = random.Random(20260805)
     out = []
 
+    dirs = list(glyphspec.CONNECT_DIRS)
+
     def node(seg=None, bulge=None):
         n = {"x": rnd.randrange(0, 11) / 2, "y": rnd.randrange(0, 7) / 2}
         if seg:
             n["seg"] = seg
             if bulge is not None:
                 n["bulge"] = bulge
+        # Exercise connect strokes too — every direction, across the grids
+        # and forms, so the extension geometry stays in step in both ports.
+        if rnd.randrange(5) == 0:
+            n["connect"] = dirs[rnd.randrange(len(dirs))]
         return n
 
     for kind, grid in (("consonant", [5, 5]), ("vowel", [5, 3]),

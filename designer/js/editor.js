@@ -97,6 +97,15 @@ const Editor = {
     return null;
   },
 
+  /** The selected node itself, any index — what the connect control edits.
+   *  Unlike selectedSeg it includes node 0, which has no arriving segment
+   *  but can still grow a connection stroke. */
+  selectedNode() {
+    const s = this.selectedShape();
+    if (!s || s.kind === "dot" || !this.sel || this.sel.kind !== "node") return null;
+    return s.nodes[this.sel.index] || null;
+  },
+
   // ── pointer ──────────────────────────────────────────────────────
 
   down(e) {
@@ -347,6 +356,20 @@ const Editor = {
       else if (!meta.bulge) meta.bulge = defaultBulge(d.shapes[this.sel.shape], idx);
     });
     this.segType = type;
+    this.render();
+  },
+
+  /** Give the selected node a connect direction (or clear it with null).
+   *  The stroke then grows from that node to the glyph's edge — see
+   *  connection_paths in glyphspec.py / geom.js. */
+  setConnect(dir) {
+    if (!this.sel || this.sel.kind !== "node") return;
+    const shapeIdx = this.sel.shape, nodeIdx = this.sel.index;
+    Store.commit((d) => {
+      const n = d.shapes[shapeIdx] && d.shapes[shapeIdx].nodes[nodeIdx];
+      if (!n) return;
+      if (dir) n.connect = dir; else delete n.connect;
+    });
     this.render();
   },
 

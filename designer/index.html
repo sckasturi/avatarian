@@ -94,6 +94,20 @@
           <button class="seg" data-seg="curve" title="Smooth run (3)">curve</button>
           <button id="smooth" class="ghost" title="Make every segment of this stroke a smooth run (S)">smooth all</button>
         </div>
+        <div class="group connect-group" id="connect-group" hidden>
+          <span class="lbl" title="Grow a stroke from the selected node to the glyph edge, so it meets the block partner at the seam">connect</span>
+          <div class="connect-pad">
+            <button class="conn" data-connect="up-left" title="up-left">↖</button>
+            <button class="conn" data-connect="up" title="up">↑</button>
+            <button class="conn" data-connect="up-right" title="up-right">↗</button>
+            <button class="conn" data-connect="left" title="left">←</button>
+            <button class="conn conn-off" data-connect="none" title="no connection">•</button>
+            <button class="conn" data-connect="right" title="right">→</button>
+            <button class="conn" data-connect="down-left" title="down-left">↙</button>
+            <button class="conn" data-connect="down" title="down">↓</button>
+            <button class="conn" data-connect="down-right" title="down-right">↘</button>
+          </div>
+        </div>
       </details>
 
       <div class="spacer"></div>

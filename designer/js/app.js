@@ -530,6 +530,11 @@ const App = {
       Editor.setDotSize(b.dataset.size);
       this.syncToolbar();
     }));
+    $$(".conn").forEach((b) => b.addEventListener("click", () => {
+      const dir = b.dataset.connect;
+      Editor.setConnect(dir === "none" ? null : dir);
+      this.syncToolbar();
+    }));
     $("#smooth").addEventListener("click", () => { Editor.smoothShape(); this.syncToolbar(); });
     $("#refit").addEventListener("click", () => Editor.refitSelected());
     $("#use-current").addEventListener("click", () => Editor.fromCurrentGlyph());
@@ -581,6 +586,12 @@ const App = {
     const shape = Editor.selectedShape();
     const size = shape && shape.kind === "dot" ? shape.size : Editor.dotSize;
     $$(".dotsize").forEach((b) => b.classList.toggle("on", b.dataset.size === size));
+    // The connect pad edits the selected node; show it only then, and
+    // light the button for the direction that node currently carries.
+    const node = Editor.selectedNode();
+    $("#connect-group").hidden = !node;
+    const conn = (node && node.connect) || "none";
+    $$(".conn").forEach((b) => b.classList.toggle("on", b.dataset.connect === conn));
     $("#undo").disabled = !Store.canUndo();
     $("#redo").disabled = !Store.canRedo();
   },

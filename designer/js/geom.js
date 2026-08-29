@@ -258,11 +258,47 @@ function dotSVG(shape, f) {
   return `<circle cx="${num(fx(f, shape.x))}" cy="${num(fy(f, shape.y))}" r="${num(r)}" fill="currentColor" stroke="none"/>`;
 }
 
+// A node's `connect` direction grows a straight stroke from it to the
+// glyph's edge, so it reaches the block seam and meets the partner.
+// Mirror of glyphspec.py's connection_paths — keep the two in step.
+const CONNECT_DIRS = {
+  "up": [0, -1], "down": [0, 1], "left": [-1, 0], "right": [1, 0],
+  "up-left": [-1, -1], "up-right": [1, -1],
+  "down-left": [-1, 1], "down-right": [1, 1],
+};
+
+function edgeTarget(x, y, dx, dy, w, h) {
+  const ts = [];
+  if (dx > 0) ts.push((w - x) / dx); else if (dx < 0) ts.push((0 - x) / dx);
+  if (dy > 0) ts.push((h - y) / dy); else if (dy < 0) ts.push((0 - y) / dy);
+  const pos = ts.filter((t) => t > 1e-9);
+  const t = pos.length ? Math.min(...pos) : 0;
+  return [x + t * dx, y + t * dy];
+}
+
+/** The extension `d` strings for every connect-marked node. */
+function connectionPaths(design, f) {
+  const [w, h] = gridFor(design.type || "consonant");
+  const out = [];
+  for (const s of (design.shapes || [])) {
+    if (s.kind === "dot") continue;
+    for (const n of (s.nodes || [])) {
+      const vec = CONNECT_DIRS[n.connect];
+      if (!vec) continue;
+      const [tx, ty] = edgeTarget(n.x, n.y, vec[0], vec[1], w, h);
+      out.push(`M ${num(fx(f, n.x))} ${num(fy(f, n.y))} L ${num(fx(f, tx))} ${num(fy(f, ty))}`);
+    }
+  }
+  return out;
+}
+
 function body(design, form = "square") {
   const f = frameFor(design.type || "consonant", form, markCols(design));
-  return (design.shapes || [])
+  const shapes = (design.shapes || [])
     .map((s) => (s.kind === "dot" ? dotSVG(s, f) : (pathD(s, f) ? `<path d="${pathD(s, f)}"/>` : "")))
     .join("");
+  const conns = connectionPaths(design, f).map((d) => `<path d="${d}"/>`).join("");
+  return shapes + conns;
 }
 
 function toSVG(design, form = "square") {
@@ -289,4 +325,5 @@ function editorPath(shape, scale) {
 window.GEOM = {
   GEO, isTall, frameFor, gridFor, markCols, toSVG, body, pathD, dotSVG, formsFor,
   editorPath, arcParams, segmentsOf, tangentAt, num,
+  CONNECT_DIRS, connectionPaths, edgeTarget,
 };

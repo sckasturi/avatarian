@@ -501,9 +501,17 @@ In the reference, glyphs are hand-lettered so adjacent strokes
 **interlock and share edges**, and blocks are visibly skewed and organic.
 This project renders each glyph as a discrete vector butted against its
 neighbours, so it reproduces the *structure* correctly — the pairing, the
-heights, the flips, the C-C overlap — but not the stroke-level fusion.
-Getting that would mean redrawing every glyph with defined connection
-points: a type-design project, not a layout tweak.
+heights, the flips, the C-C overlap — but not, by default, the
+stroke-level fusion.
+
+**Connection strokes** are the lightweight way in: a design node can carry
+a `connect` direction (designs/README.md), which grows a straight stroke
+from it to the glyph's edge so it reaches the block seam and meets the
+partner glyph reaching the same seam. That is fusion as one mark per node
+rather than redrawing every glyph — set it on a node in the designer's
+**connect** compass. The glyphs are not yet marked up this way, so out of
+the box the strokes still butt; adding the connection nodes is the work
+that turns the mechanism on.
 
 ---
 
