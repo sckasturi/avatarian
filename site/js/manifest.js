@@ -8,7 +8,15 @@ window.AVATARIAN_GLYPHS = {
     "name": "p",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 18 50 L 50 82 L 82 50 L 66 34 L 50 18 Z\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 18 50 L 50 82 L 82 50 L 66 34 L 50 18 Z\"/></svg>",
+    "ports": {
+      "0.5": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 18 50 L 50 82 L 82 50 L 66 34 L 50 18 Z\"/><path d=\"M 18 50 L 18 90\"/></svg>"
+      },
+      "4.5": {
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 18 50 L 50 82 L 82 50 L 66 34 L 50 18 Z\"/><path d=\"M 82 50 L 82 90\"/></svg>"
+      }
+    }
   },
   "b": {
     "name": "b",
