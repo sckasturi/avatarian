@@ -130,6 +130,21 @@ h1 { font-size: 1.6rem; margin-bottom: 4px; }
   background: var(--card); margin: 20px 0;
 }
 .card h2 { margin: 0 0 4px; font-size: 1.15rem; }
+
+/* The draw-a-glyph card folds away. The summary carries the heading and a
+   rotating caret; everything below it collapses. */
+.draw-card > summary {
+  cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px;
+}
+.draw-card > summary::-webkit-details-marker { display: none; }
+.draw-card > summary h2 { margin: 0; }
+.draw-card > summary::before {
+  content: "\25B8"; color: var(--muted); font-size: 0.85em;
+  transition: transform 0.15s ease;
+}
+.draw-card[open] > summary::before { transform: rotate(90deg); }
+.draw-card > summary:hover { color: var(--accent); }
+.draw-card[open] > summary { margin-bottom: 4px; }
 .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
 .syntax-help {
   font-size: 0.82rem; color: var(--muted-2); line-height: 1.55; margin: 6px 0 2px;
