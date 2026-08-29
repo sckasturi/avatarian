@@ -51,7 +51,8 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
  * Paste into MediaWiki:Avatarian.css, which is @imported into both
  * MediaWiki:Common.css and MediaWiki:Fandommobile.css (mobile is a separate page
  * and serves no site JS). -webkit-mask only (Fandom rejects unprefixed mask-*).
- * av- prefix namespaces the classes. Word ~= 125% of surrounding text. */
+ * av- prefix namespaces the classes. Word ~= 125% of surrounding text.
+ * Designed by [[User:TechFilmer]]. */
 .av-word{display:inline;vertical-align:middle;padding-right:.3em;color:inherit;font-size:calc(1.25em / 2.05)}
 .av-word.av-solo{display:inline-flex;font-size:1.4em;padding-right:0;position:relative}
 .av-word-part{display:inline-flex;align-items:flex-start;vertical-align:middle;position:relative}

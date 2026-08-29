@@ -3,6 +3,7 @@
 -- site/js/sounds.js. Do not hand-edit — regenerate. Emits the same av-* markup
 -- that wiki/Avatarian-css-only.css styles (see DEVELOPMENT.md). Ported from
 -- render.js; guarded by tests/lua_golden.test.js (JS vs Lua over the corpus).
+-- Designed by [[User:TechFilmer]].
 local p = {}
 
 local READABLE = {["a"]="æ", ["e"]="ɛ", ["i"]="ɪ", ["u"]="ʌ", ["ah"]="ɑ", ["uh"]="ə", ["ee"]="i", ["ey"]="e", ["eye"]="aɪ", ["oh"]="oʊ", ["oo"]="u", ["uu"]="ʊ", ["ow"]="aʊ", ["aw"]="ɔ", ["oy"]="ɔɪ", ["p"]="p", ["b"]="b", ["t"]="t", ["d"]="d", ["k"]="k", ["g"]="g", ["m"]="m", ["n"]="n", ["ng"]="ŋ", ["ch"]="tʃ", ["j"]="dʒ", ["f"]="f", ["v"]="v", ["th"]="θ", ["dh"]="ð", ["s"]="s", ["z"]="z", ["sh"]="ʃ", ["zh"]="ʒ", ["h"]="h", ["w"]="w", ["y"]="j", ["r"]="ɹ", ["l"]="l", ["kh"]="x", ["nul"]="∅"}

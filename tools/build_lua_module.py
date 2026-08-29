@@ -123,6 +123,7 @@ LOGIC = r'''-- ===== Avatarian — Scribunto renderer (server-side, works on mob
 -- site/js/sounds.js. Do not hand-edit — regenerate. Emits the same av-* markup
 -- that wiki/Avatarian-css-only.css styles (see DEVELOPMENT.md). Ported from
 -- render.js; guarded by tests/lua_golden.test.js (JS vs Lua over the corpus).
+-- Designed by [[User:TechFilmer]].
 local p = {}
 
 --[[DATA]]--

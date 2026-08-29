@@ -1,4 +1,4 @@
-<!-- Avatarian decipherment: [[User:BokerBigBanana]], u/DepressionDokkebi, u/arienzio. Tool: [[User:TechFilmer]]. Full credits: AVATARIAN.md in the project repo. -->
+<!-- Avatarian decipherment: [[User:BokerBigBanana]], u/DepressionDokkebi, u/arienzio. Designed by [[User:TechFilmer]]. -->
 <noinclude>
 == Usage ==
 <pre>{{Avatarian|k uh t ah r uh|Katara}}</pre>
