@@ -254,8 +254,7 @@ CONSONANTS = {
     # with clean miter joins.
     "l": path("M 18 82 L 18 18 L 82 18 L 82 58 A 28.28 28.28 0 0 1 50 82"),
     "r": "",                            # derived below: the mirror of /l/
-    "y": path("M 50 34 A 42 42 0 0 1 82 18 L 82 82 L 18 82")
-         + path("M 18 58 A 36.46 36.46 0 0 0 50 34"),
+    "y": "",                            # derived below: the mirror of /w/
     "sh": path("M 18 50 L 50 18 L 82 50") + path("M 18 82 L 50 50 L 82 82"),
     "ch": path("M 50 50 L 18 50 L 18 18 L 82 18 L 82 82 L 18 82"),
     "j_dz": path("M 82 18 L 82 82 L 18 82 L 18 18 L 50 18 L 50 58"),
@@ -266,6 +265,12 @@ CONSONANTS = {
 # new drawing from the designer) and /r/ is its horizontal flip, always in
 # step. Reassigning keeps /r/'s place in the dict, right after /l/.
 CONSONANTS["r"] = hflip(CONSONANTS["l"])
+
+# /w/ and /y/ (IPA /j/) are the other mirror pair, set up the same way:
+# /w/ is the drawn master, /y/ is its horizontal flip, so editing /w/ (here
+# or in the designer) keeps the two in step. Their cluster forms mirror the
+# same way — see load_clusters().
+CONSONANTS["y"] = hflip(CONSONANTS["w"])
 
 # CLUSTERS (custom C-C forms) is loaded from designs/<name>_cluster.json
 # further down, once NAME_TO_IPA exists — see load_clusters().
@@ -447,7 +452,9 @@ IPA_TO_NAME = {
     "p": "p", "b": "b", "t": "t", "d": "d", "k": "k", "g": "g",
     "m": "m", "n": "n", "ŋ": "ng", "tʃ": "ch", "dʒ": "j_dz",
     "f": "f", "v": "v", "θ": "th", "ð": "dh", "s": "s", "z": "z",
-    "ʃ": "sh", "ʒ": "zh", "h": "h", "w": "w", "j": "y", "r": "r",
+    # The rhotic is the approximant /ɹ/, not the trill /r/ (American English);
+    # the stem stays the plain letter `r`. See AVATARIAN.md §8.
+    "ʃ": "sh", "ʒ": "zh", "h": "h", "w": "w", "j": "y", "ɹ": "r",
     "l": "l", "x": "kh",
     "i": "i", "ɪ": "ih", "e": "ei", "ɛ": "eh", "æ": "ae", "ʌ": "uh",
     "ə": "schwa", "u": "uu", "ʊ": "oo", "oʊ": "ow", "ɔ": "aw",
@@ -519,7 +526,9 @@ def load_clusters():
             if d.get("shapes"):
                 out[ipa] = glyphspec.body(d)
     if "l" in out:
-        out["r"] = hflip(out["l"])
+        out["ɹ"] = hflip(out["l"])
+    if "w" in out:
+        out["j"] = hflip(out["w"])      # /y/'s cluster mirrors /w/'s, as their bases do
     return out
 
 

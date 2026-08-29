@@ -106,12 +106,18 @@
   "w": {
     "file": "w.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "variants": {
+      "cluster": "w_cluster.svg"
+    }
   },
   "j": {
     "file": "y.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "variants": {
+      "cluster": "y_cluster.svg"
+    }
   },
   "ɹ": {
     "file": "r.svg",

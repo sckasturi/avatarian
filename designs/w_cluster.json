@@ -1,0 +1,51 @@
+{
+  "name": "w_cluster",
+  "ipa": null,
+  "type": "consonant",
+  "grid": [
+    5,
+    5
+  ],
+  "flips": true,
+  "notes": "Cluster (C-C) form of /w/ — drawn, not flipped. /y/'s cluster mirrors this one, so only /w/ is edited here. Seeded as a copy of the base /w/; reshape it into the separate consonant form.",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 2.5,
+          "y": 3
+        },
+        {
+          "x": 0.5,
+          "y": 4.5,
+          "seg": "arc",
+          "bulge": 0.25
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "seg": "line"
+        }
+      ]
+    },
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 4.5,
+          "y": 2
+        },
+        {
+          "x": 2.5,
+          "y": 3,
+          "seg": "arc",
+          "bulge": -0.25
+        }
+      ]
+    }
+  ],
+  "updated": "2026-08-29T01:56:56Z"
+}

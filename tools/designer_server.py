@@ -167,9 +167,11 @@ def catalog():
             else read(GLYPHS / f"{name}{bg.FLAT_SUFFIX}.svg"),
         })
     # Cluster (C-C) forms drawn independently (see CLUSTERS in build_glyphs).
-    # The key traces a distinct cluster /l/ (l_b), so it is drawn, not
-    # flipped; /r/'s cluster form mirrors /l/'s, so only /l/ is editable here.
-    for base, ref_stem in (("l", "l_b"),):
+    # Each is one of a mirror pair: only the master is drawn here, and its
+    # partner's cluster is the horizontal flip. /l/ is drawn (the key traces a
+    # distinct cluster /l/, l_b) and /r/'s mirrors it; /w/ is drawn and /y/'s
+    # mirrors it. `mirror` names the partner the note should point at.
+    for base, ref_stem, mirror in (("l", "l_b", "r"), ("w", None, "y")):
         name = f"{base}{bg.CLUSTER_SUFFIX}"
         rows.append({
             "name": name, "ipa": None, "key": name,
@@ -179,8 +181,8 @@ def catalog():
             "placeholder": not (GLYPHS / f"{name}.svg").exists(),
             "flips": False, "rows": None,
             "note": f"cluster (C-C) form of /{base}/ — drawn, not flipped "
-                    f"(/r/'s mirrors it)",
-            "reference": read(REF / f"{ref_stem}.svg"),
+                    f"(/{mirror}/'s mirrors it)",
+            "reference": read(REF / f"{ref_stem}.svg") if ref_stem else None,
             "current": read(GLYPHS / f"{name}.svg"),
             "currentFlat": None,
         })

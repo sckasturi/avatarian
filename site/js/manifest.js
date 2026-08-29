@@ -132,13 +132,25 @@ window.AVATARIAN_GLYPHS = {
     "name": "w",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 42 A 52 52 0 0 0 18 18 L 18 82 L 82 82\"/><path d=\"M 82 58 A 42 42 0 0 1 50 42\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 42 A 52 52 0 0 0 18 18 L 18 82 L 82 82\"/><path d=\"M 82 58 A 42 42 0 0 1 50 42\"/></svg>",
+    "variants": {
+      "cluster": {
+        "name": "w_cluster",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 58 A 52 52 0 0 1 18 82 L 18 18\"/><path d=\"M 82 42 A 42 42 0 0 0 50 58\"/></svg>"
+      }
+    }
   },
   "j": {
     "name": "y",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 34 A 42 42 0 0 1 82 18 L 82 82 L 18 82\"/><path d=\"M 18 58 A 36.46 36.46 0 0 0 50 34\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 42 A 52 52 0 0 1 82 18 L 82 82 L 18 82\"/><path d=\"M 18 58 A 42 42 0 0 0 50 42\"/></svg>",
+    "variants": {
+      "cluster": {
+        "name": "y_cluster",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 58 A 52 52 0 0 0 82 82 L 82 18\"/><path d=\"M 18 42 A 42 42 0 0 1 50 58\"/></svg>"
+      }
+    }
   },
   "ɹ": {
     "name": "r",
