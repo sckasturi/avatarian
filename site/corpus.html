@@ -369,12 +369,17 @@ const soundsOf = (ipa) => ipa.filter(t => t !== "∅" && t !== "∅c")
   .map(t => t.replace(/[$%]/g, "")).join(" ");
 
 // The same sounds in the translator's readable respelling (k uh t ah r
-// uh), for the card to show beside the IPA. `cqBase` (corpusquery.js)
-// drops the null and any override/cluster suffix; `soundToCode`
-// (sounds.js) is the IPA -> readable-code map the Sounds box uses.
-const codesOf = (ipa) => ipa.map(cqBase)
-  .filter(t => t !== "∅" && t !== "∅c")
-  .map(soundToCode).join(" ");
+// uh), for the card to show beside the IPA. Nulls drop out, and a
+// cluster-form request (`_c`) normalises to its base code — but a
+// `$`/`%` orientation override STAYS, the way the translator's Sounds
+// box shows it, so a hand-oriented spelling like "students" (both /s/
+// spelled by hand) reads the way it is actually drawn. `cqBase`
+// (corpusquery.js) tests for the null; `soundToCode` (sounds.js) is the
+// IPA -> readable-code map, and it carries the override suffix through.
+const codesOf = (ipa) => ipa
+  .filter(t => { const b = cqBase(t); return b !== "∅" && b !== "∅c"; })
+  .map(t => soundToCode(t.replace("_c", "")))
+  .join(" ");
 
 // Every source that cites this word — the winning spelling's, plus any a
 // contested alternate came from. A source that only contributed the
