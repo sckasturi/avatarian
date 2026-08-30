@@ -69,7 +69,7 @@ function serializeGlyph(g) {
   // /s/ and /z/ redraw in a C-C block: read render.js's ACTUAL mutated SVG (not
   // a re-derivation) so this reflects what the gadget really drew.
   const drawn = g.innerHTML || "";
-  if (name === "s" && /L 50 31 L/.test(drawn)) name = "s_inset";
+  if (name === "s" && /L 50 2 L/.test(drawn)) name = "s_inset";
   if (name === "z") {
     const l = /cx="26"/.test(drawn), r = /cx="74"/.test(drawn);
     if (l && !r) name = "z_left";

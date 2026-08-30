@@ -285,15 +285,16 @@ function orientationOf(sym, entry, slot, partner) {
  * SOME GLYPHS ARE DRAWN DIFFERENTLY IN A C-C BLOCK, where the one-row
  * overlap (blocks.css) crowds them against their neighbour.
  *
- * /s/ is a full five-row caret whose sharp point sits on the lattice
- * edge; the overlap brings the neighbour up to that edge, so the point is
- * the one scrap of ink in the shared row and reads as poking through the
- * glyph beside it (flat-topped consonants fuse there instead). Its vertex
- * insets one lattice row (y 18 → 31) so the point lands on the block
- * boundary — but ONLY when the point faces the overlap: point-down on top of
- * a cluster (`still`), point-up on the bottom of one (`balance`, `sula's`).
- * Forced upright in a TOP slot (`rest`, `humansitters`), the point is at the
- * far top edge, so it keeps full height instead of pulling down off the top.
+ * /s/ is a full five-row caret whose sharp point sits on the lattice edge.
+ * The overlap brings the neighbour up to that edge, so where the point faces
+ * the seam it is meant to MERGE with the glyph beside it — the two are one
+ * mark. Landing the point exactly on the boundary read instead as a stray
+ * tick poking through. So the vertex is pushed PAST the boundary (y 18 → 2),
+ * continuing into the neighbour and overlapping its ink at the shared column
+ * — point-down on top of a cluster (`still`, into /k/'s window edge), point-up
+ * on the bottom of one (`balance`, into /t/'s or /n/'s body). Forced upright
+ * in a TOP slot (`rest`, `humansitters`) the point faces AWAY at the far top
+ * edge, so it keeps its plain height — the flat base meets the seam there.
  *
  * /z/'s two corner dots sit in its top row, which the overlap rides up into
  * the glyph above. Under a plain consonant BOTH drop (`goods`, `trends`,
@@ -306,13 +307,14 @@ function orientationOf(sym, entry, slot, partner) {
  */
 function clusterForm(sym, svg, partner, slot, flipped) {
   if (sym === "s") {
-    // Inset the vertex only when the POINT faces the one-row overlap: the
-    // bottom of a top slot (flipped point-down, `still`) or the top of a
-    // bottom slot (upright point-up, `balance`, `sula's`). Forced the other
-    // way — upright in a top slot (`rest`, `humansitters`) — the point is at
-    // the far edge and must keep full height, or it pulls off the top.
+    // Extend the vertex past the boundary ONLY when the POINT faces the
+    // one-row overlap: the bottom of a top slot (flipped point-down, `still`)
+    // or the top of a bottom slot (upright point-up, `balance`, `sula's`).
+    // It then continues into the neighbour and overlaps its ink — the merge.
+    // Forced the other way — upright in a top slot (`rest`, `humansitters`) —
+    // the point is at the far edge facing away, so it keeps full height.
     const pointAtOverlap = slot === "top" ? flipped : !flipped;
-    return pointAtOverlap ? svg.replace("L 50 18 L", "L 50 31 L") : svg;
+    return pointAtOverlap ? svg.replace("L 50 18 L", "L 50 2 L") : svg;
   }
   if (sym === "z") {
     const p = partner != null ? parseSymbol(partner).sym : null;
