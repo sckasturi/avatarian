@@ -267,13 +267,14 @@ derivable and why the `$`/`%` override still exists for /s/.
 Two consonants are redrawn when they sit in a C-C block (`clusterForm` in
 `render.js`), because the one-row overlap changes what fits:
 
-- **/s/** is a full five-row caret whose point sits on the lattice edge;
-  the overlap brings the neighbour up to that edge, so where the point faces
-  the seam it is pushed PAST the boundary to continue into the neighbour and
-  overlap its ink — the two merge into one mark (`still`, `balance`). Facing
-  away (upright in a top slot, `rest`) it keeps its plain height and its flat
-  base meets the seam. A non-cluster /s/ (the final /s/ of `class`, under a
-  vowel) keeps its full length.
+- **/s/** is a full five-row caret with a sharp miter point; the overlap
+  brings the neighbour up to the seam, so where the point faces it the vertex
+  is placed so the miter tip lands on the seam and fuses with the neighbour's
+  stroke there — the two merge into one mark (`still`, `balance`), without the
+  bare miter stabbing into a hollow interior or stopping short in a gap.
+  Facing away (upright in a top slot, `rest`) it keeps its plain height and
+  its flat base meets the seam. A non-cluster /s/ (the final /s/ of `class`,
+  under a vowel) keeps its full length.
 - **/z/** drops its two corner dots in a C-C block — they sit in the top
   row, which the overlap rides up into the glyph above (`goods`, `trends`,
   `models`). A /z/ beside a vowel (`is`, `cheese`) keeps them.

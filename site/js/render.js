@@ -285,16 +285,17 @@ function orientationOf(sym, entry, slot, partner) {
  * SOME GLYPHS ARE DRAWN DIFFERENTLY IN A C-C BLOCK, where the one-row
  * overlap (blocks.css) crowds them against their neighbour.
  *
- * /s/ is a full five-row caret whose sharp point sits on the lattice edge.
- * The overlap brings the neighbour up to that edge, so where the point faces
- * the seam it is meant to MERGE with the glyph beside it — the two are one
- * mark. Landing the point exactly on the boundary read instead as a stray
- * tick poking through. So the vertex is pushed PAST the boundary (y 18 → 2),
- * continuing into the neighbour and overlapping its ink at the shared column
- * — point-down on top of a cluster (`still`, into /k/'s window edge), point-up
- * on the bottom of one (`balance`, into /t/'s or /n/'s body). Forced upright
- * in a TOP slot (`rest`, `humansitters`) the point faces AWAY at the far top
- * edge, so it keeps its plain height — the flat base meets the seam there.
+ * /s/ is a full five-row caret with a sharp miter point. Where that point
+ * faces the one-row overlap it is meant to MERGE with the glyph beside it.
+ * The trouble is the miter: a bare vertex spikes ~10 units past itself, so
+ * the point either overshoots into the neighbour's hollow interior (a stab)
+ * or, pulled too far back, stops short of its ink (a gap). So the vertex is
+ * placed (y 18 → 27) precisely so the miter TIP lands on the block seam,
+ * where it is buried in the neighbour's own stroke at the shared centre
+ * column and the two fuse — point-down on top of a cluster (`still`, onto
+ * /t/'s or /k/'s edge), point-up on the bottom of one (`balance`). Forced
+ * upright in a TOP slot (`rest`, `humansitters`) the point faces AWAY at the
+ * far top edge, so it keeps its plain height — the flat base meets the seam.
  *
  * /z/'s two corner dots sit in its top row, which the overlap rides up into
  * the glyph above. Under a plain consonant BOTH drop (`goods`, `trends`,
@@ -307,14 +308,14 @@ function orientationOf(sym, entry, slot, partner) {
  */
 function clusterForm(sym, svg, partner, slot, flipped) {
   if (sym === "s") {
-    // Extend the vertex past the boundary ONLY when the POINT faces the
-    // one-row overlap: the bottom of a top slot (flipped point-down, `still`)
-    // or the top of a bottom slot (upright point-up, `balance`, `sula's`).
-    // It then continues into the neighbour and overlaps its ink — the merge.
-    // Forced the other way — upright in a top slot (`rest`, `humansitters`) —
-    // the point is at the far edge facing away, so it keeps full height.
+    // Place the vertex so the miter TIP lands on the seam and fuses with the
+    // neighbour's stroke there — ONLY when the POINT faces the one-row overlap:
+    // the bottom of a top slot (flipped point-down, `still`) or the top of a
+    // bottom slot (upright point-up, `balance`, `sula's`). Forced the other
+    // way — upright in a top slot (`rest`, `humansitters`) — the point is at
+    // the far edge facing away, so it keeps full height.
     const pointAtOverlap = slot === "top" ? flipped : !flipped;
-    return pointAtOverlap ? svg.replace("L 50 18 L", "L 50 2 L") : svg;
+    return pointAtOverlap ? svg.replace("L 50 18 L", "L 50 27 L") : svg;
   }
   if (sym === "z") {
     const p = partner != null ? parseSymbol(partner).sym : null;

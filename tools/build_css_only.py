@@ -94,15 +94,15 @@ def main():
         if cl and cl.get("svg"):
             rules.append(f'.g-{g["name"]}_c{{-webkit-mask-image:url("{mask_uri(cl["svg"])}")}}')
         # C-C redraw variants render.js makes at runtime (clusterForm in
-        # render.js): /s/ pushes its vertex past the boundary where the point
-        # faces the one-row overlap, so it continues into the neighbour and
-        # merges; /z/ drops the top dot(s) that the overlap rides into the
-        # glyph above. The mask path can't mutate a baked SVG, so emit a class
-        # per shape; Module_Avatarian.lua picks them by the same rule. The
-        # class is still named s_inset for continuity with the Lua module.
+        # render.js): /s/ moves its vertex where the point faces the one-row
+        # overlap, so the miter tip lands on the seam and fuses with the
+        # neighbour's stroke; /z/ drops the top dot(s) that the overlap rides
+        # into the glyph above. The mask path can't mutate a baked SVG, so emit
+        # a class per shape; Module_Avatarian.lua picks them by the same rule.
+        # The class is still named s_inset for continuity with the Lua module.
         name, base = g["name"], svg
         if name == "s" and base:
-            rules.append(f'.g-s_inset{{-webkit-mask-image:url("{mask_uri(base.replace("L 50 18 L", "L 50 2 L"))}")}}')
+            rules.append(f'.g-s_inset{{-webkit-mask-image:url("{mask_uri(base.replace("L 50 18 L", "L 50 27 L"))}")}}')
         if name == "z" and base:
             drop = lambda cx: re.sub(rf'<circle cx="{cx}"[^>]*>', "", base)
             rules.append(f'.g-z_left{{-webkit-mask-image:url("{mask_uri(drop("74"))}")}}')   # right dot dropped, left kept
