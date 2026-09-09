@@ -98,6 +98,11 @@ window.AVATARIAN_CORPUS = {
       "what": "Sonam statue",
       "where": "movie 04:08",
       "image": "sonam.jpg"
+    },
+    "7h-promo": {
+      "what": "1 month",
+      "where": "https://www.instagram.com/p/DdEzLNeEdK8/",
+      "image": "7h-promo.png"
     }
   },
   "words": {
@@ -3695,6 +3700,22 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sonam"
+    },
+    "month": {
+      "ipa": [
+        "m",
+        "ʌ",
+        "n",
+        "∅",
+        "θ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "7h-promo"
+      ],
+      "confidence": "certain",
+      "source": "7h-promo"
     }
   },
   "conventions": {
