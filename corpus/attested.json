@@ -140,6 +140,12 @@
       "where": "movie 1:28:40",
       "image": "submission-etlk6u.jpg",
       "credit": "Bundas"
+    },
+    "skips-fishing-supplies": {
+      "what": "\"Skip's fishing supplies\" shop banner",
+      "where": "movie 1:23:14-1:23:15 (never seen fully just parts - attached image is cut together), also seen at 0:10:52, 1:14:12, and 1:30:56",
+      "image": "submission-iceibt.png",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -1935,6 +1941,27 @@
       "confidence": "certain",
       "gloss": "Republic",
       "source": "republic-city"
+    },
+    {
+      "key": "fishing",
+      "spelling": "f ɪ ʃ ɪ ŋ ∅",
+      "confidence": "certain",
+      "gloss": "fishing",
+      "source": "skips-fishing-supplies"
+    },
+    {
+      "key": "skip's",
+      "spelling": "s k ɪ p * *",
+      "confidence": "certain",
+      "gloss": "Skip's",
+      "source": "skips-fishing-supplies"
+    },
+    {
+      "key": "supplies",
+      "spelling": "s ə p l aɪ z",
+      "confidence": "certain",
+      "gloss": "supplies",
+      "source": "skips-fishing-supplies"
     }
   ]
 }

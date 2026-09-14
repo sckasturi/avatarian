@@ -121,6 +121,12 @@ window.AVATARIAN_CORPUS = {
       "where": "movie 1:28:40",
       "image": "submission-etlk6u.jpg",
       "credit": "Bundas"
+    },
+    "skips-fishing-supplies": {
+      "what": "\"Skip's fishing supplies\" shop banner",
+      "where": "movie 1:23:14-1:23:15 (never seen fully just parts - attached image is cut together), also seen at 0:10:52, 1:14:12, and 1:30:56",
+      "image": "submission-iceibt.png",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -3828,6 +3834,57 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "shirshu-sign",
       "gloss": "shirshu"
+    },
+    "skip's": {
+      "ipa": [
+        "s",
+        "k",
+        "ɪ",
+        "p",
+        "*",
+        "*"
+      ],
+      "count": 1,
+      "sources": [
+        "skips-fishing-supplies"
+      ],
+      "confidence": "certain",
+      "source": "skips-fishing-supplies",
+      "gloss": "Skip's"
+    },
+    "fishing": {
+      "ipa": [
+        "f",
+        "ɪ",
+        "ʃ",
+        "ɪ",
+        "ŋ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "skips-fishing-supplies"
+      ],
+      "confidence": "certain",
+      "source": "skips-fishing-supplies",
+      "gloss": "fishing"
+    },
+    "supplies": {
+      "ipa": [
+        "s",
+        "ə",
+        "p",
+        "l",
+        "aɪ",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "skips-fishing-supplies"
+      ],
+      "confidence": "certain",
+      "source": "skips-fishing-supplies",
+      "gloss": "supplies"
     }
   },
   "conventions": {
