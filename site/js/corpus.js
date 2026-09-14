@@ -133,6 +133,12 @@ window.AVATARIAN_CORPUS = {
       "where": "movie 1:30:13",
       "image": "submission-4ndonk.jpg",
       "credit": "Bundas"
+    },
+    "shop-sing-that-reads-jewel-there-are-als": {
+      "what": "Shop sing that reads \"Jewel\". There are also a bunch of gpyhs in circles with unknown meaning: left ones read /y i r/ and /uh v/, and the three from left to right are /i z/, /f a/ and /m i/",
+      "where": "movie 1:29:53",
+      "image": "submission-wvvbph.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -3893,6 +3899,21 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "skips-fishing-supplies",
       "gloss": "supplies"
+    },
+    "jewel": {
+      "ipa": [
+        "dʒ",
+        "u",
+        "ə",
+        "l"
+      ],
+      "count": 1,
+      "sources": [
+        "shop-sing-that-reads-jewel-there-are-als"
+      ],
+      "confidence": "certain",
+      "source": "shop-sing-that-reads-jewel-there-are-als",
+      "gloss": "jewel"
     }
   },
   "conventions": {
