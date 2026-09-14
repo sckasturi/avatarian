@@ -1,0 +1,31 @@
+{
+  "_submission": {
+    "at": "2026-09-14T23:08:37.536Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "submission-etlk6u",
+    "what": "\"Republic City\" written on a wooden sign above a gate",
+    "where": "movie 1:28:40",
+    "image": "submission-etlk6u.jpg",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "republic",
+      "spelling": "ɹ i p ʌ b l ə k",
+      "source": "submission-etlk6u",
+      "confidence": "certain",
+      "gloss": "Republic"
+    },
+    {
+      "key": "city",
+      "spelling": "s ɪ t i",
+      "source": "submission-etlk6u",
+      "confidence": "certain",
+      "gloss": "City"
+    }
+  ]
+}
