@@ -115,6 +115,12 @@ window.AVATARIAN_CORPUS = {
       "where": "movie 1:14:00 (it is mirrored)",
       "image": "submission-f3xyf4.jpg",
       "credit": "Bundas"
+    },
+    "republic-city": {
+      "what": "\"Republic City\" written on a wooden sign above a gate",
+      "where": "movie 1:28:40",
+      "image": "submission-etlk6u.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -2140,12 +2146,14 @@ window.AVATARIAN_CORPUS = {
         "t",
         "i"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-1.3"
+        "instagram-1.3",
+        "republic-city"
       ],
       "confidence": "certain",
-      "source": "instagram-1.3"
+      "source": "instagram-1.3",
+      "gloss": "City"
     },
     "fanny": {
       "ipa": [
@@ -2305,7 +2313,28 @@ window.AVATARIAN_CORPUS = {
         "instagram-1.3"
       ],
       "confidence": "certain",
-      "source": "instagram-1.3"
+      "source": "instagram-1.3",
+      "alternates": [
+        {
+          "ipa": [
+            "ɹ",
+            "i",
+            "p",
+            "ʌ",
+            "b",
+            "l",
+            "ə",
+            "k"
+          ],
+          "count": 1,
+          "sources": [
+            "republic-city"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true,
+      "gloss": "Republic"
     },
     "seaweed": {
       "ipa": [
@@ -3747,14 +3776,14 @@ window.AVATARIAN_CORPUS = {
       "source": "beifong-academy-banner",
       "gloss": "Beifong"
     },
-    "shirshu": {
+    "agency": {
       "ipa": [
-        "ʃ",
-        "ɪ",
-        "ɹ",
-        "∅",
-        "ʃ",
-        "u"
+        "e",
+        "dʒ",
+        "ə",
+        "n",
+        "s",
+        "i"
       ],
       "count": 1,
       "sources": [
@@ -3762,7 +3791,7 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "shirshu-sign",
-      "gloss": "shirshu"
+      "gloss": "agency"
     },
     "detective": {
       "ipa": [
@@ -3783,14 +3812,14 @@ window.AVATARIAN_CORPUS = {
       "source": "shirshu-sign",
       "gloss": "detective"
     },
-    "agency": {
+    "shirshu": {
       "ipa": [
-        "e",
-        "dʒ",
-        "ə",
-        "n",
-        "s",
-        "i"
+        "ʃ",
+        "ɪ",
+        "ɹ",
+        "∅",
+        "ʃ",
+        "u"
       ],
       "count": 1,
       "sources": [
@@ -3798,7 +3827,7 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "shirshu-sign",
-      "gloss": "agency"
+      "gloss": "shirshu"
     }
   },
   "conventions": {

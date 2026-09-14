@@ -134,6 +134,12 @@
       "where": "movie 1:14:00 (it is mirrored)",
       "image": "submission-f3xyf4.jpg",
       "credit": "Bundas"
+    },
+    "republic-city": {
+      "what": "\"Republic City\" written on a wooden sign above a gate",
+      "where": "movie 1:28:40",
+      "image": "submission-etlk6u.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -1915,6 +1921,20 @@
       "confidence": "certain",
       "gloss": "shirshu",
       "source": "shirshu-sign"
+    },
+    {
+      "key": "city",
+      "spelling": "s ɪ t i",
+      "confidence": "certain",
+      "gloss": "City",
+      "source": "republic-city"
+    },
+    {
+      "key": "republic",
+      "spelling": "ɹ i p ʌ b l ə k",
+      "confidence": "certain",
+      "gloss": "Republic",
+      "source": "republic-city"
     }
   ]
 }
