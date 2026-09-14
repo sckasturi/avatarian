@@ -775,39 +775,19 @@ function renderStaged() {
   updateSubmit();
 }
 
-/** Turnstile calls this back with a token (see contribute.html). */
-window.onTurnstile = (token) => { state.turnstileToken = token; updateSubmit(); };
-window.onTurnstileExpired = () => { state.turnstileToken = null; updateSubmit(); };
-/**
- * A widget that errors (most often the domain isn't in the widget's
- * allowed hostnames, or the site key is wrong) would otherwise just leave
- * the button greyed with no explanation. Say so.
- */
-window.onTurnstileError = (code) => {
-  state.turnstileToken = null;
-  updateSubmit();
-  showProblems([`The anti-spam widget could not load (Turnstile ${code || ""}).`
-    + ` The site key or its allowed domains may be misconfigured — `
-    + `submissions can't be sent until it loads.`]);
-};
-
 /** Whether every precondition for a submission is met, and enable/label. */
 function updateSubmit() {
   const btn = $("submitBtn");
-  const needsTurnstile = !!(window.AVATARIAN_CONTRIB
-    && window.AVATARIAN_CONTRIB.turnstileSiteKey);
   const ready = !state.submitting
     && state.entries.length > 0
     && !!state.source.name
-    && !!state.image
-    && (!needsTurnstile || !!state.turnstileToken);
+    && !!state.image;
   btn.disabled = !ready;
 
   const why = [];
   if (!state.entries.length) why.push("add at least one sighting");
   if (!state.source.name) why.push("name the source");
   if (!state.image) why.push("attach the reference image");
-  if (needsTurnstile && !state.turnstileToken) why.push("complete the check");
   $("submitWhy").textContent = state.submitting ? "" : why.join(" · ");
 
   updateSelfServe();
@@ -922,7 +902,6 @@ async function submit() {
     submitter: state.submitter || null,
     entries: state.entries.map((e) => ({ ...e })),
     image: { name: state.image.name, dataUrl: state.image.dataUrl },
-    turnstileToken: state.turnstileToken || null,
   };
 
   try {
@@ -946,9 +925,6 @@ async function submit() {
     setStatus("not submitted — see above", "is-error");
   } finally {
     state.submitting = false;
-    // Turnstile tokens are single-use; force a fresh one for a retry.
-    state.turnstileToken = null;
-    if (window.turnstile) { try { window.turnstile.reset(); } catch (_) {} }
     updateSubmit();
   }
 }

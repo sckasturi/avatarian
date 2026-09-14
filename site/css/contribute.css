@@ -238,7 +238,6 @@ input:focus, textarea:focus, select:focus {
 .save-state.is-error { color: var(--warn); }
 .save-state.is-ok { color: var(--ok); }
 .submit-why { font-size: 0.8rem; color: var(--faint); }
-.cf-turnstile { margin: 6px 0; }
 
 /* --- the GitHub-account path -------------------------------------- */
 
