@@ -1,0 +1,24 @@
+{
+  "_submission": {
+    "at": "2026-09-14T20:22:20.899Z",
+    "via": "contribute.html",
+    "ua": "curl/8.7.1",
+    "submitter": "apptest"
+  },
+  "source": {
+    "name": "apptest",
+    "what": "GitHub App end-to-end test — safe to close",
+    "where": "not a real sighting",
+    "image": "apptest.png",
+    "credit": "tester"
+  },
+  "entries": [
+    {
+      "key": "cherries",
+      "spelling": "tʃ ɛ ɹ i z ∅",
+      "source": "apptest",
+      "confidence": "probable",
+      "gloss": "cherries"
+    }
+  ]
+}
