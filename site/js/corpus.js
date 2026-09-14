@@ -105,13 +105,32 @@ window.AVATARIAN_CORPUS = {
       "image": "7h-promo.png"
     },
     "beifong-academy-banner": {
-      "what": "Beiofong academy banner",
+      "what": "Beifong academy banner",
       "where": "movie 0:20:16",
       "image": "submission-oq04us.jpg",
       "credit": "Bundas"
     }
   },
   "words": {
+    "academy": {
+      "ipa": [
+        "ə",
+        "∅",
+        "k",
+        "æ",
+        "d",
+        "ə",
+        "m",
+        "i"
+      ],
+      "count": 2,
+      "sources": [
+        "toph-letter",
+        "beifong-academy-banner"
+      ],
+      "confidence": "certain",
+      "source": "toph-letter"
+    },
     "all": {
       "ipa": [
         "ɔ",
@@ -787,25 +806,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "katara-letter",
       "gloss": "Aang"
-    },
-    "academy": {
-      "ipa": [
-        "ə",
-        "∅",
-        "k",
-        "æ",
-        "d",
-        "ə",
-        "m",
-        "i"
-      ],
-      "count": 2,
-      "sources": [
-        "toph-letter",
-        "beifong-academy-banner"
-      ],
-      "confidence": "certain",
-      "source": "toph-letter"
     },
     "after": {
       "ipa": [
