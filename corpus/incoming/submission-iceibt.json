@@ -1,0 +1,36 @@
+{
+  "_submission": {
+    "at": "2026-09-14T22:38:50.246Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "submission-iceibt",
+    "what": "\"Skip's fishing supplies\" shop banner",
+    "where": "movie 1:23:14-1:23:15 (never seen fully just parts - attached image is cut together), also seen at 0:10:52, 1:14:12, and 1:30:56",
+    "image": "submission-iceibt.png",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "skip's",
+      "spelling": "s k ɪ p * *",
+      "source": "submission-iceibt",
+      "confidence": "certain",
+      "gloss": "Skip's"
+    },
+    {
+      "key": "fishing",
+      "spelling": "f ɪ ʃ ɪ ŋ ∅",
+      "source": "submission-iceibt",
+      "confidence": "certain"
+    },
+    {
+      "key": "supplies",
+      "spelling": "s ə p l aɪ z",
+      "source": "submission-iceibt",
+      "confidence": "certain"
+    }
+  ]
+}
