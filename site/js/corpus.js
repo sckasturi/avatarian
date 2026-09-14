@@ -127,6 +127,12 @@ window.AVATARIAN_CORPUS = {
       "where": "movie 1:23:14-1:23:15 (never seen fully just parts - attached image is cut together), also seen at 0:10:52, 1:14:12, and 1:30:56",
       "image": "submission-iceibt.png",
       "credit": "Bundas"
+    },
+    "enjoy-stamp": {
+      "what": "\"Enjoy\" stamp among graffiti on a wall",
+      "where": "movie 1:30:13",
+      "image": "submission-4ndonk.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -2428,12 +2434,14 @@ window.AVATARIAN_CORPUS = {
         "dʒ",
         "ɔɪ"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-1.4"
+        "instagram-1.4",
+        "enjoy-stamp"
       ],
       "confidence": "certain",
-      "source": "instagram-1.4"
+      "source": "instagram-1.4",
+      "gloss": "enjoy"
     },
     "night": {
       "ipa": [
@@ -3835,23 +3843,6 @@ window.AVATARIAN_CORPUS = {
       "source": "shirshu-sign",
       "gloss": "shirshu"
     },
-    "skip's": {
-      "ipa": [
-        "s",
-        "k",
-        "ɪ",
-        "p",
-        "*",
-        "*"
-      ],
-      "count": 1,
-      "sources": [
-        "skips-fishing-supplies"
-      ],
-      "confidence": "certain",
-      "source": "skips-fishing-supplies",
-      "gloss": "Skip's"
-    },
     "fishing": {
       "ipa": [
         "f",
@@ -3868,6 +3859,23 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "skips-fishing-supplies",
       "gloss": "fishing"
+    },
+    "skip's": {
+      "ipa": [
+        "s",
+        "k",
+        "ɪ",
+        "p",
+        "*",
+        "*"
+      ],
+      "count": 1,
+      "sources": [
+        "skips-fishing-supplies"
+      ],
+      "confidence": "certain",
+      "source": "skips-fishing-supplies",
+      "gloss": "Skip's"
     },
     "supplies": {
       "ipa": [

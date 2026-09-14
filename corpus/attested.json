@@ -146,6 +146,12 @@
       "where": "movie 1:23:14-1:23:15 (never seen fully just parts - attached image is cut together), also seen at 0:10:52, 1:14:12, and 1:30:56",
       "image": "submission-iceibt.png",
       "credit": "Bundas"
+    },
+    "enjoy-stamp": {
+      "what": "\"Enjoy\" stamp among graffiti on a wall",
+      "where": "movie 1:30:13",
+      "image": "submission-4ndonk.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -1962,6 +1968,13 @@
       "confidence": "certain",
       "gloss": "supplies",
       "source": "skips-fishing-supplies"
+    },
+    {
+      "key": "enjoy",
+      "spelling": "ɛ n dʒ ɔɪ",
+      "confidence": "certain",
+      "gloss": "enjoy",
+      "source": "enjoy-stamp"
     }
   ]
 }
