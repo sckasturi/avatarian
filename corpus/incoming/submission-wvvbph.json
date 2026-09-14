@@ -1,0 +1,23 @@
+{
+  "_submission": {
+    "at": "2026-09-14T23:43:00.112Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "submission-wvvbph",
+    "what": "Shop sing that reads \"Jewel\". There are also a bunch of gpyhs in circles with unknown meaning: left ones read /y i r/ and /uh v/, and the three from left to right are /i z/, /f a/ and /m i/",
+    "where": "movie 1:29:53",
+    "image": "submission-wvvbph.jpg",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "jewel",
+      "spelling": "dʒ u ə l",
+      "source": "submission-wvvbph",
+      "confidence": "certain"
+    }
+  ]
+}
