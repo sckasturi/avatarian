@@ -36,6 +36,11 @@ import subprocess
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+
+import build_corpus                                      # noqa: E402
+import promote_corpus                                    # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WEB = ROOT / "review"
 SITE = ROOT / "site"
@@ -213,10 +218,36 @@ class Handler(SimpleHTTPRequestHandler):
         number = int(body.get("number"))
         slug = str(body.get("slug") or "")
         name = str(body.get("name") or "").strip()
+        edited = body.get("submission")     # the maintainer's edited version, or None
         if not re.fullmatch(r"[A-Za-z0-9._-]+", slug):
             return self.send_json({"error": "bad submission id"}, 400)
         if not name:
             return self.send_json({"error": "give the source a name"}, 400)
+
+        # Validate the edits BEFORE touching GitHub, so a bad edit can't
+        # leave a merged-but-unpromoted PR behind. Same validator that
+        # guards every other write (build_corpus.check).
+        if edited is not None:
+            try:
+                folded = promote_corpus.fold_submission(
+                    promote_corpus.base_corpus(), edited, name)
+                # The reference image is still only on the PR branch, not
+                # local until the merge — so drop it for this pre-check, or
+                # build_corpus.check would fail every edited approve on a
+                # missing file. promote re-validates WITH the image after the
+                # merge, so nothing is actually skipped.
+                src = folded["sources"].get(name)
+                if src:
+                    src = {k: v for k, v in src.items() if k != "image"}
+                    folded["sources"][name] = src
+                problems, _ = build_corpus.check(folded)
+            except Exception as e:                       # noqa: BLE001
+                return self.send_json({"error": f"the edit is malformed: {e}"}, 400)
+            if problems:
+                return self.send_json({
+                    "error": "The edits don't validate — nothing was touched.",
+                    "problems": problems,
+                }, 400)
 
         log = []
 
@@ -242,6 +273,20 @@ class Handler(SimpleHTTPRequestHandler):
             return self.send_json({"error": "merge failed — see the log", "log": log}, 500)
         if not step("pull main", ["git", "pull", "--ff-only", "origin", "main"]):
             return self.send_json({"error": "could not fast-forward main", "log": log}, 500)
+
+        # Apply the maintainer's edits over the merged staged file, so the
+        # fold uses the corrected version. Already validated above.
+        if edited is not None:
+            incoming = ROOT / "corpus" / "incoming" / f"{slug}.json"
+            try:
+                incoming.write_text(
+                    json.dumps(edited, ensure_ascii=False, indent=2) + "\n",
+                    encoding="utf-8")
+                log.append({"step": "apply edits", "ok": True, "out": "", "err": ""})
+            except OSError as e:
+                log.append({"step": "apply edits", "ok": False, "out": "", "err": str(e)})
+                return self.send_json({"error": "could not write edits", "log": log}, 500)
+
         if not step(f"promote as '{name}'",
                     [sys.executable, "tools/promote_corpus.py", f"{slug}.json", "--name", name]):
             return self.send_json({"error": "promote failed — see the log", "log": log}, 500)

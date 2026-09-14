@@ -114,9 +114,25 @@ def fold(base, path, rename=None):
     you name the source here. `rename` sets the real source key and points
     every one of the submission's entries at it.
     """
-    name, source, entries = load_submission(path)
-    if rename:
-        name = rename.strip()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return fold_submission(base, data, rename)
+
+
+def fold_submission(base, data, rename=None):
+    """
+    Fold a submission *object* (not a file) into a corpus dict.
+
+    The review console uses this both to validate a maintainer's edits
+    before it merges anything, and it is what `fold` above routes through —
+    so an edited submission and a staged file take exactly the same path.
+    """
+    source = data.get("source") or {}
+    name = (rename or source.get("name") or "").strip()
+    if not name:
+        raise ValueError("submission has no source name")
+    entries = data.get("entries") or []
+    if not isinstance(entries, list) or not entries:
+        raise ValueError("submission has no entries")
     sources = dict(base.get("sources") or {})
     sources[name] = {**sources.get(name, {}), **clean_source(source)}
     folded = list(base.get("entries") or [])

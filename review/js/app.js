@@ -3,16 +3,26 @@
  *
  * Lists the open contribution pull requests the Worker has opened, draws
  * each with the product's own renderer (site/js/render.js against
- * blocks.css), and lets you approve — name it, and the server merges the
- * PR, folds it into the corpus, and pushes — or reject (close the PR).
+ * blocks.css), and lets you edit the details, then approve — name it, and
+ * the server merges the PR, folds the (possibly edited) submission into the
+ * corpus, and pushes — or reject (close the PR).
  *
- * Everything on GitHub and every git step happens server-side in
- * tools/review_server.py; this is the workflow around it.
+ * Edits are applied server-side over the merged staged file and validated
+ * with the same build_corpus.check that guards every other write, so a bad
+ * edit is refused before anything is merged. GitHub and git work all happen
+ * in tools/review_server.py; this is the workflow around it.
  */
 
 const $ = (id) => document.getElementById(id);
 
 const state = { submissions: [], busy: false };
+
+// Codes <-> IPA, the same way the contribute page and workbench do it, so
+// an edited spelling is parsed by the product's own sounds.js.
+function spellingToIPA(text) { return soundTextToWords(text).flatMap((w) => w.ipa); }
+function ipaToSpelling(ipa) {
+  return ipa && ipa.length ? wordsToSoundText([{ word: "", ipa }]) : "";
+}
 
 function banner(text, cls = "") {
   const el = $("banner");
@@ -46,15 +56,22 @@ function render() {
   const list = $("list");
   list.innerHTML = "";
   const n = state.submissions.length;
-  $("count").textContent = n
-    ? `${n} awaiting review`
-    : "";
+  $("count").textContent = n ? `${n} awaiting review` : "";
   if (!n) {
     list.innerHTML = '<p class="empty">No open submissions. When someone '
       + 'contributes, their pull request shows up here.</p>';
     return;
   }
   for (const sub of state.submissions) list.appendChild(card(sub));
+}
+
+function field(label, hint, control) {
+  const wrap = document.createElement("label");
+  wrap.className = "efield";
+  wrap.innerHTML = `<span class="efield-label">${label}`
+    + (hint ? ` <span class="efield-hint">${hint}</span>` : "") + `</span>`;
+  wrap.appendChild(control);
+  return wrap;
 }
 
 function card(sub) {
@@ -67,17 +84,14 @@ function card(sub) {
   const meta = s._submission || {};
   const entries = s.entries || [];
 
-  // --- header: PR link, author, date ---
   const head = document.createElement("div");
   head.className = "card-head";
-  head.innerHTML =
-    `<a class="pr" target="_blank" rel="noopener"></a>`
-    + `<span class="by"></span><span class="spacer"></span>`
-    + `<span class="when"></span>`;
-  const pr = head.querySelector(".pr");
-  pr.href = sub.url;
-  pr.textContent = `PR #${sub.number}`;
-  head.querySelector(".by").textContent = "by " + (meta.submitter || sub.author || "anonymous");
+  head.innerHTML = `<a class="pr" target="_blank" rel="noopener"></a>`
+    + `<span class="by"></span><span class="spacer"></span><span class="when"></span>`;
+  head.querySelector(".pr").href = sub.url;
+  head.querySelector(".pr").textContent = `PR #${sub.number}`;
+  head.querySelector(".by").textContent =
+    "by " + (meta.submitter || sub.author || "anonymous");
   head.querySelector(".when").textContent = new Date(sub.createdAt).toLocaleString();
   el.appendChild(head);
 
@@ -86,11 +100,10 @@ function card(sub) {
     bad.className = "card-error";
     bad.textContent = "Couldn't read this submission: " + (sub.error || "malformed");
     el.appendChild(bad);
-    el.appendChild(actions(sub, source, /*canApprove*/ false));
+    el.appendChild(actions(sub, source, null));
     return el;
   }
 
-  // --- body: image on the left, words on the right ---
   const body = document.createElement("div");
   body.className = "card-body";
 
@@ -111,86 +124,116 @@ function card(sub) {
   const info = document.createElement("div");
   info.className = "info-col";
 
-  // What it is / where / how it was read.
-  const facts = document.createElement("dl");
-  facts.className = "facts";
-  const fact = (k, v) => {
-    if (!v) return;
-    const dt = document.createElement("dt"); dt.textContent = k;
-    const dd = document.createElement("dd"); dd.textContent = v;
-    facts.append(dt, dd);
-  };
-  fact("What", source.what);
-  fact("Where", source.where);
-  fact("Read by", source.credit || (meta.submitter ? meta.submitter : ""));
-  fact("Confidence", entries[0] && entries[0].confidence);
-  info.appendChild(facts);
+  // Editable source fields.
+  const whatEl = document.createElement("textarea");
+  whatEl.rows = 2; whatEl.value = source.what || "";
+  const whereEl = document.createElement("input");
+  whereEl.type = "text"; whereEl.value = source.where || "";
+  const creditEl = document.createElement("input");
+  creditEl.type = "text"; creditEl.value = source.credit || "";
+  info.append(
+    field("What", "and what it says", whatEl),
+    field("Where", "", whereEl),
+    field("Read by", "credit — blank if the source itself is translated", creditEl),
+  );
 
-  // The words, drawn in Avatarian.
+  // Editable entries.
   const words = document.createElement("div");
   words.className = "words";
-  for (const entry of entries) {
-    words.appendChild(wordChip(entry));
-  }
+  const rows = entries.map((entry) => entryRow(entry, words));
   info.appendChild(words);
 
   body.appendChild(info);
   el.appendChild(body);
 
-  el.appendChild(actions(sub, source, true));
+  // Everything the approve needs, read live from the inputs.
+  const collect = () => ({
+    _submission: meta,
+    source: {
+      name: source.name,
+      what: whatEl.value.trim(),
+      where: whereEl.value.trim(),
+      image: source.image,
+      ...(creditEl.value.trim() ? { credit: creditEl.value.trim() } : {}),
+    },
+    entries: rows.map((r) => r.read()),
+  });
+
+  el.appendChild(actions(sub, source, collect));
   return el;
 }
 
-function wordChip(entry) {
+/** One editable entry: live-rendered art + word + codes + confidence. */
+function entryRow(entry, container) {
   const chip = document.createElement("div");
   chip.className = "word";
-  const ipa = (entry.spelling || "").split(" ").filter(Boolean);
+  let ipa = (entry.spelling || "").split(" ").filter(Boolean);
 
   const art = document.createElement("div");
   art.className = "word-art";
-  try { renderAvatarian(ipa, art); } catch (_) { art.textContent = "?"; }
+  const draw = () => {
+    art.innerHTML = "";
+    try { renderAvatarian(ipa, art); } catch (_) { art.textContent = "?"; }
+  };
+  draw();
 
-  const label = document.createElement("div");
-  label.className = "word-label";
-  label.textContent = entry.gloss || entry.key || "(unnamed)";
+  const word = document.createElement("input");
+  word.type = "text"; word.className = "word-input";
+  word.value = entry.gloss || entry.key || "";
+  word.title = "the word this spells (display form)";
 
-  const codes = document.createElement("div");
-  codes.className = "word-codes";
-  // Show the readable codes when sounds.js is available; fall back to IPA.
-  try {
-    codes.textContent = wordsToSoundText([{ word: "", ipa }]);
-  } catch (_) { codes.textContent = ipa.join(" "); }
+  const codes = document.createElement("input");
+  codes.type = "text"; codes.className = "codes-input"; codes.spellcheck = false;
+  codes.value = ipaToSpelling(ipa);
+  codes.title = "the spelling, in codes — edit to fix a slot; 0 is a null";
+  codes.addEventListener("input", () => {
+    ipa = spellingToIPA(codes.value);
+    draw();
+    warn.textContent = ipa.length % 2 ? "odd — a null is missing" : "";
+  });
 
-  chip.append(art, label, codes);
-  if ((entry.times || 1) > 1) {
-    const t = document.createElement("span");
-    t.className = "word-times";
-    t.textContent = entry.times + "×";
-    chip.appendChild(t);
+  const conf = document.createElement("select");
+  conf.className = "conf-input";
+  for (const c of ["certain", "probable", "unclear"]) {
+    const o = document.createElement("option");
+    o.value = c; o.textContent = c;
+    if ((entry.confidence || "certain") === c) o.selected = true;
+    conf.appendChild(o);
   }
-  return chip;
+
+  const warn = document.createElement("span");
+  warn.className = "word-warn";
+
+  chip.append(art, word, codes, conf, warn);
+  container.appendChild(chip);
+
+  return {
+    read() {
+      const out = { key: entry.key, spelling: ipa.join(" "), confidence: conf.value };
+      const g = word.value.trim();
+      if (g) out.gloss = g;
+      if (entry.times && entry.times > 1) out.times = entry.times;
+      if (entry.note) out.note = entry.note;
+      return out;
+    },
+  };
 }
 
-function actions(sub, source, canApprove) {
+function actions(sub, source, collect) {
   const wrap = document.createElement("div");
   wrap.className = "actions";
 
-  if (canApprove) {
-    const nameField = document.createElement("label");
-    nameField.className = "name-field";
-    nameField.innerHTML = '<span>Name the source</span>';
+  if (collect) {
     const input = document.createElement("input");
-    input.type = "text";
-    input.className = "name-input";
+    input.type = "text"; input.className = "name-input";
     input.value = slugify(source.what) || sub.slug;
     input.placeholder = "e.g. sonam";
-    nameField.appendChild(input);
-    wrap.appendChild(nameField);
+    wrap.appendChild(field("Name the source", "", input));
 
     const approve = document.createElement("button");
     approve.className = "primary";
     approve.textContent = "approve & publish";
-    approve.addEventListener("click", () => doApprove(sub, input.value.trim(), wrap));
+    approve.addEventListener("click", () => doApprove(sub, input.value.trim(), collect, wrap));
     wrap.appendChild(approve);
   }
 
@@ -205,8 +248,7 @@ function actions(sub, source, canApprove) {
   wrap.appendChild(status);
 
   const logBox = document.createElement("pre");
-  logBox.className = "log";
-  logBox.hidden = true;
+  logBox.className = "log"; logBox.hidden = true;
   wrap.appendChild(logBox);
 
   return wrap;
@@ -214,32 +256,41 @@ function actions(sub, source, canApprove) {
 
 function setBusy(wrap, on) {
   state.busy = on;
-  wrap.querySelectorAll("button, input").forEach((b) => { b.disabled = on; });
+  wrap.closest(".card").querySelectorAll("button, input, textarea, select")
+    .forEach((b) => { b.disabled = on; });
 }
 
-function showLog(wrap, log) {
-  if (!log || !log.length) return;
+function showLog(wrap, log, problems) {
   const box = wrap.querySelector(".log");
+  const lines = [];
+  if (problems && problems.length) lines.push(...problems.map((p) => "• " + p));
+  if (log && log.length) {
+    lines.push(...log.map((s) =>
+      `${s.ok ? "✓" : "✗"} ${s.step}${s.err ? "\n    " + s.err : ""}`));
+  }
+  if (!lines.length) return;
   box.hidden = false;
-  box.textContent = log.map((s) =>
-    `${s.ok ? "✓" : "✗"} ${s.step}${s.err ? "\n    " + s.err : ""}`).join("\n");
+  box.textContent = lines.join("\n");
 }
 
-async function doApprove(sub, name, wrap) {
+async function doApprove(sub, name, collect, wrap) {
   if (state.busy) return;
   if (!name) { wrap.querySelector(".name-input").focus(); return; }
   const status = wrap.querySelector(".action-status");
   setBusy(wrap, true);
   status.textContent = "publishing…";
   status.className = "action-status";
+  wrap.querySelector(".log").hidden = true;
   try {
     const res = await fetch("/api/approve", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ number: sub.number, slug: sub.slug, name }),
+      body: JSON.stringify({
+        number: sub.number, slug: sub.slug, name, submission: collect(),
+      }),
     });
     const body = await res.json();
-    showLog(wrap, body.log);
+    showLog(wrap, body.log, body.problems);
     if (body.ok) {
       status.textContent = `published as "${name}" — live on next deploy`;
       status.className = "action-status is-ok";
@@ -261,7 +312,7 @@ async function doReject(sub, wrap) {
   const comment = prompt(
     "Reject PR #" + sub.number + "? Optional message to the contributor "
     + "(shown on the closed PR):", "");
-  if (comment === null) return;      // cancelled
+  if (comment === null) return;
   const status = wrap.querySelector(".action-status");
   setBusy(wrap, true);
   status.textContent = "closing…";
