@@ -1,21 +1,21 @@
 # contrib-worker — the corpus contribution backend
 
-A small Cloudflare Worker that lets **anyone** (no GitHub account needed)
-submit an Avatarian sighting from [`site/contribute.html`](../site/contribute.html)
-and have it become a pull request a maintainer reviews.
+A small Cloudflare Worker that lets someone submit an Avatarian sighting
+from [`site/contribute.html`](../site/contribute.html) — without a GitHub
+account — and have it become a pull request a maintainer reviews.
 
 It is the one piece of server in an otherwise static, GitHub-Pages-hosted
 project, and it exists for exactly one reason: Pages cannot take a write,
-and an anonymous contributor cannot open a PR. The Worker holds a bot token
-at the edge, does cheap sanity + anti-spam checks, and opens the PR on the
-contributor's behalf. It **cannot write to the corpus** — it can only
+and a contributor without a GitHub account cannot open a PR. The Worker
+authenticates as a **GitHub App**, does cheap sanity checks, and opens the
+PR as the App's bot. It **cannot write to the corpus** — it can only
 propose. The real validation is `build_corpus.check`, which runs as CI on
 the PR ([`.github/workflows/validate-contrib.yml`](../.github/workflows/validate-contrib.yml))
 and again at promote time ([`tools/promote_corpus.py`](../tools/promote_corpus.py)).
 
 ```
-contribute.html ──POST /submit──▶ this Worker ──GitHub API──▶ PR
-                                   (bot token)                 (corpus/incoming/<slug>.json
+contribute.html ──POST /submit──▶ this Worker ──GitHub App──▶ PR
+                                   (installation token)        (corpus/incoming/<slug>.json
                                                                 + site/sources/<image>)
                                                               │
                         CI: promote_corpus.py --check + tests │  you review & merge
@@ -25,14 +25,15 @@ contribute.html ──POST /submit──▶ this Worker ──GitHub API──�
 
 ## What it does per request
 
-1. **Rate-limit** the caller's IP (KV, `RATE_LIMIT_PER_DAY` per day).
-2. **Verify Turnstile** (Cloudflare's CAPTCHA) if a secret is configured.
-3. **Cheap validation** — a pre-filter only: source name present, each
+1. **Rate-limit** the caller's IP (KV, `RATE_LIMIT_PER_DAY` per day; skipped
+   if no KV binding is configured).
+2. **Cheap validation** — a pre-filter only: source name present, each
    spelling an even token count, confidence known, image an accepted type
    under 24 MB. Drawability and the rest are left to CI's `build_corpus.check`.
-4. **Open the PR** with the bot token: a `contrib/<slug>` branch, the image
-   committed to `site/sources/`, the submission staged at
-   `corpus/incoming/<slug>.json`, and a pull request against `main`.
+3. **Open the PR** as the GitHub App: mint a short-lived installation token,
+   create a `contrib/<slug>` branch, commit the image to `site/sources/`,
+   stage the submission at `corpus/incoming/<slug>.json`, and open a pull
+   request against `main`.
 
 Nothing auto-merges. Every submission is a PR you approve, and CI must pass.
 
@@ -46,43 +47,42 @@ You need a Cloudflare account and [`wrangler`](https://developers.cloudflare.com
 Edit [`wrangler.toml`](./wrangler.toml): set `REPO_OWNER`, `REPO_NAME`, and
 `ALLOWED_ORIGIN` (your site's origin). `BASE_BRANCH` defaults to `main`.
 
-### 2. A bot token (kept as a Worker secret)
+### 2. Create a GitHub App
 
-Create a **fine-grained personal access token** scoped to **only this
-repository**, with repository permissions:
+GitHub → **Settings → Developer settings → GitHub Apps → New GitHub App**:
 
-- **Contents: Read and write** (to push the branch + files)
-- **Pull requests: Read and write** (to open the PR)
+- **Name:** anything, e.g. `Avatarian Corpus Bot` (this becomes the PR
+  author, shown as `avatarian-corpus-bot[bot]`).
+- **Homepage URL:** anything (your site is fine).
+- **Webhook:** untick **Active** — no webhook is needed.
+- **Repository permissions:** **Contents → Read and write**, and
+  **Pull requests → Read and write**. Nothing else.
+- **Where can this app be installed:** *Only on this account*.
+- Create it.
 
-Then store it — it is never committed:
+Then, on the App's page:
+
+- Note the **App ID** (a number near the top) → put it in `wrangler.toml`'s
+  `GH_APP_ID`.
+- Under **Private keys**, **Generate a private key** — it downloads a `.pem`.
+- **Install App** (left sidebar) → install on your account → **Only select
+  repositories** → pick **`avatarian`**.
+
+### 3. Store the private key as a Worker secret
+
+Pipe the downloaded `.pem` straight in (a multi-line value is awkward to
+paste by hand):
 
 ```bash
 cd contrib-worker
-wrangler secret put BOT_TOKEN        # paste the token
+wrangler secret put GH_APP_PRIVATE_KEY < ~/Downloads/avatarian-corpus-bot.*.private-key.pem
 ```
 
-> Prefer a dedicated bot account's token, or a GitHub App installation
-> token, so community PRs are clearly not authored by you. A fine-grained
-> PAT on your own account works too.
+The key can be GitHub's PKCS#1 (`BEGIN RSA PRIVATE KEY`) verbatim — the
+Worker converts it. Keep the `.pem` somewhere safe or delete it; the secret
+now lives only in Cloudflare.
 
-### 3. Turnstile (anti-spam)
-
-Create a **Turnstile** widget in the Cloudflare dashboard (Turnstile →
-Add site). You get two keys:
-
-- the **site key** (public) → put it in `site/contribute.html`'s
-  `window.AVATARIAN_CONTRIB.turnstileSiteKey`.
-- the **secret key** → store it in the Worker:
-
-```bash
-wrangler secret put TURNSTILE_SECRET
-```
-
-If you skip Turnstile, leave both empty; the Worker then does not require a
-challenge (rate-limiting still applies). Not recommended for a public,
-anonymous endpoint.
-
-### 4. Rate-limit store (recommended)
+### 4. Rate-limit store (optional)
 
 ```bash
 wrangler kv namespace create RATE
@@ -105,11 +105,22 @@ into `site/contribute.html`:
 ```js
 window.AVATARIAN_CONTRIB = {
   submitUrl: "https://avatarian-contrib.<you>.workers.dev/submit",
-  turnstileSiteKey: "0x4AAAAAAA...",   // the Turnstile SITE key
+  repo: "sckasturi/avatarian",   // powers the "open the PR yourself" link
+  baseBranch: "main",
 };
 ```
 
 Commit that change; Pages redeploys and the page is live.
+
+### 6. Clean up any old secrets
+
+If you experimented with the earlier personal-token / Turnstile setup,
+remove those secrets — they are unused now:
+
+```bash
+wrangler secret delete BOT_TOKEN
+wrangler secret delete TURNSTILE_SECRET   # if it still exists
+```
 
 ## Local development
 
@@ -118,9 +129,15 @@ wrangler dev
 ```
 
 `wrangler dev` serves the Worker on `http://localhost:8787`. To exercise the
-real PR path you still need `BOT_TOKEN` (put it in a local `.dev.vars` file,
-which is gitignored) and a repo you don't mind test branches in. A sample
-request:
+real PR path, put the App's key in a local `.dev.vars` (gitignored) and set
+the App ID:
+
+```
+GH_APP_ID = "123456"
+GH_APP_PRIVATE_KEY = "-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----\n"
+```
+
+A sample request (opens a real PR — use a throwaway branch/repo):
 
 ```bash
 curl -sX POST http://localhost:8787/submit \
@@ -133,18 +150,19 @@ curl -sX POST http://localhost:8787/submit \
       }'
 ```
 
-With no `TURNSTILE_SECRET` set locally, the challenge is skipped, so this
-opens a real PR if `BOT_TOKEN` is present — use a throwaway branch/repo.
-
 ## Files
 
 - `src/index.js` — the Worker.
-- `wrangler.toml` — repo + origin config and the KV binding.
+- `wrangler.toml` — repo + origin config, `GH_APP_ID`, and the KV binding.
 - `package.json` — pins `wrangler` for `npm run deploy` / `npm run dev`.
 
 ## Security notes
 
-- The token lives only as a Worker secret, never in the repo or the page.
+- No long-lived credential is stored: the Worker signs a short JWT with the
+  App key and mints an installation token (~1h) per request. Only the App's
+  private key is a secret, and it never leaves Cloudflare or touches the repo.
+- The App is scoped to this one repo with just Contents + Pull requests
+  write — it can't touch anything else in your account.
 - The Worker validates cheaply **before** spending a PR, so junk never
   reaches the repo; CI is the authoritative gate before anything can merge.
 - Submissions are untrusted: the PR body says so, and the image + text

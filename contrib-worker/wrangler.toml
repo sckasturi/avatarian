@@ -5,13 +5,14 @@ name = "avatarian-contrib"
 main = "src/index.js"
 compatibility_date = "2024-11-01"
 
-# Non-secret configuration. The secrets (BOT_TOKEN, TURNSTILE_SECRET) are
-# set with `wrangler secret put` and never live in this file.
+# Non-secret configuration. The only secret is the GitHub App private key
+# (GH_APP_PRIVATE_KEY), set with `wrangler secret put` and never in this file.
 [vars]
 REPO_OWNER = "sckasturi"         # <-- the GitHub account/org that owns the repo
 REPO_NAME = "avatarian"          # <-- the repository name
 BASE_BRANCH = "main"
 ALLOWED_ORIGIN = "https://avatarian.techfilmer.com"
+GH_APP_ID = "PASTE_YOUR_GITHUB_APP_ID"   # <-- the App's numeric ID (App settings)
 
 # Per-IP daily rate limiting. Create the namespace once with
 #   wrangler kv namespace create RATE

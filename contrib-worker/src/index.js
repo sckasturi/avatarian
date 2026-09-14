@@ -24,9 +24,14 @@
  * two files a maintainer reviews, and exactly what promote_corpus.py folds
  * in on merge.
  *
- * Secrets (wrangler secret put): BOT_TOKEN, TURNSTILE_SECRET.
- * Vars (wrangler.toml [vars]): REPO_OWNER, REPO_NAME, BASE_BRANCH,
- *   ALLOWED_ORIGIN. Binding: RATE (a KV namespace) for per-IP limiting.
+ * Auth is a GitHub App: it signs a short JWT with the App's private key,
+ * exchanges it for an installation token scoped to this one repo, and opens
+ * the PR as the App's bot. Nothing long-lived is stored.
+ *
+ * Secret (wrangler secret put): GH_APP_PRIVATE_KEY (the App's .pem).
+ * Vars (wrangler.toml [vars]): GH_APP_ID, REPO_OWNER, REPO_NAME,
+ *   BASE_BRANCH, ALLOWED_ORIGIN. Binding: RATE (a KV namespace) for
+ *   per-IP limiting (optional).
  */
 
 const GITHUB = "https://api.github.com";
@@ -222,29 +227,34 @@ async function openPullRequest(env, staged) {
   const base = env.BASE_BRANCH || "main";
   const branch = `contrib/${staged.slug}`;
 
+  // A short-lived installation token for the GitHub App — minted per
+  // request, never stored. The App is the bot identity the PR is opened
+  // as, so nothing here rides on anyone's personal token.
+  const token = await installationToken(env);
+
   // 1. The base branch's current commit.
-  const ref = await gh(env, `/repos/${owner}/${repo}/git/ref/heads/${base}`);
+  const ref = await gh(token, `/repos/${owner}/${repo}/git/ref/heads/${base}`);
   const baseSha = ref.object.sha;
 
   // 2. A branch off it.
-  await gh(env, `/repos/${owner}/${repo}/git/refs`, "POST", {
+  await gh(token, `/repos/${owner}/${repo}/git/refs`, "POST", {
     ref: `refs/heads/${branch}`, sha: baseSha,
   });
 
   // 3. The image, committed into site/sources/ (the deployed, committed
   //    copy the corpus page links to, and the one build_corpus.check looks
   //    for). Then the staged submission JSON.
-  await putFile(env, owner, repo, branch,
+  await putFile(token, owner, repo, branch,
     `site/sources/${staged.imageFile}`, staged.imageBase64,
     `corpus: reference image for ${staged.name} (community submission)`);
 
-  await putFile(env, owner, repo, branch,
+  await putFile(token, owner, repo, branch,
     `corpus/incoming/${staged.slug}.json`, utf8ToBase64(staged.submissionJson),
     `corpus: stage ${staged.words.join(", ")} from ${staged.name} `
     + `(community submission)`);
 
   // 4. The pull request.
-  const pr = await gh(env, `/repos/${owner}/${repo}/pulls`, "POST", {
+  const pr = await gh(token, `/repos/${owner}/${repo}/pulls`, "POST", {
     title: `corpus: ${staged.words.join(", ")} (community submission)`,
     head: branch,
     base,
@@ -275,17 +285,22 @@ function prBody(staged) {
 }
 
 /** Create-or-update one file on a branch via the Contents API. */
-async function putFile(env, owner, repo, branch, path, contentBase64, message) {
-  await gh(env, `/repos/${owner}/${repo}/contents/${encodePath(path)}`, "PUT", {
+async function putFile(token, owner, repo, branch, path, contentBase64, message) {
+  await gh(token, `/repos/${owner}/${repo}/contents/${encodePath(path)}`, "PUT", {
     message, content: contentBase64, branch,
   });
 }
 
-async function gh(env, path, method = "GET", payload) {
+/**
+ * One GitHub REST call. `token` is either the App JWT (for the two
+ * app-level endpoints) or an installation token (for everything else) —
+ * both are sent as Bearer.
+ */
+async function gh(token, path, method = "GET", payload) {
   const res = await fetch(GITHUB + path, {
     method,
     headers: {
-      "Authorization": `Bearer ${env.BOT_TOKEN}`,
+      "Authorization": `Bearer ${token}`,
       "Accept": "application/vnd.github+json",
       "X-GitHub-Api-Version": "2022-11-28",
       // GitHub requires a User-Agent on every request.
@@ -299,6 +314,102 @@ async function gh(env, path, method = "GET", payload) {
     throw new Error(`GitHub ${method} ${path} -> ${res.status}: ${detail}`);
   }
   return res.status === 204 ? {} : res.json();
+}
+
+// ---------------------------------------------------------------------
+// GitHub App authentication
+// ---------------------------------------------------------------------
+//
+// The Worker acts as a GitHub App, not a personal token: it signs a short
+// JWT with the App's private key, exchanges it for an installation token
+// scoped to the one repo the App is installed on, and uses that. Tokens
+// live ~1h and are minted per request, so nothing long-lived is stored
+// and the PR is authored by the App's bot identity.
+
+async function installationToken(env) {
+  if (!env.GH_APP_ID || !env.GH_APP_PRIVATE_KEY) {
+    throw new Error("GitHub App not configured (GH_APP_ID / GH_APP_PRIVATE_KEY)");
+  }
+  const jwt = await appJwt(env);
+  // Resolve the installation from the repo itself, so no installation id
+  // has to be configured by hand.
+  const inst = await gh(jwt,
+    `/repos/${env.REPO_OWNER}/${env.REPO_NAME}/installation`);
+  const res = await gh(jwt,
+    `/app/installations/${inst.id}/access_tokens`, "POST");
+  return res.token;
+}
+
+/** A signed App JWT (RS256), valid ~9 minutes. */
+async function appJwt(env) {
+  const now = Math.floor(Date.now() / 1000);
+  const header = strToB64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  // iat backdated 60s to tolerate clock skew; exp within the 10-min cap.
+  const payload = strToB64url(JSON.stringify({
+    iat: now - 60, exp: now + 540, iss: String(env.GH_APP_ID),
+  }));
+  const data = `${header}.${payload}`;
+  const key = await importPrivateKey(env.GH_APP_PRIVATE_KEY);
+  const sig = await crypto.subtle.sign(
+    { name: "RSASSA-PKCS1-v1_5" }, key, new TextEncoder().encode(data));
+  return `${data}.${bytesToB64url(new Uint8Array(sig))}`;
+}
+
+/**
+ * Import the App's PEM private key for signing. GitHub hands out a PKCS#1
+ * key ("BEGIN RSA PRIVATE KEY"), which WebCrypto can't import directly, so
+ * it is wrapped into PKCS#8 first; a key already in PKCS#8 ("BEGIN PRIVATE
+ * KEY") is imported as-is. So you can paste GitHub's .pem verbatim.
+ */
+async function importPrivateKey(pem) {
+  const isPkcs8 = /BEGIN PRIVATE KEY/.test(pem);
+  const body = pem
+    .replace(/-----BEGIN [^-]+-----/, "")
+    .replace(/-----END [^-]+-----/, "")
+    .replace(/\s+/g, "");
+  const der = b64ToBytes(body);
+  const pkcs8 = isPkcs8 ? der : wrapPkcs1ToPkcs8(der);
+  return crypto.subtle.importKey(
+    "pkcs8", pkcs8,
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["sign"]);
+}
+
+/** DER length bytes (short form under 128, else long form). */
+function derLen(n) {
+  if (n < 0x80) return [n];
+  const out = [];
+  let x = n;
+  while (x > 0) { out.unshift(x & 0xff); x >>= 8; }
+  return [0x80 | out.length, ...out];
+}
+
+/** Wrap a PKCS#1 RSAPrivateKey (DER) into a PKCS#8 PrivateKeyInfo (DER). */
+function wrapPkcs1ToPkcs8(pkcs1) {
+  const version = [0x02, 0x01, 0x00];
+  // AlgorithmIdentifier: rsaEncryption (1.2.840.113549.1.1.1) + NULL.
+  const algId = [0x30, 0x0d, 0x06, 0x09,
+    0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00];
+  const octet = [0x04, ...derLen(pkcs1.length), ...pkcs1];
+  const bodyLen = version.length + algId.length + octet.length;
+  const seq = [0x30, ...derLen(bodyLen), ...version, ...algId, ...octet];
+  return new Uint8Array(seq);
+}
+
+function b64ToBytes(b64) {
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+function bytesToB64url(bytes) {
+  let bin = "";
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function strToB64url(s) {
+  return bytesToB64url(new TextEncoder().encode(s));
 }
 
 // ---------------------------------------------------------------------
