@@ -41,6 +41,11 @@
   anything enters the corpus — so take your best reading; it doesn't have
   to be perfect.
 </p>
+<p class="contrib-intro">
+  Module to add words to the corpus. <strong>Please message me on Discord
+  first before adding anything here.</strong> Make sure to attach images as
+  proof or link to an Instagram post.
+</p>
 
 <p class="problems" id="problems" hidden></p>
 
@@ -234,10 +239,13 @@
 
 <!-- The tools: shared by the transcription box and every row's codes. -->
 <aside class="contrib-tools">
-  <section class="panel">
-    <div class="panel-head"><h2>Draw a glyph</h2></div>
+  <!-- Collapsible, folded away by default — the same pattern the translator
+       page uses. createDrawPad still runs at load; the canvas sizes when
+       the panel is opened. -->
+  <details class="panel draw-card">
+    <summary><h2>Draw a glyph</h2></summary>
     <div id="drawpad"></div>
-  </section>
+  </details>
   <section class="panel">
     <div class="panel-head"><h2>Palette</h2></div>
     <div class="palette" id="palette"></div>

@@ -59,7 +59,9 @@ export default {
     try {
       return await handle(request, env, origin);
     } catch (err) {
-      // Never leak internals to the page; the detail is in the Worker log.
+      // Never leak internals to the page; the detail is in the Worker log
+      // (wrangler tail). Credential/permission failures on the GitHub side
+      // surface here as a generic message on purpose.
       console.error("submit failed:", err && err.stack || err);
       return json({ ok: false, error: "The submission service hit an "
         + "unexpected error. Nothing was recorded." }, 500, origin);
