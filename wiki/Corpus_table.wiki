@@ -7,7 +7,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | Aang || {{Avatarian|ey ng|Aang}}<ref name="katara-letter">''katara-letter'' — movie (translation by BokerBigBanana)</ref><ref name="instagram-3.2">''instagram-3.2'' — [https://www.instagram.com/p/DboCKbiDL_v/?img_index=2 post]</ref> || /e ŋ/ || 2
 |-
-| academy || {{Avatarian|uh 0 k a d uh m ee|academy}}<ref name="katara-letter" /> || /ə k æ d ə m i/ || 1
+| academy || {{Avatarian|uh 0 k a d uh m ee|academy}}<ref name="toph-letter">''toph-letter'' — movie</ref> || /ə k æ d ə m i/ || 1
 |-
 | after || {{Avatarian|a f t uh r 0|after}}<ref name="katara-letter" /> || /æ f t ə ɹ/ || 1
 |-
@@ -15,7 +15,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | air || {{Avatarian|ey r|air}}<ref name="sdcc-2">''sdcc-2'' — san diego comic con 2026</ref> || /e ɹ/ || 1
 |-
-| all || {{Avatarian|aw l|all}}<ref name="toph-letter">''toph-letter'' — movie</ref> || /ɔ l/ || 1
+| all || {{Avatarian|aw l|all}}<ref name="toph-letter" /> || /ɔ l/ || 1
 |-
 | always || {{Avatarian|* l w ey i z|always}}<ref name="instagram-3.3">''instagram-3.3'' — [https://www.instagram.com/p/DboCKbiDL_v/?img_index=3 post]</ref> || /* l w e ɪ z/ || 1
 |-
@@ -280,6 +280,8 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 | models || {{Avatarian|m ah d uh l z|models}}<ref name="instagram-2.1" /> || /m ɑ d ə l z/ || 1
 |-
 | Momo || {{Avatarian|m oh m oh|Momo}}<ref name="katara-letter" /> || /m oʊ m oʊ/ || 1
+|-
+| month || {{Avatarian|m u n 0 th 0|month}}<ref name="7h-promo">''7h-promo'' — [https://www.instagram.com/p/DdEzLNeEdK8/ post]</ref> || /m ʌ n θ/ || 1
 |-
 | Mount || {{Avatarian|m ow n t|Mount}}<ref name="toph-letter" /> || /m aʊ n t/ || 1
 |-
