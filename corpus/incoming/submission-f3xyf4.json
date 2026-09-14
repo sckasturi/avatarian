@@ -1,0 +1,35 @@
+{
+  "_submission": {
+    "at": "2026-09-14T21:14:50.974Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "submission-f3xyf4",
+    "what": "Street sign saying \"Shirshu Detective Agency\"",
+    "where": "movie 1:14:00 (it is mirrored)",
+    "image": "submission-f3xyf4.jpg",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "shirshu",
+      "spelling": "ʃ ɪ ɹ ∅ ʃ u",
+      "source": "submission-f3xyf4",
+      "confidence": "certain"
+    },
+    {
+      "key": "detective",
+      "spelling": "d ɪ t ɛ k t ɪ v",
+      "source": "submission-f3xyf4",
+      "confidence": "certain"
+    },
+    {
+      "key": "agency",
+      "spelling": "e dʒ ə n s i",
+      "source": "submission-f3xyf4",
+      "confidence": "certain"
+    }
+  ]
+}
