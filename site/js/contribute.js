@@ -138,17 +138,10 @@ function readSourceFields() {
   state.source.where = $("srcWhere").value.trim();
   state.source.confidence = $("srcConfidence").value;
   state.submitter = $("submitter").value.trim();
-  // Who to credit for the READING. "Someone else" credits the named
-  // reader; otherwise the reading is the submitter's own, so they get the
-  // credit (blank when they chose to stay anonymous — an honest unknown).
-  state.source.credit = $("translatorWho").value === "other"
-    ? $("translatorName").value.trim()
-    : state.submitter;
-}
-
-/** Show the "who read it" name field only when it is someone else. */
-function syncTranslatorField() {
-  $("translatorNameField").hidden = $("translatorWho").value !== "other";
+  // Who to credit for the READING. If the reader is the submitter, they get
+  // the credit (blank when anonymous — an honest unknown). If the source
+  // itself includes the translation, there's no separate person to credit.
+  state.source.credit = $("translatorWho").value === "self" ? state.submitter : "";
 }
 
 // ---------------------------------------------------------------------
@@ -863,14 +856,11 @@ function showSubmitted(prUrl) {
 
 function wire() {
   // Source fields.
-  for (const id of ["srcWhat", "srcWhere", "submitter", "translatorName"]) {
+  for (const id of ["srcWhat", "srcWhere", "submitter"]) {
     $(id).addEventListener("input", () => { readSourceFields(); updateSubmit(); });
   }
   $("srcConfidence").addEventListener("change", readSourceFields);
-  $("translatorWho").addEventListener("change", () => {
-    syncTranslatorField(); readSourceFields(); updateSubmit();
-  });
-  syncTranslatorField();
+  $("translatorWho").addEventListener("change", () => { readSourceFields(); updateSubmit(); });
 
   // Image.
   wireDrop($("dropzone"), imageDropped);
