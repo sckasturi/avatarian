@@ -128,6 +128,12 @@
       "where": "movie 0:20:16",
       "image": "submission-oq04us.jpg",
       "credit": "Bundas"
+    },
+    "shirshu-sign": {
+      "what": "Street sign saying \"Shirshu Detective Agency\"",
+      "where": "movie 1:14:00 (it is mirrored)",
+      "image": "submission-f3xyf4.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -1888,6 +1894,27 @@
       "source": "beifong-academy-banner",
       "confidence": "certain",
       "gloss": "Beifong"
+    },
+    {
+      "key": "agency",
+      "spelling": "e dʒ ə n s i",
+      "confidence": "certain",
+      "gloss": "agency",
+      "source": "shirshu-sign"
+    },
+    {
+      "key": "detective",
+      "spelling": "d ɪ t ɛ k t ɪ v",
+      "confidence": "certain",
+      "gloss": "detective",
+      "source": "shirshu-sign"
+    },
+    {
+      "key": "shirshu",
+      "spelling": "ʃ ɪ ɹ ∅ ʃ u",
+      "confidence": "certain",
+      "gloss": "shirshu",
+      "source": "shirshu-sign"
     }
   ]
 }

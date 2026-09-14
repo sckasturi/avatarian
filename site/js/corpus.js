@@ -109,6 +109,12 @@ window.AVATARIAN_CORPUS = {
       "where": "movie 0:20:16",
       "image": "submission-oq04us.jpg",
       "credit": "Bundas"
+    },
+    "shirshu-sign": {
+      "what": "Street sign saying \"Shirshu Detective Agency\"",
+      "where": "movie 1:14:00 (it is mirrored)",
+      "image": "submission-f3xyf4.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -3740,6 +3746,59 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "beifong-academy-banner",
       "gloss": "Beifong"
+    },
+    "shirshu": {
+      "ipa": [
+        "ʃ",
+        "ɪ",
+        "ɹ",
+        "∅",
+        "ʃ",
+        "u"
+      ],
+      "count": 1,
+      "sources": [
+        "shirshu-sign"
+      ],
+      "confidence": "certain",
+      "source": "shirshu-sign",
+      "gloss": "shirshu"
+    },
+    "detective": {
+      "ipa": [
+        "d",
+        "ɪ",
+        "t",
+        "ɛ",
+        "k",
+        "t",
+        "ɪ",
+        "v"
+      ],
+      "count": 1,
+      "sources": [
+        "shirshu-sign"
+      ],
+      "confidence": "certain",
+      "source": "shirshu-sign",
+      "gloss": "detective"
+    },
+    "agency": {
+      "ipa": [
+        "e",
+        "dʒ",
+        "ə",
+        "n",
+        "s",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "shirshu-sign"
+      ],
+      "confidence": "certain",
+      "source": "shirshu-sign",
+      "gloss": "agency"
     }
   },
   "conventions": {
