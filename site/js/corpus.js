@@ -103,6 +103,12 @@ window.AVATARIAN_CORPUS = {
       "what": "1 month",
       "where": "https://www.instagram.com/p/DdEzLNeEdK8/",
       "image": "7h-promo.png"
+    },
+    "beifong-academy-banner": {
+      "what": "Beiofong academy banner",
+      "where": "movie 0:20:16",
+      "image": "submission-oq04us.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -793,9 +799,10 @@ window.AVATARIAN_CORPUS = {
         "m",
         "i"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "beifong-academy-banner"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -3716,6 +3723,23 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "7h-promo"
+    },
+    "beifong": {
+      "ipa": [
+        "b",
+        "e",
+        "f",
+        "ɔ",
+        "ŋ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "beifong-academy-banner"
+      ],
+      "confidence": "certain",
+      "source": "beifong-academy-banner",
+      "gloss": "Beifong"
     }
   },
   "conventions": {

@@ -122,9 +122,21 @@
       "what": "1 month",
       "where": "https://www.instagram.com/p/DdEzLNeEdK8/",
       "image": "7h-promo.png"
+    },
+    "beifong-academy-banner": {
+      "what": "Beiofong academy banner",
+      "where": "movie 0:20:16",
+      "image": "submission-oq04us.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
+    {
+      "key": "academy",
+      "spelling": "ə ∅ k æ d ə m i",
+      "confidence": "certain",
+      "source": "toph-letter"
+    },
     {
       "key": "all",
       "spelling": "ɔ l",
@@ -397,12 +409,6 @@
       "gloss": "Aang",
       "confidence": "certain",
       "source": "katara-letter"
-    },
-    {
-      "key": "academy",
-      "spelling": "ə ∅ k æ d ə m i",
-      "confidence": "certain",
-      "source": "toph-letter"
     },
     {
       "key": "after",
@@ -1869,6 +1875,19 @@
       "spelling": "m ʌ n ∅ θ ∅",
       "source": "7h-promo",
       "confidence": "certain"
+    },
+    {
+      "key": "academy",
+      "spelling": "ə ∅ k æ d ə m i",
+      "source": "beifong-academy-banner",
+      "confidence": "certain"
+    },
+    {
+      "key": "beifong",
+      "spelling": "b e f ɔ ŋ ∅",
+      "source": "beifong-academy-banner",
+      "confidence": "certain",
+      "gloss": "Beifong"
     }
   ]
 }
