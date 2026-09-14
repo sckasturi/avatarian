@@ -1,0 +1,24 @@
+{
+  "_submission": {
+    "at": "2026-09-14T20:31:13.662Z",
+    "via": "contribute.html",
+    "ua": "curl/8.7.1",
+    "submitter": "apptest"
+  },
+  "source": {
+    "name": "submission-w0q0g3",
+    "what": "nameless test — safe to close",
+    "where": "movie (04:08)",
+    "image": "submission-w0q0g3.png",
+    "credit": "tester"
+  },
+  "entries": [
+    {
+      "key": "cherries",
+      "spelling": "tʃ ɛ ɹ i z ∅",
+      "source": "submission-w0q0g3",
+      "confidence": "probable",
+      "gloss": "cherries"
+    }
+  ]
+}
