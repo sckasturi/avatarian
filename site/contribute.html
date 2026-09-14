@@ -310,15 +310,45 @@ themeBtn.addEventListener("click", () => {
 });
 
 // --- Turnstile, only when a site key is configured ----------------------
+// Explicit render, made resilient: some environments leave window.turnstile
+// present but not yet fully initialised (turnstile.render undefined), or
+// don't fire the onload callback at all. So we both register onload AND
+// poll until render() is really available, rendering exactly once.
 (function () {
   const key = window.AVATARIAN_CONTRIB && window.AVATARIAN_CONTRIB.turnstileSiteKey;
   const mount = document.getElementById("turnstile");
   if (!key) { mount.hidden = true; return; }
-  mount.setAttribute("data-sitekey", key);
-  mount.setAttribute("data-callback", "onTurnstile");
-  mount.setAttribute("data-expired-callback", "onTurnstileExpired");
+
+  let done = false;
+  function render() {
+    if (done) return;
+    if (!(window.turnstile && typeof window.turnstile.render === "function")) return;
+    done = true;
+    try {
+      window.turnstile.render(mount, {
+        sitekey: key,
+        callback: window.onTurnstile,
+        "expired-callback": window.onTurnstileExpired,
+        "error-callback": window.onTurnstileError,
+      });
+    } catch (e) {
+      done = false;
+      console.error("Turnstile render failed:", e);
+    }
+  }
+  window.onTurnstileLoad = render;
+
+  // Fallback poll (~6s) for environments where onload never fires cleanly.
+  let tries = 0;
+  (function poll() {
+    if (done) return;
+    render();
+    if (!done && tries++ < 40) setTimeout(poll, 150);
+  })();
+
   const s = document.createElement("script");
-  s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+  s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js"
+        + "?render=explicit&onload=onTurnstileLoad";
   s.async = true; s.defer = true;
   document.head.appendChild(s);
 })();

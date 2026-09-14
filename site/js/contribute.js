@@ -778,6 +778,18 @@ function renderStaged() {
 /** Turnstile calls this back with a token (see contribute.html). */
 window.onTurnstile = (token) => { state.turnstileToken = token; updateSubmit(); };
 window.onTurnstileExpired = () => { state.turnstileToken = null; updateSubmit(); };
+/**
+ * A widget that errors (most often the domain isn't in the widget's
+ * allowed hostnames, or the site key is wrong) would otherwise just leave
+ * the button greyed with no explanation. Say so.
+ */
+window.onTurnstileError = (code) => {
+  state.turnstileToken = null;
+  updateSubmit();
+  showProblems([`The anti-spam widget could not load (Turnstile ${code || ""}).`
+    + ` The site key or its allowed domains may be misconfigured — `
+    + `submissions can't be sent until it loads.`]);
+};
 
 /** Whether every precondition for a submission is met, and enable/label. */
 function updateSubmit() {
