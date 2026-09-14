@@ -1,0 +1,51 @@
+# Validate community corpus submissions on their pull request.
+#
+# The public contribution page (site/contribute.html) posts to a Cloudflare
+# Worker, which opens a PR that stages the sighting under corpus/incoming/
+# and commits its image into site/sources/. This is the gate: it folds the
+# staged submission into a copy of the corpus and runs the SAME python
+# validator (build_corpus.check, via tools/promote_corpus.py --check) that
+# guards every other write. A submission that would break the corpus fails
+# here and cannot be merged — so an anonymous stranger can open a PR, but
+# not a bad corpus.
+#
+# It runs on any PR that touches the staging area or the shipped images,
+# not only the Worker's. That is deliberate: a hand-made submission, or a
+# maintainer editing one before merge, is checked exactly the same way.
+name: Validate corpus submissions
+
+on:
+  pull_request:
+    paths:
+      - "corpus/incoming/**"
+      - "site/sources/**"
+
+# A submission PR reads the repo and reports a check; it needs nothing more.
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # The submission gate: fold every staged file into the corpus in
+      # memory and validate. Writes nothing; fails the job on any problem,
+      # printing the exact messages a maintainer would see in the workbench.
+      - name: Validate staged submissions
+        run: python3 tools/promote_corpus.py --check
+
+      # The full suite. No dependencies to install — stdlib + node's built-in
+      # runner — and much of it IS the corpus, so it grows coverage as words
+      # are added. Belt and braces beside the fold check above.
+      - name: Run the test suite
+        run: python3 tools/run_tests.py

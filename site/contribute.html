@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contribute to the Avatarian Corpus</title>
+<meta name="description" content="Seen a word written in Avatarian? Read it off the image, check it against the model, and submit it — it becomes a pull request a maintainer reviews before it enters the corpus." />
+<link rel="canonical" href="https://avatarian.techfilmer.com/contribute.html" />
+<link rel="icon" href="favicon.svg?v=1" type="image/svg+xml" />
+<meta name="theme-color" content="#2a211b" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Avatarian" />
+<meta property="og:title" content="Contribute to the Avatarian Corpus" />
+<meta property="og:description" content="Seen a word written in Avatarian? Read it off the image and submit it — a maintainer reviews it before it enters the corpus." />
+<meta property="og:url" content="https://avatarian.techfilmer.com/contribute.html" />
+<meta property="og:image" content="https://avatarian.techfilmer.com/og-image.png?v=2" />
+<meta name="robots" content="index,follow" />
+<link rel="stylesheet" href="css/blocks.css?v=59" />
+<link rel="stylesheet" href="css/style.css?v=59" />
+<link rel="stylesheet" href="css/contribute.css" />
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Contribute</h1>
+  <a class="backlink" href="index.html">Translator</a>
+  <a class="backlink" href="corpus.html">Corpus</a>
+  <a class="backlink" href="sources.html">Sources</a>
+  <span class="spacer"></span>
+  <button class="theme-toggle" id="themeToggle" type="button"></button>
+</div>
+
+<div class="contrib-wrap">
+
+<p class="contrib-intro">
+  Seen a word written in Avatarian — on a poster, a letter, a stamp, a
+  frame of the film? Add it to the <a href="corpus.html">corpus</a>. Read
+  the glyphs off the image yourself (the tool previews and suggests, but
+  never reads the picture for you), attach the image as proof, and submit.
+  Your submission opens a pull request that a maintainer reviews before
+  anything enters the corpus — so take your best reading; it doesn't have
+  to be perfect.
+</p>
+
+<p class="problems" id="problems" hidden></p>
+
+<!-- The thank-you that replaces the form on success. -->
+<section class="submitted" id="submitted" hidden>
+  <h2>Submitted — thank you</h2>
+  <p>Your sighting is now a pull request. A maintainer will check it against
+    the source before it lands in the corpus. You can follow it here:</p>
+  <p><a id="submittedLink" href="#" target="_blank" rel="noopener">the pull request</a></p>
+  <p><a href="contribute.html">Submit another</a></p>
+</section>
+
+<div class="contrib-grid" id="contribForm">
+<div class="contrib-main">
+
+  <!-- 1. The source ------------------------------------------------- -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2 class="step"><span class="step-n">1</span> The source</h2>
+    </div>
+
+    <div class="source-body">
+      <div class="source-image-col">
+        <div class="dropzone" id="dropzone">
+          <img id="sourceImage" alt="" hidden />
+          <p class="dropzone-hint" id="dropHint">Drop the reference image here,
+            or paste it. It is stored as proof of where the spelling came
+            from — nothing reads its pixels.</p>
+        </div>
+        <label class="zoom-ctl" hidden>zoom
+          <input type="range" id="imageZoom" min="100" max="400" step="10" value="100" />
+        </label>
+        <p class="image-name" id="imageName"></p>
+      </div>
+
+      <div class="source-fields-col">
+        <label class="field">
+          <span class="field-label">Name <span class="fine">— a short label
+            the entries cite, e.g. <code>toph-letter</code></span></span>
+          <input type="text" id="srcName" placeholder="fanny-poster" autocomplete="off" />
+        </label>
+        <label class="field">
+          <span class="field-label">What it is <span class="fine">— and what it
+            says, in full</span></span>
+          <textarea id="srcWhat" rows="3"
+            placeholder="A poster on the wall of the metalbending academy. “Cherries on top!”"></textarea>
+        </label>
+        <label class="field">
+          <span class="field-label">Where it came from
+            <span class="fine">— specific enough to find again</span></span>
+          <textarea id="srcWhere" rows="2"
+            placeholder="movie (04:08) or a link to the post"></textarea>
+        </label>
+        <label class="field">
+          <span class="field-label">Confidence <span class="fine">— how sure
+            you are of the reading, for all of them</span></span>
+          <select id="srcConfidence">
+            <option value="certain">certain</option>
+            <option value="probable">probable</option>
+            <option value="unclear">unclear</option>
+          </select>
+        </label>
+
+        <!-- Who did the READING. The reading is the contribution — the
+             image is just provenance — so this is the credit that matters,
+             and it is not always the submitter (people pass on a reading
+             they found elsewhere). -->
+        <label class="field">
+          <span class="field-label">Who read the Avatarian?
+            <span class="fine">— the reading is the contribution; this is who
+              gets credited for it</span></span>
+          <select id="translatorWho">
+            <option value="self">I read it myself</option>
+            <option value="other">Someone else — I'm passing on their reading</option>
+          </select>
+        </label>
+        <label class="field" id="translatorNameField" hidden>
+          <span class="field-label">Who read it <span class="fine">— a name or
+            handle to credit</span></span>
+          <input type="text" id="translatorName" autocomplete="off"
+            placeholder="e.g. BokerBigBanana" />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Your name or handle
+            <span class="fine">— optional, recorded as the submitter. Leave
+              blank to stay anonymous.</span></span>
+          <input type="text" id="submitter" autocomplete="off" placeholder="optional" />
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Transcribe ------------------------------------------------- -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2 class="step"><span class="step-n">2</span> Read it off the image</h2>
+    </div>
+
+    <label class="field">
+      <span class="field-label">English <span class="fine">— optional. Type the
+        line and get a first <em>draft</em> of the sounds to correct against
+        the image. A draft is the model's guess, not a sighting — every word
+        it fills in must be checked before it can be submitted.</span></span>
+      <div class="english-row">
+        <input type="text" id="impEnglish" autocomplete="off"
+          placeholder="how is the metalbending academy?" />
+        <button type="button" id="impDerive" class="small">draft the sounds ↓</button>
+      </div>
+    </label>
+
+    <label class="field">
+      <span class="field-label">Transcription
+        <span class="fine">— the whole source, <code>/</code> between words.
+          Two slots per block, write the nulls. Put a word you already know in
+          <code>(brackets)</code>; anything else gets suggested.</span></span>
+      <div class="sound-tools">
+        <button type="button" class="tool-btn" data-insert="0"
+                title="Null — a slot with no sound in it">0&nbsp;null</button>
+        <button type="button" class="tool-btn" data-insert="*"
+                title="A glyph you can see but cannot make out. It fills its slot, so the block structure is still recorded.">*&nbsp;unreadable</button>
+        <button type="button" class="tool-btn" data-insert="$"
+                title="Force the glyph's top form">$&nbsp;top form</button>
+        <button type="button" class="tool-btn" data-insert="%"
+                title="Force the glyph's bottom form">%&nbsp;bottom form</button>
+        <span class="spacer"></span>
+        <button type="button" class="tool-btn" id="delToken" title="Remove the last sound">⌫</button>
+        <button type="button" class="tool-btn" id="clearSpelling">clear</button>
+      </div>
+      <textarea id="impText" rows="3" spellcheck="false"
+        placeholder="how 0 / ih z / m eh t l / …"></textarea>
+    </label>
+
+    <div id="impRows"></div>
+
+    <div class="import-actions">
+      <button type="button" id="impAdd" class="primary" disabled>add sightings</button>
+      <button type="button" id="impCheckAll" class="small" hidden>all of them
+        match the image</button>
+      <span class="import-summary" id="impSummary"></span>
+    </div>
+  </section>
+
+  <!-- 3. Review + submit -------------------------------------------- -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2 class="step"><span class="step-n">3</span> Review &amp; submit</h2>
+      <span class="staged-count" id="stagedCount"></span>
+    </div>
+
+    <div class="source-words" id="stagedWords"></div>
+
+    <!-- Turnstile mounts here when a site key is configured. -->
+    <div class="cf-turnstile" id="turnstile"></div>
+
+    <div class="submit-row">
+      <button type="button" id="submitBtn" class="primary" disabled>submit to the corpus</button>
+      <span class="save-state" id="submitState"></span>
+      <span class="submit-why" id="submitWhy"></span>
+    </div>
+
+    <!-- The GitHub-account path. Some people would rather open the pull
+         request themselves than route it through the submission service —
+         no bot in the middle, their own name on the commit. This builds the
+         same staged file they'd get either way and hands it to GitHub's
+         new-file editor prefilled; the image is the one thing that has to be
+         uploaded by hand, because a prefilled link can't carry a binary. -->
+    <details class="selfserve" id="selfserve">
+      <summary>Have a GitHub account? Open the pull request yourself.</summary>
+      <div class="selfserve-body">
+        <p>No submission service, no bot — your own commit. Stage at least one
+          sighting above, then:</p>
+        <ol>
+          <li>Add your reference image to <code>site/sources/</code> as
+            <code id="ssImageName">the image</code> (on GitHub: <em>Add file →
+            Upload files</em>).</li>
+          <li>Add the submission file below to <code>corpus/incoming/</code> —
+            the link prefills it for you.</li>
+          <li>Open the pull request. CI validates it the same way; a maintainer
+            reviews and merges.</li>
+        </ol>
+        <div class="selfserve-actions">
+          <a id="selfserveLink" class="btn-link" href="#" target="_blank"
+             rel="noopener">Create the submission file on GitHub →</a>
+          <button type="button" id="copyJson" class="small">Copy the submission JSON</button>
+          <span class="copy-state" id="copyState"></span>
+        </div>
+        <p class="fine" id="selfserveHint">Stage a sighting first to build the file.</p>
+      </div>
+    </details>
+  </section>
+
+</div>
+
+<!-- The tools: shared by the transcription box and every row's codes. -->
+<aside class="contrib-tools">
+  <section class="panel">
+    <div class="panel-head"><h2>Draw a glyph</h2></div>
+    <div id="drawpad"></div>
+  </section>
+  <section class="panel">
+    <div class="panel-head"><h2>Palette</h2></div>
+    <div class="palette" id="palette"></div>
+  </section>
+</aside>
+
+</div>
+</div>
+
+<footer>
+  <p class="footer-by">Built by TechFilmer</p>
+  <p class="footer-note">Static site, no cookies. Submissions become public
+    pull requests.</p>
+</footer>
+
+<!-- Where a submission goes, and the anti-spam key. Both are filled in
+     once the Cloudflare Worker and Turnstile site are set up — see
+     contrib-worker/README.md. Empty is safe: the submit button says what
+     is missing and posts nothing. -->
+<script>
+  window.AVATARIAN_CONTRIB = {
+    // The Worker's /submit URL, e.g. "https://avatarian-contrib.<you>.workers.dev/submit"
+    submitUrl: "",
+    // The Turnstile SITE key (public). Empty = no challenge shown.
+    turnstileSiteKey: "",
+    // "owner/repo" — powers the "open the PR yourself" link. Keep in step
+    // with contrib-worker/wrangler.toml's REPO_OWNER / REPO_NAME.
+    repo: "sckasturi/avatarian",
+    baseBranch: "main",
+  };
+</script>
+
+<!-- The product's own code draws the preview, parses the sounds, suggests
+     the words, and compares against the model. lexicon.js is the 1.6 MB
+     pronunciation dictionary the reverse-decode searches. -->
+<script src="js/manifest.js?v=59"></script>
+<script src="js/corpus.js?v=59"></script>
+<script src="js/lexicon.js?v=59"></script>
+<script src="js/g2p.js?v=59"></script>
+<script src="js/sounds.js?v=59"></script>
+<script src="js/render.js?v=59"></script>
+<script src="js/recognise.js?v=59"></script>
+<script src="js/reverse.js?v=59"></script>
+<script src="js/draw.js?v=59"></script>
+
+<script>
+"use strict";
+
+// --- theme toggle (same behaviour as the rest of the site) --------------
+const themeBtn = document.getElementById("themeToggle");
+const THEME_LABELS = { auto: "◐ Theme: auto", light: "☀ Theme: light", dark: "☾ Theme: dark" };
+const THEME_ORDER = ["auto", "light", "dark"];
+function applyTheme(mode) {
+  if (mode === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", mode);
+  themeBtn.textContent = THEME_LABELS[mode];
+  themeBtn.setAttribute("aria-label", "Colour theme: " + mode + ". Click to change.");
+}
+let themeMode = localStorage.getItem("avatarian-theme") || "auto";
+if (!THEME_ORDER.includes(themeMode)) themeMode = "auto";
+applyTheme(themeMode);
+themeBtn.addEventListener("click", () => {
+  themeMode = THEME_ORDER[(THEME_ORDER.indexOf(themeMode) + 1) % THEME_ORDER.length];
+  if (themeMode === "auto") localStorage.removeItem("avatarian-theme");
+  else localStorage.setItem("avatarian-theme", themeMode);
+  applyTheme(themeMode);
+});
+
+// --- Turnstile, only when a site key is configured ----------------------
+(function () {
+  const key = window.AVATARIAN_CONTRIB && window.AVATARIAN_CONTRIB.turnstileSiteKey;
+  const mount = document.getElementById("turnstile");
+  if (!key) { mount.hidden = true; return; }
+  mount.setAttribute("data-sitekey", key);
+  mount.setAttribute("data-callback", "onTurnstile");
+  mount.setAttribute("data-expired-callback", "onTurnstileExpired");
+  const s = document.createElement("script");
+  s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+  s.async = true; s.defer = true;
+  document.head.appendChild(s);
+})();
+</script>
+
+<script src="js/contribute.js"></script>
+</body>
+</html>

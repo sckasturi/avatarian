@@ -23,6 +23,13 @@ corpus/sources/*
 # Scratch/analysis pages served locally, not shipped
 site/_*.html
 
+# The contribution Worker's local secrets and build artefacts. .dev.vars
+# holds the bot token for `wrangler dev` and must NEVER be committed; the
+# deployed secrets live in Cloudflare, set with `wrangler secret put`.
+contrib-worker/.dev.vars
+contrib-worker/node_modules/
+contrib-worker/.wrangler/
+
 # Internal working docs — dev process, not for publication. The session
 # handoff log, the backlog, and the "how to continue" context. Everything
 # a reader needs is in README.md, AVATARIAN.md, and DECIPHERMENT.md.
@@ -30,3 +37,10 @@ HANDOFF.md
 TODO.md
 CONTEXT.md
 CORPUS.md
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
