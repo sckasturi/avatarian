@@ -1,0 +1,23 @@
+{
+  "_submission": {
+    "at": "2026-09-14T20:24:08.132Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "submitter": "techfilmer"
+  },
+  "source": {
+    "name": "credits-1",
+    "what": "something in the credits",
+    "where": "credits",
+    "image": "credits-1.jpg",
+    "credit": "techfilmer"
+  },
+  "entries": [
+    {
+      "key": "test",
+      "spelling": "t ɛ s t",
+      "source": "credits-1",
+      "confidence": "certain"
+    }
+  ]
+}
