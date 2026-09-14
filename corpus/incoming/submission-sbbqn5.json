@@ -1,0 +1,24 @@
+{
+  "_submission": {
+    "at": "2026-09-14T21:03:43.335Z",
+    "via": "contribute.html",
+    "ua": "curl/8.7.1",
+    "submitter": "reviewtest"
+  },
+  "source": {
+    "name": "submission-sbbqn5",
+    "what": "Review console render test — safe to reject",
+    "where": "movie 04:08",
+    "image": "submission-sbbqn5.png",
+    "credit": "tester"
+  },
+  "entries": [
+    {
+      "key": "sonam",
+      "spelling": "s oʊ n ə m ∅",
+      "source": "submission-sbbqn5",
+      "confidence": "certain",
+      "gloss": "Sonam"
+    }
+  ]
+}
