@@ -41,14 +41,16 @@ Deeper docs:
 The site is static — just open `site/index.html` off the filesystem, or:
 
 ```bash
-python3 -m http.server 8791 --directory site       # the translator      :8791
-python3 tools/designer_server.py                   # the glyph designer  :8792
-python3 tools/corpus_server.py                     # the workbench       :8793
+python3 -m http.server 8791 --directory site       # the translator        :8791
+python3 tools/designer_server.py                   # the glyph designer    :8792
+python3 tools/corpus_server.py                     # the workbench         :8793
+python3 tools/review_server.py                     # the review console    :8794
 ```
 
 The **designer** draws glyphs on their lattice; the **workbench** records
-attested words a source at a time. Both write files back into the repo and
-are local-only — they never deploy.
+attested words a source at a time; the **review console** approves public
+submissions (see below). All write files back into the repo and are
+local-only — they never deploy.
 
 ## Build
 
@@ -91,11 +93,20 @@ The flow, and where authority stays:
    submission into the corpus in memory and runs the **same**
    `build_corpus.check` that guards every other write. A bad submission
    fails here and cannot be merged.
-4. You review and merge, then promote it:
+4. You review and approve. The easiest way is the **review console**:
 
 ```bash
-python3 tools/promote_corpus.py --list          # what's waiting
-python3 tools/promote_corpus.py <file>.json      # fold it into attested.json + rebuild
+python3 tools/review_server.py                   # http://localhost:8794
+```
+
+It lists the open submission PRs, draws each one (the reference image beside
+the words rendered in real Avatarian), and — on **approve & publish** — names
+the source, merges the PR, folds it into the corpus, and pushes, hands-off.
+Or do it by hand:
+
+```bash
+python3 tools/promote_corpus.py --list                       # what's waiting
+python3 tools/promote_corpus.py <file>.json --name toph-letter
 ```
 
 Promotion routes through the same `build_corpus.save` as every other write,

@@ -30,6 +30,15 @@
       ],
       "port": 8793,
       "autoPort": false
+    },
+    {
+      "name": "avatarian-review",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "tools/review_server.py"
+      ],
+      "port": 8794,
+      "autoPort": false
     }
   ]
 }

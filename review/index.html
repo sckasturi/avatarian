@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Avatarian submission review</title>
+<link rel="stylesheet" href="/site/css/blocks.css" />
+<link rel="stylesheet" href="css/review.css" />
+</head>
+<body>
+
+<header class="bar">
+  <h1>Submission review</h1>
+  <span class="bar-note" id="repo"></span>
+  <span class="count" id="count"></span>
+  <span class="spacer"></span>
+  <button type="button" id="refresh">refresh</button>
+</header>
+
+<p class="banner" id="banner" hidden></p>
+
+<main id="list" class="list"></main>
+
+<!-- The product's own renderer draws the Avatarian, so what you approve is
+     what the site will show. Read-only over /site/. -->
+<script src="/site/js/manifest.js"></script>
+<script src="/site/js/corpus.js"></script>
+<script src="/site/js/sounds.js"></script>
+<script src="/site/js/render.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
