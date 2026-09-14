@@ -12,7 +12,7 @@ REPO_OWNER = "sckasturi"         # <-- the GitHub account/org that owns the repo
 REPO_NAME = "avatarian"          # <-- the repository name
 BASE_BRANCH = "main"
 ALLOWED_ORIGIN = "https://avatarian.techfilmer.com"
-GH_APP_ID = "PASTE_YOUR_GITHUB_APP_ID"   # <-- the App's numeric ID (App settings)
+GH_APP_ID = "4945180"            # <-- the App's numeric ID (App settings)
 
 # Per-IP daily rate limiting. Create the namespace once with
 #   wrangler kv namespace create RATE
