@@ -121,8 +121,8 @@ async function handle(request, env, origin) {
 
 function validate(body) {
   const source = body && body.source;
-  if (!source || !safeStem(source.name)) {
-    return "The source needs a name.";
+  if (!source || typeof source !== "object") {
+    return "The submission is missing its source details.";
   }
   const entries = body && body.entries;
   if (!Array.isArray(entries) || entries.length === 0) {
@@ -168,7 +168,14 @@ function validate(body) {
 // ---------------------------------------------------------------------
 
 function buildStaged(body, request) {
-  const name = safeStem(body.source.name);
+  const id = shortId();
+  // The submitter no longer names the source — the maintainer does when
+  // folding it in. So a submission with no name gets a placeholder key
+  // (`submission-<id>`) that keeps the staged file, its image, and the
+  // branch unique and clearly "needs naming".
+  const provided = safeStem(body.source.name);
+  const name = provided || `submission-${id}`;
+  const slug = provided ? `${name}-${id}` : name;
   const parsed = parseDataUrl(body.image.dataUrl);
   const imageFile = `${name}.${IMAGE_EXT[parsed.mime]}`;
 
@@ -208,7 +215,7 @@ function buildStaged(body, request) {
   const words = [...new Set(entries.map((e) => e.key))];
   return {
     name,
-    slug: `${name}-${shortId()}`,
+    slug,
     imageFile,
     imageBase64: parsed.base64,
     submissionJson: JSON.stringify(submission, null, 2) + "\n",

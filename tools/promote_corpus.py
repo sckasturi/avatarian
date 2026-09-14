@@ -4,9 +4,13 @@ Fold a reviewed community submission into the attested corpus.
 
     python3 tools/promote_corpus.py --list             # what is waiting
     python3 tools/promote_corpus.py --check             # validate all (CI)
-    python3 tools/promote_corpus.py fanny-poster.json   # promote one
-    python3 tools/promote_corpus.py fanny-poster.json --dry-run
+    python3 tools/promote_corpus.py submission-ab12cd.json --name toph-letter
+    python3 tools/promote_corpus.py submission-ab12cd.json --dry-run
     python3 tools/promote_corpus.py --all               # promote everything
+
+Public submissions arrive with a placeholder source name
+(`submission-<id>`) — the contribute page no longer asks contributors to
+name the source. Name it yourself as you promote with `--name`.
 
 This is the merge-side counterpart to the public contribution page
 (site/contribute.html). Submissions arrive as one self-contained JSON file
@@ -96,7 +100,7 @@ def clean_entry(entry, source_name):
     return out
 
 
-def fold(base, path):
+def fold(base, path, rename=None):
     """
     Fold one submission into a corpus dict, returning a NEW dict.
 
@@ -104,8 +108,15 @@ def fold(base, path):
     fields and gains only the ones the submission fills, and entries are
     appended. `build_corpus.check` is what then decides whether the result
     is legal — this only assembles it.
+
+    Public submissions arrive with a placeholder source name
+    (`submission-<id>`) because the contribute page no longer asks for one —
+    you name the source here. `rename` sets the real source key and points
+    every one of the submission's entries at it.
     """
     name, source, entries = load_submission(path)
+    if rename:
+        name = rename.strip()
     sources = dict(base.get("sources") or {})
     sources[name] = {**sources.get(name, {}), **clean_source(source)}
     folded = list(base.get("entries") or [])
@@ -166,8 +177,12 @@ def cmd_check():
     return 0
 
 
-def promote(paths, dry_run):
-    folded = fold_all(base_corpus(), paths)
+def promote(paths, dry_run, rename=None):
+    # `rename` names the source, and only makes sense for a single file.
+    if rename and len(paths) == 1:
+        folded = fold(base_corpus(), paths[0], rename)
+    else:
+        folded = fold_all(base_corpus(), paths)
     if dry_run:
         errors, records = build_corpus.check(folded)
         print(f"Would promote {len(paths)} submission(s):")
@@ -213,6 +228,9 @@ def main():
                     help="fold all and validate without writing (what CI runs)")
     ap.add_argument("--dry-run", action="store_true",
                     help="show the fold, write nothing")
+    ap.add_argument("--name", metavar="SOURCE",
+                    help="name the source as it is folded in (single file only); "
+                         "replaces the submission's placeholder name")
     args = ap.parse_args()
 
     if args.list:
@@ -221,6 +239,8 @@ def main():
         return cmd_check()
 
     if args.all:
+        if args.name:
+            ap.error("--name names one source, so it can't be used with --all")
         paths = submissions()
         if not paths:
             print("Nothing to promote.")
@@ -234,7 +254,7 @@ def main():
     else:
         ap.error("give a submission filename, or --all / --list / --check")
 
-    return promote(paths, args.dry_run)
+    return promote(paths, args.dry_run, args.name)
 
 
 if __name__ == "__main__":

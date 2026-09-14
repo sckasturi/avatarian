@@ -14,7 +14,10 @@ matter to two things:
 - **`tools/promote_corpus.py`** — after you merge a submission, this folds
   its source and entries into `corpus/attested.json`, regenerates
   `site/js/corpus.js` (through the same `build_corpus.save` every other
-  write uses), and deletes the file from here.
+  write uses), and deletes the file from here. Submissions arrive with a
+  **placeholder source name** (`submission-<id>`) — the contribute page no
+  longer asks contributors to name the source — so name it as you promote:
+  `python3 tools/promote_corpus.py submission-<id>.json --name toph-letter`.
 
 ## Where these come from
 
@@ -41,11 +44,11 @@ per block, in IPA — see [CORPUS.md](../../CORPUS.md)).
     "ua": "…optional user-agent…"
   },
   "source": {
-    "name": "fanny-poster",
+    "name": "submission-ab12cd",
     "what": "A poster on the wall of the metalbending academy. “Cherries on top!”",
     "where": "movie (04:08) or a link to the post",
     "credit": "…optional name/handle of who READ the Avatarian…",
-    "image": "fanny-poster.png"
+    "image": "submission-ab12cd.png"
   },
   "entries": [
     { "key": "cherries", "spelling": "tʃ ɛ ɹ i z ∅", "source": "fanny-poster",

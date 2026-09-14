@@ -239,40 +239,6 @@ input:focus, textarea:focus, select:focus {
 .save-state.is-ok { color: var(--ok); }
 .submit-why { font-size: 0.8rem; color: var(--faint); }
 
-/* --- the GitHub-account path -------------------------------------- */
-
-.selfserve {
-  margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px;
-}
-.selfserve > summary {
-  cursor: pointer; font-size: 0.85rem; color: var(--muted);
-  user-select: none;
-}
-.selfserve > summary:hover { color: var(--accent); }
-.selfserve-body { margin-top: 10px; font-size: 0.85rem; color: var(--muted);
-                  line-height: 1.5; }
-.selfserve-body ol { margin: 8px 0; padding-left: 20px; }
-.selfserve-body li { margin: 4px 0; }
-.selfserve-body code {
-  font-family: ui-monospace, Menlo, monospace; font-size: 0.85em;
-  background: var(--code-bg); padding: 1px 5px; border-radius: 4px;
-}
-.selfserve-actions {
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 10px 0 4px;
-}
-.btn-link {
-  display: inline-block; font-size: 0.85rem; font-weight: 600;
-  color: var(--paper); background: var(--accent);
-  border: 1px solid var(--accent); border-radius: 6px; padding: 6px 12px;
-  text-decoration: none;
-}
-.btn-link:hover { filter: brightness(1.1); }
-.btn-link.is-disabled {
-  opacity: 0.45; cursor: default; pointer-events: none;
-  background: var(--surface); color: var(--faint); border-color: var(--line);
-}
-.copy-state { font-size: 0.8rem; color: var(--ok); }
-
 .submitted {
   border: 1px solid var(--ok); border-left: 4px solid var(--ok);
   border-radius: 10px; padding: 16px 18px; background: var(--card);

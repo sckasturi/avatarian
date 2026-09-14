@@ -130,7 +130,10 @@ function showProblems(problems) {
 // ---------------------------------------------------------------------
 
 function readSourceFields() {
-  state.source.name = $("srcName").value.trim();
+  // The source is left unnamed on purpose — the maintainer names it when
+  // folding the submission into the corpus. The Worker assigns a temporary
+  // placeholder key so the staged file and its image still have somewhere
+  // to live.
   state.source.what = $("srcWhat").value.trim();
   state.source.where = $("srcWhere").value.trim();
   state.source.confidence = $("srcConfidence").value;
@@ -685,16 +688,12 @@ function updateImportSummary() {
 /** Fold the confirmed rows into the staged sightings. */
 function commitImport() {
   readSourceFields();
-  if (!state.source.name) {
-    showProblems(["Give the source a name first — it is how the entries cite it."]);
-    $("srcName").focus();
-    return;
-  }
   const confidence = state.source.confidence;
+  // No source name here — the Worker assigns a placeholder and the
+  // maintainer names it at fold time, so entries carry no `source`.
   const make = (row) => {
     const key = corpusKey(row.word);
-    const entry = { key, spelling: row.ipa.join(" "),
-                    source: state.source.name, confidence };
+    const entry = { key, spelling: row.ipa.join(" "), confidence };
     if (row.word && row.word !== key) entry.gloss = row.word;
     if (row.times > 1) entry.times = row.times;
     return entry;
@@ -780,100 +779,13 @@ function updateSubmit() {
   const btn = $("submitBtn");
   const ready = !state.submitting
     && state.entries.length > 0
-    && !!state.source.name
     && !!state.image;
   btn.disabled = !ready;
 
   const why = [];
   if (!state.entries.length) why.push("add at least one sighting");
-  if (!state.source.name) why.push("name the source");
   if (!state.image) why.push("attach the reference image");
   $("submitWhy").textContent = state.submitting ? "" : why.join(" · ");
-
-  updateSelfServe();
-}
-
-// ---------------------------------------------------------------------
-// The GitHub-account path: build the same staged file and hand it to
-// GitHub's new-file editor prefilled, so a contributor can open the PR
-// under their own name instead of through the submission Worker.
-// ---------------------------------------------------------------------
-
-/** Mirror the Worker's safe_stem, so the file lands under the same name. */
-function safeStem(name) {
-  return String(name || "").trim()
-    .replace(/[^A-Za-z0-9._-]+/g, "-")
-    .replace(/^[-.]+|[-.]+$/g, "")
-    .replace(/\.(png|jpe?g|webp|gif|heic|tiff?)$/i, "")
-    .slice(0, 60) || "source";
-}
-
-function shortId() {
-  return Math.random().toString(36).slice(2, 8);
-}
-
-/**
- * The staged submission object — the exact shape the Worker writes and
- * promote_corpus.py folds, built client-side so the self-serve path
- * produces an identical file. The image bytes are not here (a prefilled
- * link cannot carry a binary); only its filename, which the contributor
- * uploads to match.
- */
-function buildSubmissionObject() {
-  const name = safeStem(state.source.name);
-  const ext = (state.image && IMAGE_TYPES[state.image.mime]) || ".png";
-  const imageFile = name + ext;
-  const entries = state.entries.map((e) => {
-    const out = { key: e.key, spelling: e.spelling, source: name,
-                  confidence: e.confidence || "certain" };
-    if (e.gloss) out.gloss = e.gloss;
-    if (e.times && e.times > 1) out.times = e.times;
-    if (e.note) out.note = e.note;
-    return out;
-  });
-  const sub = {
-    _submission: { at: new Date().toISOString(), via: "contribute.html" },
-    source: { name, what: state.source.what, where: state.source.where, image: imageFile },
-    entries,
-  };
-  if (state.submitter) sub._submission.submitter = state.submitter;
-  if (state.source.credit) sub.source.credit = state.source.credit;
-  return { sub, name, imageFile };
-}
-
-function updateSelfServe() {
-  const cfg = window.AVATARIAN_CONTRIB || {};
-  const repo = cfg.repo || "";
-  const branch = cfg.baseBranch || "main";
-  const link = $("selfserveLink");
-  const hint = $("selfserveHint");
-  const ready = state.entries.length && state.source.name && state.image && repo;
-
-  if (!ready) {
-    link.classList.add("is-disabled");
-    link.setAttribute("aria-disabled", "true");
-    link.removeAttribute("href");
-    $("ssImageName").textContent = "the image";
-    hint.textContent = !repo
-      ? "This site has no repository configured for the self-serve path."
-      : "Stage a sighting and attach the image first to build the file.";
-    state.selfServeJson = "";
-    return;
-  }
-
-  const { sub, imageFile } = buildSubmissionObject();
-  const slug = safeStem(state.source.name) + "-" + shortId();
-  const json = JSON.stringify(sub, null, 2) + "\n";
-  const filename = "corpus/incoming/" + slug + ".json";
-  link.href = "https://github.com/" + repo + "/new/" + encodeURIComponent(branch)
-    + "?filename=" + encodeURIComponent(filename)
-    + "&value=" + encodeURIComponent(json);
-  link.classList.remove("is-disabled");
-  link.removeAttribute("aria-disabled");
-  $("ssImageName").textContent = imageFile;
-  hint.textContent = `The link opens GitHub with ${filename} prefilled. Upload `
-    + `your image as ${imageFile} in the same pull request.`;
-  state.selfServeJson = json;
 }
 
 async function submit() {
@@ -894,7 +806,6 @@ async function submit() {
 
   const payload = {
     source: {
-      name: state.source.name,
       what: state.source.what,
       where: state.source.where,
       ...(state.source.credit ? { credit: state.source.credit } : {}),
@@ -952,7 +863,7 @@ function showSubmitted(prUrl) {
 
 function wire() {
   // Source fields.
-  for (const id of ["srcName", "srcWhat", "srcWhere", "submitter", "translatorName"]) {
+  for (const id of ["srcWhat", "srcWhere", "submitter", "translatorName"]) {
     $(id).addEventListener("input", () => { readSourceFields(); updateSubmit(); });
   }
   $("srcConfidence").addEventListener("change", readSourceFields);
@@ -960,23 +871,6 @@ function wire() {
     syncTranslatorField(); readSourceFields(); updateSubmit();
   });
   syncTranslatorField();
-
-  // The self-serve "copy the submission JSON" button.
-  $("copyJson").addEventListener("click", async () => {
-    if (!state.selfServeJson) return;
-    const state_el = $("copyState");
-    try {
-      await navigator.clipboard.writeText(state.selfServeJson);
-      state_el.textContent = "copied";
-    } catch {
-      state_el.textContent = "copy failed — use the link instead";
-    }
-    setTimeout(() => { state_el.textContent = ""; }, 2500);
-  });
-  // A disabled self-serve link should not navigate.
-  $("selfserveLink").addEventListener("click", (e) => {
-    if ($("selfserveLink").classList.contains("is-disabled")) e.preventDefault();
-  });
 
   // Image.
   wireDrop($("dropzone"), imageDropped);
@@ -1007,12 +901,6 @@ function wire() {
     }
     renderImportRows();
   });
-  // The source name decides whether a row is a duplicate of a staged one.
-  $("srcName").addEventListener("input", () => {
-    for (const row of importRows) row.relation = importRelation(row);
-    renderImportRows();
-  });
-
   // The shared sounds controls.
   trackSoundField($("impText"));
   document.querySelectorAll(".sound-tools [data-insert]").forEach((b) => {

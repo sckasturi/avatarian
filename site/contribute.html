@@ -33,15 +33,6 @@
 <div class="contrib-wrap">
 
 <p class="contrib-intro">
-  Seen a word written in Avatarian — on a poster, a letter, a stamp, a
-  frame of the film? Add it to the <a href="corpus.html">corpus</a>. Read
-  the glyphs off the image yourself (the tool previews and suggests, but
-  never reads the picture for you), attach the image as proof, and submit.
-  Your submission opens a pull request that a maintainer reviews before
-  anything enters the corpus — so take your best reading; it doesn't have
-  to be perfect.
-</p>
-<p class="contrib-intro">
   Module to add words to the corpus. <strong>Please message me on Discord
   first before adding anything here.</strong> Make sure to attach images as
   proof or link to an Instagram post.
@@ -82,11 +73,6 @@
       </div>
 
       <div class="source-fields-col">
-        <label class="field">
-          <span class="field-label">Name <span class="fine">— a short label
-            the entries cite, e.g. <code>toph-letter</code></span></span>
-          <input type="text" id="srcName" placeholder="fanny-poster" autocomplete="off" />
-        </label>
         <label class="field">
           <span class="field-label">What it is <span class="fine">— and what it
             says, in full</span></span>
@@ -203,36 +189,6 @@
       <span class="save-state" id="submitState"></span>
       <span class="submit-why" id="submitWhy"></span>
     </div>
-
-    <!-- The GitHub-account path. Some people would rather open the pull
-         request themselves than route it through the submission service —
-         no bot in the middle, their own name on the commit. This builds the
-         same staged file they'd get either way and hands it to GitHub's
-         new-file editor prefilled; the image is the one thing that has to be
-         uploaded by hand, because a prefilled link can't carry a binary. -->
-    <details class="selfserve" id="selfserve">
-      <summary>Have a GitHub account? Open the pull request yourself.</summary>
-      <div class="selfserve-body">
-        <p>No submission service, no bot — your own commit. Stage at least one
-          sighting above, then:</p>
-        <ol>
-          <li>Add your reference image to <code>site/sources/</code> as
-            <code id="ssImageName">the image</code> (on GitHub: <em>Add file →
-            Upload files</em>).</li>
-          <li>Add the submission file below to <code>corpus/incoming/</code> —
-            the link prefills it for you.</li>
-          <li>Open the pull request. CI validates it the same way; a maintainer
-            reviews and merges.</li>
-        </ol>
-        <div class="selfserve-actions">
-          <a id="selfserveLink" class="btn-link" href="#" target="_blank"
-             rel="noopener">Create the submission file on GitHub →</a>
-          <button type="button" id="copyJson" class="small">Copy the submission JSON</button>
-          <span class="copy-state" id="copyState"></span>
-        </div>
-        <p class="fine" id="selfserveHint">Stage a sighting first to build the file.</p>
-      </div>
-    </details>
   </section>
 
 </div>
@@ -268,10 +224,6 @@
   window.AVATARIAN_CONTRIB = {
     // The Worker's /submit URL, e.g. "https://avatarian-contrib.<you>.workers.dev/submit"
     submitUrl: "https://avatarian-contrib.avatarian.workers.dev/submit",
-    // "owner/repo" — powers the "open the PR yourself" link. Keep in step
-    // with contrib-worker/wrangler.toml's REPO_OWNER / REPO_NAME.
-    repo: "sckasturi/avatarian",
-    baseBranch: "main",
   };
 </script>
 
