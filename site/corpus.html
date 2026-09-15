@@ -486,8 +486,11 @@ function fillWhat(el, text, word) {
 // winning one first, then the alternates. A contested word's preview
 // collapses to these, so `the` is two rows (two spellings), not six.
 function spellingGroups(w) {
-  const altTotal = (w.alternates || []).reduce((n, a) => n + (a.count || 0), 0);
-  const groups = [{ ipa: w.ipa, sources: w.sources || [], count: (w.count || 0) - altTotal }];
+  // Top-level ipa/sources/count all describe the WINNING spelling; each
+  // alternate carries its own. So the winner's count is just w.count — not
+  // w.count minus the alternates, which undercounted it (a contested
+  // word's winner showed one short per alternate sighting).
+  const groups = [{ ipa: w.ipa, sources: w.sources || [], count: w.count || 0 }];
   for (const a of (w.alternates || [])) {
     groups.push({ ipa: a.ipa, sources: a.sources || [], count: a.count || 0 });
   }
@@ -675,7 +678,12 @@ function card(w) {
   // how much it has been seen.
   const meta = document.createElement("div");
   meta.className = "word-meta";
-  const times = w.count === 1 ? "seen once" : `seen ${w.count}×`;
+  // The whole word, across every spelling: the winner's count plus each
+  // alternate's. w.count alone is only the winning spelling's, which
+  // undercounts a contested word (e.g. `your`, seen 4× but winner 3×).
+  const seen = (w.count || 0)
+    + (w.alternates || []).reduce((n, a) => n + (a.count || 0), 0);
+  const times = seen === 1 ? "seen once" : `seen ${seen}×`;
   const nSrc = allSourcesOf(w).length;
   meta.append(times);
   if (w.contested) {
