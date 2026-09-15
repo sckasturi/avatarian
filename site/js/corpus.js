@@ -135,7 +135,7 @@ window.AVATARIAN_CORPUS = {
       "credit": "Bundas"
     },
     "jewel-sign": {
-      "what": "Shop sing that reads \"Jewel\". There are also a bunch of gpyhs in circles with unknown meaning: left ones read /y i r/ and /uh v/, and the three from left to right are /i z/, /f a/ and /m i/",
+      "what": "Shop sign that reads \"Jewel\". There are also a bunch of glyphs in circles with unknown meaning: left ones read /y i r/ and /uh v/, and the three from left to right are /i z/, /f a/ and /m i/",
       "where": "movie 1:29:53",
       "image": "submission-wvvbph.jpg",
       "credit": "Bundas"
