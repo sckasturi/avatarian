@@ -55,10 +55,27 @@ test("an empty query is 'no filter', not an error", () => {
 });
 
 test("nonsense is reported, not silently matched", () => {
-  assert.ok(parseQuery("@cc").error, "a context with no phoneme");
+  assert.ok(parseQuery("top:").error, "a slot with nothing to search for");
   assert.ok(parseQuery("g @zz").error, "an unknown context");
   assert.ok(parseQuery("side:g").error, "an unknown slot");
   assert.ok(parseQuery("g s").error, "two phonemes (out of scope in v1)");
+});
+
+test("a bare @context is a shape-only search — every block of that shape", () => {
+  const q = plain(parseQuery("@cc"));
+  assert.deepEqual(q, { phoneme: null, slot: null, context: "cc" });
+
+  // Every C-C block in the corpus, whatever characters sit in it — so it is
+  // a superset of any phoneme-scoped C-C search.
+  const anyCC = found("@cc");
+  assert.ok(anyCC.includes("gluten"), "gluten has a C-C block");
+  assert.ok(anyCC.length >= found("g @cc").length, "@cc is a superset of g @cc");
+
+  // A word with no C-C block is excluded; a C-C block is reported by index.
+  assert.equal(matchWord(["b", "ɪ", "g", "∅"], q).matched, false,
+    "big = (b,ɪ)(g,∅) has no C-C block");
+  assert.deepEqual(plain(matchWord(["g", "l", "ə", "∅"], q).hits),
+    [{ block: 0, slot: null }], "(g,l) is a C-C block at index 0");
 });
 
 // ---------------------------------------------------------------------
@@ -125,7 +142,7 @@ test("hits report the block index the page will highlight", () => {
 // ---------------------------------------------------------------------
 
 test("buildQuery is the inverse of parseQuery", () => {
-  for (const s of ["g", "g @cc", "top:s @cv", "bottom:t", "aɪ @vv"]) {
+  for (const s of ["g", "g @cc", "top:s @cv", "bottom:t", "aɪ @vv", "@cc"]) {
     assert.equal(buildQuery(plain(parseQuery(s, ctx.normaliseSound))), s,
       `"${s}" should round-trip`);
   }

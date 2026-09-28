@@ -21,8 +21,8 @@
 <meta name="twitter:title" content="Avatarian Corpus" />
 <meta name="twitter:description" content="Every Avatarian word anyone has actually seen written, linked back to its source." />
 <meta name="twitter:image" content="https://avatarian.techfilmer.com/og-image.png?v=2" />
-<link rel="stylesheet" href="css/blocks.css?v=60" />
-<link rel="stylesheet" href="css/style.css?v=60" />
+<link rel="stylesheet" href="css/blocks.css?v=61" />
+<link rel="stylesheet" href="css/style.css?v=61" />
 <style>
   /* Corpus page only. Everything structural is in style.css / blocks.css;
      this is the grid of words and its controls. */
@@ -287,10 +287,13 @@ everything here was read off a real source.</p>
     </div>
     <p class="adv-note" id="qNote" role="status" aria-live="polite"></p>
     <p class="adv-help" id="qHelp">Grammar:
-      <code>[top:|bottom:]sound [@cc @cv @vc @vv @null]</code>. Sounds read
+      <code>[[top:|bottom:]sound] [@cc @cv @vc @vv @null]</code>. Sounds read
       like the translator — <code>sh</code>, <code>ng</code>, <code>uh</code>,
       or raw IPA. So <code>g @cc</code> finds /g/ paired with another
-      consonant, and never /ŋ/. Matching blocks are ringed in each word.</p>
+      consonant, and never /ŋ/. The sound is optional: a shape on its own —
+      <code>@cc</code>, or picking a block shape with the sound left on
+      <em>any</em> — finds every block of that shape. Matching blocks are
+      ringed in each word.</p>
   </div>
 </details>
 
@@ -324,15 +327,15 @@ me</a> and I'll add them.</p>
   <p class="footer-note">Static site, no cookies.</p>
 </footer>
 
-<script src="js/manifest.js?v=60"></script>
+<script src="js/manifest.js?v=61"></script>
 <!-- The corpus itself. Already loaded on every page (it tops the lookup
      chain in g2p.js); here it is the whole content. -->
-<script src="js/corpus.js?v=60"></script>
-<script src="js/render.js?v=60"></script>
+<script src="js/corpus.js?v=61"></script>
+<script src="js/render.js?v=61"></script>
 <!-- sounds.js reads a typed sound (sh, ng, uh) to its IPA symbol;
      corpusquery.js is the structural matcher and uses it. -->
-<script src="js/sounds.js?v=60"></script>
-<script src="js/corpusquery.js?v=60"></script>
+<script src="js/sounds.js?v=61"></script>
+<script src="js/corpusquery.js?v=61"></script>
 <script>
 "use strict";
 
@@ -815,8 +818,14 @@ const CTX_PHRASE = {
   cc: "a C–C block", cv: "a C–V block", vc: "a V–C block",
   vv: "a V–V block", null: "a block with a null",
 };
+const CTX_NAME = {
+  cc: "C–C block", cv: "C–V block", vc: "V–C block",
+  vv: "V–V block", null: "block with a null",
+};
 function describeQuery(q) {
   if (q.empty) return "";
+  // Shape-only: no phoneme, just a block shape — "every C–C block".
+  if (!q.phoneme) return "every " + CTX_NAME[q.context];
   const bits = ["/" + q.phoneme + "/"];
   if (q.slot) bits.push("in the " + q.slot + " slot");
   if (q.context) bits.push((q.slot ? "of " : "in ") + CTX_PHRASE[q.context]);

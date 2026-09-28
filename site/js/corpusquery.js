@@ -11,13 +11,15 @@
  * block is just an adjacent pair and its shape is readable straight off
  * the symbols.
  *
- * THE QUERY, in one line:  [slot:]phoneme [@context]
+ * THE QUERY, in one line:  [[slot:]phoneme] [@context]
  *
  *   g            /g/ anywhere
  *   g @cc        /g/ in a two-consonant block (so NOT beside a null)
  *   top:s @cv    /s/ in the top slot of a consonant-vowel block
  *   aɪ @vv       the diphthong sharing its block with another vowel
+ *   @cc          EVERY two-consonant block, whatever sits in it (no phoneme)
  *
+ *   phoneme  optional — omit it and a bare @context is a shape-only search
  *   slot     top | bottom            (t | b accepted; absent = either)
  *   context  @cc @cv @vc @vv @null   (@any or absent = any shape)
  *
@@ -157,8 +159,14 @@ function parseQuery(str, normalise) {
     phoneme = cqBase(norm(piece));
   }
 
-  if (!phoneme) return { error: "name a phoneme to search for, e.g. g or sh" };
-  return { phoneme, slot, context };
+  // A phoneme is no longer required: a bare `@context` ("@cc") is a
+  // shape-only search — every block of that shape, whatever sits in it.
+  // Something has to be asked for, though, so a lone slot ("top:") is not
+  // a query.
+  if (!phoneme && !context) {
+    return { error: "name a sound (g, sh) or a block shape (@cc @cv @vc @vv @null)" };
+  }
+  return { phoneme: phoneme || null, slot, context };
 }
 
 /**
@@ -171,12 +179,15 @@ function parseQuery(str, normalise) {
  */
 function matchWord(ipa, q) {
   if (!q || q.empty) return { matched: true, hits: [] };
-  if (q.error || !q.phoneme) return { matched: false, hits: [] };
+  if (q.error || (!q.phoneme && !q.context)) return { matched: false, hits: [] };
 
   const blocks = cqBlocks(ipa || []);
   const hits = [];
   blocks.forEach((block, bi) => {
     if (!cqShapeMatches(q.context, block)) return;
+    // Shape-only (no phoneme): the whole block is the hit — every block of
+    // this shape, whatever characters sit in it.
+    if (!q.phoneme) { hits.push({ block: bi, slot: null }); return; }
     for (const [pos, name] of [[0, "top"], [1, "bottom"]]) {
       if (q.slot && q.slot !== name) continue;
       if (cqBase(block[pos]) === q.phoneme) hits.push({ block: bi, slot: name });
@@ -192,7 +203,9 @@ function matchWord(ipa, q) {
  * (no filter).
  */
 function buildQuery({ phoneme, slot, context } = {}) {
-  if (!phoneme) return "";
+  // Shape-only: no phoneme but a context is a bare "@cc". (A slot with no
+  // phoneme has nothing to attach to, so it is dropped.)
+  if (!phoneme) return context ? "@" + context : "";
   let head = phoneme;
   if (slot === "top" || slot === "bottom") head = slot + ":" + phoneme;
   if (context && context !== "any") return head + " @" + context;
