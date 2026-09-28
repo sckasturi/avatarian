@@ -115,6 +115,19 @@
       or paste it.</p>
   </div>
 
+  <!-- Or pull it straight from an Instagram post. The slide comes from the
+       URL's img_index (or the box), so no copy-paste of the picture. -->
+  <div class="ig-fetch">
+    <input type="url" id="impIgUrl" autocomplete="off"
+      placeholder="…or paste an Instagram post URL (…/p/CODE/?img_index=2)" />
+    <label class="ig-slide">slide
+      <input type="number" id="impIgSlide" min="1" step="1" value="1"
+             inputmode="numeric" autocomplete="off" />
+    </label>
+    <button type="button" id="impIgFetch" class="small">fetch slide</button>
+    <span class="fine" id="impIgNote"></span>
+  </div>
+
   <!-- English in, a first draft of the sounds out.
 
        The spelling this produces is the MODEL's guess, not an

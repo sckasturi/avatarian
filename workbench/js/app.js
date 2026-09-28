@@ -1672,6 +1672,61 @@ function wireImport() {
   });
 
   wireDrop($("impDrop"), importDropped);
+
+  // Instagram: pull a specific carousel slide straight from the post URL,
+  // instead of screenshotting and pasting it. The slide number follows the
+  // URL's img_index as you paste, and the button fetches it.
+  $("impIgUrl").addEventListener("input", () => {
+    const m = /[?&]img_index=(\d+)/.exec($("impIgUrl").value);
+    if (m) $("impIgSlide").value = m[1];
+  });
+  $("impIgUrl").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); fetchInstagram(); }
+  });
+  $("impIgFetch").addEventListener("click", fetchInstagram);
+}
+
+/**
+ * Pull one Instagram carousel slide and file it as this source's image —
+ * the same end state as dropping a screenshot, minus the screenshotting.
+ * The server (tools/instagram.py) reads the slide from the public post
+ * HTML; no login.
+ */
+async function fetchInstagram() {
+  const name = $("impName").value.trim();
+  if (!name) {
+    showProblems(["Name the source first, then fetch its Instagram slide."]);
+    $("impName").focus();
+    return;
+  }
+  const url = $("impIgUrl").value.trim();
+  if (!url) { $("impIgUrl").focus(); return; }
+  const index = parseInt($("impIgSlide").value, 10) || undefined;
+
+  const note = $("impIgNote");
+  note.textContent = "fetching…";
+  showProblems([]);
+  try {
+    const res = await fetch("/api/fetch_image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, name, index }),
+    });
+    const body = await res.json();
+    if (body.error) { note.textContent = ""; showProblems([body.error]); return; }
+    importImage = body.file;
+    const img = $("impImage");
+    img.src = "/images/" + body.file + "?t=" + Date.now();
+    img.hidden = false;
+    $("impDropHint").hidden = true;
+    note.textContent = `slide ${body.slide} of ${body.slides} filed`;
+    // The post URL is exactly what "where" wants; fill it if empty.
+    if (!$("impWhere").value.trim()) $("impWhere").value = url;
+    updateImportSummary();
+  } catch (e) {
+    note.textContent = "";
+    showProblems([String(e)]);
+  }
 }
 
 /** An image dropped or pasted onto the import panel. */

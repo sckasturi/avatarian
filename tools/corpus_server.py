@@ -24,6 +24,7 @@ API
     POST /api/corpus         save the lot (validates; writes nothing if bad)
     POST /api/conventions    save the unsourced conventions (same contract)
     POST /api/image          store a reference image against a source
+    POST /api/fetch_image    fetch one Instagram carousel slide by URL (no login)
     GET  /images/<file>      a stored reference image
 
     GET  /site/...           the main site's own files, read-only
@@ -50,6 +51,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 import build_corpus                                     # noqa: E402
+import instagram                                        # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WEB = ROOT / "workbench"
@@ -201,6 +203,8 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.save_conventions()
             if path == "/api/image":
                 return self.store_image()
+            if path == "/api/fetch_image":
+                return self.fetch_image()
         except Exception as e:                       # noqa: BLE001
             return self.send_json({"error": f"{type(e).__name__}: {e}"}, 400)
         return self.send_error(404)
@@ -267,6 +271,35 @@ class Handler(SimpleHTTPRequestHandler):
         path = unique_path(safe_stem(body.get("name")), IMAGE_TYPES[mime])
         path.write_bytes(raw)
         return self.send_json({"file": path.name, "bytes": len(raw)})
+
+    def fetch_image(self):
+        """
+        File one Instagram carousel slide, no login, from its post URL.
+
+        The login wall on a post is a dismissible overlay — every slide's
+        image URL is already in the page HTML — so this reads that public
+        data and files the slide exactly as a dropped image would be
+        (same result shape). The Instagram quirks all live in
+        tools/instagram.py; keep them there.
+        """
+        body = self.read_json() or {}
+        url = (body.get("url") or "").strip()
+        if not url:
+            return self.send_json({"error": "give an Instagram post URL"}, 400)
+        raw_index = body.get("index")
+        index = int(raw_index) if str(raw_index).isdigit() else None
+        try:
+            raw, ext, meta = instagram.fetch_slide(url, index)
+        except instagram.InstagramError as e:
+            return self.send_json({"error": str(e)}, 400)
+
+        stem = safe_stem(body.get("name") or meta.get("shortcode") or "source")
+        path = unique_path(stem, ext)
+        path.write_bytes(raw)
+        return self.send_json({
+            "file": path.name, "bytes": len(raw),
+            "slide": meta.get("index"), "slides": meta.get("count"),
+        })
 
 
 def main():

@@ -377,6 +377,15 @@ input:focus, textarea:focus, select:focus {
 .english-row { display: flex; gap: 8px; align-items: center; }
 .english-row input { flex: 1; min-width: 0; }
 
+/* Pull an Instagram slide instead of pasting a screenshot. */
+.ig-fetch { display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+            margin-top: 8px; }
+.ig-fetch > input[type="url"] { flex: 1; min-width: 12rem; }
+.ig-slide { display: flex; align-items: center; gap: 5px; font-size: 0.8rem;
+            color: var(--muted); white-space: nowrap; }
+.ig-slide input { width: 4rem; }
+#impIgNote { flex-basis: 100%; }
+
 .import-actions {
   display: flex; align-items: center; gap: 12px; margin-top: 14px;
   padding-top: 12px; border-top: 1px solid var(--line);
