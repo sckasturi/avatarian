@@ -65,7 +65,7 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
 .av-consonant,.av-null-c{width:1.25em;height:1.25em}
 .av-vowel,.av-null-v{width:1.25em;height:1em}
 .av-flipped{transform:scaleY(-1)}
-.av-slot-top .av-vowel:not(.av-4row),.av-slot-top .av-null-v:not(.av-4row){transform:translateY(-20%)}
+.av-slot-top .av-vowel:not(.av-4row):not(.av-flipped),.av-slot-top .av-null-v:not(.av-4row):not(.av-flipped){transform:translateY(-20%)}
 .av-slot-bottom .av-vowel.av-flipped:not(.av-4row),.av-slot-bottom .av-null-v.av-flipped:not(.av-4row){transform:scaleY(-1) translateY(-20%)}
 .av-mark{display:inline-block;line-height:0;align-self:stretch;background-color:currentColor;height:calc(1.25em * 1.64);width:calc(1.25em * 1.64 / 9);-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:100% 100%}
 .av-mark.av-wide{width:calc(1.25em * 1.64 * 2 / 9)}

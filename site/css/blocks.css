@@ -107,9 +107,16 @@
    it works out to, so it holds at any size.
 
    4-row vowels are excluded: they fill their box and abut the
-   consonant directly, which is already right in either slot. */
-.avatarian-slot-top .avatarian-glyph.avatarian-vowel:not(.avatarian-4row),
-.avatarian-slot-top .avatarian-glyph.avatarian-null:not(.avatarian-4row) {
+   consonant directly, which is already right in either slot.
+
+   FLIPPED glyphs are excluded too. The pull-up compensates a drawing that
+   is bottom-aligned as authored; once scaleY(-1) mirrors it, the ink is
+   top-aligned instead, so the pull-up would double up and jam it against
+   the outer edge — /ɔ/ in a top slot (`order`) floated a row high. A
+   flipped top glyph wants no shift at all (the counterpart of the
+   no-shift, non-flipped BOTTOM case below), just the mirror. */
+.avatarian-slot-top .avatarian-glyph.avatarian-vowel:not(.avatarian-4row):not(.avatarian-flipped),
+.avatarian-slot-top .avatarian-glyph.avatarian-null:not(.avatarian-4row):not(.avatarian-flipped) {
   transform: translateY(-20%);
 }
 
