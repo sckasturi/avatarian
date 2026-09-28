@@ -139,9 +139,29 @@ window.AVATARIAN_CORPUS = {
       "where": "movie 1:29:53",
       "image": "submission-wvvbph.jpg",
       "credit": "Bundas"
+    },
+    "episode1-3": {
+      "what": "Survival / On the Horizon / Into the Storm / The Order",
+      "where": "https://www.instagram.com/p/Dd1kFKtmcdo/?stkn=MXZ4dTE3ODM5NGJiaw%3D%3D&img_index=1",
+      "image": "episode1-3.jpg"
     }
   },
   "words": {
+    "aang": {
+      "ipa": [
+        "e",
+        "ŋ"
+      ],
+      "count": 3,
+      "sources": [
+        "toph-letter",
+        "katara-letter",
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "toph-letter",
+      "gloss": "Aang"
+    },
     "academy": {
       "ipa": [
         "ə",
@@ -565,13 +585,15 @@ window.AVATARIAN_CORPUS = {
         "ɑ",
         "n"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "toph-letter",
-        "instagram-2.1"
+        "instagram-2.1",
+        "episode1-3"
       ],
       "confidence": "certain",
-      "source": "toph-letter"
+      "source": "toph-letter",
+      "gloss": "On"
     },
     "out": {
       "ipa": [
@@ -635,11 +657,31 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "s",
         "ʌ",
-        "∅",
         "m",
+        "∅",
         "θ",
         "ɪ",
         "ŋ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "toph-letter"
+      ],
+      "confidence": "certain",
+      "source": "toph-letter"
+    },
+    "students": {
+      "ipa": [
+        "s",
+        "t",
+        "u",
+        "∅",
+        "d",
+        "ə",
+        "n",
+        "t",
+        "s",
         "∅"
       ],
       "count": 1,
@@ -654,13 +696,14 @@ window.AVATARIAN_CORPUS = {
         "ð",
         "ə"
       ],
-      "count": 7,
+      "count": 10,
       "sources": [
         "toph-letter",
         "katara-letter",
         "instagram-1.3",
         "instagram-1.4",
-        "instagram-3.3"
+        "instagram-3.3",
+        "episode1-3"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -823,20 +866,6 @@ window.AVATARIAN_CORPUS = {
       "source": "toph-letter",
       "gloss": "Zuko"
     },
-    "aang": {
-      "ipa": [
-        "e",
-        "ŋ"
-      ],
-      "count": 2,
-      "sources": [
-        "katara-letter",
-        "instagram-3.2"
-      ],
-      "confidence": "certain",
-      "source": "katara-letter",
-      "gloss": "Aang"
-    },
     "after": {
       "ipa": [
         "æ",
@@ -881,6 +910,22 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "katara-letter"
+    },
+    "baihu": {
+      "ipa": [
+        "b",
+        "aɪ",
+        "h",
+        "u"
+      ],
+      "count": 2,
+      "sources": [
+        "katara-letter",
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter",
+      "gloss": "Baihu"
     },
     "be": {
       "ipa": [
@@ -1435,21 +1480,6 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "instagram-2.1"
-    },
-    "baihu": {
-      "ipa": [
-        "b",
-        "aɪ",
-        "h",
-        "u"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-2.1"
-      ],
-      "confidence": "certain",
-      "source": "instagram-2.1",
-      "gloss": "Baihu"
     },
     "biggest": {
       "ipa": [
@@ -3914,6 +3944,95 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "jewel-sign",
       "gloss": "jewel"
+    },
+    "horizon": {
+      "ipa": [
+        "h",
+        "ə",
+        "ɹ",
+        "aɪ",
+        "z",
+        "ə",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episode1-3"
+      ],
+      "confidence": "certain",
+      "source": "episode1-3",
+      "gloss": "Horizon"
+    },
+    "into": {
+      "ipa": [
+        "ɪ",
+        "n",
+        "t",
+        "u"
+      ],
+      "count": 1,
+      "sources": [
+        "episode1-3"
+      ],
+      "confidence": "certain",
+      "source": "episode1-3",
+      "gloss": "Into"
+    },
+    "order": {
+      "ipa": [
+        "ɔ",
+        "ɹ",
+        "d",
+        "ə",
+        "ɹ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episode1-3"
+      ],
+      "confidence": "certain",
+      "source": "episode1-3",
+      "gloss": "Order"
+    },
+    "storm": {
+      "ipa": [
+        "s",
+        "t",
+        "ɔ",
+        "ɹ",
+        "m",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episode1-3"
+      ],
+      "confidence": "certain",
+      "source": "episode1-3",
+      "gloss": "Storm"
+    },
+    "survival": {
+      "ipa": [
+        "s",
+        "ə",
+        "ɹ",
+        "∅",
+        "v",
+        "aɪ",
+        "v",
+        "ə",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episode1-3"
+      ],
+      "confidence": "certain",
+      "source": "episode1-3",
+      "gloss": "Survival"
     }
   },
   "conventions": {

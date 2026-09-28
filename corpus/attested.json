@@ -158,9 +158,21 @@
       "where": "movie 1:29:53",
       "image": "submission-wvvbph.jpg",
       "credit": "Bundas"
+    },
+    "episode1-3": {
+      "what": "Survival / On the Horizon / Into the Storm / The Order",
+      "where": "https://www.instagram.com/p/Dd1kFKtmcdo/?stkn=MXZ4dTE3ODM5NGJiaw%3D%3D&img_index=1",
+      "image": "episode1-3.jpg"
     }
   },
   "entries": [
+    {
+      "key": "aang",
+      "spelling": "e ŋ",
+      "gloss": "Aang",
+      "confidence": "certain",
+      "source": "toph-letter"
+    },
     {
       "key": "academy",
       "spelling": "ə ∅ k æ d ə m i",
@@ -176,8 +188,8 @@
     {
       "key": "am",
       "spelling": "æ m",
-      "source": "toph-letter",
-      "confidence": "certain"
+      "confidence": "certain",
+      "source": "toph-letter"
     },
     {
       "key": "and",
@@ -366,9 +378,15 @@
     },
     {
       "key": "something",
-      "spelling": "s ʌ ∅ m θ ɪ ŋ ∅",
-      "source": "toph-letter",
-      "confidence": "certain"
+      "spelling": "s ʌ m ∅ θ ɪ ŋ ∅",
+      "confidence": "certain",
+      "source": "toph-letter"
+    },
+    {
+      "key": "students",
+      "spelling": "s t u ∅ d ə n t s ∅",
+      "confidence": "certain",
+      "source": "toph-letter"
     },
     {
       "key": "the",
@@ -436,7 +454,6 @@
     {
       "key": "aang",
       "spelling": "e ŋ",
-      "gloss": "Aang",
       "confidence": "certain",
       "source": "katara-letter"
     },
@@ -471,6 +488,13 @@
       "spelling": "æ t",
       "source": "katara-letter",
       "confidence": "certain"
+    },
+    {
+      "key": "baihu",
+      "spelling": "b aɪ h u",
+      "gloss": "Baihu",
+      "confidence": "certain",
+      "source": "katara-letter"
     },
     {
       "key": "be",
@@ -747,13 +771,6 @@
       "confidence": "certain"
     },
     {
-      "key": "baihu",
-      "spelling": "b aɪ h u",
-      "gloss": "Baihu",
-      "confidence": "certain",
-      "source": "instagram-2.1"
-    },
-    {
       "key": "biggest",
       "spelling": "b ɪ g ə * t",
       "source": "instagram-2.1",
@@ -951,6 +968,12 @@
       "spelling": "w ɪ ð * n ∅",
       "source": "instagram-3.1",
       "confidence": "certain"
+    },
+    {
+      "key": "baihu",
+      "spelling": "b aɪ h u",
+      "confidence": "certain",
+      "source": "instagram-1.2"
     },
     {
       "key": "baking",
@@ -1988,6 +2011,55 @@
       "confidence": "certain",
       "gloss": "jewel",
       "source": "jewel-sign"
+    },
+    {
+      "key": "horizon",
+      "spelling": "h ə ɹ aɪ z ə n ∅",
+      "source": "episode1-3",
+      "confidence": "certain",
+      "gloss": "Horizon"
+    },
+    {
+      "key": "into",
+      "spelling": "ɪ n t u",
+      "source": "episode1-3",
+      "confidence": "certain",
+      "gloss": "Into"
+    },
+    {
+      "key": "on",
+      "spelling": "ɑ n",
+      "source": "episode1-3",
+      "confidence": "certain",
+      "gloss": "On"
+    },
+    {
+      "key": "order",
+      "spelling": "ɔ ɹ d ə ɹ ∅",
+      "source": "episode1-3",
+      "confidence": "certain",
+      "gloss": "Order"
+    },
+    {
+      "key": "storm",
+      "spelling": "s t ɔ ɹ m ∅",
+      "source": "episode1-3",
+      "confidence": "certain",
+      "gloss": "Storm"
+    },
+    {
+      "key": "survival",
+      "spelling": "s ə ɹ ∅ v aɪ v ə l ∅",
+      "source": "episode1-3",
+      "confidence": "certain",
+      "gloss": "Survival"
+    },
+    {
+      "key": "the",
+      "spelling": "ð ə",
+      "source": "episode1-3",
+      "confidence": "certain",
+      "times": 3
     }
   ]
 }
