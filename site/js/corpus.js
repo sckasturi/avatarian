@@ -145,9 +145,59 @@ window.AVATARIAN_CORPUS = {
       "what": "Survival / On the Horizon / Into the Storm / The Order",
       "where": "https://www.instagram.com/p/Dd1kFKtmcdo/?stkn=MXZ4dTE3ODM5NGJiaw%3D%3D&img_index=1",
       "image": "episode1-3.jpg"
+    },
+    "episodes4-6": {
+      "what": "The Faceless / The One Left Behind / Night of the Afflicted",
+      "where": "https://www.instagram.com/p/Dd4I9kLmLyW/?img_index=2",
+      "image": "episodes4-6.jpg"
     }
   },
   "words": {
+    "aang": {
+      "ipa": [
+        "e",
+        "ŋ"
+      ],
+      "count": 2,
+      "sources": [
+        "toph-letter",
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "toph-letter",
+      "gloss": "Aang"
+    },
+    "academy": {
+      "ipa": [
+        "ə",
+        "∅",
+        "k",
+        "æ",
+        "d",
+        "ə",
+        "m",
+        "i"
+      ],
+      "count": 2,
+      "sources": [
+        "toph-letter",
+        "beifong-academy-banner"
+      ],
+      "confidence": "certain",
+      "source": "toph-letter"
+    },
+    "all": {
+      "ipa": [
+        "ɔ",
+        "l"
+      ],
+      "count": 1,
+      "sources": [
+        "toph-letter"
+      ],
+      "confidence": "certain",
+      "source": "toph-letter"
+    },
     "am": {
       "ipa": [
         "æ",
@@ -220,6 +270,22 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "toph-letter"
+    },
+    "baihu": {
+      "ipa": [
+        "b",
+        "aɪ",
+        "h",
+        "u"
+      ],
+      "count": 2,
+      "sources": [
+        "toph-letter",
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "toph-letter",
+      "gloss": "Baihu"
     },
     "being": {
       "ipa": [
@@ -651,14 +717,15 @@ window.AVATARIAN_CORPUS = {
         "ð",
         "ə"
       ],
-      "count": 10,
+      "count": 13,
       "sources": [
         "toph-letter",
         "katara-letter",
         "instagram-1.3",
         "instagram-1.4",
         "instagram-3.3",
-        "episode1-3"
+        "episode1-3",
+        "episodes4-6"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -821,20 +888,6 @@ window.AVATARIAN_CORPUS = {
       "source": "toph-letter",
       "gloss": "Zuko"
     },
-    "aang": {
-      "ipa": [
-        "e",
-        "ŋ"
-      ],
-      "count": 2,
-      "sources": [
-        "katara-letter",
-        "toph-letter"
-      ],
-      "confidence": "certain",
-      "source": "katara-letter",
-      "gloss": "Aang"
-    },
     "after": {
       "ipa": [
         "æ",
@@ -879,22 +932,6 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "katara-letter"
-    },
-    "baihu": {
-      "ipa": [
-        "b",
-        "aɪ",
-        "h",
-        "u"
-      ],
-      "count": 2,
-      "sources": [
-        "katara-letter",
-        "toph-letter"
-      ],
-      "confidence": "certain",
-      "source": "katara-letter",
-      "gloss": "Baihu"
     },
     "be": {
       "ipa": [
@@ -1046,11 +1083,12 @@ window.AVATARIAN_CORPUS = {
         "ʌ",
         "v"
       ],
-      "count": 3,
+      "count": 4,
       "sources": [
         "katara-letter",
         "zuko-stamp",
-        "sdcc-1"
+        "sdcc-1",
+        "episodes4-6"
       ],
       "confidence": "certain",
       "source": "katara-letter",
@@ -1725,25 +1763,6 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "instagram-2.1"
-    },
-    "academy": {
-      "ipa": [
-        "ə",
-        "∅",
-        "k",
-        "æ",
-        "d",
-        "ə",
-        "m",
-        "i"
-      ],
-      "count": 2,
-      "sources": [
-        "toph-letter",
-        "beifong-academy-banner"
-      ],
-      "confidence": "certain",
-      "source": "toph-letter"
     },
     "bao": {
       "ipa": [
@@ -2575,12 +2594,14 @@ window.AVATARIAN_CORPUS = {
         "t",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-1.4"
+        "instagram-1.4",
+        "episodes4-6"
       ],
       "confidence": "certain",
-      "source": "instagram-1.4"
+      "source": "instagram-1.4",
+      "gloss": "Night"
     },
     "quiet": {
       "ipa": [
@@ -3980,18 +4001,6 @@ window.AVATARIAN_CORPUS = {
       "source": "skips-fishing-supplies",
       "gloss": "supplies"
     },
-    "all": {
-      "ipa": [
-        "ɔ",
-        "l"
-      ],
-      "count": 1,
-      "sources": [
-        "toph-letter"
-      ],
-      "confidence": "certain",
-      "source": "toph-letter"
-    },
     "jewel": {
       "ipa": [
         "dʒ",
@@ -4095,6 +4104,89 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "episode1-3",
       "gloss": "Survival"
+    },
+    "afflicted": {
+      "ipa": [
+        "ə",
+        "f",
+        "l",
+        "ɪ",
+        "k",
+        "t",
+        "ə",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes4-6"
+      ],
+      "confidence": "certain",
+      "source": "episodes4-6",
+      "gloss": "Afflicted"
+    },
+    "behind": {
+      "ipa": [
+        "b",
+        "ɪ",
+        "h",
+        "aɪ",
+        "n",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes4-6"
+      ],
+      "confidence": "certain",
+      "source": "episodes4-6",
+      "gloss": "Behind"
+    },
+    "faceless": {
+      "ipa": [
+        "f",
+        "e",
+        "s$",
+        "l",
+        "ə",
+        "s"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes4-6"
+      ],
+      "confidence": "certain",
+      "source": "episodes4-6",
+      "gloss": "Faceless"
+    },
+    "left": {
+      "ipa": [
+        "l",
+        "ɛ",
+        "f",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes4-6"
+      ],
+      "confidence": "certain",
+      "source": "episodes4-6",
+      "gloss": "Left"
+    },
+    "one": {
+      "ipa": [
+        "w",
+        "ʌ",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes4-6"
+      ],
+      "confidence": "certain",
+      "source": "episodes4-6",
+      "gloss": "One"
     }
   },
   "conventions": {
