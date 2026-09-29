@@ -91,10 +91,10 @@ and made-up words too.</p>
       <span class="ipa-hint" id="soundsHint"></span>
       <span class="spacer"></span>
       <!-- A spelling choice, so it lives with the sounds it rewrites rather
-           than in the export bar. Off = the attested corpus form (the good
-           default); on = the model's standard spelling. -->
-      <label class="opt-ctl" title="Show corpus words in the model's standard spelling instead of the attested form the corpus recorded">
-        <input type="checkbox" id="stdSpelling"> <span>standard spelling</span>
+           than in the export bar. On (default) = the attested corpus form;
+           off = the model's standard spelling. -->
+      <label class="opt-ctl" title="Spell corpus words the way a source actually wrote them (checked), instead of the model's standard spelling">
+        <input type="checkbox" id="attestedSpelling" checked> <span>attested spellings</span>
       </label>
     </div>
 
@@ -300,10 +300,10 @@ function fillUnreadable(word) {
   return { ...word, ipa };
 }
 
-// "standard spelling" toggle: normally a corpus word forces its attested
-// form, which is the right default. With this on, an attested/convention
-// word is shown in the model's standard spelling instead — the trailing
-// punctuation marks are kept.
+// "attested spellings" toggle: on by default, a corpus word keeps the
+// attested form a source actually wrote. Turn it off and an
+// attested/convention word is shown in the model's standard spelling
+// instead — the trailing punctuation marks are kept.
 let standardSpelling = false;
 
 function applyWordForm(word) {
@@ -771,8 +771,10 @@ $("englishInput").addEventListener("input", () => {
 // The standard-spelling toggle rewrites the sounds from the English, so it
 // has to re-run the conversion — and that means dropping the hand-edit
 // guard, since switching form is an explicit request to regenerate.
-$("stdSpelling").addEventListener("change", () => {
-  standardSpelling = $("stdSpelling").checked;
+$("attestedSpelling").addEventListener("change", () => {
+  // The box is phrased the other way round now: checked means "keep the
+  // attested form", so standard spelling is the unchecked state.
+  standardSpelling = !$("attestedSpelling").checked;
   markEdited(false);
   convert();
 });
