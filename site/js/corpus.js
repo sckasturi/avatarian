@@ -147,40 +147,6 @@ window.AVATARIAN_CORPUS = {
     }
   },
   "words": {
-    "aang": {
-      "ipa": [
-        "e",
-        "ŋ"
-      ],
-      "count": 3,
-      "sources": [
-        "toph-letter",
-        "katara-letter",
-        "instagram-3.2"
-      ],
-      "confidence": "certain",
-      "source": "toph-letter",
-      "gloss": "Aang"
-    },
-    "academy": {
-      "ipa": [
-        "ə",
-        "∅",
-        "k",
-        "æ",
-        "d",
-        "ə",
-        "m",
-        "i"
-      ],
-      "count": 2,
-      "sources": [
-        "toph-letter",
-        "beifong-academy-banner"
-      ],
-      "confidence": "certain",
-      "source": "toph-letter"
-    },
     "all": {
       "ipa": [
         "ɔ",
@@ -866,6 +832,21 @@ window.AVATARIAN_CORPUS = {
       "source": "toph-letter",
       "gloss": "Zuko"
     },
+    "aang": {
+      "ipa": [
+        "e",
+        "ŋ"
+      ],
+      "count": 3,
+      "sources": [
+        "katara-letter",
+        "instagram-1.2",
+        "instagram-3.2"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter",
+      "gloss": "Aang"
+    },
     "after": {
       "ipa": [
         "æ",
@@ -1091,8 +1072,9 @@ window.AVATARIAN_CORPUS = {
             "ə",
             "v"
           ],
-          "count": 1,
+          "count": 2,
           "sources": [
+            "instagram-1.2",
             "instagram-1.4"
           ],
           "confidence": "certain"
@@ -1198,6 +1180,22 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "katara-letter"
     },
+    "balloon": {
+      "ipa": [
+        "b",
+        "ə",
+        "l",
+        "ʊ",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
     "cabbages": {
       "ipa": [
         "k",
@@ -1229,6 +1227,47 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "instagram-1.1"
+    },
+    "festival": {
+      "ipa": [
+        "f",
+        "ɛ",
+        "s",
+        "t",
+        "ə",
+        "∅",
+        "v",
+        "ə",
+        "l",
+        "∅"
+      ],
+      "count": 2,
+      "sources": [
+        "instagram-1.1",
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1",
+      "alternates": [
+        {
+          "ipa": [
+            "f",
+            "ɛ",
+            "s",
+            "t",
+            "ə",
+            "v",
+            "ə",
+            "l"
+          ],
+          "count": 1,
+          "sources": [
+            "sdcc-3"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true
     },
     "fish": {
       "ipa": [
@@ -1325,6 +1364,18 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-1.1"
     },
+    "in": {
+      "ipa": [
+        "ɪ",
+        "n"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
     "june": {
       "ipa": [
         "dʒ",
@@ -1347,22 +1398,6 @@ window.AVATARIAN_CORPUS = {
         "ə",
         "l",
         "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "instagram-1.1"
-    },
-    "peeep": {
-      "ipa": [
-        "p",
-        "i",
-        "i",
-        "∅",
-        "i",
-        "p"
       ],
       "count": 1,
       "sources": [
@@ -1534,7 +1569,7 @@ window.AVATARIAN_CORPUS = {
     "draw": {
       "ipa": [
         "d",
-        "*",
+        "ɹ",
         "ɔ",
         "∅"
       ],
@@ -1714,10 +1749,51 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-2.1"
     },
+    "academy": {
+      "ipa": [
+        "ə",
+        "∅",
+        "k",
+        "æ",
+        "d",
+        "ə",
+        "m",
+        "i"
+      ],
+      "count": 2,
+      "sources": [
+        "instagram-3.1",
+        "beifong-academy-banner"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.1"
+    },
     "bao": {
       "ipa": [
         "b",
         "aʊ"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.1"
+    },
+    "beaverfish": {
+      "ipa": [
+        "b",
+        "e",
+        "v",
+        "e",
+        "ɹ",
+        "∅",
+        "f",
+        "i",
+        "s",
+        "∅",
+        "h",
+        "∅"
       ],
       "count": 1,
       "sources": [
@@ -1812,18 +1888,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-3.1"
     },
-    "in": {
-      "ipa": [
-        "e",
-        "n"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-3.1"
-      ],
-      "confidence": "certain",
-      "source": "instagram-3.1"
-    },
     "my": {
       "ipa": [
         "m",
@@ -1849,12 +1913,26 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-3.1"
     },
+    "save": {
+      "ipa": [
+        "s",
+        "e",
+        "ɪ",
+        "v"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.1"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.1"
+    },
     "seagull": {
       "ipa": [
         "s",
-        "i",
+        "*",
         "g",
-        "æ",
+        "*",
         "l",
         "∅"
       ],
@@ -2073,6 +2151,22 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-1.2"
     },
+    "flame": {
+      "ipa": [
+        "f",
+        "l",
+        "e",
+        "∅",
+        "ɪ",
+        "m"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
     "frozen": {
       "ipa": [
         "f",
@@ -2144,7 +2238,7 @@ window.AVATARIAN_CORPUS = {
         "ɹ",
         "∅",
         "f",
-        "∅",
+        "ɔ",
         "ɹ",
         "∅",
         "m",
@@ -2179,6 +2273,24 @@ window.AVATARIAN_CORPUS = {
         "u",
         "l",
         "s"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-1.2"
+      ],
+      "confidence": "certain",
+      "source": "instagram-1.2"
+    },
+    "temple": {
+      "ipa": [
+        "t",
+        "ɛ",
+        "m",
+        "∅",
+        "p",
+        "ə",
+        "l",
+        "∅"
       ],
       "count": 1,
       "sources": [
@@ -2695,7 +2807,7 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "m",
         "j",
-        "ʊ",
+        "u",
         "t"
       ],
       "count": 1,
@@ -3007,46 +3119,6 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "instagram-3.3"
-    },
-    "festival": {
-      "ipa": [
-        "f",
-        "ɛ",
-        "s",
-        "t",
-        "ə",
-        "∅",
-        "v",
-        "ə",
-        "l",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-3.3"
-      ],
-      "confidence": "certain",
-      "source": "instagram-3.3",
-      "alternates": [
-        {
-          "ipa": [
-            "f",
-            "ɛ",
-            "s",
-            "t",
-            "ə",
-            "v",
-            "ə",
-            "l"
-          ],
-          "count": 1,
-          "sources": [
-            "sdcc-3"
-          ],
-          "confidence": "certain"
-        }
-      ],
-      "contested": true
     },
     "foot": {
       "ipa": [

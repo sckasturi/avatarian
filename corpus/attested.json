@@ -167,19 +167,6 @@
   },
   "entries": [
     {
-      "key": "aang",
-      "spelling": "e ŋ",
-      "gloss": "Aang",
-      "confidence": "certain",
-      "source": "toph-letter"
-    },
-    {
-      "key": "academy",
-      "spelling": "ə ∅ k æ d ə m i",
-      "confidence": "certain",
-      "source": "toph-letter"
-    },
-    {
       "key": "all",
       "spelling": "ɔ l",
       "confidence": "certain",
@@ -669,6 +656,12 @@
       "times": 2
     },
     {
+      "key": "balloon",
+      "spelling": "b ə l ʊ n ∅",
+      "source": "instagram-1.1",
+      "confidence": "certain"
+    },
+    {
       "key": "cabbages",
       "spelling": "k æ b ɪ dʒ ɪ z ∅",
       "source": "instagram-1.1",
@@ -677,6 +670,12 @@
     {
       "key": "farm",
       "spelling": "f ɑ ɹ m",
+      "source": "instagram-1.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "festival",
+      "spelling": "f ɛ s t ə ∅ v ə l ∅",
       "source": "instagram-1.1",
       "confidence": "certain"
     },
@@ -711,6 +710,12 @@
       "confidence": "certain"
     },
     {
+      "key": "in",
+      "spelling": "ɪ n",
+      "confidence": "certain",
+      "source": "instagram-1.1"
+    },
+    {
       "key": "june",
       "spelling": "dʒ u n ∅",
       "source": "instagram-1.1",
@@ -719,12 +724,6 @@
     {
       "key": "noodle",
       "spelling": "n u d ə l ∅",
-      "source": "instagram-1.1",
-      "confidence": "certain"
-    },
-    {
-      "key": "peeep",
-      "spelling": "p i i ∅ i p",
       "source": "instagram-1.1",
       "confidence": "certain"
     },
@@ -790,9 +789,9 @@
     },
     {
       "key": "draw",
-      "spelling": "d * ɔ ∅",
-      "source": "instagram-2.1",
-      "confidence": "certain"
+      "spelling": "d ɹ ɔ ∅",
+      "confidence": "certain",
+      "source": "instagram-2.1"
     },
     {
       "key": "fav",
@@ -874,8 +873,20 @@
       "confidence": "certain"
     },
     {
+      "key": "academy",
+      "spelling": "ə ∅ k æ d ə m i",
+      "confidence": "certain",
+      "source": "instagram-3.1"
+    },
+    {
       "key": "bao",
       "spelling": "b aʊ",
+      "source": "instagram-3.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "beaverfish",
+      "spelling": "b e v e ɹ ∅ f i s ∅ h ∅",
       "source": "instagram-3.1",
       "confidence": "certain"
     },
@@ -922,12 +933,6 @@
       "confidence": "certain"
     },
     {
-      "key": "in",
-      "spelling": "e n",
-      "source": "instagram-3.1",
-      "confidence": "certain"
-    },
-    {
       "key": "looking",
       "spelling": "l ʊ k ɪ ŋ ∅",
       "source": "instagram-3.1",
@@ -946,10 +951,16 @@
       "confidence": "certain"
     },
     {
-      "key": "seagull",
-      "spelling": "s i g æ l ∅",
+      "key": "save",
+      "spelling": "s e ɪ v",
       "source": "instagram-3.1",
       "confidence": "certain"
+    },
+    {
+      "key": "seagull",
+      "spelling": "s * g * l ∅",
+      "confidence": "certain",
+      "source": "instagram-3.1"
     },
     {
       "key": "step",
@@ -968,6 +979,13 @@
       "spelling": "w ɪ ð * n ∅",
       "source": "instagram-3.1",
       "confidence": "certain"
+    },
+    {
+      "key": "aang",
+      "spelling": "e ŋ",
+      "gloss": "Aang",
+      "confidence": "certain",
+      "source": "instagram-1.2"
     },
     {
       "key": "baihu",
@@ -1036,6 +1054,12 @@
       "confidence": "certain"
     },
     {
+      "key": "flame",
+      "spelling": "f l e ∅ ɪ m",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
       "key": "frozen",
       "spelling": "f ɹ oʊ ∅ z ə n ∅",
       "source": "instagram-1.2",
@@ -1054,6 +1078,12 @@
       "confidence": "certain"
     },
     {
+      "key": "of",
+      "spelling": "ə v",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
       "key": "panda",
       "spelling": "p æ n ∅ d ə",
       "source": "instagram-1.2",
@@ -1061,9 +1091,9 @@
     },
     {
       "key": "performance",
-      "spelling": "p ə ɹ ∅ f ∅ ɹ ∅ m ə n s",
-      "source": "instagram-1.2",
-      "confidence": "certain"
+      "spelling": "p ə ɹ ∅ f ɔ ɹ ∅ m ə n s",
+      "confidence": "certain",
+      "source": "instagram-1.2"
     },
     {
       "key": "school",
@@ -1074,6 +1104,12 @@
     {
       "key": "sula's",
       "spelling": "s u l s",
+      "source": "instagram-1.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "temple",
+      "spelling": "t ɛ m ∅ p ə l ∅",
       "source": "instagram-1.2",
       "confidence": "certain"
     },
@@ -1320,9 +1356,9 @@
     },
     {
       "key": "mute",
-      "spelling": "m j ʊ t",
-      "source": "instagram-2.2",
-      "confidence": "certain"
+      "spelling": "m j u t",
+      "confidence": "certain",
+      "source": "instagram-2.2"
     },
     {
       "key": "new",
