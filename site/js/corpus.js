@@ -30,7 +30,7 @@ window.AVATARIAN_CORPUS = {
       "image": "katara-letter-2.webp"
     },
     "instagram-1.1": {
-      "what": "still waters / trends this june / balloon festival / peeep farm / sad fish / noodle house / garden gems",
+      "what": "still waters / trends this june / balloon festival / peeep farm / sad fish / noodle house / garden gems / free cabbages",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
       "image": "instagram-1-1.png"
     },
@@ -45,7 +45,7 @@ window.AVATARIAN_CORPUS = {
       "image": "instagram-3-1.png"
     },
     "instagram-1.2": {
-      "what": "sula's baking class / frozen cream cakes / bending performacnce / ignite / cancel school / panda ballet / balance / catfish meal card",
+      "what": "sula's baking class / frozen cream cakes / bending performance / ignite / cancel school / panda ballet / balance / catfish meal card / flame temple / of",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=2",
       "image": "instagram-1-2.png"
     },
@@ -826,11 +826,10 @@ window.AVATARIAN_CORPUS = {
         "e",
         "ŋ"
       ],
-      "count": 3,
+      "count": 2,
       "sources": [
         "katara-letter",
-        "instagram-1.2",
-        "instagram-3.2"
+        "toph-letter"
       ],
       "confidence": "certain",
       "source": "katara-letter",
@@ -891,7 +890,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "katara-letter",
-        "instagram-1.2"
+        "toph-letter"
       ],
       "confidence": "certain",
       "source": "katara-letter",
@@ -1354,18 +1353,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-1.1"
     },
-    "in": {
-      "ipa": [
-        "ɪ",
-        "n"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-1.1"
-      ],
-      "confidence": "certain",
-      "source": "instagram-1.1"
-    },
     "june": {
       "ipa": [
         "dʒ",
@@ -1752,11 +1739,11 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 2,
       "sources": [
-        "instagram-3.1",
+        "toph-letter",
         "beifong-academy-banner"
       ],
       "confidence": "certain",
-      "source": "instagram-3.1"
+      "source": "toph-letter"
     },
     "bao": {
       "ipa": [
