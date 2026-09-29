@@ -275,6 +275,42 @@ button.primary:hover { opacity: 0.9; }
 }
 .ink-ctl input[type="color"].is-pinned { border-color: var(--accent); }
 
+/* The Export menu: a native <details> as a small popover, so the bar keeps
+   one button where five used to sit. */
+.export-menu { position: relative; }
+.export-menu > summary {
+  list-style: none; cursor: pointer;
+  font-family: inherit; font-size: 0.82rem; padding: 4px 11px;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--card); color: var(--muted); white-space: nowrap;
+}
+.export-menu > summary::-webkit-details-marker { display: none; }
+.export-menu > summary::marker { content: ""; }
+.export-menu > summary:hover,
+.export-menu[open] > summary {
+  background: var(--hover); color: var(--ink); border-color: var(--accent);
+}
+.export-pop {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 30;
+  display: flex; flex-direction: column; gap: 6px; align-items: stretch;
+  min-width: 160px; padding: 10px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+.export-pop button { width: 100%; text-align: left; }
+.export-pop .label-ctl {
+  padding: 2px 2px 8px; margin-bottom: 2px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* The standard-spelling toggle now sits under the sounds box. */
+.sounds-opts { align-items: center; }
+.opt-ctl {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.82rem; color: var(--muted); cursor: pointer; user-select: none;
+}
+.opt-ctl input { cursor: pointer; margin: 0; }
+
 .out-foot {
   display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
   margin: 8px 0 0; font-size: 0.8rem; color: var(--muted-2);

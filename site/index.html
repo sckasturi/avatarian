@@ -21,8 +21,8 @@
 <meta name="twitter:title" content="Avatarian Translator" />
 <meta name="twitter:description" content="Type anything and watch it written in Avatarian, the script from Avatar Legends." />
 <meta name="twitter:image" content="https://avatarian.techfilmer.com/og-image.png?v=2" />
-<link rel="stylesheet" href="css/blocks.css?v=63" />
-<link rel="stylesheet" href="css/style.css?v=63" />
+<link rel="stylesheet" href="css/blocks.css?v=64" />
+<link rel="stylesheet" href="css/style.css?v=64" />
 </head>
 <body>
 
@@ -87,8 +87,15 @@ and made-up words too.</p>
     </div>
     <textarea id="soundsInput" rows="3" spellcheck="false"
       placeholder="k uh t ah r uh   /   p l ee z"></textarea>
-    <div class="row">
+    <div class="row sounds-opts">
       <span class="ipa-hint" id="soundsHint"></span>
+      <span class="spacer"></span>
+      <!-- A spelling choice, so it lives with the sounds it rewrites rather
+           than in the export bar. Off = the attested corpus form (the good
+           default); on = the model's standard spelling. -->
+      <label class="opt-ctl" title="Show corpus words in the model's standard spelling instead of the attested form the corpus recorded">
+        <input type="checkbox" id="stdSpelling"> <span>standard spelling</span>
+      </label>
     </div>
 
     <!-- The other direction. If you built these sounds by hand — clicking
@@ -168,17 +175,21 @@ and made-up words too.</p>
     <label class="ink-ctl" title="Colour of the exported glyphs. Follows the page unless you pick one.">
       <input type="color" id="inkColour" aria-label="Glyph colour">
     </label>
-    <label class="label-ctl" title="Add the English and IPA under each word in the exported/copied image">
-      <input type="checkbox" id="labelToggle"> <span>labels</span>
-    </label>
-    <label class="label-ctl" title="Show corpus words in the model's standard spelling instead of the attested form the corpus recorded">
-      <input type="checkbox" id="stdSpelling"> <span>standard spelling</span>
-    </label>
-    <button type="button" id="shareBtn" title="Copy a link that reopens this exact transcription — the glyphs, not a picture">Share</button>
     <button type="button" id="copyBtn" title="Copy the drawing as an image">Copy</button>
-    <button type="button" id="pngBtn" title="Download as a PNG image">PNG</button>
-    <button type="button" id="svgBtn" title="Download as an SVG, which stays sharp at any size">SVG</button>
-    <button type="button" id="wikitextBtn" title="Copy the {{Avatarian}} template markup to paste into a wiki article">Wikitext</button>
+    <button type="button" id="shareBtn" title="Copy a link that reopens this exact transcription — the glyphs, not a picture">Share</button>
+    <!-- The file formats, folded away so the bar isn't a wall of buttons.
+         `labels` is an option for the exported image, so it lives here. -->
+    <details class="export-menu">
+      <summary title="Download the drawing, or copy it for a wiki">Export ▾</summary>
+      <div class="export-pop">
+        <label class="label-ctl" title="Add the English and IPA under each word in the exported image">
+          <input type="checkbox" id="labelToggle" checked> <span>labels on the image</span>
+        </label>
+        <button type="button" id="pngBtn" title="Download as a PNG image">PNG image</button>
+        <button type="button" id="svgBtn" title="Download as an SVG, which stays sharp at any size">SVG vector</button>
+        <button type="button" id="wikitextBtn" title="Copy the {{Avatarian}} template markup to paste into a wiki article">Wikitext</button>
+      </div>
+    </details>
   </div>
 
   <div class="avatarian-output" id="avatarianOutput"></div>
@@ -230,28 +241,28 @@ and made-up words too.</p>
   <p class="footer-note">Static site, no cookies.</p>
 </footer>
 
-<script src="js/manifest.js?v=63"></script>
+<script src="js/manifest.js?v=64"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=63"></script>
+<script src="js/corpus.js?v=64"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=63"></script>
-<script src="js/g2p.js?v=63"></script>
+<script src="js/lexicon.js?v=64"></script>
+<script src="js/g2p.js?v=64"></script>
 <!-- the sounds syntax (standalone; shared with the glyph designer). -->
-<script src="js/sounds.js?v=63"></script>
-<script src="js/render.js?v=63"></script>
+<script src="js/sounds.js?v=64"></script>
+<script src="js/render.js?v=64"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=63"></script>
-<script src="js/draw.js?v=63"></script>
+<script src="js/recognise.js?v=64"></script>
+<script src="js/draw.js?v=64"></script>
 <!-- Sounds -> likely English. Searches the corpus, then EXCEPTIONS, then
      the whole bundled dictionary, so it only earns its keep on a page
      that already loads lexicon.js — which this one does. -->
-<script src="js/reverse.js?v=63"></script>
+<script src="js/reverse.js?v=64"></script>
 <script>
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
 
@@ -764,6 +775,16 @@ $("stdSpelling").addEventListener("change", () => {
   standardSpelling = $("stdSpelling").checked;
   markEdited(false);
   convert();
+});
+
+// The Export menu closes after you pick a format, and when you click away —
+// a native <details> does neither on its own.
+document.querySelectorAll(".export-pop button").forEach((b) =>
+  b.addEventListener("click", () => { const d = b.closest("details"); if (d) d.open = false; }));
+document.addEventListener("click", (e) => {
+  document.querySelectorAll("details.export-menu[open]").forEach((d) => {
+    if (!d.contains(e.target)) d.open = false;
+  });
 });
 /**
  * Grow the sounds box to fit, up to the cap in the stylesheet, then let
