@@ -23,6 +23,7 @@
 <meta name="twitter:image" content="https://avatarian.techfilmer.com/og-image.png?v=2" />
 <link rel="stylesheet" href="css/blocks.css?v=64" />
 <link rel="stylesheet" href="css/style.css?v=64" />
+<link rel="stylesheet" href="css/sourcepop.css?v=64" />
 <style>
   /* Corpus page only. Everything structural is in style.css / blocks.css;
      this is the grid of words and its controls. */
@@ -137,27 +138,8 @@
 
   /* The source preview that appears on hover/focus — a floating panel so
      it is never clipped by a card edge or the grid. */
-  #pop {
-    position: fixed; z-index: 50; display: none; width: 280px;
-    max-height: min(72vh, 540px); overflow-y: auto;
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 11px;
-    text-align: left;
-  }
-  #pop.show { display: block; }
-  #pop .pop-title { font-weight: 700; margin-bottom: 8px; }
-  #pop .pop-src { display: flex; gap: 10px; align-items: flex-start; }
-  #pop .pop-src + .pop-src {
-    margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line);
-  }
-  #pop img {
-    width: 88px; height: 88px; object-fit: cover; flex: 0 0 auto;
-    border-radius: 6px; border: 1px solid var(--line);
-    display: block; background: var(--hover);
-  }
-  #pop .pop-name { font-weight: 600; }
-  #pop .pop-where { color: var(--muted-2); font-size: 0.74rem; }
-  #pop .pop-what { color: var(--muted); font-size: 0.76rem; margin-top: 4px; }
+  /* The source preview popup (#pop / #pop2) now lives in css/sourcepop.css,
+     shared with the translator. */
   /* B4 (decided): a line under attested words. Everything here is
      attested, so this doubles as the legend for the mark the translator
      uses. */
@@ -187,35 +169,6 @@
   /* A contested word flags its other spellings inline in the meta line;
      the hover preview is where you see how each source actually drew it. */
   .word-meta .alt-flag { color: var(--accent); }
-  /* Contested preview: one group per distinct spelling — the spelling
-     drawn with its count on the LEFT, the sources that used it as
-     thumbnails on the RIGHT. Hover a thumbnail for its detail (#pop2). */
-  #pop .pop-group { display: flex; gap: 12px; align-items: flex-start; }
-  #pop .pop-group + .pop-group {
-    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line);
-  }
-  #pop .pop-gleft { flex: 0 0 auto; text-align: center; }
-  #pop .pop-spelling { --av-size: 30px; margin: 2px auto 4px; }
-  #pop .pop-gmeta { color: var(--muted-2); font-size: 0.72rem; white-space: nowrap; }
-  #pop .pop-thumbs { display: flex; flex-wrap: wrap; gap: 6px; flex: 1 1 auto; padding-top: 2px; }
-  #pop .pop-thumb { display: block; line-height: 0; }
-  #pop .pop-thumb img {
-    width: 42px; height: 42px; object-fit: cover;
-    border-radius: 4px; border: 1px solid var(--line); background: var(--hover);
-  }
-  #pop .pop-thumb:hover img { border-color: var(--accent); }
-
-  /* The second tooltip: a source's detail, over a thumbnail. */
-  #pop2 {
-    position: fixed; z-index: 60; display: none; width: 232px; pointer-events: none;
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.32); padding: 9px 11px;
-    text-align: left;
-  }
-  #pop2.show { display: block; }
-  #pop2 .p2-name { font-weight: 600; }
-  #pop2 .p2-where { color: var(--muted-2); font-size: 0.74rem; }
-  #pop2 .p2-what { color: var(--muted); font-size: 0.78rem; margin-top: 4px; }
   .empty { color: var(--muted); margin-top: 24px; }
   /* An open call to contribute new sightings. */
   .contribute {
@@ -338,6 +291,8 @@ me</a> and I'll add them.</p>
      corpusquery.js is the structural matcher and uses it. -->
 <script src="js/sounds.js?v=64"></script>
 <script src="js/corpusquery.js?v=64"></script>
+<!-- The source preview popup, shared with the translator. -->
+<script src="js/sourcepop.js?v=64"></script>
 <script>
 "use strict";
 
@@ -386,15 +341,8 @@ const codesOf = (ipa) => ipa
   .map(t => soundToCode(t.replace("_c", "")))
   .join(" ");
 
-// Every source that cites this word — the winning spelling's, plus any a
-// contested alternate came from. A source that only contributed the
-// losing spelling of a contested word still cited the word, so filtering
-// by it should surface the word.
-function allSourcesOf(w) {
-  const set = new Set(w.sources || []);
-  for (const a of (w.alternates || [])) for (const s of (a.sources || [])) set.add(s);
-  return [...set];
-}
+// allSourcesOf / sourceHref / spellingGroups / fillWhat and the popup
+// itself come from js/sourcepop.js, shared with the translator.
 
 // A source id -> a short human label + a description for the tooltip.
 function sourceTitle(id) {
@@ -405,229 +353,9 @@ function sourceTitle(id) {
   return bits.join(". ") || id;
 }
 
-// Where clicking a source takes you: the original post if the source
-// recorded a URL, otherwise the reference image the corpus was read off
-// (shipped under site/sources/). Null if there is nothing to open.
-function sourceHref(id) {
-  const s = SOURCES[id] || {};
-  if (s.where && /^https?:\/\//.test(s.where)) return s.where;
-  if (s.image) return "sources/" + encodeURIComponent(s.image);
-  return null;
-}
-
-// --- the hover source preview ------------------------------------------
-// One floating panel, filled and positioned for whichever card is hovered
-// or focused. A shared panel (rather than one per card) keeps it out of
-// the grid's flow, so it is never clipped, and only ever loads the images
-// of the source you are actually looking at.
-const pop = document.createElement("div");
-pop.id = "pop";
-document.body.appendChild(pop);
-let hideTimer = null;
-
-// A second, smaller tooltip: hovering a source thumbnail in the contested
-// preview shows that source's name and the text slice around the word.
-// pointer-events:none in CSS, so it never steals the hover from the thumb.
-const pop2 = document.createElement("div");
-pop2.id = "pop2";
-document.body.appendChild(pop2);
-let hide2Timer = null;
-
-function showPop2(thumb, id, w) {
-  clearTimeout(hide2Timer);
-  clearTimeout(hideTimer);          // moving onto a thumb keeps the main preview open
-  const s = SOURCES[id] || {};
-  pop2.innerHTML = "";
-  const name = document.createElement("div");
-  name.className = "p2-name";
-  name.textContent = id;
-  pop2.appendChild(name);
-  if (s.where) {
-    const where = document.createElement("div");
-    where.className = "p2-where";
-    where.textContent = /^https?:\/\//.test(s.where) ? "open the post ↗" : s.where;
-    pop2.appendChild(where);
-  }
-  if (s.what) {
-    const what = document.createElement("div");
-    what.className = "p2-what";
-    fillWhat(what, s.what, w.key);
-    pop2.appendChild(what);
-  }
-  pop2.classList.add("show");
-  const r = thumb.getBoundingClientRect();
-  const pw = pop2.offsetWidth, ph = pop2.offsetHeight;
-  let left = r.left + r.width / 2 - pw / 2;
-  left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
-  let top = r.bottom + 6;
-  if (top + ph > window.innerHeight - 8) top = r.top - ph - 6;
-  pop2.style.left = left + "px";
-  pop2.style.top = Math.max(8, top) + "px";
-}
-function hidePop2() { hide2Timer = setTimeout(() => pop2.classList.remove("show"), 100); }
-
-// Show the slice of a source's text AROUND the word — "…found something
-// out and it is really big!…" — rather than always the opening. Falls
-// back to the start if the word isn't in the text verbatim (some sources
-// describe their contents rather than quote them). The match is bolded.
-function fillWhat(el, text, word) {
-  const esc = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const m = new RegExp("\\b" + esc + "\\b", "i").exec(text);
-  if (!m) {
-    el.textContent = text.length > 120 ? text.slice(0, 120) + "…" : text;
-    return;
-  }
-  const pad = 42;
-  const start = Math.max(0, m.index - pad);
-  const end = Math.min(text.length, m.index + m[0].length + pad);
-  el.append((start > 0 ? "…" : "") + text.slice(start, m.index));
-  const hit = document.createElement("strong");
-  hit.textContent = text.slice(m.index, m.index + m[0].length);
-  el.appendChild(hit);
-  el.append(text.slice(m.index + m[0].length, end) + (end < text.length ? "…" : ""));
-}
-
-// The distinct spellings of a word, each with the sources behind it — the
-// winning one first, then the alternates. A contested word's preview
-// collapses to these, so `the` is two rows (two spellings), not six.
-function spellingGroups(w) {
-  // Top-level ipa/sources/count all describe the WINNING spelling; each
-  // alternate carries its own. So the winner's count is just w.count — not
-  // w.count minus the alternates, which undercounted it (a contested
-  // word's winner showed one short per alternate sighting).
-  const groups = [{ ipa: w.ipa, sources: w.sources || [], count: w.count || 0 }];
-  for (const a of (w.alternates || [])) {
-    groups.push({ ipa: a.ipa, sources: a.sources || [], count: a.count || 0 });
-  }
-  return groups;
-}
-
-// A source as a small clickable thumbnail of its reference image.
-function sourceThumb(id, w) {
-  const s = SOURCES[id] || {};
-  const href = sourceHref(id);
-  const el = document.createElement(href ? "a" : "span");
-  el.className = "pop-thumb";
-  if (href) { el.href = href; el.target = "_blank"; el.rel = "noopener"; }
-  if (s.image) {
-    const img = document.createElement("img");
-    img.loading = "lazy";
-    img.src = "sources/" + encodeURIComponent(s.image);
-    img.alt = id;
-    el.appendChild(img);
-  } else {
-    el.textContent = id;
-  }
-  // Second hover: the source's name and the text around the word.
-  el.addEventListener("mouseenter", () => showPop2(el, id, w));
-  el.addEventListener("mouseleave", hidePop2);
-  return el;
-}
-
-function buildPop(w) {
-  pop.innerHTML = "";
-  const title = document.createElement("div");
-  title.className = "pop-title";
-  title.textContent = w.label;
-  pop.appendChild(title);
-
-  // Contested: collapse to one row per DISTINCT spelling — the spelling
-  // drawn, how many times, and the sources that used it as thumbnails.
-  if (w.contested) {
-    for (const g of spellingGroups(w)) {
-      const grp = document.createElement("div");
-      grp.className = "pop-group";
-      // Left: the spelling drawn, with its count. Right: the sources that
-      // used it, as thumbnails — hover one for its detail.
-      const left = document.createElement("div");
-      left.className = "pop-gleft";
-      const sp = document.createElement("div");
-      sp.className = "avatarian-word pop-spelling";
-      renderAvatarian(g.ipa, sp);
-      left.appendChild(sp);
-      const meta = document.createElement("div");
-      meta.className = "pop-gmeta";
-      meta.textContent = g.count === 1 ? "seen once" : `seen ${g.count}×`;
-      left.appendChild(meta);
-      grp.appendChild(left);
-      const thumbs = document.createElement("div");
-      thumbs.className = "pop-thumbs";
-      for (const id of g.sources) thumbs.appendChild(sourceThumb(id, w));
-      grp.appendChild(thumbs);
-      pop.appendChild(grp);
-    }
-    return;
-  }
-
-  // Uncontested: one row per source — its reference image and the text
-  // slice around the word.
-  for (const id of allSourcesOf(w)) {
-    const s = SOURCES[id] || {};
-    const row = document.createElement("div");
-    row.className = "pop-src";
-    if (s.image) {
-      const img = document.createElement("img");
-      img.loading = "lazy";
-      img.src = "sources/" + encodeURIComponent(s.image);
-      img.alt = "reference for " + id;
-      row.appendChild(img);
-    }
-    const info = document.createElement("div");
-    const href = sourceHref(id);
-    const name = document.createElement(href ? "a" : "div");
-    name.className = "pop-name";
-    name.textContent = id;
-    if (href) { name.href = href; name.target = "_blank"; name.rel = "noopener"; }
-    info.appendChild(name);
-    if (s.where) {
-      const where = document.createElement("div");
-      where.className = "pop-where";
-      where.textContent = /^https?:\/\//.test(s.where) ? "open the post ↗" : s.where;
-      info.appendChild(where);
-    }
-    // Extra named links (schema: `links: [{text, url}]`) — for a source
-    // whose `where` is a label, not a URL, so it still has a way out.
-    for (const lk of (s.links || [])) {
-      if (!lk || !lk.url) continue;
-      const l = document.createElement("div");
-      l.className = "pop-where";
-      const a = document.createElement("a");
-      a.href = lk.url; a.target = "_blank"; a.rel = "noopener";
-      a.textContent = (lk.text || "link") + " ↗";
-      l.appendChild(a);
-      info.appendChild(l);
-    }
-    if (s.what) {
-      const what = document.createElement("div");
-      what.className = "pop-what";
-      fillWhat(what, s.what, w.key);
-      info.appendChild(what);
-    }
-    row.appendChild(info);
-    pop.appendChild(row);
-  }
-}
-
-function placePop(card) {
-  pop.classList.add("show");            // show first so it can be measured
-  const r = card.getBoundingClientRect();
-  const pw = pop.offsetWidth, ph = pop.offsetHeight;
-  let left = r.left + r.width / 2 - pw / 2;
-  left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
-  let top = r.bottom + 8;
-  if (top + ph > window.innerHeight - 8) top = r.top - ph - 8;   // flip up
-  top = Math.max(8, top);
-  pop.style.left = left + "px";
-  pop.style.top = top + "px";
-}
-
-function showPop(card, w) { clearTimeout(hideTimer); buildPop(w); placePop(card); }
-function hidePop() { hideTimer = setTimeout(() => pop.classList.remove("show"), 140); }
-
-// Keep it open while the pointer is on the panel itself, so a link in it
-// is clickable.
-pop.addEventListener("mouseenter", () => clearTimeout(hideTimer));
-pop.addEventListener("mouseleave", () => { hidePop(); hidePop2(); });
+// The source preview popup is built once here and shared with the
+// translator (js/sourcepop.js): hover or focus a word card to open it.
+const srcPop = createSourcePopup(SOURCES, renderAvatarian);
 
 // Populate the source filter, each with how many words cite it.
 (function fillSourceFilter() {
@@ -709,10 +437,10 @@ function card(w) {
     el.appendChild(t);
   }
 
-  el.addEventListener("mouseenter", () => showPop(el, w));
-  el.addEventListener("mouseleave", hidePop);
-  el.addEventListener("focus", () => showPop(el, w));
-  el.addEventListener("blur", hidePop);
+  el.addEventListener("mouseenter", () => srcPop.show(el, w));
+  el.addEventListener("mouseleave", srcPop.hide);
+  el.addEventListener("focus", () => srcPop.show(el, w));
+  el.addEventListener("blur", srcPop.hide);
   return el;
 }
 

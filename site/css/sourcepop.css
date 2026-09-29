@@ -1,0 +1,56 @@
+/* The source preview popup, shared by the corpus page and the translator
+   (js/sourcepop.js). The main panel (#pop) lists where a word was seen; the
+   small tooltip (#pop2) shows one source's detail over a thumbnail. Colours
+   come from the page's own tokens, so it themes with either page. */
+
+#pop {
+  position: fixed; z-index: 50; display: none; width: 280px;
+  max-height: min(72vh, 540px); overflow-y: auto;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); padding: 11px;
+  text-align: left;
+}
+#pop.show { display: block; }
+#pop .pop-title { font-weight: 700; margin-bottom: 8px; }
+#pop .pop-src { display: flex; gap: 10px; align-items: flex-start; }
+#pop .pop-src + .pop-src {
+  margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line);
+}
+#pop img {
+  width: 88px; height: 88px; object-fit: cover; flex: 0 0 auto;
+  border-radius: 6px; border: 1px solid var(--line);
+  display: block; background: var(--hover);
+}
+#pop .pop-name { font-weight: 600; }
+#pop .pop-where { color: var(--muted-2); font-size: 0.74rem; }
+#pop .pop-what { color: var(--muted); font-size: 0.76rem; margin-top: 4px; }
+
+/* Contested preview: one group per distinct spelling — the spelling drawn
+   with its count on the LEFT, the sources that used it as thumbnails on the
+   RIGHT. Hover a thumbnail for its detail (#pop2). */
+#pop .pop-group { display: flex; gap: 12px; align-items: flex-start; }
+#pop .pop-group + .pop-group {
+  margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line);
+}
+#pop .pop-gleft { flex: 0 0 auto; text-align: center; }
+#pop .pop-spelling { --av-size: 30px; margin: 2px auto 4px; }
+#pop .pop-gmeta { color: var(--muted-2); font-size: 0.72rem; white-space: nowrap; }
+#pop .pop-thumbs { display: flex; flex-wrap: wrap; gap: 6px; flex: 1 1 auto; padding-top: 2px; }
+#pop .pop-thumb { display: block; line-height: 0; }
+#pop .pop-thumb img {
+  width: 42px; height: 42px; object-fit: cover;
+  border-radius: 4px; border: 1px solid var(--line); background: var(--hover);
+}
+#pop .pop-thumb:hover img { border-color: var(--accent); }
+
+/* The second tooltip: a source's detail, over a thumbnail. */
+#pop2 {
+  position: fixed; z-index: 60; display: none; width: 232px; pointer-events: none;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32); padding: 9px 11px;
+  text-align: left;
+}
+#pop2.show { display: block; }
+#pop2 .p2-name { font-weight: 600; }
+#pop2 .p2-where { color: var(--muted-2); font-size: 0.74rem; }
+#pop2 .p2-what { color: var(--muted); font-size: 0.78rem; margin-top: 4px; }

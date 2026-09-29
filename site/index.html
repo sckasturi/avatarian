@@ -23,6 +23,7 @@
 <meta name="twitter:image" content="https://avatarian.techfilmer.com/og-image.png?v=2" />
 <link rel="stylesheet" href="css/blocks.css?v=64" />
 <link rel="stylesheet" href="css/style.css?v=64" />
+<link rel="stylesheet" href="css/sourcepop.css?v=64" />
 </head>
 <body>
 
@@ -263,6 +264,8 @@ and made-up words too.</p>
      the whole bundled dictionary, so it only earns its keep on a page
      that already loads lexicon.js — which this one does. -->
 <script src="js/reverse.js?v=64"></script>
+<!-- The source preview popup, shared with the corpus page. -->
+<script src="js/sourcepop.js?v=64"></script>
 <script>
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
 
@@ -335,6 +338,10 @@ function markEdited(on) {
 // Rendering
 // ---------------------------------------------------------------------
 
+// The corpus's own source preview, reused here: hovering an attested word
+// shows where it was seen written, the same panel the corpus page uses.
+const srcPop = createSourcePopup((window.AVATARIAN_CORPUS || {}).sources, renderAvatarian);
+
 // Does this drawn spelling match a spelling the corpus actually recorded
 // for the word — the winner or any contested alternate? Punctuation marks
 // are not part of a corpus spelling, so they are ignored, and an attested
@@ -389,6 +396,14 @@ function renderWords(words) {
         en.target = "_blank";
         en.rel = "noopener";
         en.title = `See "${w.word}" in the corpus`;
+        // Hover or focus for the corpus's source preview; click still opens
+        // the full entry. The word object the popup wants is the corpus
+        // record plus a display label and lookup key.
+        const w2 = Object.assign({ label: w.word, key: normaliseWord(w.word) }, record);
+        en.addEventListener("mouseenter", () => srcPop.show(en, w2));
+        en.addEventListener("mouseleave", srcPop.hide);
+        en.addEventListener("focus", () => srcPop.show(en, w2));
+        en.addEventListener("blur", srcPop.hide);
       }
       en.textContent = w.word;
       cap.appendChild(en);
