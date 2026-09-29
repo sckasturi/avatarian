@@ -990,8 +990,7 @@ $("wikitextBtn").addEventListener("click", async (e) => {
     await navigator.clipboard.writeText(wikitext);
     flash(btn, "Copied");
     $("outHint").textContent =
-      "Wikitext copied. Paste it into an article on a wiki that has the "
-      + "Avatarian gadget.";
+      "Wikitext copied. Paste it into an article on Avatar Wiki.";
   } catch (err) {
     // No clipboard (e.g. file://): show the markup so it can still be
     // selected and copied by hand.
