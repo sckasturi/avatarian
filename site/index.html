@@ -21,8 +21,8 @@
 <meta name="twitter:title" content="Avatarian Translator" />
 <meta name="twitter:description" content="Type anything and watch it written in Avatarian, the script from Avatar Legends." />
 <meta name="twitter:image" content="https://avatarian.techfilmer.com/og-image.png?v=2" />
-<link rel="stylesheet" href="css/blocks.css?v=61" />
-<link rel="stylesheet" href="css/style.css?v=61" />
+<link rel="stylesheet" href="css/blocks.css?v=62" />
+<link rel="stylesheet" href="css/style.css?v=62" />
 </head>
 <body>
 
@@ -227,28 +227,28 @@ and made-up words too.</p>
   <p class="footer-note">Static site, no cookies.</p>
 </footer>
 
-<script src="js/manifest.js?v=61"></script>
+<script src="js/manifest.js?v=62"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=61"></script>
+<script src="js/corpus.js?v=62"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=61"></script>
-<script src="js/g2p.js?v=61"></script>
+<script src="js/lexicon.js?v=62"></script>
+<script src="js/g2p.js?v=62"></script>
 <!-- the sounds syntax (standalone; shared with the glyph designer). -->
-<script src="js/sounds.js?v=61"></script>
-<script src="js/render.js?v=61"></script>
+<script src="js/sounds.js?v=62"></script>
+<script src="js/render.js?v=62"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=61"></script>
-<script src="js/draw.js?v=61"></script>
+<script src="js/recognise.js?v=62"></script>
+<script src="js/draw.js?v=62"></script>
 <!-- Sounds -> likely English. Searches the corpus, then EXCEPTIONS, then
      the whole bundled dictionary, so it only earns its keep on a page
      that already loads lexicon.js — which this one does. -->
-<script src="js/reverse.js?v=61"></script>
+<script src="js/reverse.js?v=62"></script>
 <script>
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
 
@@ -268,8 +268,26 @@ const $ = (id) => document.getElementById(id);
 // throws the fix away.
 let soundsEdited = false;
 
+// An attested spelling can carry an UNREADABLE slot ("*") — a glyph that
+// was there in the source photo but couldn't be made out. On the corpus and
+// sources pages that honest gap is the whole point, but the TRANSLATOR is
+// answering "how do I write this word", where a hole is worse than the
+// model's best guess. So when a looked-up word has a "*", fill it from the
+// model's own spelling for that slot (same-length spellings align
+// slot-for-slot; on the rare length mismatch fall back to the model spelling
+// whole). This only rewrites what this page draws — the corpus is untouched.
+function fillUnreadable(word) {
+  if (!word || !word.word || !word.ipa || !word.ipa.includes("*")) return word;
+  const model = (typeof modelSpelling === "function") ? modelSpelling(word.word) : null;
+  if (!model || !model.length) return word;
+  const ipa = model.length === word.ipa.length
+    ? word.ipa.map((t, i) => (t === "*" && model[i] && model[i] !== "*") ? model[i] : t)
+    : model.slice();
+  return { ...word, ipa };
+}
+
 function setSoundsFromEnglish() {
-  const words = sentenceToIPA($("englishInput").value);
+  const words = sentenceToIPA($("englishInput").value).map(fillUnreadable);
   $("soundsInput").value = wordsToSoundText(words);
   fitSounds();
 }
