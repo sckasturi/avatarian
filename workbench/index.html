@@ -109,6 +109,17 @@
     </label>
   </div>
 
+  <div class="row">
+    <!-- Optional. Who translated this source; credited on the public sources
+         page. Rides through with the rest of the source. -->
+    <label class="field grow">
+      <span class="field-label">Author <span class="fine">— who translated it,
+        shown on the sources page (optional)</span></span>
+      <input type="text" id="impAuthor" autocomplete="off"
+        placeholder="e.g. Bundas" />
+    </label>
+  </div>
+
   <div class="dropzone" id="impDrop">
     <img id="impImage" alt="" hidden />
     <p class="dropzone-hint" id="impDropHint">Drop the reference image here,
@@ -211,6 +222,14 @@
           <span class="fine">— specific enough to find again</span></span>
         <textarea id="srcWhere" rows="2"></textarea>
       </label>
+      <!-- Who did the reading, credited on the public sources page. Optional;
+           leave blank and no credit shows. -->
+      <label class="field">
+        <span class="field-label">Author <span class="fine">— who translated
+          it, shown on the sources page</span></span>
+        <input type="text" id="srcAuthor" autocomplete="off"
+          placeholder="e.g. Bundas" />
+      </label>
 
       <!-- Deleting a source has to take its entries with it: an entry
            citing a source that is gone fails validation, so leaving them
@@ -236,6 +255,11 @@
     <div class="panel-head">
       <h2 id="sourceViewTitle"></h2>
       <span class="fine" id="sourceViewCount"></span>
+      <span class="spacer"></span>
+      <!-- Transcribe another line off the SAME source. Opens the import
+           panel already filled with this source's name, text and image, so
+           the new words land under it instead of a fresh source. -->
+      <button type="button" id="addToSource" class="small">+ add more</button>
       <button type="button" id="closeSourceView" class="small">close</button>
     </div>
     <div class="source-words" id="sourceWords"></div>

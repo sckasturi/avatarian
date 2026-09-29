@@ -667,6 +667,12 @@ function showSource(name) {
   $("srcName").value = name;
   $("srcWhat").value = source.what || "";
   $("srcWhere").value = source.where || "";
+  // author may be a plain string or {name, url}; the editor only sets the
+  // name, so show whichever form is stored.
+  $("srcAuthor").value =
+    typeof source.author === "object" && source.author
+      ? (source.author.name || "")
+      : (source.author || "");
   const img = $("sourceImage");
   if (source.image) {
     img.src = "/images/" + source.image + "?t=" + Date.now();
@@ -1128,6 +1134,65 @@ function openImport() {
   $("impName").focus();
 }
 
+/**
+ * Open the import panel already filled for an existing source, so the next
+ * line transcribed lands under IT rather than a new source.
+ *
+ * `commitImport` already merges into `state.sources[name]` when the name
+ * matches — the only thing missing was a way in that carries the name, the
+ * two sentences and the filed image across, instead of making you retype
+ * them and lose the image preview. That is all this does.
+ */
+function addMoreToSource(name) {
+  name = name || state.sourceView;
+  const source = state.sources[name];
+  if (!source) return;
+  commitEditor();
+
+  $("impName").value = name;
+  $("impWhat").value = source.what || "";
+  $("impWhere").value = source.where || "";
+  $("impAuthor").value =
+    typeof source.author === "object" && source.author
+      ? (source.author.name || "")
+      : (source.author || "");
+
+  // Reuse the source's own image as the import's image. A fresh drop or
+  // Instagram fetch still overwrites it, but by default "add more" keeps
+  // the picture the words were read off.
+  importImage = source.image || null;
+  const img = $("impImage");
+  if (source.image) {
+    img.src = "/images/" + source.image + "?t=" + Date.now();
+    img.hidden = false;
+    $("impDropHint").hidden = true;
+  } else {
+    img.hidden = true;
+    img.removeAttribute("src");
+    $("impDropHint").hidden = false;
+  }
+
+  // A blank line to read — the source metadata is what we are keeping, not
+  // the last transcription.
+  $("impText").value = "";
+  $("impEnglish").value = "";
+  $("impIgUrl").value = "";
+  $("impIgNote").textContent = "";
+  importSeeded = new Map();
+  importConfirmed = new Set();
+  importRows = [];
+  renderImportRows();
+  showProblems([]);
+
+  // Show import at the top; keep the source view below it so the words
+  // already read off this source stay in sight while you add more.
+  $("importPanel").hidden = false;
+  $("sourcePanel").hidden = true;
+  $("editor").hidden = true;
+  $("convEditor").hidden = true;
+  $("impText").focus();
+}
+
 function closeImport() {
   $("importPanel").hidden = true;
   $("editor").hidden = false;
@@ -1586,6 +1651,19 @@ function commitImport() {
   const source = state.sources[name] || {};
   source.what = $("impWhat").value.trim();
   source.where = $("impWhere").value.trim();
+  // Optional credit — keep the JSON clean by dropping it when blank rather
+  // than storing an empty string. A stored {name,url} author is left as-is
+  // unless the field text disagrees with its name.
+  const author = $("impAuthor").value.trim();
+  if (author) {
+    if (typeof source.author === "object" && source.author && source.author.url) {
+      source.author = { ...source.author, name: author };
+    } else {
+      source.author = author;
+    }
+  } else {
+    delete source.author;
+  }
   if (importImage) source.image = importImage;
   state.sources[name] = source;
 
@@ -1636,6 +1714,7 @@ function commitImport() {
 function wireImport() {
   $("importBtn").addEventListener("click", openImport);
   $("closeImport").addEventListener("click", closeImport);
+  $("addToSource").addEventListener("click", () => addMoreToSource());
   $("impAdd").addEventListener("click", commitImport);
 
   $("impDerive").addEventListener("click", deriveFromEnglish);
@@ -2191,6 +2270,21 @@ function wire() {
       if (source) { source[key] = $(id).value; markDirty(); }
     });
   }
+
+  // Author is optional and dropped when blank, so an empty field never
+  // leaves an empty string in the file. A stored {name,url} keeps its url.
+  $("srcAuthor").addEventListener("input", () => {
+    const source = state.sources[$("source").value];
+    if (!source) return;
+    const v = $("srcAuthor").value.trim();
+    if (v) {
+      source.author = (typeof source.author === "object" && source.author && source.author.url)
+        ? { ...source.author, name: v } : v;
+    } else {
+      delete source.author;
+    }
+    markDirty();
+  });
 
   $("imageZoom").addEventListener("input", applyZoom);
   wireDropzone();
