@@ -558,8 +558,30 @@ function rulesToIPA(w) {
  * corpus, `corpusSpan()` is 1 and the loop below collapses to the
  * word-at-a-time behaviour it replaced.
  */
+// The punctuation the script draws (render.js PUNCTUATION). Split off the
+// end of a word so "there." spells /ð e r ∅/ and then a period mark,
+// instead of losing the mark or feeding "." to the word lookup.
+const SENTENCE_PUNCT = /[.,!?]+$/;
+
 function sentenceToIPA(text) {
-  const words = text.trim().split(/\s+/).filter(Boolean);
+  const raw = text.trim().split(/\s+/).filter(Boolean);
+  // Peel any trailing . , ! ? off each token: `clean` is what gets looked
+  // up and captioned, `punct` is the marks to append to the spelling.
+  const words = [], punct = [];
+  for (const tok of raw) {
+    const m = SENTENCE_PUNCT.exec(tok);
+    const marks = m ? m[0].split("") : [];
+    const head = m ? tok.slice(0, tok.length - m[0].length) : tok;
+    // A token that is only punctuation rides on the previous word so it
+    // still renders after it (and never becomes an empty word unit).
+    if (!head && marks.length && words.length) {
+      punct[punct.length - 1].push(...marks);
+      continue;
+    }
+    words.push(head);
+    punct.push(marks);
+  }
+
   const out = [];
   const span = corpusSpan();
   const attested = corpusWords();
@@ -584,6 +606,9 @@ function sentenceToIPA(text) {
       out.push({ word: words[i], ipa, tier, entry });
       taken = 1;
     }
+    // Trailing punctuation of every token this unit consumed, drawn after
+    // its glyphs as marks (render.js handles them, unpaired).
+    for (let k = i; k < i + taken; k++) out[out.length - 1].ipa.push(...punct[k]);
     i += taken;
   }
   return out;

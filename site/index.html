@@ -21,8 +21,8 @@
 <meta name="twitter:title" content="Avatarian Translator" />
 <meta name="twitter:description" content="Type anything and watch it written in Avatarian, the script from Avatar Legends." />
 <meta name="twitter:image" content="https://avatarian.techfilmer.com/og-image.png?v=2" />
-<link rel="stylesheet" href="css/blocks.css?v=62" />
-<link rel="stylesheet" href="css/style.css?v=62" />
+<link rel="stylesheet" href="css/blocks.css?v=63" />
+<link rel="stylesheet" href="css/style.css?v=63" />
 </head>
 <body>
 
@@ -171,6 +171,9 @@ and made-up words too.</p>
     <label class="label-ctl" title="Add the English and IPA under each word in the exported/copied image">
       <input type="checkbox" id="labelToggle"> <span>labels</span>
     </label>
+    <label class="label-ctl" title="Show corpus words in the model's standard spelling instead of the attested form the corpus recorded">
+      <input type="checkbox" id="stdSpelling"> <span>standard spelling</span>
+    </label>
     <button type="button" id="shareBtn" title="Copy a link that reopens this exact transcription — the glyphs, not a picture">Share</button>
     <button type="button" id="copyBtn" title="Copy the drawing as an image">Copy</button>
     <button type="button" id="pngBtn" title="Download as a PNG image">PNG</button>
@@ -227,28 +230,28 @@ and made-up words too.</p>
   <p class="footer-note">Static site, no cookies.</p>
 </footer>
 
-<script src="js/manifest.js?v=62"></script>
+<script src="js/manifest.js?v=63"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=62"></script>
+<script src="js/corpus.js?v=63"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=62"></script>
-<script src="js/g2p.js?v=62"></script>
+<script src="js/lexicon.js?v=63"></script>
+<script src="js/g2p.js?v=63"></script>
 <!-- the sounds syntax (standalone; shared with the glyph designer). -->
-<script src="js/sounds.js?v=62"></script>
-<script src="js/render.js?v=62"></script>
+<script src="js/sounds.js?v=63"></script>
+<script src="js/render.js?v=63"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=62"></script>
-<script src="js/draw.js?v=62"></script>
+<script src="js/recognise.js?v=63"></script>
+<script src="js/draw.js?v=63"></script>
 <!-- Sounds -> likely English. Searches the corpus, then EXCEPTIONS, then
      the whole bundled dictionary, so it only earns its keep on a page
      that already loads lexicon.js — which this one does. -->
-<script src="js/reverse.js?v=62"></script>
+<script src="js/reverse.js?v=63"></script>
 <script>
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
 
@@ -286,8 +289,27 @@ function fillUnreadable(word) {
   return { ...word, ipa };
 }
 
+// "standard spelling" toggle: normally a corpus word forces its attested
+// form, which is the right default. With this on, an attested/convention
+// word is shown in the model's standard spelling instead — the trailing
+// punctuation marks are kept.
+let standardSpelling = false;
+
+function applyWordForm(word) {
+  if (standardSpelling && word && word.word
+      && (word.tier === "attested" || word.tier === "convention")
+      && typeof modelSpelling === "function") {
+    const model = modelSpelling(word.word);
+    if (model && model.length) {
+      const marks = (word.ipa || []).filter((t) => PUNCTUATION[t]);
+      return { ...word, ipa: model.concat(marks) };
+    }
+  }
+  return fillUnreadable(word);
+}
+
 function setSoundsFromEnglish() {
-  const words = sentenceToIPA($("englishInput").value).map(fillUnreadable);
+  const words = sentenceToIPA($("englishInput").value).map(applyWordForm);
   $("soundsInput").value = wordsToSoundText(words);
   fitSounds();
 }
@@ -301,6 +323,19 @@ function markEdited(on) {
 // ---------------------------------------------------------------------
 // Rendering
 // ---------------------------------------------------------------------
+
+// Does this drawn spelling match a spelling the corpus actually recorded
+// for the word — the winner or any contested alternate? Punctuation marks
+// are not part of a corpus spelling, so they are ignored, and an attested
+// `*` (a glyph that couldn't be read) matches whatever fills its slot.
+function spellingIsAttested(ipa, record) {
+  if (!record || !ipa) return false;
+  const drawn = ipa.filter((t) => !PUNCTUATION[t]);
+  const cands = [record.ipa, ...(record.alternates || []).map((a) => a.ipa)];
+  return cands.some((cand) =>
+    cand && cand.length === drawn.length &&
+    cand.every((t, i) => t === drawn[i] || t === "*"));
+}
 
 function renderWords(words) {
   const output = $("avatarianOutput");
@@ -322,19 +357,28 @@ function renderWords(words) {
     // word, so it is what gets looked up — and it drives two marks below,
     // the attested underline and the contested asterisk.
     const record = w.word ? corpusWords()[normaliseWord(w.word)] : null;
+    // The underline means "the corpus has seen it written THIS WAY". It is
+    // keyed to the drawn spelling, not just the word, so hand-editing the
+    // sounds away from the attested form drops the mark instead of leaving
+    // a stale one. A filled unreadable slot (`*`) still counts as a match.
+    const attested = spellingIsAttested(w.ipa, record);
 
     const cap = document.createElement("span");
     cap.className = "avatarian-caption";
     let en = null;
     if (w.word) {
-      en = document.createElement("span");
+      // An attested word links to its entry on the corpus page (new tab, so
+      // the transcription in progress is not lost). Anything else is a plain
+      // span.
+      en = document.createElement(attested ? "a" : "span");
       en.className = "cap-en";
-      // B4 / item 21: underline a word the corpus has actually seen
-      // written. Its presence in the corpus IS the attested tier — the
-      // same signal lookupWord() reports, read straight off the caption
-      // because these word objects carry no tier. corpus.html is the
-      // working example of the mark and doubles as its legend.
-      if (record) en.classList.add("is-attested");
+      if (attested) {
+        en.classList.add("is-attested");
+        en.href = "corpus.html?q=" + encodeURIComponent(normaliseWord(w.word));
+        en.target = "_blank";
+        en.rel = "noopener";
+        en.title = `See "${w.word}" in the corpus`;
+      }
       en.textContent = w.word;
       cap.appendChild(en);
     }
@@ -345,7 +389,7 @@ function renderWords(words) {
     // couple of stragglers, and marking it would cry wolf. So the runner-up
     // has to be at least half the leader (minor*2 >= major). When it is,
     // the mark is a small asterisk on the word — "your*" — not a badge.
-    if (record && record.contested && en) {
+    if (attested && record.contested && en) {
       const altCounts = (record.alternates || []).map(a => a.count || 0);
       const winner = (record.count || 0) - altCounts.reduce((n, c) => n + c, 0);
       const [major, minor] = [winner, ...altCounts].sort((a, b) => b - a);
@@ -704,6 +748,15 @@ let drawTimer = null;
 $("englishInput").addEventListener("input", () => {
   clearTimeout(drawTimer);
   drawTimer = setTimeout(convert, 140);
+});
+
+// The standard-spelling toggle rewrites the sounds from the English, so it
+// has to re-run the conversion — and that means dropping the hand-edit
+// guard, since switching form is an explicit request to regenerate.
+$("stdSpelling").addEventListener("change", () => {
+  standardSpelling = $("stdSpelling").checked;
+  markEdited(false);
+  convert();
 });
 /**
  * Grow the sounds box to fit, up to the cap in the stylesheet, then let
