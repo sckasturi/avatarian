@@ -135,10 +135,11 @@ window.AVATARIAN_CORPUS = {
       "credit": "Bundas"
     },
     "jewel-sign": {
-      "what": "Shop sign that reads \"Jewel\". There are also a bunch of glyphs in circles with unknown meaning: left ones read /y i r/ and /uh v/, and the three from left to right are /i z/, /f a/ and /m i/",
+      "what": "Shop sign that reads \"Jewel\". To the left, it reads \"year of\". There are also a bunch of glyphs in circles with unknown meaning: from left to right are /i z/, /f a/ and /m i/",
       "where": "movie 1:29:53",
       "image": "submission-wvvbph.jpg",
-      "credit": "Bundas"
+      "credit": "Bundas",
+      "author": "Bundas"
     },
     "episode1-3": {
       "what": "Survival / On the Horizon / Into the Storm / The Order",
@@ -147,18 +148,6 @@ window.AVATARIAN_CORPUS = {
     }
   },
   "words": {
-    "all": {
-      "ipa": [
-        "ɔ",
-        "l"
-      ],
-      "count": 1,
-      "sources": [
-        "toph-letter"
-      ],
-      "confidence": "certain",
-      "source": "toph-letter"
-    },
     "am": {
       "ipa": [
         "æ",
@@ -1072,10 +1061,11 @@ window.AVATARIAN_CORPUS = {
             "ə",
             "v"
           ],
-          "count": 2,
+          "count": 3,
           "sources": [
             "instagram-1.2",
-            "instagram-1.4"
+            "instagram-1.4",
+            "jewel-sign"
           ],
           "confidence": "certain"
         }
@@ -2662,9 +2652,10 @@ window.AVATARIAN_CORPUS = {
         "ɹ",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-1.4"
+        "instagram-1.4",
+        "jewel-sign"
       ],
       "confidence": "certain",
       "source": "instagram-1.4"
@@ -4001,6 +3992,18 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "skips-fishing-supplies",
       "gloss": "supplies"
+    },
+    "all": {
+      "ipa": [
+        "ɔ",
+        "l"
+      ],
+      "count": 1,
+      "sources": [
+        "jewel-sign"
+      ],
+      "confidence": "certain",
+      "source": "jewel-sign"
     },
     "jewel": {
       "ipa": [
