@@ -987,15 +987,20 @@ function deleteToken() {
 // Each cell shows a glyph in the script; clicking it appends its code to
 // the sounds box, so the chart doubles as a palette.
 
-function keyArt(svg) {
+function keyArt(svg, flip) {
   const art = document.createElement("div");
   art.className = "key-art";
-  if (svg) art.innerHTML = svg;
-  else art.classList.add("is-empty");
+  if (svg) {
+    art.innerHTML = svg;
+    // Show the glyph in its BOTTOM-slot form. A `flips` vowel stores its
+    // top form, so its bottom form is the vertical mirror; the bottom-up
+    // vowels (u, ʊ, ɔ) already store the bottom form and are left alone.
+    if (flip) art.style.transform = "scaleY(-1)";
+  } else art.classList.add("is-empty");
   return art;
 }
 
-function keyCell({ code, title, drawn, note, cls }) {
+function keyCell({ code, title, drawn, note, cls, flip }) {
   const cell = document.createElement(code ? "button" : "div");
   cell.className = "key-cell" + (cls ? " " + cls : "") + (code ? " is-clickable" : "");
   if (code) {
@@ -1004,7 +1009,7 @@ function keyCell({ code, title, drawn, note, cls }) {
     cell.addEventListener("click", () => appendSound(code));
   }
 
-  cell.appendChild(keyArt(drawn));
+  cell.appendChild(keyArt(drawn, flip));
 
   const lab = document.createElement("div");
   lab.className = "key-lab";
@@ -1069,6 +1074,9 @@ function buildKeyGrid() {
         drawn: info.status === "PLACEHOLDER" ? null : info.svg,
         note: info.status === "PLACEHOLDER" ? "no glyph anywhere yet" : null,
         cls: info.status === "PLACEHOLDER" ? "is-placeholder" : "",
+        // Vowels are shown in their bottom-slot form. Only a `flips` vowel
+        // needs mirroring — its stored art is the top form.
+        flip: kind === "vowel" && !!info.flips,
       }));
     });
   });
