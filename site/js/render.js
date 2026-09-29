@@ -261,9 +261,10 @@ const TURNS_ABOVE_CLUSTER = new Set(["s"]);
  * They flip like any other, but the art is stored the other way up, so
  * the slot test is inverted. Read off the corpus: /u/ is plain in all 18
  * bottom slots and mirrored in 7 of its 9 top ones, /ɔ/ plain in 12
- * bottoms and mirrored in all 3 tops.
+ * bottoms and mirrored in all 3 tops. /ʊ/ (the "uu" glyph) is drawn the
+ * same way — plain in the bottom slot, mirrored in the top.
  */
-const DRAWN_BOTTOM_UP = new Set(["u", "ɔ"]);
+const DRAWN_BOTTOM_UP = new Set(["u", "ɔ", "ʊ"]);
 
 /** True when the block partner is another consonant — i.e. a C-C block. */
 function isClusterPartner(partner) {

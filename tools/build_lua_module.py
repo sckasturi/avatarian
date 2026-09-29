@@ -131,7 +131,7 @@ local p = {}
 -- These are decisions of the SCRIPT, tied to specific sounds, so they live in
 -- the logic beside the code that reads them (render.js keeps them the same way).
 local NULL_V, NULL_C = "∅", "∅c"
-local DRAWN_BOTTOM_UP    = { ["u"]=true, ["ɔ"]=true }
+local DRAWN_BOTTOM_UP    = { ["u"]=true, ["ɔ"]=true, ["ʊ"]=true }
 local TURNS_IN_CLUSTER   = { ["ɹ"]=true, ["j"]=true, ["w"]=true }
 local TURNS_ABOVE_CLUSTER = { ["s"]=true }
 local UNREADABLE = "*"
