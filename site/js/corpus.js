@@ -4000,10 +4000,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "jewel-sign"
+        "toph-letter"
       ],
       "confidence": "certain",
-      "source": "jewel-sign"
+      "source": "toph-letter"
     },
     "jewel": {
       "ipa": [
