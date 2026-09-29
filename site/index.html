@@ -480,7 +480,14 @@ function renderDecode(words) {
 
   strip.innerHTML = "";
   for (const { w, i } of pending) {
-    const hits = suggestWords(w.ipa, 5);
+    // Keep the best guess always, then only the genuinely close ones — an
+    // edit distance under ~40% of the word's length. The corpus bonus
+    // (reverse.js) otherwise pads the strip with far-off attested words
+    // behind a strong match (typing "katara" also offered avatar, card,
+    // courage). The workbench's own suggestions are untouched.
+    const qlen = (typeof soundsOnly === "function" ? soundsOnly(w.ipa) : w.ipa).length || 1;
+    const hits = suggestWords(w.ipa, 5)
+      .filter((h, n) => n === 0 || h.distance / qlen <= 0.4);
     if (!hits.length) continue;
 
     const row = document.createElement("div");
