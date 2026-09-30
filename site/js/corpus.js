@@ -150,6 +150,11 @@ window.AVATARIAN_CORPUS = {
       "what": "The Faceless / The One Left Behind / Night of the Afflicted",
       "where": "https://www.instagram.com/p/Dd4I9kLmLyW/?img_index=2",
       "image": "episodes4-6.jpg"
+    },
+    "episodes6-9": {
+      "what": "",
+      "where": "https://www.instagram.com/p/Dd6trweFDnm/",
+      "image": "episodes6-9.jpg"
     }
   },
   "words": {
@@ -717,7 +722,7 @@ window.AVATARIAN_CORPUS = {
         "ð",
         "ə"
       ],
-      "count": 13,
+      "count": 14,
       "sources": [
         "toph-letter",
         "katara-letter",
@@ -725,7 +730,8 @@ window.AVATARIAN_CORPUS = {
         "instagram-1.4",
         "instagram-3.3",
         "episode1-3",
-        "episodes4-6"
+        "episodes4-6",
+        "episodes6-9"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -1177,7 +1183,24 @@ window.AVATARIAN_CORPUS = {
         "katara-letter"
       ],
       "confidence": "certain",
-      "source": "katara-letter"
+      "source": "katara-letter",
+      "alternates": [
+        {
+          "ipa": [
+            "w",
+            "ʌ",
+            "t",
+            "∅"
+          ],
+          "count": 1,
+          "sources": [
+            "episodes6-9"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true,
+      "gloss": "What"
     },
     "when": {
       "ipa": [
@@ -4180,13 +4203,91 @@ window.AVATARIAN_CORPUS = {
         "n",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "episodes4-6"
+        "episodes4-6",
+        "episodes6-9"
       ],
       "confidence": "certain",
       "source": "episodes4-6",
       "gloss": "One"
+    },
+    "beneath": {
+      "ipa": [
+        "b",
+        "ɪ",
+        "n",
+        "i",
+        "θ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes6-9"
+      ],
+      "confidence": "certain",
+      "source": "episodes6-9",
+      "gloss": "Beneath"
+    },
+    "envoys": {
+      "ipa": [
+        "ɛ",
+        "n",
+        "v",
+        "ɔɪ",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes6-9"
+      ],
+      "confidence": "certain",
+      "source": "episodes6-9",
+      "gloss": "Envoys"
+    },
+    "lies": {
+      "ipa": [
+        "l",
+        "aɪ",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes6-9"
+      ],
+      "confidence": "certain",
+      "source": "episodes6-9",
+      "gloss": "Lies"
+    },
+    "part": {
+      "ipa": [
+        "p",
+        "ɑ",
+        "ɹ",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes6-9"
+      ],
+      "confidence": "certain",
+      "source": "episodes6-9",
+      "gloss": "Part"
+    },
+    "two": {
+      "ipa": [
+        "t",
+        "u"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes6-9"
+      ],
+      "confidence": "certain",
+      "source": "episodes6-9",
+      "gloss": "Two"
     }
   },
   "conventions": {

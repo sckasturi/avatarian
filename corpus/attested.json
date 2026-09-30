@@ -169,6 +169,11 @@
       "what": "The Faceless / The One Left Behind / Night of the Afflicted",
       "where": "https://www.instagram.com/p/Dd4I9kLmLyW/?img_index=2",
       "image": "episodes4-6.jpg"
+    },
+    "episodes6-9": {
+      "what": "",
+      "where": "https://www.instagram.com/p/Dd6trweFDnm/",
+      "image": "episodes6-9.jpg"
     }
   },
   "entries": [
@@ -2158,6 +2163,62 @@
       "confidence": "certain",
       "gloss": "The",
       "times": 3
+    },
+    {
+      "key": "beneath",
+      "spelling": "b ɪ n i θ ∅",
+      "source": "episodes6-9",
+      "confidence": "certain",
+      "gloss": "Beneath"
+    },
+    {
+      "key": "envoys",
+      "spelling": "ɛ n v ɔɪ z ∅",
+      "source": "episodes6-9",
+      "confidence": "certain",
+      "gloss": "Envoys"
+    },
+    {
+      "key": "lies",
+      "spelling": "l aɪ z ∅",
+      "source": "episodes6-9",
+      "confidence": "certain",
+      "gloss": "Lies"
+    },
+    {
+      "key": "one",
+      "spelling": "w ʌ n ∅",
+      "source": "episodes6-9",
+      "confidence": "certain",
+      "gloss": "One"
+    },
+    {
+      "key": "part",
+      "spelling": "p ɑ ɹ t",
+      "source": "episodes6-9",
+      "confidence": "certain",
+      "gloss": "Part"
+    },
+    {
+      "key": "the",
+      "spelling": "ð ə",
+      "source": "episodes6-9",
+      "confidence": "certain",
+      "gloss": "The"
+    },
+    {
+      "key": "two",
+      "spelling": "t u",
+      "source": "episodes6-9",
+      "confidence": "certain",
+      "gloss": "Two"
+    },
+    {
+      "key": "what",
+      "spelling": "w ʌ t ∅",
+      "source": "episodes6-9",
+      "confidence": "certain",
+      "gloss": "What"
     }
   ]
 }
