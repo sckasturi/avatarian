@@ -120,6 +120,12 @@ function readEditor() {
 
 /** Fold the open editor back into the entry list, adding it if new. */
 function commitEditor() {
+  // A hidden editor is not being edited — its fields still hold the last
+  // entry, while a source view may have repointed the source dropdown. A
+  // later commit (e.g. from save) would then re-stamp that stale entry onto
+  // the wrong source. Callers that DO want to commit (openSourceView) do it
+  // while the editor is still visible, so guarding on hidden is safe.
+  if ($("editor").hidden) return;
   const entry = readEditor();
   if (!entry.key && !entry.spelling) return;
   for (const k of ["gloss", "note"]) if (!entry[k]) delete entry[k];
