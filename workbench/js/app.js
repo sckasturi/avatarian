@@ -888,12 +888,51 @@ async function save() {
     if (body.saved) {
       state.dirty = false;
       setStatus(`saved — ${body.count} entries`, "is-ok");
-    } else {
-      setStatus("not saved — see above", "is-error");
+      return true;
     }
+    setStatus("not saved — see above", "is-error");
+    return false;
   } catch (e) {
     showProblems([String(e)]);
     setStatus("not saved — see above", "is-error");
+    return false;
+  }
+}
+
+/**
+ * Save, then git commit + push the corpus files — the chore that used to be
+ * a terminal round-trip after every session. Saves first so corpus.js and
+ * the images on disk are current; a failed save stops here with its problems
+ * already shown.
+ */
+async function pushCorpus() {
+  if (state.dirty) {
+    const ok = await save();
+    if (!ok) return;
+  }
+  setStatus("pushing…");
+  try {
+    const res = await fetch("/api/push", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
+    });
+    const body = await res.json();
+    if (body.error) {
+      showProblems([body.error]);
+      setStatus("push failed — see above", "is-error");
+      return;
+    }
+    showProblems([]);
+    if (body.pushed) {
+      const n = (body.files || []).length;
+      setStatus(`pushed — ${n} file${n === 1 ? "" : "s"}`, "is-ok");
+    } else {
+      setStatus(body.message || "nothing to push", "is-ok");
+    }
+  } catch (e) {
+    showProblems([String(e)]);
+    setStatus("push failed — see above", "is-error");
   }
 }
 
@@ -2244,6 +2283,7 @@ function wire() {
   $("deleteSource").addEventListener("click", deleteSource);
   $("closeSourceView").addEventListener("click", closeSourceView);
   $("saveBtn").addEventListener("click", save);
+  $("pushBtn").addEventListener("click", pushCorpus);
 
   document.querySelectorAll(".sound-tools [data-insert]").forEach((b) => {
     const text = b.dataset.insert;

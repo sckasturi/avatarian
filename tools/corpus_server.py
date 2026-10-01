@@ -25,6 +25,7 @@ API
     POST /api/conventions    save the unsourced conventions (same contract)
     POST /api/image          store a reference image against a source
     POST /api/fetch_image    fetch one Instagram carousel slide by URL (no login)
+    POST /api/push           git commit + push the corpus files
     GET  /images/<file>      a stored reference image
 
     GET  /site/...           the main site's own files, read-only
@@ -45,6 +46,7 @@ import base64
 import json
 import pathlib
 import re
+import subprocess
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
@@ -205,9 +207,54 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.store_image()
             if path == "/api/fetch_image":
                 return self.fetch_image()
+            if path == "/api/push":
+                return self.push_corpus()
         except Exception as e:                       # noqa: BLE001
             return self.send_json({"error": f"{type(e).__name__}: {e}"}, 400)
         return self.send_error(404)
+
+    def push_corpus(self):
+        """
+        Commit the corpus files and push them. The UI saves first (which
+        regenerates corpus.js and syncs images), so this just stages what
+        corpus work touches, commits and pushes — the chore that used to be
+        a terminal round-trip after every transcription session.
+
+        Nothing here invents a commit for the user: it is their data, their
+        repo, their git identity, so no Co-Authored-By trailer is added.
+        """
+        body = self.read_json() or {}
+        msg = (body.get("message") or "").strip() or "corpus: update from the workbench"
+
+        def git(*args):
+            return subprocess.run(["git", *args], cwd=str(ROOT),
+                                  capture_output=True, text=True)
+
+        # Only the paths corpus work changes — never the whole tree, so an
+        # unrelated edit elsewhere is never swept into a corpus commit.
+        git("add", "corpus/attested.json", "corpus/conventions.json",
+            "site/js/corpus.js", "site/sources")
+        staged = git("diff", "--cached", "--name-only").stdout.strip()
+        if not staged:
+            return self.send_json(
+                {"pushed": False, "message": "Nothing to push — no corpus changes."})
+
+        commit = git("commit", "-m", msg)
+        if commit.returncode != 0:
+            return self.send_json(
+                {"error": "commit failed: " + (commit.stderr or commit.stdout).strip()}, 400)
+
+        push = git("push")
+        if push.returncode != 0:
+            return self.send_json(
+                {"error": "push failed: " + (push.stderr or push.stdout).strip()}, 400)
+
+        return self.send_json({
+            "pushed": True,
+            "message": msg,
+            "files": staged.split("\n"),
+            "output": (push.stderr or push.stdout).strip(),
+        })
 
     def save_corpus(self):
         """
