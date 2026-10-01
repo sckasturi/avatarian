@@ -4312,6 +4312,55 @@ window.AVATARIAN_CORPUS = {
       "source": "episodes6-9",
       "gloss": "Two"
     },
+    "battle": {
+      "ipa": [
+        "b",
+        "æ",
+        "t",
+        "ə",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Battle"
+    },
+    "chakra": {
+      "ipa": [
+        "tʃ",
+        "ɑ",
+        "k",
+        "∅",
+        "ɹ",
+        "ə"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Chakra"
+    },
+    "dome": {
+      "ipa": [
+        "d",
+        "oʊ",
+        "m",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Dome"
+    },
     "ghosts": {
       "ipa": [
         "g",
@@ -4328,6 +4377,38 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "episodes10-13",
       "gloss": "Ghosts"
+    },
+    "root": {
+      "ipa": [
+        "ɹ",
+        "u",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Root"
+    },
+    "ruins": {
+      "ipa": [
+        "ɹ",
+        "u",
+        "ə",
+        "n",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Ruins"
     },
     "spirits": {
       "ipa": [
@@ -4347,87 +4428,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "episodes10-13",
       "gloss": "Spirits"
-    },
-    "battle": {
-      "ipa": [
-        "b",
-        "æ",
-        "t",
-        "ə",
-        "l",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "episodes10-13"
-      ],
-      "confidence": "certain",
-      "source": "episodes10-13",
-      "gloss": "Battle"
-    },
-    "ruins": {
-      "ipa": [
-        "ɹ",
-        "u",
-        "ə",
-        "n",
-        "z",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "episodes10-13"
-      ],
-      "confidence": "certain",
-      "source": "episodes10-13",
-      "gloss": "Ruins"
-    },
-    "dome": {
-      "ipa": [
-        "d",
-        "oʊ",
-        "m",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "episodes10-13"
-      ],
-      "confidence": "certain",
-      "source": "episodes10-13",
-      "gloss": "Dome"
-    },
-    "root": {
-      "ipa": [
-        "ɹ",
-        "u",
-        "t",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "episodes10-13"
-      ],
-      "confidence": "certain",
-      "source": "episodes10-13",
-      "gloss": "Root"
-    },
-    "chakra": {
-      "ipa": [
-        "tʃ",
-        "ɑ",
-        "k",
-        "∅",
-        "ɹ",
-        "ə"
-      ],
-      "count": 1,
-      "sources": [
-        "episodes10-13"
-      ],
-      "confidence": "certain",
-      "source": "episodes10-13",
-      "gloss": "Chakra"
     }
   },
   "conventions": {
