@@ -141,7 +141,7 @@ window.AVATARIAN_CORPUS = {
       "credit": "Bundas",
       "author": "Bundas"
     },
-    "episode1-3": {
+    "episodes1-3": {
       "what": "Survival / On the Horizon / Into the Storm / The Order",
       "where": "https://www.instagram.com/p/Dd1kFKtmcdo/?stkn=MXZ4dTE3ODM5NGJiaw%3D%3D&img_index=1",
       "image": "episode1-3.jpg"
@@ -152,9 +152,14 @@ window.AVATARIAN_CORPUS = {
       "image": "episodes4-6.jpg"
     },
     "episodes6-9": {
-      "what": "",
+      "what": "What Lies Beneath / The Envoys: Part One / The Envoys: Part Two",
       "where": "https://www.instagram.com/p/Dd6trweFDnm/",
       "image": "episodes6-9.jpg"
+    },
+    "episodes10-13": {
+      "what": "Ghosts and Spirits / Battle of the Ruins / The Dome / The Root Chakra",
+      "where": "https://www.instagram.com/p/Dd9SiT1lA7e/?img_index=1",
+      "image": "episodes10-13.jpg"
     }
   },
   "words": {
@@ -230,7 +235,23 @@ window.AVATARIAN_CORPUS = {
         "instagram-3.3"
       ],
       "confidence": "certain",
-      "source": "toph-letter"
+      "source": "toph-letter",
+      "alternates": [
+        {
+          "ipa": [
+            "ʌ",
+            "n",
+            "d",
+            "∅"
+          ],
+          "count": 1,
+          "sources": [
+            "episodes10-13"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true
     },
     "anyway": {
       "ipa": [
@@ -615,7 +636,7 @@ window.AVATARIAN_CORPUS = {
       "sources": [
         "toph-letter",
         "instagram-2.1",
-        "episode1-3"
+        "episodes1-3"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -722,16 +743,17 @@ window.AVATARIAN_CORPUS = {
         "ð",
         "ə"
       ],
-      "count": 14,
+      "count": 17,
       "sources": [
         "toph-letter",
         "katara-letter",
         "instagram-1.3",
         "instagram-1.4",
         "instagram-3.3",
-        "episode1-3",
+        "episodes1-3",
         "episodes4-6",
-        "episodes6-9"
+        "episodes6-9",
+        "episodes10-13"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -1089,12 +1111,13 @@ window.AVATARIAN_CORPUS = {
         "ʌ",
         "v"
       ],
-      "count": 4,
+      "count": 5,
       "sources": [
         "katara-letter",
         "zuko-stamp",
         "sdcc-1",
-        "episodes4-6"
+        "episodes4-6",
+        "episodes10-13"
       ],
       "confidence": "certain",
       "source": "katara-letter",
@@ -4052,10 +4075,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episode1-3"
+        "episodes1-3"
       ],
       "confidence": "certain",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "gloss": "Horizon"
     },
     "into": {
@@ -4067,10 +4090,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episode1-3"
+        "episodes1-3"
       ],
       "confidence": "certain",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "gloss": "Into"
     },
     "order": {
@@ -4084,10 +4107,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episode1-3"
+        "episodes1-3"
       ],
       "confidence": "certain",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "gloss": "Order"
     },
     "storm": {
@@ -4101,10 +4124,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episode1-3"
+        "episodes1-3"
       ],
       "confidence": "certain",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "gloss": "Storm"
     },
     "survival": {
@@ -4122,10 +4145,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episode1-3"
+        "episodes1-3"
       ],
       "confidence": "certain",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "gloss": "Survival"
     },
     "afflicted": {
@@ -4288,6 +4311,123 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "episodes6-9",
       "gloss": "Two"
+    },
+    "ghosts": {
+      "ipa": [
+        "g",
+        "oʊ",
+        "s",
+        "t",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Ghosts"
+    },
+    "spirits": {
+      "ipa": [
+        "s",
+        "p",
+        "ɪ",
+        "ɹ",
+        "ɪ",
+        "t",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Spirits"
+    },
+    "battle": {
+      "ipa": [
+        "b",
+        "æ",
+        "t",
+        "ə",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Battle"
+    },
+    "ruins": {
+      "ipa": [
+        "ɹ",
+        "u",
+        "ə",
+        "n",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Ruins"
+    },
+    "dome": {
+      "ipa": [
+        "d",
+        "oʊ",
+        "m",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Dome"
+    },
+    "root": {
+      "ipa": [
+        "ɹ",
+        "u",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Root"
+    },
+    "chakra": {
+      "ipa": [
+        "tʃ",
+        "ɑ",
+        "k",
+        "∅",
+        "ɹ",
+        "ə"
+      ],
+      "count": 1,
+      "sources": [
+        "episodes10-13"
+      ],
+      "confidence": "certain",
+      "source": "episodes10-13",
+      "gloss": "Chakra"
     }
   },
   "conventions": {

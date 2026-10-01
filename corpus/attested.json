@@ -160,7 +160,7 @@
       "credit": "Bundas",
       "author": "Bundas"
     },
-    "episode1-3": {
+    "episodes1-3": {
       "what": "Survival / On the Horizon / Into the Storm / The Order",
       "where": "https://www.instagram.com/p/Dd1kFKtmcdo/?stkn=MXZ4dTE3ODM5NGJiaw%3D%3D&img_index=1",
       "image": "episode1-3.jpg"
@@ -171,9 +171,14 @@
       "image": "episodes4-6.jpg"
     },
     "episodes6-9": {
-      "what": "",
+      "what": "What Lies Beneath / The Envoys: Part One / The Envoys: Part Two",
       "where": "https://www.instagram.com/p/Dd6trweFDnm/",
       "image": "episodes6-9.jpg"
+    },
+    "episodes10-13": {
+      "what": "Ghosts and Spirits / Battle of the Ruins / The Dome / The Root Chakra",
+      "where": "https://www.instagram.com/p/Dd9SiT1lA7e/?img_index=1",
+      "image": "episodes10-13.jpg"
     }
   },
   "entries": [
@@ -2062,49 +2067,49 @@
     {
       "key": "horizon",
       "spelling": "h ə ɹ aɪ z ə n ∅",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "confidence": "certain",
       "gloss": "Horizon"
     },
     {
       "key": "into",
       "spelling": "ɪ n t u",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "confidence": "certain",
       "gloss": "Into"
     },
     {
       "key": "on",
       "spelling": "ɑ n",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "confidence": "certain",
       "gloss": "On"
     },
     {
       "key": "order",
       "spelling": "ɔ ɹ d ə ɹ ∅",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "confidence": "certain",
       "gloss": "Order"
     },
     {
       "key": "storm",
       "spelling": "s t ɔ ɹ m ∅",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "confidence": "certain",
       "gloss": "Storm"
     },
     {
       "key": "survival",
       "spelling": "s ə ɹ ∅ v aɪ v ə l ∅",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "confidence": "certain",
       "gloss": "Survival"
     },
     {
       "key": "the",
       "spelling": "ð ə",
-      "source": "episode1-3",
+      "source": "episodes1-3",
       "confidence": "certain",
       "times": 3
     },
@@ -2219,6 +2224,74 @@
       "source": "episodes6-9",
       "confidence": "certain",
       "gloss": "What"
+    },
+    {
+      "key": "and",
+      "spelling": "ʌ n d ∅",
+      "source": "episodes10-13",
+      "confidence": "certain"
+    },
+    {
+      "key": "battle",
+      "spelling": "b æ t ə l ∅",
+      "source": "episodes10-13",
+      "confidence": "certain",
+      "gloss": "Battle"
+    },
+    {
+      "key": "chakra",
+      "spelling": "tʃ ɑ k ∅ ɹ ə",
+      "source": "episodes10-13",
+      "confidence": "certain",
+      "gloss": "Chakra"
+    },
+    {
+      "key": "dome",
+      "spelling": "d oʊ m ∅",
+      "source": "episodes10-13",
+      "confidence": "certain",
+      "gloss": "Dome"
+    },
+    {
+      "key": "ghosts",
+      "spelling": "g oʊ s t s ∅",
+      "source": "episodes10-13",
+      "confidence": "certain",
+      "gloss": "Ghosts"
+    },
+    {
+      "key": "of",
+      "spelling": "ʌ v",
+      "source": "episodes10-13",
+      "confidence": "certain"
+    },
+    {
+      "key": "root",
+      "spelling": "ɹ u t ∅",
+      "source": "episodes10-13",
+      "confidence": "certain",
+      "gloss": "Root"
+    },
+    {
+      "key": "ruins",
+      "spelling": "ɹ u ə n z ∅",
+      "source": "episodes10-13",
+      "confidence": "certain",
+      "gloss": "Ruins"
+    },
+    {
+      "key": "spirits",
+      "spelling": "s p ɪ ɹ ɪ t s ∅",
+      "source": "episodes10-13",
+      "confidence": "certain",
+      "gloss": "Spirits"
+    },
+    {
+      "key": "the",
+      "spelling": "ð ə",
+      "source": "episodes10-13",
+      "confidence": "certain",
+      "times": 3
     }
   ]
 }
