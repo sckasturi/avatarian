@@ -160,6 +160,11 @@ window.AVATARIAN_CORPUS = {
       "what": "Ghosts and Spirits / Battle of the Ruins / The Dome / The Root Chakra",
       "where": "https://www.instagram.com/p/Dd9SiT1lA7e/?img_index=1",
       "image": "episodes10-13.jpg"
+    },
+    "7h-promo-1-week": {
+      "what": "7h-promo: 1 week",
+      "where": "https://www.instagram.com/p/Dd_iuUomsv_/?img_index=1&stkn=ZHkyMXZpcWhrcGRy",
+      "image": "submission-bljdgh.png"
     }
   },
   "words": {
@@ -4428,6 +4433,21 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "episodes10-13",
       "gloss": "Spirits"
+    },
+    "week": {
+      "ipa": [
+        "w",
+        "i",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "7h-promo-1-week"
+      ],
+      "confidence": "certain",
+      "source": "7h-promo-1-week",
+      "gloss": "week"
     }
   },
   "conventions": {

@@ -179,6 +179,11 @@
       "what": "Ghosts and Spirits / Battle of the Ruins / The Dome / The Root Chakra",
       "where": "https://www.instagram.com/p/Dd9SiT1lA7e/?img_index=1",
       "image": "episodes10-13.jpg"
+    },
+    "7h-promo-1-week": {
+      "what": "7h-promo: 1 week",
+      "where": "https://www.instagram.com/p/Dd_iuUomsv_/?img_index=1&stkn=ZHkyMXZpcWhrcGRy",
+      "image": "submission-bljdgh.png"
     }
   },
   "entries": [
@@ -2292,6 +2297,13 @@
       "source": "episodes10-13",
       "confidence": "certain",
       "times": 3
+    },
+    {
+      "key": "week",
+      "spelling": "w i k ∅",
+      "confidence": "certain",
+      "gloss": "week",
+      "source": "7h-promo-1-week"
     }
   ]
 }
