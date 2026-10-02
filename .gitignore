@@ -44,3 +44,8 @@ CORPUS.md
 !.dev.vars.example
 .env*
 !.env.example
+
+# Unrelated wiki modules (fighting game notation, Braving the Elements
+# credits) and their templates/docs — kept locally, not part of Avatarian
+wiki/*FGN*
+wiki/*BtE*
