@@ -6,11 +6,12 @@
  * and serves no site JS). -webkit-mask only (Fandom rejects unprefixed mask-*).
  * av- prefix namespaces the classes. Word ~= 125% of surrounding text.
  * Designed by [[User:TechFilmer]]. */
-.av-word{display:inline;vertical-align:middle;padding-right:.3em;color:inherit;font-size:calc(1.25em / 2.05)}
+.av-word{display:inline;vertical-align:middle;color:inherit;font-size:calc(1.25em / 2.05)}
 .av-word.av-solo{display:inline-flex;font-size:1.4em;padding-right:0;position:relative}
 .av-word-part{display:inline-flex;align-items:flex-start;vertical-align:middle;position:relative}
 .av-word-part+.av-word-part{margin-left:.5em}
 .av-block{display:inline-flex;flex-direction:column;align-items:center;margin-right:.05em}
+.av-block:last-child{margin-right:0}
 .av-slot{display:flex;justify-content:center}
 .av-slot-bottom{margin-top:-.225em}
 .av-block.av-cc .av-slot-bottom{margin-top:-.45em}
