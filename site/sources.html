@@ -46,8 +46,13 @@
     background: var(--card); border: 1px solid var(--line);
     border-radius: 12px; padding: 16px; display: flex; gap: 16px;
     align-items: flex-start;
+    /* room above when scrolled to via its link, so it isn't jammed to the top */
+    scroll-margin-top: 16px;
   }
   .source-card[hidden] { display: none; }
+  /* Landed on via its own link (sources.html#source-<id>): ring it so it's
+     obvious which card the link pointed at. */
+  .source-card:target { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
   /* The reference image. Links to the original post, or to the full image
      if there is no post URL. */
   .source-thumb {
@@ -67,7 +72,11 @@
   }
   .source-body { flex: 1 1 auto; min-width: 0; }
   .source-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; }
-  .source-id { font-weight: 700; font-size: 1.02rem; }
+  .source-id { font-weight: 700; font-size: 1.02rem; color: inherit; text-decoration: none; }
+  .source-id:hover, .source-id:focus-visible { color: var(--accent); }
+  /* A faint ¶-style anchor mark, so it reads as "click to link here". */
+  .source-id::after { content: " #"; color: var(--muted-2); font-weight: 400; opacity: 0; }
+  .source-id:hover::after, .source-id:focus-visible::after { opacity: 1; }
   .source-where a { color: var(--accent); font-size: 0.85rem; }
   .source-where span { color: var(--muted-2); font-size: 0.85rem; }
   /* Who translated / transcribed this source, when the source records it.
@@ -283,6 +292,9 @@ function sourceCard(id) {
 
   const el = document.createElement("div");
   el.className = "source-card";
+  // A stable anchor so a single source is directly linkable:
+  // sources.html#source-<id> jumps to and rings this card.
+  el.id = "source-" + id;
   // Filter target: the id, the venue/URL, and the transcription text, so
   // searching "festival" or "instagram" or a venue name all work.
   el.dataset.hay = (id + " " + (s.where || "") + " " + (s.what || "")).toLowerCase();
@@ -310,9 +322,13 @@ function sourceCard(id) {
 
   const head = document.createElement("div");
   head.className = "source-head";
-  const idEl = document.createElement("span");
+  // The id doubles as the link to this card — click it (or copy its address)
+  // to share a link straight to this one source.
+  const idEl = document.createElement("a");
   idEl.className = "source-id";
+  idEl.href = "#source-" + id;
   idEl.textContent = id;
+  idEl.title = "Link to this source";
   head.appendChild(idEl);
 
   if (s.where) {
@@ -443,6 +459,23 @@ function applyFilter() {
 }
 search.addEventListener("input", applyFilter);
 applyFilter();
+
+// Deep-link to one source: sources.html#source-<id>, or ?source=<id> (the
+// same id the corpus page's filter uses). The cards are built above, after
+// the browser's own hash scroll has already run and found nothing, so scroll
+// the target into view ourselves; the :target CSS rings it. A filter is
+// cleared first so the linked card can't be hidden.
+(function focusLinkedSource() {
+  const p = new URLSearchParams(location.search);
+  const param = p.get("source");
+  if (param && SOURCES[param]) location.hash = "source-" + param;
+  const hash = decodeURIComponent(location.hash || "").slice(1);
+  if (!hash) return;
+  const el = document.getElementById(hash);
+  if (!el) return;
+  if (search.value) { search.value = ""; applyFilter(); }
+  el.scrollIntoView({ block: "start" });
+})();
 </script>
 
 <!-- Cloudflare Web Analytics: cookieless, privacy-first visit counts. -->
