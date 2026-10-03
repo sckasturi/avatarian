@@ -47,6 +47,15 @@ function sourceHref(id) {
   return null;
 }
 
+// The sources page's own card for this source — the hub with its image,
+// provenance, author and every word read off it. A source's name and
+// thumbnail in the popup link here, so clicking a source (on the corpus page
+// or in the translator) lands on its card. The post itself stays reachable
+// from the "open the post ↗" line.
+function sourcePageHref(id) {
+  return "sources.html#source-" + id;
+}
+
 /**
  * The distinct spellings of a word, each with the sources behind it — the
  * winning one first, then the alternates. A contested word's preview
@@ -122,10 +131,11 @@ function popHideSub() { subHideTimer = setTimeout(() => POP_SUB.classList.remove
 // A source as a small clickable thumbnail of its reference image.
 function sourceThumb(id, w) {
   const s = POP_SOURCES[id] || {};
-  const href = sourceHref(id);
-  const el = document.createElement(href ? "a" : "span");
+  // The thumbnail links to the source's card on the sources page.
+  const href = sourcePageHref(id);
+  const el = document.createElement("a");
   el.className = "pop-thumb";
-  if (href) { el.href = href; el.target = "_blank"; el.rel = "noopener"; }
+  el.href = href; el.target = "_blank"; el.rel = "noopener";
   if (s.image) {
     const img = document.createElement("img");
     img.loading = "lazy";
@@ -187,16 +197,26 @@ function popBuild(w) {
       row.appendChild(img);
     }
     const info = document.createElement("div");
-    const href = sourceHref(id);
-    const name = document.createElement(href ? "a" : "div");
+    // The source name links to its card on the sources page; the post itself
+    // stays reachable from the "open the post ↗" line below.
+    const name = document.createElement("a");
     name.className = "pop-name";
     name.textContent = id;
-    if (href) { name.href = href; name.target = "_blank"; name.rel = "noopener"; }
+    name.href = sourcePageHref(id); name.target = "_blank"; name.rel = "noopener";
     info.appendChild(name);
     if (s.where) {
       const where = document.createElement("div");
       where.className = "pop-where";
-      where.textContent = /^https?:\/\//.test(s.where) ? "open the post ↗" : s.where;
+      // A real link to the post now that the name/thumbnail go to the sources
+      // page — so the popup still reaches the original post directly.
+      if (/^https?:\/\//.test(s.where)) {
+        const a = document.createElement("a");
+        a.href = s.where; a.target = "_blank"; a.rel = "noopener";
+        a.textContent = "open the post ↗";
+        where.appendChild(a);
+      } else {
+        where.textContent = s.where;
+      }
       info.appendChild(where);
     }
     // Extra named links (schema: `links: [{text, url}]`) — for a source whose

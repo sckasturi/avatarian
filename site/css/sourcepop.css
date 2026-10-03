@@ -23,6 +23,8 @@
 }
 #pop .pop-name { font-weight: 600; }
 #pop .pop-where { color: var(--muted-2); font-size: 0.74rem; }
+#pop .pop-where a { color: var(--accent); text-decoration: none; }
+#pop .pop-where a:hover, #pop .pop-where a:focus-visible { text-decoration: underline; }
 #pop .pop-what { color: var(--muted); font-size: 0.76rem; margin-top: 4px; }
 
 /* Contested preview: one group per distinct spelling — the spelling drawn
