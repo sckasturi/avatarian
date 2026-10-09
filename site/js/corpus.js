@@ -171,6 +171,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E01 02:21",
       "image": "submission-9hcu99.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.2": {
+      "what": "Ellora signs: Ellora 8 / Ellora 5",
+      "where": "A7H S01E01 02:39",
+      "image": "submission-85ey06.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -4470,6 +4476,23 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-101.1"
+    },
+    "ellora": {
+      "ipa": [
+        "ɛ",
+        "∅",
+        "l",
+        "oʊ",
+        "ɹ",
+        "ə"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.2",
+      "gloss": "Ellora"
     }
   },
   "conventions": {

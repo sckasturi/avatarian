@@ -190,6 +190,12 @@
       "where": "A7H S01E01 02:21",
       "image": "submission-9hcu99.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.2": {
+      "what": "Ellora signs: Ellora 8 / Ellora 5",
+      "where": "A7H S01E01 02:39",
+      "image": "submission-85ey06.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -2316,6 +2322,13 @@
       "spelling": "aʊ t p oʊ s t",
       "source": "sevenhavens-101.1",
       "confidence": "certain"
+    },
+    {
+      "key": "ellora",
+      "spelling": "ɛ ∅ l oʊ ɹ ə",
+      "source": "sevenhavens-101.2",
+      "confidence": "certain",
+      "gloss": "Ellora"
     }
   ]
 }
