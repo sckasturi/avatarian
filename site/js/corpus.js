@@ -90,7 +90,7 @@ window.AVATARIAN_CORPUS = {
       "image": "sdcc-2.png"
     },
     "sdcc-3": {
-      "what": "Avatar / Korra / theater / shh / games / treats / festival / aquaduct / written",
+      "what": "Avatar / Korra / theater / show / games / treats / festival / aquaduct / written",
       "where": "san diego comic con 2026",
       "image": "sdcc-3.png"
     },
@@ -3931,7 +3931,7 @@ window.AVATARIAN_CORPUS = {
       "source": "sdcc-3",
       "gloss": "Korra"
     },
-    "shh": {
+    "show": {
       "ipa": [
         "ʃ",
         "oʊ"

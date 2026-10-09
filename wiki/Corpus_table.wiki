@@ -5,11 +5,17 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |+ Attested Avatarian corpus
 ! Word !! Avatarian !! IPA !! Seen
 |-
-| Aang || {{Avatarian|ey ng|Aang}}<ref name="katara-letter">''katara-letter'' — movie (translation by BokerBigBanana)</ref><ref name="instagram-3.2">''instagram-3.2'' — [https://www.instagram.com/p/DboCKbiDL_v/?img_index=2 post]</ref> || /e ŋ/ || 2
+| Aang || {{Avatarian|ey ng|Aang}}<ref name="toph-letter">''toph-letter'' — movie</ref><ref name="katara-letter">''katara-letter'' — movie (translation by BokerBigBanana)</ref> || /e ŋ/ || 2
 |-
-| academy || {{Avatarian|uh 0 k a d uh m ee|academy}}<ref name="toph-letter">''toph-letter'' — movie</ref> || /ə k æ d ə m i/ || 1
+| academy || {{Avatarian|uh 0 k a d uh m ee|academy}}<ref name="toph-letter" /><ref name="beifong-academy-banner">''beifong-academy-banner'' — movie 0:20:16</ref> || /ə k æ d ə m i/ || 2
+|-
+| access || {{Avatarian|a k s e s 0|access}}<ref name="sevenhavens-101.9">''sevenhavens-101.9'' — A7H S01E01 21:02</ref> || /æ k s ɛ s/ || 1
+|-
+| Afflicted || {{Avatarian|uh f l i k t uh d|Afflicted}}<ref name="episodes4-6">''episodes4-6'' — [https://www.instagram.com/p/Dd4I9kLmLyW/?img_index=2 post]</ref> || /ə f l ɪ k t ə d/ || 1
 |-
 | after || {{Avatarian|a f t uh r 0|after}}<ref name="katara-letter" /> || /æ f t ə ɹ/ || 1
+|-
+| agency || {{Avatarian|ey j uh n s ee|agency}}<ref name="shirshu-sign">''shirshu-sign'' — movie 1:14:00 (it is mirrored)</ref> || /e dʒ ə n s i/ || 1
 |-
 | ages || {{Avatarian|ey 0 i 0 j uh z 0|ages}}<ref name="instagram-2.1">''instagram-2.1'' — [https://www.instagram.com/p/DbbT9_BjMv2/?img_index=1 post]</ref> || /e ɪ dʒ ə z/ || 1
 |-
@@ -21,7 +27,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | am || {{Avatarian|a m|am}}<ref name="toph-letter" /> || /æ m/ || 1
 |-
-| and || {{Avatarian|a n d 0|and}}<ref name="toph-letter" /><ref name="katara-letter" /><ref name="instagram-1.3">''instagram-1.3'' — [https://www.instagram.com/p/DbYdfaFDJmt/?img_index=3 post]</ref><ref name="instagram-3.3" /> || /æ n d/ || 5
+| and<ref group="note" name="contested">Its sources spell this word more than one way; each spelling is shown.</ref> || {{Avatarian|a n d 0|and}}<ref name="toph-letter" /><ref name="katara-letter" /><ref name="instagram-1.3">''instagram-1.3'' — [https://www.instagram.com/p/DbYdfaFDJmt/?img_index=3 post]</ref><ref name="instagram-3.3" /><br>{{Avatarian|u n d 0|and}}<ref name="episodes10-13">''episodes10-13'' — [https://www.instagram.com/p/Dd9SiT1lA7e/?img_index=1 post]</ref> || /æ n d/ || 5
 |-
 | animal || {{Avatarian|a 0 n uh m uh l 0|animal}}<ref name="instagram-2.1" /> || /æ n ə m ə l/ || 1
 |-
@@ -43,7 +49,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | Avatarian || {{Avatarian|a v uh 0 t ah r 0 ee 0 uh n|Avatarian}}<ref name="sdcc-1" /> || /æ v ə t ɑ ɹ i ə n/ || 1
 |-
-| Baihu || {{Avatarian|b eye h oo|Baihu}}<ref name="instagram-2.1" /> || /b aɪ h u/ || 1
+| Baihu || {{Avatarian|b eye h oo|Baihu}}<ref name="toph-letter" /><ref name="katara-letter" /> || /b aɪ h u/ || 2
 |-
 | baked || {{Avatarian|b ey i k t 0|baked}}<ref name="instagram-3.3" /> || /b e ɪ k t/ || 2
 |-
@@ -53,13 +59,27 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | ballet || {{Avatarian|b a l ey i 0|ballet}}<ref name="instagram-1.2" /> || /b æ l e ɪ/ || 1
 |-
+| balloon || {{Avatarian|b uh l uu n 0|balloon}}<ref name="instagram-1.1">''instagram-1.1'' — [https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1 post]</ref> || /b ə l ʊ n/ || 1
+|-
 | bao || {{Avatarian|b ow|bao}}<ref name="instagram-3.1">''instagram-3.1'' — [https://www.instagram.com/mmara_art/p/DboCKbiDL_v/?img_index=1 post]</ref> || /b aʊ/ || 1
 |-
+| Battle || {{Avatarian|b a t uh l 0|Battle}}<ref name="episodes10-13" /> || /b æ t ə l/ || 1
+|-
+| bay || {{Avatarian|b ey|bay}}<ref name="sevenhavens-101.7">''sevenhavens-101.7'' — A7H S01E01 20:55</ref> || /b e/ || 1
+|-
 | be || {{Avatarian|b ee|be}}<ref name="katara-letter" /><ref name="instagram-1.4">''instagram-1.4'' — [https://www.instagram.com/p/DbYdfaFDJmt/?img_index=4 post]</ref> || /b i/ || 3
+|-
+| beaverfish || {{Avatarian|b ey v ey r 0 f ee s 0 h 0|beaverfish}}<ref name="instagram-3.1" /> || /b e v e ɹ f i s h/ || 1
+|-
+| Behind || {{Avatarian|b i h eye n d|Behind}}<ref name="episodes4-6" /> || /b ɪ h aɪ n d/ || 1
+|-
+| Beifong || {{Avatarian|b ey f aw ng 0|Beifong}}<ref name="beifong-academy-banner" /> || /b e f ɔ ŋ/ || 1
 |-
 | being || {{Avatarian|b ee i ng|being}}<ref name="toph-letter" /> || /b i ɪ ŋ/ || 1
 |-
 | bending || {{Avatarian|b e n 0 d i ng 0|bending}}<ref name="instagram-1.2" /> || /b ɛ n d ɪ ŋ/ || 1
+|-
+| Beneath || {{Avatarian|b i n ee th 0|Beneath}}<ref name="episodes6-9">''episodes6-9'' — [https://www.instagram.com/p/Dd6trweFDnm/ post]</ref> || /b ɪ n i θ/ || 1
 |-
 | best || {{Avatarian|b e s t|best}}<ref name="instagram-3.3" /> || /b ɛ s t/ || 1
 |-
@@ -69,15 +89,17 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | bloom || {{Avatarian|b l oo m|bloom}}<ref name="instagram-2.2" /> || /b l u m/ || 1
 |-
+| books || {{Avatarian|b uu k s|books}}<ref name="sevenhavens-101.3">''sevenhavens-101.3'' — A7H S01E01 02:44</ref> || /b ʊ k s/ || 1
+|-
 | brave || {{Avatarian|b r ey 0 i v|brave}}<ref name="instagram-1.4" /> || /b ɹ e ɪ v/ || 1
 |-
 | but || {{Avatarian|b u t 0|but}}<ref name="katara-letter" /> || /b ʌ t/ || 1
 |-
 | by || {{Avatarian|b eye|by}}<ref name="zuko-stamp">''zuko-stamp'' — [https://www.instagram.com/p/DcBlbbJlHWB?img_index=1 post]</ref> || /b aɪ/ || 1
 |-
-| cabbage || {{Avatarian|k a b uh j 0|cabbage}}<ref name="instagram-3.2" /> || /k æ b ə dʒ/ || 1
+| cabbage || {{Avatarian|k a b uh j 0|cabbage}}<ref name="instagram-3.2">''instagram-3.2'' — [https://www.instagram.com/p/DboCKbiDL_v/?img_index=2 post]</ref> || /k æ b ə dʒ/ || 1
 |-
-| cabbages || {{Avatarian|k a b i j i z 0|cabbages}}<ref name="instagram-1.1">''instagram-1.1'' — [https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1 post]</ref> || /k æ b ɪ dʒ ɪ z/ || 1
+| cabbages || {{Avatarian|k a b i j i z 0|cabbages}}<ref name="instagram-1.1" /> || /k æ b ɪ dʒ ɪ z/ || 1
 |-
 | cakes || {{Avatarian|k ey i k s 0|cakes}}<ref name="instagram-1.2" /> || /k e ɪ k s/ || 1
 |-
@@ -89,15 +111,17 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | catfish || {{Avatarian|k a t 0 f i sh 0|catfish}}<ref name="instagram-1.2" /> || /k æ t f ɪ ʃ/ || 1
 |-
+| Chakra || {{Avatarian|ch ah k 0 r uh|Chakra}}<ref name="episodes10-13" /> || /tʃ ɑ k ɹ ə/ || 1
+|-
 | cherries || {{Avatarian|ch e r ee z 0|cherries}}<ref name="instagram-2.1" /> || /tʃ ɛ ɹ i z/ || 1
 |-
 | choir || {{Avatarian|k w eye 0 uh r|choir}}<ref name="instagram-2.2" /> || /k w aɪ ə ɹ/ || 1
 |-
-| city || {{Avatarian|s i t ee|city}}<ref name="instagram-1.3" /> || /s ɪ t i/ || 1
+| City || {{Avatarian|s i t ee|City}}<ref name="instagram-1.3" /><ref name="republic-city">''republic-city'' — movie 1:28:40</ref> || /s ɪ t i/ || 2
 |-
 | class || {{Avatarian|k l a s|class}}<ref name="instagram-1.2" /> || /k l æ s/ || 1
 |-
-| come<ref group="note" name="contested">Its sources spell this word more than one way; each spelling is shown.</ref> || {{Avatarian|k u m 0|come}}<ref name="toph-letter" /><ref name="instagram-3.3" /><br>{{Avatarian|k uh m 0|come}}<ref name="instagram-3.3" /> || /k ʌ m/ || 3
+| come<ref group="note" name="contested" /> || {{Avatarian|k u m 0|come}}<ref name="toph-letter" /><ref name="instagram-3.3" /><br>{{Avatarian|k uh m 0|come}}<ref name="instagram-3.3" /> || /k ʌ m/ || 3
 |-
 | contest || {{Avatarian|k ah n 0 t e * t|contest}}<ref name="instagram-2.1" /> || /k ɑ n t ɛ * t/ || 1
 |-
@@ -109,9 +133,13 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | criminals || {{Avatarian|k r i 0 m uh n uh l z|criminals}}<ref name="instagram-2.2" /> || /k ɹ ɪ m ə n ə l z/ || 1
 |-
+| curry || {{Avatarian|k uh r ee|curry}}<ref name="sevenhavens-101.4">''sevenhavens-101.4'' — A7H S01E01 14:06</ref> || /k ə ɹ i/ || 1
+|-
 | decree || {{Avatarian|d i k r ee 0|decree}}<ref name="zuko-stamp" /> || /d ɪ k ɹ i/ || 1
 |-
 | denied || {{Avatarian|d ey n eye d 0|denied}}<ref name="katara-letter" /> || /d e n aɪ d/ || 1
+|-
+| detective || {{Avatarian|d i t e k t i v|detective}}<ref name="shirshu-sign" /> || /d ɪ t ɛ k t ɪ v/ || 1
 |-
 | did || {{Avatarian|d i d 0|did}}<ref name="katara-letter" /> || /d ɪ d/ || 1
 |-
@@ -119,19 +147,33 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | do || {{Avatarian|d oo|do}}<ref name="katara-letter" /> || /d u/ || 1
 |-
-| draw || {{Avatarian|d * aw 0|draw}}<ref name="instagram-2.1" /> || /d * ɔ/ || 1
+| doctor || {{Avatarian|d ah k 0 t uh r 0|doctor}}<ref name="sevenhavens-101.3" /> || /d ɑ k t ə ɹ/ || 1
+|-
+| Dome || {{Avatarian|d oh m 0|Dome}}<ref name="episodes10-13" /> || /d oʊ m/ || 1
+|-
+| draw || {{Avatarian|d r aw 0|draw}}<ref name="instagram-2.1" /> || /d ɹ ɔ/ || 1
+|-
+| drinks || {{Avatarian|d r i ng k s|drinks}}<ref name="sevenhavens-101-102">''sevenhavens-101-102'' — A7H S01E01 10:17 and S01E02 10:19</ref> || /d ɹ ɪ ŋ k s/ || 1
 |-
 | ear || {{Avatarian|ee r|ear}}<ref name="instagram-2.2" /> || /i ɹ/ || 2
 |-
 | earth || {{Avatarian|uh r th 0|earth}}<ref name="sdcc-2" /> || /ə ɹ θ/ || 1
 |-
+| Ellora || {{Avatarian|e 0 l oh r uh|Ellora}}<ref name="sevenhavens-101.2">''sevenhavens-101.2'' — A7H S01E01 02:39</ref><ref name="sevenhavens-101-102" /> || /ɛ l oʊ ɹ ə/ || 2
+|-
 | energies || {{Avatarian|e 0 n uh r 0 j ee z 0|energies}}<ref name="instagram-2.2" /> || /ɛ n ə ɹ dʒ i z/ || 1
 |-
-| enjoy || {{Avatarian|e n j oy|enjoy}}<ref name="instagram-1.4" /> || /ɛ n dʒ ɔɪ/ || 1
+| enjoy || {{Avatarian|e n j oy|enjoy}}<ref name="instagram-1.4" /><ref name="enjoy-stamp">''enjoy-stamp'' — movie 1:30:13</ref> || /ɛ n dʒ ɔɪ/ || 2
+|-
+| Envoys || {{Avatarian|e n v oy z 0|Envoys}}<ref name="episodes6-9" /> || /ɛ n v ɔɪ z/ || 1
 |-
 | every || {{Avatarian|e 0 v uh r ee|every}}<ref name="instagram-3.3" /> || /ɛ v ə ɹ i/ || 1
 |-
 | evil || {{Avatarian|ee 0 v uh l 0|evil}}<ref name="instagram-3.1" /> || /i v ə l/ || 1
+|-
+| exit || {{Avatarian|e g z i t 0|exit}}<ref name="sevenhavens-103.1">''sevenhavens-103.1'' — A7H S01E03 08:21</ref> || /ɛ g z ɪ t/ || 1
+|-
+| Faceless || {{Avatarian|f ey s$ l uh s|Faceless}}<ref name="episodes4-6" /> || /f e s l ə s/ || 1
 |-
 | fanny || {{Avatarian|f a n ee|fanny}}<ref name="instagram-1.3" /> || /f æ n i/ || 1
 |-
@@ -139,13 +181,17 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | fav || {{Avatarian|f * v 0|fav}}<ref name="instagram-2.1" /> || /f * v/ || 1
 |-
-| festival<ref group="note" name="contested" /> || {{Avatarian|f e s t uh 0 v uh l 0|festival}}<ref name="instagram-3.3" /><br>{{Avatarian|f e s t uh v uh l|festival}}<ref name="sdcc-3" /> || /f ɛ s t ə v ə l/ || 1
+| festival<ref group="note" name="contested" /> || {{Avatarian|f e s t uh 0 v uh l 0|festival}}<ref name="instagram-1.1" /><ref name="instagram-3.3" /><br>{{Avatarian|f e s t uh v uh l|festival}}<ref name="sdcc-3" /> || /f ɛ s t ə v ə l/ || 2
 |-
 | fire || {{Avatarian|f eye uh r|fire}}<ref name="instagram-3.2" /><ref name="zuko-stamp" /><ref name="sdcc-2" /> || /f aɪ ə ɹ/ || 3
 |-
 | fish || {{Avatarian|f i sh 0|fish}}<ref name="instagram-1.1" /><ref name="instagram-2.2" /> || /f ɪ ʃ/ || 2
 |-
-| food || {{Avatarian|f oo d 0|food}}<ref name="instagram-1.3" /> || /f u d/ || 1
+| fishing || {{Avatarian|f i sh i ng 0|fishing}}<ref name="skips-fishing-supplies">''skips-fishing-supplies'' — movie 1:23:14-1:23:15 (never seen fully just parts - attached image is cut together), also seen at 0:10:52, 1:14:12, and 1:30:56</ref> || /f ɪ ʃ ɪ ŋ/ || 1
+|-
+| flame || {{Avatarian|f l ey 0 i m|flame}}<ref name="instagram-1.2" /> || /f l e ɪ m/ || 1
+|-
+| food || {{Avatarian|f oo d 0|food}}<ref name="instagram-1.3" /><ref name="sevenhavens-101-102" /> || /f u d/ || 2
 |-
 | foot || {{Avatarian|f uu t 0|foot}}<ref name="instagram-3.3" /> || /f ʊ t/ || 1
 |-
@@ -167,7 +213,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | fruit || {{Avatarian|f r oo t|fruit}}<ref name="instagram-3.3" /> || /f ɹ u t/ || 1
 |-
-| games || {{Avatarian|g ey m z|games}}<ref name="sdcc-3" /> || /g e m z/ || 1
+| games || {{Avatarian|g ey m z|games}}<ref name="sdcc-3" /><ref name="sevenhavens-101-102" /> || /g e m z/ || 2
 |-
 | garden || {{Avatarian|g ah r 0 d uh n 0|garden}}<ref name="instagram-1.1" /><ref name="instagram-3.1" /> || /g ɑ ɹ d ə n/ || 2
 |-
@@ -176,6 +222,8 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 | gems || {{Avatarian|j e m z|gems}}<ref name="instagram-1.1" /> || /dʒ ɛ m z/ || 1
 |-
 | get || {{Avatarian|g e t 0|get}}<ref name="instagram-3.3" /> || /g ɛ t/ || 1
+|-
+| Ghosts || {{Avatarian|g oh s t s 0|Ghosts}}<ref name="episodes10-13" /> || /g oʊ s t s/ || 1
 |-
 | gluten || {{Avatarian|g l oo 0 t ey n 0|gluten}}<ref name="instagram-1.3" /> || /g l u t e n/ || 1
 |-
@@ -199,7 +247,9 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | hope || {{Avatarian|h oh p 0|hope}}<ref name="toph-letter" /> || /h oʊ p/ || 1
 |-
-| house || {{Avatarian|h ow s 0|house}}<ref name="instagram-1.1" /> || /h aʊ s/ || 1
+| Horizon || {{Avatarian|h uh r eye z uh n 0|Horizon}}<ref name="episodes1-3">''episodes1-3'' — [https://www.instagram.com/p/Dd1kFKtmcdo/?stkn=MXZ4dTE3ODM5NGJiaw%3D%3D&img_index=1 post]</ref> || /h ə ɹ aɪ z ə n/ || 1
+|-
+| house || {{Avatarian|h ow s 0|house}}<ref name="instagram-1.1" /><ref name="sevenhavens-101.4" /> || /h aʊ s/ || 2
 |-
 | how || {{Avatarian|h ow|how}}<ref name="toph-letter" /> || /h aʊ/ || 1
 |-
@@ -211,13 +261,15 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | ignite || {{Avatarian|i g n eye t 0|ignite}}<ref name="instagram-1.2" /> || /ɪ g n aɪ t/ || 1
 |-
-| in || {{Avatarian|ey n|in}}<ref name="instagram-3.1" /> || /e n/ || 1
+| Into || {{Avatarian|i n t oo|Into}}<ref name="episodes1-3" /> || /ɪ n t u/ || 1
 |-
 | is || {{Avatarian|i z|is}}<ref name="toph-letter" /><ref name="instagram-1.3" /> || /ɪ z/ || 3
 |-
 | it || {{Avatarian|i t|it}}<ref name="toph-letter" /> || /ɪ t/ || 1
 |-
 | item || {{Avatarian|eye 0 t uh m 0|item}}<ref name="instagram-1.3" /> || /aɪ t ə m/ || 1
+|-
+| jewel || {{Avatarian|j oo uh l|jewel}}<ref name="jewel-sign">''jewel-sign'' — movie 1:29:53</ref> || /dʒ u ə l/ || 1
 |-
 | journey || {{Avatarian|j uh r 0 n ee|journey}}<ref name="instagram-2.1" /><ref name="instagram-1.4" /> || /dʒ ə ɹ n i/ || 2
 |-
@@ -233,11 +285,15 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | kids || {{Avatarian|k i d z|kids}}<ref name="instagram-3.2" /> || /k ɪ d z/ || 1
 |-
-| Korra || {{Avatarian|k oh r uh|Korra}}<ref name="sdcc-3" /> || /k oʊ ɹ ə/ || 1
+| Korra || {{Avatarian|k oh r uh|Korra}}<ref name="sdcc-3" /><ref name="sevenhavens-101.5">''sevenhavens-101.5'' — A7H S01E01 15:35</ref> || /k oʊ ɹ ə/ || 2
 |-
 | Language || {{Avatarian|l ey ng 0 g w uh j|Language}}<ref name="sdcc-1" /> || /l e ŋ g w ə dʒ/ || 1
 |-
+| Left || {{Avatarian|l e f t|Left}}<ref name="episodes4-6" /> || /l ɛ f t/ || 1
+|-
 | let's || {{Avatarian|l e t s|let's}}<ref name="instagram-3.2" /> || /l ɛ t s/ || 1
+|-
+| Lies || {{Avatarian|l eye z 0|Lies}}<ref name="episodes6-9" /> || /l aɪ z/ || 1
 |-
 | listen || {{Avatarian|l i s uh n 0|listen}}<ref name="instagram-2.2" /> || /l ɪ s ə n/ || 1
 |-
@@ -256,6 +312,8 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 | mak || {{Avatarian|m a k 0|mak}}<ref name="instagram-3.3" /> || /m æ k/ || 1
 |-
 | mama || {{Avatarian|m ah m uh|mama}}<ref name="instagram-2.1" /> || /m ɑ m ə/ || 1
+|-
+| market || {{Avatarian|m ah r k uh t|market}}<ref name="sevenhavens-101.5" /> || /m ɑ ɹ k ə t/ || 1
 |-
 | me || {{Avatarian|m ee|me}}<ref name="toph-letter" /><ref name="katara-letter" /> || /m i/ || 2
 |-
@@ -285,7 +343,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | Mount || {{Avatarian|m ow n t|Mount}}<ref name="toph-letter" /> || /m aʊ n t/ || 1
 |-
-| mute || {{Avatarian|m y uu t|mute}}<ref name="instagram-2.2" /> || /m j ʊ t/ || 1
+| mute || {{Avatarian|m y oo t|mute}}<ref name="instagram-2.2" /> || /m j u t/ || 1
 |-
 | my || {{Avatarian|m eye|my}}<ref name="instagram-3.1" /><ref name="instagram-3.2" /> || /m aɪ/ || 2
 |-
@@ -293,7 +351,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | new || {{Avatarian|n y oo 0|new}}<ref name="instagram-1.3" /><ref name="instagram-2.2" /><ref name="instagram-3.2" /> || /n j u/ || 3
 |-
-| night || {{Avatarian|n eye t 0|night}}<ref name="instagram-1.4" /> || /n aɪ t/ || 1
+| Night || {{Avatarian|n eye t 0|Night}}<ref name="instagram-1.4" /><ref name="episodes4-6" /> || /n aɪ t/ || 2
 |-
 | no || {{Avatarian|n oh|no}}<ref name="instagram-2.2" /><ref name="instagram-3.3" /> || /n oʊ/ || 2
 |-
@@ -305,21 +363,27 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | number || {{Avatarian|n u m 0 b uh r 0|number}}<ref name="instagram-3.3" /> || /n ʌ m b ə ɹ/ || 1
 |-
-| of<ref group="note" name="contested" /> || {{Avatarian|u v|of}}<ref name="katara-letter" /><ref name="zuko-stamp" /><ref name="sdcc-1" /><br>{{Avatarian|uh v|of}}<ref name="instagram-1.4" /> || /ʌ v/ || 3
+| of<ref group="note" name="contested" /> || {{Avatarian|u v|of}}<ref name="katara-letter" /><ref name="zuko-stamp" /><ref name="sdcc-1" /><ref name="episodes4-6" /><ref name="episodes10-13" /><br>{{Avatarian|uh v|of}}<ref name="instagram-1.2" /><ref name="instagram-1.4" /><ref name="jewel-sign" /> || /ʌ v/ || 5
 |-
-| on || {{Avatarian|ah n|on}}<ref name="toph-letter" /><ref name="instagram-2.1" /> || /ɑ n/ || 2
+| On || {{Avatarian|ah n|On}}<ref name="toph-letter" /><ref name="instagram-2.1" /><ref name="episodes1-3" /> || /ɑ n/ || 3
+|-
+| One || {{Avatarian|w u n 0|One}}<ref name="episodes4-6" /><ref name="episodes6-9" /> || /w ʌ n/ || 2
+|-
+| Order || {{Avatarian|aw r d uh r 0|Order}}<ref name="episodes1-3" /> || /ɔ ɹ d ə ɹ/ || 1
 |-
 | organic || {{Avatarian|aw r g a n i k 0|organic}}<ref name="instagram-1.3" /> || /ɔ ɹ g æ n ɪ k/ || 1
 |-
 | out || {{Avatarian|ow t|out}}<ref name="toph-letter" /><ref name="katara-letter" /> || /aʊ t/ || 2
 |-
+| outpost || {{Avatarian|ow t p oh s t|outpost}}<ref name="sevenhavens-101.1">''sevenhavens-101.1'' — A7H S01E01 02:21</ref> || /aʊ t p oʊ s t/ || 1
+|-
 | pair || {{Avatarian|p e r 0|pair}}<ref name="instagram-3.3" /> || /p ɛ ɹ/ || 1
 |-
 | panda || {{Avatarian|p a n 0 d uh|panda}}<ref name="instagram-1.2" /> || /p æ n d ə/ || 1
 |-
-| peeep || {{Avatarian|p ee ee 0 ee p|peeep}}<ref name="instagram-1.1" /> || /p i i i p/ || 1
+| Part || {{Avatarian|p ah r t|Part}}<ref name="episodes6-9" /> || /p ɑ ɹ t/ || 1
 |-
-| performance || {{Avatarian|p uh r 0 f 0 r 0 m uh n s|performance}}<ref name="instagram-1.2" /> || /p ə ɹ f ɹ m ə n s/ || 1
+| performance || {{Avatarian|p uh r 0 f aw r 0 m uh n s|performance}}<ref name="instagram-1.2" /> || /p ə ɹ f ɔ ɹ m ə n s/ || 1
 |-
 | pet || {{Avatarian|p e t 0|pet}}<ref name="instagram-2.2" /> || /p ɛ t/ || 1
 |-
@@ -341,33 +405,53 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | raise || {{Avatarian|r ey i z|raise}}<ref name="instagram-2.2" /> || /ɹ e ɪ z/ || 1
 |-
+| ramen || {{Avatarian|r ah m e n 0|ramen}}<ref name="sevenhavens-101.6">''sevenhavens-101.6'' — A7H S01E01 15:56</ref> || /ɹ ɑ m ɛ n/ || 1
+|-
 | really || {{Avatarian|r i l ee|really}}<ref name="toph-letter" /> || /ɹ ɪ l i/ || 1
 |-
-| republic || {{Avatarian|r ee p uh b l uh k|republic}}<ref name="instagram-1.3" /> || /ɹ i p ə b l ə k/ || 1
+| Republic<ref group="note" name="contested" /> || {{Avatarian|r ee p uh b l uh k|Republic}}<ref name="instagram-1.3" /><br>{{Avatarian|r ee p u b l uh k|Republic}}<ref name="republic-city" /> || /ɹ i p ə b l ə k/ || 1
 |-
 | rest || {{Avatarian|r e s$ t|rest}}<ref name="katara-letter" /> || /ɹ ɛ s t/ || 1
 |-
+| rooftop || {{Avatarian|r oo f 0 t ah p 0|rooftop}}<ref name="sevenhavens-101.8">''sevenhavens-101.8'' — A7H S01E01 21:00</ref> || /ɹ u f t ɑ p/ || 1
+|-
+| Root || {{Avatarian|r oo t 0|Root}}<ref name="episodes10-13" /> || /ɹ u t/ || 1
+|-
 | royal || {{Avatarian|r oy uh l|royal}}<ref name="zuko-stamp" /> || /ɹ ɔɪ ə l/ || 1
+|-
+| Ruins || {{Avatarian|r oo uh n z 0|Ruins}}<ref name="episodes10-13" /> || /ɹ u ə n z/ || 1
 |-
 | sad || {{Avatarian|s a d 0|sad}}<ref name="instagram-1.1" /> || /s æ d/ || 1
 |-
 | salon || {{Avatarian|s uh l * n 0|salon}}<ref name="instagram-2.1" /> || /s ə l * n/ || 1
 |-
+| save || {{Avatarian|s ey i v|save}}<ref name="instagram-3.1" /> || /s e ɪ v/ || 1
+|-
 | school || {{Avatarian|s k oo l|school}}<ref name="instagram-1.2" /> || /s k u l/ || 1
 |-
-| seagull || {{Avatarian|s ee g a l 0|seagull}}<ref name="instagram-3.1" /> || /s i g æ l/ || 1
+| seagull || {{Avatarian|s * g * l 0|seagull}}<ref name="instagram-3.1" /> || /s * g * l/ || 1
+|-
+| seal || {{Avatarian|s ee l 0|seal}}<ref name="sevenhavens-103.2">''sevenhavens-103.2'' — A7H S01E03 10:21</ref> || /s i l/ || 1
 |-
 | seaweed || {{Avatarian|s ee w ee d 0|seaweed}}<ref name="instagram-1.3" /><ref name="instagram-3.3" /> || /s i w i d/ || 2
 |-
-| shh || {{Avatarian|sh oh|shh}}<ref name="sdcc-3" /> || /ʃ oʊ/ || 1
+| shirshu || {{Avatarian|sh i r 0 sh oo|shirshu}}<ref name="shirshu-sign" /> || /ʃ ɪ ɹ ʃ u/ || 1
 |-
-| something || {{Avatarian|s u 0 m th i ng 0|something}}<ref name="toph-letter" /> || /s ʌ m θ ɪ ŋ/ || 1
+| show || {{Avatarian|sh oh|show}}<ref name="sdcc-3" /> || /ʃ oʊ/ || 1
+|-
+| sick || {{Avatarian|s i k 0|sick}}<ref name="sevenhavens-101.7" /> || /s ɪ k/ || 1
+|-
+| Skip's || {{Avatarian|s k i p * *|Skip's}}<ref name="skips-fishing-supplies" /> || /s k ɪ p * */ || 1
+|-
+| something || {{Avatarian|s u m 0 th i ng 0|something}}<ref name="toph-letter" /> || /s ʌ m θ ɪ ŋ/ || 1
 |-
 | sonam || {{Avatarian|s oh n uh m 0|sonam}}<ref name="sonam">''sonam'' — movie 04:08</ref> || /s oʊ n ə m/ || 1
 |-
 | sound || {{Avatarian|s ow n d|sound}}<ref name="instagram-2.2" /> || /s aʊ n d/ || 1
 |-
 | soup || {{Avatarian|s oo p 0|soup}}<ref name="instagram-1.3" /> || /s u p/ || 1
+|-
+| Spirits || {{Avatarian|s p i r i t s 0|Spirits}}<ref name="episodes10-13" /> || /s p ɪ ɹ ɪ t s/ || 1
 |-
 | step || {{Avatarian|s t e p|step}}<ref name="instagram-3.1" /> || /s t ɛ p/ || 1
 |-
@@ -377,7 +461,15 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | stillness || {{Avatarian|s t i l n uh s 0|stillness}}<ref name="instagram-1.4" /> || /s t ɪ l n ə s/ || 1
 |-
+| Storm || {{Avatarian|s t aw r m 0|Storm}}<ref name="episodes1-3" /> || /s t ɔ ɹ m/ || 1
+|-
+| students || {{Avatarian|s t oo 0 d uh n t s 0|students}}<ref name="toph-letter" /> || /s t u d ə n t s/ || 1
+|-
 | sula's || {{Avatarian|s oo l s|sula's}}<ref name="instagram-1.2" /> || /s u l s/ || 1
+|-
+| supplies || {{Avatarian|s uh p l eye z|supplies}}<ref name="skips-fishing-supplies" /> || /s ə p l aɪ z/ || 1
+|-
+| Survival || {{Avatarian|s uh r 0 v eye v uh l 0|Survival}}<ref name="episodes1-3" /> || /s ə ɹ v aɪ v ə l/ || 1
 |-
 | take || {{Avatarian|t ey k 0|take}}<ref name="katara-letter" /> || /t e k/ || 1
 |-
@@ -385,7 +477,9 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | team || {{Avatarian|t ee m 0|team}}<ref name="katara-letter" /> || /t i m/ || 1
 |-
-| The<ref group="note" name="contested" /> || {{Avatarian|dh uh|The}}<ref name="toph-letter" /><ref name="katara-letter" /><ref name="instagram-1.3" /><ref name="instagram-1.4" /><ref name="instagram-3.3" /><br>{{Avatarian|dh ee|The}}<ref name="sdcc-1" /> || /ð ə/ || 7
+| temple || {{Avatarian|t e m 0 p uh l 0|temple}}<ref name="instagram-1.2" /> || /t ɛ m p ə l/ || 1
+|-
+| The<ref group="note" name="contested" /> || {{Avatarian|dh uh|The}}<ref name="toph-letter" /><ref name="katara-letter" /><ref name="instagram-1.3" /><ref name="instagram-1.4" /><ref name="instagram-3.3" /><ref name="episodes1-3" /><ref name="episodes4-6" /><ref name="episodes6-9" /><ref name="episodes10-13" /><br>{{Avatarian|dh ee|The}}<ref name="sdcc-1" /> || /ð ə/ || 17
 |-
 | theater || {{Avatarian|th ee uh t uh r|theater}}<ref name="sdcc-3" /> || /θ i ə t ə ɹ/ || 1
 |-
@@ -411,11 +505,13 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | treasures || {{Avatarian|t r e 0 zh uh r z|treasures}}<ref name="instagram-3.3" /> || /t ɹ ɛ ʒ ə ɹ z/ || 1
 |-
-| treats || {{Avatarian|t r ee t s 0|treats}}<ref name="sdcc-3" /> || /t ɹ i t s/ || 1
+| treats || {{Avatarian|t r ee t s 0|treats}}<ref name="sdcc-3" /><ref name="sevenhavens-101-102" /> || /t ɹ i t s/ || 2
 |-
 | trends || {{Avatarian|t r e n d z|trends}}<ref name="instagram-1.1" /> || /t ɹ ɛ n d z/ || 1
 |-
 | try || {{Avatarian|t r eye 0|try}}<ref name="instagram-3.3" /> || /t ɹ aɪ/ || 1
+|-
+| Two || {{Avatarian|t oo|Two}}<ref name="episodes6-9" /> || /t u/ || 1
 |-
 | Unique || {{Avatarian|y oo n ee k 0|Unique}}<ref name="sdcc-1" /> || /j u n i k/ || 1
 |-
@@ -439,7 +535,9 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | wear || {{Avatarian|w e r 0|wear}}<ref name="instagram-3.3" /> || /w ɛ ɹ/ || 1
 |-
-| what || {{Avatarian|w ah t 0|what}}<ref name="katara-letter" /> || /w ɑ t/ || 1
+| week || {{Avatarian|w ee k 0|week}}<ref name="7h-promo-1-week">''7h-promo-1-week'' — [https://www.instagram.com/p/Dd_iuUomsv_/?img_index=1&stkn=ZHkyMXZpcWhrcGRy post]</ref> || /w i k/ || 1
+|-
+| What<ref group="note" name="contested" /> || {{Avatarian|w ah t 0|What}}<ref name="katara-letter" /><br>{{Avatarian|w u t 0|What}}<ref name="episodes6-9" /> || /w ɑ t/ || 1
 |-
 | when || {{Avatarian|w e n 0|when}}<ref name="katara-letter" /> || /w ɛ n/ || 1
 |-
@@ -455,7 +553,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | Written || {{Avatarian|r i t uh n 0|Written}}<ref name="sdcc-1" /><ref name="sdcc-3" /> || /ɹ ɪ t ə n/ || 2
 |-
-| year || {{Avatarian|y i r 0|year}}<ref name="instagram-1.4" /> || /j ɪ ɹ/ || 1
+| year || {{Avatarian|y i r 0|year}}<ref name="instagram-1.4" /><ref name="jewel-sign" /> || /j ɪ ɹ/ || 2
 |-
 | you || {{Avatarian|y oo|you}}<ref name="toph-letter" /><ref name="katara-letter" /><ref name="instagram-3.2" /> || /j u/ || 5
 |-
