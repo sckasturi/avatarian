@@ -1,0 +1,93 @@
+;Description
+:This template is used to write Avatarian characters on articles here.
+;Dependencies
+:The application utilizes custom CSS and Lua. The CSS handles the SVG designs and allows for each to be displayed. The Lua module handles the conversion of plain text characters into the specific Avatarian glyphs. It handles things like which null to use, which orientation a glyph should be in and more.
+::[[User:TechFilmer/Avatarian.css]]
+::[[Module:Avatarian]]
+:The code to generate these files is open source and freely editable on [https://github.com/sckasturi/avatarian Github].
+;Syntax
+:Type <code>{{tl|Avatarian|Avatarian text representation|English word}}</code> somewhere.
+;Sample output
+:<code><nowiki>{{Avatarian|b eye / r oy uh l / d i k r ee - / u v / f eye uh r / l aw r d / z oo k oh|By royal decree of Fire Lord Zuko}}</nowiki></code>
+::gives...
+:{{Avatarian|b eye / r oy uh l / d i k r ee - / u v / f eye uh r / l aw r d / z oo k oh|By royal decree of Fire Lord Zuko}}<br/>
+;Usage
+*The template turns Latin alphabets into Avatarian glyphs. By typing in each sound, the script will stack the glyphs into the proper blocks, handle orientation, and more. Each set of Latin alphabet is mapped to a specific IPA sound and Avatarian glyph.
+* When only one phoneme is called in the template, it will show up alone so {{tl|Avatarian|g}} gives {{Avatarian|g}}. If two or more phonemes are called, they will appear as stacked blocks so {{tl|Avatarian|g -}} gives {{Avatarian|g -}} (g with a null) and {{tl|Avatarian|g a}} gives {{Avatarian|g a}}.
+* Because phonemes are separated by spaces, words are separated with a <code>/</code> mark.
+* If you need to force a character flip, you can with <code>$</code> and <code>%</code>. {{tl|Avatarian|s$}} gives the top variant of /s/, {{Avatarian|s$}} and {{tl|Avatarian|s%}} gives the bottom variant, {{Avatarian|s%}}.
+* Nulls are typed with <code>-</code>. You do not need to specify which null you are using, it will be automatically selected based on the needed height. Nulls used to be typed with <code>0</code>, which still works for now but is being replaced.
+* Numbers can be typed as they are, without spaces, so {{tl|Avatarian|2026}} gives {{Avatarian|2026}}. Each digit is its own glyph and stands next to the blocks rather than inside one, the same way punctuation does. A zero on its own is typed <code>@</code> for now, since <code>0</code> was the null.
+* The English shows if you hover over the word next to the IPA and is optional.
+* As it can be cumbersome to type Avatarian and sound out words, a utility exists at [https://avatarian.techfilmer.com] to enable easy typing. The Wikitext copy button will give you this template filled out.
+;Letter conversions
+{| class="wikitable" style="text-align:center; margin-left:20px"
+|-
+!  !! colspan="10" | vowels
+|-
+! IPA
+| i || ɪ || e || ɛ || æ || ʌ || ə || u || oʊ || ɔ
+|-
+! Latin
+| ee || i || ey || e || a || u || uh || oo || oh || aw
+|-
+! Avatarian
+| {{Avatarian|ee}} || {{Avatarian|i}} || {{Avatarian|ey}} || {{Avatarian|e}} || {{Avatarian|a}} || {{Avatarian|u}} || {{Avatarian|uh}} || {{Avatarian|oo}} || {{Avatarian|oh}} || {{Avatarian|aw}}
+|-
+!  !! colspan="5" | vowels !!  !! colspan="4" | consonants
+|-
+! IPA
+| ɑ || aɪ || aʊ || ʊ || ɔɪ ||  || p || b || t || d
+|-
+! Latin
+| ah || eye || ow || uu || oy ||  || p || b || t || d
+|-
+! Avatarian
+| {{Avatarian|ah}} || {{Avatarian|eye}} || {{Avatarian|ow}} || {{Avatarian|uu}} || {{Avatarian|oy}} ||  || {{Avatarian|p}} || {{Avatarian|b}} || {{Avatarian|t}} || {{Avatarian|d}}
+|-
+!  !! colspan="10" | consonants
+|-
+! IPA
+| k || g || m || n || ŋ || f || v || θ || ð || s
+|-
+! Latin
+| k || g || m || n || ng || f || v || th || dh || s
+|-
+! Avatarian
+| {{Avatarian|k}} || {{Avatarian|g}} || {{Avatarian|m}} || {{Avatarian|n}} || {{Avatarian|ng}} || {{Avatarian|f}} || {{Avatarian|v}} || {{Avatarian|th}} || {{Avatarian|dh}} || {{Avatarian|s}}
+|-
+!  !! colspan="10" | consonants
+|-
+! IPA
+| z || h || w || j || ɹ || l || tʃ || dʒ || ʃ || ʒ
+|-
+! Latin
+| z || h || w || y || r || l || ch || j || sh || zh
+|-
+! Avatarian
+| {{Avatarian|z}} || {{Avatarian|h}} || {{Avatarian|w}} || {{Avatarian|y}} || {{Avatarian|r}} || {{Avatarian|l}} || {{Avatarian|ch}} || {{Avatarian|j}} || {{Avatarian|sh}} || {{Avatarian|zh}}
+|-
+!  !! colspan="4" | consonants !!  colspan="2" | nulls !! colspan="4" | punctuation
+|-
+! IPA
+| ɹ || l || w || j || ∅ || ∅c || . || , || ? || !
+|-
+! Latin
+| r_c || l_c || w_c || y_c || - || -c || . || , || ? || !
+|-
+! Avatarian
+| {{Avatarian|r_c}} || {{Avatarian|l_c}} || {{Avatarian|w_c}} || {{Avatarian|y_c}} || {{Avatarian|-}} || {{Avatarian|-c}}  || {{Avatarian|.}} || {{Avatarian|,}} || {{Avatarian|?}} || {{Avatarian|!}}
+|-
+!  !! colspan="10" | numbers
+|-
+! Number
+| 0 || 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9
+|-
+! Latin
+| @ || 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9
+|-
+! Avatarian
+| {{Avatarian|@}} || {{Avatarian|1}} || {{Avatarian|2}} || {{Avatarian|3}} || {{Avatarian|4}} || {{Avatarian|5}} || {{Avatarian|6}} || {{Avatarian|7}} || {{Avatarian|8}} || {{Avatarian|9}}
+|}{{clear}}
+
+<includeonly>[[Category:Article templates|{{PAGENAME}}]]</includeonly><noinclude>[[Category:Template documentation|{{PAGENAME}}]]</noinclude>
