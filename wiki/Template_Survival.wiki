@@ -1,0 +1,10 @@
+<includeonly>{{Avatarian|s uh r 0 v eye v uh l 0|Survival}}</includeonly><noinclude>
+== Usage ==
+<pre>==== Book One: Survival ({{Survival}}) ====</pre>
+"Survival" in Avatarian, for the ''Avatar: Seven Havens'' Book One heading.
+Write that heading exactly as above on every page: its TOC anchor,
+<code>#Book_One:_Survival_(Survival)</code>, is what MediaWiki:Avatarian.css
+keys on to draw the glyphs in the table of contents too (see TOC_WORDS in
+tools/build_css_only.py). Changing the heading's English or this template's
+label breaks the TOC glyphs until the CSS is regenerated to match.
+</noinclude>
