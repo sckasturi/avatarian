@@ -1,0 +1,23 @@
+{
+  "_submission": {
+    "at": "2026-10-09T10:06:11.002Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "submission-gtzfda",
+    "what": "rooftop",
+    "where": "A7H S01E01 21:00",
+    "image": "submission-gtzfda.jpg",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "rooftop",
+      "spelling": "ɹ u f ∅ t ɑ p ∅",
+      "source": "submission-gtzfda",
+      "confidence": "certain"
+    }
+  ]
+}
