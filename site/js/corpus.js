@@ -183,6 +183,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E01 02:44",
       "image": "submission-34s03b.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101-102": {
+      "what": "Ellora festival market signs: 3 / games / drinks / food / Ellora treats",
+      "where": "A7H S01E01 10:17 and S01E02 10:19",
+      "image": "submission-rjoe9m.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -2401,9 +2407,10 @@ window.AVATARIAN_CORPUS = {
         "d",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-1.3"
+        "instagram-1.3",
+        "sevenhavens-101-102"
       ],
       "confidence": "certain",
       "source": "instagram-1.3"
@@ -3851,9 +3858,10 @@ window.AVATARIAN_CORPUS = {
         "m",
         "z"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "sdcc-3"
+        "sdcc-3",
+        "sevenhavens-101-102"
       ],
       "confidence": "certain",
       "source": "sdcc-3"
@@ -3910,9 +3918,10 @@ window.AVATARIAN_CORPUS = {
         "s",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "sdcc-3"
+        "sdcc-3",
+        "sevenhavens-101-102"
       ],
       "confidence": "certain",
       "source": "sdcc-3"
@@ -4492,13 +4501,28 @@ window.AVATARIAN_CORPUS = {
         "ɹ",
         "ə"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "sevenhavens-101.2"
+        "sevenhavens-101.2",
+        "sevenhavens-101-102"
       ],
       "confidence": "certain",
       "source": "sevenhavens-101.2",
       "gloss": "Ellora"
+    },
+    "books": {
+      "ipa": [
+        "b",
+        "ʊ",
+        "k",
+        "s"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.3"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.3"
     },
     "doctor": {
       "ipa": [
@@ -4518,19 +4542,21 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-101.3"
     },
-    "books": {
+    "drinks": {
       "ipa": [
-        "b",
-        "ʊ",
+        "d",
+        "ɹ",
+        "ɪ",
+        "ŋ",
         "k",
         "s"
       ],
       "count": 1,
       "sources": [
-        "sevenhavens-101.3"
+        "sevenhavens-101-102"
       ],
       "confidence": "certain",
-      "source": "sevenhavens-101.3"
+      "source": "sevenhavens-101-102"
     }
   },
   "conventions": {

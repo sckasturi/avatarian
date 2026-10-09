@@ -202,6 +202,12 @@
       "where": "A7H S01E01 02:44",
       "image": "submission-34s03b.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101-102": {
+      "what": "Ellora festival market signs: 3 / games / drinks / food / Ellora treats",
+      "where": "A7H S01E01 10:17 and S01E02 10:19",
+      "image": "submission-rjoe9m.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -2346,6 +2352,37 @@
       "key": "doctor",
       "spelling": "d ɑ k ∅ t ə ɹ ∅",
       "source": "sevenhavens-101.3",
+      "confidence": "certain"
+    },
+    {
+      "key": "drinks",
+      "spelling": "d ɹ ɪ ŋ k s",
+      "source": "sevenhavens-101-102",
+      "confidence": "certain"
+    },
+    {
+      "key": "ellora",
+      "spelling": "ɛ ∅ l oʊ ɹ ə",
+      "source": "sevenhavens-101-102",
+      "confidence": "certain",
+      "gloss": "Ellora"
+    },
+    {
+      "key": "food",
+      "spelling": "f u d ∅",
+      "source": "sevenhavens-101-102",
+      "confidence": "certain"
+    },
+    {
+      "key": "games",
+      "spelling": "g e m z",
+      "source": "sevenhavens-101-102",
+      "confidence": "certain"
+    },
+    {
+      "key": "treats",
+      "spelling": "t ɹ i t s ∅",
+      "source": "sevenhavens-101-102",
       "confidence": "certain"
     }
   ]
