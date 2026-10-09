@@ -189,6 +189,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E01 10:17 and S01E02 10:19",
       "image": "submission-rjoe9m.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.4": {
+      "what": "Ellora street: 432 / curry house",
+      "where": "A7H S01E01 14:06",
+      "image": "submission-h7l23x.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -1459,9 +1465,10 @@ window.AVATARIAN_CORPUS = {
         "s",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-1.1"
+        "instagram-1.1",
+        "sevenhavens-101.4"
       ],
       "confidence": "certain",
       "source": "instagram-1.1"
@@ -4557,6 +4564,20 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-101-102"
+    },
+    "curry": {
+      "ipa": [
+        "k",
+        "ə",
+        "ɹ",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.4"
     }
   },
   "conventions": {
