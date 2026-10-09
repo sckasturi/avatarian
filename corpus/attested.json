@@ -238,6 +238,12 @@
       "where": "A7H S01E01 21:00",
       "image": "submission-gtzfda.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.9": {
+      "what": "access 3",
+      "where": "A7H S01E01 21:02",
+      "image": "submission-b4bjem.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -2462,6 +2468,12 @@
       "key": "rooftop",
       "spelling": "ɹ u f ∅ t ɑ p ∅",
       "source": "sevenhavens-101.8",
+      "confidence": "certain"
+    },
+    {
+      "key": "access",
+      "spelling": "æ k s ɛ s ∅",
+      "source": "sevenhavens-101.9",
       "confidence": "certain"
     }
   ]
