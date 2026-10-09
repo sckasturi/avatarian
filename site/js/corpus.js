@@ -177,6 +177,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E01 02:39",
       "image": "submission-85ey06.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.3": {
+      "what": "Ellora street signs: doctor / 314 / 17 / books",
+      "where": "A7H S01E01 02:44",
+      "image": "submission-34s03b.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -4493,6 +4499,38 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-101.2",
       "gloss": "Ellora"
+    },
+    "doctor": {
+      "ipa": [
+        "d",
+        "ɑ",
+        "k",
+        "∅",
+        "t",
+        "ə",
+        "ɹ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.3"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.3"
+    },
+    "books": {
+      "ipa": [
+        "b",
+        "ʊ",
+        "k",
+        "s"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.3"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.3"
     }
   },
   "conventions": {

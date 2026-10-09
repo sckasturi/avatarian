@@ -196,6 +196,12 @@
       "where": "A7H S01E01 02:39",
       "image": "submission-85ey06.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.3": {
+      "what": "Ellora street signs: doctor / 314 / 17 / books",
+      "where": "A7H S01E01 02:44",
+      "image": "submission-34s03b.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -2329,6 +2335,18 @@
       "source": "sevenhavens-101.2",
       "confidence": "certain",
       "gloss": "Ellora"
+    },
+    {
+      "key": "books",
+      "spelling": "b ʊ k s",
+      "source": "sevenhavens-101.3",
+      "confidence": "certain"
+    },
+    {
+      "key": "doctor",
+      "spelling": "d ɑ k ∅ t ə ɹ ∅",
+      "source": "sevenhavens-101.3",
+      "confidence": "certain"
     }
   ]
 }
