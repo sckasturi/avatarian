@@ -49,6 +49,13 @@ test("numerals are typed as digits; the null is -", () => {
   assert.equal(wordsToSoundText(words), "1 0 -  /  k uh -");
 });
 
+test("a number needs no spaces between its digits", () => {
+  assert.deepEqual(plain(soundTextToWords("20")[0].ipa), ["2", "0"]);
+  assert.deepEqual(plain(soundTextToWords("1000 / k uh -")[0].ipa), ["1", "0", "0", "0"]);
+  // A lone 0 is zero too; 0c is still the old null spelling.
+  assert.deepEqual(plain(soundTextToWords("0 0c")[0].ipa), ["0", "∅c"]);
+});
+
 test("an old share link's 0s are read as nulls, captions left alone", () => {
   const { legacyNulls } = ctx;
   assert.equal(legacyNulls("a 0 p 0 uh 0 (Appa)"), "a - p - uh - (Appa)");

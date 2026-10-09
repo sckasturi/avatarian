@@ -486,7 +486,8 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
 - **Sounds are separated by spaces, words by `/`.**
 - **`-`** (or `_`) is the `∅` filler; the height comes from the pairing
   partner (§3), and `-c` forces the consonant-height one.
-- **`0`–`9`** are the numerals (§9). The null was typed `0` until the
+- **`0`–`9`** are the numerals (§9). A number needs no spaces: `20` or
+  `1000` is one numeral per digit, and a `0` inside a number is always zero. The null was typed `0` until the
   numerals arrived; the old spellings `0c` (null) and `@` (zero) are still
   accepted, and a share link made before the switch (no `v=2`) has its `0`
   tokens read as nulls. **The wiki has not switched yet**: `Module:Avatarian`

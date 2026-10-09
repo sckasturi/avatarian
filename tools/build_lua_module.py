@@ -383,7 +383,15 @@ local function parseWords(text)
   for chunk in (text .. "/"):gmatch("([^/]*)/") do
     local body, label = splitCaption(chunk)
     local ipa = {}
-    for tok in body:gmatch("%S+") do ipa[#ipa + 1] = normaliseSound(tok) end
+    for tok in body:gmatch("%S+") do
+      -- A run of digits is a number: one numeral per digit, and a 0 inside
+      -- it is zero, never the null (numberOrSound in sounds.js).
+      if tok:match("^%d%d+$") then
+        for d in tok:gmatch("%d") do ipa[#ipa + 1] = d end
+      else
+        ipa[#ipa + 1] = normaliseSound(tok)
+      end
+    end
     if #ipa > 0 then words[#words + 1] = { ipa = ipa, label = label } end
   end
   return words
@@ -427,7 +435,7 @@ function p._main(sounds, label)
   end
 
   -- Solo: one token, no space and no slash (e.g. {{Avatarian|ng}}).
-  if not sounds:find("[%s/]") then
+  if not sounds:find("[%s/]") and not sounds:match("^%d%d+$") then
     local ipa = normaliseSound(sounds)
     local sym = parseSymbol(ipa)
     local inner = isMark(sym) and markSpan(sym) or glyphSpan(ipa, "top", nil)

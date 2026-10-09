@@ -120,6 +120,16 @@ function legacyNulls(text) {
 }
 
 /**
+ * One typed token -> its symbols. A run of digits is a number written in
+ * numerals, so `20` or `1000` needs no spaces: it becomes one numeral per
+ * digit. Each digit is the numeral itself — a `0` inside a number is
+ * always zero, never a null. Anything else is one sound.
+ */
+function numberOrSound(token) {
+  return /^\d{2,}$/.test(token) ? token.split("") : [normaliseSound(token)];
+}
+
+/**
  * Split a token into its base sound and any trailing markers: a `$`/`%`
  * orientation override and/or a `_c` cluster-form request. Both are carried
  * through the code<->IPA lookups untouched (`r_c$` is not a key in READABLE)
@@ -230,7 +240,7 @@ function soundTextToWords(text) {
   const words = text.split("/")
     .map((chunk) => {
       const { body, label } = splitCaption(chunk);
-      const ipa = body.trim().split(/\s+/).filter(Boolean).map(normaliseSound);
+      const ipa = body.trim().split(/\s+/).filter(Boolean).flatMap(numberOrSound);
       return { word: label, ipa };
     })
     .filter(w => w.ipa.length);
@@ -288,7 +298,7 @@ function spreadCaptions(words) {
 if (typeof module !== "undefined") {
   module.exports = {
     SOUND_ALIASES, READABLE, READABLE_ALIASES, IPA_TO_CODE,
-    splitOverride, normaliseSound, soundToCode, legacyNulls,
+    splitOverride, normaliseSound, soundToCode, legacyNulls, numberOrSound,
     wordsToSoundText, soundTextToWords,
     splitCaption, spreadCaptions,
   };

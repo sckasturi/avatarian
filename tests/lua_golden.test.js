@@ -167,6 +167,17 @@ test("numerals render unpaired, at three columns, the same in both ports", { ski
   assert.deepEqual(runLua(driver).split("\n").slice(0, seqs.length), ref);
 });
 
+test("a number needs no spaces on the wiki either; its 0s are zeros", { skip: !haveLua && "lua not on PATH" }, () => {
+  const driver =
+    `local p = dofile(${luaLit(LUA_MODULE)})\n` +
+    `print(p._main("1000", nil))\n` +
+    `print(p._main("k uh 20", nil))\n`;
+  const [solo, word] = runLua(driver).split("\n");
+  assert.match(solo, /g-one av-wide3.*g-zero.*g-zero.*g-zero/);
+  assert.match(word, /av-block.*g-two av-wide3.*g-zero av-wide3/);
+  assert.doesNotMatch(word, /g-null/, "the 0 inside 20 is zero, not the wiki's 0 null");
+});
+
 test("Lua normaliseSound matches sounds.js over every code", { skip: !haveLua && "lua not on PATH" }, () => {
   const ctx = loadSite();
   // Everything the JS knows how to spell, plus a few overrides and raw IPA.
