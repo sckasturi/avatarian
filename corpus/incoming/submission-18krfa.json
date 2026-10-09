@@ -1,0 +1,23 @@
+{
+  "_submission": {
+    "at": "2026-10-09T10:08:30.594Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "submission-18krfa",
+    "what": "exit 3",
+    "where": "A7H S01E03 08:21",
+    "image": "submission-18krfa.jpg",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "exit",
+      "spelling": "ɛ g z ɪ t ∅",
+      "source": "submission-18krfa",
+      "confidence": "certain"
+    }
+  ]
+}
