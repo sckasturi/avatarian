@@ -220,6 +220,12 @@
       "where": "A7H S01E01 15:35",
       "image": "submission-nqguhs.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.6": {
+      "what": "Old World ruins: ramen 999",
+      "where": "A7H S01E01 15:56",
+      "image": "submission-x4geka.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -2420,6 +2426,12 @@
       "key": "market",
       "spelling": "m ɑ ɹ k ə t",
       "source": "sevenhavens-101.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "ramen",
+      "spelling": "ɹ ɑ m ɛ n ∅",
+      "source": "sevenhavens-101.6",
       "confidence": "certain"
     }
   ]

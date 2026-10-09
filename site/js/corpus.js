@@ -201,6 +201,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E01 15:35",
       "image": "submission-nqguhs.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.6": {
+      "what": "Old World ruins: ramen 999",
+      "where": "A7H S01E01 15:56",
+      "image": "submission-x4geka.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -4601,6 +4607,22 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-101.5"
+    },
+    "ramen": {
+      "ipa": [
+        "ɹ",
+        "ɑ",
+        "m",
+        "ɛ",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.6"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.6"
     }
   },
   "conventions": {
