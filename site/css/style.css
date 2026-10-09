@@ -510,6 +510,8 @@ a.social:hover, a.social:focus-visible { color: var(--accent); }
 .key-cell.is-placeholder { background: var(--tint-placeholder); }
 .key-art { color: var(--accent); width: 52px; height: 52px; margin: 0 auto; }
 .key-art svg { width: 100%; height: 100%; display: block; }
+/* A numeral: nine rows by three columns (68x164), at the letters' scale. */
+.key-art.is-mark { width: 36px; height: 86px; }
 .key-art.is-empty { border: 1px dashed var(--line); border-radius: 6px; box-sizing: border-box; }
 .key-lab { font-size: 13px; color: var(--ink); margin-top: 6px; }
 .key-lab .key-code {

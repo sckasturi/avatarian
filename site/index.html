@@ -21,9 +21,9 @@
 <meta name="twitter:title" content="Avatarian Translator" />
 <meta name="twitter:description" content="Type anything and watch it written in Avatarian, the script from Avatar Legends." />
 <meta name="twitter:image" content="https://avatarian.techfilmer.com/og-image.png?v=2" />
-<link rel="stylesheet" href="css/blocks.css?v=66" />
-<link rel="stylesheet" href="css/style.css?v=66" />
-<link rel="stylesheet" href="css/sourcepop.css?v=66" />
+<link rel="stylesheet" href="css/blocks.css?v=67" />
+<link rel="stylesheet" href="css/style.css?v=67" />
+<link rel="stylesheet" href="css/sourcepop.css?v=67" />
 </head>
 <body>
 
@@ -245,30 +245,30 @@ and made-up words too.</p>
   <p class="footer-note">Static site, no cookies.</p>
 </footer>
 
-<script src="js/manifest.js?v=66"></script>
+<script src="js/manifest.js?v=67"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=66"></script>
+<script src="js/corpus.js?v=67"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=66"></script>
-<script src="js/g2p.js?v=66"></script>
+<script src="js/lexicon.js?v=67"></script>
+<script src="js/g2p.js?v=67"></script>
 <!-- the sounds syntax (standalone; shared with the glyph designer). -->
-<script src="js/sounds.js?v=66"></script>
-<script src="js/render.js?v=66"></script>
+<script src="js/sounds.js?v=67"></script>
+<script src="js/render.js?v=67"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=66"></script>
-<script src="js/draw.js?v=66"></script>
+<script src="js/recognise.js?v=67"></script>
+<script src="js/draw.js?v=67"></script>
 <!-- Sounds -> likely English. Searches the corpus, then EXCEPTIONS, then
      the whole bundled dictionary, so it only earns its keep on a page
      that already loads lexicon.js — which this one does. -->
-<script src="js/reverse.js?v=66"></script>
+<script src="js/reverse.js?v=67"></script>
 <!-- The source preview popup, shared with the corpus page. -->
-<script src="js/sourcepop.js?v=66"></script>
+<script src="js/sourcepop.js?v=67"></script>
 <script>
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
 
@@ -1089,9 +1089,9 @@ function deleteToken() {
 // Each cell shows a glyph in the script; clicking it appends its code to
 // the sounds box, so the chart doubles as a palette.
 
-function keyArt(svg, flip) {
+function keyArt(svg, flip, mark) {
   const art = document.createElement("div");
-  art.className = "key-art";
+  art.className = "key-art" + (mark ? " is-mark" : "");
   if (svg) {
     art.innerHTML = svg;
     // Show the glyph in its BOTTOM-slot form. A `flips` vowel stores its
@@ -1102,7 +1102,7 @@ function keyArt(svg, flip) {
   return art;
 }
 
-function keyCell({ code, title, drawn, note, cls, flip }) {
+function keyCell({ code, title, drawn, note, cls, flip, mark }) {
   const cell = document.createElement(code ? "button" : "div");
   cell.className = "key-cell" + (cls ? " " + cls : "") + (code ? " is-clickable" : "");
   if (code) {
@@ -1111,7 +1111,7 @@ function keyCell({ code, title, drawn, note, cls, flip }) {
     cell.addEventListener("click", () => appendSound(code));
   }
 
-  cell.appendChild(keyArt(drawn, flip));
+  cell.appendChild(keyArt(drawn, flip, mark));
 
   const lab = document.createElement("div");
   lab.className = "key-lab";
@@ -1159,12 +1159,15 @@ function buildKeyGrid() {
     consonant: ["Consonants", null],
     vowel: ["Vowels", null],
     null: ["Slot fillers", "written into empty slots, not a sound"],
+    numeral: ["Numerals", "one digit at a time, beside the writing"],
   };
 
-  ["consonant", "vowel", "null"].forEach((kind) => {
-    const entries = Object.entries(GLYPH_SET).filter(([, i]) =>
-      kind === "null" ? i.type === "null" || i.type === "null_consonant" : i.type === kind
-    );
+  ["consonant", "vowel", "null", "numeral"].forEach((kind) => {
+    const entries = Object.entries(GLYPH_SET).filter(([ipa, i]) =>
+      kind === "null" ? i.type === "null" || i.type === "null_consonant"
+      : kind === "numeral" ? !!NUMERALS[ipa]
+      : i.type === kind
+    ).sort(([a], [b]) => kind === "numeral" ? a.localeCompare(b) : 0);
     if (!entries.length) return;
     keySection(wrap, SECTIONS[kind][0], SECTIONS[kind][1]);
 
@@ -1172,7 +1175,9 @@ function buildKeyGrid() {
       const code = IPA_TO_CODE[ipa] || ipa;
       wrap.appendChild(keyCell({
         code,
-        title: "/" + ipa + "/",
+        // A numeral is not a sound, so no IPA slashes: just its name.
+        title: kind === "numeral" ? NUMERALS[ipa].name : "/" + ipa + "/",
+        mark: kind === "numeral",
         drawn: info.status === "PLACEHOLDER" ? null : info.svg,
         note: info.status === "PLACEHOLDER" ? "no glyph anywhere yet" : null,
         cls: info.status === "PLACEHOLDER" ? "is-placeholder" : "",
@@ -1248,6 +1253,6 @@ fitSounds();
 <!-- Cloudflare Web Analytics: cookieless, privacy-first visit counts. -->
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
   data-cf-beacon='{"token": "5fc3578a9a1d49d7b7d40a0b4d34381b"}'></script>
-<script src="js/notice.js?v=66"></script>
+<script src="js/notice.js?v=67"></script>
 </body>
 </html>
