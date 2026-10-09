@@ -165,6 +165,12 @@ window.AVATARIAN_CORPUS = {
       "what": "7h-promo: 1 week",
       "where": "https://www.instagram.com/p/Dd_iuUomsv_/?img_index=1&stkn=ZHkyMXZpcWhrcGRy",
       "image": "submission-bljdgh.png"
+    },
+    "sevenhavens-101.1": {
+      "what": "Ellora sign: outpost 7",
+      "where": "A7H S01E01 02:21",
+      "image": "submission-9hcu99.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -4448,6 +4454,22 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "7h-promo-1-week",
       "gloss": "week"
+    },
+    "outpost": {
+      "ipa": [
+        "aʊ",
+        "t",
+        "p",
+        "oʊ",
+        "s",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.1"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.1"
     }
   },
   "conventions": {
