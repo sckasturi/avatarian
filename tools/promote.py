@@ -106,6 +106,15 @@ def _entry_span(src, start, end, name):
     e_start = start + m.start()
     nxt = re.compile(r'^    "', re.M).search(body, m.end())
     e_end = start + nxt.start() if nxt else end
+    # Comment lines directly above the NEXT entry belong to it, not to this
+    # one. Without this, replacing an entry ate its neighbour's comment
+    # (shipping /ð/ deleted the note above /s/).
+    while True:
+        prev = src.rfind("\n", start, e_end - 1)
+        line_start = prev + 1
+        if line_start <= e_start or not src[line_start:e_end].startswith("    #"):
+            break
+        e_end = line_start
 
     # Walk back over any comment lines immediately above.
     c_start = e_start
@@ -204,6 +213,7 @@ def shippable():
     return [p.stem for p in sorted(DESIGNS.glob("*.json"))
             if p.stem in bg.NAME_TO_IPA
             and p.stem not in bg.PLACEHOLDERS
+            and p.stem not in bg.MIRRORED
             and json.loads(p.read_text(encoding="utf-8")).get("shapes")]
 
 
@@ -246,6 +256,10 @@ def promote(name, design=None, dry_run=False, allow_invented=False):
     still a PLACEHOLDER, i.e. one the set has no glyph for at all.
     Adding a glyph is a bigger step than adjusting one, and bulk runs
     skip these entirely, so naming it takes a second press."""
+    if name in bg.MIRRORED:
+        raise PromoteError(
+            f"{name} isn't drawn — it ships as the mirror of "
+            f"{bg.MIRRORED[name]}. Edit and ship {bg.MIRRORED[name]} instead.")
     design = design or load(name)
     if name in bg.PLACEHOLDERS and not allow_invented:
         raise PromoteError(
