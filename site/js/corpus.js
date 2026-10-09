@@ -225,6 +225,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E01 21:02",
       "image": "submission-b4bjem.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-103.1": {
+      "what": "exit 3",
+      "where": "A7H S01E03 08:21",
+      "image": "submission-18krfa.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -4701,6 +4707,22 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-101.9"
+    },
+    "exit": {
+      "ipa": [
+        "ɛ",
+        "g",
+        "z",
+        "ɪ",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-103.1"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-103.1"
     }
   },
   "conventions": {
