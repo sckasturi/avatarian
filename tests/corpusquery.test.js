@@ -58,7 +58,21 @@ test("nonsense is reported, not silently matched", () => {
   assert.ok(parseQuery("top:").error, "a slot with nothing to search for");
   assert.ok(parseQuery("g @zz").error, "an unknown context");
   assert.ok(parseQuery("side:g").error, "an unknown slot");
-  assert.ok(parseQuery("g s").error, "two phonemes (out of scope in v1)");
+  assert.ok(parseQuery("g s k").error, "three sounds — a block only holds two");
+  assert.ok(parseQuery("top:m z").error, "a block search already names both slots");
+});
+
+test("two sounds are one exact block, top then bottom", () => {
+  assert.deepEqual(plain(parseQuery("m z", ctx.normaliseSound)),
+    { phoneme: null, slot: null, context: null, block: ["m", "z"] });
+  const mz = found("m z");
+  assert.ok(mz.includes("games") && mz.includes("gems"), "games and gems write /m/ over /z/");
+  assert.ok(!found("z m").includes("games"), "order matters: top then bottom");
+  // Every hit is the whole block, and is the right one.
+  const r = matchWord(WORDS.games.ipa, parseQuery("m z", ctx.normaliseSound));
+  assert.ok(r.hits.length && r.hits.every((h) => h.slot === null));
+  // A typed null matches either height of null.
+  assert.ok(found("s 0").length > 0, "s over a null");
 });
 
 test("a bare @context is a shape-only search — every block of that shape", () => {

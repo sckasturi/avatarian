@@ -276,8 +276,11 @@ Two consonants are redrawn when they sit in a C-C block (`clusterForm` in
   its flat base meets the seam. A non-cluster /s/ (the final /s/ of `class`,
   under a vowel) keeps its full length.
 - **/z/** drops its two corner dots in a C-C block — they sit in the top
-  row, which the overlap rides up into the glyph above (`goods`, `trends`,
-  `models`). A /z/ beside a vowel (`is`, `cheese`) keeps them.
+  row, which the overlap rides up into the glyph above (`goods`, `trends`).
+  Only the dots something collides with go: under /ɹ/ the left one stays
+  (`waters`), under /l/ the right (`models`), and under /m/ — a ring, its
+  bottom corners empty — both stay (`games`, `gems`). A /z/ beside a vowel
+  (`is`, `cheese`) keeps them.
 
 ---
 

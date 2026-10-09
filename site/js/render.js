@@ -302,7 +302,9 @@ function orientationOf(sym, entry, slot, partner) {
  * the glyph above. Under a plain consonant BOTH drop (`goods`, `trends`,
  * `models`). Under an approximant only one collides with the rising l_c/r_c
  * stroke, so the OTHER survives: under /r/ the left dot stays (`waters`,
- * `stickers`), under /l/ the right (`models`, `criminals`).
+ * `stickers`), under /l/ the right (`models`, `criminals`). Under /m/ BOTH
+ * stay (`games`, `gems`): /m/ is a ring, its bottom corners are empty, so
+ * nothing rides up into the dots.
  *
  * A non-cluster /s/ or /z/ — sitting under or over a vowel — is left
  * whole. See AVATARIAN.md §12.6.
@@ -322,6 +324,7 @@ function clusterForm(sym, svg, partner, slot, flipped) {
     const p = partner != null ? parseSymbol(partner).sym : null;
     if (p === "ɹ") return svg.replace(/<circle cx="74"[^>]*>/, "");  // keep left
     if (p === "l") return svg.replace(/<circle cx="26"[^>]*>/, "");  // keep right
+    if (p === "m") return svg;                                       // keep both
     return svg.replace(/<circle[^>]*>/g, "");
   }
   return svg;

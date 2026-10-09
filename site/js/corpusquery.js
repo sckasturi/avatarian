@@ -11,15 +11,18 @@
  * block is just an adjacent pair and its shape is readable straight off
  * the symbols.
  *
- * THE QUERY, in one line:  [[slot:]phoneme] [@context]
+ * THE QUERY, in one line:  [[slot:]phoneme | top bottom] [@context]
  *
  *   g            /g/ anywhere
+ *   m z          a whole BLOCK: /m/ on top, /z/ beneath it (`games`)
+ *   s 0          /s/ over a null — either null, the height doesn't matter
  *   g @cc        /g/ in a two-consonant block (so NOT beside a null)
  *   top:s @cv    /s/ in the top slot of a consonant-vowel block
  *   aɪ @vv       the diphthong sharing its block with another vowel
  *   @cc          EVERY two-consonant block, whatever sits in it (no phoneme)
  *
  *   phoneme  optional — omit it and a bare @context is a shape-only search
+ *   block    two sounds, top then bottom, match one block exactly; no slot:
  *   slot     top | bottom            (t | b accepted; absent = either)
  *   context  @cc @cv @vc @vv @null   (@any or absent = any shape)
  *
@@ -44,7 +47,9 @@ const CQ_VOWELS = new Set([
   "aɪ", "aʊ", "ɔɪ",
 ]);
 const CQ_NULLS = new Set(["∅", "∅c"]);
-const CQ_PUNCT = new Set([".", ",", "?", "!"]);
+// Everything drawn beside the writing rather than in a slot: punctuation
+// and the numerals (render.js PUNCTUATION / NUMERALS).
+const CQ_PUNCT = new Set([".", ",", "?", "!", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
 /** The block-shape codes a `@context` can name, and what each requires. */
 const CQ_CONTEXTS = ["any", "cc", "cv", "vc", "vv", "null"];
@@ -59,6 +64,14 @@ function cqBase(token) {
   if (t.endsWith("$") || t.endsWith("%")) t = t.slice(0, -1);
   if (t.endsWith("_c")) t = t.slice(0, -2);
   return t;
+}
+
+/** A slot's symbol for comparing: bare, with the two nulls as one — a
+ *  block search for `s 0` means "s over a null", and which height of null
+ *  is written is decided by the partner, not the search. */
+function cqSlotKey(token) {
+  const b = cqBase(token);
+  return CQ_NULLS.has(b) ? "∅" : b;
 }
 
 /** C, V or N (consonant / vowel / null) — the class that decides shape. */
@@ -124,7 +137,7 @@ function parseQuery(str, normalise) {
 
   let slot = null, context = null;
   const parts = raw.split(/\s+/);
-  let phoneme = null;
+  const sounds = [];
 
   for (let piece of parts) {
     if (!piece) continue;
@@ -155,9 +168,18 @@ function parseQuery(str, normalise) {
       if (!piece) continue;               // "top:" with the phoneme still to come
     }
 
-    if (phoneme) return { error: "one phoneme per query in this version" };
-    phoneme = cqBase(norm(piece));
+    if (sounds.length === 2) {
+      return { error: "a block holds two sounds — name one, or a top and a bottom" };
+    }
+    sounds.push(cqSlotKey(norm(piece)));
   }
+
+  // Two sounds are a whole block, top then bottom.
+  if (sounds.length === 2) {
+    if (slot) return { error: "a block search names both slots — drop the top:/bottom:" };
+    return { phoneme: null, slot: null, context, block: sounds };
+  }
+  const phoneme = sounds[0] || null;
 
   // A phoneme is no longer required: a bare `@context` ("@cc") is a
   // shape-only search — every block of that shape, whatever sits in it.
@@ -166,7 +188,7 @@ function parseQuery(str, normalise) {
   if (!phoneme && !context) {
     return { error: "name a sound (g, sh) or a block shape (@cc @cv @vc @vv @null)" };
   }
-  return { phoneme: phoneme || null, slot, context };
+  return { phoneme, slot, context };
 }
 
 /**
@@ -179,12 +201,19 @@ function parseQuery(str, normalise) {
  */
 function matchWord(ipa, q) {
   if (!q || q.empty) return { matched: true, hits: [] };
-  if (q.error || (!q.phoneme && !q.context)) return { matched: false, hits: [] };
+  if (q.error || (!q.phoneme && !q.context && !q.block)) return { matched: false, hits: [] };
 
   const blocks = cqBlocks(ipa || []);
   const hits = [];
   blocks.forEach((block, bi) => {
     if (!cqShapeMatches(q.context, block)) return;
+    // A whole-block search: both slots, in order.
+    if (q.block) {
+      if (cqSlotKey(block[0]) === q.block[0] && cqSlotKey(block[1]) === q.block[1]) {
+        hits.push({ block: bi, slot: null });
+      }
+      return;
+    }
     // Shape-only (no phoneme): the whole block is the hit — every block of
     // this shape, whatever characters sit in it.
     if (!q.phoneme) { hits.push({ block: bi, slot: null }); return; }
@@ -215,7 +244,7 @@ function buildQuery({ phoneme, slot, context } = {}) {
 if (typeof module !== "undefined") {
   module.exports = {
     parseQuery, matchWord, buildQuery,
-    cqBase, cqClass, cqBlocks, cqShapeMatches,
+    cqBase, cqSlotKey, cqClass, cqBlocks, cqShapeMatches,
     CQ_VOWELS, CQ_NULLS, CQ_CONTEXTS,
   };
 }

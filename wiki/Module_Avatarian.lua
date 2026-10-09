@@ -209,6 +209,7 @@ local function glyphSpan(token, slot, partner)
       local pSym = parseSymbol(partner)
       if pSym == "ɹ" then stem = "z_left"      -- right dot dropped, left kept
       elseif pSym == "l" then stem = "z_right"  -- left dot dropped, right kept
+      elseif pSym == "m" then stem = "z"        -- under /m/'s ring both dots stay
       else stem = "z_none" end
     end
   end

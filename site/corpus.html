@@ -209,7 +209,7 @@ everything here was read off a real source.</p>
 </div>
 
 <details class="adv-search" id="advSearch">
-  <summary>Structural search — find a sound by the block it sits in</summary>
+  <summary>Structural search — find a sound, or a whole block, in the corpus</summary>
   <div class="adv-body">
     <div class="adv-builder">
       <label>Sound
@@ -236,19 +236,21 @@ everything here was read off a real source.</p>
     <div class="adv-query">
       <label style="flex:1 1 14rem">Query
         <input type="text" id="qString" spellcheck="false" autocomplete="off"
-               placeholder="e.g. g @cc" aria-describedby="qHelp" />
+               placeholder="e.g. g @cc  or  m z" aria-describedby="qHelp" />
       </label>
       <button type="button" id="qClear" class="filter-toggle">Clear</button>
     </div>
     <p class="adv-note" id="qNote" role="status" aria-live="polite"></p>
     <p class="adv-help" id="qHelp">Grammar:
-      <code>[[top:|bottom:]sound] [@cc @cv @vc @vv @null]</code>. Sounds read
+      <code>[[top:|bottom:]sound | top bottom] [@cc @cv @vc @vv @null]</code>. Sounds read
       like the translator — <code>sh</code>, <code>ng</code>, <code>uh</code>,
       or raw IPA. So <code>g @cc</code> finds /g/ paired with another
       consonant, and never /ŋ/. The sound is optional: a shape on its own —
       <code>@cc</code>, or picking a block shape with the sound left on
-      <em>any</em> — finds every block of that shape. Matching blocks are
-      ringed in each word.</p>
+      <em>any</em> — finds every block of that shape. Two sounds find one
+      exact block, top then bottom: <code>m z</code> is /m/ over /z/, and
+      <code>s 0</code> is /s/ over a null. Matching blocks are ringed in each
+      word.</p>
   </div>
 </details>
 
@@ -563,6 +565,8 @@ const CTX_NAME = {
 };
 function describeQuery(q) {
   if (q.empty) return "";
+  // A whole block: "the block /m/ over /z/".
+  if (q.block) return "the block /" + q.block[0] + "/ over /" + q.block[1] + "/";
   // Shape-only: no phoneme, just a block shape — "every C–C block".
   if (!q.phoneme) return "every " + CTX_NAME[q.context];
   const bits = ["/" + q.phoneme + "/"];
