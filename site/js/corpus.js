@@ -213,6 +213,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E01 20:55",
       "image": "submission-5tavjw.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.8": {
+      "what": "rooftop",
+      "where": "A7H S01E01 21:00",
+      "image": "submission-gtzfda.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -4630,6 +4636,18 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-101.6"
     },
+    "bay": {
+      "ipa": [
+        "b",
+        "e"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.7"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.7"
+    },
     "sick": {
       "ipa": [
         "s",
@@ -4644,17 +4662,23 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-101.7"
     },
-    "bay": {
+    "rooftop": {
       "ipa": [
-        "b",
-        "e"
+        "ɹ",
+        "u",
+        "f",
+        "∅",
+        "t",
+        "ɑ",
+        "p",
+        "∅"
       ],
       "count": 1,
       "sources": [
-        "sevenhavens-101.7"
+        "sevenhavens-101.8"
       ],
       "confidence": "certain",
-      "source": "sevenhavens-101.7"
+      "source": "sevenhavens-101.8"
     }
   },
   "conventions": {

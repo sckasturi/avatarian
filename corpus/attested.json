@@ -232,6 +232,12 @@
       "where": "A7H S01E01 20:55",
       "image": "submission-5tavjw.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.8": {
+      "what": "rooftop",
+      "where": "A7H S01E01 21:00",
+      "image": "submission-gtzfda.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -2450,6 +2456,12 @@
       "key": "sick",
       "spelling": "s ɪ k ∅",
       "source": "sevenhavens-101.7",
+      "confidence": "certain"
+    },
+    {
+      "key": "rooftop",
+      "spelling": "ɹ u f ∅ t ɑ p ∅",
+      "source": "sevenhavens-101.8",
       "confidence": "certain"
     }
   ]
