@@ -214,6 +214,9 @@ function label(key) {
  * Falls back to the glyph beside a null when there is no example.
  */
 function defaultPhrase(sound) {
+  // A full-height mark stands on its own, unpaired — a null beside it
+  // would only draw an empty block next to the thing being drawn.
+  if (sound.type === "mark_full" && !sound.example) return sound.code || sound.key;
   const word = sound.example;
   if (!word || word.startsWith("(")) {
     return (sound.code || sound.ipa || "0") + " 0";

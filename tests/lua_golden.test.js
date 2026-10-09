@@ -62,6 +62,7 @@ const HEIGHT = {
   "avatarian-null_consonant": "av-null-c", "avatarian-null": "av-null-v",
 };
 const WIDE_MARK = new Set(["question"]);
+const NUMERAL_MARK = new Set(["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]);
 
 function serializeGlyph(g) {
   if (g._c.has("avatarian-unreadable")) return '<span class="av-glyph av-consonant g-unreadable"></span>';
@@ -98,7 +99,8 @@ function serializeWord(container) {
       h += "</span>";
     } else if (n._c.has("avatarian-mark")) {
       const name = n.dataset.glyph;
-      h += '<span class="av-mark g-' + name + (WIDE_MARK.has(name) ? " av-wide" : "") + '"></span>';
+      const wide = NUMERAL_MARK.has(name) ? " av-wide3" : WIDE_MARK.has(name) ? " av-wide" : "";
+      h += '<span class="av-mark g-' + name + wide + '"></span>';
     }
   }
   return h;
@@ -145,13 +147,33 @@ test("Lua module renders every corpus word identically to render.js", { skip: !h
     `${mismatches.length}/${words.length} words differ:\n\n` + mismatches.slice(0, 8).join("\n\n"));
 });
 
+test("numerals render unpaired, at three columns, the same in both ports", { skip: !haveLua && "lua not on PATH" }, () => {
+  const ctx = loadSite();
+  ctx.document = makeDocument();
+  // Numerals break the run like punctuation: (k,ə) then 1 2 0 as marks,
+  // then (t,∅) pairs on its own.
+  const seqs = [["k", "ə", "1", "2", "0", "t"], ["0", "9"], ["5", "."]];
+  const ref = seqs.map(ipa => {
+    const el = ctx.document.createElement("span");
+    ctx.renderAvatarian(ipa, el);
+    return serializeWord(el);
+  });
+  assert.match(ref[0], /g-one av-wide3.*g-two av-wide3.*g-zero av-wide3/);
+  assert.equal((ref[0].match(/av-block/g) || []).length, 2, "the digits don't fill slots");
+  const driver =
+    `local p = dofile(${luaLit(LUA_MODULE)})\n` +
+    `local words = {${seqs.map(luaArr).join(",")}}\n` +
+    `for _, ipa in ipairs(words) do print(p._renderWord(ipa)) end\n`;
+  assert.deepEqual(runLua(driver).split("\n").slice(0, seqs.length), ref);
+});
+
 test("Lua normaliseSound matches sounds.js over every code", { skip: !haveLua && "lua not on PATH" }, () => {
   const ctx = loadSite();
   // Everything the JS knows how to spell, plus a few overrides and raw IPA.
   const codes = [...new Set([
     ...Object.keys(ctx.READABLE), ...Object.keys(ctx.READABLE_ALIASES),
     ...Object.keys(ctx.SOUND_ALIASES), "AH", "Uh", "EE", "s$", "z%", "r_c", "r_c$",
-    "0", "0c", "ə", "ɑ", "tʃ", "x", "notasound",
+    "0", "0c", "@", "5", "9", "ə", "ɑ", "tʃ", "x", "notasound",
   ])];
   const ref = codes.map(ctx.normaliseSound);
 

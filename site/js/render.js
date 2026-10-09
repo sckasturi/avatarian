@@ -493,7 +493,7 @@ function renderAvatarian(ipaSeq, container) {
   };
 
   for (const token of ipaSeq) {
-    if (PUNCTUATION[parseSymbol(token).sym]) {
+    if (isMark(parseSymbol(token).sym)) {
       flush();
       container.appendChild(makeMark(parseSymbol(token).sym));
     } else {
@@ -522,11 +522,12 @@ function renderGlyph(code, container) {
   container.classList.add("avatarian-word", "avatarian-solo");
   soundTextToWords(String(code == null ? "" : code).trim()).forEach((w) => {
     for (const token of w.ipa) {
-      // A mark (. , ? !) is drawn on its own path, not paired; route it
-      // there so a lone `?` gives a real mark, not a mis-sized letter box.
+      // A mark (. , ? ! or a numeral) is drawn on its own path, not paired;
+      // route it there so a lone `?` gives a real mark, not a mis-sized
+      // letter box.
       const sym = parseSymbol(token).sym;
       container.appendChild(
-        PUNCTUATION[sym] ? makeMark(sym) : makeGlyph(token, "top", null));
+        isMark(sym) ? makeMark(sym) : makeGlyph(token, "top", null));
     }
   });
   return container;
@@ -567,8 +568,31 @@ const PUNCTUATION = {
             + '<path d="M 18 146 L 18 146.5"/>' },
 };
 
+/**
+ * The numerals: the same height class as punctuation — nine rows, unpaired,
+ * standing beside the writing — but three lattice columns wide (68×164).
+ * Keyed by the digit itself; the zero numeral's key is "0", typed `@` for
+ * now because `0` still means the null (sounds.js). There is no inline
+ * copy: each one comes from the manifest, where an undrawn numeral ships a
+ * dashed placeholder at its real width.
+ */
+const NUMERALS = {
+  "0": { name: "zero" }, "1": { name: "one" }, "2": { name: "two" },
+  "3": { name: "three" }, "4": { name: "four" }, "5": { name: "five" },
+  "6": { name: "six" }, "7": { name: "seven" }, "8": { name: "eight" },
+  "9": { name: "nine" },
+};
+
+const NUMERAL_BOX = 'viewBox="0 0 68 164" fill="none" stroke="currentColor"'
+  + ' stroke-width="6" stroke-dasharray="10 9" opacity="0.75"';
+
+/** Is this symbol a full-height mark — drawn on its own, never in a slot? */
+function isMark(sym) {
+  return !!(PUNCTUATION[sym] || NUMERALS[sym]);
+}
+
 function makeMark(sym) {
-  const mark = PUNCTUATION[sym];
+  const mark = PUNCTUATION[sym] || NUMERALS[sym];
   const span = document.createElement("span");
   span.className = "avatarian-mark avatarian-mark-" + mark.name;
   span.title = mark.name;
@@ -579,7 +603,10 @@ function makeMark(sym) {
   const fromManifest = GLYPHS[sym];
   const svg = (fromManifest && fromManifest.svg)
     ? fromManifest.svg
-    : `<svg xmlns="http://www.w3.org/2000/svg" ${MARK_BOX}>` + mark.d + "</svg>";
+    : mark.d
+      ? `<svg xmlns="http://www.w3.org/2000/svg" ${MARK_BOX}>` + mark.d + "</svg>"
+      : `<svg xmlns="http://www.w3.org/2000/svg" ${NUMERAL_BOX}>`
+        + '<rect x="8" y="14" width="52" height="136" rx="10"/></svg>';
   span.innerHTML = svg;
   // A mark is nine rows tall but may be more than one column wide (a
   // question mark). The CSS assumes a 1-column 36×164; set the real
@@ -594,5 +621,6 @@ if (typeof module !== "undefined") {
   module.exports = {
     renderAvatarian, renderGlyph, pairUp, resolveBlocks, slotRows, glyphSVG, VOWELS,
     NULL_IPA, NULL_C_IPA, NULLS, nullFor, isVowelSymbol, parseSymbol,
+    PUNCTUATION, NUMERALS, isMark,
   };
 }

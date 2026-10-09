@@ -92,19 +92,20 @@ def main():
         if (g.get("variants") or {}).get("cluster"):
             fields.append("cluster=true")
         glyph_rows.append(f"  [{lua_str(key)}]={{{', '.join(fields)}}},")
-        # A mark whose box is wider than the 1-column 36 gets the wide class so
-        # its mask keeps proportion (only `?`, at 52). Matches makeMark's
-        # per-mark aspect-ratio in render.js, coarsened to a class.
+        # A mark whose box is wider than the 1-column 36 gets a wide class so
+        # its mask keeps proportion: av-wide for 2 columns (`?`, at 52),
+        # av-wide3 for 3 (the numerals, at 68). Matches makeMark's per-mark
+        # aspect-ratio in render.js, coarsened to a class.
         if typ and typ.startswith("mark"):
             m = re.search(r'viewBox="0 0 ([\d.]+)', g.get("svg", ""))
             if m and float(m.group(1)) > 36:
-                wide_marks.append(key)
+                wide_marks.append((key, "av-wide3" if float(m.group(1)) > 52 else "av-wide"))
 
     data = "\n".join([
         lua_map("READABLE", readable),
         lua_map("READABLE_ALIASES", readable_aliases),
         lua_map("SOUND_ALIASES", sound_aliases),
-        "local MARK_WIDE = {" + ", ".join(f"[{lua_str(k)}]=true" for k in wide_marks) + "}",
+        "local MARK_WIDE = {" + ", ".join(f"[{lua_str(k)}]={lua_str(c)}" for k, c in wide_marks) + "}",
         "local GLYPH = {",
         "\n".join(glyph_rows),
         "}",
@@ -277,11 +278,12 @@ local function glyphSpan(token, slot, partner)
   return '<span class="' .. cls .. '"></span>'
 end
 
--- A punctuation mark: nine rows tall, one column (two for `?`), unpaired.
+-- A full-height mark: nine rows tall, one column (two for `?`, three for a
+-- numeral), unpaired.
 local function markSpan(sym)
   local m = GLYPH[sym]
   local cls = "av-mark g-" .. m.name
-  if MARK_WIDE[sym] then cls = cls .. " av-wide" end
+  if MARK_WIDE[sym] then cls = cls .. " " .. MARK_WIDE[sym] end
   return '<span class="' .. cls .. '"></span>'
 end
 

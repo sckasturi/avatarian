@@ -70,6 +70,7 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
 .av-slot-bottom .av-vowel.av-flipped:not(.av-4row),.av-slot-bottom .av-null-v.av-flipped:not(.av-4row){transform:scaleY(-1) translateY(-20%)}
 .av-mark{display:inline-block;line-height:0;align-self:stretch;background-color:currentColor;height:calc(1.25em * 1.64);width:calc(1.25em * 1.64 / 9);-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:100% 100%}
 .av-mark.av-wide{width:calc(1.25em * 1.64 * 2 / 9)}
+.av-mark.av-wide3{width:calc(1.25em * 0.68)}
 /* Copy/paste: the glyph spans are empty masks, so Module:Avatarian emits the
  * word's text in .av-copy — a transparent, selectable text layer covering the
  * word. The glyphs sit ABOVE it (z-index) and are click-through
@@ -81,6 +82,59 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
 
 /* ===== glyph shapes ===== */
 """
+
+
+# TOC words. MediaWiki strips every class out of a heading when it builds the
+# table of contents, so a {{Avatarian}} word in a heading reaches the TOC as
+# its plain .av-copy text. For the few headings that matter, redraw the line
+# in CSS keyed on the TOC link's anchor (the same on every page, since it comes
+# from the heading text): every piece of the original text goes into zero-width
+# clipped grid columns (Fandom serves it either as plain text or split around
+# bare <span>s, which become separate grid items), ::before re-types the
+# English, ::after paints the word as one mask, and the link's ::after puts
+# back the closing text. Desktop: #toc and Fandom's #sticky-toc (.toc). Mobile:
+# the community menu's Contents panel, which is too narrow for one line, so its
+# English breaks at a fixed point (CSS "\A") and the word ends the last line.
+# Each SVG is the word as laid out by this stylesheet, exported from a live
+# heading (see wiki/toc-words/README.md).
+# (anchor, text before the word, text after it, svg file, mobile text before it)
+TOC_WORDS = [
+    ("Book_One:_Survival_(Survival)", "Book One: Survival (", ")", "survival.svg",
+     "Book One:\\A Survival ("),
+]
+TOC_WORD_HEIGHT = 1.355   # the word's height in a heading, in the heading's em
+MOBILE_TOC_GAP = "9px"    # the mobile Contents link's flex column-gap, undone before the closing text
+HIDE_TEXT = ("display:inline-grid;grid-template-columns:auto auto;grid-template-rows:auto;"
+             "grid-auto-flow:column;grid-auto-columns:0;align-items:center;overflow:hidden;white-space:nowrap")
+
+
+def toc_rules():
+    out = ["", "/* ===== TOC words (see TOC_WORDS in tools/build_css_only.py) ===== */"]
+    for anchor, before, after, fname, mobile_before in TOC_WORDS:
+        svg = (ROOT / "wiki" / "toc-words" / fname).read_text(encoding="utf-8").strip()
+        vb = [float(v) for v in re.search(r'viewBox="([^"]+)"', svg).group(1).split()]
+        width = TOC_WORD_HEIGHT * vb[2] / vb[3]
+        uri = "data:image/svg+xml," + urllib.parse.quote(svg, safe="")
+        word = (f"width:{width:.3f}em;height:{TOC_WORD_HEIGHT}em;background-color:currentColor;"
+                f'-webkit-mask:url("{uri}") center/100% 100% no-repeat')
+        a = f'.toc a[href="#{anchor}"]'
+        out += [
+            f"{a}{{display:inline-flex;align-items:center}}",
+            f"{a} .toctext{{{HIDE_TEXT}}}",
+            f'{a} .toctext::before{{content:"{before}";grid-column:1;grid-row:1;white-space:pre}}',
+            f'{a} .toctext::after{{content:"";grid-column:2;grid-row:1}}',
+            f'{a}::after{{content:"{after}"}}',
+        ]
+        m = f'#community-menu-toc-list a[href="#{anchor}"]'
+        t = f"{m} .mobile-global-navigation__menu-item-with-icon-description"
+        out += [
+            f"{t}{{{HIDE_TEXT}}}",
+            f'{t}::before{{content:"{mobile_before}";grid-column:1;grid-row:1;white-space:pre;align-self:flex-end}}',
+            f'{t}::after{{content:"";grid-column:2;grid-row:1;align-self:flex-end}}',
+            f'{m}::after{{content:"{after}";align-self:flex-end;margin-left:-{MOBILE_TOC_GAP}}}',
+            f"{a} .toctext::after,{t}::after{{{word}}}",   # one copy of the SVG for both
+        ]
+    return out
 
 
 def main():
@@ -109,7 +163,7 @@ def main():
             rules.append(f'.g-z_left{{-webkit-mask-image:url("{mask_uri(drop("74"))}")}}')   # right dot dropped, left kept
             rules.append(f'.g-z_right{{-webkit-mask-image:url("{mask_uri(drop("26"))}")}}')  # left dot dropped, right kept
             rules.append(f'.g-z_none{{-webkit-mask-image:url("{mask_uri(re.sub(r"<circle[^>]*>", "", base))}")}}')
-    OUT.write_text(LAYOUT + "\n".join(rules) + "\n", encoding="utf-8")
+    OUT.write_text(LAYOUT + "\n".join(rules + toc_rules()) + "\n", encoding="utf-8")
     print(f"Wrote {OUT} — {len(rules)} glyph classes, {round(OUT.stat().st_size / 1024, 1)} KB")
 
 

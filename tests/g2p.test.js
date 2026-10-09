@@ -145,6 +145,13 @@ test("an attested answer carries its source and confidence", () => {
   assert.equal(got.entry.confidence, appa.confidence);
 });
 
+test("a number in English is written in numerals, a digit apiece", () => {
+  const words = sentenceToIPA("appa 2024.");
+  assert.equal(words.length, 2);
+  assert.deepEqual([...words[1].ipa], ["2", "0", "2", "4", "."]);
+  assert.equal(words[1].tier, "numeral");
+});
+
 test("sentenceToIPA carries the tier onto every word", () => {
   const words = sentenceToIPA("appa bloodbending zzblrf");
   assert.deepEqual(plain(words.map(w => w.tier)),

@@ -1,0 +1,11 @@
+=== Numerals ===
+Numerals are written one digit at a time. Like punctuation, they fall outside the regular block system and stand on their own; each is three columns wide and nine rows high.
+
+{| class="wikitable" style="text-align:center"
+|-
+! Numeral
+| 0 || 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9
+|-
+! Avatarian
+| {{Avatarian|@}} || {{Avatarian|1}} || {{Avatarian|2}} || {{Avatarian|3}} || {{Avatarian|4}} || {{Avatarian|5}} || {{Avatarian|6}} || {{Avatarian|7}} || {{Avatarian|8}} || {{Avatarian|9}}
+|}

@@ -102,7 +102,9 @@ def code_map():
     Falls back to nothing if READABLE stops being a plain object literal,
     which shows up as a sound list with no codes rather than wrong ones.
     """
-    out = {bg.NULL_IPA: "0"}
+    # Numerals are typed as themselves — except zero, whose `0` still
+    # belongs to the null for now, so it is typed `@` (sounds.js).
+    out = {bg.NULL_IPA: "0", **{d: d for d in bg.NUMERAL_TO_NAME}, "0": "@"}
     try:
         src = SOUNDS.read_text(encoding="utf-8")
     except OSError:
@@ -130,17 +132,25 @@ def catalog():
         # They differ for the two nulls: both read as marks, but one is
         # written at a consonant's height and one at a vowel's.
         kind = bg.design_type(ipa)
+        numeral = ipa in bg.NUMERAL_TO_NAME
+        if numeral:
+            group = "numeral"
+        elif kind.startswith("mark"):
+            group = "mark"
+        else:
+            group = kind
         rows.append({
             "name": name,
             "ipa": None if ipa in (bg.NULL_IPA, bg.NULL_C_IPA) else ipa,
             "key": ipa,
             "type": kind,
-            "group": "mark" if kind.startswith("mark") else kind,
+            "group": group,
             # A full-height mark opens at whatever width it ships (the
-            # question mark may be wider than one column); every other
-            # glyph has a fixed grid.
+            # question mark may be wider than one column); a numeral not
+            # yet drawn opens on its 3x9; every other glyph has a fixed grid.
             "grid": ([bg.MARKS_FULL[name]["cols"], 9]
                      if kind == "mark_full" and name in bg.MARKS_FULL
+                     else [bg.NUMERAL_COLS, 9] if numeral
                      else glyphspec.grid_for(kind)),
             "code": codes.get(ipa),
             "example": EXAMPLES.get(name),
@@ -187,8 +197,10 @@ def catalog():
             "currentFlat": None,
         })
 
-    order = {"consonant": 0, "vowel": 1, "mark": 2, "cluster": 3}
-    rows.sort(key=lambda r: (order[r["group"]], r["name"]))
+    order = {"consonant": 0, "vowel": 1, "mark": 2, "numeral": 3, "cluster": 4}
+    # Numerals sort by value, not alphabetically by their spelled-out names.
+    rows.sort(key=lambda r: (order[r["group"]],
+                             r["key"] if r["group"] == "numeral" else r["name"]))
 
     # Extra tracings the key has that aren't a sound of their own — the
     # second /l/ and /æ/ cells, which are the bottom-slot orientations.

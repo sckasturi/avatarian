@@ -292,7 +292,7 @@ interpretations of the key chart, not facsimiles.
 | --- | --- | --- |
 | consonant, `mark_consonant` | 5 × 5 cells | 100 × 100 |
 | vowel, `mark` | 5 × 4 cells | 100 × 80 (flat) |
-| `mark_full` (punctuation) | 1–3 × 9 cells | 36–68 × 164 |
+| `mark_full` (punctuation, numerals) | 1–3 × 9 cells | 36–68 × 164 |
 
 Constants (`tools/glyphspec.py` / `tools/build_glyphs.py`, kept in step):
 
@@ -343,7 +343,7 @@ often differ — don't read one off the other. Regenerate this table from the
 build script rather than trusting it blind.
 
 The inventory is **40 phonemes — 25 consonants and 15 vowels** — plus two
-nulls (§3) and four punctuation marks (§9). Every drawn glyph is sourced
+nulls (§3), four punctuation marks and ten numerals (§9). Every drawn glyph is sourced
 from reference material; nothing is invented.
 
 ### Consonants (5×5)
@@ -441,6 +441,16 @@ carries no manifest. The exact shapes live in `build_glyphs.py`.
 The apostrophe is still stripped; `woong's` and `heng's` are attested and
 write the possessive as sounds (`ɛ s`) with no mark.
 
+### Numerals
+
+The ten digits are `mark_full` too — nine rows, unpaired, standing beside
+the writing and breaking the pairing run exactly as punctuation does —
+but **three columns wide** (a 3×9 lattice, 68×164). They are keyed by the
+digit (`0`–`9`, stems `zero`…`nine`) and typed as themselves, except
+zero: `0` is still the null's code, so the zero numeral is typed **`@`**
+for now (§10). Converting from English writes a number as numerals, one
+digit per mark. The shapes live in `MARKS_FULL` in `build_glyphs.py`.
+
 ---
 
 ## 10. The sounds syntax (how you type it)
@@ -474,6 +484,8 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
 - **Sounds are separated by spaces, words by `/`.**
 - **`0`** (or `_`, `-`) is the `∅` filler. `∅c` has no code — the height
   comes from the pairing partner (§3).
+- **`1`–`9`** are the numerals, and **`@`** is the zero numeral — a
+  stopgap while `0` still means the null (§9).
 - **`$` / `%`** force a glyph's orientation: `$` is the top-slot form, `%`
   the bottom, for **every** glyph (the upside-down-stored u/ɔ included). The
   only spot the corpus still needs it is **`s$`** in *rest* and *humansitters*

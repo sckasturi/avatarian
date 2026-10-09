@@ -1,0 +1,58 @@
+{
+  "name": "three",
+  "ipa": "3",
+  "type": "mark_full",
+  "grid": [
+    3,
+    9
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.5,
+          "y": 8.5,
+          "seg": "line"
+        }
+      ]
+    },
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 1.5
+        },
+        {
+          "x": 2.5,
+          "y": 1.5,
+          "seg": "line"
+        }
+      ]
+    },
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 3.5
+        },
+        {
+          "x": 2.5,
+          "y": 3.5,
+          "seg": "line"
+        }
+      ]
+    }
+  ],
+  "updated": "2026-10-09T20:07:44Z"
+}

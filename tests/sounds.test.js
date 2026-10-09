@@ -35,6 +35,18 @@ test("readable codes, IPA and the fillers all reach the same symbol", () => {
   assert.equal(normaliseSound("-"), "∅");
 });
 
+test("numerals are typed as digits, zero as @ while 0 is the null", () => {
+  assert.equal(normaliseSound("7"), "7");
+  assert.equal(normaliseSound("@"), "0", "@ is the zero numeral");
+  assert.equal(normaliseSound("0"), "∅", "0 is still the null");
+  assert.equal(soundToCode("0"), "@", "the zero numeral shows as @, not as a null");
+  assert.equal(soundToCode("4"), "4");
+  // Box -> parse -> box keeps the zero numeral and the null apart.
+  const words = soundTextToWords("1 @ 0 / k uh 0");
+  assert.deepEqual(plain(words[0].ipa), ["1", "0", "∅"]);
+  assert.equal(wordsToSoundText(words), "1 @ 0  /  k uh 0");
+});
+
 test("Katara spells from its readable codes", () => {
   assert.deepEqual(
     plain(soundTextToWords("k uh t ah r uh")[0].ipa),

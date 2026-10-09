@@ -70,14 +70,23 @@ const READABLE_ALIASES = {
 const SOUND_ALIASES = {
   "0": "∅", "_": "∅", "-": "∅",   // the empty-slot filler
   "0c": "∅c",                     // the consonant-height null, written 0c
+  // The zero NUMERAL. Its manifest key is the real digit "0", but `0` is
+  // still the null above, so for now zero is typed `@`. The other nine
+  // digits are typed as themselves and need no alias. When the null moves
+  // off `0`, drop "0" above and this line, and fix IPA_TO_CODE below.
+  "@": "0",
   "eɪ": "e", "ej": "e",           // key chart labels this vowel e/eɪ
   "ɝ": "ə", "ɜr": "ə", "ɜ": "ə",  // r-coloured spellings, and ɜ itself
   "ɑː": "ɑ", "iː": "i", "uː": "u",
 };
 
-/** IPA -> the readable code to DISPLAY. `∅` shows as its `0` filler. */
+/**
+ * IPA -> the readable code to DISPLAY. `∅` shows as its `0` filler, and so
+ * the zero numeral (key "0") has to show as `@`, or re-reading the box
+ * would turn it into a null.
+ */
 const IPA_TO_CODE = (() => {
-  const map = { "∅": "0" };
+  const map = { "∅": "0", "0": "@" };
   Object.entries(READABLE).forEach(([code, ipa]) => {
     if (!map[ipa]) map[ipa] = code;
   });

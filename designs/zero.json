@@ -1,0 +1,41 @@
+{
+  "name": "zero",
+  "ipa": "0",
+  "type": "mark_full",
+  "grid": [
+    3,
+    9
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": true,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 6.5
+        },
+        {
+          "x": 0.5,
+          "y": 8.5,
+          "seg": "line"
+        },
+        {
+          "x": 2.5,
+          "y": 8.5,
+          "seg": "line"
+        },
+        {
+          "x": 2.5,
+          "y": 6.5,
+          "seg": "line"
+        }
+      ],
+      "closeSeg": {
+        "seg": "line"
+      }
+    }
+  ],
+  "updated": "2026-10-09T20:10:12Z"
+}

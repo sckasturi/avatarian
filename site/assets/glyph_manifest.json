@@ -330,5 +330,55 @@
     "file": "exclamation.svg",
     "status": "drawn",
     "type": "mark_full"
+  },
+  "0": {
+    "file": "zero.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "1": {
+    "file": "one.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "2": {
+    "file": "two.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "3": {
+    "file": "three.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "4": {
+    "file": "four.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "5": {
+    "file": "five.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "6": {
+    "file": "six.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "7": {
+    "file": "seven.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "8": {
+    "file": "eight.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
+  "9": {
+    "file": "nine.svg",
+    "status": "drawn",
+    "type": "mark_full"
   }
 }

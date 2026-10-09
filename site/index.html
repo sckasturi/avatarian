@@ -315,7 +315,7 @@ function applyWordForm(word) {
       && typeof modelSpelling === "function") {
     const model = modelSpelling(word.word);
     if (model && model.length) {
-      const marks = (word.ipa || []).filter((t) => PUNCTUATION[t]);
+      const marks = (word.ipa || []).filter((t) => isMark(t));
       return { ...word, ipa: model.concat(marks) };
     }
   }
@@ -348,7 +348,7 @@ const srcPop = createSourcePopup((window.AVATARIAN_CORPUS || {}).sources, render
 // `*` (a glyph that couldn't be read) matches whatever fills its slot.
 function spellingIsAttested(ipa, record) {
   if (!record || !ipa) return false;
-  const drawn = ipa.filter((t) => !PUNCTUATION[t]);
+  const drawn = ipa.filter((t) => !isMark(t));
   const cands = [record.ipa, ...(record.alternates || []).map((a) => a.ipa)];
   return cands.some((cand) =>
     cand && cand.length === drawn.length &&
@@ -555,7 +555,7 @@ function reportUnknown(words) {
       // Two things have no glyph on purpose: `*`, a slot in a source that
       // could not be read, and the punctuation marks, which are drawn
       // beside the writing rather than in a slot.
-      .filter(sym => sym !== "*" && !PUNCTUATION[sym] && !GLYPH_SET[sym])
+      .filter(sym => sym !== "*" && !isMark(sym) && !GLYPH_SET[sym])
   )];
   $("soundsHint").textContent = unknown.length
     ? "not a known sound: " + unknown.join(" ")
