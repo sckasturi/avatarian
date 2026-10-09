@@ -2,7 +2,7 @@
 
 One file per character, `<name>.json`, drawn on the script's own lattice
 — **5×5** cells for a consonant, **5×4** for a vowel, **1×9** (or **2×9**)
-for a punctuation mark — in the designer:
+for a punctuation mark, **3×9** for a numeral — in the designer:
 
 ```bash
 python3 tools/designer_server.py     # http://localhost:8792/
@@ -32,7 +32,8 @@ every glyph rather than needing 40 paths re-authored.
   "ipa": "m",                 // null for a mark
   "type": "consonant",        // consonant | vowel | mark | mark_consonant | mark_full
   "grid": [5, 5],             // [w, h] — 5×5 consonant, 5×4 vowel,
-                              //   1×9 (or 2×9) mark_full punctuation
+                              //   1×9 (or 2×9) mark_full punctuation,
+                              //   3×9 mark_full numeral
   "notes": "ring, dot centred",
   "shapes": [
     {

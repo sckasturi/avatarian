@@ -223,6 +223,8 @@ CONSONANTS = {
               "A 28.28 28.28 0 0 0 18 50")
          + dot(50, 50),
     "ng": path("M 34 82 A 34 34 0 1 1 66 82"),
+    # bowed saltire, crossing high (about a third down): short shallow arms out
+    # to the top corners, long legs bowing outward and finishing near-vertical
     "f": path("M 18 18 A 51.6 51.6 0 0 1 50 34 A 61.38 61.38 0 0 1 82 82")
          + path("M 82 18 A 51.6 51.6 0 0 0 50 34 A 61.38 61.38 0 0 0 18 82"),
     "v": path("M 18 18 L 82 18 A 36.22 36.22 0 0 1 50 58 A 52 52 0 0 0 18 82")
@@ -250,7 +252,7 @@ CONSONANTS = {
     # drawing them as a single path replaces the square-capped joins
     # between separate <path>s (which left a little tick, visible flipped)
     # with clean miter joins.
-    "l": path("M 18 82 L 18 18 L 82 18 L 82 58 A 28.28 28.28 0 0 1 50 82"),
+    "l": path("M 18 82 L 18 18 L 82 18 L 82 50 A 32 32 0 0 1 50 82"),
     "r": "",                            # derived below: the mirror of /l/
     "y": "",                            # derived below: the mirror of /w/
     "sh": path("M 18 50 L 50 18 L 82 50") + path("M 18 82 L 50 50 L 82 82"),
@@ -258,6 +260,11 @@ CONSONANTS = {
     "j_dz": path("M 82 18 L 82 82 L 18 82 L 18 18 L 50 18 L 50 58"),
     "zh": path("M 18 82 L 18 50 A 32 32 0 0 1 82 50 L 82 82"),
 }
+
+# Glyphs that are never drawn: each is the horizontal flip of its master,
+# always in step. promote.py won't ship one (the entry above would be
+# overwritten here anyway) and "ship all" doesn't list them — edit the master.
+MIRRORED = {"r": "l", "y": "w"}
 
 # /l/ and /r/ are a mirror pair: draw /l/ (edit its entry above, or promote a
 # new drawing from the designer) and /r/ is its horizontal flip, always in
@@ -279,20 +286,22 @@ CONSONANTS["y"] = hflip(CONSONANTS["w"])
 
 VOWELS = {
     "i": path("M 18 40 L 82 40") + path("M 18 80 L 82 80"),
-    "ih": path("M 50 80 L 50 60")
-          + path("M 18 60 L 82 60 L 82 20 L 18 20"),
+    "ih": path("M 50 80 L 50 60") + path("M 18 60 L 82 60 L 82 20 L 18 20"),
     "ei": path("M 50 80 L 50 20")
           + path("M 18 60 L 82 60")
           + path("M 18 20 L 82 20"),
     "eh": path("M 18 40 A 42 52.5 0 0 1 50 60 A 42 52.5 0 0 0 82 80")
           + path("M 82 40 A 42 52.5 0 0 0 50 60 A 42 52.5 0 0 1 18 80"),
-    "ae": path("M 26 40 L 26 70 A 33.94 42.43 0 0 0 74 70 L 74 40")
-          + dot(50, 50),
+    "ae": path("M 18 40 L 18 40 A 32 40 0 0 0 82 40 L 82 40") + dot(50, 50),
     "ai": dot(26, 70) + path("M 74 40 L 26 40") + dot(74, 70),
     "uh": path("M 18 80 L 34 80")
           + path("M 18 40 L 34 40")
           + path("M 66 40 L 82 40")
           + path("M 66 80 L 82 80"),
+    # ə in its TOP-slot form. The bottom form is this mirrored, and the
+    # renderer derives it. This drawing used to be called `nurse` and ship as a
+    # separate sound /ɜ/; the two turned out to be one letter in its two slot
+    # orientations, point-for-point mirrors including the dots.
     "schwa": path("M 82 80 A 25.3 31.62 0 0 1 50 60 A 25.3 31.62 0 0 0 18 40")
              + dot(82, 40)
              + dot(18, 80),
@@ -354,6 +363,16 @@ MARKS_FULL = {
     "comma": mark(1, path("M 18 114 L 18 146")),
     "exclamation": mark(1, dot(18, 82) + path("M 18 18 L 18 58") + path("M 18 146 L 18 106")),
     "question": mark(2, path("M 34 66 A 16 16 0 0 0 34 98")),
+    "zero": mark(3, path("M 18 114 L 18 146 L 50 146 L 50 114 L 18 114 Z")),
+    "one": mark(3, path("M 18 18 L 50 18") + path("M 34 146 L 34 18")),
+    "two": mark(3, path("M 18 146 L 18 50 A 32 32 0 0 0 50 18")),
+    "three": mark(3, path("M 18 18 L 18 146") + path("M 18 34 L 50 34") + path("M 18 66 L 50 66")),
+    "four": mark(3, path("M 18 146 L 18 18 L 50 50")),
+    "five": mark(3, path("M 34 18 L 34 66 L 18 66 L 18 98 L 50 98 L 50 66 L 34 66") + path("M 34 146 L 34 98")),
+    "six": mark(3, path("M 18 18 L 18 114 L 50 114 L 50 146")),
+    "seven": mark(3, path("M 18 18 C 18 60.67 18 103.33 18 146") + path("M 18 82 L 50 114")),
+    "eight": mark(3, path("M 18 18 L 18 146 L 50 146 L 50 114")),
+    "nine": mark(3, path("M 18 18 L 18 98 L 26 98 A 24 24 0 0 1 26 146 L 18 146")),
 }
 
 # The character you type -> the mark's name, i.e. its manifest key -> stem.
@@ -365,6 +384,22 @@ MARK_FULL_UNIT = 16   # one lattice column
 MARK_FULL_MARGIN = 10  # clearance either side
 def mark_width(cols):  # viewBox width for a mark that many columns wide
     return cols * MARK_FULL_UNIT + 2 * MARK_FULL_MARGIN
+
+
+# Numerals are mark_full too: the height of a whole block, unpaired, and
+# THREE lattice columns wide (68x164). Keyed in the manifest by the digit
+# itself, so the zero numeral's key really is "0" — but `0` is still typed
+# for the null, so for now the zero numeral is typed `@` (SOUND_ALIASES in
+# site/js/sounds.js). Swapping the null off `0` later only touches the
+# aliases; nothing keyed here moves.
+#
+# Each starts as a PLACEHOLDER until it is drawn in the designer and
+# shipped, which lands its body in MARKS_FULL as `mark(3, ...)`.
+NUMERAL_COLS = 3
+NUMERAL_TO_NAME = {
+    "0": "zero", "1": "one", "2": "two", "3": "three", "4": "four",
+    "5": "five", "6": "six", "7": "seven", "8": "eight", "9": "nine",
+}
 
 
 # Glyphs whose source is NOT reference/avatarian_key.svg, so the key tab
@@ -446,6 +481,19 @@ PLACEHOLDER_SVG = (
     "</svg>"
 )
 
+# The same dashed box at a numeral's 3x9 proportions, so an undrawn numeral
+# holds its real width in a line instead of squashing a square into it.
+PLACEHOLDER_MARK_SVG = (
+    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {mark_width(NUMERAL_COLS)} '
+    f'{MARK_FULL_BOX}" fill="none">'
+    f'<rect x="8" y="14" width="{mark_width(NUMERAL_COLS) - 16}" height="136" rx="10" '
+    'stroke="currentColor" stroke-width="6" stroke-dasharray="10 9" opacity="0.75"/>'
+    f'<text x="{mark_width(NUMERAL_COLS) // 2}" y="82" text-anchor="middle" '
+    'dominant-baseline="central" font-family="Georgia,serif" font-size="40" '
+    'fill="currentColor" opacity="0.75">?</text>'
+    "</svg>"
+)
+
 # IPA -> filename stem
 IPA_TO_NAME = {
     "p": "p", "b": "b", "t": "t", "d": "d", "k": "k", "g": "g",
@@ -463,8 +511,9 @@ IPA_TO_NAME = {
     "ɑ": "ah", "aɪ": "ai", "aʊ": "au", "ɔɪ": "oi",
     NULL_IPA: "null_v",
     NULL_C_IPA: "null_c",
-    # Punctuation, keyed by the character. mark_full height class.
+    # Punctuation and numerals, keyed by the character. mark_full height class.
     **PUNCT_TO_NAME,
+    **NUMERAL_TO_NAME,
 }
 
 VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
@@ -472,7 +521,7 @@ VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
 
 
 def glyph_type(ipa):
-    if ipa in PUNCT_TO_NAME:
+    if ipa in PUNCT_TO_NAME or ipa in NUMERAL_TO_NAME:
         return "mark_full"
     if ipa == NULL_IPA:
         return "null"
@@ -700,7 +749,9 @@ def main():
                 name, port_variants(d, flatten(body), "flat"), flat_form=True)
 
     for name in PLACEHOLDERS:
-        (OUT / f"{name}.svg").write_text(PLACEHOLDER_SVG, encoding="utf-8")
+        mark_ph = glyph_type(NAME_TO_IPA[name]) == "mark_full"
+        (OUT / f"{name}.svg").write_text(
+            PLACEHOLDER_MARK_SVG if mark_ph else PLACEHOLDER_SVG, encoding="utf-8")
 
     (OUT / "unknown.svg").write_text(PLACEHOLDER_SVG, encoding="utf-8")
 

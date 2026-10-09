@@ -8,8 +8,8 @@ local p = {}
 
 local READABLE = {["a"]="æ", ["e"]="ɛ", ["i"]="ɪ", ["u"]="ʌ", ["ah"]="ɑ", ["uh"]="ə", ["ee"]="i", ["ey"]="e", ["eye"]="aɪ", ["oh"]="oʊ", ["oo"]="u", ["uu"]="ʊ", ["ow"]="aʊ", ["aw"]="ɔ", ["oy"]="ɔɪ", ["p"]="p", ["b"]="b", ["t"]="t", ["d"]="d", ["k"]="k", ["g"]="g", ["m"]="m", ["n"]="n", ["ng"]="ŋ", ["ch"]="tʃ", ["j"]="dʒ", ["f"]="f", ["v"]="v", ["th"]="θ", ["dh"]="ð", ["s"]="s", ["z"]="z", ["sh"]="ʃ", ["zh"]="ʒ", ["h"]="h", ["w"]="w", ["y"]="j", ["r"]="ɹ", ["l"]="l", ["kh"]="x", ["nul"]="∅"}
 local READABLE_ALIASES = {["o"]="ɑ", ["ay"]="e", ["ai"]="e", ["au"]="ɔ", ["or"]="ɔ", ["er"]="ə", ["ur"]="ə", ["ir"]="ə", ["igh"]="aɪ", ["schwa"]="ə", ["ax"]="ə", ["sh'"]="ʃ"}
-local SOUND_ALIASES = {["0"]="∅", ["_"]="∅", ["-"]="∅", ["0c"]="∅c", ["eɪ"]="e", ["ej"]="e", ["ɝ"]="ə", ["ɜr"]="ə", ["ɜ"]="ə", ["ɑː"]="ɑ", ["iː"]="i", ["uː"]="u"}
-local MARK_WIDE = {["?"]=true}
+local SOUND_ALIASES = {["0"]="∅", ["_"]="∅", ["-"]="∅", ["0c"]="∅c", ["@"]="0", ["eɪ"]="e", ["ej"]="e", ["ɝ"]="ə", ["ɜr"]="ə", ["ɜ"]="ə", ["ɑː"]="ɑ", ["iː"]="i", ["uː"]="u"}
+local MARK_WIDE = {["?"]="av-wide", ["0"]="av-wide3", ["1"]="av-wide3", ["2"]="av-wide3", ["3"]="av-wide3", ["4"]="av-wide3", ["5"]="av-wide3", ["6"]="av-wide3", ["7"]="av-wide3", ["8"]="av-wide3", ["9"]="av-wide3"}
 local GLYPH = {
   ["p"]={name="p", type="consonant"},
   ["b"]={name="b", type="consonant"},
@@ -57,6 +57,16 @@ local GLYPH = {
   [","]={name="comma", type="mark_full"},
   ["?"]={name="question", type="mark_full"},
   ["!"]={name="exclamation", type="mark_full"},
+  ["0"]={name="zero", type="mark_full"},
+  ["1"]={name="one", type="mark_full"},
+  ["2"]={name="two", type="mark_full"},
+  ["3"]={name="three", type="mark_full"},
+  ["4"]={name="four", type="mark_full"},
+  ["5"]={name="five", type="mark_full"},
+  ["6"]={name="six", type="mark_full"},
+  ["7"]={name="seven", type="mark_full"},
+  ["8"]={name="eight", type="mark_full"},
+  ["9"]={name="nine", type="mark_full"},
 }
 
 -- These are decisions of the SCRIPT, tied to specific sounds, so they live in
@@ -208,11 +218,12 @@ local function glyphSpan(token, slot, partner)
   return '<span class="' .. cls .. '"></span>'
 end
 
--- A punctuation mark: nine rows tall, one column (two for `?`), unpaired.
+-- A full-height mark: nine rows tall, one column (two for `?`, three for a
+-- numeral), unpaired.
 local function markSpan(sym)
   local m = GLYPH[sym]
   local cls = "av-mark g-" .. m.name
-  if MARK_WIDE[sym] then cls = cls .. " av-wide" end
+  if MARK_WIDE[sym] then cls = cls .. " " .. MARK_WIDE[sym] end
   return '<span class="' .. cls .. '"></span>'
 end
 

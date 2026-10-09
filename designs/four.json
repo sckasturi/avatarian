@@ -1,0 +1,33 @@
+{
+  "name": "four",
+  "ipa": "4",
+  "type": "mark_full",
+  "grid": [
+    3,
+    9
+  ],
+  "notes": "",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 8.5
+        },
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "seg": "line"
+        },
+        {
+          "x": 2.5,
+          "y": 2.5,
+          "seg": "line"
+        }
+      ]
+    }
+  ],
+  "updated": "2026-10-09T20:09:48Z"
+}

@@ -601,6 +601,12 @@ function sentenceToIPA(text) {
         break;
       }
     }
+    // A number is written in numerals, a digit apiece — not read out as a
+    // word. Each digit is its own unpaired mark (render.js NUMERALS).
+    if (!taken && /^\d+$/.test(words[i])) {
+      out.push({ word: words[i], ipa: words[i].split(""), tier: "numeral" });
+      taken = 1;
+    }
     if (!taken) {
       const { ipa, tier, entry } = lookupWord(words[i]);
       out.push({ word: words[i], ipa, tier, entry });
