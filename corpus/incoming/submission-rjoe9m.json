@@ -1,0 +1,48 @@
+{
+  "_submission": {
+    "at": "2026-10-09T09:43:17.799Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "submission-rjoe9m",
+    "what": "Ellora festival market signs: 3 / games / drinks / food / Ellora treats",
+    "where": "A7H S01E01 10:17 and S01E02 10:19",
+    "image": "submission-rjoe9m.jpg",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "games",
+      "spelling": "g e m z",
+      "source": "submission-rjoe9m",
+      "confidence": "certain"
+    },
+    {
+      "key": "drinks",
+      "spelling": "d ɹ ɪ ŋ k s",
+      "source": "submission-rjoe9m",
+      "confidence": "certain"
+    },
+    {
+      "key": "food",
+      "spelling": "f u d ∅",
+      "source": "submission-rjoe9m",
+      "confidence": "certain"
+    },
+    {
+      "key": "ellora",
+      "spelling": "ɛ ∅ l oʊ ɹ ə",
+      "source": "submission-rjoe9m",
+      "confidence": "certain",
+      "gloss": "Ellora"
+    },
+    {
+      "key": "treats",
+      "spelling": "t ɹ i t s ∅",
+      "source": "submission-rjoe9m",
+      "confidence": "certain"
+    }
+  ]
+}
