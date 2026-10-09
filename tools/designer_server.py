@@ -102,9 +102,8 @@ def code_map():
     Falls back to nothing if READABLE stops being a plain object literal,
     which shows up as a sound list with no codes rather than wrong ones.
     """
-    # Numerals are typed as themselves — except zero, whose `0` still
-    # belongs to the null for now, so it is typed `@` (sounds.js).
-    out = {bg.NULL_IPA: "0", **{d: d for d in bg.NUMERAL_TO_NAME}, "0": "@"}
+    # The null is typed `-`; the numerals, zero included, as themselves.
+    out = {bg.NULL_IPA: "-", **{d: d for d in bg.NUMERAL_TO_NAME}}
     try:
         src = SOUNDS.read_text(encoding="utf-8")
     except OSError:

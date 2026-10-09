@@ -44,7 +44,7 @@ const READABLE = {
   "f": "f", "v": "v", "th": "θ", "dh": "ð",
   "s": "s", "z": "z", "sh": "ʃ", "zh": "ʒ",
   "h": "h", "w": "w", "y": "j", "r": "ɹ", "l": "l", "kh": "x",
-  // Not a sound; kept alongside so `0` has a spelled-out twin.
+  // Not a sound; kept alongside so `-` has a spelled-out twin.
   "nul": "∅",
 };
 
@@ -68,30 +68,56 @@ const READABLE_ALIASES = {
 
 /** Spellings accepted for symbols that are awkward to type. */
 const SOUND_ALIASES = {
-  "0": "∅", "_": "∅", "-": "∅",   // the empty-slot filler
-  "0c": "∅c",                     // the consonant-height null, written 0c
-  // The zero NUMERAL. Its manifest key is the real digit "0", but `0` is
-  // still the null above, so for now zero is typed `@`. The other nine
-  // digits are typed as themselves and need no alias. When the null moves
-  // off `0`, drop "0" above and this line, and fix IPA_TO_CODE below.
+  "-": "∅", "_": "∅",             // the empty-slot filler
+  "-c": "∅c",                     // the consonant-height null, written -c
+  // `0` is the zero NUMERAL now — the digits are typed as themselves and
+  // need no alias. These two are what the null and zero used to be typed
+  // as, still accepted: `0c` can't be read as anything else, and `@` was
+  // the zero while `0` belonged to the null. (The wiki module still reads
+  // `0` as the null until its pages are migrated — WIKI_ALIASES in
+  // tools/build_lua_module.py.)
+  "0c": "∅c",
   "@": "0",
   "eɪ": "e", "ej": "e",           // key chart labels this vowel e/eɪ
   "ɝ": "ə", "ɜr": "ə", "ɜ": "ə",  // r-coloured spellings, and ɜ itself
   "ɑː": "ɑ", "iː": "i", "uː": "u",
 };
 
-/**
- * IPA -> the readable code to DISPLAY. `∅` shows as its `0` filler, and so
- * the zero numeral (key "0") has to show as `@`, or re-reading the box
- * would turn it into a null.
- */
+/** IPA -> the readable code to DISPLAY. The nulls show as `-` / `-c`. */
 const IPA_TO_CODE = (() => {
-  const map = { "∅": "0", "0": "@" };
+  const map = { "∅": "-", "∅c": "-c" };
   Object.entries(READABLE).forEach(([code, ipa]) => {
     if (!map[ipa]) map[ipa] = code;
   });
   return map;
 })();
+
+/**
+ * A sounds string written before `0` became the zero numeral, brought up
+ * to date: every `0` / `0c` token (orientation marker and all) was a null,
+ * so it becomes `-` / `-c`. Only whole tokens move — a `0` inside a caption
+ * is English, and is left alone. Used for share links made before the
+ * switch, which carry no version flag.
+ */
+function legacyNulls(text) {
+  let depth = 0, out = "", tok = "";
+  const flush = () => {
+    out += depth === 0 ? tok.replace(/^0(c?)([$%]?)$/, "-$1$2") : tok;
+    tok = "";
+  };
+  for (const ch of String(text)) {
+    if (ch === "(" || ch === ")" || ch === "/" || /\s/.test(ch)) {
+      flush();
+      if (ch === "(") depth += 1;
+      if (ch === ")" && depth > 0) depth -= 1;
+      out += ch;
+    } else {
+      tok += ch;
+    }
+  }
+  flush();
+  return out;
+}
 
 /**
  * Split a token into its base sound and any trailing markers: a `$`/`%`
@@ -262,7 +288,7 @@ function spreadCaptions(words) {
 if (typeof module !== "undefined") {
   module.exports = {
     SOUND_ALIASES, READABLE, READABLE_ALIASES, IPA_TO_CODE,
-    splitOverride, normaliseSound, soundToCode,
+    splitOverride, normaliseSound, soundToCode, legacyNulls,
     wordsToSoundText, soundTextToWords,
     splitCaption, spreadCaptions,
   };

@@ -15,8 +15,8 @@
 <meta property="og:url" content="https://avatarian.techfilmer.com/contribute.html" />
 <meta property="og:image" content="https://avatarian.techfilmer.com/og-image.png?v=2" />
 <meta name="robots" content="index,follow" />
-<link rel="stylesheet" href="css/blocks.css?v=65" />
-<link rel="stylesheet" href="css/style.css?v=65" />
+<link rel="stylesheet" href="css/blocks.css?v=66" />
+<link rel="stylesheet" href="css/style.css?v=66" />
 <link rel="stylesheet" href="css/contribute.css" />
 </head>
 <body>
@@ -143,8 +143,8 @@
           Two slots per block, write the nulls. Put a word you already know in
           <code>(brackets)</code>; anything else gets suggested.</span></span>
       <div class="sound-tools">
-        <button type="button" class="tool-btn" data-insert="0"
-                title="Null — a slot with no sound in it">0&nbsp;null</button>
+        <button type="button" class="tool-btn" data-insert="-"
+                title="Null — a slot with no sound in it">-&nbsp;null</button>
         <button type="button" class="tool-btn" data-insert="*"
                 title="A glyph you can see but cannot make out. It fills its slot, so the block structure is still recorded.">*&nbsp;unreadable</button>
         <button type="button" class="tool-btn" data-insert="$"
@@ -224,15 +224,15 @@
 <!-- The product's own code draws the preview, parses the sounds, suggests
      the words, and compares against the model. lexicon.js is the 1.6 MB
      pronunciation dictionary the reverse-decode searches. -->
-<script src="js/manifest.js?v=65"></script>
-<script src="js/corpus.js?v=65"></script>
-<script src="js/lexicon.js?v=65"></script>
-<script src="js/g2p.js?v=65"></script>
-<script src="js/sounds.js?v=65"></script>
-<script src="js/render.js?v=65"></script>
-<script src="js/recognise.js?v=65"></script>
-<script src="js/reverse.js?v=65"></script>
-<script src="js/draw.js?v=65"></script>
+<script src="js/manifest.js?v=66"></script>
+<script src="js/corpus.js?v=66"></script>
+<script src="js/lexicon.js?v=66"></script>
+<script src="js/g2p.js?v=66"></script>
+<script src="js/sounds.js?v=66"></script>
+<script src="js/render.js?v=66"></script>
+<script src="js/recognise.js?v=66"></script>
+<script src="js/reverse.js?v=66"></script>
+<script src="js/draw.js?v=66"></script>
 
 <script>
 "use strict";
@@ -259,5 +259,6 @@ themeBtn.addEventListener("click", () => {
 </script>
 
 <script src="js/contribute.js"></script>
+<script src="js/notice.js?v=66"></script>
 </body>
 </html>

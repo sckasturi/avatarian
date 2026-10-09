@@ -30,21 +30,30 @@ test("readable codes, IPA and the fillers all reach the same symbol", () => {
   assert.equal(normaliseSound("AH"), "ɑ", "codes are case-insensitive");
   assert.equal(normaliseSound("ɑ"), "ɑ", "IPA passes through");
   assert.equal(normaliseSound("uh"), "ə");
-  assert.equal(normaliseSound("0"), "∅");
-  assert.equal(normaliseSound("_"), "∅");
   assert.equal(normaliseSound("-"), "∅");
+  assert.equal(normaliseSound("_"), "∅");
+  assert.equal(normaliseSound("-c"), "∅c");
 });
 
-test("numerals are typed as digits, zero as @ while 0 is the null", () => {
+test("numerals are typed as digits; the null is -", () => {
   assert.equal(normaliseSound("7"), "7");
-  assert.equal(normaliseSound("@"), "0", "@ is the zero numeral");
-  assert.equal(normaliseSound("0"), "∅", "0 is still the null");
-  assert.equal(soundToCode("0"), "@", "the zero numeral shows as @, not as a null");
-  assert.equal(soundToCode("4"), "4");
+  assert.equal(normaliseSound("0"), "0", "0 is the zero numeral");
+  assert.equal(normaliseSound("@"), "0", "@, the old zero, still reads as zero");
+  assert.equal(normaliseSound("0c"), "∅c", "0c can only ever have meant the null");
+  assert.equal(soundToCode("0"), "0");
+  assert.equal(soundToCode("∅"), "-");
+  assert.equal(soundToCode("∅c"), "-c");
   // Box -> parse -> box keeps the zero numeral and the null apart.
-  const words = soundTextToWords("1 @ 0 / k uh 0");
+  const words = soundTextToWords("1 0 - / k uh -");
   assert.deepEqual(plain(words[0].ipa), ["1", "0", "∅"]);
-  assert.equal(wordsToSoundText(words), "1 @ 0  /  k uh 0");
+  assert.equal(wordsToSoundText(words), "1 0 -  /  k uh -");
+});
+
+test("an old share link's 0s are read as nulls, captions left alone", () => {
+  const { legacyNulls } = ctx;
+  assert.equal(legacyNulls("a 0 p 0 uh 0 (Appa)"), "a - p - uh - (Appa)");
+  assert.equal(legacyNulls("k uh 0c / s$ 0% (room 101 0)"), "k uh -c / s$ -% (room 101 0)");
+  assert.equal(legacyNulls("1 @ / t 0"), "1 @ / t -");
 });
 
 test("Katara spells from its readable codes", () => {
@@ -69,7 +78,7 @@ test("an override survives the trip back to codes", () => {
   assert.equal(soundToCode("s%"), "s%");
   assert.equal(soundToCode("s$"), "s$");
   assert.equal(soundToCode("ɑ"), "ah");
-  assert.equal(soundToCode("∅"), "0");
+  assert.equal(soundToCode("∅"), "-");
 });
 
 // ---------------------------------------------------------------------

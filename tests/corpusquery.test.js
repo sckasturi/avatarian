@@ -72,7 +72,7 @@ test("two sounds are one exact block, top then bottom", () => {
   const r = matchWord(WORDS.games.ipa, parseQuery("m z", ctx.normaliseSound));
   assert.ok(r.hits.length && r.hits.every((h) => h.slot === null));
   // A typed null matches either height of null.
-  assert.ok(found("s 0").length > 0, "s over a null");
+  assert.ok(found("s -").length > 0, "s over a null");
 });
 
 test("a bare @context is a shape-only search — every block of that shape", () => {

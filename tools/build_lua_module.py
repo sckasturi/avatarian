@@ -70,6 +70,14 @@ def lua_map(name, pairs):
     return f"local {name} = {{{body}}}"
 
 
+# Where the wiki still reads codes differently from the site. The site
+# switched the null from `0` to `-` and made `0` the zero numeral; the wiki's
+# pages are full of `0` nulls, so until a bot rewrites them `0` stays the null
+# here (alongside `-`), and zero stays typed `@`. Once the pages are migrated,
+# delete these and the wiki matches sounds.js again.
+WIKI_ALIASES = {"0": "∅", "0c": "∅c", "@": "0"}
+
+
 def main():
     man = MANIFEST.read_text(encoding="utf-8")
     snd = SOUNDS.read_text(encoding="utf-8")
@@ -78,7 +86,7 @@ def main():
     # --- code -> IPA lookups, straight from sounds.js -------------------------
     readable = js_object(snd, "READABLE")
     readable_aliases = js_object(snd, "READABLE_ALIASES")
-    sound_aliases = js_object(snd, "SOUND_ALIASES")
+    sound_aliases = list({**dict(js_object(snd, "SOUND_ALIASES")), **WIKI_ALIASES}.items())
 
     # --- glyph metadata, only the fields the renderer reads -------------------
     glyph_rows, wide_marks = [], []

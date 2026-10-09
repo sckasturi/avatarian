@@ -21,9 +21,9 @@
 <meta name="twitter:title" content="Avatarian Translator" />
 <meta name="twitter:description" content="Type anything and watch it written in Avatarian, the script from Avatar Legends." />
 <meta name="twitter:image" content="https://avatarian.techfilmer.com/og-image.png?v=2" />
-<link rel="stylesheet" href="css/blocks.css?v=65" />
-<link rel="stylesheet" href="css/style.css?v=65" />
-<link rel="stylesheet" href="css/sourcepop.css?v=65" />
+<link rel="stylesheet" href="css/blocks.css?v=66" />
+<link rel="stylesheet" href="css/style.css?v=66" />
+<link rel="stylesheet" href="css/sourcepop.css?v=66" />
 </head>
 <body>
 
@@ -78,8 +78,8 @@ and made-up words too.</p>
     <div class="sound-tools">
       <button type="button" class="tool-btn" data-insert="/"
               title="End this word and start the next one">/&nbsp;word break</button>
-      <button type="button" class="tool-btn" data-insert="0"
-              title="Null, fills a slot with no sound in it">0&nbsp;null</button>
+      <button type="button" class="tool-btn" data-insert="-"
+              title="Null, fills a slot with no sound in it">-&nbsp;null</button>
       <span class="spacer"></span>
       <button type="button" class="tool-btn" id="delToken"
               title="Remove the last sound">⌫</button>
@@ -145,9 +145,12 @@ and made-up words too.</p>
           <code>Ah</code> and <code>AH</code> all mean the same sound.</p>
         <p>Anything in <code>(brackets)</code> is a label for that word, not a
           sound. That is how the English caption under each word gets there.</p>
-        <p><code>0</code> fills an empty slot: at the end of a word with an
+        <p><code>-</code> fills an empty slot: at the end of a word with an
           odd number of sounds, and inside a word wherever a syllable ends,
           since a block never runs across a syllable boundary.</p>
+        <p>Numbers are written as numerals, one digit at a time:
+          <code>2 0 2 6</code>. Like punctuation, each one stands beside the
+          writing rather than in a block.</p>
         <p>Punctuation is written as itself: <code>, . ? !</code>. A mark is
           a tall thin column drawn beside the word rather than inside a
           block.</p>
@@ -242,30 +245,30 @@ and made-up words too.</p>
   <p class="footer-note">Static site, no cookies.</p>
 </footer>
 
-<script src="js/manifest.js?v=65"></script>
+<script src="js/manifest.js?v=66"></script>
 <!-- The attested corpus — words somebody has actually seen written,
      stored as finished spellings. Wins the lookup chain in g2p.js.
      Small, so unlike the dictionary it loads eagerly. -->
-<script src="js/corpus.js?v=65"></script>
+<script src="js/corpus.js?v=66"></script>
 <!-- The pronunciation dictionary. Read lazily by g2p.js on the first
      lookup, so it costs nothing until someone converts a word; if it
      is absent the rules take over and the page still works. -->
-<script src="js/lexicon.js?v=65"></script>
-<script src="js/g2p.js?v=65"></script>
+<script src="js/lexicon.js?v=66"></script>
+<script src="js/g2p.js?v=66"></script>
 <!-- the sounds syntax (standalone; shared with the glyph designer). -->
-<script src="js/sounds.js?v=65"></script>
-<script src="js/render.js?v=65"></script>
+<script src="js/sounds.js?v=66"></script>
+<script src="js/render.js?v=66"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
      only the two small scripts. -->
-<script src="js/recognise.js?v=65"></script>
-<script src="js/draw.js?v=65"></script>
+<script src="js/recognise.js?v=66"></script>
+<script src="js/draw.js?v=66"></script>
 <!-- Sounds -> likely English. Searches the corpus, then EXCEPTIONS, then
      the whole bundled dictionary, so it only earns its keep on a page
      that already loads lexicon.js — which this one does. -->
-<script src="js/reverse.js?v=65"></script>
+<script src="js/reverse.js?v=66"></script>
 <!-- The source preview popup, shared with the corpus page. -->
-<script src="js/sourcepop.js?v=65"></script>
+<script src="js/sourcepop.js?v=66"></script>
 <script>
 const GLYPH_SET = window.AVATARIAN_GLYPHS || {};
 
@@ -925,7 +928,9 @@ function exportFailed(btn, what, err) {
 function shareURL() {
   const sounds = $("soundsInput").value.trim();
   if (!sounds) return null;
-  return location.origin + location.pathname + "?s=" + encodeURIComponent(sounds);
+  // `v=2`: written with `-` for the null. A link without it predates the
+  // switch, when `0` was the null — see the load below.
+  return location.origin + location.pathname + "?v=2&s=" + encodeURIComponent(sounds);
 }
 $("shareBtn").addEventListener("click", async (e) => {
   const btn = e.currentTarget;
@@ -1222,7 +1227,11 @@ createDrawPad($("drawpad"), { onPick: (hit) => appendSound(hit.code), limit: 5 }
 // English box can't overwrite them, and reconstruct the English caption
 // text for context. Otherwise start with something on screen — an empty
 // output looks like a broken page.
-const sharedSounds = new URLSearchParams(location.search).get("s");
+// A link made before `0` became the zero numeral has no `v=2`; its 0s were
+// nulls, so legacyNulls() rewrites them as `-` rather than drawing zeros.
+const shareParams = new URLSearchParams(location.search);
+const sharedSounds = shareParams.get("s") && (shareParams.get("v") === "2"
+  ? shareParams.get("s") : legacyNulls(shareParams.get("s")));
 if (sharedSounds) {
   $("soundsInput").value = sharedSounds;
   markEdited(true);
@@ -1239,5 +1248,6 @@ fitSounds();
 <!-- Cloudflare Web Analytics: cookieless, privacy-first visit counts. -->
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
   data-cf-beacon='{"token": "5fc3578a9a1d49d7b7d40a0b4d34381b"}'></script>
+<script src="js/notice.js?v=66"></script>
 </body>
 </html>

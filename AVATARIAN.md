@@ -91,7 +91,7 @@ There are two, distinguished by height:
 
 | key | shape | height class | design type |
 | --- | --- | --- | --- |
-| `∅` (typed `0`) | rounded cup ∪ | vowel-height (3-row) | `mark` (`null_v`) |
+| `∅` (typed `-`) | rounded cup ∪ | vowel-height (3-row) | `mark` (`null_v`) |
 | `∅c` | squared cup | consonant-height (5-row) | `mark_consonant` (`null_c`) |
 
 **Which null is written is decided by its pairing PARTNER, not by the slot
@@ -101,12 +101,12 @@ it fills:**
 - a **consonant** paired with a null takes the **vowel-height** (`∅`) null.
 
 `render.js` (`nullFor`) applies this to any null, whether auto-inserted
-into a trailing empty slot or typed as `0` mid-word. It is also what keeps
+into a trailing empty slot or typed as `-` mid-word. It is also what keeps
 every block nine rows tall (§4): 4 + 5 for a vowel and its null, 5 + 4 for
 a consonant and its null.
 
-`∅c` has no typeable code, and none is needed: `0` plus the sound beside
-it says everything a second code could.
+`∅c` needs no code of its own: `-` plus the sound beside it says everything
+a second code could (`-c` forces it, for a reference table).
 
 Nulls occur at the end of a word with an odd sound count, and **inside**
 words wherever the syllable rule (§5) leaves a slot open.
@@ -449,9 +449,8 @@ write the possessive as sounds (`ɛ s`) with no mark.
 The ten digits are `mark_full` too — nine rows, unpaired, standing beside
 the writing and breaking the pairing run exactly as punctuation does —
 but **three columns wide** (a 3×9 lattice, 68×164). They are keyed by the
-digit (`0`–`9`, stems `zero`…`nine`) and typed as themselves, except
-zero: `0` is still the null's code, so the zero numeral is typed **`@`**
-for now (§10). Converting from English writes a number as numerals, one
+digit (`0`–`9`, stems `zero`…`nine`) and typed as themselves (§10).
+Converting from English writes a number as numerals, one
 digit per mark. The shapes live in `MARKS_FULL` in `build_glyphs.py`.
 
 ---
@@ -485,10 +484,14 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
   `ɑː`→`ɑ`, `iː`→`i`, `uː`→`u`. The corpus is stored in IPA, so it does
   not move when the ASCII layer changes.
 - **Sounds are separated by spaces, words by `/`.**
-- **`0`** (or `_`, `-`) is the `∅` filler. `∅c` has no code — the height
-  comes from the pairing partner (§3).
-- **`1`–`9`** are the numerals, and **`@`** is the zero numeral — a
-  stopgap while `0` still means the null (§9).
+- **`-`** (or `_`) is the `∅` filler; the height comes from the pairing
+  partner (§3), and `-c` forces the consonant-height one.
+- **`0`–`9`** are the numerals (§9). The null was typed `0` until the
+  numerals arrived; the old spellings `0c` (null) and `@` (zero) are still
+  accepted, and a share link made before the switch (no `v=2`) has its `0`
+  tokens read as nulls. **The wiki has not switched yet**: `Module:Avatarian`
+  still reads `0` as the null (as well as `-`) and `@` as zero, until a bot
+  rewrites its pages (`WIKI_ALIASES` in `tools/build_lua_module.py`).
 - **`$` / `%`** force a glyph's orientation: `$` is the top-slot form, `%`
   the bottom, for **every** glyph (the upside-down-stored u/ɔ included). The
   only spot the corpus still needs it is **`s$`** in *rest* and *humansitters*

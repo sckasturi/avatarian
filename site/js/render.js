@@ -160,7 +160,7 @@ function pairUp(ipaSeq) {
  *
  * An empty bottom slot is written, not skipped — the null is part of the
  * spelling, so dropping it would silently shorten the word. A null that
- * was TYPED is resolved here too rather than taken literally: `0` means
+ * was TYPED is resolved here too rather than taken literally: `-` means
  * "a null", and the sound beside it says which one. That applies
  * mid-word, where canon puts nulls the renderer cannot derive — (u,∅)
  * takes the tall one, (s,∅) the short one.
@@ -574,8 +574,8 @@ const PUNCTUATION = {
 /**
  * The numerals: the same height class as punctuation — nine rows, unpaired,
  * standing beside the writing — but three lattice columns wide (68×164).
- * Keyed by the digit itself; the zero numeral's key is "0", typed `@` for
- * now because `0` still means the null (sounds.js). There is no inline
+ * Keyed by the digit itself and typed as it (the null is `-`, sounds.js;
+ * the wiki module still reads `0` as the null for now). There is no inline
  * copy: each one comes from the manifest, where an undrawn numeral ships a
  * dashed placeholder at its real width.
  */

@@ -202,8 +202,8 @@ function glyphIsTall(kind) {
 
 /** How a symbol reads in a caption: its readable code where it has one. */
 function label(key) {
-  if (key === "∅") return "0";
-  if (key === "∅c") return "0c";
+  if (key === "∅") return "-";
+  if (key === "∅c") return "-c";
   const s = Store.catalog.find((x) => x.key === key);
   return (s && (s.code || s.ipa)) || key;
 }
@@ -219,10 +219,10 @@ function defaultPhrase(sound) {
   if (sound.type === "mark_full" && !sound.example) return sound.code || sound.key;
   const word = sound.example;
   if (!word || word.startsWith("(")) {
-    return (sound.code || sound.ipa || "0") + " 0";
+    return (sound.code || sound.ipa || "-") + " -";
   }
   const words = sentenceToIPA(word);
-  if (!words.length) return (sound.code || sound.ipa) + " 0";
+  if (!words.length) return (sound.code || sound.ipa) + " -";
   return words.map((w) => w.ipa.map((s) => IPA_TO_CODE[s] || s).join(" ")
     + (w.word ? ` (${w.word})` : "")).join("  /  ");
 }

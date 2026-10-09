@@ -27,9 +27,9 @@ OUT = ROOT / "wiki" / "Corpus_table.wiki"
 
 def ipa_to_code():
     """IPA -> readable code, built from sounds.js's READABLE first-wins, so
-    it matches soundToCode in the app. `∅` shows as its `0` filler."""
+    it matches soundToCode in the app. `∅` shows as its `-` filler."""
     m = re.search(r"READABLE\s*=\s*\{(.*?)\n\};", SOUNDS.read_text(encoding="utf-8"), re.S)
-    out = {"∅": "0"}
+    out = {"∅": "-"}
     for code, ipa in re.findall(r'"([^"]+)"\s*:\s*"([^"]+)"', m.group(1)):
         out.setdefault(ipa, code)
     return out

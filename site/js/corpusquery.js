@@ -15,7 +15,7 @@
  *
  *   g            /g/ anywhere
  *   m z          a whole BLOCK: /m/ on top, /z/ beneath it (`games`)
- *   s 0          /s/ over a null — either null, the height doesn't matter
+ *   s -          /s/ over a null — either null, the height doesn't matter
  *   g @cc        /g/ in a two-consonant block (so NOT beside a null)
  *   top:s @cv    /s/ in the top slot of a consonant-vowel block
  *   aɪ @vv       the diphthong sharing its block with another vowel
@@ -67,7 +67,7 @@ function cqBase(token) {
 }
 
 /** A slot's symbol for comparing: bare, with the two nulls as one — a
- *  block search for `s 0` means "s over a null", and which height of null
+ *  block search for `s -` means "s over a null", and which height of null
  *  is written is decided by the partner, not the search. */
 function cqSlotKey(token) {
   const b = cqBase(token);

@@ -175,7 +175,10 @@ test("Lua normaliseSound matches sounds.js over every code", { skip: !haveLua &&
     ...Object.keys(ctx.SOUND_ALIASES), "AH", "Uh", "EE", "s$", "z%", "r_c", "r_c$",
     "0", "0c", "@", "5", "9", "ə", "ɑ", "tʃ", "x", "notasound",
   ])];
-  const ref = codes.map(ctx.normaliseSound);
+  // The wiki still reads `0` as the null and `@` as zero until its pages
+  // are migrated (WIKI_ALIASES in tools/build_lua_module.py).
+  const WIKI = { "0": "∅", "0c": "∅c", "@": "0" };
+  const ref = codes.map(c => WIKI[c] || ctx.normaliseSound(c));
 
   const driver =
     `local p = dofile(${luaLit(LUA_MODULE)})\n` +
