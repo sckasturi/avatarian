@@ -226,6 +226,12 @@
       "where": "A7H S01E01 15:56",
       "image": "submission-x4geka.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.7": {
+      "what": "Sick bay",
+      "where": "A7H S01E01 20:55",
+      "image": "submission-5tavjw.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -2432,6 +2438,18 @@
       "key": "ramen",
       "spelling": "ɹ ɑ m ɛ n ∅",
       "source": "sevenhavens-101.6",
+      "confidence": "certain"
+    },
+    {
+      "key": "bay",
+      "spelling": "b e",
+      "source": "sevenhavens-101.7",
+      "confidence": "certain"
+    },
+    {
+      "key": "sick",
+      "spelling": "s ɪ k ∅",
+      "source": "sevenhavens-101.7",
       "confidence": "certain"
     }
   ]

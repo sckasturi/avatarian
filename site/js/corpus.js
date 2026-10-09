@@ -207,6 +207,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E01 15:56",
       "image": "submission-x4geka.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.7": {
+      "what": "Sick bay",
+      "where": "A7H S01E01 20:55",
+      "image": "submission-5tavjw.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -4623,6 +4629,32 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-101.6"
+    },
+    "sick": {
+      "ipa": [
+        "s",
+        "ɪ",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.7"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.7"
+    },
+    "bay": {
+      "ipa": [
+        "b",
+        "e"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.7"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.7"
     }
   },
   "conventions": {
