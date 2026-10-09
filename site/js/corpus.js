@@ -195,6 +195,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E01 14:06",
       "image": "submission-h7l23x.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.5": {
+      "what": "Old World ruins: Korra market",
+      "where": "A7H S01E01 15:35",
+      "image": "submission-nqguhs.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -3880,9 +3886,10 @@ window.AVATARIAN_CORPUS = {
         "ɹ",
         "ə"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "sdcc-3"
+        "sdcc-3",
+        "sevenhavens-101.5"
       ],
       "confidence": "certain",
       "source": "sdcc-3",
@@ -4578,6 +4585,22 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-101.4"
+    },
+    "market": {
+      "ipa": [
+        "m",
+        "ɑ",
+        "ɹ",
+        "k",
+        "ə",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-101.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-101.5"
     }
   },
   "conventions": {

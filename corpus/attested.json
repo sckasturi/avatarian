@@ -214,6 +214,12 @@
       "where": "A7H S01E01 14:06",
       "image": "submission-h7l23x.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-101.5": {
+      "what": "Old World ruins: Korra market",
+      "where": "A7H S01E01 15:35",
+      "image": "submission-nqguhs.jpg",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -2401,6 +2407,19 @@
       "key": "house",
       "spelling": "h aʊ s ∅",
       "source": "sevenhavens-101.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "korra",
+      "spelling": "k oʊ ɹ ə",
+      "source": "sevenhavens-101.5",
+      "confidence": "certain",
+      "gloss": "Korra"
+    },
+    {
+      "key": "market",
+      "spelling": "m ɑ ɹ k ə t",
+      "source": "sevenhavens-101.5",
       "confidence": "certain"
     }
   ]
