@@ -231,6 +231,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E03 08:21",
       "image": "submission-18krfa.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-103.2": {
+      "what": "\"seal\" seals on a box",
+      "where": "A7H S01E03 10:21",
+      "image": "submission-j2joy6.jpg",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -4723,6 +4729,20 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-103.1"
+    },
+    "seal": {
+      "ipa": [
+        "s",
+        "i",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-103.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-103.2"
     }
   },
   "conventions": {
