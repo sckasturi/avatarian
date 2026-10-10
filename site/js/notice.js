@@ -36,7 +36,7 @@
   dlg.innerHTML =
     '<h2 id="avNoticeTitle">Nulls are now typed <code>-</code></h2>' +
     '<p>The null that fills an empty slot used to be typed <code>0</code>. ' +
-    'It is now <code>-</code>, so <em>Appa</em> is <code>a - p - uh -</code>.</p>' +
+    'It is now <code>-</code>, so <em>Avatar</em> is <code>a v uh - t ah r -</code>.</p>' +
     '<p><code>0</code> is now the numeral zero. Older links you saved still ' +
     'open the way they were written.</p>' +
     '<form method="dialog"><button type="submit" autofocus>Got it</button></form>';
