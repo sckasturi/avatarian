@@ -569,7 +569,7 @@ function renderImportRows() {
     codes.spellcheck = false;
     codes.value = ipaToSpelling(row.ipa);
     codes.title = "The spelling as it will be submitted. Edit it to match the "
-                + "image — 0 is a null.";
+                + "image — - is a null.";
     trackSoundField(codes);
 
     const flagBox = document.createElement("div");

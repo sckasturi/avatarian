@@ -185,7 +185,7 @@ function entryRow(entry, container) {
   const codes = document.createElement("input");
   codes.type = "text"; codes.className = "codes-input"; codes.spellcheck = false;
   codes.value = ipaToSpelling(ipa);
-  codes.title = "the spelling, in codes — edit to fix a slot; 0 is a null";
+  codes.title = "the spelling, in codes — edit to fix a slot; - is a null";
   codes.addEventListener("input", () => {
     ipa = spellingToIPA(codes.value);
     draw();

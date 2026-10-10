@@ -1541,7 +1541,7 @@ function renderImportRows() {
     codes.spellcheck = false;
     codes.value = ipaToSpelling(row.ipa);
     codes.title = "The spelling as it will be saved. Edit it to match the "
-                + "image — 0 is a null.";
+                + "image — - is a null.";
     // So the palette and the draw pad insert into THIS row once you have
     // clicked into it, which is the whole point of them being shared.
     trackSoundField(codes);

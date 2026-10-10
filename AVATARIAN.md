@@ -487,11 +487,10 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
 - **`-`** (or `_`) is the `∅` filler; the height comes from the pairing
   partner (§3), and `-c` forces the consonant-height one.
 - **`0`–`9`** are the numerals (§9). A number needs no spaces: `20` or
-  `1000` is one numeral per digit, and a `0` inside a number is always zero. The null was typed `0` until the
-  numerals arrived; the old spellings `0c` (null) and `@` (zero) are still
-  accepted, and a share link made before the switch (no `v=2`) has its `0`
-  tokens read as nulls. The wiki reads codes exactly as the site does; its
-  pages were rewritten from `0` to `-` by bot.
+  `1000` is one numeral per digit, and a `0` inside a number is always zero. `0` is never a null. (It was, until the numerals arrived;
+  `@`, the zero of that time, still reads as zero, and a share link made
+  before the switch — no `v=2` — has its old `0` nulls upgraded to `-` on
+  load.) The wiki reads codes exactly as the site does.
 - **`$` / `%`** force a glyph's orientation: `$` is the top-slot form, `%`
   the bottom, for **every** glyph (the upside-down-stored u/ɔ included). The
   only spot the corpus still needs it is **`s$`** in *rest* and *humansitters*
@@ -507,7 +506,7 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
 - **`*`** marks a glyph visible in a source but unreadable. It fills a
   slot, so block structure is recorded where the letter is not.
 - **`(parentheses)`** caption a word instead of being read as sounds:
-  `m e t uh l 0 b e n d i ng (metalbending)`. Converting from English
+  `m e t uh l - b e n d i ng (metalbending)`. Converting from English
   emits these automatically.
 
 The drawing updates live as you type. **Insert sounds** appends rather

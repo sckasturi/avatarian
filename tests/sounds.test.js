@@ -39,7 +39,7 @@ test("numerals are typed as digits; the null is -", () => {
   assert.equal(normaliseSound("7"), "7");
   assert.equal(normaliseSound("0"), "0", "0 is the zero numeral");
   assert.equal(normaliseSound("@"), "0", "@, the old zero, still reads as zero");
-  assert.equal(normaliseSound("0c"), "∅c", "0c can only ever have meant the null");
+  assert.equal(normaliseSound("0c"), "0c", "0 is never a null, not even as 0c");
   assert.equal(soundToCode("0"), "0");
   assert.equal(soundToCode("∅"), "-");
   assert.equal(soundToCode("∅c"), "-c");
@@ -52,8 +52,8 @@ test("numerals are typed as digits; the null is -", () => {
 test("a number needs no spaces between its digits", () => {
   assert.deepEqual(plain(soundTextToWords("20")[0].ipa), ["2", "0"]);
   assert.deepEqual(plain(soundTextToWords("1000 / k uh -")[0].ipa), ["1", "0", "0", "0"]);
-  // A lone 0 is zero too; 0c is still the old null spelling.
-  assert.deepEqual(plain(soundTextToWords("0 0c")[0].ipa), ["0", "∅c"]);
+  // A lone 0 is zero too.
+  assert.deepEqual(plain(soundTextToWords("0 -c")[0].ipa), ["0", "∅c"]);
 });
 
 test("an old share link's 0s are read as nulls, captions left alone", () => {

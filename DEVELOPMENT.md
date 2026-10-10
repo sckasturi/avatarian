@@ -230,7 +230,7 @@ paired with a null takes the 3-height null.** Neither null is a sound.
 This is what `render.js` does: `nullFor(partner)` picks the tall `∅c`
 beside a vowel and the short `∅` beside a consonant, which is also what
 keeps a block nine rows tall whatever is in it (4+5 or 5+4). It applies
-to a null you type as well as one the renderer inserts, so `0` means "a
+to a null you type as well as one the renderer inserts, so `-` means "a
 null" and the sound beside it decides which.
 
 **Mid-word nulls are derived too.** A block never
@@ -582,7 +582,7 @@ It is **ASCII-first, typeable on a plain QWERTY keyboard**. Sounds are
 separated by spaces, words by `/`:
 
 ```
-s t oo 0 d uh n t s 0   /   m eh t uh l 0 b eh n d ih ng
+s t oo - d uh n t s -   /   m eh t uh l - b eh n d ih ng
 students                    metalbending
 ```
 
@@ -595,14 +595,15 @@ students                    metalbending
   plus `ng ch sh th dh zh j y kh`. The table is `READABLE` in `sounds.js`.
 * **Codes are case-insensitive** — `ah`, `Ah` and `AH` all mean the same sound.
 * **IPA is accepted too**, plus aliases: `eɪ` for `e`, `ɝ`/`ɜr` for `ɜ`.
-* **`0`** (or `_`, `-`) is the `∅` empty-slot filler.
+* **`-`** (or `_`) is the `∅` empty-slot filler; `-c` forces the consonant-height one.
+* **`0`–`9`** are the numerals; a number needs no spaces (`2026`).
 * **`$` / `%`** suffixes force a glyph's top or bottom orientation —
   `s$`, `r%`. They win over the derived orientation. Because /s/ and the
   approximants are derived, nothing needs one to be *drawn* correctly;
   they are how a corpus entry records what a source actually
   shows, including the three attested `l$` the rules do not reproduce.
 * **`(parentheses)`** caption a word rather than being read as sounds, so
-  `M EH T AX L 0 B EH N D IH NG (metalbending)` draws captioned. Converting
+  `M EH T AX L - B EH N D IH NG (metalbending)` draws captioned. Converting
   from English emits these automatically, and since the label is part of the
   text it survives any later editing.
 

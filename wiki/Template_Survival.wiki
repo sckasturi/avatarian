@@ -1,4 +1,4 @@
-<includeonly>{{Avatarian|s uh r 0 v eye v uh l 0|Survival}}</includeonly><noinclude>
+<includeonly>{{Avatarian|s uh r - v eye v uh l -|Survival}}</includeonly><noinclude>
 == Usage ==
 <pre>==== Book One: Survival ({{Survival}}) ====</pre>
 "Survival" in Avatarian, for the ''Avatar: Seven Havens'' Book One heading.

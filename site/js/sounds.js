@@ -71,10 +71,8 @@ const SOUND_ALIASES = {
   "-": "∅", "_": "∅",             // the empty-slot filler
   "-c": "∅c",                     // the consonant-height null, written -c
   // `0` is the zero NUMERAL — the digits are typed as themselves and need
-  // no alias. These two are what the null and zero used to be typed as,
-  // still accepted: `0c` can't be read as anything else, and `@` was the
-  // zero while `0` belonged to the null.
-  "0c": "∅c",
+  // no alias. `@` was the zero while `0` belonged to the null; still read
+  // as zero so nothing typed back then breaks.
   "@": "0",
   "eɪ": "e", "ej": "e",           // key chart labels this vowel e/eɪ
   "ɝ": "ə", "ɜr": "ə", "ɜ": "ə",  // r-coloured spellings, and ɜ itself

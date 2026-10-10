@@ -388,10 +388,7 @@ def mark_width(cols):  # viewBox width for a mark that many columns wide
 
 # Numerals are mark_full too: the height of a whole block, unpaired, and
 # THREE lattice columns wide (68x164). Keyed in the manifest by the digit
-# itself, so the zero numeral's key really is "0" — but `0` is still typed
-# for the null, so for now the zero numeral is typed `@` (SOUND_ALIASES in
-# site/js/sounds.js). Swapping the null off `0` later only touches the
-# aliases; nothing keyed here moves.
+# itself and typed as it (the null is `-`, site/js/sounds.js).
 #
 # Each starts as a PLACEHOLDER until it is drawn in the designer and
 # shipped, which lands its body in MARKS_FULL as `mark(3, ...)`.

@@ -8,7 +8,7 @@ CSS, matching on the TOC link's anchor. Each word here is one SVG used as a mask
 ## Adding or re-exporting a word
 
 1. Open a live wiki page whose heading has the word, e.g.
-   `==== Book One: Survival ({{Avatarian|s uh r 0 v eye v uh l 0|Survival}}) ====`.
+   `==== Book One: Survival ({{Avatarian|s uh r - v eye v uh l -|Survival}}) ====`.
 2. Paste this in the browser console. It reads each glyph's position and mask off
    the laid-out heading, so the SVG matches the wiki CSS exactly:
 
