@@ -427,7 +427,11 @@ function p._main(sounds, label)
   end
 
   -- Solo: one token, no space and no slash (e.g. {{Avatarian|ng}}).
-  if not sounds:find("[%s/]") and not sounds:match("^%d%d+$") then
+  -- A number is never a chart glyph: {{Avatarian|3}} is a number in running
+  -- text, drawn at text size like {{Avatarian|2026}}, not the 1.4em of .av-solo.
+  -- So any lone token that is digits (or @, the old zero) takes the word path.
+  local loneNumber = sounds:match("^%d+$") or normaliseSound(sounds):match("^%d$")
+  if not sounds:find("[%s/]") and not loneNumber then
     local ipa = normaliseSound(sounds)
     local sym = parseSymbol(ipa)
     local inner = isMark(sym) and markSpan(sym) or glyphSpan(ipa, "top", nil)

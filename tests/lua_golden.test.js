@@ -178,6 +178,16 @@ test("a number needs no spaces on the wiki either", { skip: !haveLua && "lua not
   assert.doesNotMatch(word, /g-null/, "the 0 inside 20 is zero");
 });
 
+test("a lone number is drawn at text size, not as a chart glyph", { skip: !haveLua && "lua not on PATH" }, () => {
+  const driver =
+    `local p = dofile(${luaLit(LUA_MODULE)})\n` +
+    `for _, s in ipairs({"3", "0", "2026", "g"}) do print(p._main(s, nil)) end\n`;
+  const [three, zero, year, g] = runLua(driver).split("\n");
+  for (const out of [three, zero, year]) assert.doesNotMatch(out, /av-solo/);
+  assert.match(three, /g-three av-wide3/);
+  assert.match(g, /av-solo/, "a lone letter is still a chart glyph");
+});
+
 test("Lua normaliseSound matches sounds.js over every code", { skip: !haveLua && "lua not on PATH" }, () => {
   const ctx = loadSite();
   // Everything the JS knows how to spell, plus a few overrides and raw IPA.
