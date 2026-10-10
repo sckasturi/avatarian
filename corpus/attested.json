@@ -89,7 +89,7 @@
       "image": "instagram-3-2.png"
     },
     "instagram-3.3": {
-      "what": "joy's baked goods / the best / no phone number / always freshly baked / narrok's seaweed noodlery / hand pulled / heng's foot wear / warm and cozy!!! / come and get your pair now! / yue jewelery / timeless waterproof treasures / at every pond / white lotus festival / please come / fresh fruit forever / i don't do discounts / try today / melon milk / mmm / mak made",
+      "what": "joy's baked goods / the best / no phone number / always freshly baked / narrok's seaweed noodlery / hand pulled / heng's foot wear / warm and cozy!!! / come and get your pair now! / yue jewelery / timeless waterproof treasures / at every pond / white lotus festival / please come / fresh fruit forever / i don't do discounts / try today / melon milk / mmm / mak made / entry is not free",
       "where": "https://www.instagram.com/p/DboCKbiDL_v/?img_index=3",
       "image": "instagram-3-3.png"
     },
@@ -1581,7 +1581,7 @@
     },
     {
       "key": "always",
-      "spelling": "* l w e ɪ z",
+      "spelling": "ɔ l w e ɪ z",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1612,15 +1612,9 @@
     },
     {
       "key": "come",
-      "spelling": "k ʌ m ∅",
-      "source": "instagram-3.3",
-      "confidence": "certain"
-    },
-    {
-      "key": "come",
       "spelling": "k ə m ∅",
       "source": "instagram-3.3",
-      "confidence": "certain"
+      "times": 2
     },
     {
       "key": "cozy",
@@ -1633,6 +1627,11 @@
       "spelling": "d * s * aʊ n t s",
       "source": "instagram-3.3",
       "confidence": "certain"
+    },
+    {
+      "key": "entry",
+      "spelling": "ɛ n t ɹ i ∅",
+      "source": "instagram-3.3"
     },
     {
       "key": "every",
@@ -1659,6 +1658,11 @@
       "confidence": "certain"
     },
     {
+      "key": "free",
+      "spelling": "f ɹ i ∅",
+      "source": "instagram-3.3"
+    },
+    {
       "key": "fresh",
       "spelling": "f * ɛ ʃ",
       "confidence": "certain",
@@ -1666,7 +1670,7 @@
     },
     {
       "key": "freshly",
-      "spelling": "f ɹ ɛ ʃ * * i ∅",
+      "spelling": "f ɹ ɛ ∅ ʃ l i ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1699,6 +1703,13 @@
       "spelling": "h ɛ ŋ ∅ ɛ s",
       "source": "instagram-3.3",
       "confidence": "certain"
+    },
+    {
+      "key": "is",
+      "spelling": "ɪ z",
+      "source": "instagram-3.3",
+      "confidence": "unclear",
+      "note": "barely legible; may read 'ee zh' (i ʒ)"
     },
     {
       "key": "joy's",
@@ -1749,6 +1760,11 @@
       "confidence": "certain"
     },
     {
+      "key": "not",
+      "spelling": "n ɑ t ∅",
+      "source": "instagram-3.3"
+    },
+    {
       "key": "now",
       "spelling": "n aʊ",
       "source": "instagram-3.3",
@@ -1756,7 +1772,7 @@
     },
     {
       "key": "number",
-      "spelling": "n ʌ m ∅ b ə ɹ ∅",
+      "spelling": "n ə m ∅ b ə ɹ ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
     },
@@ -1855,6 +1871,12 @@
       "spelling": "j ɔ ɹ ∅",
       "source": "instagram-3.3",
       "confidence": "certain"
+    },
+    {
+      "key": "yue",
+      "spelling": "j u",
+      "source": "instagram-3.3",
+      "gloss": "Yue"
     },
     {
       "key": "by",

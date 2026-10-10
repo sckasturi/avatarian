@@ -70,7 +70,7 @@ window.AVATARIAN_CORPUS = {
       "image": "instagram-3-2.png"
     },
     "instagram-3.3": {
-      "what": "joy's baked goods / the best / no phone number / always freshly baked / narrok's seaweed noodlery / hand pulled / heng's foot wear / warm and cozy!!! / come and get your pair now! / yue jewelery / timeless waterproof treasures / at every pond / white lotus festival / please come / fresh fruit forever / i don't do discounts / try today / melon milk / mmm / mak made",
+      "what": "joy's baked goods / the best / no phone number / always freshly baked / narrok's seaweed noodlery / hand pulled / heng's foot wear / warm and cozy!!! / come and get your pair now! / yue jewelery / timeless waterproof treasures / at every pond / white lotus festival / please come / fresh fruit forever / i don't do discounts / try today / melon milk / mmm / mak made / entry is not free",
       "where": "https://www.instagram.com/p/DboCKbiDL_v/?img_index=3",
       "image": "instagram-3-3.png"
     },
@@ -425,10 +425,9 @@ window.AVATARIAN_CORPUS = {
         "m",
         "∅"
       ],
-      "count": 3,
+      "count": 2,
       "sources": [
-        "toph-letter",
-        "instagram-3.3"
+        "toph-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -440,7 +439,7 @@ window.AVATARIAN_CORPUS = {
             "m",
             "∅"
           ],
-          "count": 1,
+          "count": 2,
           "sources": [
             "instagram-3.3"
           ],
@@ -591,13 +590,15 @@ window.AVATARIAN_CORPUS = {
         "ɪ",
         "z"
       ],
-      "count": 3,
+      "count": 4,
       "sources": [
         "toph-letter",
-        "instagram-1.3"
+        "instagram-1.3",
+        "instagram-3.3"
       ],
       "confidence": "certain",
-      "source": "toph-letter"
+      "source": "toph-letter",
+      "note": "barely legible; may read 'ee zh' (i ʒ)"
     },
     "it": {
       "ipa": [
@@ -696,10 +697,11 @@ window.AVATARIAN_CORPUS = {
         "t",
         "∅"
       ],
-      "count": 3,
+      "count": 4,
       "sources": [
         "toph-letter",
-        "katara-letter"
+        "katara-letter",
+        "instagram-3.3"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -1441,10 +1443,11 @@ window.AVATARIAN_CORPUS = {
         "i",
         "∅"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "instagram-1.1",
-        "instagram-3.2"
+        "instagram-3.2",
+        "instagram-3.3"
       ],
       "confidence": "certain",
       "source": "instagram-1.1",
@@ -3152,7 +3155,7 @@ window.AVATARIAN_CORPUS = {
     },
     "always": {
       "ipa": [
-        "*",
+        "ɔ",
         "l",
         "w",
         "e",
@@ -3281,9 +3284,9 @@ window.AVATARIAN_CORPUS = {
         "f",
         "ɹ",
         "ɛ",
+        "∅",
         "ʃ",
-        "*",
-        "*",
+        "l",
         "i",
         "∅"
       ],
@@ -3471,7 +3474,7 @@ window.AVATARIAN_CORPUS = {
     "number": {
       "ipa": [
         "n",
-        "ʌ",
+        "ə",
         "m",
         "∅",
         "b",
@@ -4743,6 +4746,35 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-103.2"
+    },
+    "yue": {
+      "ipa": [
+        "j",
+        "u"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3",
+      "gloss": "Yue"
+    },
+    "entry": {
+      "ipa": [
+        "ɛ",
+        "n",
+        "t",
+        "ɹ",
+        "i",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
     }
   },
   "conventions": {
