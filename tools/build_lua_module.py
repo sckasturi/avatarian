@@ -70,14 +70,6 @@ def lua_map(name, pairs):
     return f"local {name} = {{{body}}}"
 
 
-# Where the wiki still reads codes differently from the site. The site
-# switched the null from `0` to `-` and made `0` the zero numeral; the wiki's
-# pages are full of `0` nulls, so until a bot rewrites them `0` stays the null
-# here (alongside `-`), and zero stays typed `@`. Once the pages are migrated,
-# delete these and the wiki matches sounds.js again.
-WIKI_ALIASES = {"0": "∅", "0c": "∅c", "@": "0"}
-
-
 def main():
     man = MANIFEST.read_text(encoding="utf-8")
     snd = SOUNDS.read_text(encoding="utf-8")
@@ -86,7 +78,7 @@ def main():
     # --- code -> IPA lookups, straight from sounds.js -------------------------
     readable = js_object(snd, "READABLE")
     readable_aliases = js_object(snd, "READABLE_ALIASES")
-    sound_aliases = list({**dict(js_object(snd, "SOUND_ALIASES")), **WIKI_ALIASES}.items())
+    sound_aliases = js_object(snd, "SOUND_ALIASES")
 
     # --- glyph metadata, only the fields the renderer reads -------------------
     glyph_rows, wide_marks = [], []
@@ -384,8 +376,8 @@ local function parseWords(text)
     local body, label = splitCaption(chunk)
     local ipa = {}
     for tok in body:gmatch("%S+") do
-      -- A run of digits is a number: one numeral per digit, and a 0 inside
-      -- it is zero, never the null (numberOrSound in sounds.js).
+      -- A run of digits is a number: one numeral per digit
+      -- (numberOrSound in sounds.js).
       if tok:match("^%d%d+$") then
         for d in tok:gmatch("%d") do ipa[#ipa + 1] = d end
       else

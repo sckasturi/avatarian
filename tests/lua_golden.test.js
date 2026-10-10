@@ -167,7 +167,7 @@ test("numerals render unpaired, at three columns, the same in both ports", { ski
   assert.deepEqual(runLua(driver).split("\n").slice(0, seqs.length), ref);
 });
 
-test("a number needs no spaces on the wiki either; its 0s are zeros", { skip: !haveLua && "lua not on PATH" }, () => {
+test("a number needs no spaces on the wiki either", { skip: !haveLua && "lua not on PATH" }, () => {
   const driver =
     `local p = dofile(${luaLit(LUA_MODULE)})\n` +
     `print(p._main("1000", nil))\n` +
@@ -175,7 +175,7 @@ test("a number needs no spaces on the wiki either; its 0s are zeros", { skip: !h
   const [solo, word] = runLua(driver).split("\n");
   assert.match(solo, /g-one av-wide3.*g-zero.*g-zero.*g-zero/);
   assert.match(word, /av-block.*g-two av-wide3.*g-zero av-wide3/);
-  assert.doesNotMatch(word, /g-null/, "the 0 inside 20 is zero, not the wiki's 0 null");
+  assert.doesNotMatch(word, /g-null/, "the 0 inside 20 is zero");
 });
 
 test("Lua normaliseSound matches sounds.js over every code", { skip: !haveLua && "lua not on PATH" }, () => {
@@ -186,10 +186,7 @@ test("Lua normaliseSound matches sounds.js over every code", { skip: !haveLua &&
     ...Object.keys(ctx.SOUND_ALIASES), "AH", "Uh", "EE", "s$", "z%", "r_c", "r_c$",
     "0", "0c", "@", "5", "9", "ə", "ɑ", "tʃ", "x", "notasound",
   ])];
-  // The wiki still reads `0` as the null and `@` as zero until its pages
-  // are migrated (WIKI_ALIASES in tools/build_lua_module.py).
-  const WIKI = { "0": "∅", "0c": "∅c", "@": "0" };
-  const ref = codes.map(c => WIKI[c] || ctx.normaliseSound(c));
+  const ref = codes.map(ctx.normaliseSound);
 
   const driver =
     `local p = dofile(${luaLit(LUA_MODULE)})\n` +

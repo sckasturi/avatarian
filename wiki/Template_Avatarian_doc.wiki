@@ -16,8 +16,8 @@
 * When only one phoneme is called in the template, it will show up alone so {{tl|Avatarian|g}} gives {{Avatarian|g}}. If two or more phonemes are called, they will appear as stacked blocks so {{tl|Avatarian|g -}} gives {{Avatarian|g -}} (g with a null) and {{tl|Avatarian|g a}} gives {{Avatarian|g a}}.
 * Because phonemes are separated by spaces, words are separated with a <code>/</code> mark.
 * If you need to force a character flip, you can with <code>$</code> and <code>%</code>. {{tl|Avatarian|s$}} gives the top variant of /s/, {{Avatarian|s$}} and {{tl|Avatarian|s%}} gives the bottom variant, {{Avatarian|s%}}.
-* Nulls are typed with <code>-</code>. You do not need to specify which null you are using, it will be automatically selected based on the needed height. Nulls used to be typed with <code>0</code>, which still works for now but is being replaced.
-* Numbers can be typed as they are, without spaces, so {{tl|Avatarian|2026}} gives {{Avatarian|2026}}. Each digit is its own glyph and stands next to the blocks rather than inside one, the same way punctuation does. A zero on its own is typed <code>@</code> for now, since <code>0</code> was the null.
+* Nulls are typed with <code>-</code>. You do not need to specify which null you are using, it will be automatically selected based on the needed height.
+* Numbers can be typed as they are, without spaces, so {{tl|Avatarian|2026}} gives {{Avatarian|2026}}. Each digit is its own glyph and stands next to the blocks rather than inside one, the same way punctuation does.
 * The English shows if you hover over the word next to the IPA and is optional.
 * As it can be cumbersome to type Avatarian and sound out words, a utility exists at [https://avatarian.techfilmer.com] to enable easy typing. The Wikitext copy button will give you this template filled out.
 ;Letter conversions
@@ -84,10 +84,10 @@
 | 0 || 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9
 |-
 ! Latin
-| @ || 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9
+| 0 || 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9
 |-
 ! Avatarian
-| {{Avatarian|@}} || {{Avatarian|1}} || {{Avatarian|2}} || {{Avatarian|3}} || {{Avatarian|4}} || {{Avatarian|5}} || {{Avatarian|6}} || {{Avatarian|7}} || {{Avatarian|8}} || {{Avatarian|9}}
+| {{Avatarian|0}} || {{Avatarian|1}} || {{Avatarian|2}} || {{Avatarian|3}} || {{Avatarian|4}} || {{Avatarian|5}} || {{Avatarian|6}} || {{Avatarian|7}} || {{Avatarian|8}} || {{Avatarian|9}}
 |}{{clear}}
 
 <includeonly>[[Category:Article templates|{{PAGENAME}}]]</includeonly><noinclude>[[Category:Template documentation|{{PAGENAME}}]]</noinclude>

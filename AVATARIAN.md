@@ -490,9 +490,8 @@ on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
   `1000` is one numeral per digit, and a `0` inside a number is always zero. The null was typed `0` until the
   numerals arrived; the old spellings `0c` (null) and `@` (zero) are still
   accepted, and a share link made before the switch (no `v=2`) has its `0`
-  tokens read as nulls. **The wiki has not switched yet**: `Module:Avatarian`
-  still reads `0` as the null (as well as `-`) and `@` as zero, until a bot
-  rewrites its pages (`WIKI_ALIASES` in `tools/build_lua_module.py`).
+  tokens read as nulls. The wiki reads codes exactly as the site does; its
+  pages were rewritten from `0` to `-` by bot.
 - **`$` / `%`** force a glyph's orientation: `$` is the top-slot form, `%`
   the bottom, for **every** glyph (the upside-down-stored u/ɔ included). The
   only spot the corpus still needs it is **`s$`** in *rest* and *humansitters*

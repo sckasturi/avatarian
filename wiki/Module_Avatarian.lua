@@ -8,7 +8,7 @@ local p = {}
 
 local READABLE = {["a"]="æ", ["e"]="ɛ", ["i"]="ɪ", ["u"]="ʌ", ["ah"]="ɑ", ["uh"]="ə", ["ee"]="i", ["ey"]="e", ["eye"]="aɪ", ["oh"]="oʊ", ["oo"]="u", ["uu"]="ʊ", ["ow"]="aʊ", ["aw"]="ɔ", ["oy"]="ɔɪ", ["p"]="p", ["b"]="b", ["t"]="t", ["d"]="d", ["k"]="k", ["g"]="g", ["m"]="m", ["n"]="n", ["ng"]="ŋ", ["ch"]="tʃ", ["j"]="dʒ", ["f"]="f", ["v"]="v", ["th"]="θ", ["dh"]="ð", ["s"]="s", ["z"]="z", ["sh"]="ʃ", ["zh"]="ʒ", ["h"]="h", ["w"]="w", ["y"]="j", ["r"]="ɹ", ["l"]="l", ["kh"]="x", ["nul"]="∅"}
 local READABLE_ALIASES = {["o"]="ɑ", ["ay"]="e", ["ai"]="e", ["au"]="ɔ", ["or"]="ɔ", ["er"]="ə", ["ur"]="ə", ["ir"]="ə", ["igh"]="aɪ", ["schwa"]="ə", ["ax"]="ə", ["sh'"]="ʃ"}
-local SOUND_ALIASES = {["-"]="∅", ["_"]="∅", ["-c"]="∅c", ["0c"]="∅c", ["@"]="0", ["eɪ"]="e", ["ej"]="e", ["ɝ"]="ə", ["ɜr"]="ə", ["ɜ"]="ə", ["ɑː"]="ɑ", ["iː"]="i", ["uː"]="u", ["0"]="∅"}
+local SOUND_ALIASES = {["-"]="∅", ["_"]="∅", ["-c"]="∅c", ["0c"]="∅c", ["@"]="0", ["eɪ"]="e", ["ej"]="e", ["ɝ"]="ə", ["ɜr"]="ə", ["ɜ"]="ə", ["ɑː"]="ɑ", ["iː"]="i", ["uː"]="u"}
 local MARK_WIDE = {["?"]="av-wide", ["0"]="av-wide3", ["1"]="av-wide3", ["2"]="av-wide3", ["3"]="av-wide3", ["4"]="av-wide3", ["5"]="av-wide3", ["6"]="av-wide3", ["7"]="av-wide3", ["8"]="av-wide3", ["9"]="av-wide3"}
 local GLYPH = {
   ["p"]={name="p", type="consonant"},
@@ -316,8 +316,8 @@ local function parseWords(text)
     local body, label = splitCaption(chunk)
     local ipa = {}
     for tok in body:gmatch("%S+") do
-      -- A run of digits is a number: one numeral per digit, and a 0 inside
-      -- it is zero, never the null (numberOrSound in sounds.js).
+      -- A run of digits is a number: one numeral per digit
+      -- (numberOrSound in sounds.js).
       if tok:match("^%d%d+$") then
         for d in tok:gmatch("%d") do ipa[#ipa + 1] = d end
       else

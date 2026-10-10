@@ -574,8 +574,8 @@ const PUNCTUATION = {
 /**
  * The numerals: the same height class as punctuation — nine rows, unpaired,
  * standing beside the writing — but three lattice columns wide (68×164).
- * Keyed by the digit itself and typed as it (the null is `-`, sounds.js;
- * the wiki module still reads `0` as the null for now). There is no inline
+ * Keyed by the digit itself and typed as it (the null is `-`, sounds.js).
+ * There is no inline
  * copy: each one comes from the manifest, where an undrawn numeral ships a
  * dashed placeholder at its real width.
  */

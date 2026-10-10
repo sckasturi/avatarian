@@ -70,12 +70,10 @@ const READABLE_ALIASES = {
 const SOUND_ALIASES = {
   "-": "∅", "_": "∅",             // the empty-slot filler
   "-c": "∅c",                     // the consonant-height null, written -c
-  // `0` is the zero NUMERAL now — the digits are typed as themselves and
-  // need no alias. These two are what the null and zero used to be typed
-  // as, still accepted: `0c` can't be read as anything else, and `@` was
-  // the zero while `0` belonged to the null. (The wiki module still reads
-  // `0` as the null until its pages are migrated — WIKI_ALIASES in
-  // tools/build_lua_module.py.)
+  // `0` is the zero NUMERAL — the digits are typed as themselves and need
+  // no alias. These two are what the null and zero used to be typed as,
+  // still accepted: `0c` can't be read as anything else, and `@` was the
+  // zero while `0` belonged to the null.
   "0c": "∅c",
   "@": "0",
   "eɪ": "e", "ej": "e",           // key chart labels this vowel e/eɪ
