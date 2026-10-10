@@ -85,9 +85,9 @@
 |-
 ! Latin
 | 0 || 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9
-|-
-! Avatarian
-| style="font-size:140%" | {{Avatarian|0}} || style="font-size:140%" | {{Avatarian|1}} || style="font-size:140%" | {{Avatarian|2}} || style="font-size:140%" | {{Avatarian|3}} || style="font-size:140%" | {{Avatarian|4}} || style="font-size:140%" | {{Avatarian|5}} || style="font-size:140%" | {{Avatarian|6}} || style="font-size:140%" | {{Avatarian|7}} || style="font-size:140%" | {{Avatarian|8}} || style="font-size:140%" | {{Avatarian|9}}
+|- style="font-size:140%"
+! style="font-size:71%" | Avatarian
+| {{Avatarian|0}} || {{Avatarian|1}} || {{Avatarian|2}} || {{Avatarian|3}} || {{Avatarian|4}} || {{Avatarian|5}} || {{Avatarian|6}} || {{Avatarian|7}} || {{Avatarian|8}} || {{Avatarian|9}}
 |}{{clear}}
 
 <includeonly>[[Category:Article templates|{{PAGENAME}}]]</includeonly><noinclude>[[Category:Template documentation|{{PAGENAME}}]]</noinclude>
