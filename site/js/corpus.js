@@ -184,7 +184,7 @@ window.AVATARIAN_CORPUS = {
       "image": "submission-34s03b.jpg",
       "credit": "Bundas"
     },
-    "sevenhavens-101-102": {
+    "sevenhavens-101.10": {
       "what": "Ellora festival market signs: 3 / games / drinks / food / Ellora treats",
       "where": "A7H S01E01 10:17 and S01E02 10:19",
       "image": "submission-rjoe9m.jpg",
@@ -2462,7 +2462,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "instagram-1.3",
-        "sevenhavens-101-102"
+        "sevenhavens-101.10"
       ],
       "confidence": "certain",
       "source": "instagram-1.3"
@@ -3942,7 +3942,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "sdcc.3",
-        "sevenhavens-101-102"
+        "sevenhavens-101.10"
       ],
       "confidence": "certain",
       "source": "sdcc.3"
@@ -4003,7 +4003,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "sdcc.3",
-        "sevenhavens-101-102"
+        "sevenhavens-101.10"
       ],
       "confidence": "certain",
       "source": "sdcc.3"
@@ -4586,7 +4586,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "sevenhavens-101.2",
-        "sevenhavens-101-102"
+        "sevenhavens-101.10"
       ],
       "confidence": "certain",
       "source": "sevenhavens-101.2",
@@ -4635,10 +4635,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sevenhavens-101-102"
+        "sevenhavens-101.10"
       ],
       "confidence": "certain",
-      "source": "sevenhavens-101-102"
+      "source": "sevenhavens-101.10"
     },
     "curry": {
       "ipa": [

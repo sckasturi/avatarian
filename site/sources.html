@@ -261,7 +261,7 @@ differently from the corpus's most-attested form.</p>
 </footer>
 
 <script src="js/manifest.js?v=70"></script>
-<script src="js/corpus.js?v=70"></script>
+<script src="js/corpus.js?v=73"></script>
 <script src="js/render.js?v=70"></script>
 <script src="js/category.js?v=72"></script>
 <script>
@@ -337,7 +337,7 @@ for (const id of Object.keys(bySource)) {
 
 // Group sources by category (the `instagram-1` of `instagram-1.1`). A
 // category with 2+ slides gets a header; a lone source — or a name with no
-// dot — stands on its own. Richest units lead, as before.
+// dot — stands on its own. Newest contributions lead (see the sort below).
 function wordCount(id) { return (bySource[id] || []).length; }
 
 const catMembers = {};                       // category -> [ids]
@@ -352,16 +352,22 @@ for (const cat of Object.keys(catMembers)) {
   if (catMembers[cat].length < 2) { loners.push(...catMembers[cat]); delete catMembers[cat]; }
 }
 
-// Category groups, richest first (total words). Standalone sources are kept
-// SEPARATE — in their own section below — so a lone source never flows into a
-// group's tiling and looks like one of its slides.
+// Category groups, most recently contributed first. "Recency" is the source's
+// position in attested.json — new sources are appended, so a larger index means
+// a later contribution; a group ranks by its newest slide. Standalone sources
+// are kept SEPARATE — in their own section below — so a lone source never flows
+// into a group's tiling and looks like one of its slides.
+const srcPos = {};
+Object.keys(SOURCES).forEach((id, i) => { srcPos[id] = i; });
+const recencyOf = (id) => (id in srcPos ? srcPos[id] : -1);
+
 const groupUnits = [];
 for (const cat of Object.keys(catMembers)) {
   const ids = catMembers[cat].slice().sort(slideOrder);
-  groupUnits.push({ group: cat, ids, weight: ids.reduce((n, id) => n + wordCount(id), 0) });
+  groupUnits.push({ group: cat, ids, recency: Math.max(...ids.map(recencyOf)) });
 }
-groupUnits.sort((a, b) => b.weight - a.weight || a.group.localeCompare(b.group));
-loners.sort((a, b) => wordCount(b) - wordCount(a) || a.localeCompare(b));
+groupUnits.sort((a, b) => b.recency - a.recency || a.group.localeCompare(b.group));
+loners.sort((a, b) => recencyOf(b) - recencyOf(a) || a.localeCompare(b));
 
 // --- render -------------------------------------------------------------
 
