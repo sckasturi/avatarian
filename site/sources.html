@@ -42,6 +42,24 @@
   .legend { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
 
   .source-list { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+  /* A category groups the slides of one post / signs of one episode
+     (instagram-1.1, .2, …) under a header. Lone sources have no header. */
+  .cat-head {
+    font-size: 1.05rem; font-weight: 700; color: var(--ink);
+    margin: 14px 0 -4px; padding-bottom: 5px; border-bottom: 1px solid var(--line);
+    scroll-margin-top: 16px;
+  }
+  .cat-head:first-child { margin-top: 0; }
+  .cat-head[hidden] { display: none; }
+  .cat-head a { color: inherit; text-decoration: none; }
+  .cat-head a:hover, .cat-head a:focus-visible { color: var(--accent); }
+  .cat-head a::after { content: " #"; color: var(--muted-2); font-weight: 400; opacity: 0; }
+  .cat-head a:hover::after, .cat-head a:focus-visible::after { opacity: 1; }
+  .cat-head .cat-count { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
+  /* A grouped card sits slightly inset so the group reads as a unit. */
+  .source-card.in-cat { margin-left: 14px; }
+  @media (max-width: 560px) { .source-card.in-cat { margin-left: 0; } }
+  .source-card:target { scroll-margin-top: 16px; }
   .source-card {
     background: var(--card); border: 1px solid var(--line);
     border-radius: 12px; padding: 16px; display: flex; gap: 16px;
@@ -208,6 +226,7 @@ differently from the corpus's most-attested form.</p>
 <script src="js/manifest.js?v=70"></script>
 <script src="js/corpus.js?v=70"></script>
 <script src="js/render.js?v=70"></script>
+<script src="js/category.js?v=72"></script>
 <script>
 "use strict";
 
@@ -279,11 +298,33 @@ for (const id of Object.keys(bySource)) {
   bySource[id].sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
 }
 
-// Richest sources first — the letters and busy posters lead, matching the
-// order the corpus page's source dropdown uses.
-const ORDER = Object.keys(SOURCES).sort(
-  (a, b) => bySource[b].length - bySource[a].length || a.localeCompare(b)
-);
+// Group sources by category (the `instagram-1` of `instagram-1.1`). A
+// category with 2+ slides gets a header; a lone source — or a name with no
+// dot — stands on its own. Richest units lead, as before.
+function wordCount(id) { return (bySource[id] || []).length; }
+
+const catMembers = {};                       // category -> [ids]
+const loners = [];                           // ids that stand alone
+for (const id of Object.keys(SOURCES)) {
+  const { category } = categoryOf(id);
+  if (category) (catMembers[category] = catMembers[category] || []).push(id);
+  else loners.push(id);
+}
+// A category of one isn't worth a header.
+for (const cat of Object.keys(catMembers)) {
+  if (catMembers[cat].length < 2) { loners.push(...catMembers[cat]); delete catMembers[cat]; }
+}
+
+// Render units: a group (header + its slide cards) or a single card. Weight is
+// total words, so busy posters and full episodes lead either way.
+const UNITS = [];
+for (const cat of Object.keys(catMembers)) {
+  const ids = catMembers[cat].slice().sort(slideOrder);
+  UNITS.push({ group: cat, ids, weight: ids.reduce((n, id) => n + wordCount(id), 0) });
+}
+for (const id of loners) UNITS.push({ id, weight: wordCount(id) });
+UNITS.sort((a, b) => b.weight - a.weight
+  || String(a.group || a.id).localeCompare(String(b.group || b.id)));
 
 // --- render -------------------------------------------------------------
 function sourceCard(id) {
@@ -434,14 +475,45 @@ function sourceCard(id) {
 
 const list = document.getElementById("list");
 const frag = document.createDocumentFragment();
-ORDER.forEach(id => frag.appendChild(sourceCard(id)));
+const cards = [];        // every source card, for filtering + deep-links
+const groups = [];       // { head, members } so a header can hide when empty
+
+for (const u of UNITS) {
+  if (u.id) {            // a lone source
+    const c = sourceCard(u.id);
+    frag.appendChild(c);
+    cards.push(c);
+    continue;
+  }
+  // A category group: a header, then its slide cards.
+  const head = document.createElement("h2");
+  head.className = "cat-head";
+  head.id = "cat-" + u.group;
+  const a = document.createElement("a");
+  a.href = "#cat-" + u.group;
+  a.textContent = u.group;
+  a.title = "Link to this category";
+  const count = document.createElement("span");
+  count.className = "cat-count";
+  count.textContent = ` · ${u.ids.length} images`;
+  head.append(a, count);
+  frag.appendChild(head);
+  const members = [];
+  for (const id of u.ids) {
+    const c = sourceCard(id);
+    c.classList.add("in-cat");
+    frag.appendChild(c);
+    cards.push(c);
+    members.push(c);
+  }
+  groups.push({ head, members });
+}
 list.appendChild(frag);
 
 // --- filtering ----------------------------------------------------------
 const search = document.getElementById("search");
 const countEl = document.getElementById("count");
 const emptyEl = document.getElementById("empty");
-const cards = [...list.children];
 
 function applyFilter() {
   const q = search.value.trim().toLowerCase();
@@ -451,6 +523,8 @@ function applyFilter() {
     el.hidden = !show;
     if (show) shown++;
   }
+  // A category header hides when none of its slides are showing.
+  for (const g of groups) g.head.hidden = !g.members.some(c => !c.hidden);
   emptyEl.hidden = shown > 0;
   const total = cards.length;
   countEl.textContent = shown === total
