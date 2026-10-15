@@ -478,20 +478,23 @@ beside its traced original, with a toggle to overlay one on the other.
 That tab is the working surface for this: compare, note which shapes have
 drifted, fix them in `build_glyphs.py`, re-run, look again.
 
-### Still unresolved
+### Glyph coverage
 
-**/x/ is the only sound left with no glyph**, and it renders as a dashed
-"?" box. To fill it in, draw it in the designer and press **ship it** —
-that writes the path into `build_glyphs.py`, moves the name out of the
-`PLACEHOLDERS` dict and re-runs both scripts in one go.
+**Every sound in the set now has a drawn glyph** — there are no
+placeholders left. `/x/` (the velar fricative, code `kh`) was the last one
+without a source; rather than ship it as a dashed "?" box, it was dropped
+from the set entirely, since English only reaches for it in loanwords
+(*loch*, *Bach*). To add a new glyph later, draw it in the designer and
+press **ship it** — that writes the path into `build_glyphs.py` and re-runs
+the build scripts in one go. (If a sound ever needs to wait for a source,
+the `PLACEHOLDERS` dict in `build_glyphs.py` carries it as a dashed box in
+the meantime; it is currently empty.)
 
-The other six — tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ — were placeholders until they
-were drawn in the designer and shipped. They come from **source material
-outside the key chart**, which is why they were never in
-`reference/avatarian_key.svg` and have no tracing to sit beside; they are
-listed in `SOURCE_NOTES` for that reason, as `/ɑ/` and `/ɔ/` are. Nothing
-in the set is invented — /x/ has no glyph precisely because no source for
-one has been found.
+tʃ, dʒ, ʃ, ʒ, ʊ and ɔɪ were placeholders until they were drawn in the
+designer and shipped. They come from **source material outside the key
+chart**, which is why they were never in `reference/avatarian_key.svg` and
+have no tracing to sit beside; they are listed in `SOURCE_NOTES` for that
+reason, as `/ɑ/` and `/ɔ/` are. Nothing in the set is invented.
 
 Not every glyph comes from `reference/avatarian_key.svg` — /ɑ/ and /ɔ/ were
 supplied separately, so they have no tracing to sit beside. Add such a glyph
@@ -592,7 +595,7 @@ students                    metalbending
   `ow` mouth, `aw` thought, `ey` face, `eye` price, `oy` choice,
   `uh` comma — which also covers *nurse* and *bird*, since Avatarian
   writes one letter where English writes two. Consonants are themselves
-  plus `ng ch sh th dh zh j y kh`. The table is `READABLE` in `sounds.js`.
+  plus `ng ch sh th dh zh j y`. The table is `READABLE` in `sounds.js`.
 * **Codes are case-insensitive** — `ah`, `Ah` and `AH` all mean the same sound.
 * **IPA is accepted too**, plus aliases: `eɪ` for `e`, `ɝ`/`ɜr` for `ɜ`.
 * **`-`** (or `_`) is the `∅` empty-slot filler; `-c` forces the consonant-height one.
@@ -691,5 +694,7 @@ The wiki just draws exactly what you hand it.
   hand-lettered canon (see "Why this isn't a literal font").
 - G2P is rule-based, not dictionary-grade: unusual words and names may need
   a hand-edit in the Sounds box or an `EXCEPTIONS` entry.
-- /x/ has no glyph — no source shows one, so it renders as a dashed box.
+- /x/ (the velar fricative) is not in the set — no source shows a glyph for
+  it, and English only uses it in loanwords, so it was dropped rather than
+  shipped as a placeholder.
 - The apostrophe is stripped, not rendered.

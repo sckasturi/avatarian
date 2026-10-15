@@ -459,14 +459,15 @@ FLIPS_BASE = {"æ", "ɑ", "ɪ", "e", "aɪ", "ə"}
 # own `rows`, and that wins — see design_overrides below.
 VOWEL_4ROW_BASE = {"ɑ", "aʊ", "e", "ɪ", "ɔɪ", "ʊ", "u"}
 
-# Sounds with no symbol anywhere in the reference material yet.
+# Sounds carried as a dashed-box placeholder until drawn. Currently none:
 #
-# "ch" was drawn (an inverted chevron under a dot) but no source for it
-# was ever found — it is in no reference material seen so far, so it was
-# an invention wearing the same clothes as the sourced glyphs. Demoted
-# rather than left shipping: a wrong glyph propagates everywhere.
+# "ch" was drawn (an inverted chevron under a dot) but no source for it was
+# ever found, so it was an invention wearing the same clothes as the sourced
+# glyphs — demoted rather than left shipping, since a wrong glyph propagates
+# everywhere. "kh" (/x/) was likewise a placeholder for a sound English only
+# uses in loanwords; it was dropped entirely rather than carried undrawn.
+# PLACEHOLDER_SVG below is still used for unknown.svg.
 PLACEHOLDERS = {
-    "kh": "x",
 }
 
 PLACEHOLDER_SVG = (
@@ -499,7 +500,7 @@ IPA_TO_NAME = {
     # The rhotic is the approximant /ɹ/, not the trill /r/ (American English);
     # the stem stays the plain letter `r`. See AVATARIAN.md §8.
     "ʃ": "sh", "ʒ": "zh", "h": "h", "w": "w", "j": "y", "ɹ": "r",
-    "l": "l", "x": "kh",
+    "l": "l",
     "i": "i", "ɪ": "ih", "e": "ei", "ɛ": "eh", "æ": "ae", "ʌ": "uh",
     "ə": "schwa", "u": "uu", "ʊ": "oo", "oʊ": "ow", "ɔ": "aw",
     # There is no ɜ. It was carried as a separate sound until the two

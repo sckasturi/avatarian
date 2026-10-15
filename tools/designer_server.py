@@ -84,7 +84,7 @@ EXAMPLES = {
     "v": "of", "th": "thing", "dh": "the", "s": "some", "z": "please",
     "h": "hello", "w": "when", "y": "you", "r": "really", "l": "please",
     "ch": "chase", "j_dz": "just", "sh": "she",
-    "zh": "vision", "kh": "loch",
+    "zh": "vision",
     "i": "please", "ih": "metalbending", "ei": "wake", "eh": "set",
     "ae": "mad", "uh": "up", "schwa": "katara / earth", "uu": "do", "oo": "good",
     "ow": "toe", "aw": "thought", "ah": "appa", "ai": "tie", "au": "now",

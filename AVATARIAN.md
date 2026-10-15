@@ -377,7 +377,6 @@ from reference material; nothing is invented.
 | dʒ | j | j_dz | drawn | from source outside the key chart |
 | ʃ | sh | sh | drawn | from source outside the key chart |
 | ʒ | zh | zh | drawn | the /ʒ/ in "treasure" |
-| x | kh | kh | **placeholder** | no source shows it |
 
 ### Vowels (5×4)
 
@@ -476,7 +475,7 @@ dictionaries use for laypeople. `k uh t ah r uh` is *Katara*.
 `uh` also covers the vowel of *nurse* and *bird* — Avatarian writes one
 letter where English dictionaries write two — so `er`, `ur`, `ir` all land
 on it. Consonants are themselves, plus `ng`, `ch`, `sh`, `th` (*thin*),
-`dh` (*this*), `zh` (*vision*), `j` (*jam*), `y` (*yes*), `kh` (/x/).
+`dh` (*this*), `zh` (*vision*), `j` (*jam*), `y` (*yes*).
 
 - **Codes are case-insensitive** — `ah`, `Ah` and `AH` all mean the same
   sound.
@@ -543,19 +542,18 @@ the l/w clusters are marked so far; a join appears once both partners are.
 
 ## 12. What is not determined
 
-1. **/x/ has no glyph.** No source shows one; it renders as a dashed box.
-2. **Whether /ɔɪ/ mirrors by slot.** The shipped set says it does, with
+1. **Whether /ɔɪ/ mirrors by slot.** The shipped set says it does, with
    nothing behind it: three sightings, all in bottom slots, none checked.
-3. **Whether the FACE vowel is ever one letter.** Every printed source
+2. **Whether the FACE vowel is ever one letter.** Every printed source
    writes it `e` then `ɪ`; two hand-written letters use a bare `e`
    (*take, wake, hey, anyway*). Whether that is the script or the reading
    is open.
-4. **A morpheme-boundary rule.** The syllable rule (§5) misses about ten
+3. **A morpheme-boundary rule.** The syllable rule (§5) misses about ten
    attested spellings, most of which divide at a morpheme boundary; too
    few to state as a rule.
-5. **One mark in the reference key is unassigned** — an unlabelled wedge
+4. **One mark in the reference key is unassigned** — an unlabelled wedge
    above the vowel null; `CELLS` maps it to nothing pending a source.
-6. **Positional variants of ɪ and u.** Both are numbered as pairs in the
+5. **Positional variants of ɪ and u.** Both are numbered as pairs in the
    source but only one form each is drawn, so they render identically in
    both slots; distinguishing them needs a word placing the vowel at both
    an even and an odd index.

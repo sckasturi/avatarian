@@ -43,7 +43,7 @@ const READABLE = {
   "ch": "tʃ", "j": "dʒ",
   "f": "f", "v": "v", "th": "θ", "dh": "ð",
   "s": "s", "z": "z", "sh": "ʃ", "zh": "ʒ",
-  "h": "h", "w": "w", "y": "j", "r": "ɹ", "l": "l", "kh": "x",
+  "h": "h", "w": "w", "y": "j", "r": "ɹ", "l": "l",
   // Not a sound; kept alongside so `-` has a spelled-out twin.
   "nul": "∅",
 };
