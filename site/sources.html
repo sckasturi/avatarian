@@ -41,9 +41,10 @@
   .corpus-count { color: var(--muted); font-size: 0.9rem; }
   .legend { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
 
-  /* Tiling: cards pack into as many columns as fit, so a wide screen isn't
-     one card per row with dead space. Category headers span the full width,
-     which starts each group on its own row. */
+  /* Tiling: cards pack into as many columns as fit. The words shown per card
+     are capped (below), so cards stay a fairly uniform height and the grid
+     rows don't leave the dead space a 50-word card used to. Category headers
+     span every column, starting each group on its own row. */
   .source-list {
     display: grid; gap: 16px; margin-top: 20px; align-items: start;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
@@ -54,7 +55,7 @@
     grid-column: 1 / -1;
     display: flex; align-items: baseline; gap: 8px 12px; flex-wrap: wrap;
     font-size: 1.05rem; font-weight: 700; color: var(--ink);
-    margin: 14px 0 -4px; padding-bottom: 5px; border-bottom: 1px solid var(--line);
+    margin: 16px 0 14px; padding-bottom: 5px; border-bottom: 1px solid var(--line);
     scroll-margin-top: 16px;
   }
   .cat-head:first-child { margin-top: 0; }
@@ -84,7 +85,25 @@
   .source-card.is-collapsed .source-noimg,
   .source-card.is-collapsed .source-what,
   .source-card.is-collapsed .source-words,
+  .source-card.is-collapsed .words-more,
   .source-card.is-collapsed .source-empty { display: none; }
+
+  /* Cap the words' HEIGHT so a word-heavy source stays a tile, not a tower;
+     the overflow fades out under the "show all" button. */
+  .source-words.capped {
+    max-height: 168px; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
+    mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  }
+  .source-words.capped.open {
+    max-height: none; -webkit-mask-image: none; mask-image: none;
+  }
+  .words-more {
+    margin-top: 8px; font: inherit; font-size: 0.8rem;
+    background: none; border: 1px solid var(--line); color: var(--muted);
+    border-radius: 6px; padding: 3px 10px; cursor: pointer;
+  }
+  .words-more:hover { border-color: var(--accent); color: var(--ink); }
   .source-card {
     background: var(--card); border: 1px solid var(--line);
     border-radius: 12px; padding: 16px; display: flex; gap: 16px;
@@ -134,6 +153,10 @@
   .source-what {
     color: var(--muted); font-size: 0.82rem; font-style: italic;
     margin: 6px 0 12px; line-height: 1.5;
+    /* Clamp a long transcription so it doesn't make the card a tower; the
+       full text is in the title, and the words are listed below anyway. */
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   /* The words themselves, each drawn in the spelling THIS source used —
      which is the thing the corpus page hides except in the contested
@@ -484,13 +507,19 @@ function sourceCard(id) {
     const what = document.createElement("p");
     what.className = "source-what";
     what.textContent = "“" + s.what + "”";
+    what.title = s.what;      // the full transcription, since it's clamped
     body.appendChild(what);
   }
 
   if (words.length) {
     const grid = document.createElement("div");
     grid.className = "source-words";
-    for (const w of words) {
+    // Cap the HEIGHT of the words so every card is roughly the same size and
+    // the grid tiles without a 50-word source towering over its neighbours.
+    // The rest fade under a "show all"; one click reveals them.
+    const capped = words.length > 6;
+    if (capped) grid.classList.add("capped");
+    words.forEach((w, i) => {
       const chip = document.createElement("a");
       chip.className = "source-word";
       chip.href = "corpus.html?q=" + encodeURIComponent(w.label);
@@ -509,8 +538,19 @@ function sourceCard(id) {
       chip.appendChild(en);
 
       grid.appendChild(chip);
-    }
+    });
     body.appendChild(grid);
+    if (capped) {
+      const more = document.createElement("button");
+      more.type = "button";
+      more.className = "words-more";
+      more.textContent = `show all ${words.length} words`;
+      more.addEventListener("click", () => {
+        const open = grid.classList.toggle("open");
+        more.textContent = open ? "show fewer" : `show all ${words.length} words`;
+      });
+      body.appendChild(more);
+    }
   } else {
     const none = document.createElement("p");
     none.className = "source-empty";
