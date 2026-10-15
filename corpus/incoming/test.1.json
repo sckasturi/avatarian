@@ -1,0 +1,29 @@
+{
+  "_submission": {
+    "at": "2026-10-15T21:15:59.214Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "batch": "29sjlb"
+  },
+  "source": {
+    "name": "test.1",
+    "what": "test",
+    "where": "test",
+    "image": "test.1.png"
+  },
+  "entries": [
+    {
+      "key": "sonam",
+      "spelling": "s ɑ n æ m ∅",
+      "source": "test.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "test",
+      "spelling": "t ɛ s t",
+      "source": "test.1",
+      "confidence": "certain",
+      "times": 3
+    }
+  ]
+}
