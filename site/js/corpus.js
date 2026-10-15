@@ -79,89 +79,89 @@ window.AVATARIAN_CORPUS = {
       "where": "https://www.instagram.com/p/DcBlbbJlHWB?img_index=1",
       "image": "zuko-stamp.png"
     },
-    "sdcc-1": {
+    "sdcc.1": {
       "what": "Avatarian: The Unique Written Language of the Avatar World",
       "where": "San Diego Comic-Con",
       "image": "sdcc-1.png"
     },
-    "sdcc-2": {
+    "sdcc.2": {
       "what": "water / earth / fire / air",
       "where": "san diego comic con 2026",
       "image": "sdcc-2.png"
     },
-    "sdcc-3": {
+    "sdcc.3": {
       "what": "Avatar / Korra / theater / show / games / treats / festival / aquaduct / written",
       "where": "san diego comic con 2026",
       "image": "sdcc-3.png"
     },
-    "sonam": {
+    "movie.1": {
       "what": "Sonam statue",
       "where": "movie 04:08",
       "image": "sonam.jpg"
     },
-    "7h-promo": {
+    "7h-promo.1": {
       "what": "1 month",
       "where": "https://www.instagram.com/p/DdEzLNeEdK8/",
       "image": "7h-promo.png"
     },
-    "beifong-academy-banner": {
+    "movie.2": {
       "what": "Beifong academy banner",
       "where": "movie 0:20:16",
       "image": "submission-oq04us.jpg",
       "credit": "Bundas"
     },
-    "shirshu-sign": {
+    "movie.3": {
       "what": "Street sign saying \"Shirshu Detective Agency\"",
       "where": "movie 1:14:00 (it is mirrored)",
       "image": "submission-f3xyf4.jpg",
       "credit": "Bundas"
     },
-    "republic-city": {
+    "movie.5": {
       "what": "\"Republic City\" written on a wooden sign above a gate",
       "where": "movie 1:28:40",
       "image": "submission-etlk6u.jpg",
       "credit": "Bundas"
     },
-    "skips-fishing-supplies": {
+    "movie.4": {
       "what": "\"Skip's fishing supplies\" shop banner",
       "where": "movie 1:23:14-1:23:15 (never seen fully just parts - attached image is cut together), also seen at 0:10:52, 1:14:12, and 1:30:56",
       "image": "submission-iceibt.png",
       "credit": "Bundas"
     },
-    "enjoy-stamp": {
+    "movie.7": {
       "what": "\"Enjoy\" stamp among graffiti on a wall",
       "where": "movie 1:30:13",
       "image": "submission-4ndonk.jpg",
       "credit": "Bundas"
     },
-    "jewel-sign": {
+    "movie.6": {
       "what": "Shop sign that reads \"Jewel\". To the left, it reads \"year of\". There are also a bunch of glyphs in circles with unknown meaning: from left to right are /i z/, /f a/ and /m i/",
       "where": "movie 1:29:53",
       "image": "submission-wvvbph.jpg",
       "credit": "Bundas",
       "author": "Bundas"
     },
-    "episodes1-3": {
+    "sevenhavens-book1.1": {
       "what": "Survival / On the Horizon / Into the Storm / The Order",
       "where": "https://www.instagram.com/p/Dd1kFKtmcdo/?stkn=MXZ4dTE3ODM5NGJiaw%3D%3D&img_index=1",
       "image": "episode1-3.jpg"
     },
-    "episodes4-6": {
+    "sevenhavens-book1.2": {
       "what": "The Faceless / The One Left Behind / Night of the Afflicted",
       "where": "https://www.instagram.com/p/Dd4I9kLmLyW/?img_index=2",
       "image": "episodes4-6.jpg"
     },
-    "episodes6-9": {
+    "sevenhavens-book1.3": {
       "what": "What Lies Beneath / The Envoys: Part One / The Envoys: Part Two",
       "where": "https://www.instagram.com/p/Dd6trweFDnm/",
       "image": "episodes6-9.jpg"
     },
-    "episodes10-13": {
+    "sevenhavens-book1.4": {
       "what": "Ghosts and Spirits / Battle of the Ruins / The Dome / The Root Chakra",
       "where": "https://www.instagram.com/p/Dd9SiT1lA7e/?img_index=1",
       "image": "episodes10-13.jpg"
     },
-    "7h-promo-1-week": {
+    "7h-promo.2": {
       "what": "7h-promo: 1 week",
       "where": "https://www.instagram.com/p/Dd_iuUomsv_/?img_index=1&stkn=ZHkyMXZpcWhrcGRy",
       "image": "submission-bljdgh.png"
@@ -268,7 +268,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "toph-letter",
-        "beifong-academy-banner"
+        "movie.2"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -323,7 +323,7 @@ window.AVATARIAN_CORPUS = {
           ],
           "count": 1,
           "sources": [
-            "episodes10-13"
+            "sevenhavens-book1.4"
           ],
           "confidence": "certain"
         }
@@ -715,7 +715,7 @@ window.AVATARIAN_CORPUS = {
       "sources": [
         "toph-letter",
         "instagram-2.1",
-        "episodes1-3"
+        "sevenhavens-book1.1"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -829,10 +829,10 @@ window.AVATARIAN_CORPUS = {
         "instagram-1.3",
         "instagram-1.4",
         "instagram-3.3",
-        "episodes1-3",
-        "episodes4-6",
-        "episodes6-9",
-        "episodes10-13"
+        "sevenhavens-book1.1",
+        "sevenhavens-book1.2",
+        "sevenhavens-book1.3",
+        "sevenhavens-book1.4"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -844,7 +844,7 @@ window.AVATARIAN_CORPUS = {
           ],
           "count": 2,
           "sources": [
-            "sdcc-1"
+            "sdcc.1"
           ],
           "confidence": "certain"
         }
@@ -1194,9 +1194,9 @@ window.AVATARIAN_CORPUS = {
       "sources": [
         "katara-letter",
         "zuko-stamp",
-        "sdcc-1",
-        "episodes4-6",
-        "episodes10-13"
+        "sdcc.1",
+        "sevenhavens-book1.2",
+        "sevenhavens-book1.4"
       ],
       "confidence": "certain",
       "source": "katara-letter",
@@ -1210,7 +1210,7 @@ window.AVATARIAN_CORPUS = {
           "sources": [
             "instagram-1.2",
             "instagram-1.4",
-            "jewel-sign"
+            "movie.6"
           ],
           "confidence": "certain"
         }
@@ -1296,7 +1296,7 @@ window.AVATARIAN_CORPUS = {
           ],
           "count": 1,
           "sources": [
-            "episodes6-9"
+            "sevenhavens-book1.3"
           ],
           "confidence": "certain"
         }
@@ -1414,7 +1414,7 @@ window.AVATARIAN_CORPUS = {
           ],
           "count": 1,
           "sources": [
-            "sdcc-3"
+            "sdcc.3"
           ],
           "confidence": "certain"
         }
@@ -2432,7 +2432,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "instagram-1.3",
-        "republic-city"
+        "movie.5"
       ],
       "confidence": "certain",
       "source": "instagram-1.3",
@@ -2612,7 +2612,7 @@ window.AVATARIAN_CORPUS = {
           ],
           "count": 1,
           "sources": [
-            "republic-city"
+            "movie.5"
           ],
           "confidence": "certain"
         }
@@ -2709,7 +2709,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "instagram-1.4",
-        "enjoy-stamp"
+        "movie.7"
       ],
       "confidence": "certain",
       "source": "instagram-1.4",
@@ -2725,7 +2725,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "instagram-1.4",
-        "episodes4-6"
+        "sevenhavens-book1.2"
       ],
       "confidence": "certain",
       "source": "instagram-1.4",
@@ -2791,7 +2791,7 @@ window.AVATARIAN_CORPUS = {
       "count": 2,
       "sources": [
         "instagram-1.4",
-        "jewel-sign"
+        "movie.6"
       ],
       "confidence": "certain",
       "source": "instagram-1.4"
@@ -3044,7 +3044,7 @@ window.AVATARIAN_CORPUS = {
       "sources": [
         "instagram-3.2",
         "zuko-stamp",
-        "sdcc-2"
+        "sdcc.2"
       ],
       "confidence": "certain",
       "source": "instagram-3.2"
@@ -3771,11 +3771,11 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 2,
       "sources": [
-        "sdcc-1",
-        "sdcc-3"
+        "sdcc.1",
+        "sdcc.3"
       ],
       "confidence": "certain",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "gloss": "Avatar"
     },
     "avatarian": {
@@ -3795,10 +3795,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sdcc-1"
+        "sdcc.1"
       ],
       "confidence": "certain",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "gloss": "Avatarian"
     },
     "language": {
@@ -3814,10 +3814,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sdcc-1"
+        "sdcc.1"
       ],
       "confidence": "certain",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "gloss": "Language"
     },
     "unique": {
@@ -3831,10 +3831,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sdcc-1"
+        "sdcc.1"
       ],
       "confidence": "certain",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "gloss": "Unique"
     },
     "world": {
@@ -3848,10 +3848,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sdcc-1"
+        "sdcc.1"
       ],
       "confidence": "certain",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "gloss": "World"
     },
     "written": {
@@ -3865,11 +3865,11 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 2,
       "sources": [
-        "sdcc-1",
-        "sdcc-3"
+        "sdcc.1",
+        "sdcc.3"
       ],
       "confidence": "certain",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "gloss": "Written"
     },
     "air": {
@@ -3879,10 +3879,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sdcc-2"
+        "sdcc.2"
       ],
       "confidence": "certain",
-      "source": "sdcc-2"
+      "source": "sdcc.2"
     },
     "earth": {
       "ipa": [
@@ -3893,10 +3893,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sdcc-2"
+        "sdcc.2"
       ],
       "confidence": "certain",
-      "source": "sdcc-2"
+      "source": "sdcc.2"
     },
     "water": {
       "ipa": [
@@ -3909,10 +3909,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sdcc-2"
+        "sdcc.2"
       ],
       "confidence": "certain",
-      "source": "sdcc-2"
+      "source": "sdcc.2"
     },
     "aquaduct": {
       "ipa": [
@@ -3927,10 +3927,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sdcc-3"
+        "sdcc.3"
       ],
       "confidence": "certain",
-      "source": "sdcc-3"
+      "source": "sdcc.3"
     },
     "games": {
       "ipa": [
@@ -3941,11 +3941,11 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 2,
       "sources": [
-        "sdcc-3",
+        "sdcc.3",
         "sevenhavens-101-102"
       ],
       "confidence": "certain",
-      "source": "sdcc-3"
+      "source": "sdcc.3"
     },
     "korra": {
       "ipa": [
@@ -3956,11 +3956,11 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 2,
       "sources": [
-        "sdcc-3",
+        "sdcc.3",
         "sevenhavens-101.5"
       ],
       "confidence": "certain",
-      "source": "sdcc-3",
+      "source": "sdcc.3",
       "gloss": "Korra"
     },
     "show": {
@@ -3970,10 +3970,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sdcc-3"
+        "sdcc.3"
       ],
       "confidence": "certain",
-      "source": "sdcc-3"
+      "source": "sdcc.3"
     },
     "theater": {
       "ipa": [
@@ -3986,10 +3986,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sdcc-3"
+        "sdcc.3"
       ],
       "confidence": "certain",
-      "source": "sdcc-3"
+      "source": "sdcc.3"
     },
     "treats": {
       "ipa": [
@@ -4002,11 +4002,11 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 2,
       "sources": [
-        "sdcc-3",
+        "sdcc.3",
         "sevenhavens-101-102"
       ],
       "confidence": "certain",
-      "source": "sdcc-3"
+      "source": "sdcc.3"
     },
     "sonam": {
       "ipa": [
@@ -4019,10 +4019,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "sonam"
+        "movie.1"
       ],
       "confidence": "certain",
-      "source": "sonam"
+      "source": "movie.1"
     },
     "month": {
       "ipa": [
@@ -4035,10 +4035,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "7h-promo"
+        "7h-promo.1"
       ],
       "confidence": "certain",
-      "source": "7h-promo"
+      "source": "7h-promo.1"
     },
     "beifong": {
       "ipa": [
@@ -4051,10 +4051,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "beifong-academy-banner"
+        "movie.2"
       ],
       "confidence": "certain",
-      "source": "beifong-academy-banner",
+      "source": "movie.2",
       "gloss": "Beifong"
     },
     "agency": {
@@ -4068,10 +4068,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "shirshu-sign"
+        "movie.3"
       ],
       "confidence": "certain",
-      "source": "shirshu-sign",
+      "source": "movie.3",
       "gloss": "agency"
     },
     "detective": {
@@ -4087,10 +4087,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "shirshu-sign"
+        "movie.3"
       ],
       "confidence": "certain",
-      "source": "shirshu-sign",
+      "source": "movie.3",
       "gloss": "detective"
     },
     "shirshu": {
@@ -4104,10 +4104,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "shirshu-sign"
+        "movie.3"
       ],
       "confidence": "certain",
-      "source": "shirshu-sign",
+      "source": "movie.3",
       "gloss": "shirshu"
     },
     "fishing": {
@@ -4121,10 +4121,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "skips-fishing-supplies"
+        "movie.4"
       ],
       "confidence": "certain",
-      "source": "skips-fishing-supplies",
+      "source": "movie.4",
       "gloss": "fishing"
     },
     "skip's": {
@@ -4138,10 +4138,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "skips-fishing-supplies"
+        "movie.4"
       ],
       "confidence": "certain",
-      "source": "skips-fishing-supplies",
+      "source": "movie.4",
       "gloss": "Skip's"
     },
     "supplies": {
@@ -4155,10 +4155,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "skips-fishing-supplies"
+        "movie.4"
       ],
       "confidence": "certain",
-      "source": "skips-fishing-supplies",
+      "source": "movie.4",
       "gloss": "supplies"
     },
     "jewel": {
@@ -4170,10 +4170,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "jewel-sign"
+        "movie.6"
       ],
       "confidence": "certain",
-      "source": "jewel-sign",
+      "source": "movie.6",
       "gloss": "jewel"
     },
     "horizon": {
@@ -4189,10 +4189,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes1-3"
+        "sevenhavens-book1.1"
       ],
       "confidence": "certain",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "gloss": "Horizon"
     },
     "into": {
@@ -4204,10 +4204,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes1-3"
+        "sevenhavens-book1.1"
       ],
       "confidence": "certain",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "gloss": "Into"
     },
     "order": {
@@ -4221,10 +4221,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes1-3"
+        "sevenhavens-book1.1"
       ],
       "confidence": "certain",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "gloss": "Order"
     },
     "storm": {
@@ -4238,10 +4238,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes1-3"
+        "sevenhavens-book1.1"
       ],
       "confidence": "certain",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "gloss": "Storm"
     },
     "survival": {
@@ -4259,10 +4259,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes1-3"
+        "sevenhavens-book1.1"
       ],
       "confidence": "certain",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "gloss": "Survival"
     },
     "afflicted": {
@@ -4278,10 +4278,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes4-6"
+        "sevenhavens-book1.2"
       ],
       "confidence": "certain",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "gloss": "Afflicted"
     },
     "behind": {
@@ -4295,10 +4295,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes4-6"
+        "sevenhavens-book1.2"
       ],
       "confidence": "certain",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "gloss": "Behind"
     },
     "faceless": {
@@ -4312,10 +4312,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes4-6"
+        "sevenhavens-book1.2"
       ],
       "confidence": "certain",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "gloss": "Faceless"
     },
     "left": {
@@ -4327,10 +4327,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes4-6"
+        "sevenhavens-book1.2"
       ],
       "confidence": "certain",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "gloss": "Left"
     },
     "one": {
@@ -4342,11 +4342,11 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 2,
       "sources": [
-        "episodes4-6",
-        "episodes6-9"
+        "sevenhavens-book1.2",
+        "sevenhavens-book1.3"
       ],
       "confidence": "certain",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "gloss": "One"
     },
     "beneath": {
@@ -4360,10 +4360,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes6-9"
+        "sevenhavens-book1.3"
       ],
       "confidence": "certain",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "gloss": "Beneath"
     },
     "envoys": {
@@ -4377,10 +4377,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes6-9"
+        "sevenhavens-book1.3"
       ],
       "confidence": "certain",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "gloss": "Envoys"
     },
     "lies": {
@@ -4392,10 +4392,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes6-9"
+        "sevenhavens-book1.3"
       ],
       "confidence": "certain",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "gloss": "Lies"
     },
     "part": {
@@ -4407,10 +4407,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes6-9"
+        "sevenhavens-book1.3"
       ],
       "confidence": "certain",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "gloss": "Part"
     },
     "two": {
@@ -4420,10 +4420,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes6-9"
+        "sevenhavens-book1.3"
       ],
       "confidence": "certain",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "gloss": "Two"
     },
     "battle": {
@@ -4437,10 +4437,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes10-13"
+        "sevenhavens-book1.4"
       ],
       "confidence": "certain",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "gloss": "Battle"
     },
     "chakra": {
@@ -4454,10 +4454,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes10-13"
+        "sevenhavens-book1.4"
       ],
       "confidence": "certain",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "gloss": "Chakra"
     },
     "dome": {
@@ -4469,10 +4469,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes10-13"
+        "sevenhavens-book1.4"
       ],
       "confidence": "certain",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "gloss": "Dome"
     },
     "ghosts": {
@@ -4486,10 +4486,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes10-13"
+        "sevenhavens-book1.4"
       ],
       "confidence": "certain",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "gloss": "Ghosts"
     },
     "root": {
@@ -4501,10 +4501,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes10-13"
+        "sevenhavens-book1.4"
       ],
       "confidence": "certain",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "gloss": "Root"
     },
     "ruins": {
@@ -4518,10 +4518,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes10-13"
+        "sevenhavens-book1.4"
       ],
       "confidence": "certain",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "gloss": "Ruins"
     },
     "spirits": {
@@ -4537,10 +4537,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "episodes10-13"
+        "sevenhavens-book1.4"
       ],
       "confidence": "certain",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "gloss": "Spirits"
     },
     "week": {
@@ -4552,10 +4552,10 @@ window.AVATARIAN_CORPUS = {
       ],
       "count": 1,
       "sources": [
-        "7h-promo-1-week"
+        "7h-promo.2"
       ],
       "confidence": "certain",
-      "source": "7h-promo-1-week",
+      "source": "7h-promo.2",
       "gloss": "week"
     },
     "outpost": {

@@ -98,89 +98,89 @@
       "where": "https://www.instagram.com/p/DcBlbbJlHWB?img_index=1",
       "image": "zuko-stamp.png"
     },
-    "sdcc-1": {
+    "sdcc.1": {
       "what": "Avatarian: The Unique Written Language of the Avatar World",
       "where": "San Diego Comic-Con",
       "image": "sdcc-1.png"
     },
-    "sdcc-2": {
+    "sdcc.2": {
       "what": "water / earth / fire / air",
       "where": "san diego comic con 2026",
       "image": "sdcc-2.png"
     },
-    "sdcc-3": {
+    "sdcc.3": {
       "what": "Avatar / Korra / theater / show / games / treats / festival / aquaduct / written",
       "where": "san diego comic con 2026",
       "image": "sdcc-3.png"
     },
-    "sonam": {
+    "movie.1": {
       "what": "Sonam statue",
       "where": "movie 04:08",
       "image": "sonam.jpg"
     },
-    "7h-promo": {
+    "7h-promo.1": {
       "what": "1 month",
       "where": "https://www.instagram.com/p/DdEzLNeEdK8/",
       "image": "7h-promo.png"
     },
-    "beifong-academy-banner": {
+    "movie.2": {
       "what": "Beifong academy banner",
       "where": "movie 0:20:16",
       "image": "submission-oq04us.jpg",
       "credit": "Bundas"
     },
-    "shirshu-sign": {
+    "movie.3": {
       "what": "Street sign saying \"Shirshu Detective Agency\"",
       "where": "movie 1:14:00 (it is mirrored)",
       "image": "submission-f3xyf4.jpg",
       "credit": "Bundas"
     },
-    "republic-city": {
+    "movie.5": {
       "what": "\"Republic City\" written on a wooden sign above a gate",
       "where": "movie 1:28:40",
       "image": "submission-etlk6u.jpg",
       "credit": "Bundas"
     },
-    "skips-fishing-supplies": {
+    "movie.4": {
       "what": "\"Skip's fishing supplies\" shop banner",
       "where": "movie 1:23:14-1:23:15 (never seen fully just parts - attached image is cut together), also seen at 0:10:52, 1:14:12, and 1:30:56",
       "image": "submission-iceibt.png",
       "credit": "Bundas"
     },
-    "enjoy-stamp": {
+    "movie.7": {
       "what": "\"Enjoy\" stamp among graffiti on a wall",
       "where": "movie 1:30:13",
       "image": "submission-4ndonk.jpg",
       "credit": "Bundas"
     },
-    "jewel-sign": {
+    "movie.6": {
       "what": "Shop sign that reads \"Jewel\". To the left, it reads \"year of\". There are also a bunch of glyphs in circles with unknown meaning: from left to right are /i z/, /f a/ and /m i/",
       "where": "movie 1:29:53",
       "image": "submission-wvvbph.jpg",
       "credit": "Bundas",
       "author": "Bundas"
     },
-    "episodes1-3": {
+    "sevenhavens-book1.1": {
       "what": "Survival / On the Horizon / Into the Storm / The Order",
       "where": "https://www.instagram.com/p/Dd1kFKtmcdo/?stkn=MXZ4dTE3ODM5NGJiaw%3D%3D&img_index=1",
       "image": "episode1-3.jpg"
     },
-    "episodes4-6": {
+    "sevenhavens-book1.2": {
       "what": "The Faceless / The One Left Behind / Night of the Afflicted",
       "where": "https://www.instagram.com/p/Dd4I9kLmLyW/?img_index=2",
       "image": "episodes4-6.jpg"
     },
-    "episodes6-9": {
+    "sevenhavens-book1.3": {
       "what": "What Lies Beneath / The Envoys: Part One / The Envoys: Part Two",
       "where": "https://www.instagram.com/p/Dd6trweFDnm/",
       "image": "episodes6-9.jpg"
     },
-    "episodes10-13": {
+    "sevenhavens-book1.4": {
       "what": "Ghosts and Spirits / Battle of the Ruins / The Dome / The Root Chakra",
       "where": "https://www.instagram.com/p/Dd9SiT1lA7e/?img_index=1",
       "image": "episodes10-13.jpg"
     },
-    "7h-promo-1-week": {
+    "7h-promo.2": {
       "what": "7h-promo: 1 week",
       "where": "https://www.instagram.com/p/Dd_iuUomsv_/?img_index=1&stkn=ZHkyMXZpcWhrcGRy",
       "image": "submission-bljdgh.png"
@@ -1923,34 +1923,34 @@
     {
       "key": "avatar",
       "spelling": "æ v ə ∅ t ɑ ɹ ∅",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "confidence": "certain",
       "gloss": "Avatar"
     },
     {
       "key": "avatarian",
       "spelling": "æ v ə ∅ t ɑ ɹ ∅ i ∅ ə n",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "confidence": "certain",
       "gloss": "Avatarian"
     },
     {
       "key": "language",
       "spelling": "l e ŋ ∅ g w ə dʒ",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "confidence": "certain",
       "gloss": "Language"
     },
     {
       "key": "of",
       "spelling": "ʌ v",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "confidence": "certain"
     },
     {
       "key": "the",
       "spelling": "ð i",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "confidence": "certain",
       "gloss": "The",
       "times": 2
@@ -1958,126 +1958,126 @@
     {
       "key": "unique",
       "spelling": "j u n i k ∅",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "confidence": "certain",
       "gloss": "Unique"
     },
     {
       "key": "world",
       "spelling": "w ə ɹ l d ∅",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "confidence": "certain",
       "gloss": "World"
     },
     {
       "key": "written",
       "spelling": "ɹ ɪ t ə n ∅",
-      "source": "sdcc-1",
+      "source": "sdcc.1",
       "confidence": "certain",
       "gloss": "Written"
     },
     {
       "key": "air",
       "spelling": "e ɹ",
-      "source": "sdcc-2",
+      "source": "sdcc.2",
       "confidence": "certain"
     },
     {
       "key": "earth",
       "spelling": "ə ɹ θ ∅",
-      "source": "sdcc-2",
+      "source": "sdcc.2",
       "confidence": "certain"
     },
     {
       "key": "fire",
       "spelling": "f aɪ ə ɹ",
-      "source": "sdcc-2",
+      "source": "sdcc.2",
       "confidence": "certain"
     },
     {
       "key": "water",
       "spelling": "w ɔ t ə ɹ ∅",
-      "source": "sdcc-2",
+      "source": "sdcc.2",
       "confidence": "certain"
     },
     {
       "key": "aquaduct",
       "spelling": "æ k w ə d ʌ k t",
-      "source": "sdcc-3",
+      "source": "sdcc.3",
       "confidence": "certain"
     },
     {
       "key": "avatar",
       "spelling": "æ v ə ∅ t ɑ ɹ ∅",
-      "source": "sdcc-3",
+      "source": "sdcc.3",
       "confidence": "certain",
       "gloss": "Avatar"
     },
     {
       "key": "festival",
       "spelling": "f ɛ s t ə v ə l",
-      "source": "sdcc-3",
+      "source": "sdcc.3",
       "confidence": "certain"
     },
     {
       "key": "games",
       "spelling": "g e m z",
-      "source": "sdcc-3",
+      "source": "sdcc.3",
       "confidence": "certain"
     },
     {
       "key": "korra",
       "spelling": "k oʊ ɹ ə",
-      "source": "sdcc-3",
+      "source": "sdcc.3",
       "confidence": "certain",
       "gloss": "Korra"
     },
     {
       "key": "show",
       "spelling": "ʃ oʊ",
-      "source": "sdcc-3",
+      "source": "sdcc.3",
       "confidence": "certain"
     },
     {
       "key": "theater",
       "spelling": "θ i ə t ə ɹ",
-      "source": "sdcc-3",
+      "source": "sdcc.3",
       "confidence": "certain"
     },
     {
       "key": "treats",
       "spelling": "t ɹ i t s ∅",
-      "source": "sdcc-3",
+      "source": "sdcc.3",
       "confidence": "certain"
     },
     {
       "key": "written",
       "spelling": "ɹ ɪ t ə n ∅",
-      "source": "sdcc-3",
+      "source": "sdcc.3",
       "confidence": "certain"
     },
     {
       "key": "sonam",
       "spelling": "s oʊ n ə m ∅",
-      "source": "sonam",
+      "source": "movie.1",
       "confidence": "certain"
     },
     {
       "key": "month",
       "spelling": "m ʌ n ∅ θ ∅",
-      "source": "7h-promo",
+      "source": "7h-promo.1",
       "confidence": "certain"
     },
     {
       "key": "academy",
       "spelling": "ə ∅ k æ d ə m i",
-      "source": "beifong-academy-banner",
+      "source": "movie.2",
       "confidence": "certain"
     },
     {
       "key": "beifong",
       "spelling": "b e f ɔ ŋ ∅",
-      "source": "beifong-academy-banner",
+      "source": "movie.2",
       "confidence": "certain",
       "gloss": "Beifong"
     },
@@ -2086,184 +2086,184 @@
       "spelling": "e dʒ ə n s i",
       "confidence": "certain",
       "gloss": "agency",
-      "source": "shirshu-sign"
+      "source": "movie.3"
     },
     {
       "key": "detective",
       "spelling": "d ɪ t ɛ k t ɪ v",
       "confidence": "certain",
       "gloss": "detective",
-      "source": "shirshu-sign"
+      "source": "movie.3"
     },
     {
       "key": "shirshu",
       "spelling": "ʃ ɪ ɹ ∅ ʃ u",
       "confidence": "certain",
       "gloss": "shirshu",
-      "source": "shirshu-sign"
+      "source": "movie.3"
     },
     {
       "key": "city",
       "spelling": "s ɪ t i",
       "confidence": "certain",
       "gloss": "City",
-      "source": "republic-city"
+      "source": "movie.5"
     },
     {
       "key": "republic",
       "spelling": "ɹ i p ʌ b l ə k",
       "confidence": "certain",
       "gloss": "Republic",
-      "source": "republic-city"
+      "source": "movie.5"
     },
     {
       "key": "fishing",
       "spelling": "f ɪ ʃ ɪ ŋ ∅",
       "confidence": "certain",
       "gloss": "fishing",
-      "source": "skips-fishing-supplies"
+      "source": "movie.4"
     },
     {
       "key": "skip's",
       "spelling": "s k ɪ p * *",
       "confidence": "certain",
       "gloss": "Skip's",
-      "source": "skips-fishing-supplies"
+      "source": "movie.4"
     },
     {
       "key": "supplies",
       "spelling": "s ə p l aɪ z",
       "confidence": "certain",
       "gloss": "supplies",
-      "source": "skips-fishing-supplies"
+      "source": "movie.4"
     },
     {
       "key": "enjoy",
       "spelling": "ɛ n dʒ ɔɪ",
       "confidence": "certain",
       "gloss": "enjoy",
-      "source": "enjoy-stamp"
+      "source": "movie.7"
     },
     {
       "key": "jewel",
       "spelling": "dʒ u ə l",
       "confidence": "certain",
       "gloss": "jewel",
-      "source": "jewel-sign"
+      "source": "movie.6"
     },
     {
       "key": "of",
       "spelling": "ə v",
-      "source": "jewel-sign",
+      "source": "movie.6",
       "confidence": "certain"
     },
     {
       "key": "year",
       "spelling": "j ɪ ɹ ∅",
-      "source": "jewel-sign",
+      "source": "movie.6",
       "confidence": "certain"
     },
     {
       "key": "horizon",
       "spelling": "h ə ɹ aɪ z ə n ∅",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "confidence": "certain",
       "gloss": "Horizon"
     },
     {
       "key": "into",
       "spelling": "ɪ n t u",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "confidence": "certain",
       "gloss": "Into"
     },
     {
       "key": "on",
       "spelling": "ɑ n",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "confidence": "certain",
       "gloss": "On"
     },
     {
       "key": "order",
       "spelling": "ɔ ɹ d ə ɹ ∅",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "confidence": "certain",
       "gloss": "Order"
     },
     {
       "key": "storm",
       "spelling": "s t ɔ ɹ m ∅",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "confidence": "certain",
       "gloss": "Storm"
     },
     {
       "key": "survival",
       "spelling": "s ə ɹ ∅ v aɪ v ə l ∅",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "confidence": "certain",
       "gloss": "Survival"
     },
     {
       "key": "the",
       "spelling": "ð ə",
-      "source": "episodes1-3",
+      "source": "sevenhavens-book1.1",
       "confidence": "certain",
       "times": 3
     },
     {
       "key": "afflicted",
       "spelling": "ə f l ɪ k t ə d",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "confidence": "certain",
       "gloss": "Afflicted"
     },
     {
       "key": "behind",
       "spelling": "b ɪ h aɪ n d",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "confidence": "certain",
       "gloss": "Behind"
     },
     {
       "key": "faceless",
       "spelling": "f e s$ l ə s",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "confidence": "certain",
       "gloss": "Faceless"
     },
     {
       "key": "left",
       "spelling": "l ɛ f t",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "confidence": "certain",
       "gloss": "Left"
     },
     {
       "key": "night",
       "spelling": "n aɪ t ∅",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "confidence": "certain",
       "gloss": "Night"
     },
     {
       "key": "of",
       "spelling": "ʌ v",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "confidence": "certain"
     },
     {
       "key": "one",
       "spelling": "w ʌ n ∅",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "confidence": "certain",
       "gloss": "One"
     },
     {
       "key": "the",
       "spelling": "ð ə",
-      "source": "episodes4-6",
+      "source": "sevenhavens-book1.2",
       "confidence": "certain",
       "gloss": "The",
       "times": 3
@@ -2271,124 +2271,124 @@
     {
       "key": "beneath",
       "spelling": "b ɪ n i θ ∅",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "confidence": "certain",
       "gloss": "Beneath"
     },
     {
       "key": "envoys",
       "spelling": "ɛ n v ɔɪ z ∅",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "confidence": "certain",
       "gloss": "Envoys"
     },
     {
       "key": "lies",
       "spelling": "l aɪ z ∅",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "confidence": "certain",
       "gloss": "Lies"
     },
     {
       "key": "one",
       "spelling": "w ʌ n ∅",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "confidence": "certain",
       "gloss": "One"
     },
     {
       "key": "part",
       "spelling": "p ɑ ɹ t",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "confidence": "certain",
       "gloss": "Part"
     },
     {
       "key": "the",
       "spelling": "ð ə",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "confidence": "certain",
       "gloss": "The"
     },
     {
       "key": "two",
       "spelling": "t u",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "confidence": "certain",
       "gloss": "Two"
     },
     {
       "key": "what",
       "spelling": "w ʌ t ∅",
-      "source": "episodes6-9",
+      "source": "sevenhavens-book1.3",
       "confidence": "certain",
       "gloss": "What"
     },
     {
       "key": "and",
       "spelling": "ʌ n d ∅",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "confidence": "certain"
     },
     {
       "key": "battle",
       "spelling": "b æ t ə l ∅",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "confidence": "certain",
       "gloss": "Battle"
     },
     {
       "key": "chakra",
       "spelling": "tʃ ɑ k ∅ ɹ ə",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "confidence": "certain",
       "gloss": "Chakra"
     },
     {
       "key": "dome",
       "spelling": "d oʊ m ∅",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "confidence": "certain",
       "gloss": "Dome"
     },
     {
       "key": "ghosts",
       "spelling": "g oʊ s t s ∅",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "confidence": "certain",
       "gloss": "Ghosts"
     },
     {
       "key": "of",
       "spelling": "ʌ v",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "confidence": "certain"
     },
     {
       "key": "root",
       "spelling": "ɹ u t ∅",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "confidence": "certain",
       "gloss": "Root"
     },
     {
       "key": "ruins",
       "spelling": "ɹ u ə n z ∅",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "confidence": "certain",
       "gloss": "Ruins"
     },
     {
       "key": "spirits",
       "spelling": "s p ɪ ɹ ɪ t s ∅",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "confidence": "certain",
       "gloss": "Spirits"
     },
     {
       "key": "the",
       "spelling": "ð ə",
-      "source": "episodes10-13",
+      "source": "sevenhavens-book1.4",
       "confidence": "certain",
       "times": 3
     },
@@ -2397,7 +2397,7 @@
       "spelling": "w i k ∅",
       "confidence": "certain",
       "gloss": "week",
-      "source": "7h-promo-1-week"
+      "source": "7h-promo.2"
     },
     {
       "key": "outpost",
