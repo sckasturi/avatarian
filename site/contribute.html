@@ -17,7 +17,7 @@
 <meta name="robots" content="index,follow" />
 <link rel="stylesheet" href="css/blocks.css?v=70" />
 <link rel="stylesheet" href="css/style.css?v=70" />
-<link rel="stylesheet" href="css/contribute.css" />
+<link rel="stylesheet" href="css/contribute.css?v=72" />
 </head>
 <body>
 
@@ -51,6 +51,17 @@
 
 <div class="contrib-grid" id="contribForm">
 <div class="contrib-main">
+
+  <!-- 0. Category — groups the whole batch -------------------------- -->
+  <section class="panel">
+    <label class="field">
+      <span class="field-label">Category <span class="fine">— the prefix that
+        groups the images you add below; each one becomes
+        <code>&lt;category&gt;.1</code>, <code>.2</code>, …. Leave blank for a
+        single source.</span></span>
+      <input type="text" id="category" autocomplete="off" placeholder="e.g. instagram-5" />
+    </label>
+  </section>
 
   <!-- 1. The source ------------------------------------------------- -->
   <section class="panel">
@@ -169,14 +180,29 @@
     </div>
   </section>
 
-  <!-- 3. Review + submit -------------------------------------------- -->
+  <!-- 3. Review this image, add it to the batch --------------------- -->
   <section class="panel">
     <div class="panel-head">
-      <h2 class="step"><span class="step-n">3</span> Review &amp; submit</h2>
+      <h2 class="step"><span class="step-n">3</span> This image</h2>
       <span class="staged-count" id="stagedCount"></span>
     </div>
 
     <div class="source-words" id="stagedWords"></div>
+
+    <div class="import-actions">
+      <button type="button" id="addImageBtn" class="primary" disabled>add this image to the batch ↓</button>
+      <span class="submit-why" id="addWhy"></span>
+    </div>
+  </section>
+
+  <!-- 4. The batch + submit ----------------------------------------- -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2 class="step"><span class="step-n">4</span> Submit</h2>
+      <span class="staged-count" id="batchCount"></span>
+    </div>
+
+    <div class="batch-list" id="batchList"></div>
 
     <div class="submit-row">
       <button type="button" id="submitBtn" class="primary" disabled>submit to the corpus</button>
@@ -258,7 +284,7 @@ themeBtn.addEventListener("click", () => {
 });
 </script>
 
-<script src="js/contribute.js"></script>
+<script src="js/contribute.js?v=72"></script>
 <script src="js/notice.js?v=71"></script>
 </body>
 </html>

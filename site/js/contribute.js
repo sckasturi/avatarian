@@ -54,6 +54,11 @@ const state = {
   submitter: "",        // who is sending it (may differ from who read it)
   image: null,          // { name, mime, dataUrl, bytes } once one is dropped
   entries: [],          // the sightings read off it this session
+  // A submission is a BATCH: the working image above, plus every image
+  // already added below. They share a category (the name prefix) and are
+  // numbered <category>.1, .2, … in the order they were added.
+  category: "",
+  batch: [],            // [{ what, where, confidence, credit, image, entries }]
   submitting: false,
 };
 
@@ -710,6 +715,109 @@ function commitImport() {
 }
 
 // ---------------------------------------------------------------------
+// The batch: the working image, plus images already added
+// ---------------------------------------------------------------------
+
+/** Reset the working panel for the next image, keeping the batch intact. */
+function clearWorkingImage() {
+  state.image = null;
+  state.entries = [];
+  state.source.what = "";
+  state.source.where = "";
+  const img = $("sourceImage");
+  img.hidden = true;
+  img.removeAttribute("src");
+  $("dropHint").hidden = false;
+  $("imageName").textContent = "";
+  const zoom = $("imageZoom").closest(".zoom-ctl");
+  if (zoom) zoom.hidden = true;
+  $("srcWhat").value = "";
+  $("srcWhere").value = "";
+  $("impText").value = "";
+  $("impEnglish").value = "";
+  importSeeded = new Map();
+  importConfirmed = new Set();
+  importRows = [];
+  renderImportRows();
+  renderStaged();
+}
+
+/** Move the working image (image + its sightings + fields) into the batch. */
+function addImage() {
+  readSourceFields();
+  if (!state.image || !state.entries.length) return;
+  state.batch.push({
+    what: state.source.what,
+    where: state.source.where,
+    confidence: state.source.confidence,
+    credit: state.source.credit,
+    image: state.image,
+    entries: state.entries.map((e) => ({ ...e })),
+  });
+  clearWorkingImage();
+  renderBatch();
+  updateSubmit();
+  setStatus(`image added — ${state.batch.length} in the batch. Drop the next `
+            + `image above, or submit below.`, "is-dirty");
+  $("dropzone").scrollIntoView({ block: "nearest" });
+}
+
+/** The name an image will be suggested under: <category>.<n>, 1-based. */
+function batchName(index) {
+  const cat = state.category.trim();
+  return cat ? `${cat}.${index + 1}` : `image ${index + 1}`;
+}
+
+function renderBatch() {
+  const box = $("batchList");
+  const count = $("batchCount");
+  box.innerHTML = "";
+  if (!state.batch.length) {
+    box.innerHTML = '<p class="empty">No images added yet — transcribe the '
+      + 'image above and press <b>add this image</b>. One image is fine too.</p>';
+    count.textContent = "";
+    return;
+  }
+  count.textContent = `${state.batch.length} image`
+    + `${state.batch.length === 1 ? "" : "s"}`;
+  state.batch.forEach((src, i) => {
+    const item = document.createElement("div");
+    item.className = "batch-item";
+
+    const thumb = document.createElement("img");
+    thumb.className = "batch-thumb";
+    thumb.src = src.image.dataUrl;
+    thumb.alt = "";
+
+    const info = document.createElement("div");
+    info.className = "batch-info";
+    const name = document.createElement("span");
+    name.className = "batch-name";
+    name.textContent = batchName(i);
+    const words = src.entries.length;
+    const meta = document.createElement("span");
+    meta.className = "batch-meta";
+    meta.textContent = `${words} word${words === 1 ? "" : "s"}`
+      + (src.where ? " · " + src.where : "");
+    info.append(name, meta);
+
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "staged-del";
+    del.title = "remove this image from the batch";
+    del.textContent = "×";
+    del.addEventListener("click", () => {
+      state.batch.splice(i, 1);
+      renderBatch();       // re-numbers the rest
+      updateSubmit();
+    });
+
+    item.append(thumb, info, del);
+    box.appendChild(item);
+  });
+}
+
+// ---------------------------------------------------------------------
 // The staged sightings + submit
 // ---------------------------------------------------------------------
 
@@ -767,22 +875,30 @@ function renderStaged() {
   updateSubmit();
 }
 
-/** Whether every precondition for a submission is met, and enable/label. */
+/** Enable/label the "add this image" and "submit" buttons for the batch. */
 function updateSubmit() {
-  const btn = $("submitBtn");
-  const ready = !state.submitting
-    && state.entries.length > 0
-    && !!state.image;
-  btn.disabled = !ready;
+  // The working image is ready to add once it has an image and a sighting.
+  const workingReady = state.entries.length > 0 && !!state.image;
+  $("addImageBtn").disabled = state.submitting || !workingReady;
+  const addWhy = [];
+  if (!state.image) addWhy.push("attach the reference image");
+  if (!state.entries.length) addWhy.push("add at least one sighting");
+  $("addWhy").textContent = workingReady ? "" : addWhy.join(" · ");
 
-  const why = [];
-  if (!state.entries.length) why.push("add at least one sighting");
-  if (!state.image) why.push("attach the reference image");
-  $("submitWhy").textContent = state.submitting ? "" : why.join(" · ");
+  // Submit sends the batch — plus the working image, which is auto-added.
+  const total = state.batch.length + (workingReady ? 1 : 0);
+  $("submitBtn").disabled = state.submitting || total === 0;
+  $("submitBtn").textContent = total > 1
+    ? `submit all ${total} images` : "submit to the corpus";
+  $("submitWhy").textContent = state.submitting || total > 0
+    ? "" : "add an image to the batch first";
 }
 
 async function submit() {
   readSourceFields();
+  // A complete working image the contributor didn't explicitly add is folded
+  // into the batch rather than lost.
+  if (state.image && state.entries.length) addImage();
   updateSubmit();
   if ($("submitBtn").disabled) return;
 
@@ -791,21 +907,29 @@ async function submit() {
       + "(window.AVATARIAN_CONTRIB.submitUrl). Nothing was sent."]);
     return;
   }
+  if (!state.batch.length) {
+    showProblems(["Add at least one image before submitting."]);
+    return;
+  }
 
   state.submitting = true;
   updateSubmit();
   setStatus("submitting…");
   showProblems([]);
 
+  const category = state.category.trim();
   const payload = {
-    source: {
-      what: state.source.what,
-      where: state.source.where,
-      ...(state.source.credit ? { credit: state.source.credit } : {}),
-    },
+    category: category || null,
     submitter: state.submitter || null,
-    entries: state.entries.map((e) => ({ ...e })),
-    image: { name: state.image.name, dataUrl: state.image.dataUrl },
+    sources: state.batch.map((b, i) => ({
+      slide: i + 1,
+      what: b.what,
+      where: b.where,
+      confidence: b.confidence,
+      ...(b.credit ? { credit: b.credit } : {}),
+      entries: b.entries.map((e) => ({ ...e })),
+      image: { name: b.image.name, dataUrl: b.image.dataUrl },
+    })),
   };
 
   try {
@@ -855,6 +979,14 @@ function showSubmitted(prUrl) {
 // ---------------------------------------------------------------------
 
 function wire() {
+  // The batch category (applies to every image in this submission).
+  $("category").addEventListener("input", () => {
+    state.category = $("category").value.trim();
+    renderBatch();
+    updateSubmit();
+  });
+  $("addImageBtn").addEventListener("click", addImage);
+
   // Source fields.
   for (const id of ["srcWhat", "srcWhere", "submitter"]) {
     $(id).addEventListener("input", () => { readSourceFields(); updateSubmit(); });
@@ -909,7 +1041,7 @@ function wire() {
   $("submitBtn").addEventListener("click", submit);
 
   window.addEventListener("beforeunload", (e) => {
-    if (!state.entries.length && !importRows.length) return;
+    if (!state.entries.length && !importRows.length && !state.batch.length) return;
     e.preventDefault();
     e.returnValue = "";
   });
@@ -918,4 +1050,6 @@ function wire() {
 buildPalette();
 wire();
 renderImportRows();
+renderBatch();
+updateSubmit();
 renderStaged();

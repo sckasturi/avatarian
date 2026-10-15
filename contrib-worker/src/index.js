@@ -119,46 +119,73 @@ async function handle(request, env, origin) {
 // Validation (a pre-filter — build_corpus.check is the authority in CI)
 // ---------------------------------------------------------------------
 
-function validate(body) {
-  const source = body && body.source;
-  if (!source || typeof source !== "object") {
-    return "The submission is missing its source details.";
+// A submission is a BATCH of images under a category. Accept the new shape
+// {category, sources:[{what,where,confidence,credit,entries,image,slide}, …]}
+// and the legacy single shape {source, entries, image} as a batch of one, so
+// an old page still works.
+function inputSources(body) {
+  if (Array.isArray(body && body.sources)) return body.sources;
+  if (body && body.source) {
+    return [{
+      what: body.source.what, where: body.source.where,
+      confidence: body.source.confidence, credit: body.source.credit,
+      entries: body.entries, image: body.image,
+    }];
   }
-  const entries = body && body.entries;
-  if (!Array.isArray(entries) || entries.length === 0) {
-    return "There are no sightings to submit.";
-  }
-  if (entries.length > 200) {
-    return "That is an implausible number of sightings for one source.";
-  }
-  for (const e of entries) {
-    const key = String(e && e.key || "").trim();
-    if (!key) return "A sighting is missing its word.";
-    const tokens = String(e && e.spelling || "").split(" ").filter(Boolean);
-    if (tokens.length === 0) return `"${key}" has no spelling.`;
-    // The whole-blocks rule: two slots per block, so an even count.
-    if (tokens.length % 2 !== 0) {
-      return `"${key}" has an odd number of symbols — a null is missing.`;
-    }
-    const conf = e.confidence || "certain";
-    if (!CONFIDENCE.has(conf)) {
-      return `"${key}" has an unknown confidence "${conf}".`;
-    }
-  }
+  return [];
+}
 
-  const image = body && body.image;
-  if (!image || typeof image.dataUrl !== "string") {
-    return "The reference image is missing.";
+function validate(body) {
+  const sources = inputSources(body);
+  if (!sources.length) return "The submission has no images.";
+  if (sources.length > 24) return "That is too many images for one submission.";
+
+  let totalBytes = 0;
+  for (const src of sources) {
+    const where = src && src.where
+      ? `"${String(src.where).slice(0, 40)}"` : "an image";
+    const entries = src && src.entries;
+    if (!Array.isArray(entries) || entries.length === 0) {
+      return `${where} has no sightings.`;
+    }
+    if (entries.length > 200) {
+      return `${where} has an implausible number of sightings.`;
+    }
+    for (const e of entries) {
+      const key = String(e && e.key || "").trim();
+      if (!key) return `A sighting on ${where} is missing its word.`;
+      const tokens = String(e && e.spelling || "").split(" ").filter(Boolean);
+      if (tokens.length === 0) return `"${key}" has no spelling.`;
+      // The whole-blocks rule: two slots per block, so an even count.
+      if (tokens.length % 2 !== 0) {
+        return `"${key}" has an odd number of symbols — a null is missing.`;
+      }
+      const conf = e.confidence || "certain";
+      if (!CONFIDENCE.has(conf)) {
+        return `"${key}" has an unknown confidence "${conf}".`;
+      }
+    }
+
+    const image = src && src.image;
+    if (!image || typeof image.dataUrl !== "string") {
+      return `${where} is missing its reference image.`;
+    }
+    const parsed = parseDataUrl(image.dataUrl);
+    if (!parsed) return `${where}'s image is not a valid data URL.`;
+    if (!IMAGE_EXT[parsed.mime]) {
+      return `${parsed.mime} is not an accepted image type `
+        + `(${Object.keys(IMAGE_EXT).join(", ")}).`;
+    }
+    // base64 decodes to ~3/4 its length; check before allocating.
+    const bytes = parsed.base64.length * 0.75;
+    if (bytes > MAX_IMAGE) return `${where}'s image is over the 24 MB limit.`;
+    totalBytes += bytes;
   }
-  const parsed = parseDataUrl(image.dataUrl);
-  if (!parsed) return "The image is not a valid data URL.";
-  if (!IMAGE_EXT[parsed.mime]) {
-    return `${parsed.mime} is not an accepted image type `
-      + `(${Object.keys(IMAGE_EXT).join(", ")}).`;
+  if (totalBytes > MAX_IMAGE * 3) {
+    return "The whole batch is too large — submit fewer images at a time.";
   }
-  // base64 decodes to ~3/4 its length; check before allocating.
-  if (parsed.base64.length * 0.75 > MAX_IMAGE) {
-    return "The image is over the 24 MB limit.";
+  if (body && body.category && !safeStem(body.category)) {
+    return "The category has no usable characters.";
   }
   return null;
 }
@@ -168,60 +195,62 @@ function validate(body) {
 // ---------------------------------------------------------------------
 
 function buildStaged(body, request) {
-  const id = shortId();
-  // The submitter no longer names the source — the maintainer does when
-  // folding it in. So a submission with no name gets a placeholder key
-  // (`submission-<id>`) that keeps the staged file, its image, and the
-  // branch unique and clearly "needs naming".
-  const provided = safeStem(body.source.name);
-  const name = provided || `submission-${id}`;
-  const slug = provided ? `${name}-${id}` : name;
-  const parsed = parseDataUrl(body.image.dataUrl);
-  const imageFile = `${name}.${IMAGE_EXT[parsed.mime]}`;
+  const batchId = shortId();
+  const sources = inputSources(body);
+  // The category is the shared prefix; each image is <category>.<slide>. With
+  // no category the maintainer still names it, so each gets a unique
+  // placeholder that is clearly "needs naming".
+  const cat = safeStem(body && body.category);
+  const submitter = String(body && body.submitter || "").trim().slice(0, 80);
+  const at = new Date().toISOString();
+  const ua = (request.headers.get("User-Agent") || "").slice(0, 200);
 
-  const entries = body.entries.map((e) => {
-    const out = { key: String(e.key).trim(), spelling: String(e.spelling).trim(),
-                  source: name, confidence: e.confidence || "certain" };
-    if (e.gloss) out.gloss = String(e.gloss).trim();
-    const times = parseInt(e.times, 10);
-    if (Number.isInteger(times) && times > 1) out.times = times;
-    if (e.note) out.note = String(e.note).trim();
-    return out;
+  const items = sources.map((src, i) => {
+    const slide = Number.isInteger(src.slide) && src.slide > 0 ? src.slide : i + 1;
+    const name = cat ? `${cat}.${slide}` : `submission-${batchId}-${i + 1}`;
+    const parsed = parseDataUrl(src.image.dataUrl);
+    const imageFile = `${name}.${IMAGE_EXT[parsed.mime]}`;
+    const credit = String(src.credit || "").trim().slice(0, 80);
+
+    const entries = (src.entries || []).map((e) => {
+      const out = { key: String(e.key).trim(), spelling: String(e.spelling).trim(),
+                    source: name, confidence: e.confidence || "certain" };
+      if (e.gloss) out.gloss = String(e.gloss).trim();
+      const times = parseInt(e.times, 10);
+      if (Number.isInteger(times) && times > 1) out.times = times;
+      if (e.note) out.note = String(e.note).trim();
+      return out;
+    });
+
+    const submission = {
+      _submission: { at, via: "contribute.html", ua, batch: batchId },
+      source: {
+        name,
+        what: String(src.what || "").trim(),
+        where: String(src.where || "").trim(),
+        image: imageFile,
+      },
+      entries,
+    };
+    if (submitter) submission._submission.submitter = submitter;
+    if (credit) submission.source.credit = credit;
+
+    return {
+      name,
+      slug: name,                      // corpus/incoming/<name>.json
+      imageFile,
+      imageBase64: parsed.base64,
+      submissionJson: JSON.stringify(submission, null, 2) + "\n",
+      words: [...new Set(entries.map((e) => e.key))],
+      credit,
+    };
   });
 
-  // Who read the Avatarian, and who sent it — the reading is the
-  // contribution, so `credit` (the reader) rides on the source; the
-  // submitter is process metadata that stays in `_submission`.
-  const submitter = String(body.submitter || "").trim().slice(0, 80);
-  const credit = String(body.source.credit || "").trim().slice(0, 80);
-
-  const submission = {
-    _submission: {
-      at: new Date().toISOString(),
-      via: "contribute.html",
-      ua: (request.headers.get("User-Agent") || "").slice(0, 200),
-    },
-    source: {
-      name,
-      what: String(body.source.what || "").trim(),
-      where: String(body.source.where || "").trim(),
-      image: imageFile,
-    },
-    entries,
-  };
-  if (submitter) submission._submission.submitter = submitter;
-  if (credit) submission.source.credit = credit;
-
-  const words = [...new Set(entries.map((e) => e.key))];
   return {
-    name,
-    slug,
-    imageFile,
-    imageBase64: parsed.base64,
-    submissionJson: JSON.stringify(submission, null, 2) + "\n",
-    words,
+    category: cat,
+    branchSlug: cat || `submission-${batchId}`,
+    items,
     submitter,
-    credit,
   };
 }
 
@@ -248,47 +277,56 @@ async function openPullRequest(env, staged) {
     ref: `refs/heads/${branch}`, sha: baseSha,
   });
 
-  // 3. The image, committed into site/sources/ (the deployed, committed
-  //    copy the corpus page links to, and the one build_corpus.check looks
-  //    for). Then the staged submission JSON.
-  await putFile(token, owner, repo, branch,
-    `site/sources/${staged.imageFile}`, staged.imageBase64,
-    `corpus: reference image for ${staged.name} (community submission)`);
+  // 3. Each image into site/sources/ (the deployed copy the corpus page
+  //    links to and build_corpus.check looks for), then its staged JSON.
+  for (const item of staged.items) {
+    await putFile(token, owner, repo, branch,
+      `site/sources/${item.imageFile}`, item.imageBase64,
+      `corpus: reference image for ${item.name} (community submission)`);
+    await putFile(token, owner, repo, branch,
+      `corpus/incoming/${item.slug}.json`, utf8ToBase64(item.submissionJson),
+      `corpus: stage ${item.words.join(", ")} from ${item.name} `
+      + `(community submission)`);
+  }
 
-  await putFile(token, owner, repo, branch,
-    `corpus/incoming/${staged.slug}.json`, utf8ToBase64(staged.submissionJson),
-    `corpus: stage ${staged.words.join(", ")} from ${staged.name} `
-    + `(community submission)`);
-
-  // 4. The pull request.
+  // 4. One pull request for the whole batch.
+  const n = staged.items.length;
+  const title = n > 1
+    ? `corpus: ${staged.category || staged.items[0].name} (${n} images, community submission)`
+    : `corpus: ${staged.items[0].words.join(", ")} (community submission)`;
   const pr = await gh(token, `/repos/${owner}/${repo}/pulls`, "POST", {
-    title: `corpus: ${staged.words.join(", ")} (community submission)`,
-    head: branch,
-    base,
-    body: prBody(staged),
+    title, head: branch, base, body: prBody(staged),
   });
   return pr.html_url;
 }
 
 function prBody(staged) {
-  return [
+  const n = staged.items.length;
+  const lines = [
     `Community submission from the [contribute page](https://avatarian.techfilmer.com/contribute.html).`,
     ``,
-    `**Source:** \`${staged.name}\``,
-    `**Words:** ${staged.words.map((w) => `\`${w}\``).join(", ")}`,
-    `**Read by:** ${staged.credit ? escapeMd(staged.credit) : "_not stated_"}`,
-    `**Submitted by:** ${staged.submitter ? escapeMd(staged.submitter) : "_anonymous_"}`,
+  ];
+  if (staged.category) {
+    lines.push(`**Category:** \`${staged.category}\` · ${n} image${n === 1 ? "" : "s"}`);
+  }
+  lines.push(`**Submitted by:** ${staged.submitter ? escapeMd(staged.submitter) : "_anonymous_"}`, ``);
+  for (const item of staged.items) {
+    lines.push(`- \`${item.name}\` — ${item.words.map((w) => `\`${w}\``).join(", ")}`
+      + (item.credit ? ` · read by ${escapeMd(item.credit)}` : ""));
+  }
+  lines.push(
     ``,
-    `Staged at \`corpus/incoming/${staged.slug}.json\` with its reference `,
-    `image at \`site/sources/${staged.imageFile}\`. CI validates it with the `,
-    `same \`build_corpus.check\` that guards every other write.`,
+    `Each is staged at \`corpus/incoming/<name>.json\` with its image at `,
+    `\`site/sources/<name>.<ext>\`. CI validates with the same `,
+    `\`build_corpus.check\` that guards every other write.`,
     ``,
-    `To accept: merge, then \`python3 tools/promote_corpus.py ${staged.slug}.json\` `,
-    `folds it into \`corpus/attested.json\` and regenerates \`site/js/corpus.js\`.`,
+    `To accept: merge, then promote each with `,
+    `\`python3 tools/promote_corpus.py <name>.json --name <name>\` — or use the `,
+    `review console's "approve all".`,
     ``,
-    `_This PR was opened by the contribution Worker on a contributor's `,
-    `behalf. Treat the text and image as untrusted until reviewed._`,
-  ].join("\n");
+    `_Opened by the contribution Worker on a contributor's behalf. Treat the `,
+    `text and images as untrusted until reviewed._`);
+  return lines.join("\n");
 }
 
 /** Create-or-update one file on a branch via the Contents API. */

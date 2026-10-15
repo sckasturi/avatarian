@@ -227,6 +227,26 @@ input:focus, textarea:focus, select:focus {
 .staged-del:hover { color: var(--warn); background: none; }
 .staged-count { font-size: 0.82rem; color: var(--faint); }
 
+/* --- the batch (images added so far) ------------------------------ */
+
+.batch-list { display: flex; flex-direction: column; gap: 8px; }
+.batch-list .empty { color: var(--faint); font-size: 0.85rem; margin: 0; }
+.batch-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--surface);
+}
+.batch-thumb {
+  flex: 0 0 auto; width: 44px; height: 44px; object-fit: cover;
+  border-radius: 6px; border: 1px solid var(--line); background: var(--hover);
+}
+.batch-info { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.batch-name { font-weight: 600; font-size: 0.9rem; }
+.batch-meta {
+  color: var(--muted); font-size: 0.78rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
 /* --- submit ------------------------------------------------------- */
 
 .submit-row {
