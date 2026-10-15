@@ -81,29 +81,18 @@
   }
   .source-collapse:hover { border-color: var(--accent); color: var(--ink); }
   .source-card.is-collapsed { padding: 10px 16px; align-items: center; }
+  .source-card.is-collapsed { grid-column: auto; }
   .source-card.is-collapsed .source-thumb,
   .source-card.is-collapsed .source-noimg,
   .source-card.is-collapsed .source-what,
   .source-card.is-collapsed .source-words,
-  .source-card.is-collapsed .words-more,
   .source-card.is-collapsed .source-empty { display: none; }
 
-  /* Cap the words' HEIGHT so a word-heavy source stays a tile, not a tower;
-     the overflow fades out under the "show all" button. */
-  .source-words.capped {
-    max-height: 168px; overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
-    mask-image: linear-gradient(to bottom, #000 72%, transparent);
-  }
-  .source-words.capped.open {
-    max-height: none; -webkit-mask-image: none; mask-image: none;
-  }
-  .words-more {
-    margin-top: 8px; font: inherit; font-size: 0.8rem;
-    background: none; border: 1px solid var(--line); color: var(--muted);
-    border-radius: 6px; padding: 3px 10px; cursor: pointer;
-  }
-  .words-more:hover { border-color: var(--accent); color: var(--ink); }
+  /* A word-heavy source takes up more width instead of towering: it spans
+     extra grid columns, so its words tile wide and all of them show. The
+     grid clamps the span to however many columns actually fit. */
+  .source-card.span2 { grid-column: span 2; }
+  .source-card.span3 { grid-column: span 3; }
   .source-card {
     background: var(--card); border: 1px solid var(--line);
     border-radius: 12px; padding: 16px; display: flex; gap: 16px;
@@ -363,16 +352,16 @@ for (const cat of Object.keys(catMembers)) {
   if (catMembers[cat].length < 2) { loners.push(...catMembers[cat]); delete catMembers[cat]; }
 }
 
-// Render units: a group (header + its slide cards) or a single card. Weight is
-// total words, so busy posters and full episodes lead either way.
-const UNITS = [];
+// Category groups, richest first (total words). Standalone sources are kept
+// SEPARATE — in their own section below — so a lone source never flows into a
+// group's tiling and looks like one of its slides.
+const groupUnits = [];
 for (const cat of Object.keys(catMembers)) {
   const ids = catMembers[cat].slice().sort(slideOrder);
-  UNITS.push({ group: cat, ids, weight: ids.reduce((n, id) => n + wordCount(id), 0) });
+  groupUnits.push({ group: cat, ids, weight: ids.reduce((n, id) => n + wordCount(id), 0) });
 }
-for (const id of loners) UNITS.push({ id, weight: wordCount(id) });
-UNITS.sort((a, b) => b.weight - a.weight
-  || String(a.group || a.id).localeCompare(String(b.group || b.id)));
+groupUnits.sort((a, b) => b.weight - a.weight || a.group.localeCompare(b.group));
+loners.sort((a, b) => wordCount(b) - wordCount(a) || a.localeCompare(b));
 
 // --- render -------------------------------------------------------------
 
@@ -394,6 +383,10 @@ function sourceCard(id) {
 
   const el = document.createElement("div");
   el.className = "source-card";
+  // Word-heavy sources take up more width (span columns) so all their words
+  // show, tiled wide, rather than stacking into a tower in one column.
+  if (words.length >= 17) el.classList.add("span3");
+  else if (words.length >= 7) el.classList.add("span2");
   // A stable anchor so a single source is directly linkable:
   // sources.html#source-<id> jumps to and rings this card.
   el.id = "source-" + id;
@@ -514,11 +507,6 @@ function sourceCard(id) {
   if (words.length) {
     const grid = document.createElement("div");
     grid.className = "source-words";
-    // Cap the HEIGHT of the words so every card is roughly the same size and
-    // the grid tiles without a 50-word source towering over its neighbours.
-    // The rest fade under a "show all"; one click reveals them.
-    const capped = words.length > 6;
-    if (capped) grid.classList.add("capped");
     words.forEach((w, i) => {
       const chip = document.createElement("a");
       chip.className = "source-word";
@@ -540,17 +528,6 @@ function sourceCard(id) {
       grid.appendChild(chip);
     });
     body.appendChild(grid);
-    if (capped) {
-      const more = document.createElement("button");
-      more.type = "button";
-      more.className = "words-more";
-      more.textContent = `show all ${words.length} words`;
-      more.addEventListener("click", () => {
-        const open = grid.classList.toggle("open");
-        more.textContent = open ? "show fewer" : `show all ${words.length} words`;
-      });
-      body.appendChild(more);
-    }
   } else {
     const none = document.createElement("p");
     none.className = "source-empty";
@@ -567,25 +544,29 @@ const frag = document.createDocumentFragment();
 const cards = [];        // every source card, for filtering + deep-links
 const groups = [];       // { head, members } so a header can hide when empty
 
-for (const u of UNITS) {
-  if (u.id) {            // a lone source
-    const c = sourceCard(u.id);
-    frag.appendChild(c);
-    cards.push(c);
-    continue;
-  }
-  // A category group: a header, then its slide cards.
+// A section: a full-width header (spanning all columns) and its cards. Used
+// for a category and for the standalone "Other sources" bucket.
+function renderSection(label, anchorId, ids, opts) {
+  opts = opts || {};
   const head = document.createElement("h2");
   head.className = "cat-head";
-  head.id = "cat-" + u.group;
-  const a = document.createElement("a");
-  a.className = "cat-link";
-  a.href = "#cat-" + u.group;
-  a.textContent = u.group;
-  a.title = "Link to this category";
+  head.id = anchorId;
+
+  let labelEl;
+  if (opts.link) {
+    labelEl = document.createElement("a");
+    labelEl.className = "cat-link";
+    labelEl.href = "#" + anchorId;
+    labelEl.title = "Link to this category";
+  } else {
+    labelEl = document.createElement("span");
+  }
+  labelEl.textContent = label;
+
   const count = document.createElement("span");
   count.className = "cat-count";
-  count.textContent = ` · ${u.ids.length} images`;
+  count.textContent = ` · ${ids.length} ${opts.unit || "images"}`;
+
   const members = [];
   const collapseAll = document.createElement("button");
   collapseAll.type = "button";
@@ -596,9 +577,10 @@ for (const u of UNITS) {
     members.forEach((c) => setCardCollapsed(c, anyOpen));
     collapseAll.textContent = anyOpen ? "expand all" : "collapse all";
   });
-  head.append(a, count, collapseAll);
+
+  head.append(labelEl, count, collapseAll);
   frag.appendChild(head);
-  for (const id of u.ids) {
+  for (const id of ids) {
     const c = sourceCard(id);
     c.classList.add("in-cat");
     frag.appendChild(c);
@@ -606,6 +588,23 @@ for (const u of UNITS) {
     members.push(c);
   }
   groups.push({ head, members });
+}
+
+for (const u of groupUnits) {
+  renderSection(u.group, "cat-" + u.group, u.ids, { link: true, unit: "images" });
+}
+if (loners.length) {
+  if (groupUnits.length) {
+    // The standalone sources — letters, stamps, one-off signs — in their own
+    // section so they don't bleed into a category's tiles.
+    renderSection("Other sources", "cat-other", loners, { unit: "sources" });
+  } else {
+    for (const id of loners) {
+      const c = sourceCard(id);
+      frag.appendChild(c);
+      cards.push(c);
+    }
+  }
 }
 list.appendChild(frag);
 
