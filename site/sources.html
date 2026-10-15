@@ -41,25 +41,50 @@
   .corpus-count { color: var(--muted); font-size: 0.9rem; }
   .legend { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
 
-  .source-list { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+  /* Tiling: cards pack into as many columns as fit, so a wide screen isn't
+     one card per row with dead space. Category headers span the full width,
+     which starts each group on its own row. */
+  .source-list {
+    display: grid; gap: 16px; margin-top: 20px; align-items: start;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  }
   /* A category groups the slides of one post / signs of one episode
      (instagram-1.1, .2, …) under a header. Lone sources have no header. */
   .cat-head {
+    grid-column: 1 / -1;
+    display: flex; align-items: baseline; gap: 8px 12px; flex-wrap: wrap;
     font-size: 1.05rem; font-weight: 700; color: var(--ink);
     margin: 14px 0 -4px; padding-bottom: 5px; border-bottom: 1px solid var(--line);
     scroll-margin-top: 16px;
   }
   .cat-head:first-child { margin-top: 0; }
   .cat-head[hidden] { display: none; }
-  .cat-head a { color: inherit; text-decoration: none; }
-  .cat-head a:hover, .cat-head a:focus-visible { color: var(--accent); }
-  .cat-head a::after { content: " #"; color: var(--muted-2); font-weight: 400; opacity: 0; }
-  .cat-head a:hover::after, .cat-head a:focus-visible::after { opacity: 1; }
+  .cat-head a.cat-link { color: inherit; text-decoration: none; }
+  .cat-head a.cat-link:hover, .cat-head a.cat-link:focus-visible { color: var(--accent); }
+  .cat-head a.cat-link::after { content: " #"; color: var(--muted-2); font-weight: 400; opacity: 0; }
+  .cat-head a.cat-link:hover::after, .cat-head a.cat-link:focus-visible::after { opacity: 1; }
   .cat-head .cat-count { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
-  /* A grouped card sits slightly inset so the group reads as a unit. */
-  .source-card.in-cat { margin-left: 14px; }
-  @media (max-width: 560px) { .source-card.in-cat { margin-left: 0; } }
+  .cat-collapse {
+    margin-left: auto; font: inherit; font-size: 0.78rem; font-weight: 400;
+    background: none; border: 1px solid var(--line); color: var(--muted);
+    border-radius: 6px; padding: 2px 9px; cursor: pointer;
+  }
+  .cat-collapse:hover { border-color: var(--accent); color: var(--ink); }
   .source-card:target { scroll-margin-top: 16px; }
+
+  /* Per-source collapse: fold the image + words away, leaving the head row. */
+  .source-collapse {
+    margin-left: 8px; flex: 0 0 auto; font: inherit; font-size: 0.8rem; line-height: 1;
+    background: none; border: 1px solid var(--line); color: var(--muted);
+    border-radius: 6px; padding: 3px 7px; cursor: pointer;
+  }
+  .source-collapse:hover { border-color: var(--accent); color: var(--ink); }
+  .source-card.is-collapsed { padding: 10px 16px; align-items: center; }
+  .source-card.is-collapsed .source-thumb,
+  .source-card.is-collapsed .source-noimg,
+  .source-card.is-collapsed .source-what,
+  .source-card.is-collapsed .source-words,
+  .source-card.is-collapsed .source-empty { display: none; }
   .source-card {
     background: var(--card); border: 1px solid var(--line);
     border-radius: 12px; padding: 16px; display: flex; gap: 16px;
@@ -327,6 +352,19 @@ UNITS.sort((a, b) => b.weight - a.weight
   || String(a.group || a.id).localeCompare(String(b.group || b.id)));
 
 // --- render -------------------------------------------------------------
+
+// Fold a source card to its head row (or unfold it), keeping its toggle in
+// step — shared by the per-card button and a group's "collapse all".
+function setCardCollapsed(el, on) {
+  el.classList.toggle("is-collapsed", on);
+  const t = el.querySelector(".source-collapse");
+  if (t) {
+    t.textContent = on ? "▸" : "▾";
+    t.setAttribute("aria-expanded", String(!on));
+    t.title = on ? "Expand this source" : "Collapse this source";
+  }
+}
+
 function sourceCard(id) {
   const s = SOURCES[id] || {};
   const words = bySource[id] || [];
@@ -429,6 +467,17 @@ function sourceCard(id) {
   cnt.className = "source-count";
   cnt.textContent = words.length === 1 ? "1 word" : words.length + " words";
   head.appendChild(cnt);
+
+  // Collapse this one source down to its head row.
+  const collapse = document.createElement("button");
+  collapse.type = "button";
+  collapse.className = "source-collapse";
+  collapse.textContent = "▾";
+  collapse.setAttribute("aria-expanded", "true");
+  collapse.title = "Collapse this source";
+  collapse.addEventListener("click",
+    () => setCardCollapsed(el, !el.classList.contains("is-collapsed")));
+  head.appendChild(collapse);
   body.appendChild(head);
 
   if (s.what) {
@@ -490,15 +539,25 @@ for (const u of UNITS) {
   head.className = "cat-head";
   head.id = "cat-" + u.group;
   const a = document.createElement("a");
+  a.className = "cat-link";
   a.href = "#cat-" + u.group;
   a.textContent = u.group;
   a.title = "Link to this category";
   const count = document.createElement("span");
   count.className = "cat-count";
   count.textContent = ` · ${u.ids.length} images`;
-  head.append(a, count);
-  frag.appendChild(head);
   const members = [];
+  const collapseAll = document.createElement("button");
+  collapseAll.type = "button";
+  collapseAll.className = "cat-collapse";
+  collapseAll.textContent = "collapse all";
+  collapseAll.addEventListener("click", () => {
+    const anyOpen = members.some((c) => !c.classList.contains("is-collapsed"));
+    members.forEach((c) => setCardCollapsed(c, anyOpen));
+    collapseAll.textContent = anyOpen ? "expand all" : "collapse all";
+  });
+  head.append(a, count, collapseAll);
+  frag.appendChild(head);
   for (const id of u.ids) {
     const c = sourceCard(id);
     c.classList.add("in-cat");
