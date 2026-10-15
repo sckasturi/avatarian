@@ -75,6 +75,12 @@ button.danger { color: var(--warn); border-color: var(--warn); }
 .card-body { display: flex; gap: 16px; align-items: flex-start; }
 @media (max-width: 640px) { .card-body { flex-direction: column; } }
 
+/* One staged source inside a PR card. A batch stacks several; a rule between
+   them keeps each reading as its own source. */
+.source-block + .source-block {
+  margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line);
+}
+
 .img-col { flex: 0 0 42%; max-width: 42%; }
 @media (max-width: 640px) { .img-col { flex: none; max-width: 100%; } }
 .img-col img {

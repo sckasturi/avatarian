@@ -156,26 +156,43 @@ class Handler(SimpleHTTPRequestHandler):
             if not CONTRIB_BRANCH.match(branch):
                 continue
             paths = [f["path"] for f in pr.get("files") or []]
-            incoming = next((p for p in paths
-                             if p.startswith("corpus/incoming/") and p.endswith(".json")), None)
-            image = next((p for p in paths if p.startswith("site/sources/")), None)
-            if not incoming:
+            incomings = [p for p in paths
+                         if p.startswith("corpus/incoming/") and p.endswith(".json")]
+            images = [p for p in paths if p.startswith("site/sources/")]
+            if not incomings:
                 continue
-            # The staged file's content, straight off the PR branch.
-            ok, raw, err = run(["gh", "api",
-                                f"repos/{owner}/{repo}/contents/{incoming}?ref={branch}",
-                                "-H", "Accept: application/vnd.github.raw"])
-            submission = json.loads(raw) if ok and raw.strip() else None
+
+            # A PR may stage several sources (a batch of images under one
+            # category). Read each staged file and pair it with its image.
+            sources = []
+            for incoming in sorted(incomings):
+                ok, raw, err = run(["gh", "api",
+                                    f"repos/{owner}/{repo}/contents/{incoming}?ref={branch}",
+                                    "-H", "Accept: application/vnd.github.raw"])
+                submission = json.loads(raw) if ok and raw.strip() else None
+                slug = incoming[len("corpus/incoming/"):-len(".json")]
+                # Match the image by the name the submission recorded, else by
+                # the slug — both are <name>.<ext>.
+                want = ((submission or {}).get("source") or {}).get("image")
+                img = (next((p for p in images if p.rsplit("/", 1)[-1] == want), None) if want
+                       else None)
+                if not img:
+                    img = next((p for p in images
+                                if p.rsplit("/", 1)[-1].startswith(slug + ".")), None)
+                sources.append({
+                    "slug": slug,
+                    "imagePath": img,
+                    "submission": submission,
+                    "error": None if submission else (err.strip() or "could not read the staged file"),
+                })
+
             out.append({
                 "number": pr["number"],
                 "url": pr["url"],
                 "author": (pr.get("author") or {}).get("login", ""),
                 "createdAt": pr["createdAt"],
                 "branch": branch,
-                "slug": incoming[len("corpus/incoming/"):-len(".json")],
-                "imagePath": image,
-                "submission": submission,
-                "error": None if submission else (err.strip() or "could not read the staged file"),
+                "sources": sources,
             })
         # Newest first.
         out.sort(key=lambda s: s["number"], reverse=True)
@@ -207,47 +224,58 @@ class Handler(SimpleHTTPRequestHandler):
 
     def approve(self):
         """
-        Hands-off approve: name, merge, fold, commit, push.
+        Hands-off approve of a PR: name each staged source, merge, fold every
+        one in, commit, push. A PR may stage several sources (a batch), so the
+        body carries a list; a single {slug, name, submission} still works.
 
-        All-or-nothing where it matters — a dirty working tree is refused
-        up front so the fold and commit can't sweep up unrelated changes,
-        and each step's output is returned so a failure says exactly how
-        far it got.
+        All-or-nothing where it matters — a dirty working tree is refused up
+        front, every edit is validated before GitHub is touched, and each
+        step's output is returned so a failure says exactly how far it got.
         """
         body = self.read_json()
         number = int(body.get("number"))
-        slug = str(body.get("slug") or "")
-        name = str(body.get("name") or "").strip()
-        edited = body.get("submission")     # the maintainer's edited version, or None
-        if not re.fullmatch(r"[A-Za-z0-9._-]+", slug):
-            return self.send_json({"error": "bad submission id"}, 400)
-        if not name:
-            return self.send_json({"error": "give the source a name"}, 400)
+        sources = body.get("sources")
+        if not isinstance(sources, list):
+            sources = [{"slug": body.get("slug"), "name": body.get("name"),
+                        "submission": body.get("submission")}]
 
-        # Validate the edits BEFORE touching GitHub, so a bad edit can't
-        # leave a merged-but-unpromoted PR behind. Same validator that
-        # guards every other write (build_corpus.check).
-        if edited is not None:
-            try:
-                folded = promote_corpus.fold_submission(
-                    promote_corpus.base_corpus(), edited, name)
-                # The reference image is still only on the PR branch, not
-                # local until the merge — so drop it for this pre-check, or
-                # build_corpus.check would fail every edited approve on a
-                # missing file. promote re-validates WITH the image after the
-                # merge, so nothing is actually skipped.
-                src = folded["sources"].get(name)
-                if src:
-                    src = {k: v for k, v in src.items() if k != "image"}
-                    folded["sources"][name] = src
-                problems, _ = build_corpus.check(folded)
-            except Exception as e:                       # noqa: BLE001
-                return self.send_json({"error": f"the edit is malformed: {e}"}, 400)
-            if problems:
-                return self.send_json({
-                    "error": "The edits don't validate — nothing was touched.",
-                    "problems": problems,
-                }, 400)
+        norm = []
+        for s in sources:
+            slug = str((s or {}).get("slug") or "")
+            name = str((s or {}).get("name") or "").strip()
+            if not re.fullmatch(r"[A-Za-z0-9._-]+", slug):
+                return self.send_json({"error": f"bad submission id: {slug!r}"}, 400)
+            if not name:
+                return self.send_json({"error": f"give {slug} a source name"}, 400)
+            if not re.fullmatch(r"[A-Za-z0-9._-]+", name):
+                return self.send_json({"error": f"bad source name: {name!r}"}, 400)
+            norm.append({"slug": slug, "name": name, "edited": (s or {}).get("submission")})
+        if not norm:
+            return self.send_json({"error": "nothing to approve"}, 400)
+        names = [s["name"] for s in norm]
+        if len(set(names)) != len(names):
+            return self.send_json({"error": "two sources would get the same name"}, 400)
+
+        # Validate every edit BEFORE touching GitHub, folding them all into one
+        # base so an internally-inconsistent batch is caught too. The images
+        # are still only on the PR branch, so drop them for this pre-check;
+        # promote re-validates WITH them after the merge.
+        try:
+            base = promote_corpus.base_corpus()
+            for s in norm:
+                if s["edited"] is not None:
+                    base = promote_corpus.fold_submission(base, s["edited"], s["name"])
+                    src = base["sources"].get(s["name"])
+                    if src:
+                        base["sources"][s["name"]] = {k: v for k, v in src.items() if k != "image"}
+            problems, _ = build_corpus.check(base)
+        except Exception as e:                       # noqa: BLE001
+            return self.send_json({"error": f"an edit is malformed: {e}"}, 400)
+        if problems:
+            return self.send_json({
+                "error": "The edits don't validate — nothing was touched.",
+                "problems": problems,
+            }, 400)
 
         log = []
 
@@ -274,27 +302,37 @@ class Handler(SimpleHTTPRequestHandler):
         if not step("pull main", ["git", "pull", "--ff-only", "origin", "main"]):
             return self.send_json({"error": "could not fast-forward main", "log": log}, 500)
 
-        # Apply the maintainer's edits over the merged staged file, so the
-        # fold uses the corrected version. Already validated above.
-        if edited is not None:
-            incoming = ROOT / "corpus" / "incoming" / f"{slug}.json"
-            try:
-                incoming.write_text(
-                    json.dumps(edited, ensure_ascii=False, indent=2) + "\n",
-                    encoding="utf-8")
-                log.append({"step": "apply edits", "ok": True, "out": "", "err": ""})
-            except OSError as e:
-                log.append({"step": "apply edits", "ok": False, "out": "", "err": str(e)})
-                return self.send_json({"error": "could not write edits", "log": log}, 500)
+        # Apply edits, then promote each source. Each promote reads the current
+        # attested.json, so the folds accumulate into one working tree.
+        for s in norm:
+            if s["edited"] is not None:
+                incoming = ROOT / "corpus" / "incoming" / f"{s['slug']}.json"
+                try:
+                    incoming.write_text(
+                        json.dumps(s["edited"], ensure_ascii=False, indent=2) + "\n",
+                        encoding="utf-8")
+                except OSError as e:
+                    log.append({"step": f"apply edits {s['slug']}", "ok": False, "out": "", "err": str(e)})
+                    return self.send_json({"error": "could not write edits", "log": log}, 500)
+            if not step(f"promote {s['slug']} as '{s['name']}'",
+                        [sys.executable, "tools/promote_corpus.py",
+                         f"{s['slug']}.json", "--name", s["name"]]):
+                return self.send_json({"error": f"promote failed for {s['slug']} — see the log",
+                                       "log": log}, 500)
 
-        if not step(f"promote as '{name}'",
-                    [sys.executable, "tools/promote_corpus.py", f"{slug}.json", "--name", name]):
-            return self.send_json({"error": "promote failed — see the log", "log": log}, 500)
         if not step("stage", ["git", "add", "-A"]):
             return self.send_json({"error": "git add failed", "log": log}, 500)
-        if not step("commit",
-                    ["git", "commit", "-m",
-                     f"corpus: promote {name} (community submission)"]):
+        # One commit for the batch. Name it by the shared category when there
+        # is one, else by the count.
+        cats = {n.rsplit(".", 1)[0] for n in names if "." in n}
+        if len(norm) == 1:
+            msg = f"corpus: promote {names[0]} (community submission)"
+        elif len(cats) == 1 and all("." in n for n in names):
+            msg = (f"corpus: promote {next(iter(cats))} "
+                   f"(community submission, {len(norm)} sources)")
+        else:
+            msg = f"corpus: promote {len(norm)} community sources"
+        if not step("commit", ["git", "commit", "-m", msg]):
             return self.send_json({"error": "git commit failed", "log": log}, 500)
         if not step("push", ["git", "push"]):
             return self.send_json({"error": "git push failed", "log": log}, 500)

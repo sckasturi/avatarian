@@ -79,29 +79,49 @@ function card(sub) {
   el.className = "card";
   el.dataset.number = sub.number;
 
-  const s = sub.submission || {};
-  const source = s.source || {};
-  const meta = s._submission || {};
-  const entries = s.entries || [];
+  const srcs = sub.sources || [];
+  const firstMeta = ((srcs[0] || {}).submission || {})._submission || {};
 
   const head = document.createElement("div");
   head.className = "card-head";
   head.innerHTML = `<a class="pr" target="_blank" rel="noopener"></a>`
     + `<span class="by"></span><span class="spacer"></span><span class="when"></span>`;
   head.querySelector(".pr").href = sub.url;
-  head.querySelector(".pr").textContent = `PR #${sub.number}`;
+  head.querySelector(".pr").textContent =
+    `PR #${sub.number}` + (srcs.length > 1 ? ` · ${srcs.length} sources` : "");
   head.querySelector(".by").textContent =
-    "by " + (meta.submitter || sub.author || "anonymous");
+    "by " + (firstMeta.submitter || sub.author || "anonymous");
   head.querySelector(".when").textContent = new Date(sub.createdAt).toLocaleString();
   el.appendChild(head);
 
-  if (sub.error || !sub.submission) {
+  // One editable block per staged source (a batch stages several).
+  const blocks = [];
+  for (const src of srcs) {
+    const b = sourceBlock(sub, src);
+    el.appendChild(b.el);
+    if (b.collect) blocks.push(b);
+  }
+
+  el.appendChild(prActions(sub, blocks));
+  return el;
+}
+
+/** One staged source: its image, editable fields + entries, and a name. */
+function sourceBlock(sub, src) {
+  const wrap = document.createElement("div");
+  wrap.className = "source-block";
+
+  const s = src.submission || {};
+  const source = s.source || {};
+  const meta = s._submission || {};
+  const entries = s.entries || [];
+
+  if (src.error || !s.source) {
     const bad = document.createElement("p");
     bad.className = "card-error";
-    bad.textContent = "Couldn't read this submission: " + (sub.error || "malformed");
-    el.appendChild(bad);
-    el.appendChild(actions(sub, source, null));
-    return el;
+    bad.textContent = `Couldn't read ${src.slug}: ` + (src.error || "malformed");
+    wrap.appendChild(bad);
+    return { el: wrap, collect: null };
   }
 
   const body = document.createElement("div");
@@ -109,11 +129,11 @@ function card(sub) {
 
   const imgCol = document.createElement("div");
   imgCol.className = "img-col";
-  if (sub.imagePath) {
+  if (src.imagePath) {
     const img = document.createElement("img");
     img.loading = "lazy";
     img.src = "/api/image?branch=" + encodeURIComponent(sub.branch)
-            + "&path=" + encodeURIComponent(sub.imagePath);
+            + "&path=" + encodeURIComponent(src.imagePath);
     img.alt = "reference image";
     imgCol.appendChild(img);
   } else {
@@ -124,7 +144,14 @@ function card(sub) {
   const info = document.createElement("div");
   info.className = "info-col";
 
-  // Editable source fields.
+  // The name this source will be filed under — the Worker already suggested
+  // <category>.<slide> as the slug, so start from that; a placeholder gets a
+  // guess from "what".
+  const nameEl = document.createElement("input");
+  nameEl.type = "text"; nameEl.className = "name-input";
+  nameEl.value = /^submission-/.test(src.slug)
+    ? (slugify(source.what) || src.slug) : src.slug;
+
   const whatEl = document.createElement("textarea");
   whatEl.rows = 2; whatEl.value = source.what || "";
   const whereEl = document.createElement("input");
@@ -132,21 +159,20 @@ function card(sub) {
   const creditEl = document.createElement("input");
   creditEl.type = "text"; creditEl.value = source.credit || "";
   info.append(
+    field("Name", "how it is filed", nameEl),
     field("What", "and what it says", whatEl),
     field("Where", "", whereEl),
     field("Read by", "credit — blank if the source itself is translated", creditEl),
   );
 
-  // Editable entries.
   const words = document.createElement("div");
   words.className = "words";
   const rows = entries.map((entry) => entryRow(entry, words));
   info.appendChild(words);
 
   body.appendChild(info);
-  el.appendChild(body);
+  wrap.appendChild(body);
 
-  // Everything the approve needs, read live from the inputs.
   const collect = () => ({
     _submission: meta,
     source: {
@@ -159,8 +185,7 @@ function card(sub) {
     entries: rows.map((r) => r.read()),
   });
 
-  el.appendChild(actions(sub, source, collect));
-  return el;
+  return { el: wrap, slug: src.slug, nameEl, collect };
 }
 
 /** One editable entry: live-rendered art + word + codes + confidence. */
@@ -219,21 +244,16 @@ function entryRow(entry, container) {
   };
 }
 
-function actions(sub, source, collect) {
+function prActions(sub, blocks) {
   const wrap = document.createElement("div");
   wrap.className = "actions";
 
-  if (collect) {
-    const input = document.createElement("input");
-    input.type = "text"; input.className = "name-input";
-    input.value = slugify(source.what) || sub.slug;
-    input.placeholder = "e.g. sonam";
-    wrap.appendChild(field("Name the source", "", input));
-
+  if (blocks.length) {
     const approve = document.createElement("button");
     approve.className = "primary";
-    approve.textContent = "approve & publish";
-    approve.addEventListener("click", () => doApprove(sub, input.value.trim(), collect, wrap));
+    approve.textContent = blocks.length > 1
+      ? `approve all ${blocks.length} & publish` : "approve & publish";
+    approve.addEventListener("click", () => doApprove(sub, blocks, wrap));
     wrap.appendChild(approve);
   }
 
@@ -273,9 +293,21 @@ function showLog(wrap, log, problems) {
   box.textContent = lines.join("\n");
 }
 
-async function doApprove(sub, name, collect, wrap) {
+async function doApprove(sub, blocks, wrap) {
   if (state.busy) return;
-  if (!name) { wrap.querySelector(".name-input").focus(); return; }
+  const sources = blocks.map((b) => ({
+    slug: b.slug, name: b.nameEl.value.trim(), submission: b.collect(),
+  }));
+  const blank = blocks.find((b) => !b.nameEl.value.trim());
+  if (blank) { blank.nameEl.focus(); return; }
+  const names = sources.map((s) => s.name);
+  if (new Set(names).size !== names.length) {
+    const status = wrap.querySelector(".action-status");
+    status.textContent = "two sources have the same name — make them unique";
+    status.className = "action-status is-error";
+    return;
+  }
+
   const status = wrap.querySelector(".action-status");
   setBusy(wrap, true);
   status.textContent = "publishing…";
@@ -285,16 +317,15 @@ async function doApprove(sub, name, collect, wrap) {
     const res = await fetch("/api/approve", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        number: sub.number, slug: sub.slug, name, submission: collect(),
-      }),
+      body: JSON.stringify({ number: sub.number, sources }),
     });
     const body = await res.json();
     showLog(wrap, body.log, body.problems);
     if (body.ok) {
-      status.textContent = `published as "${name}" — live on next deploy`;
+      const what = names.length > 1 ? `${names.length} sources` : `"${names[0]}"`;
+      status.textContent = `published ${what} — live on next deploy`;
       status.className = "action-status is-ok";
-      markDone(sub.number, `approved as "${name}"`);
+      markDone(sub.number, `approved ${what}`);
     } else {
       status.textContent = body.error || "failed";
       status.className = "action-status is-error";
