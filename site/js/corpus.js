@@ -3231,6 +3231,22 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "instagram-3.3"
     },
+    "entry": {
+      "ipa": [
+        "ɛ",
+        "n",
+        "t",
+        "ɹ",
+        "i",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3"
+    },
     "every": {
       "ipa": [
         "ɛ",
@@ -3672,6 +3688,19 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "instagram-3.3"
+    },
+    "yue": {
+      "ipa": [
+        "j",
+        "u"
+      ],
+      "count": 1,
+      "sources": [
+        "instagram-3.3"
+      ],
+      "confidence": "certain",
+      "source": "instagram-3.3",
+      "gloss": "Yue"
     },
     "by": {
       "ipa": [
@@ -4746,35 +4775,6 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-103.2"
-    },
-    "yue": {
-      "ipa": [
-        "j",
-        "u"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-3.3"
-      ],
-      "confidence": "certain",
-      "source": "instagram-3.3",
-      "gloss": "Yue"
-    },
-    "entry": {
-      "ipa": [
-        "ɛ",
-        "n",
-        "t",
-        "ɹ",
-        "i",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "instagram-3.3"
-      ],
-      "confidence": "certain",
-      "source": "instagram-3.3"
     }
   },
   "conventions": {
