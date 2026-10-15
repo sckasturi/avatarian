@@ -1,0 +1,20 @@
+{
+  "_submission": {
+    "at": "2026-01-01T00:00:00Z",
+    "via": "test"
+  },
+  "source": {
+    "name": "testcat.1",
+    "what": "test sign one",
+    "where": "test loc 1",
+    "image": "testcat.1.png"
+  },
+  "entries": [
+    {
+      "key": "shop",
+      "spelling": "ʃ ɑ p ∅",
+      "source": "testcat.1",
+      "confidence": "certain"
+    }
+  ]
+}
