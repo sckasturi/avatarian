@@ -82,6 +82,20 @@ test("/sounds/ searches the pronunciation, however the blocks split it", () => {
   assert.ok(parseQuery("/e - ɪ/", ctx.normaliseSound).error, "a null isn't a sound");
 });
 
+test("every sound picked from the dropdown reads back as itself", () => {
+  // The builder writes a sound's readable code (soundToCode), never its raw
+  // IPA: raw `e` would be read as the code for ɛ (Bundas's bug with "ey").
+  const glyphs = Object.entries(ctx.window.AVATARIAN_GLYPHS);
+  assert.ok(glyphs.length > 40, "the glyph set loaded");
+  const wrong = glyphs
+    .filter(([, g]) => g.type === "consonant" || g.type === "vowel")
+    .map(([ipa]) => [ipa, parseQuery(buildQuery({ phoneme: ctx.soundToCode(ipa) }), ctx.normaliseSound).phoneme])
+    .filter(([ipa, got]) => got !== ipa);
+  assert.deepEqual(plain(wrong), []);
+  assert.equal(parseQuery(buildQuery({ phoneme: "e" }), ctx.normaliseSound).phoneme, "ɛ",
+    "raw IPA e is the trap the builder avoids");
+});
+
 test("two sounds are one exact block, top then bottom", () => {
   assert.deepEqual(plain(parseQuery("m z", ctx.normaliseSound)),
     { phoneme: null, slot: null, context: null, block: ["m", "z"] });
