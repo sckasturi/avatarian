@@ -359,7 +359,7 @@ NULL_C_IPA = "∅c"  # manifest key for the consonant-height filler
 
 MARKS_FULL = {
     # A dot on the baseline (bottom row), beside the word's last block.
-    "period": mark(1, dot(18, 114)),
+    "period": mark(1, dot(18, 82)),
     "comma": mark(1, path("M 18 114 L 18 146")),
     "exclamation": mark(1, dot(18, 82) + path("M 18 18 L 18 58") + path("M 18 146 L 18 106")),
     "question": mark(2, path("M 34 66 A 16 16 0 0 0 34 98")),
