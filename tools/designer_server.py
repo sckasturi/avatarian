@@ -20,6 +20,7 @@ API
     DELETE /api/designs/<name>   delete one
     POST   /api/render           design JSON in, SVG + python source out
     POST   /api/promote/<name>   write it into build_glyphs.py and rebuild
+    POST   /api/resync           put the glyph set back to what is deployed
 
     GET    /site/...             the main site's own files, read-only
 
@@ -42,9 +43,11 @@ only for the handful of files the preview needs.
 edits and what it deliberately leaves alone.
 """
 
+import importlib
 import json
 import pathlib
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -224,6 +227,60 @@ def catalog():
     }
 
 
+# What "deployed" means: the website is built from main on GitHub, so the
+# deployed glyph set is origin/main. These are every path the designer and
+# its ship button write — the designs, the shipped set, and the build it
+# makes — and nothing else, so a resync can't touch unrelated work.
+DEPLOYED_REF = "origin/main"
+GLYPH_PATHS = [
+    "designs", "tools/build_glyphs.py", "site/assets/glyphs",
+    "site/assets/glyph_manifest.json", "site/js/manifest.js",
+]
+
+
+def git(*args, check=True):
+    return subprocess.run(["git", *args], cwd=ROOT, capture_output=True,
+                          text=True, check=check).stdout
+
+
+def resync(dry_run):
+    """Bring the glyph set back to what is deployed (origin/main).
+
+    The dry run lists what differs. The real run first STASHES every local
+    change under GLYPH_PATHS (untracked new designs included), so nothing is
+    lost — `git stash list` shows it, `git stash pop` brings it back — then
+    restores those paths from origin/main, deleting anything origin/main
+    doesn't have. The modules are reloaded so the next catalogue request
+    reports the restored set without a server restart.
+    """
+    git("fetch", "--quiet", "origin")
+    deployed = git("rev-parse", "--short", DEPLOYED_REF).strip()
+    changed = sorted(set(
+        git("diff", "--name-only", DEPLOYED_REF, "--", *GLYPH_PATHS).split()
+        + git("ls-files", "--others", "--exclude-standard", "--", *GLYPH_PATHS).split()))
+    designs = sorted({pathlib.PurePath(f).stem for f in changed
+                      if f.startswith("designs/") and f.endswith(".json")})
+    out = {"deployed": deployed, "files": changed, "designs": designs,
+           "setChanged": "tools/build_glyphs.py" in changed}
+    if dry_run or not changed:
+        return out
+
+    # Back up first: anything not yet committed goes into a stash.
+    if git("status", "--porcelain", "--", *GLYPH_PATHS).strip():
+        stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+        git("stash", "push", "--include-untracked",
+            "-m", f"designer resync {stamp}", "--", *GLYPH_PATHS)
+        out["stashed"] = True
+    # Then match origin/main exactly on these paths (this also removes files
+    # origin/main doesn't have).
+    git("restore", f"--source={DEPLOYED_REF}", "--staged", "--worktree",
+        "--", *GLYPH_PATHS)
+    importlib.reload(bg)
+    importlib.reload(promote_mod)
+    bg.refresh()
+    return out
+
+
 def load_designs():
     DESIGNS.mkdir(exist_ok=True)
     out = {}
@@ -305,6 +362,12 @@ class Handler(SimpleHTTPRequestHandler):
         # so the order matters rather than being cosmetic.
         if self.path == "/api/promote-all":
             return self.promote_all()
+        if self.path == "/api/resync":
+            body = self.read_json() or {}
+            try:
+                return self.send_json(resync(dry_run=bool(body.get("dryRun"))))
+            except subprocess.CalledProcessError as e:
+                return self.send_json({"error": (e.stderr or str(e)).strip()}, 500)
         if self.path.startswith("/api/promote/"):
             return self.promote(self.stem("/api/promote"))
         if self.path != "/api/render":

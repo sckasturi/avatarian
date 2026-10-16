@@ -436,6 +436,16 @@ against the running source and the build runs once at the end, so it
 can't leave the tree half-built. Placeholders are skipped; ship those one
 at a time, deliberately.
 
+**resync with deployed…** goes the other way: it puts the glyph set back
+to what is live on the website, i.e. `origin/main`, which is what Pages
+builds from. Same two presses in the same strip — the first lists what
+differs from the live site, the second applies it. It touches only what
+the designer writes (`designs/`, `tools/build_glyphs.py`, the glyph SVGs
+and both manifests). Local edits are not deleted: they go into a git
+stash named `designer resync <time>` first (`git stash list`, then
+`git stash pop` to get them back), and the page reloads afterwards so
+nothing still in memory can autosave over the restored files.
+
 Shipping a sound that is still a **placeholder** takes saying so twice —
 that ADDS a glyph the set doesn't have, rather than adjusting one it
 does, which is a bigger step. The first press says so; a **ship anyway**

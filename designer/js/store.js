@@ -27,6 +27,11 @@ const API = {
   async promoteAll(dryRun) {
     return send("POST", "/api/promote-all", { dryRun: !!dryRun });
   },
+  /** Put the glyph set back to what is deployed (origin/main). `dryRun`
+   *  reports what differs; the real run stashes local edits first. */
+  async resync(dryRun) {
+    return send("POST", "/api/resync", { dryRun: !!dryRun });
+  },
 };
 
 async function get(url) {

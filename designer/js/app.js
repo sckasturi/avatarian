@@ -244,6 +244,55 @@ const App = {
   bindShip() {
     $("#ship").addEventListener("click", () => this.ship(false));
     $("#ship-all").addEventListener("click", () => this.shipAll(false));
+    $("#resync").addEventListener("click", () => this.resync(false));
+  },
+
+  /**
+   * Put the glyph set back to what is deployed — the opposite direction to
+   * "ship all". Same two presses, in the same strip: the first lists what
+   * differs from the live site, the second applies it. Local edits are
+   * stashed in git rather than deleted, and the page reloads afterwards so
+   * nothing still held in memory can autosave the old drawing back.
+   */
+  async resync(confirmed) {
+    const bar = $("#ship-all-bar");
+    const say = (text, cls) => {
+      bar.hidden = false;
+      bar.className = "ship-bar " + (cls || "");
+      bar.textContent = text;
+      return bar;
+    };
+    $("#resync").disabled = true;
+    say(confirmed ? "resyncing…" : "checking against the live site…");
+    try {
+      if (confirmed) clearTimeout(Store._saveTimer);
+      const res = await API.resync(!confirmed);
+      if (res.error) throw new Error(res.error);
+      const n = res.files.length;
+      if (!n) {
+        say(`already in sync with the live site (${res.deployed}).`, "ok");
+      } else if (confirmed) {
+        say(`back in sync with the live site (${res.deployed})`
+          + (res.stashed ? " — your edits are in a git stash." : ".") + " reloading…", "ok");
+        setTimeout(() => location.reload(), 900);
+        return;
+      } else {
+        const what = [];
+        if (res.designs.length) what.push(`designs: ${res.designs.join(", ")}`);
+        if (res.setChanged) what.push("the shipped set (build_glyphs.py)");
+        say(`${n} file${n > 1 ? "s" : ""} differ from the live site (${res.deployed}) — `
+          + `${what.join("; ") || res.files.join(", ")}. Resyncing throws these away `
+          + `(kept in a git stash). `, "bad");
+        const go = document.createElement("button");
+        go.textContent = "resync";
+        go.addEventListener("click", () => this.resync(true));
+        bar.appendChild(go);
+      }
+    } catch (e) {
+      say(String(e.message || e), "bad");
+    } finally {
+      $("#resync").disabled = false;
+    }
   },
 
   /**
