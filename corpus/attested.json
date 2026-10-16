@@ -44,7 +44,7 @@
       "image": "toph-letter.jpg"
     },
     "katara-letter": {
-      "what": "Katara, Please do not be mad at me when you wake up, but I did not have a moment to lose. I found out what the denied are after, and (unknown) can (unknown) I (unknown)  you take Appa and Momo and gather up the rest of the team. I will be Aang (unknown) Aang",
+      "what": "Katara, Please do not be mad at me when you wake up, but I did not have a moment to lose. I found out what the Denied are after, and [unknown] can change everything. I am going to need some help. You take Appa and Momo and gather up the rest of the team. I will see you soon. Aang",
       "where": "movie (translation by BokerBigBanana)",
       "image": "katara-letter-2.webp"
     },
@@ -551,10 +551,17 @@
       "gloss": "Zuko"
     },
     {
+      "key": "a",
+      "spelling": "e ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
       "key": "aang",
       "spelling": "e ŋ",
+      "source": "katara-letter",
       "confidence": "certain",
-      "source": "katara-letter"
+      "gloss": "Aang"
     },
     {
       "key": "after",
@@ -563,15 +570,21 @@
       "confidence": "certain"
     },
     {
+      "key": "am",
+      "spelling": "æ m",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
       "key": "and",
       "spelling": "æ n d ∅",
       "source": "katara-letter",
       "confidence": "certain",
-      "times": 2
+      "times": 3
     },
     {
       "key": "appa",
-      "spelling": "æ ∅ p ∅ ə ∅",
+      "spelling": "ɑ ∅ p ∅ ɑ ∅",
       "source": "katara-letter",
       "confidence": "certain",
       "gloss": "Appa"
@@ -589,18 +602,10 @@
       "confidence": "certain"
     },
     {
-      "key": "baihu",
-      "spelling": "b aɪ h u",
-      "gloss": "Baihu",
-      "confidence": "certain",
-      "source": "katara-letter"
-    },
-    {
       "key": "be",
       "spelling": "b i",
       "source": "katara-letter",
-      "confidence": "certain",
-      "times": 2
+      "confidence": "certain"
     },
     {
       "key": "but",
@@ -615,8 +620,14 @@
       "confidence": "certain"
     },
     {
+      "key": "change",
+      "spelling": "tʃ e n dʒ",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
       "key": "denied",
-      "spelling": "d e n aɪ d ∅",
+      "spelling": "d ɪ n aɪ d ∅",
       "source": "katara-letter",
       "confidence": "certain"
     },
@@ -633,6 +644,12 @@
       "confidence": "certain"
     },
     {
+      "key": "everything",
+      "spelling": "ɛ v ɹ i θ ɪ ŋ ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
       "key": "found",
       "spelling": "f aʊ n d",
       "source": "katara-letter",
@@ -641,6 +658,24 @@
     {
       "key": "gather",
       "spelling": "g æ ð ə ɹ ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "going",
+      "spelling": "g oʊ ɪ ŋ",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "have",
+      "spelling": "h æ v ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "help",
+      "spelling": "h ɛ l p",
       "source": "katara-letter",
       "confidence": "certain"
     },
@@ -660,6 +695,12 @@
       "gloss": "Katara"
     },
     {
+      "key": "lose",
+      "spelling": "l u z ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
       "key": "mad",
       "spelling": "m æ d ∅",
       "source": "katara-letter",
@@ -672,11 +713,23 @@
       "confidence": "certain"
     },
     {
+      "key": "moment",
+      "spelling": "m oʊ m ɛ n t",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
       "key": "momo",
       "spelling": "m oʊ m oʊ",
       "source": "katara-letter",
       "confidence": "certain",
       "gloss": "Momo"
+    },
+    {
+      "key": "need",
+      "spelling": "n i d ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
     },
     {
       "key": "not",
@@ -688,8 +741,8 @@
     {
       "key": "of",
       "spelling": "ʌ v",
-      "confidence": "certain",
-      "source": "katara-letter"
+      "source": "katara-letter",
+      "confidence": "certain"
     },
     {
       "key": "out",
@@ -706,9 +759,27 @@
     },
     {
       "key": "rest",
-      "spelling": "ɹ ɛ s$ t",
-      "confidence": "certain",
-      "source": "katara-letter"
+      "spelling": "ɹ ɛ s t",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "see",
+      "spelling": "s i",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "some",
+      "spelling": "s ʌ m ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
+    },
+    {
+      "key": "soon",
+      "spelling": "s u n ∅",
+      "source": "katara-letter",
+      "confidence": "certain"
     },
     {
       "key": "take",
@@ -728,6 +799,13 @@
       "source": "katara-letter",
       "confidence": "certain",
       "times": 3
+    },
+    {
+      "key": "to",
+      "spelling": "t u",
+      "source": "katara-letter",
+      "confidence": "certain",
+      "times": 2
     },
     {
       "key": "up",
@@ -765,7 +843,7 @@
       "spelling": "j u",
       "source": "katara-letter",
       "confidence": "certain",
-      "times": 2
+      "times": 3
     },
     {
       "key": "balloon",

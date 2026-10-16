@@ -25,7 +25,7 @@ window.AVATARIAN_CORPUS = {
       "image": "toph-letter.jpg"
     },
     "katara-letter": {
-      "what": "Katara, Please do not be mad at me when you wake up, but I did not have a moment to lose. I found out what the denied are after, and (unknown) can (unknown) I (unknown)  you take Appa and Momo and gather up the rest of the team. I will be Aang (unknown) Aang",
+      "what": "Katara, Please do not be mad at me when you wake up, but I did not have a moment to lose. I found out what the Denied are after, and [unknown] can change everything. I am going to need some help. You take Appa and Momo and gather up the rest of the team. I will see you soon. Aang",
       "where": "movie (translation by BokerBigBanana)",
       "image": "katara-letter-2.webp"
     },
@@ -290,9 +290,10 @@ window.AVATARIAN_CORPUS = {
         "æ",
         "m"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -304,7 +305,7 @@ window.AVATARIAN_CORPUS = {
         "d",
         "∅"
       ],
-      "count": 5,
+      "count": 6,
       "sources": [
         "toph-letter",
         "katara-letter",
@@ -381,14 +382,12 @@ window.AVATARIAN_CORPUS = {
         "h",
         "u"
       ],
-      "count": 2,
+      "count": 1,
       "sources": [
-        "toph-letter",
-        "katara-letter"
+        "toph-letter"
       ],
       "confidence": "certain",
-      "source": "toph-letter",
-      "gloss": "Baihu"
+      "source": "toph-letter"
     },
     "being": {
       "ipa": [
@@ -470,9 +469,10 @@ window.AVATARIAN_CORPUS = {
         "ɪ",
         "ŋ"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -498,9 +498,10 @@ window.AVATARIAN_CORPUS = {
         "v",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -512,9 +513,10 @@ window.AVATARIAN_CORPUS = {
         "l",
         "p"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -683,9 +685,10 @@ window.AVATARIAN_CORPUS = {
         "d",
         "∅"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
-        "toph-letter"
+        "toph-letter",
+        "katara-letter"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -871,9 +874,10 @@ window.AVATARIAN_CORPUS = {
         "t",
         "u"
       ],
-      "count": 4,
+      "count": 6,
       "sources": [
         "toph-letter",
+        "katara-letter",
         "instagram-2.2"
       ],
       "confidence": "certain",
@@ -924,7 +928,7 @@ window.AVATARIAN_CORPUS = {
         "j",
         "u"
       ],
-      "count": 5,
+      "count": 6,
       "sources": [
         "toph-letter",
         "katara-letter",
@@ -995,6 +999,18 @@ window.AVATARIAN_CORPUS = {
       "source": "toph-letter",
       "gloss": "Zuko"
     },
+    "a": {
+      "ipa": [
+        "e",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
     "after": {
       "ipa": [
         "æ",
@@ -1013,11 +1029,11 @@ window.AVATARIAN_CORPUS = {
     },
     "appa": {
       "ipa": [
-        "æ",
+        "ɑ",
         "∅",
         "p",
         "∅",
-        "ə",
+        "ɑ",
         "∅"
       ],
       "count": 1,
@@ -1045,7 +1061,7 @@ window.AVATARIAN_CORPUS = {
         "b",
         "i"
       ],
-      "count": 3,
+      "count": 2,
       "sources": [
         "katara-letter",
         "instagram-1.4"
@@ -1081,10 +1097,24 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "katara-letter"
     },
+    "change": {
+      "ipa": [
+        "tʃ",
+        "e",
+        "n",
+        "dʒ"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
     "denied": {
       "ipa": [
         "d",
-        "e",
+        "ɪ",
         "n",
         "aɪ",
         "d",
@@ -1115,6 +1145,24 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "d",
         "u"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "everything": {
+      "ipa": [
+        "ɛ",
+        "v",
+        "ɹ",
+        "i",
+        "θ",
+        "ɪ",
+        "ŋ",
+        "∅"
       ],
       "count": 1,
       "sources": [
@@ -1156,12 +1204,42 @@ window.AVATARIAN_CORPUS = {
       "source": "katara-letter",
       "gloss": "Katara"
     },
+    "lose": {
+      "ipa": [
+        "l",
+        "u",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
     "mad": {
       "ipa": [
         "m",
         "æ",
         "d",
         "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "moment": {
+      "ipa": [
+        "m",
+        "oʊ",
+        "m",
+        "ɛ",
+        "n",
+        "t"
       ],
       "count": 1,
       "sources": [
@@ -1221,8 +1299,48 @@ window.AVATARIAN_CORPUS = {
       "ipa": [
         "ɹ",
         "ɛ",
-        "s$",
+        "s",
         "t"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "see": {
+      "ipa": [
+        "s",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "some": {
+      "ipa": [
+        "s",
+        "ʌ",
+        "m",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "katara-letter"
+      ],
+      "confidence": "certain",
+      "source": "katara-letter"
+    },
+    "soon": {
+      "ipa": [
+        "s",
+        "u",
+        "n",
+        "∅"
       ],
       "count": 1,
       "sources": [
