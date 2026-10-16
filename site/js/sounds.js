@@ -163,6 +163,24 @@ function soundToCode(token) {
 }
 
 /**
+ * Schwa ə and the NURSE vowel ɜ (bird, her, word) are one Avatarian letter
+ * and share one spelling in the data — a plain ə. For an IPA READOUT, ɜ reads
+ * truer wherever that central vowel is bound to a following ɹ in the same
+ * slot: an ə sitting directly before ɹ, with no null between them. A schwa
+ * that stands free stays ə — including the one in "around" (ə ∅ ɹ ...), where
+ * the writer keeps the vowel in its own slot with a null, so that ɹ is a
+ * separate onset, not the vowel's r-colouring.
+ *
+ * Display only. The glyph and the typed code (`uh`) are unchanged, and ɜ
+ * still reads back to ə on input (see SOUND_ALIASES). Takes IPA bodies with
+ * their override suffixes already stripped, nulls kept so the adjacency test
+ * can see them; returns the bodies with the swap applied.
+ */
+function nurseVowel(bodies) {
+  return bodies.map((b, i) => (b === "ə" && bodies[i + 1] === "ɹ") ? "ɜ" : b);
+}
+
+/**
  * Serialise words back into the ASCII syntax shown in the box, carrying
  * each word's English along in parentheses so the caption survives any
  * later hand-editing.
@@ -294,7 +312,7 @@ function spreadCaptions(words) {
 if (typeof module !== "undefined") {
   module.exports = {
     SOUND_ALIASES, READABLE, READABLE_ALIASES, IPA_TO_CODE,
-    splitOverride, normaliseSound, soundToCode, legacyNulls, numberOrSound,
+    splitOverride, normaliseSound, soundToCode, nurseVowel, legacyNulls, numberOrSound,
     wordsToSoundText, soundTextToWords,
     splitCaption, spreadCaptions,
   };

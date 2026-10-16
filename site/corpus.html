@@ -291,7 +291,7 @@ me</a> and I'll add them.</p>
 <script src="js/render.js?v=70"></script>
 <!-- sounds.js reads a typed sound (sh, ng, uh) to its IPA symbol;
      corpusquery.js is the structural matcher and uses it. -->
-<script src="js/sounds.js?v=73"></script>
+<script src="js/sounds.js?v=74"></script>
 <script src="js/corpusquery.js?v=70"></script>
 <!-- The source preview popup, shared with the translator. -->
 <script src="js/sourcepop.js?v=70"></script>
@@ -327,8 +327,10 @@ const WORDS = Object.entries(CORPUS.words)
   .map(([key, entry]) => ({ key, label: entry.gloss || key, ...entry }))
   .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
 
-const soundsOf = (ipa) => ipa.filter(t => t !== "∅" && t !== "∅c")
-  .map(t => t.replace(/[$%]/g, "")).join(" ");
+// nurseVowel runs before the null filter: the ə/ɹ adjacency that marks the
+// NURSE vowel has to be judged with the nulls still in place (see sounds.js).
+const soundsOf = (ipa) => nurseVowel(ipa.map(t => t.replace(/[$%]/g, "")))
+  .filter(t => t !== "∅" && t !== "∅c").join(" ");
 
 // The same sounds in the translator's readable respelling (k uh t ah r
 // uh), for the card to show beside the IPA. Nulls drop out, and a

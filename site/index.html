@@ -136,7 +136,9 @@ and made-up words too.</p>
         <p class="fine"><code>uh</code> also covers the vowel of
           <em>nurse</em> and <em>bird</em>. Avatarian writes one letter
           where English dictionaries write two, so <code>er</code>,
-          <code>ur</code> and <code>ir</code> all land on it too.</p>
+          <code>ur</code> and <code>ir</code> all land on it too. In IPA that
+          one letter reads <b>ə</b> (schwa, as in <em>comma</em>) or <b>ɜ</b>
+          when it colours a following r (<em>nurse</em>, <em>bird</em>).</p>
         <p class="fine">Consonants are themselves, plus <code>ng</code>,
           <code>ch</code>, <code>sh</code>, <code>th</code> (<em>thin</em>),
           <code>dh</code> (<em>this</em>), <code>zh</code>
@@ -256,7 +258,7 @@ and made-up words too.</p>
 <script src="js/lexicon.js?v=70"></script>
 <script src="js/g2p.js?v=70"></script>
 <!-- the sounds syntax (standalone; shared with the glyph designer). -->
-<script src="js/sounds.js?v=73"></script>
+<script src="js/sounds.js?v=74"></script>
 <script src="js/render.js?v=70"></script>
 <!-- Draw-to-recognise. recognise.js samples its reference shapes out of
      manifest.js, which is already on the page, so this adds no data —
@@ -434,7 +436,7 @@ function renderWords(words) {
 
     const ipa = document.createElement("span");
     ipa.className = "cap-ipa";
-    ipa.textContent = "/" + w.ipa.map(t => splitOverride(t).body).join(" ") + "/";
+    ipa.textContent = "/" + nurseVowel(w.ipa.map(t => splitOverride(t).body)).join(" ") + "/";
     cap.appendChild(ipa);
     unit.appendChild(cap);
 

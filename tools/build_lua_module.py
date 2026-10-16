@@ -413,12 +413,20 @@ function p._main(sounds, label)
   -- A token run's IPA, nulls dropped, in slashes — the copy text when a word (or
   -- a single glyph) has no English caption, e.g. /k ə t ɑ r ə/ or /ŋ/.
   local function ipaText(ipa)
+    -- Parse first, keeping nulls, so the ə/ɹ adjacency that marks the NURSE
+    -- vowel (ɜ) can be judged before the nulls drop out. Mirrors sounds.js
+    -- nurseVowel: an ə directly before ɹ reads ɜ; a schwa a null keeps apart
+    -- from the next ɹ (as in "around") stays ə. Display only.
     local syms = {}
-    for _, tok in ipairs(ipa) do
-      local s = parseSymbol(tok)
-      if not isNull(s) then syms[#syms + 1] = s end
+    for _, tok in ipairs(ipa) do syms[#syms + 1] = parseSymbol(tok) end
+    local out = {}
+    for i, s in ipairs(syms) do
+      if not isNull(s) then
+        if s == "ə" and syms[i + 1] == "ɹ" then s = "ɜ" end
+        out[#out + 1] = s
+      end
     end
-    return "/" .. table.concat(syms, " ") .. "/"
+    return "/" .. table.concat(out, " ") .. "/"
   end
 
   local function overlay(text)
