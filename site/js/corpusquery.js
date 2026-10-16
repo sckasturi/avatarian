@@ -12,10 +12,17 @@
  * the symbols.
  *
  * THE QUERY, in one line:  [[slot:]phoneme | top bottom] [@context]
+ *                      or:  /sounds in a row/
  *
  *   g            /g/ anywhere
  *   m z          a whole BLOCK: /m/ on top, /z/ beneath it (`games`)
  *   s -          /s/ over a null — either null, the height doesn't matter
+ *   /e ɪ/        a run of sounds anywhere in the pronunciation, however the
+ *                blocks split it: `wake` (one block) and `ages` (e - / ɪ -)
+ *                both match. Nulls and orientation are ignored. Slashes mean
+ *                IPA, so an IPA symbol wins over a readable code that looks
+ *                the same — `e i u j` are /e i u j/ here, not ɛ ɪ ʌ dʒ — and
+ *                codes fill in the rest (`/ey ɪ/`). Space-separated.
  *   g @cc        /g/ in a two-consonant block (so NOT beside a null)
  *   top:s @cv    /s/ in the top slot of a consonant-vowel block
  *   aɪ @vv       the diphthong sharing its block with another vowel
@@ -47,6 +54,12 @@ const CQ_VOWELS = new Set([
   "aɪ", "aʊ", "ɔɪ",
 ]);
 const CQ_NULLS = new Set(["∅", "∅c"]);
+// Every consonant the script writes, in IPA. With CQ_VOWELS, the symbols a
+// /pronunciation/ search reads as IPA before trying the readable codes.
+const CQ_CONSONANTS = new Set([
+  "p", "b", "t", "d", "k", "g", "m", "n", "ŋ", "f", "v", "θ", "ð", "s", "z",
+  "ʃ", "ʒ", "h", "w", "j", "ɹ", "l", "tʃ", "dʒ", "x",
+]);
 // Everything drawn beside the writing rather than in a slot: punctuation
 // and the numerals (render.js PUNCTUATION / NUMERALS).
 const CQ_PUNCT = new Set([".", ",", "?", "!", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
@@ -135,6 +148,20 @@ function parseQuery(str, normalise) {
   const raw = String(str || "").trim();
   if (!raw) return { empty: true, phoneme: null, slot: null, context: null };
 
+  // /a run of sounds/ — a pronunciation search, not a block search.
+  if (raw.startsWith("/")) {
+    const inner = raw.replace(/^\/+|\/+$/g, "").trim();
+    if (!inner) return { error: "put the sounds between the slashes, e.g. /e ɪ/" };
+    // IPA first: `e` between slashes is the FACE vowel, not the code for ɛ.
+    const ipaFirst = (t) =>
+      (CQ_VOWELS.has(t) || CQ_CONSONANTS.has(t)) ? t : cqSlotKey(norm(t));
+    const seq = inner.split(/\s+/).map(ipaFirst);
+    if (seq.some((s) => s === "∅")) {
+      return { error: "nulls aren't part of a pronunciation — leave them out" };
+    }
+    return { phoneme: null, slot: null, context: null, seq };
+  }
+
   let slot = null, context = null;
   const parts = raw.split(/\s+/);
   const sounds = [];
@@ -201,6 +228,7 @@ function parseQuery(str, normalise) {
  */
 function matchWord(ipa, q) {
   if (!q || q.empty) return { matched: true, hits: [] };
+  if (q.seq) return matchSequence(ipa, q.seq);
   if (q.error || (!q.phoneme && !q.context && !q.block)) return { matched: false, hits: [] };
 
   const blocks = cqBlocks(ipa || []);
@@ -226,6 +254,32 @@ function matchWord(ipa, q) {
 }
 
 /**
+ * A pronunciation search: does the word's sound sequence — nulls and
+ * punctuation dropped, orientation markers stripped — contain `seq` as a
+ * contiguous run? Each match rings every block it touches, so /e ɪ/ in
+ * `ages` lights both of its blocks and in `wake` just the one.
+ */
+function matchSequence(ipa, seq) {
+  const sounds = [];
+  cqBlocks(ipa || []).forEach((block, bi) => {
+    block.forEach((tok) => {
+      const s = cqSlotKey(tok);
+      if (s !== "∅") sounds.push({ s, bi });
+    });
+  });
+  const hits = [];
+  for (let i = 0; i + seq.length <= sounds.length; i++) {
+    if (seq.every((s, k) => sounds[i + k].s === s)) {
+      for (let k = 0; k < seq.length; k++) {
+        const bi = sounds[i + k].bi;
+        if (!hits.some((h) => h.block === bi)) hits.push({ block: bi, slot: null });
+      }
+    }
+  }
+  return { matched: hits.length > 0, hits };
+}
+
+/**
  * The builder's state -> the canonical query string, so the two stay in
  * step: the dropdowns write this, the text box shows it, and editing the
  * text box parses back to the same state. Empty phoneme -> empty string
@@ -243,7 +297,7 @@ function buildQuery({ phoneme, slot, context } = {}) {
 
 if (typeof module !== "undefined") {
   module.exports = {
-    parseQuery, matchWord, buildQuery,
+    parseQuery, matchWord, matchSequence, buildQuery,
     cqBase, cqSlotKey, cqClass, cqBlocks, cqShapeMatches,
     CQ_VOWELS, CQ_NULLS, CQ_CONTEXTS,
   };

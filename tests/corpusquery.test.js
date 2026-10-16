@@ -62,6 +62,26 @@ test("nonsense is reported, not silently matched", () => {
   assert.ok(parseQuery("top:m z").error, "a block search already names both slots");
 });
 
+test("/sounds/ searches the pronunciation, however the blocks split it", () => {
+  assert.deepEqual(plain(parseQuery("/e ɪ/", ctx.normaliseSound)),
+    { phoneme: null, slot: null, context: null, seq: ["e", "ɪ"] });
+  const ei = found("/e ɪ/");
+  // Inside a word's blocks (save, made) and across a null (ages, flame, brave).
+  for (const w of ["save", "made", "ages", "flame", "brave"]) {
+    assert.ok(ei.includes(w), `${w} has /e ɪ/`);
+  }
+  // Slashes mean IPA: `e` is the FACE vowel here, not the code for ɛ —
+  // but codes that aren't also IPA still work.
+  assert.deepEqual(found("/ey ɪ/"), ei, "a readable code fills in");
+  assert.ok(!found("/ɛ ɪ/").includes("save"), "/ɛ ɪ/ is a different run");
+  assert.deepEqual(found("/e ɪ"), ei, "a missing closing slash is fine mid-type");
+  // Every block the run touches is ringed: ages spreads it over two.
+  const r = matchWord(WORDS.ages.ipa, parseQuery("/e ɪ/", ctx.normaliseSound));
+  assert.deepEqual(plain(r.hits.map((h) => h.block)), [0, 1]);
+  assert.ok(parseQuery("/").error, "nothing between the slashes");
+  assert.ok(parseQuery("/e - ɪ/", ctx.normaliseSound).error, "a null isn't a sound");
+});
+
 test("two sounds are one exact block, top then bottom", () => {
   assert.deepEqual(plain(parseQuery("m z", ctx.normaliseSound)),
     { phoneme: null, slot: null, context: null, block: ["m", "z"] });
