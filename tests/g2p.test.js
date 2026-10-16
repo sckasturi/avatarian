@@ -152,6 +152,15 @@ test("a number in English is written in numerals, a digit apiece", () => {
   assert.equal(words[1].tier, "numeral");
 });
 
+test("hyphens and possessives are drawn as themselves", () => {
+  const ipa = (t) => [...sentenceToIPA(t)[0].ipa];
+  assert.ok(ipa("well-known").includes("--"), "well-known gets a hyphen");
+  assert.deepEqual(ipa("Zuko's").slice(-1), ["'s"], "Zuko's ends in the 's glyph");
+  assert.deepEqual(ipa("Zuko’s").slice(-1), ["'s"], "curly apostrophe too");
+  assert.ok(!ipa("it's").includes("'s"), "a contraction is just a word");
+  assert.ok(!ipa("woong's").includes("'s"), "the corpus's attested spelling wins");
+});
+
 test("sentenceToIPA carries the tier onto every word", () => {
   const words = sentenceToIPA("appa bloodbending zzblrf");
   assert.deepEqual(plain(words.map(w => w.tier)),

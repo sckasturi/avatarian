@@ -326,6 +326,11 @@
     "status": "drawn",
     "type": "mark_full"
   },
+  "--": {
+    "file": "hyphen.svg",
+    "status": "PLACEHOLDER",
+    "type": "mark_full"
+  },
   "0": {
     "file": "zero.svg",
     "status": "drawn",
@@ -375,5 +380,10 @@
     "file": "nine.svg",
     "status": "drawn",
     "type": "mark_full"
+  },
+  "'s": {
+    "file": "possessive.svg",
+    "status": "PLACEHOLDER",
+    "type": "mark_short"
   }
 }

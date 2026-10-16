@@ -440,8 +440,22 @@ manifest and takes its aspect ratio from the SVG's own viewBox, so a wider
 mark keeps its proportions; an inline copy is the fallback for a page that
 carries no manifest. The exact shapes live in `build_glyphs.py`.
 
-The apostrophe is still stripped; `woong's` and `heng's` are attested and
-write the possessive as sounds (`ɛ s`) with no mark.
+### The hyphen and the possessive
+
+- **Hyphen**, typed **`--`** (a lone `-` is the null): a `mark_full` mark
+  like the punctuation above, drawn between the parts of a hyphenated word
+  (`well-known`).
+- **Possessive `'s`**: one character, not the sounds /ɛ s/. Unpaired like
+  punctuation, but **five rows tall and full width** — drawn on the
+  consonant's 5×5 lattice (design type `mark_consonant`, manifest type
+  `mark_short`) and set in the **top five rows** of the line, beside the
+  word. Typed `'s` (or `’s`).
+
+Converting English writes both: `well-known` → well `--` known, `Zuko's`
+→ Zuko `'s`. A contraction (`it's`, `let's`) stays a word, and a spelling
+the corpus has seen wins — `woong's`, `heng's` and `sula's` are attested
+written as sounds (`ɛ s`), so those keep that spelling. Both glyphs are
+placeholders until drawn in the designer.
 
 ### Numerals
 

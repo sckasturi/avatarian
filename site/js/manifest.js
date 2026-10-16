@@ -400,6 +400,12 @@ window.AVATARIAN_GLYPHS = {
     "type": "mark_full",
     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"18\" cy=\"82\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 18 18 L 18 58\"/><path d=\"M 18 146 L 18 106\"/></svg>"
   },
+  "--": {
+    "name": "hyphen",
+    "status": "PLACEHOLDER",
+    "type": "mark_full",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 68 164\" fill=\"none\"><rect x=\"8\" y=\"14\" width=\"52\" height=\"136\" rx=\"10\" stroke=\"currentColor\" stroke-width=\"6\" stroke-dasharray=\"10 9\" opacity=\"0.75\"/><text x=\"34\" y=\"82\" text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"Georgia,serif\" font-size=\"40\" fill=\"currentColor\" opacity=\"0.75\">?</text></svg>"
+  },
   "0": {
     "name": "zero",
     "status": "drawn",
@@ -459,6 +465,12 @@ window.AVATARIAN_GLYPHS = {
     "status": "drawn",
     "type": "mark_full",
     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 68 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 L 18 98 L 26 98 A 24 24 0 0 1 26 146 L 18 146\"/></svg>"
+  },
+  "'s": {
+    "name": "possessive",
+    "status": "PLACEHOLDER",
+    "type": "mark_short",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\"><rect x=\"14\" y=\"14\" width=\"72\" height=\"72\" rx=\"10\" stroke=\"currentColor\" stroke-width=\"6\" stroke-dasharray=\"10 9\" opacity=\"0.75\"/><text x=\"50\" y=\"50\" text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"Georgia,serif\" font-size=\"40\" fill=\"currentColor\" opacity=\"0.75\">?</text></svg>"
   }
 };
 

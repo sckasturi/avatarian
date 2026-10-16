@@ -378,7 +378,16 @@ MARKS_FULL = {
 # The character you type -> the mark's name, i.e. its manifest key -> stem.
 # Kept beside IPA_TO_NAME (spread into it below) so every consumer that
 # walks that map — the manifest, the designer catalogue — sees the marks.
-PUNCT_TO_NAME = {".": "period", ",": "comma", "?": "question", "!": "exclamation"}
+PUNCT_TO_NAME = {".": "period", ",": "comma", "?": "question", "!": "exclamation",
+                 # Typed `--`: a lone `-` is the null.
+                 "--": "hyphen"}
+
+# The possessive 's: one character, not the sounds /ɛ s/. Unpaired like
+# punctuation, but five rows tall and full width — drawn on the consonant's
+# 5x5 lattice (design type mark_consonant) and set in the TOP five rows of
+# the line, beside the word. Manifest type `mark_short` tells render.js and
+# the wiki module to draw it as a mark at that height.
+SHORT_MARKS = {"'s": "possessive"}
 MARK_FULL_BOX = 164   # viewBox height, every mark (9*16 + 2*10)
 MARK_FULL_UNIT = 16   # one lattice column
 MARK_FULL_MARGIN = 10  # clearance either side
@@ -459,7 +468,8 @@ FLIPS_BASE = {"æ", "ɑ", "ɪ", "e", "aɪ", "ə"}
 # own `rows`, and that wins — see design_overrides below.
 VOWEL_4ROW_BASE = {"ɑ", "aʊ", "e", "ɪ", "ɔɪ", "ʊ", "u"}
 
-# Sounds carried as a dashed-box placeholder until drawn. Currently none:
+# Glyphs carried as a dashed-box placeholder until drawn and shipped: the
+# hyphen and the possessive 's, both new.
 #
 # "ch" was drawn (an inverted chevron under a dot) but no source for it was
 # ever found, so it was an invention wearing the same clothes as the sourced
@@ -468,6 +478,7 @@ VOWEL_4ROW_BASE = {"ɑ", "aʊ", "e", "ɪ", "ɔɪ", "ʊ", "u"}
 # uses in loanwords; it was dropped entirely rather than carried undrawn.
 # PLACEHOLDER_SVG below is still used for unknown.svg.
 PLACEHOLDERS = {
+    "hyphen": "--", "possessive": "'s",
 }
 
 PLACEHOLDER_SVG = (
@@ -512,6 +523,7 @@ IPA_TO_NAME = {
     # Punctuation and numerals, keyed by the character. mark_full height class.
     **PUNCT_TO_NAME,
     **NUMERAL_TO_NAME,
+    **SHORT_MARKS,
 }
 
 VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
@@ -521,6 +533,8 @@ VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
 def glyph_type(ipa):
     if ipa in PUNCT_TO_NAME or ipa in NUMERAL_TO_NAME:
         return "mark_full"
+    if ipa in SHORT_MARKS:
+        return "mark_short"
     if ipa == NULL_IPA:
         return "null"
     if ipa == NULL_C_IPA:
@@ -531,7 +545,8 @@ def glyph_type(ipa):
 def design_type(ipa):
     """The `type` a design carries for this sound — a height class, not a
     part of speech. See "Height classes" in tools/glyphspec.py."""
-    return {"null": "mark", "null_consonant": "mark_consonant"}.get(
+    return {"null": "mark", "null_consonant": "mark_consonant",
+            "mark_short": "mark_consonant"}.get(
         glyph_type(ipa), glyph_type(ipa))
 
 

@@ -61,8 +61,16 @@ const HEIGHT = {
   "avatarian-consonant": "av-consonant", "avatarian-vowel": "av-vowel",
   "avatarian-null_consonant": "av-null-c", "avatarian-null": "av-null-v",
 };
-const WIDE_MARK = new Set(["question"]);
-const NUMERAL_MARK = new Set(["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]);
+// A mark's width class, worked out from its own glyph the way
+// build_lua_module.py does: av-short for the five-row possessive, else by
+// viewBox width (a 1-column mark is 36 wide, 2 is 52, 3 is 68).
+function markClass(name) {
+  const g = Object.values(loadSite().window.AVATARIAN_GLYPHS).find((e) => e.name === name);
+  if (!g) return "";
+  if (g.type === "mark_short") return " av-short";
+  const w = Number((/viewBox="0 0 ([\d.]+)/.exec(g.svg || "") || [])[1]);
+  return w > 52 ? " av-wide3" : w > 36 ? " av-wide" : "";
+}
 
 function serializeGlyph(g) {
   if (g._c.has("avatarian-unreadable")) return '<span class="av-glyph av-consonant g-unreadable"></span>';
@@ -99,7 +107,7 @@ function serializeWord(container) {
       h += "</span>";
     } else if (n._c.has("avatarian-mark")) {
       const name = n.dataset.glyph;
-      const wide = NUMERAL_MARK.has(name) ? " av-wide3" : WIDE_MARK.has(name) ? " av-wide" : "";
+      const wide = markClass(name);
       h += '<span class="av-mark g-' + name + wide + '"></span>';
     }
   }
@@ -188,13 +196,32 @@ test("a lone number is drawn at text size, not as a chart glyph", { skip: !haveL
   assert.match(g, /av-solo/, "a lone letter is still a chart glyph");
 });
 
+test("the hyphen and the possessive render as marks in both ports", { skip: !haveLua && "lua not on PATH" }, () => {
+  const ctx = loadSite();
+  ctx.document = makeDocument();
+  const seqs = [["w", "ɛ", "l", "∅", "--", "n", "oʊ", "n", "∅"], ["z", "u", "k", "oʊ", "'s"]];
+  const ref = seqs.map(ipa => {
+    const el = ctx.document.createElement("span");
+    ctx.renderAvatarian(ipa, el);
+    return serializeWord(el);
+  });
+  assert.match(ref[0], /g-hyphen/);
+  assert.match(ref[1], /g-possessive av-short/);
+  assert.equal((ref[1].match(/av-block/g) || []).length, 2, "'s doesn't take a slot");
+  const driver =
+    `local p = dofile(${luaLit(LUA_MODULE)})\n` +
+    `local words = {${seqs.map(luaArr).join(",")}}\n` +
+    `for _, ipa in ipairs(words) do print(p._renderWord(ipa)) end\n`;
+  assert.deepEqual(runLua(driver).split("\n").slice(0, seqs.length), ref);
+});
+
 test("Lua normaliseSound matches sounds.js over every code", { skip: !haveLua && "lua not on PATH" }, () => {
   const ctx = loadSite();
   // Everything the JS knows how to spell, plus a few overrides and raw IPA.
   const codes = [...new Set([
     ...Object.keys(ctx.READABLE), ...Object.keys(ctx.READABLE_ALIASES),
     ...Object.keys(ctx.SOUND_ALIASES), "AH", "Uh", "EE", "s$", "z%", "r_c", "r_c$",
-    "0", "0c", "@", "5", "9", "ə", "ɑ", "tʃ", "x", "notasound",
+    "0", "0c", "@", "5", "9", "--", "'s", "’s", "ə", "ɑ", "tʃ", "x", "notasound",
   ])];
   const ref = codes.map(ctx.normaliseSound);
 

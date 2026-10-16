@@ -60,9 +60,11 @@ const CQ_CONSONANTS = new Set([
   "p", "b", "t", "d", "k", "g", "m", "n", "ŋ", "f", "v", "θ", "ð", "s", "z",
   "ʃ", "ʒ", "h", "w", "j", "ɹ", "l", "tʃ", "dʒ", "x",
 ]);
-// Everything drawn beside the writing rather than in a slot: punctuation
-// and the numerals (render.js PUNCTUATION / NUMERALS).
-const CQ_PUNCT = new Set([".", ",", "?", "!", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
+// Everything drawn beside the writing rather than in a slot: punctuation,
+// the numerals and the possessive (render.js PUNCTUATION / NUMERALS /
+// SHORT_MARKS).
+const CQ_PUNCT = new Set([".", ",", "?", "!", "--", "'s",
+  "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
 /** The block-shape codes a `@context` can name, and what each requires. */
 const CQ_CONTEXTS = ["any", "cc", "cv", "vc", "vv", "null"];

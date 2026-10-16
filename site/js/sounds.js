@@ -74,6 +74,7 @@ const SOUND_ALIASES = {
   // no alias. `@` was the zero while `0` belonged to the null; still read
   // as zero so nothing typed back then breaks.
   "@": "0",
+  "’s": "'s",                     // the possessive, typed with a curly quote
   "eɪ": "e", "ej": "e",           // key chart labels this vowel e/eɪ
   "ɝ": "ə", "ɜr": "ə", "ɜ": "ə",  // r-coloured spellings, and ɜ itself
   "ɑː": "ɑ", "iː": "i", "uː": "u",

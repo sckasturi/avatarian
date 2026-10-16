@@ -558,6 +558,38 @@ function rulesToIPA(w) {
  * corpus, `corpusSpan()` is 1 and the loop below collapses to the
  * word-at-a-time behaviour it replaced.
  */
+// `'s` that means "is" or "us", not possession: these stay ordinary words.
+const S_CONTRACTIONS = new Set([
+  "it's", "that's", "he's", "she's", "what's", "where's", "there's",
+  "here's", "let's", "who's", "how's", "when's", "why's",
+]);
+
+/**
+ * One word, with the two characters that live inside a word drawn as
+ * themselves: a hyphen (`--`) between the parts of "well-known", and the
+ * possessive `'s` after "Zuko's". A spelling the corpus has seen always
+ * wins — "woong's" is attested written as sounds, and stays that way — and
+ * a contraction ("it's", "let's") is just a word.
+ */
+function lookupWithMarks(word) {
+  const w = word.replace(/’/g, "'");
+  if (corpusWords()[normaliseWord(w)]) return lookupWord(w);
+  if (/^[^-]+(?:-[^-]+)+$/.test(w)) {
+    const parts = w.split("-").map(lookupWithMarks);
+    return {
+      ipa: parts.flatMap((p, k) => (k ? ["--"] : []).concat(p.ipa)),
+      tier: parts.some((p) => p.tier === "guessed") ? "guessed" : "derived",
+      entry: null,
+    };
+  }
+  const poss = /^(.+)'s$/i.exec(w);
+  if (poss && !S_CONTRACTIONS.has(w.toLowerCase())) {
+    const r = lookupWord(poss[1]);
+    return { ...r, ipa: r.ipa.concat(["'s"]), entry: null };
+  }
+  return lookupWord(w);
+}
+
 // The punctuation the script draws (render.js PUNCTUATION). Split off the
 // end of a word so "there." spells /ð e r ∅/ and then a period mark,
 // instead of losing the mark or feeding "." to the word lookup.
@@ -608,7 +640,7 @@ function sentenceToIPA(text) {
       taken = 1;
     }
     if (!taken) {
-      const { ipa, tier, entry } = lookupWord(words[i]);
+      const { ipa, tier, entry } = lookupWithMarks(words[i]);
       out.push({ word: words[i], ipa, tier, entry });
       taken = 1;
     }

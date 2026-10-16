@@ -566,6 +566,8 @@ const PUNCTUATION = {
          d: '<path d="M 18 18 L 18 98"/><path d="M 18 146 L 18 146.5"/>' },
   // The same, broken: a question is an interrupted statement. The gap is
   // one row, which is the smallest the lattice can say anything with.
+  // Typed `--` (a lone `-` is the null). Drawn in the designer; no inline copy.
+  "--": { name: "hyphen" },
   "?": { name: "question",
          d: '<path d="M 18 18 L 18 50"/><path d="M 18 82 L 18 98"/>'
             + '<path d="M 18 146 L 18 146.5"/>' },
@@ -589,15 +591,25 @@ const NUMERALS = {
 const NUMERAL_BOX = 'viewBox="0 0 68 164" fill="none" stroke="currentColor"'
   + ' stroke-width="6" stroke-dasharray="10 9" opacity="0.75"';
 
-/** Is this symbol a full-height mark — drawn on its own, never in a slot? */
+/**
+ * Short marks: unpaired like punctuation, but five rows tall and full width
+ * — a 100x100 drawing on the consonant lattice, set in the TOP five rows of
+ * the line beside the word. The possessive `'s` is one character, not /ɛ s/.
+ */
+const SHORT_MARKS = {
+  "'s": { name: "possessive" },
+};
+
+/** Is this symbol a mark — drawn on its own, never in a slot? */
 function isMark(sym) {
-  return !!(PUNCTUATION[sym] || NUMERALS[sym]);
+  return !!(PUNCTUATION[sym] || NUMERALS[sym] || SHORT_MARKS[sym]);
 }
 
 function makeMark(sym) {
-  const mark = PUNCTUATION[sym] || NUMERALS[sym];
+  const mark = PUNCTUATION[sym] || NUMERALS[sym] || SHORT_MARKS[sym];
   const span = document.createElement("span");
-  span.className = "avatarian-mark avatarian-mark-" + mark.name;
+  span.className = "avatarian-mark avatarian-mark-" + mark.name
+    + (SHORT_MARKS[sym] ? " avatarian-mark-short" : "");
   span.title = mark.name;
   span.dataset.glyph = mark.name;
   // The mark now ships through the glyph manifest like every letter, so
@@ -624,6 +636,6 @@ if (typeof module !== "undefined") {
   module.exports = {
     renderAvatarian, renderGlyph, pairUp, resolveBlocks, slotRows, glyphSVG, VOWELS,
     NULL_IPA, NULL_C_IPA, NULLS, nullFor, isVowelSymbol, parseSymbol,
-    PUNCTUATION, NUMERALS, isMark,
+    PUNCTUATION, NUMERALS, SHORT_MARKS, isMark,
   };
 }

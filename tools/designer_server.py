@@ -93,6 +93,7 @@ EXAMPLES = {
     "ow": "toe", "aw": "thought", "ah": "appa", "ai": "tie", "au": "now",
     "oi": "toy",
     "null_c": "(null, consonant height)", "null_v": "(null, vowel height)",
+    "hyphen": "well-known", "possessive": "Zuko's",
 }
 
 
@@ -106,7 +107,9 @@ def code_map():
     which shows up as a sound list with no codes rather than wrong ones.
     """
     # The null is typed `-`; the numerals, zero included, as themselves.
-    out = {bg.NULL_IPA: "-", **{d: d for d in bg.NUMERAL_TO_NAME}}
+    out = {bg.NULL_IPA: "-", **{d: d for d in bg.NUMERAL_TO_NAME},
+           # Marks are typed as themselves (`--` for the hyphen).
+           **{m: m for m in {**bg.PUNCT_TO_NAME, **bg.SHORT_MARKS}}}
     try:
         src = SOUNDS.read_text(encoding="utf-8")
     except OSError:

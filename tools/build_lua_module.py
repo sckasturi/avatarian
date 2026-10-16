@@ -96,7 +96,10 @@ def main():
         # its mask keeps proportion: av-wide for 2 columns (`?`, at 52),
         # av-wide3 for 3 (the numerals, at 68). Matches makeMark's per-mark
         # aspect-ratio in render.js, coarsened to a class.
-        if typ and typ.startswith("mark"):
+        if typ == "mark_short":
+            # Five rows, full width, top-aligned (the possessive 's).
+            wide_marks.append((key, "av-short"))
+        elif typ and typ.startswith("mark"):
             m = re.search(r'viewBox="0 0 ([\d.]+)', g.get("svg", ""))
             if m and float(m.group(1)) > 36:
                 wide_marks.append((key, "av-wide3" if float(m.group(1)) > 52 else "av-wide"))

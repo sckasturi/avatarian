@@ -56,6 +56,15 @@ test("a number needs no spaces between its digits", () => {
   assert.deepEqual(plain(soundTextToWords("0 -c")[0].ipa), ["0", "∅c"]);
 });
 
+test("the hyphen is --, the possessive is 's", () => {
+  assert.equal(normaliseSound("--"), "--");
+  assert.equal(normaliseSound("-"), "∅", "a lone - is still the null");
+  assert.equal(normaliseSound("'s"), "'s");
+  assert.equal(normaliseSound("’s"), "'s", "a curly apostrophe works too");
+  const words = soundTextToWords("w e l - -- n oh n - / z oo k oh 's");
+  assert.equal(wordsToSoundText(words), "w e l - -- n oh n -  /  z oo k oh 's");
+});
+
 test("an old share link's 0s are read as nulls, captions left alone", () => {
   const { legacyNulls } = ctx;
   assert.equal(legacyNulls("a 0 p 0 uh 0 (Appa)"), "a - p - uh - (Appa)");
@@ -118,24 +127,17 @@ test("readable codes are case-insensitive", () => {
 test("every glyph has a readable code, and it round-trips", (t) => {
   const glyphs = ctx.window.AVATARIAN_GLYPHS || {};
   for (const ipa of Object.keys(glyphs)) {
-    // ∅c is the one symbol with no code, ON PURPOSE and now settled.
-    // `0` means "a null" and the renderer picks the height from the
-    // pairing partner. CORPUS.md §2 held off on inventing `0c` until the
-    // art had been checked; B3 confirmed in session 10 that `appa` is
-    // written with mixed null heights exactly as the rule predicts, so
-    // `0` plus the partner says everything a code could say.
-    if (ipa === "∅c") continue;
-    // Punctuation (mark_full) glyphs — , . ? ! — are drawn like every
-    // other glyph and ship through the manifest so the designer can edit
-    // them, but they are typed as THEMSELVES, not via a phoneme code, so
-    // they have no entry in IPA_TO_CODE and none is wanted.
-    if (glyphs[ipa].type === "mark_full") continue;
+    // Marks — punctuation, numerals, the hyphen (mark_full) and the
+    // possessive 's (mark_short) — are typed as THEMSELVES, not via a
+    // phoneme code, so they have no entry in IPA_TO_CODE and none is
+    // wanted. (The two nulls do have codes: - and -c.)
+    if (glyphs[ipa].type === "mark_full" || glyphs[ipa].type === "mark_short") continue;
     const code = ctx.IPA_TO_CODE[ipa];
     assert.ok(code, `no code for ${ipa}`);
     assert.equal(normaliseSound(code), ipa,
       `${ipa} displays as '${code}', which reads back as something else`);
   }
-  t.diagnostic("∅c and the punctuation marks have no typeable code — by design");
+  t.diagnostic("marks are typed as themselves, not via a code — by design");
 });
 
 // ---------------------------------------------------------------------
