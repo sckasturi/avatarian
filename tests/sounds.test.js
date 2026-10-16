@@ -127,11 +127,11 @@ test("readable codes are case-insensitive", () => {
 test("every glyph has a readable code, and it round-trips", (t) => {
   const glyphs = ctx.window.AVATARIAN_GLYPHS || {};
   for (const ipa of Object.keys(glyphs)) {
-    // Marks — punctuation, numerals, the hyphen (mark_full) and the
-    // possessive 's (mark_short) — are typed as THEMSELVES, not via a
-    // phoneme code, so they have no entry in IPA_TO_CODE and none is
-    // wanted. (The two nulls do have codes: - and -c.)
-    if (glyphs[ipa].type === "mark_full" || glyphs[ipa].type === "mark_short") continue;
+    // Marks (mark_full) — punctuation, numerals, the hyphen and the
+    // possessive 's — are typed as THEMSELVES, not via a phoneme code, so
+    // they have no entry in IPA_TO_CODE and none is wanted. (The two nulls
+    // do have codes: - and -c.)
+    if (glyphs[ipa].type === "mark_full") continue;
     const code = ctx.IPA_TO_CODE[ipa];
     assert.ok(code, `no code for ${ipa}`);
     assert.equal(normaliseSound(code), ipa,

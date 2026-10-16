@@ -62,7 +62,7 @@ const CQ_CONSONANTS = new Set([
 ]);
 // Everything drawn beside the writing rather than in a slot: punctuation,
 // the numerals and the possessive (render.js PUNCTUATION / NUMERALS /
-// SHORT_MARKS).
+// WORD_MARKS).
 const CQ_PUNCT = new Set([".", ",", "?", "!", "--", "'s",
   "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 

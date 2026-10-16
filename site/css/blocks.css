@@ -172,9 +172,6 @@
   flex: none;
 }
 .avatarian-mark svg { display: block; width: 100%; height: 100%; }
-/* A short mark (the possessive 's) is five rows, a letter's height, and sits
-   in the top five rows of the line rather than spanning all nine. */
-.avatarian-mark.avatarian-mark-short { height: var(--av-size); align-self: flex-start; }
 
 .avatarian-unreadable { opacity: 0.68; }
 /* Higher specificity than .avatarian-flipped svg (both are two classes +

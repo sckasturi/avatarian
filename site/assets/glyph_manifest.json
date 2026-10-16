@@ -328,7 +328,7 @@
   },
   "--": {
     "file": "hyphen.svg",
-    "status": "PLACEHOLDER",
+    "status": "drawn",
     "type": "mark_full"
   },
   "0": {
@@ -383,7 +383,7 @@
   },
   "'s": {
     "file": "possessive.svg",
-    "status": "PLACEHOLDER",
-    "type": "mark_short"
+    "status": "drawn",
+    "type": "mark_full"
   }
 }

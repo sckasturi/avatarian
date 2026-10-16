@@ -592,24 +592,23 @@ const NUMERAL_BOX = 'viewBox="0 0 68 164" fill="none" stroke="currentColor"'
   + ' stroke-width="6" stroke-dasharray="10 9" opacity="0.75"';
 
 /**
- * Short marks: unpaired like punctuation, but five rows tall and full width
- * — a 100x100 drawing on the consonant lattice, set in the TOP five rows of
- * the line beside the word. The possessive `'s` is one character, not /ɛ s/.
+ * Marks that belong to a word rather than a sentence: the possessive `'s`,
+ * one character rather than the sounds /ɛ s/. Nine rows like punctuation,
+ * five columns wide (100x164), drawn beside the word.
  */
-const SHORT_MARKS = {
+const WORD_MARKS = {
   "'s": { name: "possessive" },
 };
 
 /** Is this symbol a mark — drawn on its own, never in a slot? */
 function isMark(sym) {
-  return !!(PUNCTUATION[sym] || NUMERALS[sym] || SHORT_MARKS[sym]);
+  return !!(PUNCTUATION[sym] || NUMERALS[sym] || WORD_MARKS[sym]);
 }
 
 function makeMark(sym) {
-  const mark = PUNCTUATION[sym] || NUMERALS[sym] || SHORT_MARKS[sym];
+  const mark = PUNCTUATION[sym] || NUMERALS[sym] || WORD_MARKS[sym];
   const span = document.createElement("span");
-  span.className = "avatarian-mark avatarian-mark-" + mark.name
-    + (SHORT_MARKS[sym] ? " avatarian-mark-short" : "");
+  span.className = "avatarian-mark avatarian-mark-" + mark.name;
   span.title = mark.name;
   span.dataset.glyph = mark.name;
   // The mark now ships through the glyph manifest like every letter, so
@@ -636,6 +635,6 @@ if (typeof module !== "undefined") {
   module.exports = {
     renderAvatarian, renderGlyph, pairUp, resolveBlocks, slotRows, glyphSVG, VOWELS,
     NULL_IPA, NULL_C_IPA, NULLS, nullFor, isVowelSymbol, parseSymbol,
-    PUNCTUATION, NUMERALS, SHORT_MARKS, isMark,
+    PUNCTUATION, NUMERALS, WORD_MARKS, isMark,
   };
 }

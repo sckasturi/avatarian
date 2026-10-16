@@ -62,14 +62,14 @@ const HEIGHT = {
   "avatarian-null_consonant": "av-null-c", "avatarian-null": "av-null-v",
 };
 // A mark's width class, worked out from its own glyph the way
-// build_lua_module.py does: av-short for the five-row possessive, else by
-// viewBox width (a 1-column mark is 36 wide, 2 is 52, 3 is 68).
+// build_lua_module.py does: columns from the viewBox width (16 per column
+// plus 20 of margin), av-wide for 2, av-wide3 / 4 / 5 above that.
 function markClass(name) {
   const g = Object.values(loadSite().window.AVATARIAN_GLYPHS).find((e) => e.name === name);
   if (!g) return "";
-  if (g.type === "mark_short") return " av-short";
   const w = Number((/viewBox="0 0 ([\d.]+)/.exec(g.svg || "") || [])[1]);
-  return w > 52 ? " av-wide3" : w > 36 ? " av-wide" : "";
+  const cols = Math.round((w - 20) / 16);
+  return cols <= 1 ? "" : cols === 2 ? " av-wide" : ` av-wide${cols}`;
 }
 
 function serializeGlyph(g) {
@@ -206,7 +206,7 @@ test("the hyphen and the possessive render as marks in both ports", { skip: !hav
     return serializeWord(el);
   });
   assert.match(ref[0], /g-hyphen/);
-  assert.match(ref[1], /g-possessive av-short/);
+  assert.match(ref[1], /g-possessive av-wide5/);
   assert.equal((ref[1].match(/av-block/g) || []).length, 2, "'s doesn't take a slot");
   const driver =
     `local p = dofile(${luaLit(LUA_MODULE)})\n` +

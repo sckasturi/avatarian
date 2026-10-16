@@ -373,6 +373,8 @@ MARKS_FULL = {
     "seven": mark(3, path("M 18 18 C 18 60.67 18 103.33 18 146") + path("M 18 82 L 50 114")),
     "eight": mark(3, path("M 18 18 L 18 146 L 50 146 L 50 114")),
     "nine": mark(3, path("M 18 18 L 18 98 L 26 98 A 24 24 0 0 1 26 146 L 18 146")),
+    "possessive": mark(5, dot(26, 26) + path("M 74 18 A 28.28 28.28 0 0 1 50 50 A 28.28 28.28 0 0 0 26 82")),
+    "hyphen": mark(3, path("M 18 82 L 50 82 L 50 98")),
 }
 
 # The character you type -> the mark's name, i.e. its manifest key -> stem.
@@ -382,12 +384,10 @@ PUNCT_TO_NAME = {".": "period", ",": "comma", "?": "question", "!": "exclamation
                  # Typed `--`: a lone `-` is the null.
                  "--": "hyphen"}
 
-# The possessive 's: one character, not the sounds /ɛ s/. Unpaired like
-# punctuation, but five rows tall and full width — drawn on the consonant's
-# 5x5 lattice (design type mark_consonant) and set in the TOP five rows of
-# the line, beside the word. Manifest type `mark_short` tells render.js and
-# the wiki module to draw it as a mark at that height.
-SHORT_MARKS = {"'s": "possessive"}
+# The possessive 's: one character, not the sounds /ɛ s/. A mark_full like
+# the punctuation — nine rows, unpaired, beside the word — but five columns
+# wide, a letter's full width, so it can be drawn anywhere in the line.
+WORD_MARKS = {"'s": "possessive"}
 MARK_FULL_BOX = 164   # viewBox height, every mark (9*16 + 2*10)
 MARK_FULL_UNIT = 16   # one lattice column
 MARK_FULL_MARGIN = 10  # clearance either side
@@ -478,7 +478,7 @@ VOWEL_4ROW_BASE = {"ɑ", "aʊ", "e", "ɪ", "ɔɪ", "ʊ", "u"}
 # uses in loanwords; it was dropped entirely rather than carried undrawn.
 # PLACEHOLDER_SVG below is still used for unknown.svg.
 PLACEHOLDERS = {
-    "hyphen": "--", "possessive": "'s",
+
 }
 
 PLACEHOLDER_SVG = (
@@ -492,16 +492,25 @@ PLACEHOLDER_SVG = (
 
 # The same dashed box at a numeral's 3x9 proportions, so an undrawn numeral
 # holds its real width in a line instead of squashing a square into it.
-PLACEHOLDER_MARK_SVG = (
-    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {mark_width(NUMERAL_COLS)} '
-    f'{MARK_FULL_BOX}" fill="none">'
-    f'<rect x="8" y="14" width="{mark_width(NUMERAL_COLS) - 16}" height="136" rx="10" '
-    'stroke="currentColor" stroke-width="6" stroke-dasharray="10 9" opacity="0.75"/>'
-    f'<text x="{mark_width(NUMERAL_COLS) // 2}" y="82" text-anchor="middle" '
-    'dominant-baseline="central" font-family="Georgia,serif" font-size="40" '
-    'fill="currentColor" opacity="0.75">?</text>'
-    "</svg>"
-)
+# How many columns an undrawn mark opens with in the designer, and how wide
+# its placeholder is: numerals 3, the possessive 5 (a letter's width). Others
+# (the hyphen) open at 1, with a 3-wide placeholder so the "?" fits.
+DEFAULT_MARK_COLS = {**{n: NUMERAL_COLS for n in NUMERAL_TO_NAME.values()},
+                     "possessive": 5}
+
+
+def placeholder_mark_svg(cols):
+    """The dashed placeholder box for an undrawn mark that many columns wide."""
+    w = mark_width(max(cols, 3))
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {MARK_FULL_BOX}" fill="none">'
+        f'<rect x="8" y="14" width="{w - 16}" height="136" rx="10" '
+        'stroke="currentColor" stroke-width="6" stroke-dasharray="10 9" opacity="0.75"/>'
+        f'<text x="{w // 2}" y="82" text-anchor="middle" '
+        'dominant-baseline="central" font-family="Georgia,serif" font-size="40" '
+        'fill="currentColor" opacity="0.75">?</text>'
+        "</svg>"
+    )
 
 # IPA -> filename stem
 IPA_TO_NAME = {
@@ -523,7 +532,7 @@ IPA_TO_NAME = {
     # Punctuation and numerals, keyed by the character. mark_full height class.
     **PUNCT_TO_NAME,
     **NUMERAL_TO_NAME,
-    **SHORT_MARKS,
+    **WORD_MARKS,
 }
 
 VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
@@ -531,10 +540,8 @@ VOWEL_IPA = {"i", "ɪ", "e", "ɛ", "æ", "ʌ", "ə", "u", "ʊ", "oʊ", "ɔ",
 
 
 def glyph_type(ipa):
-    if ipa in PUNCT_TO_NAME or ipa in NUMERAL_TO_NAME:
+    if ipa in PUNCT_TO_NAME or ipa in NUMERAL_TO_NAME or ipa in WORD_MARKS:
         return "mark_full"
-    if ipa in SHORT_MARKS:
-        return "mark_short"
     if ipa == NULL_IPA:
         return "null"
     if ipa == NULL_C_IPA:
@@ -545,8 +552,7 @@ def glyph_type(ipa):
 def design_type(ipa):
     """The `type` a design carries for this sound — a height class, not a
     part of speech. See "Height classes" in tools/glyphspec.py."""
-    return {"null": "mark", "null_consonant": "mark_consonant",
-            "mark_short": "mark_consonant"}.get(
+    return {"null": "mark", "null_consonant": "mark_consonant"}.get(
         glyph_type(ipa), glyph_type(ipa))
 
 
@@ -764,7 +770,8 @@ def main():
     for name in PLACEHOLDERS:
         mark_ph = glyph_type(NAME_TO_IPA[name]) == "mark_full"
         (OUT / f"{name}.svg").write_text(
-            PLACEHOLDER_MARK_SVG if mark_ph else PLACEHOLDER_SVG, encoding="utf-8")
+            placeholder_mark_svg(DEFAULT_MARK_COLS.get(name, 1)) if mark_ph
+            else PLACEHOLDER_SVG, encoding="utf-8")
 
     (OUT / "unknown.svg").write_text(PLACEHOLDER_SVG, encoding="utf-8")
 

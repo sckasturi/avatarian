@@ -71,7 +71,8 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
 .av-mark{display:inline-block;line-height:0;align-self:stretch;background-color:currentColor;height:calc(1.25em * 1.64);width:calc(1.25em * 0.36);-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:100% 100%}
 .av-mark.av-wide{width:calc(1.25em * 0.52)}
 .av-mark.av-wide3{width:calc(1.25em * 0.68)}
-.av-mark.av-short{width:1.25em;height:1.25em;align-self:flex-start}
+.av-mark.av-wide4{width:calc(1.25em * 0.84)}
+.av-mark.av-wide5{width:1.25em}
 /* Copy/paste: the glyph spans are empty masks, so Module:Avatarian emits the
  * word's text in .av-copy — a transparent, selectable text layer covering the
  * word. The glyphs sit ABOVE it (z-index) and are click-through

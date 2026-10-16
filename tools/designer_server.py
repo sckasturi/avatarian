@@ -109,7 +109,7 @@ def code_map():
     # The null is typed `-`; the numerals, zero included, as themselves.
     out = {bg.NULL_IPA: "-", **{d: d for d in bg.NUMERAL_TO_NAME},
            # Marks are typed as themselves (`--` for the hyphen).
-           **{m: m for m in {**bg.PUNCT_TO_NAME, **bg.SHORT_MARKS}}}
+           **{m: m for m in {**bg.PUNCT_TO_NAME, **bg.WORD_MARKS}}}
     try:
         src = SOUNDS.read_text(encoding="utf-8")
     except OSError:
@@ -151,11 +151,12 @@ def catalog():
             "type": kind,
             "group": group,
             # A full-height mark opens at whatever width it ships (the
-            # question mark may be wider than one column); a numeral not
-            # yet drawn opens on its 3x9; every other glyph has a fixed grid.
+            # question mark may be wider than one column); one not yet drawn
+            # opens at its default width (a numeral 3, the possessive 5);
+            # every other glyph has a fixed grid.
             "grid": ([bg.MARKS_FULL[name]["cols"], 9]
                      if kind == "mark_full" and name in bg.MARKS_FULL
-                     else [bg.NUMERAL_COLS, 9] if numeral
+                     else [bg.DEFAULT_MARK_COLS.get(name, 1), 9] if kind == "mark_full"
                      else glyphspec.grid_for(kind)),
             "code": codes.get(ipa),
             "example": EXAMPLES.get(name),
