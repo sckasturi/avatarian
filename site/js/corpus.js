@@ -27,7 +27,7 @@ window.AVATARIAN_CORPUS = {
     "katara-letter": {
       "what": "Katara, Please do not be mad at me when you wake up, but I did not have a moment to lose. I found out what the Denied are after, and [unknown] can change everything. I am going to need some help. You take Appa and Momo and gather up the rest of the team. I will see you soon. Aang",
       "where": "movie (translation by BokerBigBanana)",
-      "image": "katara-letter-2.webp"
+      "image": "katara-letter-3.webp"
     },
     "instagram-1.1": {
       "what": "still waters / trends this june / balloon festival / peeep farm / sad fish / noodle house / garden gems / free cabbages",
