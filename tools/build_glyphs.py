@@ -360,6 +360,9 @@ NULL_C_IPA = "∅c"  # manifest key for the consonant-height filler
 MARKS_FULL = {
     # A dot on the baseline (bottom row), beside the word's last block.
     "period": mark(1, dot(18, 82)),
+    # Two dots straddling the period's row — rows 4 and 6, a clear row's gap
+    # between, so it reads as a colon rather than a bar.
+    "colon": mark(1, dot(18, 66) + dot(18, 98)),
     "comma": mark(1, path("M 18 114 L 18 146")),
     "exclamation": mark(1, dot(18, 82) + path("M 18 18 L 18 58") + path("M 18 146 L 18 106")),
     "question": mark(2, path("M 34 66 A 16 16 0 0 0 34 98")),
@@ -380,7 +383,8 @@ MARKS_FULL = {
 # The character you type -> the mark's name, i.e. its manifest key -> stem.
 # Kept beside IPA_TO_NAME (spread into it below) so every consumer that
 # walks that map — the manifest, the designer catalogue — sees the marks.
-PUNCT_TO_NAME = {".": "period", ",": "comma", "?": "question", "!": "exclamation",
+PUNCT_TO_NAME = {".": "period", ":": "colon", ",": "comma", "?": "question",
+                 "!": "exclamation",
                  # Typed `--`: a lone `-` is the null.
                  "--": "hyphen"}
 

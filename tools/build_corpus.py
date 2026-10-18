@@ -80,7 +80,7 @@ UNREADABLE = "*"
 # writing instead of inside it, and it does not count toward the
 # whole-blocks rule. Written as itself; `*` took over the unreadable
 # marker so that `?` could be the one everybody already knows.
-PUNCTUATION = (",", ".", "?", "!", "--", "'s")  # and the hyphen and possessive
+PUNCTUATION = (",", ".", ":", "?", "!", "--", "'s")  # + colon, hyphen, possessive
 
 HEADER = """/* Auto-generated — do not edit by hand.
  * Source: corpus/attested.json    Regenerate: python3 tools/build_corpus.py

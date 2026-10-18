@@ -311,6 +311,11 @@
     "status": "drawn",
     "type": "mark_full"
   },
+  ":": {
+    "file": "colon.svg",
+    "status": "drawn",
+    "type": "mark_full"
+  },
   ",": {
     "file": "comma.svg",
     "status": "drawn",
