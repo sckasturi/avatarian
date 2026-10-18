@@ -1,8 +1,10 @@
 # Avatarian — https://avatarian.techfilmer.com/
-# Everything here is meant to be found. The only exclusions are the HTML
-# partials that are fetched and inlined by other pages, never visited directly.
+# Most of the site is meant to be found. Excluded: the HTML partials that are
+# fetched and inlined by other pages (never visited directly), and the
+# contribute page, which is a submission tool rather than something to rank.
 User-agent: *
 Allow: /
+Disallow: /contribute.html
 Disallow: /_bysource.html
 Disallow: /_ccblocks.html
 
