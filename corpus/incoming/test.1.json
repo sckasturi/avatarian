@@ -1,0 +1,22 @@
+{
+  "_submission": {
+    "at": "2026-10-18T06:03:35.234Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "batch": "r4f0io"
+  },
+  "source": {
+    "name": "test.1",
+    "what": "test",
+    "where": "test",
+    "image": "test.1.png"
+  },
+  "entries": [
+    {
+      "key": "she's",
+      "spelling": "ʃ i 's",
+      "source": "test.1",
+      "confidence": "certain"
+    }
+  ]
+}
