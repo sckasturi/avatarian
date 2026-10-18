@@ -1,0 +1,29 @@
+{
+  "_submission": {
+    "at": "2026-10-18T06:03:42.854Z",
+    "via": "contribute.html",
+    "ua": "curl/8.7.1",
+    "batch": "bd5am9",
+    "submitter": "worker-selftest"
+  },
+  "source": {
+    "name": "zzz-selftest-1792303422.1",
+    "what": "selftest - delete me",
+    "where": "selftest",
+    "image": "zzz-selftest-1792303422.1.png"
+  },
+  "entries": [
+    {
+      "key": "she's",
+      "spelling": "ʃ i 's",
+      "source": "zzz-selftest-1792303422.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "test",
+      "spelling": "t ɛ s t",
+      "source": "zzz-selftest-1792303422.1",
+      "confidence": "certain"
+    }
+  ]
+}
