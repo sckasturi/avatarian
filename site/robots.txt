@@ -1,0 +1,9 @@
+# Avatarian — https://avatarian.techfilmer.com/
+# Everything here is meant to be found. The only exclusions are the HTML
+# partials that are fetched and inlined by other pages, never visited directly.
+User-agent: *
+Allow: /
+Disallow: /_bysource.html
+Disallow: /_ccblocks.html
+
+Sitemap: https://avatarian.techfilmer.com/sitemap.xml
