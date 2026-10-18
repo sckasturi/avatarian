@@ -288,6 +288,12 @@
       "what": "Uki's map - possible spots",
       "where": "A7H S01E03 06:31",
       "image": "sevenhavens-104.1.png"
+    },
+    "sevenhavens-106.1": {
+      "what": "Agam's Bakery",
+      "where": "A7H S01E06 09:12",
+      "image": "sevenhavens-106.1.png",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -3018,6 +3024,20 @@
       "confidence": "probable",
       "gloss": "spots",
       "source": "sevenhavens-104.1"
+    },
+    {
+      "key": "agam's",
+      "spelling": "ʌ g ʌ m 's",
+      "confidence": "certain",
+      "gloss": "Agam's",
+      "source": "sevenhavens-106.1"
+    },
+    {
+      "key": "bakery",
+      "spelling": "b e k ə ɹ i",
+      "confidence": "certain",
+      "gloss": "Bakery",
+      "source": "sevenhavens-106.1"
     }
   ]
 }

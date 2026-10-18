@@ -269,6 +269,12 @@ window.AVATARIAN_CORPUS = {
       "what": "Uki's map - possible spots",
       "where": "A7H S01E03 06:31",
       "image": "sevenhavens-104.1.png"
+    },
+    "sevenhavens-106.1": {
+      "what": "Agam's Bakery",
+      "where": "A7H S01E06 09:12",
+      "image": "sevenhavens-106.1.png",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -5534,6 +5540,39 @@ window.AVATARIAN_CORPUS = {
       "confidence": "probable",
       "source": "sevenhavens-104.1",
       "gloss": "spots"
+    },
+    "agam's": {
+      "ipa": [
+        "ʌ",
+        "g",
+        "ʌ",
+        "m",
+        "'s"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-106.1"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-106.1",
+      "gloss": "Agam's"
+    },
+    "bakery": {
+      "ipa": [
+        "b",
+        "e",
+        "k",
+        "ə",
+        "ɹ",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-106.1"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-106.1",
+      "gloss": "Bakery"
     }
   },
   "conventions": {
