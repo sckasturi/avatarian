@@ -264,6 +264,11 @@ window.AVATARIAN_CORPUS = {
       "what": "Letter to Karthik - We have the Avatar. She's a young girl here in Ellora. If you want to know more, send this rattle-raven back with a message.",
       "where": "A7H S01E05 15:33",
       "image": "sevenhavens-105.5.png"
+    },
+    "sevenhavens-104.1": {
+      "what": "Uki's map - possible spots",
+      "where": "A7H S01E03 06:31",
+      "image": "sevenhavens-104.1.png"
     }
   },
   "words": {
@@ -4975,20 +4980,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-103.2"
     },
-    "hides": {
-      "ipa": [
-        "h",
-        "aɪ",
-        "d",
-        "z"
-      ],
-      "count": 1,
-      "sources": [
-        "sevenhavens-105.1"
-      ],
-      "confidence": "certain",
-      "source": "sevenhavens-105.1"
-    },
     "amongst": {
       "ipa": [
         "ə",
@@ -4997,6 +4988,20 @@ window.AVATARIAN_CORPUS = {
         "ŋ",
         "s",
         "t"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.1"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.1"
+    },
+    "hides": {
+      "ipa": [
+        "h",
+        "aɪ",
+        "d",
+        "z"
       ],
       "count": 1,
       "sources": [
@@ -5017,14 +5022,10 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.1"
     },
-    "hiding": {
+    "as": {
       "ipa": [
-        "h",
-        "aɪ",
-        "d",
-        "ɪ",
-        "ŋ",
-        "∅"
+        "æ",
+        "z"
       ],
       "count": 1,
       "sources": [
@@ -5052,11 +5053,31 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.2"
     },
-    "posing": {
+    "earthbender": {
       "ipa": [
-        "p",
-        "oʊ",
-        "z",
+        "ə",
+        "ɹ",
+        "θ",
+        "∅",
+        "b",
+        "ɛ",
+        "n",
+        "d",
+        "ə",
+        "ɹ"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.2"
+    },
+    "hiding": {
+      "ipa": [
+        "h",
+        "aɪ",
+        "d",
         "ɪ",
         "ŋ",
         "∅"
@@ -5068,10 +5089,14 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.2"
     },
-    "as": {
+    "posing": {
       "ipa": [
-        "æ",
-        "z"
+        "p",
+        "oʊ",
+        "z",
+        "ɪ",
+        "ŋ",
+        "∅"
       ],
       "count": 1,
       "sources": [
@@ -5095,26 +5120,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.2"
     },
-    "earthbender": {
-      "ipa": [
-        "ə",
-        "ɹ",
-        "θ",
-        "∅",
-        "b",
-        "ɛ",
-        "n",
-        "d",
-        "ə",
-        "ɹ"
-      ],
-      "count": 1,
-      "sources": [
-        "sevenhavens-105.2"
-      ],
-      "confidence": "certain",
-      "source": "sevenhavens-105.2"
-    },
     "journal": {
       "ipa": [
         "dʒ",
@@ -5130,6 +5135,20 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-105.3"
+    },
+    "any": {
+      "ipa": [
+        "ɛ",
+        "∅",
+        "n",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
     },
     "council": {
       "ipa": [
@@ -5147,46 +5166,12 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.4"
     },
-    "liars": {
+    "even": {
       "ipa": [
-        "l",
-        "aɪ",
-        "ə",
-        "ɹ",
-        "z",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "sevenhavens-105.4"
-      ],
-      "confidence": "certain",
-      "source": "sevenhavens-105.4"
-    },
-    "traitors": {
-      "ipa": [
-        "t",
-        "ɹ",
-        "e",
-        "t",
-        "ə",
-        "ɹ",
-        "z",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "sevenhavens-105.4"
-      ],
-      "confidence": "certain",
-      "source": "sevenhavens-105.4"
-    },
-    "must": {
-      "ipa": [
-        "m",
-        "ʌ",
-        "s",
-        "t"
+        "i",
+        "v",
+        "ɪ",
+        "n"
       ],
       "count": 1,
       "sources": [
@@ -5213,12 +5198,28 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.4"
     },
-    "any": {
+    "force": {
       "ipa": [
-        "ɛ",
-        "∅",
-        "n",
-        "i"
+        "f",
+        "ɔ",
+        "ɹ",
+        "s"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "liars": {
+      "ipa": [
+        "l",
+        "aɪ",
+        "ə",
+        "ɹ",
+        "z",
+        "∅"
       ],
       "count": 1,
       "sources": [
@@ -5233,6 +5234,20 @@ window.AVATARIAN_CORPUS = {
         "i",
         "n",
         "z"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "must": {
+      "ipa": [
+        "m",
+        "ʌ",
+        "s",
+        "t"
       ],
       "count": 1,
       "sources": [
@@ -5259,26 +5274,16 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.4"
     },
-    "even": {
+    "traitors": {
       "ipa": [
-        "i",
-        "v",
-        "ɪ",
-        "n"
-      ],
-      "count": 1,
-      "sources": [
-        "sevenhavens-105.4"
-      ],
-      "confidence": "certain",
-      "source": "sevenhavens-105.4"
-    },
-    "force": {
-      "ipa": [
-        "f",
-        "ɔ",
+        "t",
         "ɹ",
-        "s"
+        "e",
+        "t",
+        "ə",
+        "ɹ",
+        "z",
+        "∅"
       ],
       "count": 1,
       "sources": [
@@ -5287,10 +5292,12 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.4"
     },
-    "we": {
+    "back": {
       "ipa": [
-        "w",
-        "i"
+        "b",
+        "æ",
+        "k",
+        "∅"
       ],
       "count": 1,
       "sources": [
@@ -5327,18 +5334,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.5"
     },
-    "in": {
-      "ipa": [
-        "ɪ",
-        "n"
-      ],
-      "count": 1,
-      "sources": [
-        "sevenhavens-105.5"
-      ],
-      "confidence": "certain",
-      "source": "sevenhavens-105.5"
-    },
     "if": {
       "ipa": [
         "ɪ",
@@ -5351,12 +5346,10 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.5"
     },
-    "want": {
+    "in": {
       "ipa": [
-        "w",
-        "ɑ",
-        "n",
-        "t"
+        "ɪ",
+        "n"
       ],
       "count": 1,
       "sources": [
@@ -5377,11 +5370,13 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.5"
     },
-    "more": {
+    "message": {
       "ipa": [
         "m",
-        "oʊ",
-        "ɹ",
+        "ɛ",
+        "s",
+        "ɛ",
+        "dʒ",
         "∅"
       ],
       "count": 1,
@@ -5391,12 +5386,12 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.5"
     },
-    "send": {
+    "more": {
       "ipa": [
-        "s",
-        "ɛ",
-        "n",
-        "d"
+        "m",
+        "oʊ",
+        "ɹ",
+        "∅"
       ],
       "count": 1,
       "sources": [
@@ -5437,12 +5432,51 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.5"
     },
-    "back": {
+    "send": {
       "ipa": [
-        "b",
-        "æ",
-        "k",
-        "∅"
+        "s",
+        "ɛ",
+        "n",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "she's": {
+      "ipa": [
+        "ʃ",
+        "i",
+        "'s"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "want": {
+      "ipa": [
+        "w",
+        "ɑ",
+        "n",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "we": {
+      "ipa": [
+        "w",
+        "i"
       ],
       "count": 1,
       "sources": [
@@ -5465,34 +5499,41 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-105.5"
     },
-    "message": {
+    "possible": {
       "ipa": [
-        "m",
-        "ɛ",
+        "p",
+        "ɑ",
         "s",
-        "ɛ",
-        "dʒ",
-        "∅"
+        "∅",
+        "ə",
+        "b",
+        "ə",
+        "l"
       ],
       "count": 1,
       "sources": [
-        "sevenhavens-105.5"
+        "sevenhavens-104.1"
       ],
-      "confidence": "certain",
-      "source": "sevenhavens-105.5"
+      "confidence": "probable",
+      "source": "sevenhavens-104.1",
+      "gloss": "possible"
     },
-    "she's": {
+    "spots": {
       "ipa": [
-        "ʃ",
-        "i",
-        "'s"
+        "s",
+        "p",
+        "ɑ",
+        "∅",
+        "t",
+        "s"
       ],
       "count": 1,
       "sources": [
-        "sevenhavens-105.5"
+        "sevenhavens-104.1"
       ],
-      "confidence": "certain",
-      "source": "sevenhavens-105.5"
+      "confidence": "probable",
+      "source": "sevenhavens-104.1",
+      "gloss": "spots"
     }
   },
   "conventions": {

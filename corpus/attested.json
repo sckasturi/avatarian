@@ -283,6 +283,11 @@
       "what": "Letter to Karthik - We have the Avatar. She's a young girl here in Ellora. If you want to know more, send this rattle-raven back with a message.",
       "where": "A7H S01E05 15:33",
       "image": "sevenhavens-105.5.png"
+    },
+    "sevenhavens-104.1": {
+      "what": "Uki's map - possible spots",
+      "where": "A7H S01E03 06:31",
+      "image": "sevenhavens-104.1.png"
     }
   },
   "entries": [
@@ -2999,6 +3004,20 @@
       "spelling": "j ʌ ŋ ∅",
       "source": "sevenhavens-105.5",
       "confidence": "certain"
+    },
+    {
+      "key": "possible",
+      "spelling": "p ɑ s ∅ ə b ə l",
+      "confidence": "probable",
+      "gloss": "possible",
+      "source": "sevenhavens-104.1"
+    },
+    {
+      "key": "spots",
+      "spelling": "s p ɑ ∅ t s",
+      "confidence": "probable",
+      "gloss": "spots",
+      "source": "sevenhavens-104.1"
     }
   ]
 }
