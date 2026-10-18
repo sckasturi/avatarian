@@ -45,6 +45,13 @@ const IMAGE_EXT = {
 };
 const CONFIDENCE = new Set(["certain", "probable", "unclear"]);
 
+// Marks that stand a full block beside the writing rather than filling a
+// paired slot: the sentence punctuation, the hyphen, and the possessive `'s`.
+// They are not counted toward the even-blocks rule — mirrors
+// build_corpus.py's PUNCTUATION, so a spelling the corpus accepts (e.g. the
+// possessive "she's" -> `ʃ i 's`) is not rejected here first.
+const PUNCTUATION = new Set([",", ".", "?", "!", "--", "'s"]);
+
 // Anti-spam ceiling per IP per day. A real contributor files a handful; a
 // script files thousands. Tune in wrangler.toml if you like.
 const RATE_LIMIT_PER_DAY = 10;
@@ -156,8 +163,11 @@ function validate(body) {
       if (!key) return `A sighting on ${where} is missing its word.`;
       const tokens = String(e && e.spelling || "").split(" ").filter(Boolean);
       if (tokens.length === 0) return `"${key}" has no spelling.`;
-      // The whole-blocks rule: two slots per block, so an even count.
-      if (tokens.length % 2 !== 0) {
+      // The whole-blocks rule: two slots per block, so an even count — but
+      // marks (punctuation, the possessive 's) are not slots, so they don't
+      // count, exactly as build_corpus.py decides it in CI.
+      const slots = tokens.filter((t) => !PUNCTUATION.has(t));
+      if (slots.length % 2 !== 0) {
         return `"${key}" has an odd number of symbols — a null is missing.`;
       }
       const conf = e.confidence || "certain";

@@ -460,6 +460,17 @@ function syncImportText() {
 }
 
 /**
+ * How many of a spelling's tokens are block slots. Marks — punctuation and
+ * the possessive `'s` — stand a full block beside the writing and aren't
+ * paired into slots, so they don't count toward the even-blocks rule.
+ * Mirrors render.js and build_corpus.py, so a possessive like "she's"
+ * (ʃ i 's) reads as a complete, even spelling here too — no phantom "odd,
+ * add a null" that would push a contributor to a wrong extra ∅.
+ */
+const slotCount = (tokens) =>
+  tokens.filter((t) => !isMark(parseSymbol(t).sym)).length;
+
+/**
  * The warnings under one row, rebuilt in place. Separate from
  * renderImportRows because editing a spelling changes which apply — an
  * odd count appears and clears as you type — and rebuilding the whole
@@ -469,8 +480,8 @@ function paintFlags(row, into) {
   into.innerHTML = "";
   const flags = [];
 
-  if (row.ipa.length % 2) {
-    flags.push(["is-warn", `${row.ipa.length} symbols — odd, so a null is `
+  if (slotCount(row.ipa) % 2) {
+    flags.push(["is-warn", `${slotCount(row.ipa)} symbols — odd, so a null is `
       + `missing. This one can't be submitted as it stands.`]);
   }
   // Glyphs the renderer has no drawing for would fail validation too.
@@ -508,7 +519,7 @@ function paintFlags(row, into) {
   // Against the model: the comparison that makes the corpus a research
   // instrument rather than a spelling patch. Only when the word is known
   // and the model has an opinion of its own.
-  if (row.word && !(row.ipa.length % 2)) {
+  if (row.word && !(slotCount(row.ipa) % 2)) {
     const derived = derivedSpelling(row.word);
     if (derived && derived.tokens.join(" ") !== row.ipa.join(" ")) {
       const sameSounds =
@@ -649,7 +660,7 @@ function importPlan() {
   const add = [], blocked = [], unchecked = [], merged = [];
   for (const row of importRows) {
     if (!row.word) { blocked.push(row); continue; }
-    if (row.ipa.length % 2) { blocked.push(row); continue; }
+    if (slotCount(row.ipa) % 2) { blocked.push(row); continue; }
     const bodies = row.ipa.map((t) => splitOverride(t).body);
     if (bodies.some((s) => s !== "*" && !(window.AVATARIAN_GLYPHS || {})[s])) {
       blocked.push(row); continue;
