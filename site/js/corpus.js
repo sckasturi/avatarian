@@ -237,6 +237,33 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E03 10:21",
       "image": "submission-j2joy6.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-105.1": {
+      "what": "The Avatar hides amongst us",
+      "where": "A7H S01E05 02:33",
+      "image": "sevenhavens-105.1.png"
+    },
+    "sevenhavens-105.2": {
+      "what": "Leaflet - The Avatar is hiding within the Brigade, posing as a young earthbender",
+      "where": "A7H S01E05 07:45 perspective-corrected",
+      "image": "sevenhavens-105.2.png"
+    },
+    "sevenhavens-105.3": {
+      "what": "Datu's journal - journal",
+      "where": "A7H S01E05 10:07",
+      "image": "sevenhavens-105.3.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-105.4": {
+      "what": "Page in Datu's journal - The Council and the Bending Brigade are liars and traitors to Ellora and must be exposed by any means necessary, even force",
+      "where": "A7H S01E05 10:21",
+      "image": "sevenhavens-105.4.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-105.5": {
+      "what": "Letter to Karthik - We have the Avatar. She's a young girl here in Ellora. If you want to know more, send this rattle-raven back with a message.",
+      "where": "A7H S01E05 15:33",
+      "image": "sevenhavens-105.5.png"
     }
   },
   "words": {
@@ -305,12 +332,13 @@ window.AVATARIAN_CORPUS = {
         "d",
         "∅"
       ],
-      "count": 6,
+      "count": 9,
       "sources": [
         "toph-letter",
         "katara-letter",
         "instagram-1.3",
-        "instagram-3.3"
+        "instagram-3.3",
+        "sevenhavens-105.4"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -498,10 +526,11 @@ window.AVATARIAN_CORPUS = {
         "v",
         "∅"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "toph-letter",
-        "katara-letter"
+        "katara-letter",
+        "sevenhavens-105.5"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -592,11 +621,12 @@ window.AVATARIAN_CORPUS = {
         "ɪ",
         "z"
       ],
-      "count": 4,
+      "count": 5,
       "sources": [
         "toph-letter",
         "instagram-1.3",
-        "instagram-3.3"
+        "instagram-3.3",
+        "sevenhavens-105.2"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -845,9 +875,13 @@ window.AVATARIAN_CORPUS = {
             "ð",
             "i"
           ],
-          "count": 2,
+          "count": 8,
           "sources": [
-            "sdcc.1"
+            "sdcc.1",
+            "sevenhavens-105.1",
+            "sevenhavens-105.2",
+            "sevenhavens-105.4",
+            "sevenhavens-105.5"
           ],
           "confidence": "certain"
         }
@@ -874,11 +908,13 @@ window.AVATARIAN_CORPUS = {
         "t",
         "u"
       ],
-      "count": 6,
+      "count": 8,
       "sources": [
         "toph-letter",
         "katara-letter",
-        "instagram-2.2"
+        "instagram-2.2",
+        "sevenhavens-105.4",
+        "sevenhavens-105.5"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -928,11 +964,12 @@ window.AVATARIAN_CORPUS = {
         "j",
         "u"
       ],
-      "count": 6,
+      "count": 7,
       "sources": [
         "toph-letter",
         "katara-letter",
-        "instagram-3.2"
+        "instagram-3.2",
+        "sevenhavens-105.5"
       ],
       "confidence": "certain",
       "source": "toph-letter"
@@ -1004,12 +1041,28 @@ window.AVATARIAN_CORPUS = {
         "e",
         "∅"
       ],
-      "count": 1,
+      "count": 3,
       "sources": [
-        "katara-letter"
+        "katara-letter",
+        "sevenhavens-105.2",
+        "sevenhavens-105.5"
       ],
       "confidence": "certain",
-      "source": "katara-letter"
+      "source": "katara-letter",
+      "alternates": [
+        {
+          "ipa": [
+            "ɛ",
+            "∅"
+          ],
+          "count": 1,
+          "sources": [
+            "sevenhavens-105.5"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true
     },
     "after": {
       "ipa": [
@@ -1049,9 +1102,10 @@ window.AVATARIAN_CORPUS = {
         "ɑ",
         "ɹ"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "katara-letter"
+        "katara-letter",
+        "sevenhavens-105.4"
       ],
       "confidence": "certain",
       "source": "katara-letter"
@@ -1061,10 +1115,11 @@ window.AVATARIAN_CORPUS = {
         "b",
         "i"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "katara-letter",
-        "instagram-1.4"
+        "instagram-1.4",
+        "sevenhavens-105.4"
       ],
       "confidence": "certain",
       "source": "katara-letter"
@@ -1701,9 +1756,10 @@ window.AVATARIAN_CORPUS = {
         "s",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-1.1"
+        "instagram-1.1",
+        "sevenhavens-105.5"
       ],
       "confidence": "certain",
       "source": "instagram-1.1"
@@ -2219,13 +2275,14 @@ window.AVATARIAN_CORPUS = {
         "w",
         "ɪ",
         "ð",
-        "*",
+        "ɪ",
         "n",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "instagram-3.1"
+        "instagram-3.1",
+        "sevenhavens-105.2"
       ],
       "confidence": "certain",
       "source": "instagram-3.1"
@@ -2296,7 +2353,25 @@ window.AVATARIAN_CORPUS = {
         "instagram-1.2"
       ],
       "confidence": "certain",
-      "source": "instagram-1.2"
+      "source": "instagram-1.2",
+      "alternates": [
+        {
+          "ipa": [
+            "b",
+            "ɛ",
+            "n",
+            "d",
+            "ɪ",
+            "ŋ"
+          ],
+          "count": 1,
+          "sources": [
+            "sevenhavens-105.4"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true
     },
     "cakes": {
       "ipa": [
@@ -3825,9 +3900,10 @@ window.AVATARIAN_CORPUS = {
         "b",
         "aɪ"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "zuko-stamp"
+        "zuko-stamp",
+        "sevenhavens-105.4"
       ],
       "confidence": "certain",
       "source": "zuko-stamp"
@@ -3887,10 +3963,13 @@ window.AVATARIAN_CORPUS = {
         "ɹ",
         "∅"
       ],
-      "count": 2,
+      "count": 5,
       "sources": [
         "sdcc.1",
-        "sdcc.3"
+        "sdcc.3",
+        "sevenhavens-105.1",
+        "sevenhavens-105.2",
+        "sevenhavens-105.5"
       ],
       "confidence": "certain",
       "source": "sdcc.1",
@@ -4701,10 +4780,12 @@ window.AVATARIAN_CORPUS = {
         "ɹ",
         "ə"
       ],
-      "count": 2,
+      "count": 4,
       "sources": [
         "sevenhavens-101.2",
-        "sevenhavens-101.10"
+        "sevenhavens-101.10",
+        "sevenhavens-105.4",
+        "sevenhavens-105.5"
       ],
       "confidence": "certain",
       "source": "sevenhavens-101.2",
@@ -4893,6 +4974,525 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-103.2"
+    },
+    "hides": {
+      "ipa": [
+        "h",
+        "aɪ",
+        "d",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.1"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.1"
+    },
+    "amongst": {
+      "ipa": [
+        "ə",
+        "m",
+        "ʌ",
+        "ŋ",
+        "s",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.1"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.1"
+    },
+    "us": {
+      "ipa": [
+        "ʌ",
+        "s"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.1"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.1"
+    },
+    "hiding": {
+      "ipa": [
+        "h",
+        "aɪ",
+        "d",
+        "ɪ",
+        "ŋ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.2"
+    },
+    "brigade": {
+      "ipa": [
+        "b",
+        "ɹ",
+        "ə",
+        "∅",
+        "g",
+        "e",
+        "d",
+        "∅"
+      ],
+      "count": 2,
+      "sources": [
+        "sevenhavens-105.2",
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.2"
+    },
+    "posing": {
+      "ipa": [
+        "p",
+        "oʊ",
+        "z",
+        "ɪ",
+        "ŋ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.2"
+    },
+    "as": {
+      "ipa": [
+        "æ",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.2"
+    },
+    "young": {
+      "ipa": [
+        "j",
+        "ʌ",
+        "ŋ",
+        "∅"
+      ],
+      "count": 2,
+      "sources": [
+        "sevenhavens-105.2",
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.2"
+    },
+    "earthbender": {
+      "ipa": [
+        "ə",
+        "ɹ",
+        "θ",
+        "∅",
+        "b",
+        "ɛ",
+        "n",
+        "d",
+        "ə",
+        "ɹ"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.2"
+    },
+    "journal": {
+      "ipa": [
+        "dʒ",
+        "ə",
+        "ɹ",
+        "n",
+        "ə",
+        "l"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.3"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.3"
+    },
+    "council": {
+      "ipa": [
+        "k",
+        "aʊ",
+        "n",
+        "z",
+        "ə",
+        "l"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "liars": {
+      "ipa": [
+        "l",
+        "aɪ",
+        "ə",
+        "ɹ",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "traitors": {
+      "ipa": [
+        "t",
+        "ɹ",
+        "e",
+        "t",
+        "ə",
+        "ɹ",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "must": {
+      "ipa": [
+        "m",
+        "ʌ",
+        "s",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "exposed": {
+      "ipa": [
+        "ɛ",
+        "k",
+        "s",
+        "p",
+        "oʊ",
+        "z",
+        "d",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "any": {
+      "ipa": [
+        "ɛ",
+        "∅",
+        "n",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "means": {
+      "ipa": [
+        "m",
+        "i",
+        "n",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "necessary": {
+      "ipa": [
+        "n",
+        "ɛ",
+        "s",
+        "ə",
+        "s",
+        "ɛ",
+        "ɹ",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "even": {
+      "ipa": [
+        "i",
+        "v",
+        "ɪ",
+        "n"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "force": {
+      "ipa": [
+        "f",
+        "ɔ",
+        "ɹ",
+        "s"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.4"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.4"
+    },
+    "we": {
+      "ipa": [
+        "w",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "girl": {
+      "ipa": [
+        "g",
+        "ə",
+        "ɹ",
+        "l"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "here": {
+      "ipa": [
+        "h",
+        "i",
+        "ɹ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "in": {
+      "ipa": [
+        "ɪ",
+        "n"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "if": {
+      "ipa": [
+        "ɪ",
+        "f"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "want": {
+      "ipa": [
+        "w",
+        "ɑ",
+        "n",
+        "t"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "know": {
+      "ipa": [
+        "n",
+        "oʊ"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "more": {
+      "ipa": [
+        "m",
+        "oʊ",
+        "ɹ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "send": {
+      "ipa": [
+        "s",
+        "ɛ",
+        "n",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "rattle": {
+      "ipa": [
+        "ɹ",
+        "æ",
+        "t",
+        "ə",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "raven": {
+      "ipa": [
+        "ɹ",
+        "e",
+        "v",
+        "ə",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "back": {
+      "ipa": [
+        "b",
+        "æ",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "with": {
+      "ipa": [
+        "w",
+        "ɪ",
+        "θ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "message": {
+      "ipa": [
+        "m",
+        "ɛ",
+        "s",
+        "ɛ",
+        "dʒ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
+    },
+    "she's": {
+      "ipa": [
+        "ʃ",
+        "i",
+        "'s"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-105.5"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-105.5"
     }
   },
   "conventions": {

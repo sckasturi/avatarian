@@ -256,6 +256,33 @@
       "where": "A7H S01E03 10:21",
       "image": "submission-j2joy6.jpg",
       "credit": "Bundas"
+    },
+    "sevenhavens-105.1": {
+      "what": "The Avatar hides amongst us",
+      "where": "A7H S01E05 02:33",
+      "image": "sevenhavens-105.1.png"
+    },
+    "sevenhavens-105.2": {
+      "what": "Leaflet - The Avatar is hiding within the Brigade, posing as a young earthbender",
+      "where": "A7H S01E05 07:45 perspective-corrected",
+      "image": "sevenhavens-105.2.png"
+    },
+    "sevenhavens-105.3": {
+      "what": "Datu's journal - journal",
+      "where": "A7H S01E05 10:07",
+      "image": "sevenhavens-105.3.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-105.4": {
+      "what": "Page in Datu's journal - The Council and the Bending Brigade are liars and traitors to Ellora and must be exposed by any means necessary, even force",
+      "where": "A7H S01E05 10:21",
+      "image": "sevenhavens-105.4.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-105.5": {
+      "what": "Letter to Karthik - We have the Avatar. She's a young girl here in Ellora. If you want to know more, send this rattle-raven back with a message.",
+      "where": "A7H S01E05 15:33",
+      "image": "sevenhavens-105.5.png"
     }
   },
   "entries": [
@@ -2598,6 +2625,379 @@
       "key": "seal",
       "spelling": "s i l ∅",
       "source": "sevenhavens-103.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "amongst",
+      "spelling": "ə m ʌ ŋ s t",
+      "source": "sevenhavens-105.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "avatar",
+      "spelling": "æ v ə ∅ t ɑ ɹ ∅",
+      "source": "sevenhavens-105.1",
+      "confidence": "certain",
+      "gloss": "Avatar"
+    },
+    {
+      "key": "hides",
+      "spelling": "h aɪ d z",
+      "source": "sevenhavens-105.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "the",
+      "spelling": "ð i",
+      "source": "sevenhavens-105.1",
+      "confidence": "certain",
+      "gloss": "The"
+    },
+    {
+      "key": "us",
+      "spelling": "ʌ s",
+      "source": "sevenhavens-105.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "a",
+      "spelling": "e ∅",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "as",
+      "spelling": "æ z",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "avatar",
+      "spelling": "æ v ə ∅ t ɑ ɹ ∅",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "brigade",
+      "spelling": "b ɹ ə ∅ g e d ∅",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "earthbender",
+      "spelling": "ə ɹ θ ∅ b ɛ n d ə ɹ",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "hiding",
+      "spelling": "h aɪ d ɪ ŋ ∅",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "is",
+      "spelling": "ɪ z",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "posing",
+      "spelling": "p oʊ z ɪ ŋ ∅",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "the",
+      "spelling": "ð i",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "within",
+      "spelling": "w ɪ ð ɪ n ∅",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "young",
+      "spelling": "j ʌ ŋ ∅",
+      "source": "sevenhavens-105.2",
+      "confidence": "certain"
+    },
+    {
+      "key": "journal",
+      "spelling": "dʒ ə ɹ n ə l",
+      "source": "sevenhavens-105.3",
+      "confidence": "certain"
+    },
+    {
+      "key": "and",
+      "spelling": "æ n d ∅",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain",
+      "times": 3
+    },
+    {
+      "key": "any",
+      "spelling": "ɛ ∅ n i",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "are",
+      "spelling": "ɑ ɹ",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "be",
+      "spelling": "b i",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "bending",
+      "spelling": "b ɛ n d ɪ ŋ",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "brigade",
+      "spelling": "b ɹ ə ∅ g e d ∅",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "by",
+      "spelling": "b aɪ",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "council",
+      "spelling": "k aʊ n z ə l",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "ellora",
+      "spelling": "ɛ ∅ l oʊ ɹ ə",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain",
+      "gloss": "Ellora"
+    },
+    {
+      "key": "even",
+      "spelling": "i v ɪ n",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "exposed",
+      "spelling": "ɛ k s p oʊ z d ∅",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "force",
+      "spelling": "f ɔ ɹ s",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "liars",
+      "spelling": "l aɪ ə ɹ z ∅",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "means",
+      "spelling": "m i n z",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "must",
+      "spelling": "m ʌ s t",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "necessary",
+      "spelling": "n ɛ s ə s ɛ ɹ i",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "the",
+      "spelling": "ð i",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain",
+      "times": 2
+    },
+    {
+      "key": "to",
+      "spelling": "t u",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "traitors",
+      "spelling": "t ɹ e t ə ɹ z ∅",
+      "source": "sevenhavens-105.4",
+      "confidence": "certain"
+    },
+    {
+      "key": "a",
+      "spelling": "e ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "a",
+      "spelling": "ɛ ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "avatar",
+      "spelling": "æ v ə ∅ t ɑ ɹ ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "back",
+      "spelling": "b æ k ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "ellora",
+      "spelling": "ɛ ∅ l oʊ ɹ ə",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain",
+      "gloss": "Ellora"
+    },
+    {
+      "key": "girl",
+      "spelling": "g ə ɹ l",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "have",
+      "spelling": "h æ v ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "here",
+      "spelling": "h i ɹ ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "if",
+      "spelling": "ɪ f",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "in",
+      "spelling": "ɪ n",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "know",
+      "spelling": "n oʊ",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "message",
+      "spelling": "m ɛ s ɛ dʒ ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "more",
+      "spelling": "m oʊ ɹ ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "rattle",
+      "spelling": "ɹ æ t ə l ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "raven",
+      "spelling": "ɹ e v ə n ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "send",
+      "spelling": "s ɛ n d",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "she's",
+      "spelling": "ʃ i 's",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "the",
+      "spelling": "ð i",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "this",
+      "spelling": "ð ɪ s ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "to",
+      "spelling": "t u",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "want",
+      "spelling": "w ɑ n t",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "we",
+      "spelling": "w i",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "with",
+      "spelling": "w ɪ θ ∅",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "you",
+      "spelling": "j u",
+      "source": "sevenhavens-105.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "young",
+      "spelling": "j ʌ ŋ ∅",
+      "source": "sevenhavens-105.5",
       "confidence": "certain"
     }
   ]
