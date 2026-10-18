@@ -53,7 +53,6 @@ local GLYPH = {
   ["∅"]={name="null_v", type="null"},
   ["∅c"]={name="null_c", type="null_consonant"},
   ["."]={name="period", type="mark_full"},
-  [":"]={name="colon", type="mark_full"},
   [","]={name="comma", type="mark_full"},
   ["?"]={name="question", type="mark_full"},
   ["!"]={name="exclamation", type="mark_full"},

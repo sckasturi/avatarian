@@ -382,12 +382,6 @@ window.AVATARIAN_GLYPHS = {
     "type": "mark_full",
     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"18\" cy=\"82\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
-  ":": {
-    "name": "colon",
-    "status": "drawn",
-    "type": "mark_full",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"18\" cy=\"66\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"18\" cy=\"98\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
-  },
   ",": {
     "name": "comma",
     "status": "drawn",

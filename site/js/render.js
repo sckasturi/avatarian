@@ -557,9 +557,6 @@ const PUNCTUATION = {
   // A dot on the baseline — the bottom row, beside the word's last block.
   ".": { name: "period",
          d: '<path d="M 18 146 L 18 146.5"/>' },
-  // Two dots straddling the period's row, a row's gap between — a colon.
-  ":": { name: "colon",
-         d: '<path d="M 18 66 L 18 66.5"/><path d="M 18 98 L 18 98.5"/>' },
   // A stroke through the bottom two rows: the same weight as the period,
   // given length rather than a tail, which one column has no room for.
   ",": { name: "comma",
