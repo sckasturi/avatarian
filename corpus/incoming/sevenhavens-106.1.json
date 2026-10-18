@@ -1,0 +1,32 @@
+{
+  "_submission": {
+    "at": "2026-10-18T06:28:25.114Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "batch": "fqezk9",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "sevenhavens-106.1",
+    "what": "Agam's Bakery",
+    "where": "A7H S01E06 09:12",
+    "image": "sevenhavens-106.1.png",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "agam's",
+      "spelling": "ʌ g ʌ m 's",
+      "source": "sevenhavens-106.1",
+      "confidence": "certain",
+      "gloss": "Agam's"
+    },
+    {
+      "key": "bakery",
+      "spelling": "b e k ə ɹ i",
+      "source": "sevenhavens-106.1",
+      "confidence": "certain",
+      "gloss": "Bakery"
+    }
+  ]
+}
