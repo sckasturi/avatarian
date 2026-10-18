@@ -19,7 +19,27 @@ const assert = require("node:assert/strict");
 const { loadSite, entries, plain, show, showBlocks } = require("./harness.js");
 
 const ctx = loadSite();
-const { pairUp, resolveBlocks, slotRows, nullFor, NULL_IPA, NULL_C_IPA } = ctx;
+const { pairUp, resolveBlocks, slotRows, nullFor, NULL_IPA, NULL_C_IPA,
+        isMark, parseSymbol } = ctx;
+
+// The block model runs on the paired slots only. A mark — punctuation, a
+// numeral, the possessive `'s` — stands beside the writing a full block
+// tall, breaks the pairing run and is never paired into a block, exactly as
+// renderAvatarian flushes the run at each one. So split on marks and pair
+// each run between them; feeding a mark straight into pairUp would invent a
+// block nobody writes (e.g. "she's" = ʃ i 's pairing ('s, null)).
+function markAwareBlocks(ipa) {
+  const out = [];
+  let run = [];
+  const flush = () => { if (run.length) out.push(...resolveBlocks(run)); run = []; };
+  for (const t of ipa) {
+    if (isMark(parseSymbol(t).sym)) flush();
+    else run.push(t);
+  }
+  flush();
+  return out;
+}
+const blockSlots = (ipa) => ipa.filter((t) => !isMark(parseSymbol(t).sym));
 
 // ---------------------------------------------------------------------
 // Pairing
@@ -132,7 +152,7 @@ test("every attested block is nine rows — except C-C, measured by eye", (t) =>
   const unread = [];
 
   for (const entry of entries(ctx)) {
-    for (const block of resolveBlocks(entry.ipa)) {
+    for (const block of markAwareBlocks(entry.ipa)) {
       const where = `${entry.key}: (${block.top},${block.bottom})`;
       // A `?` slot has NO KNOWN HEIGHT. `slotRows` gives it consonant
       // height so it can be laid out, but that is a rendering default and
@@ -179,7 +199,7 @@ test("no attested word yields a V-V block", () => {
   const { isVowelSymbol } = ctx;
   const vv = [];
   for (const entry of entries(ctx)) {
-    for (const { top, bottom } of resolveBlocks(entry.ipa)) {
+    for (const { top, bottom } of markAwareBlocks(entry.ipa)) {
       if (isVowelSymbol(top) && isVowelSymbol(bottom)) {
         vv.push(`${entry.key}: (${top},${bottom})`);
       }
@@ -193,9 +213,15 @@ test("every corpus entry has an even symbol count", () => {
   // phoneme list instead — the one mistake that would quietly poison the
   // data. build_corpus.py rejects it; this catches a hand-edited
   // corpus.js that skipped the builder.
+  //
+  // Marks don't count: punctuation, a numeral and the possessive `'s` each
+  // stand a full block beside the writing rather than filling a slot, so
+  // build_corpus exempts them from the even rule and so must this — else a
+  // possessive like "she's" (ʃ i 's) reads as an odd phoneme list.
   for (const entry of entries(ctx)) {
-    assert.equal(entry.ipa.length % 2, 0,
-      `${entry.key} has ${entry.ipa.length} symbols: ${show(entry.ipa)}`);
+    const slots = blockSlots(entry.ipa);
+    assert.equal(slots.length % 2, 0,
+      `${entry.key} has ${slots.length} block-slot symbols: ${show(entry.ipa)}`);
   }
 });
 
