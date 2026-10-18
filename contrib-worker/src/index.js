@@ -258,7 +258,14 @@ function buildStaged(body, request) {
 
   return {
     category: cat,
-    branchSlug: cat || `submission-${batchId}`,
+    // The PR branch, unique per submission. It carries the batch id so two
+    // submissions never share a branch: a fixed name like contrib/<category>
+    // (or the old, broken contrib/undefined — buildStaged returned branchSlug
+    // while openPullRequest read staged.slug) makes GitHub reject the second
+    // one with "reference already exists", which reaches the contributor only
+    // as an opaque 500. The review console matches on the `contrib/` prefix,
+    // not the rest, so the id is free to vary.
+    branch: `contrib/${cat ? `${cat}-` : "submission-"}${batchId}`,
     items,
     submitter,
   };
@@ -271,7 +278,7 @@ function buildStaged(body, request) {
 async function openPullRequest(env, staged) {
   const owner = env.REPO_OWNER, repo = env.REPO_NAME;
   const base = env.BASE_BRANCH || "main";
-  const branch = `contrib/${staged.slug}`;
+  const branch = staged.branch;
 
   // A short-lived installation token for the GitHub App — minted per
   // request, never stored. The App is the bot identity the PR is opened
