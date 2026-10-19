@@ -63,7 +63,7 @@ const CQ_CONSONANTS = new Set([
 // Everything drawn beside the writing rather than in a slot: punctuation,
 // the numerals and the possessive (render.js PUNCTUATION / NUMERALS /
 // WORD_MARKS).
-const CQ_PUNCT = new Set([".", ",", "?", "!", "--", "'s",
+const CQ_PUNCT = new Set([".", ",", ":", "?", "!", "--", "'s",
   "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
 /** The block-shape codes a `@context` can name, and what each requires. */
