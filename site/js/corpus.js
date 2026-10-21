@@ -5833,7 +5833,7 @@ window.AVATARIAN_CORPUS = {
       "source": "reddit.2",
       "gloss": "who"
     },
-    "heavens": {
+    "havens": {
       "ipa": [
         "h",
         "e",
@@ -5848,7 +5848,7 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "reddit.3",
-      "gloss": "Heavens"
+      "gloss": "Havens"
     },
     "look": {
       "ipa": [
@@ -5912,6 +5912,40 @@ window.AVATARIAN_CORPUS = {
       "source": "reddit.3",
       "gloss": "upon"
     },
+    "feel": {
+      "ipa": [
+        "f",
+        "i",
+        "l",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.4"
+      ],
+      "confidence": "certain",
+      "source": "reddit.4",
+      "gloss": "feel"
+    },
+    "greatness": {
+      "ipa": [
+        "g",
+        "ɹ",
+        "e",
+        "t",
+        "n",
+        "ə",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.4"
+      ],
+      "confidence": "certain",
+      "source": "reddit.4",
+      "gloss": "greatness"
+    },
     "jae": {
       "ipa": [
         "dʒ",
@@ -5938,21 +5972,6 @@ window.AVATARIAN_CORPUS = {
       "source": "reddit.4",
       "gloss": "may"
     },
-    "feel": {
-      "ipa": [
-        "f",
-        "i",
-        "l",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.4"
-      ],
-      "confidence": "certain",
-      "source": "reddit.4",
-      "gloss": "feel"
-    },
     "there": {
       "ipa": [
         "ð",
@@ -5967,25 +5986,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "reddit.4",
       "gloss": "there"
-    },
-    "greatness": {
-      "ipa": [
-        "g",
-        "ɹ",
-        "e",
-        "t",
-        "n",
-        "ə",
-        "s",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.4"
-      ],
-      "confidence": "certain",
-      "source": "reddit.4",
-      "gloss": "greatness"
     }
   },
   "conventions": {
