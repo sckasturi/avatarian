@@ -242,7 +242,7 @@ const App = {
   // ── ship it ─────────────────────────────────────────────────────
 
   bindShip() {
-    $("#ship").addEventListener("click", () => this.ship(false));
+    $$(".ship-btn").forEach((b) => b.addEventListener("click", () => this.ship(false)));
     $("#ship-all").addEventListener("click", () => this.shipAll(false));
     $("#resync").addEventListener("click", () => this.resync(false));
   },
@@ -369,7 +369,7 @@ const App = {
     }
     // Flush any pending autosave: the server ships what is ON DISK.
     await Store.save(Store.design);
-    $("#ship").disabled = true;
+    $$(".ship-btn").forEach((b) => { b.disabled = true; });
     note.className = "fine";
     note.textContent = "shipping…";
     try {
@@ -395,7 +395,7 @@ const App = {
         note.textContent = msg;
       }
     } finally {
-      $("#ship").disabled = false;
+      $$(".ship-btn").forEach((b) => { b.disabled = false; });
     }
   },
 

@@ -376,7 +376,12 @@ MARKS_FULL = {
     "seven": mark(3, path("M 18 18 C 18 60.67 18 103.33 18 146") + path("M 18 82 L 50 114")),
     "eight": mark(3, path("M 18 18 L 18 146 L 50 146 L 50 114")),
     "nine": mark(3, path("M 18 18 L 18 98 L 26 98 A 24 24 0 0 1 26 146 L 18 146")),
-    "possessive": mark(5, dot(26, 26) + path("M 74 18 A 28.28 28.28 0 0 1 50 50 A 28.28 28.28 0 0 0 26 82")),
+    # The possessive: an apostrophe dot, plus the "uh" letter (schwa) turned a
+    # quarter-turn to the left and stretched tall — its S then reads as the
+    # diagonal stroke the source draws, descending top-right to lower-left. It
+    # is that rotated, stretched schwa baked to a plain path (a transform-
+    # wrapped group gets dropped by the drawing pipeline).
+    "possessive": mark(5, dot(24, 22) + path("M 68 20 A 74.64 74.64 0 0 1 46 81 A 74.64 74.64 0 0 0 24 142")),
     "hyphen": mark(3, path("M 18 82 L 50 82 L 50 98")),
 }
 
