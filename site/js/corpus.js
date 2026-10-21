@@ -289,7 +289,7 @@ window.AVATARIAN_CORPUS = {
       "credit": "TechFilmer"
     },
     "reddit.3": {
-      "what": "Seven heavens look upon Nisha see your Avatar",
+      "what": "Seven havens look upon Nisha see your Avatar",
       "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
       "image": "reddit.3.png",
       "credit": "TechFilmer"
