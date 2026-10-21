@@ -294,6 +294,30 @@
       "where": "A7H S01E06 09:12",
       "image": "sevenhavens-106.1.png",
       "credit": "Bundas"
+    },
+    "reddit.1": {
+      "what": "If Ellora knew the truth about Pavi they would tremble",
+      "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
+      "image": "reddit.1.png",
+      "credit": "TechFilmer"
+    },
+    "reddit.2": {
+      "what": "Those who know Daemin cannot help but love him",
+      "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
+      "image": "reddit.2.png",
+      "credit": "TechFilmer"
+    },
+    "reddit.3": {
+      "what": "Seven heavens look upon Nisha see your Avatar",
+      "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
+      "image": "reddit.3.png",
+      "credit": "TechFilmer"
+    },
+    "reddit.4": {
+      "what": "Jae you may not feel it but there is greatness within you.",
+      "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
+      "image": "reddit.4.png",
+      "credit": "TechFilmer"
     }
   },
   "entries": [
@@ -3038,6 +3062,273 @@
       "confidence": "certain",
       "gloss": "Bakery",
       "source": "sevenhavens-106.1"
+    },
+    {
+      "key": "about",
+      "spelling": "ə ∅ b aʊ t ∅",
+      "confidence": "certain",
+      "gloss": "about",
+      "source": "reddit.1"
+    },
+    {
+      "key": "ellora",
+      "spelling": "ɛ ∅ l oʊ ɹ ə",
+      "confidence": "certain",
+      "gloss": "Ellora",
+      "source": "reddit.1"
+    },
+    {
+      "key": "if",
+      "spelling": "ɪ f",
+      "confidence": "certain",
+      "gloss": "If",
+      "source": "reddit.1"
+    },
+    {
+      "key": "knew",
+      "spelling": "n u",
+      "confidence": "certain",
+      "gloss": "knew",
+      "source": "reddit.1"
+    },
+    {
+      "key": "pavi",
+      "spelling": "p ʌ v i",
+      "confidence": "certain",
+      "gloss": "Pavi",
+      "source": "reddit.1"
+    },
+    {
+      "key": "the",
+      "spelling": "ð ʌ",
+      "confidence": "certain",
+      "gloss": "the",
+      "source": "reddit.1"
+    },
+    {
+      "key": "they",
+      "spelling": "ð e",
+      "confidence": "certain",
+      "gloss": "they",
+      "source": "reddit.1"
+    },
+    {
+      "key": "tremble",
+      "spelling": "t ɹ ɛ m b ə l ∅",
+      "confidence": "certain",
+      "gloss": "tremble",
+      "source": "reddit.1"
+    },
+    {
+      "key": "truth",
+      "spelling": "t ɹ u θ",
+      "confidence": "certain",
+      "gloss": "truth",
+      "source": "reddit.1"
+    },
+    {
+      "key": "would",
+      "spelling": "w ʊ d ∅",
+      "confidence": "certain",
+      "gloss": "would",
+      "source": "reddit.1"
+    },
+    {
+      "key": "but",
+      "spelling": "b ʌ t ∅",
+      "confidence": "certain",
+      "gloss": "but",
+      "source": "reddit.2"
+    },
+    {
+      "key": "cannot",
+      "spelling": "k æ n ɑ t ∅",
+      "confidence": "certain",
+      "gloss": "cannot",
+      "source": "reddit.2"
+    },
+    {
+      "key": "daemin",
+      "spelling": "d ɛ m ∅ ɪ n",
+      "confidence": "certain",
+      "gloss": "Daemin",
+      "source": "reddit.2"
+    },
+    {
+      "key": "help",
+      "spelling": "h ɛ l p",
+      "confidence": "certain",
+      "gloss": "help",
+      "source": "reddit.2"
+    },
+    {
+      "key": "him",
+      "spelling": "h ɪ m ∅",
+      "confidence": "certain",
+      "gloss": "him",
+      "source": "reddit.2"
+    },
+    {
+      "key": "know",
+      "spelling": "n oʊ",
+      "confidence": "certain",
+      "gloss": "know",
+      "source": "reddit.2"
+    },
+    {
+      "key": "love",
+      "spelling": "l ʌ v ∅",
+      "confidence": "certain",
+      "gloss": "love",
+      "source": "reddit.2"
+    },
+    {
+      "key": "those",
+      "spelling": "ð oʊ z ∅",
+      "confidence": "certain",
+      "gloss": "Those",
+      "source": "reddit.2"
+    },
+    {
+      "key": "who",
+      "spelling": "h u",
+      "confidence": "certain",
+      "gloss": "who",
+      "source": "reddit.2"
+    },
+    {
+      "key": "avatar",
+      "spelling": "æ v ə ∅ t ɑ ɹ ∅",
+      "confidence": "certain",
+      "gloss": "Avatar",
+      "source": "reddit.3"
+    },
+    {
+      "key": "heavens",
+      "spelling": "h e v ə n z",
+      "confidence": "certain",
+      "gloss": "Heavens",
+      "source": "reddit.3"
+    },
+    {
+      "key": "look",
+      "spelling": "l ʊ k ∅",
+      "confidence": "certain",
+      "gloss": "look",
+      "source": "reddit.3"
+    },
+    {
+      "key": "nisha",
+      "spelling": "n ɪ ʃ ə",
+      "confidence": "certain",
+      "gloss": "Nisha",
+      "source": "reddit.3"
+    },
+    {
+      "key": "see",
+      "spelling": "s i",
+      "confidence": "certain",
+      "gloss": "see",
+      "source": "reddit.3"
+    },
+    {
+      "key": "seven",
+      "spelling": "s ɛ v ə n ∅",
+      "confidence": "certain",
+      "gloss": "Seven",
+      "source": "reddit.3"
+    },
+    {
+      "key": "upon",
+      "spelling": "ʌ p ɑ n",
+      "confidence": "certain",
+      "gloss": "upon",
+      "source": "reddit.3"
+    },
+    {
+      "key": "your",
+      "spelling": "j ɔ ɹ ∅",
+      "confidence": "certain",
+      "gloss": "your",
+      "source": "reddit.3"
+    },
+    {
+      "key": "but",
+      "spelling": "b ʌ t ∅",
+      "confidence": "certain",
+      "gloss": "but",
+      "source": "reddit.4"
+    },
+    {
+      "key": "feel",
+      "spelling": "f i l ∅",
+      "confidence": "certain",
+      "gloss": "feel",
+      "source": "reddit.4"
+    },
+    {
+      "key": "greatness",
+      "spelling": "g ɹ e t n ə s ∅",
+      "confidence": "certain",
+      "gloss": "greatness",
+      "source": "reddit.4"
+    },
+    {
+      "key": "is",
+      "spelling": "ɪ z",
+      "confidence": "certain",
+      "gloss": "is",
+      "source": "reddit.4"
+    },
+    {
+      "key": "it",
+      "spelling": "ɪ t",
+      "confidence": "certain",
+      "gloss": "it",
+      "source": "reddit.4"
+    },
+    {
+      "key": "jae",
+      "spelling": "dʒ e",
+      "confidence": "certain",
+      "gloss": "Jae",
+      "source": "reddit.4"
+    },
+    {
+      "key": "may",
+      "spelling": "m e",
+      "confidence": "certain",
+      "gloss": "may",
+      "source": "reddit.4"
+    },
+    {
+      "key": "not",
+      "spelling": "n ɑ t ∅",
+      "confidence": "certain",
+      "gloss": "not",
+      "source": "reddit.4"
+    },
+    {
+      "key": "there",
+      "spelling": "ð ɛ ɹ ∅",
+      "confidence": "certain",
+      "gloss": "there",
+      "source": "reddit.4"
+    },
+    {
+      "key": "within",
+      "spelling": "w ɪ ð ɪ n ∅",
+      "confidence": "certain",
+      "gloss": "within",
+      "source": "reddit.4"
+    },
+    {
+      "key": "you",
+      "spelling": "j u",
+      "confidence": "certain",
+      "gloss": "you",
+      "times": 2,
+      "source": "reddit.4"
     }
   ]
 }
