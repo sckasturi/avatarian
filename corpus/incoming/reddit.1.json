@@ -1,0 +1,81 @@
+{
+  "_submission": {
+    "at": "2026-10-21T17:01:39.215Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "batch": "9okf76",
+    "submitter": "TechFilmer"
+  },
+  "source": {
+    "name": "reddit.1",
+    "what": "If Ellora knew the truth about Pavi they would tremble",
+    "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
+    "image": "reddit.1.png",
+    "credit": "TechFilmer"
+  },
+  "entries": [
+    {
+      "key": "if",
+      "spelling": "ɪ f",
+      "source": "reddit.1",
+      "confidence": "certain",
+      "gloss": "If"
+    },
+    {
+      "key": "ellora",
+      "spelling": "ɛ ∅ l oʊ ɹ ə",
+      "source": "reddit.1",
+      "confidence": "certain",
+      "gloss": "Ellora"
+    },
+    {
+      "key": "knew",
+      "spelling": "n u",
+      "source": "reddit.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "the",
+      "spelling": "ð ʌ",
+      "source": "reddit.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "truth",
+      "spelling": "t ɹ u θ",
+      "source": "reddit.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "about",
+      "spelling": "ə ∅ b aʊ t ∅",
+      "source": "reddit.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "pavi",
+      "spelling": "p ʌ v i",
+      "source": "reddit.1",
+      "confidence": "certain",
+      "gloss": "Pavi"
+    },
+    {
+      "key": "they",
+      "spelling": "ð e",
+      "source": "reddit.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "would",
+      "spelling": "w ʊ d ∅",
+      "source": "reddit.1",
+      "confidence": "certain"
+    },
+    {
+      "key": "tremble",
+      "spelling": "t ɹ ɛ m b ə l ∅",
+      "source": "reddit.1",
+      "confidence": "certain"
+    }
+  ]
+}
