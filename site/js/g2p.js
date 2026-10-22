@@ -572,10 +572,15 @@ const S_CONTRACTIONS = new Set([
  * a contraction ("it's", "let's") is just a word.
  */
 function lookupWithMarks(word) {
-  const w = word.replace(/’/g, "'");
+  const w = word.replace(/’/g, "'").replace(/[—–]/g, "-");   // em/en dash -> hyphen
   if (corpusWords()[normaliseWord(w)]) return lookupWord(w);
-  if (/^[^-]+(?:-[^-]+)+$/.test(w)) {
-    const parts = w.split("-").map(lookupWithMarks);
+  // A token of nothing but dashes is the hyphen mark standing on its own
+  // (a spaced dash, "cat -- dog", or an em dash normalised above).
+  if (/^-+$/.test(w)) return { ipa: ["--"], tier: "derived", entry: null };
+  // A hyphenated compound: split on the hyphen(s) and draw a hyphen mark
+  // between the parts. One or more hyphens ("well-known", "cat--dog").
+  if (/^[^-]+(?:-+[^-]+)+$/.test(w)) {
+    const parts = w.split(/-+/).map(lookupWithMarks);
     return {
       ipa: parts.flatMap((p, k) => (k ? ["--"] : []).concat(p.ipa)),
       tier: parts.some((p) => p.tier === "guessed") ? "guessed" : "derived",
