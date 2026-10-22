@@ -593,11 +593,11 @@ function lookupWithMarks(word) {
 // The punctuation the script draws (render.js PUNCTUATION). Split off the
 // end of a word so "there." spells /ð e r ∅/ and then a period mark,
 // instead of losing the mark or feeding "." to the word lookup.
-const SENTENCE_PUNCT = /[.,!?]+$/;
+const SENTENCE_PUNCT = /[.,!?:]+$/;
 
 function sentenceToIPA(text) {
   const raw = text.trim().split(/\s+/).filter(Boolean);
-  // Peel any trailing . , ! ? off each token: `clean` is what gets looked
+  // Peel any trailing . , ! ? : off each token: `clean` is what gets looked
   // up and captioned, `punct` is the marks to append to the spelling.
   const words = [], punct = [];
   for (const tok of raw) {
