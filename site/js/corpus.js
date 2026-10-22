@@ -6000,6 +6000,20 @@ window.AVATARIAN_CORPUS = {
       ],
       "gloss": "Kyoshi",
       "note": "The model reads the final vowel as /i/ (ee); it should be /ɪ/ (i). Unsourced — no sample of the name written has turned up yet."
+    },
+    "portable": {
+      "ipa": [
+        "p",
+        "ɔ",
+        "ɹ",
+        "t",
+        "ə",
+        "b",
+        "ə",
+        "l"
+      ],
+      "gloss": "Portable",
+      "note": "closer to possible for \"portable sports\""
     }
   }
 };
