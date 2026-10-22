@@ -206,7 +206,7 @@ test("the hyphen and the possessive render as marks in both ports", { skip: !hav
     return serializeWord(el);
   });
   assert.match(ref[0], /g-hyphen/);
-  assert.match(ref[1], /g-possessive av-wide5/);
+  assert.match(ref[1], /g-possessive av-wide3/);
   assert.equal((ref[1].match(/av-block/g) || []).length, 2, "'s doesn't take a slot");
   const driver =
     `local p = dofile(${luaLit(LUA_MODULE)})\n` +

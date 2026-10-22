@@ -362,7 +362,7 @@ MARKS_FULL = {
     "period": mark(1, dot(18, 82)),
     # Two dots straddling the period's row — rows 4 and 6, a clear row's gap
     # between, so it reads as a colon rather than a bar.
-    "colon": mark(1, dot(18, 66) + dot(18, 98)),
+    "colon": mark(2, path("M 18 146 L 34 146")),
     "comma": mark(1, path("M 18 114 L 18 146")),
     "exclamation": mark(1, dot(18, 82) + path("M 18 18 L 18 58") + path("M 18 146 L 18 106")),
     "question": mark(2, path("M 34 66 A 16 16 0 0 0 34 98")),
@@ -381,7 +381,7 @@ MARKS_FULL = {
     # diagonal stroke the source draws, descending top-right to lower-left. It
     # is that rotated, stretched schwa baked to a plain path (a transform-
     # wrapped group gets dropped by the drawing pipeline).
-    "possessive": mark(5, dot(24, 22) + path("M 68 20 A 74.64 74.64 0 0 1 46 81 A 74.64 74.64 0 0 0 24 142")),
+    "possessive": mark(3, dot(24, 22) + path("M 50 18 A 42 42 0 0 1 34 50 A 42 42 0 0 0 18 82")),
     "hyphen": mark(3, path("M 18 82 L 50 82 L 50 98")),
 }
 

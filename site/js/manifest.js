@@ -386,7 +386,7 @@ window.AVATARIAN_GLYPHS = {
     "name": "colon",
     "status": "drawn",
     "type": "mark_full",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 36 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"18\" cy=\"66\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"18\" cy=\"98\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 52 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 146 L 34 146\"/></svg>"
   },
   ",": {
     "name": "comma",
@@ -476,7 +476,7 @@ window.AVATARIAN_GLYPHS = {
     "name": "possessive",
     "status": "drawn",
     "type": "mark_full",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"24\" cy=\"22\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 68 20 A 74.64 74.64 0 0 1 46 81 A 74.64 74.64 0 0 0 24 142\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 68 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"24\" cy=\"22\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 50 18 A 42 42 0 0 1 34 50 A 42 42 0 0 0 18 82\"/></svg>"
   }
 };
 
