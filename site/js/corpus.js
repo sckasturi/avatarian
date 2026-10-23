@@ -299,6 +299,24 @@ window.AVATARIAN_CORPUS = {
       "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
       "image": "reddit.4.png",
       "credit": "TechFilmer"
+    },
+    "sevenhavens-107.1": {
+      "what": "Video 1",
+      "where": "A7H S01E07 06:42",
+      "image": "sevenhavens-107.1.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-107.2": {
+      "what": "Future Industries",
+      "where": "A7H S01E07 06:57",
+      "image": "sevenhavens-107.2.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-107.3": {
+      "what": "Poster of pabu – \"Mako\"",
+      "where": "A7H S01E07 08:07",
+      "image": "sevenhavens-107.3.png",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -5986,6 +6004,78 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "reddit.4",
       "gloss": "there"
+    },
+    "video": {
+      "ipa": [
+        "v",
+        "i",
+        "d",
+        "i",
+        "oʊ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-107.1"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-107.1",
+      "gloss": "video"
+    },
+    "future": {
+      "ipa": [
+        "f",
+        "j",
+        "u",
+        "∅",
+        "tʃ",
+        "u",
+        "ɹ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-107.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-107.2",
+      "gloss": "Future"
+    },
+    "industries": {
+      "ipa": [
+        "ɪ",
+        "n",
+        "d",
+        "ə",
+        "s",
+        "t",
+        "ɹ",
+        "i",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-107.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-107.2",
+      "gloss": "Industries"
+    },
+    "mako": {
+      "ipa": [
+        "m",
+        "ɑ",
+        "k",
+        "oʊ"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-107.3"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-107.3",
+      "gloss": "Mako"
     }
   },
   "conventions": {

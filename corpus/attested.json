@@ -318,6 +318,24 @@
       "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
       "image": "reddit.4.png",
       "credit": "TechFilmer"
+    },
+    "sevenhavens-107.1": {
+      "what": "Video 1",
+      "where": "A7H S01E07 06:42",
+      "image": "sevenhavens-107.1.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-107.2": {
+      "what": "Future Industries",
+      "where": "A7H S01E07 06:57",
+      "image": "sevenhavens-107.2.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-107.3": {
+      "what": "Poster of pabu – \"Mako\"",
+      "where": "A7H S01E07 08:07",
+      "image": "sevenhavens-107.3.png",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -3329,6 +3347,34 @@
       "gloss": "you",
       "times": 2,
       "source": "reddit.4"
+    },
+    {
+      "key": "video",
+      "spelling": "v i d i oʊ ∅",
+      "confidence": "certain",
+      "gloss": "video",
+      "source": "sevenhavens-107.1"
+    },
+    {
+      "key": "future",
+      "spelling": "f j u ∅ tʃ u ɹ ∅",
+      "confidence": "certain",
+      "gloss": "Future",
+      "source": "sevenhavens-107.2"
+    },
+    {
+      "key": "industries",
+      "spelling": "ɪ n d ə s t ɹ i z ∅",
+      "confidence": "certain",
+      "gloss": "Industries",
+      "source": "sevenhavens-107.2"
+    },
+    {
+      "key": "mako",
+      "spelling": "m ɑ k oʊ",
+      "confidence": "certain",
+      "gloss": "Mako",
+      "source": "sevenhavens-107.3"
     }
   ]
 }
