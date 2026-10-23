@@ -1,0 +1,24 @@
+{
+  "_submission": {
+    "at": "2026-10-23T09:22:33.706Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "batch": "zkz9ah",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "sevenhavens-107.1",
+    "what": "Video 1",
+    "where": "A7H S01E07 06:42",
+    "image": "sevenhavens-107.1.png",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "video",
+      "spelling": "v i d i oʊ ∅",
+      "source": "sevenhavens-107.1",
+      "confidence": "certain"
+    }
+  ]
+}
