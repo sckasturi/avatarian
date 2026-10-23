@@ -23,11 +23,15 @@ SETUP (once)
    It shows a username like  TechFilmer@deploy  and a long password token.
    (The CSS target is your own user subpage, so no admin grant is needed.)
 
-3. Put the wiki URL and those credentials in your shell environment:
-       export WIKI_API_URL="https://<your-wiki>.fandom.com/api.php"
-       export WIKI_USER="TechFilmer@deploy"
-       export WIKI_BOT_PASSWORD="<the long token>"
-   (WIKI_API_URL can instead be hard-coded in API_URL_DEFAULT below.)
+3. Put the wiki URL and those credentials where this script reads them —
+   either real shell env vars, or a `.env` file at the repo root (it is
+   gitignored via `.env*`, so the token is never committed, and this script
+   auto-loads it). Copy .env.example to .env and fill it in:
+       WIKI_API_URL=https://<your-wiki>.fandom.com/api.php
+       WIKI_USER=TechFilmer@deploy
+       WIKI_BOT_PASSWORD=<the long token>
+   (A real exported env var wins over the .env file; WIKI_API_URL can also be
+   hard-coded in API_URL_DEFAULT below.)
 
 USAGE
 -----
@@ -59,6 +63,21 @@ PAGES = {
 }
 
 SUMMARY = "Sync from the avatarian repo (tools/deploy_wiki.py)"
+
+
+def load_dotenv():
+    """Load KEY=VALUE lines from a .env at the repo root, if present. A real
+    exported env var always wins (setdefault), so .env is just a convenience.
+    .env is gitignored (.env*), so credentials put here are never committed."""
+    path = ROOT / ".env"
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, val = line.partition("=")
+        os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
 
 
 class WikiError(RuntimeError):
@@ -122,6 +141,7 @@ class Wiki:
 
 def main(argv):
     check = "--check" in argv
+    load_dotenv()
     api_url = os.environ.get("WIKI_API_URL") or API_URL_DEFAULT
     if not api_url:
         sys.exit("Set WIKI_API_URL (or API_URL_DEFAULT) to your wiki's "
