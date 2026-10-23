@@ -1,0 +1,25 @@
+{
+  "_submission": {
+    "at": "2026-10-23T09:22:33.706Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "batch": "zkz9ah",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "sevenhavens-107.3",
+    "what": "Poster of pabu – \"Mako\"",
+    "where": "A7H S01E07 08:07",
+    "image": "sevenhavens-107.3.png",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "mako",
+      "spelling": "m ɑ k oʊ",
+      "source": "sevenhavens-107.3",
+      "confidence": "certain",
+      "gloss": "Mako"
+    }
+  ]
+}
