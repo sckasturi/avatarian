@@ -10,7 +10,7 @@ local READABLE = {["a"]="æ", ["e"]="ɛ", ["i"]="ɪ", ["u"]="ʌ", ["ah"]="ɑ", [
 local READABLE_ALIASES = {["o"]="ɑ", ["ay"]="e", ["ai"]="e", ["au"]="ɔ", ["or"]="ɔ", ["er"]="ə", ["ur"]="ə", ["ir"]="ə", ["igh"]="aɪ", ["schwa"]="ə", ["ax"]="ə", ["sh'"]="ʃ"}
 local SOUND_ALIASES = {["-"]="∅", ["_"]="∅", ["-c"]="∅c", ["@"]="0", ["’s"]="'s", ["eɪ"]="e", ["ej"]="e", ["ɝ"]="ə", ["ɜr"]="ə", ["ɜ"]="ə", ["ɑː"]="ɑ", ["iː"]="i", ["uː"]="u"}
 local MARK_WIDE = {[":"]="av-wide", ["?"]="av-wide", ["--"]="av-wide3", ["0"]="av-wide3", ["1"]="av-wide3", ["2"]="av-wide3", ["3"]="av-wide3", ["4"]="av-wide3", ["5"]="av-wide3", ["6"]="av-wide3", ["7"]="av-wide3", ["8"]="av-wide3", ["9"]="av-wide3", ["'s"]="av-wide3"}
-local BLOCK_DOTS = {}
+local BLOCK_DOTS = {["m|z"]=6}
 local GLYPH = {
   ["p"]={name="p", type="consonant"},
   ["b"]={name="b", type="consonant"},
@@ -251,7 +251,7 @@ end
 -- The rail a glyph carries for an approximant partner (render.js railFor): in
 -- every C-C block the approximant's long side runs on through the partner, as
 -- its own span over the glyph.
-local RAIL_SIDE = { ["l"]="l", ["w"]="l", ["ɹ"]="r", ["j"]="r" }
+local RAIL_SIDE = { ["l"]="l", ["w"]="l", ["ɹ"]="r" }   -- not /j/, as in render.js
 local function railSpan(token, slot, partner)
   local sym = parseSymbol(token)
   local pSym = parseSymbol(partner)

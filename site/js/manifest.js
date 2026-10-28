@@ -647,4 +647,8 @@ window.AVATARIAN_REFERENCE = {
 };
 
 /* Per-block tweaks from designs/blocks/tweaks.json (render.js BLOCK_TWEAKS). */
-window.AVATARIAN_BLOCK_TWEAKS = {};
+window.AVATARIAN_BLOCK_TWEAKS = {
+  "m|z": {
+    "dots": 6
+  }
+};
