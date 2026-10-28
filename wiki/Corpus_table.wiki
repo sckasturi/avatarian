@@ -5,7 +5,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |+ Attested Avatarian corpus
 ! Word !! Avatarian !! IPA !! Seen
 |-
-| Aang || {{Avatarian|ey ng|Aang}}<ref name="toph-letter">''toph-letter'' — movie</ref><ref name="katara-letter">''katara-letter'' — movie (translation by BokerBigBanana)</ref> || /e ŋ/ || 2
+| Aang || {{Avatarian|ey ng|Aang}}<ref name="toph-letter">''toph-letter'' — movie 0:20:52</ref><ref name="katara-letter">''katara-letter'' — movie 0:17:39</ref> || /e ŋ/ || 2
 |-
 | academy || {{Avatarian|uh - k a d uh m ee|academy}}<ref name="toph-letter" /><ref name="beifong-academy-banner">''beifong-academy-banner'' — movie 0:20:16</ref> || /ə k æ d ə m i/ || 2
 |-
