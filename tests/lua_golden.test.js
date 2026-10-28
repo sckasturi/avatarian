@@ -80,7 +80,8 @@ function serializeGlyph(g) {
   const drawn = g.innerHTML || "";
   if (name === "s" && /L 50 27 L/.test(drawn)) name = "s_inset";
   if (name === "z") {
-    const l = /cx="26"/.test(drawn), r = /cx="74"/.test(drawn);
+    const cxs = [...drawn.matchAll(/<circle cx="([\d.]+)"/g)].map((m) => +m[1]);
+    const l = cxs.some((x) => x < 50), r = cxs.some((x) => x > 50);
     if (l && !r) name = "z_left";
     else if (r && !l) name = "z_right";
     else if (!l && !r) name = "z_none";

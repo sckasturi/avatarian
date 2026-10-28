@@ -6,12 +6,12 @@
     3,
     9
   ],
-  "notes": "",
+  "notes": "The left half of /z/: its stem, shoulder, 45-degree leg and straight foot, with /z/'s left dot.",
   "shapes": [
     {
       "kind": "dot",
-      "x": 0.875,
-      "y": 0.75,
+      "x": 1,
+      "y": 1,
       "size": "m"
     },
     {
@@ -23,16 +23,31 @@
           "y": 0.5
         },
         {
-          "x": 1.5,
-          "y": 2.5,
+          "x": 2.5,
+          "y": 1.0858,
+          "seg": "line"
+        },
+        {
+          "x": 2.2071,
+          "y": 1.7929,
           "seg": "arc",
-          "bulge": 0.25
+          "bulge": 0.0761
+        },
+        {
+          "x": 0.9393,
+          "y": 3.0643,
+          "seg": "line"
+        },
+        {
+          "x": 0.5,
+          "y": 4.1213,
+          "seg": "arc",
+          "bulge": -0.1142
         },
         {
           "x": 0.5,
           "y": 4.5,
-          "seg": "arc",
-          "bulge": -0.25
+          "seg": "line"
         }
       ]
     }

@@ -322,8 +322,12 @@ function clusterForm(sym, svg, partner, slot, flipped) {
   }
   if (sym === "z") {
     const p = partner != null ? parseSymbol(partner).sym : null;
-    if (p === "ɹ") return svg.replace(/<circle cx="74"[^>]*>/, "");  // keep left
-    if (p === "l") return svg.replace(/<circle cx="26"[^>]*>/, "");  // keep right
+    // Which dot is which goes by the side of the centre line it sits on,
+    // so the dots can move in the designer without breaking this.
+    const drop = (side) => svg.replace(/<circle cx="([\d.]+)"[^>]*>/g,
+      (c, cx) => ((+cx < 50) === (side === "left") ? "" : c));
+    if (p === "ɹ") return drop("right");                             // keep left
+    if (p === "l") return drop("left");                              // keep right
     if (p === "m") return svg;                                       // keep both
     return svg.replace(/<circle[^>]*>/g, "");
   }

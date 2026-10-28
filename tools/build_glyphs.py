@@ -238,8 +238,14 @@ CONSONANTS = {
     # attested) and nowhere else (0 of 20). See render.js TURNS_ABOVE_CLUSTER.
     # TODO item 30.
     "s": path("M 18 82 L 50 18 L 82 82") + dot(50, 66),
-    "z": path("M 50 18 L 50 50")
-         + path("M 18 82 A 32 32 0 0 1 82 82")
+    # Traced from the reference (z.svg): the stem bends into each leg on a
+    # 1-unit radius (smooth outside shoulders, sharp crotch), the legs run at
+    # 45 degrees, turn on a 1.5-unit radius and drop straight. The dots stay at
+    # (1,1) and (4,1).
+    "z": path("M 50 18 L 50 27.37 A 16 16 0 0 0 54.69 38.69 L 74.97 59.03 "
+              "A 23.86 23.86 0 0 1 82 75.94 L 82 82")
+         + path("M 50 18 L 50 27.37 A 16 16 0 0 1 45.31 38.69 L 25.03 59.03 "
+                "A 23.86 23.86 0 0 0 18 75.94 L 18 82")
          + dot(26, 26)
          + dot(74, 26),
     "h": path("M 18 18 L 82 18")
@@ -376,12 +382,9 @@ MARKS_FULL = {
     "seven": mark(3, path("M 18 18 C 18 60.67 18 103.33 18 146") + path("M 18 82 L 50 114")),
     "eight": mark(3, path("M 18 18 L 18 146 L 50 146 L 50 114")),
     "nine": mark(3, path("M 18 18 L 18 98 L 26 98 A 24 24 0 0 1 26 146 L 18 146")),
-    # The possessive: an apostrophe dot, plus the "uh" letter (schwa) turned a
-    # quarter-turn to the left and stretched tall — its S then reads as the
-    # diagonal stroke the source draws, descending top-right to lower-left. It
-    # is that rotated, stretched schwa baked to a plain path (a transform-
-    # wrapped group gets dropped by the drawing pipeline).
-    "possessive": mark(3, dot(24, 22) + path("M 50 18 A 42 42 0 0 1 34 50 A 42 42 0 0 0 18 82")),
+    # The left half of /z/: its stem, shoulder, 45-degree leg and straight
+    # foot, with /z/'s left dot.
+    "possessive": mark(3, dot(26, 26) + path("M 50 18 L 50 27.37 A 16 16 0 0 1 45.31 38.69 L 25.03 59.03 A 23.86 23.86 0 0 0 18 75.94 L 18 82")),
     "hyphen": mark(3, path("M 18 82 L 50 82 L 50 98")),
 }
 

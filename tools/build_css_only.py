@@ -161,9 +161,11 @@ def main():
         if name == "s" and base:
             rules.append(f'.g-s_inset{{-webkit-mask-image:url("{mask_uri(base.replace("L 50 18 L", "L 50 27 L"))}")}}')
         if name == "z" and base:
-            drop = lambda cx: re.sub(rf'<circle cx="{cx}"[^>]*>', "", base)
-            rules.append(f'.g-z_left{{-webkit-mask-image:url("{mask_uri(drop("74"))}")}}')   # right dot dropped, left kept
-            rules.append(f'.g-z_right{{-webkit-mask-image:url("{mask_uri(drop("26"))}")}}')  # left dot dropped, right kept
+            # A dot's side is which half of the 100-wide box it sits in.
+            drop = lambda left: re.sub(r'<circle cx="([\d.]+)"[^>]*>',
+                                       lambda m: "" if (float(m.group(1)) < 50) == left else m.group(0), base)
+            rules.append(f'.g-z_left{{-webkit-mask-image:url("{mask_uri(drop(False))}")}}')   # right dot dropped, left kept
+            rules.append(f'.g-z_right{{-webkit-mask-image:url("{mask_uri(drop(True))}")}}')   # left dot dropped, right kept
             rules.append(f'.g-z_none{{-webkit-mask-image:url("{mask_uri(re.sub(r"<circle[^>]*>", "", base))}")}}')
     OUT.write_text(LAYOUT + "\n".join(rules + toc_rules()) + "\n", encoding="utf-8")
     print(f"Wrote {OUT} — {len(rules)} glyph classes, {round(OUT.stat().st_size / 1024, 1)} KB")

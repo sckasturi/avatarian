@@ -114,7 +114,7 @@ window.AVATARIAN_GLYPHS = {
     "name": "z",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 50 50\"/><path d=\"M 18 82 A 32 32 0 0 1 82 82\"/><circle cx=\"26\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 50 27.37 A 16 16 0 0 0 54.69 38.69 L 74.97 59.03 A 23.86 23.86 0 0 1 82 75.94 L 82 82\"/><path d=\"M 50 18 L 50 27.37 A 16 16 0 0 1 45.31 38.69 L 25.03 59.03 A 23.86 23.86 0 0 0 18 75.94 L 18 82\"/><circle cx=\"26\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>"
   },
   "ʃ": {
     "name": "sh",
@@ -476,7 +476,7 @@ window.AVATARIAN_GLYPHS = {
     "name": "possessive",
     "status": "drawn",
     "type": "mark_full",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 68 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"24\" cy=\"22\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 50 18 A 42 42 0 0 1 34 50 A 42 42 0 0 0 18 82\"/></svg>"
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 68 164\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><circle cx=\"26\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><path d=\"M 50 18 L 50 27.37 A 16 16 0 0 1 45.31 38.69 L 25.03 59.03 A 23.86 23.86 0 0 0 18 75.94 L 18 82\"/></svg>"
   }
 };
 
