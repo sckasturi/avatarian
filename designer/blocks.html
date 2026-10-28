@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Block review</title>
+<!-- Every block drawn by the site's own renderer and stylesheet (served over
+     /site/ by tools/designer_server.py), so what you review here is exactly
+     what the product draws. -->
+<link rel="stylesheet" href="/site/css/blocks.css">
+<link rel="stylesheet" href="css/designer.css">
+<link rel="stylesheet" href="css/blocks.css">
+</head>
+<body class="blocks-page">
+
+<header class="bar">
+  <div class="bar-left">
+    <strong>Block review</strong>
+    <span class="sep"></span>
+    <span class="now">every pairing of two glyphs, drawn as the site draws it</span>
+  </div>
+  <div class="bar-right">
+    <span id="progress" class="save-state"></span>
+    <button id="copy-all" class="ghost" title="Copy every note as plain text">copy notes</button>
+    <a class="ghost btn-link" href="index.html">← glyph designer</a>
+    <button id="theme-btn" class="ghost" title="Theme">◐</button>
+  </div>
+</header>
+
+<div class="br-controls">
+  <div class="br-tabs" role="tablist">
+    <button class="br-tab" data-kind="cc" role="tab">C–C <span></span></button>
+    <button class="br-tab" data-kind="vc" role="tab">V–C <span></span></button>
+    <button class="br-tab" data-kind="cv" role="tab">C–V <span></span></button>
+  </div>
+  <label>show
+    <select id="show">
+      <option value="all">everything</option>
+      <option value="unreviewed">not reviewed yet</option>
+      <option value="bad">marked wrong</option>
+      <option value="good">marked good</option>
+      <option value="noted">has a note</option>
+      <option value="seen">seen in the corpus</option>
+    </select>
+  </label>
+  <label>size <input id="size" type="range" min="18" max="48" value="28"></label>
+  <span class="br-hint">Rows are the top glyph, columns the bottom. Click a block to mark it and leave a note.
+    A small number is how many corpus words use that block. Keys: <kbd>g</kbd> good, <kbd>b</kbd> wrong,
+    <kbd>c</kbd> clear, arrows to move, <kbd>n</kbd> next unreviewed.</span>
+</div>
+
+<main class="br-main">
+  <div class="br-scroll"><table id="matrix" class="br-matrix"></table></div>
+
+  <aside id="panel" class="br-panel" hidden>
+    <div class="br-big" id="big"></div>
+    <div class="br-title" id="title"></div>
+    <div class="br-seen" id="seen"></div>
+    <div class="br-status">
+      <button data-status="good" class="ghost">✓ good <kbd>g</kbd></button>
+      <button data-status="bad" class="ghost">✗ wrong <kbd>b</kbd></button>
+      <button data-status="" class="ghost">clear <kbd>c</kbd></button>
+    </div>
+    <textarea id="note" rows="6" placeholder="What looks wrong? e.g. the strokes don't meet at the seam, the dot collides with the stroke above, should fuse like in 'still'…"></textarea>
+    <div class="br-save" id="save"></div>
+    <div class="br-nav">
+      <button id="prev" class="ghost">← prev</button>
+      <button id="next-un" class="ghost">next unreviewed <kbd>n</kbd></button>
+      <button id="next" class="ghost">next →</button>
+    </div>
+  </aside>
+</main>
+
+<script src="/site/js/manifest.js"></script>
+<script src="/site/js/corpus.js"></script>
+<script src="/site/js/g2p.js"></script>
+<script src="/site/js/sounds.js"></script>
+<script src="/site/js/render.js"></script>
+<script src="js/blocks.js"></script>
+</body>
+</html>

@@ -21,6 +21,8 @@ API
     POST   /api/render           design JSON in, SVG + python source out
     POST   /api/promote/<name>   write it into build_glyphs.py and rebuild
     POST   /api/resync           put the glyph set back to what is deployed
+    GET    /api/block-feedback   notes on how each block looks (blocks.html)
+    PUT    /api/block-feedback   save one block's note: {key, status, note}
 
     GET    /site/...             the main site's own files, read-only
 
@@ -67,6 +69,12 @@ GLYPHS = ROOT / "site" / "assets" / "glyphs"
 SOUNDS = ROOT / "site" / "js" / "sounds.js"
 
 PORT = 8792
+
+# Feedback on how two glyphs look stacked into a block — the review grid at
+# /blocks.html writes it, keyed "top|bottom" in IPA. Deliberately NOT under
+# designs/: it is notes about the drawing, not the drawing, and the resync
+# button (which resets designs/) must never throw it away.
+FEEDBACK = ROOT / "feedback" / "blocks.json"
 
 NAME_OK = re.compile(r"^[a-z0-9_]+$")
 
@@ -285,6 +293,33 @@ def resync(dry_run):
     return out
 
 
+def load_feedback():
+    try:
+        return json.loads(FEEDBACK.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def save_feedback(entry):
+    """Merge one block's feedback in. An empty status and note removes it,
+    so clearing a cell leaves no stub behind."""
+    key = str(entry.get("key") or "")
+    if "|" not in key:
+        raise ValueError("key must be 'top|bottom'")
+    data = load_feedback()
+    status = entry.get("status") if entry.get("status") in ("good", "bad") else None
+    note = str(entry.get("note") or "").strip()
+    if not status and not note:
+        data.pop(key, None)
+    else:
+        data[key] = {"status": status, "note": note,
+                     "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+    FEEDBACK.parent.mkdir(exist_ok=True)
+    FEEDBACK.write_text(json.dumps(dict(sorted(data.items())), ensure_ascii=False, indent=2) + "\n",
+                        encoding="utf-8")
+    return data.get(key)
+
+
 def load_designs():
     DESIGNS.mkdir(exist_ok=True)
     out = {}
@@ -340,6 +375,8 @@ class Handler(SimpleHTTPRequestHandler):
             return self.send_json(catalog())
         if self.path == "/api/designs":
             return self.send_json(load_designs())
+        if self.path == "/api/block-feedback":
+            return self.send_json(load_feedback())
         if self.path.startswith("/site/"):
             return self.send_site(self.path[len("/site/"):].split("?")[0])
         return super().do_GET()
@@ -435,6 +472,11 @@ class Handler(SimpleHTTPRequestHandler):
             return self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
 
     def do_PUT(self):
+        if self.path == "/api/block-feedback":
+            try:
+                return self.send_json({"saved": save_feedback(self.read_json() or {})})
+            except Exception as e:                   # noqa: BLE001
+                return self.send_json({"error": f"{type(e).__name__}: {e}"}, 400)
         name = self.stem("/api/designs")
         if not name:
             return self.send_json({"error": "bad name"}, 400)

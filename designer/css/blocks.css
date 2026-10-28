@@ -1,0 +1,60 @@
+/* Block review page (blocks.html). Colours come from designer.css. */
+
+.blocks-page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.btn-link { text-decoration: none; display: inline-flex; align-items: center; }
+
+.br-controls {
+  display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center;
+  padding: 8px 16px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted);
+}
+.br-tabs { display: flex; gap: 4px; }
+.br-tab { padding: 4px 12px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
+.br-tab span { color: var(--faint); font-size: 12px; }
+.br-tab.on { border-color: var(--accent); background: var(--hover); }
+.br-hint { flex: 1 1 24rem; color: var(--faint); font-size: 12px; }
+.br-hint kbd, .br-panel kbd { font-size: 11px; padding: 0 4px; border: 1px solid var(--line);
+  border-radius: 4px; background: var(--code-bg); color: var(--muted); }
+
+.br-main { flex: 1; display: flex; min-height: 0; }
+.br-scroll { flex: 1; overflow: auto; padding: 8px 16px 40px; }
+
+.br-matrix { border-collapse: separate; border-spacing: 3px; }
+.br-matrix th { position: sticky; background: var(--paper); z-index: 2; color: var(--accent);
+  font: 600 12px ui-monospace, Menlo, monospace; padding: 2px 4px; }
+.br-matrix thead th { top: 0; }
+.br-matrix tbody th { left: 0; text-align: right; }
+.br-matrix thead th:first-child { left: 0; z-index: 3; }
+.br-matrix th .ipa { display: block; color: var(--faint); font-weight: 400; font-size: 11px; }
+
+.br-cell {
+  position: relative; padding: 4px; border-radius: 6px; cursor: pointer;
+  background: var(--surface); border: 2px solid transparent; line-height: 0;
+}
+.br-cell:hover { border-color: var(--line); }
+.br-cell.sel { border-color: var(--sel); }
+.br-cell.good { background: color-mix(in srgb, var(--ok) 14%, var(--surface)); border-color: var(--ok); }
+.br-cell.bad { background: color-mix(in srgb, var(--warn) 14%, var(--surface)); border-color: var(--warn); }
+.br-cell.dim { opacity: 0.18; }
+.br-cell .avatarian-word { margin: 0; color: var(--ink); }
+.br-cell .count { position: absolute; right: 2px; bottom: 1px; font: 10px ui-monospace, monospace;
+  color: var(--faint); line-height: 1; }
+.br-cell .noted { position: absolute; left: 3px; top: 3px; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); }
+
+.br-panel {
+  width: 320px; flex: none; border-left: 1px solid var(--line); background: var(--card);
+  padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow: auto;
+}
+.br-big { --av-size: 96px; display: flex; justify-content: center; padding: 12px;
+  background: var(--surface); border-radius: 10px; min-height: 120px; }
+.br-big .avatarian-word { margin: 0; color: var(--ink); }
+.br-title { font-size: 16px; font-weight: 600; color: var(--ink); }
+.br-title .fine { font-weight: 400; color: var(--muted); font-size: 13px; }
+.br-seen { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.br-status, .br-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.br-status button.on[data-status="good"] { border-color: var(--ok); color: var(--ok); }
+.br-status button.on[data-status="bad"] { border-color: var(--warn); color: var(--warn); }
+#note { width: 100%; box-sizing: border-box; font: 13px/1.45 inherit; padding: 8px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink); resize: vertical; }
+.br-save { font-size: 12px; color: var(--faint); min-height: 1em; }
