@@ -10,6 +10,7 @@ local READABLE = {["a"]="æ", ["e"]="ɛ", ["i"]="ɪ", ["u"]="ʌ", ["ah"]="ɑ", [
 local READABLE_ALIASES = {["o"]="ɑ", ["ay"]="e", ["ai"]="e", ["au"]="ɔ", ["or"]="ɔ", ["er"]="ə", ["ur"]="ə", ["ir"]="ə", ["igh"]="aɪ", ["schwa"]="ə", ["ax"]="ə", ["sh'"]="ʃ"}
 local SOUND_ALIASES = {["-"]="∅", ["_"]="∅", ["-c"]="∅c", ["@"]="0", ["’s"]="'s", ["eɪ"]="e", ["ej"]="e", ["ɝ"]="ə", ["ɜr"]="ə", ["ɜ"]="ə", ["ɑː"]="ɑ", ["iː"]="i", ["uː"]="u"}
 local MARK_WIDE = {[":"]="av-wide", ["?"]="av-wide", ["--"]="av-wide3", ["0"]="av-wide3", ["1"]="av-wide3", ["2"]="av-wide3", ["3"]="av-wide3", ["4"]="av-wide3", ["5"]="av-wide3", ["6"]="av-wide3", ["7"]="av-wide3", ["8"]="av-wide3", ["9"]="av-wide3", ["'s"]="av-wide3"}
+local BLOCK_DOTS = {}
 local GLYPH = {
   ["p"]={name="p", type="consonant"},
   ["b"]={name="b", type="consonant"},
@@ -211,7 +212,10 @@ local function glyphSpan(token, slot, partner)
       local pSym = parseSymbol(partner)
       if pSym == "ɹ" then stem = "z_left"      -- right dot dropped, left kept
       elseif pSym == "l" then stem = "z_right"  -- left dot dropped, right kept
-      elseif pSym == "m" then stem = "z"        -- under /m/'s ring both dots stay
+      elseif pSym == "m" then                   -- under /m/'s ring both dots stay
+        local key = slot == "top" and (sym .. "|" .. pSym) or (pSym .. "|" .. sym)
+        local dy = BLOCK_DOTS[key]
+        stem = dy and ("z_d" .. dy) or "z"      -- ... dropped `dy` if the block says so
       else stem = "z_none" end
     end
   end
@@ -244,6 +248,22 @@ local function slotIsConsonant(token)
   return e ~= nil and e.type == "consonant"
 end
 
+-- The rail a glyph carries for an approximant partner (render.js railFor): in
+-- every C-C block the approximant's long side runs on through the partner, as
+-- its own span over the glyph.
+local RAIL_SIDE = { ["l"]="l", ["w"]="l", ["ɹ"]="r", ["j"]="r" }
+local function railSpan(token, slot, partner)
+  local sym = parseSymbol(token)
+  local pSym = parseSymbol(partner)
+  if not RAIL_SIDE[pSym] or sym == UNREADABLE then return "" end   -- `*` draws no rail, as in render.js
+  if not (slotIsConsonant(token) and isClusterPartner(partner)) then return "" end
+  local pe = GLYPH[pSym]
+  if not (pe and pe.cluster) then return "" end
+  local rlPair = (pSym == "ɹ" or pSym == "l") and (sym == "ɹ" or sym == "l") and pSym ~= sym
+  if rlPair and slot == "bottom" then return "" end   -- the partner is on top: base form
+  return '<span class="av-rail av-rail-' .. RAIL_SIDE[pSym] .. '"></span>'
+end
+
 -- Render one word's IPA sequence into blocks. Punctuation is NOT paired: it
 -- breaks the run so the sounds either side pair among themselves.
 local function renderWord(seq)
@@ -252,8 +272,10 @@ local function renderWord(seq)
     for _, blk in ipairs(resolveBlocks(run)) do
       local cc = slotIsConsonant(blk.top) and slotIsConsonant(blk.bottom)
       out[#out + 1] = '<span class="av-block' .. (cc and " av-cc" or "") .. '">'
-        .. '<span class="av-slot av-slot-top">' .. glyphSpan(blk.top, "top", blk.bottom) .. '</span>'
-        .. '<span class="av-slot av-slot-bottom">' .. glyphSpan(blk.bottom, "bottom", blk.top) .. '</span>'
+        .. '<span class="av-slot av-slot-top">' .. glyphSpan(blk.top, "top", blk.bottom)
+        .. railSpan(blk.top, "top", blk.bottom) .. '</span>'
+        .. '<span class="av-slot av-slot-bottom">' .. glyphSpan(blk.bottom, "bottom", blk.top)
+        .. railSpan(blk.bottom, "bottom", blk.top) .. '</span>'
         .. '</span>'
     end
     run = {}

@@ -30,6 +30,16 @@ SRC = ROOT / "site" / "assets" / "glyph_manifest.json"
 REF_GLYPHS = ROOT / "site" / "assets" / "reference"
 REF_SRC = ROOT / "site" / "assets" / "reference_manifest.json"
 DST = ROOT / "site" / "js" / "manifest.js"
+# Per-block tweaks set in the designer's block review page (render.js,
+# BLOCK_TWEAKS), keyed "top|bottom" in IPA.
+TWEAKS = ROOT / "designs" / "blocks" / "tweaks.json"
+
+
+def load_tweaks():
+    try:
+        return json.loads(TWEAKS.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
 
 HEADER = (
     "/* Auto-generated — do not edit by hand.\n"
@@ -129,12 +139,15 @@ def main():
 
     body = json.dumps(out, ensure_ascii=False, indent=2)
     ref_body = json.dumps(ref, ensure_ascii=False, indent=2)
+    tweaks_body = json.dumps(load_tweaks(), ensure_ascii=False, indent=2, sort_keys=True)
     DST.write_text(
         f"{HEADER}window.AVATARIAN_GLYPHS = {body};\n\n"
         f"/* Traced shapes from the hand-lettered key — the comparison\n"
         f" * baseline, not what the tool renders. See\n"
         f" * tools/extract_reference.py. */\n"
-        f"window.AVATARIAN_REFERENCE = {ref_body};\n",
+        f"window.AVATARIAN_REFERENCE = {ref_body};\n\n"
+        f"/* Per-block tweaks from designs/blocks/tweaks.json (render.js BLOCK_TWEAKS). */\n"
+        f"window.AVATARIAN_BLOCK_TWEAKS = {tweaks_body};\n",
         encoding="utf-8",
     )
 

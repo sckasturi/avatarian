@@ -183,6 +183,7 @@
       ? `In the corpus: ${words.slice(0, 12).join(", ")}${words.length > 12 ? ` (+${words.length - 12} more)` : ""}`
       : "Not seen in the corpus.";
     showSources(key);
+    showTweaks(rows[r], cols[c]);
     const f = feedback[key] || {};
     $("#note").value = f.note || "";
     statusButtons(f.status);
@@ -325,6 +326,66 @@
     document.addEventListener("keydown", esc, true);
     document.body.appendChild(lb);
   }
+
+  // ── per-block tweaks (render.js BLOCK_TWEAKS) ─────────────────────
+  // Saved to designs/blocks/tweaks.json as you drag, drawn live here, and
+  // only reach the site and wiki when shipped. Today that is /z/'s dot drop
+  // where both dots survive (under /m/).
+  let tweaks = {};
+  let shipped = JSON.stringify(window.AVATARIAN_BLOCK_TWEAKS || {});
+  window.AVATARIAN_BLOCK_TWEAKS = tweaks;
+  const keepsDots = (t, b) => (t === "z" && b === "m") || (t === "m" && b === "z");
+  function showTweaks(top, bottom) {
+    const box = $("#tweak-dots");
+    box.hidden = !keepsDots(top, bottom);
+    if (box.hidden) return;
+    const v = (tweaks[keyOf(top, bottom)] || {}).dots || 0;
+    $("#dots").value = v;
+    $("#dots-val").textContent = v;
+    tweakState();
+  }
+  function tweakState() {
+    $("#tweak-state").textContent = JSON.stringify(tweaks) === shipped ? "shipped" : "not shipped yet";
+  }
+  function redraw(key) {
+    const td = cells.get(key);
+    if (td) {
+      const span = td.querySelector("span");
+      span.innerHTML = "";
+      renderAvatarian(key.split("|"), span);
+    }
+    if (key === currentKey()) {
+      const word = $("#big").firstChild;
+      word.innerHTML = "";
+      renderAvatarian(key.split("|"), word);
+    }
+  }
+  let dotsTimer = null;
+  $("#dots").addEventListener("input", () => {
+    const key = currentKey();
+    const dots = +$("#dots").value;
+    $("#dots-val").textContent = dots;
+    if (dots) tweaks[key] = { ...(tweaks[key] || {}), dots };
+    else if (tweaks[key]) { delete tweaks[key].dots; if (!Object.keys(tweaks[key]).length) delete tweaks[key]; }
+    redraw(key);
+    tweakState();
+    clearTimeout(dotsTimer);
+    dotsTimer = setTimeout(() => fetch("/api/block-tweaks", {
+      method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key, dots }),
+    }), 300);
+  });
+  $("#ship-tweaks").addEventListener("click", async () => {
+    $("#tweak-state").textContent = "shipping…";
+    try {
+      const res = await (await fetch("/api/block-tweaks/ship", { method: "POST" })).json();
+      if (res.error) throw new Error(res.error);
+      shipped = JSON.stringify(res.shipped);
+      tweakState();
+    } catch (e) {
+      $("#tweak-state").textContent = "not shipped: " + (e.message || e);
+    }
+  });
 
   // ── quick notes ────────────────────────────────────────────────────
   // Every distinct line written in any note becomes a pick, most used
@@ -547,11 +608,14 @@
   });
 
   // ── boot ───────────────────────────────────────────────────────────
-  fetch("/api/block-feedback", { cache: "no-store" })
-    .then((r) => r.json())
-    .catch(() => ({}))
-    .then((data) => {
+  Promise.all([
+    fetch("/api/block-feedback", { cache: "no-store" }).then((r) => r.json()).catch(() => ({})),
+    fetch("/api/block-tweaks", { cache: "no-store" }).then((r) => r.json()).catch(() => ({})),
+  ])
+    .then(([data, tw]) => {
       feedback = data || {};
+      // The saved tweaks, shipped or not, so what you see is what you set.
+      Object.assign(tweaks, tw || {});
       let k = "cc";
       try { k = localStorage.getItem("blocks-kind") || "cc"; } catch (e) { /* storage off */ }
       setKind(KINDS[k] ? k : "cc");

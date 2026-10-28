@@ -23,6 +23,9 @@ API
     POST   /api/resync           put the glyph set back to what is deployed
     GET    /api/block-feedback   notes on how each block looks (blocks.html)
     PUT    /api/block-feedback   save one block's note: {key, status, note}
+    GET    /api/block-tweaks     per-block design tweaks (designs/blocks/tweaks.json)
+    PUT    /api/block-tweaks     set one block's tweak: {key, dots}
+    POST   /api/block-tweaks/ship  rebuild manifest.js and the wiki Lua/CSS with them
 
     GET    /site/...             the main site's own files, read-only
 
@@ -76,6 +79,7 @@ PORT = 8792
 # designs/: it is notes about the drawing, not the drawing, and the resync
 # button (which resets designs/) must never throw it away.
 FEEDBACK = ROOT / "feedback" / "blocks.json"
+TWEAKS = DESIGNS / "blocks" / "tweaks.json"
 
 NAME_OK = re.compile(r"^[a-z0-9_]+$")
 
@@ -326,6 +330,56 @@ def save_feedback(entry):
     return data.get(key)
 
 
+def load_tweaks():
+    try:
+        return json.loads(TWEAKS.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def save_tweak(entry):
+    """Set one block's tweaks (render.js BLOCK_TWEAKS). Only `dots` for now,
+    a whole number of viewBox units; 0 removes it, and a block left with no
+    tweaks is dropped. Saved here, shipped by ship_tweaks()."""
+    key = str(entry.get("key") or "")
+    if "|" not in key:
+        raise ValueError("key must be 'top|bottom'")
+    data = load_tweaks()
+    t = dict(data.get(key) or {})
+    if "dots" in entry:
+        dots = int(round(float(entry["dots"] or 0)))
+        if not -16 <= dots <= 16:
+            raise ValueError("dots must be between -16 and 16")
+        if dots:
+            t["dots"] = dots
+        else:
+            t.pop("dots", None)
+    if t:
+        data[key] = t
+    else:
+        data.pop(key, None)
+    TWEAKS.parent.mkdir(parents=True, exist_ok=True)
+    TWEAKS.write_text(json.dumps(dict(sorted(data.items())), ensure_ascii=False, indent=2) + "\n",
+                      encoding="utf-8")
+    return data.get(key)
+
+
+def ship_tweaks():
+    """Bake the tweaks into site/js/manifest.js, then regenerate the wiki's
+    Lua module and CSS from it (both read the manifest)."""
+    import build_manifest
+    import build_lua_module
+    import build_css_only
+    for mod in (build_manifest, build_lua_module, build_css_only):
+        mod = importlib.reload(mod)
+        if mod is build_css_only:
+            # It reads its output path off sys.argv at import, which here
+            # is the server's own command line.
+            mod.OUT = ROOT / "wiki" / "Avatarian-css-only.css"
+        mod.main()
+    return {"shipped": load_tweaks()}
+
+
 def load_designs():
     DESIGNS.mkdir(exist_ok=True)
     out = {}
@@ -383,6 +437,8 @@ class Handler(SimpleHTTPRequestHandler):
             return self.send_json(load_designs())
         if self.path == "/api/block-feedback":
             return self.send_json(load_feedback())
+        if self.path == "/api/block-tweaks":
+            return self.send_json(load_tweaks())
         if self.path.startswith("/site/"):
             return self.send_site(self.path[len("/site/"):].split("?")[0])
         return super().do_GET()
@@ -410,6 +466,11 @@ class Handler(SimpleHTTPRequestHandler):
         # so the order matters rather than being cosmetic.
         if self.path == "/api/promote-all":
             return self.promote_all()
+        if self.path == "/api/block-tweaks/ship":
+            try:
+                return self.send_json(ship_tweaks())
+            except Exception as e:                   # noqa: BLE001
+                return self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
         if self.path == "/api/resync":
             body = self.read_json() or {}
             try:
@@ -479,6 +540,11 @@ class Handler(SimpleHTTPRequestHandler):
             return self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
 
     def do_PUT(self):
+        if self.path == "/api/block-tweaks":
+            try:
+                return self.send_json({"saved": save_tweak(self.read_json() or {})})
+            except Exception as e:                   # noqa: BLE001
+                return self.send_json({"error": f"{type(e).__name__}: {e}"}, 400)
         if self.path == "/api/block-feedback":
             try:
                 return self.send_json({"saved": save_feedback(self.read_json() or {})})

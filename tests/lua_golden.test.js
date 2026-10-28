@@ -85,6 +85,10 @@ function serializeGlyph(g) {
     if (l && !r) name = "z_left";
     else if (r && !l) name = "z_right";
     else if (!l && !r) name = "z_none";
+    else {
+      const cy = +((/<circle [^>]*cy="([\d.]+)"/.exec(drawn) || [])[1]);
+      if (cy && cy !== 26) name = "z_d" + (cy - 26);   // BLOCK_TWEAKS `dots`
+    }
   }
   const stem = "g-" + name;
   let height = "";
@@ -92,7 +96,8 @@ function serializeGlyph(g) {
   let cls = "av-glyph " + stem + " " + height;
   if (g._c.has("avatarian-4row")) cls += " av-4row";
   if (g._c.has("avatarian-flipped")) cls += " av-flipped";
-  return '<span class="' + cls + '"></span>';
+  const rail = g.dataset.rail ? '<span class="av-rail av-rail-' + g.dataset.rail + '"></span>' : "";
+  return '<span class="' + cls + '"></span>' + rail;
 }
 
 function serializeWord(container) {

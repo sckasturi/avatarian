@@ -65,6 +65,11 @@
     <textarea id="note" rows="4" placeholder="What looks wrong? Typing marks the block wrong. One complaint per line; each line becomes a quick pick below."></textarea>
     <div class="br-save" id="save"></div>
     <div class="br-presets" id="presets"></div>
+    <div class="br-tweak" id="tweak-dots" hidden>
+      <label>dot drop <input id="dots" type="range" min="0" max="12" step="1" value="0"> <span id="dots-val">0</span></label>
+      <button id="ship-tweaks" class="ghost" title="Bake the tweaks into the site's manifest.js and the wiki's Lua and CSS (local files; nothing is pushed)">ship tweaks</button>
+      <div class="br-save" id="tweak-state"></div>
+    </div>
     <div class="br-nav">
       <button id="prev" class="ghost">← prev</button>
       <button id="next-un" class="ghost">next unreviewed <kbd>n</kbd></button>

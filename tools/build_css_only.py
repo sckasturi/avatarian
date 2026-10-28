@@ -32,6 +32,15 @@ def glyphs():
     return json.loads(src[i:j + 1])
 
 
+def block_tweaks():
+    """designs/blocks/tweaks.json as shipped in manifest.js (render.js BLOCK_TWEAKS)."""
+    src = MANIFEST.read_text(encoding="utf-8")
+    if "AVATARIAN_BLOCK_TWEAKS" not in src:
+        return {}
+    i = src.index("{", src.index("AVATARIAN_BLOCK_TWEAKS"))
+    return json.JSONDecoder().raw_decode(src[i:])[0]
+
+
 def mask_uri(svg):
     # opaque strokes/fills so the SVG's alpha is the mask; colour = the element
     svg = svg.replace('stroke="currentColor"', 'stroke="#000"').replace('fill="currentColor"', 'fill="#000"')
@@ -80,6 +89,13 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
  * normal text (the selection paints behind the glyphs) and copies clean text
  * (the English caption, or the sounds) instead of nothing. */
 .av-copy{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:transparent;white-space:nowrap;overflow:hidden;font-size:1.6em;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text}
+/* A rail (render.js railFor): the approximant's long side carried the
+ * full height of its partner — x 18 or 82, y 18 to 82 of the 100 box, at the
+ * 13 display weight, so 11.5% in and 77% tall. Its own span over the glyph,
+ * since a mask can't take a second layer per block. */
+.av-rail{position:absolute;z-index:1;pointer-events:none;background-color:currentColor;top:calc(1.25em * .115);width:calc(1.25em * .13);height:calc(1.25em * .77)}
+.av-rail-l{left:calc(50% - 1.25em * .385)}
+.av-rail-r{left:calc(50% + 1.25em * .255)}
 .av-block,.av-slot,.av-glyph,.av-mark{position:relative;z-index:1;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
 /* ===== glyph shapes ===== */
@@ -167,6 +183,11 @@ def main():
             rules.append(f'.g-z_left{{-webkit-mask-image:url("{mask_uri(drop(False))}")}}')   # right dot dropped, left kept
             rules.append(f'.g-z_right{{-webkit-mask-image:url("{mask_uri(drop(True))}")}}')   # left dot dropped, right kept
             rules.append(f'.g-z_none{{-webkit-mask-image:url("{mask_uri(re.sub(r"<circle[^>]*>", "", base))}")}}')
+            # Both dots dropped `dy` units, one class per distinct drop a block
+            # asks for (BLOCK_TWEAKS `dots`, e.g. m|z) — the Lua names it z_d<dy>.
+            for dy in sorted({t["dots"] for t in block_tweaks().values() if t.get("dots")}):
+                moved = re.sub(r'(<circle [^>]*cy=")([\d.]+)', lambda m: f"{m.group(1)}{float(m.group(2)) + dy:g}", base)
+                rules.append(f'.g-z_d{dy:g}{{-webkit-mask-image:url("{mask_uri(moved)}")}}')
     OUT.write_text(LAYOUT + "\n".join(rules + toc_rules()) + "\n", encoding="utf-8")
     print(f"Wrote {OUT} — {len(rules)} glyph classes, {round(OUT.stat().st_size / 1024, 1)} KB")
 

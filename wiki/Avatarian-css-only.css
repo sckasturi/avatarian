@@ -33,6 +33,13 @@
  * normal text (the selection paints behind the glyphs) and copies clean text
  * (the English caption, or the sounds) instead of nothing. */
 .av-copy{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:transparent;white-space:nowrap;overflow:hidden;font-size:1.6em;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text}
+/* A rail (render.js railFor): the approximant's long side carried the
+ * full height of its partner — x 18 or 82, y 18 to 82 of the 100 box, at the
+ * 13 display weight, so 11.5% in and 77% tall. Its own span over the glyph,
+ * since a mask can't take a second layer per block. */
+.av-rail{position:absolute;z-index:1;pointer-events:none;background-color:currentColor;top:calc(1.25em * .115);width:calc(1.25em * .13);height:calc(1.25em * .77)}
+.av-rail-l{left:calc(50% - 1.25em * .385)}
+.av-rail-r{left:calc(50% + 1.25em * .255)}
 .av-block,.av-slot,.av-glyph,.av-mark{position:relative;z-index:1;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
 /* ===== glyph shapes ===== */

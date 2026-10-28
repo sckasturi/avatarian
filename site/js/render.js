@@ -309,6 +309,52 @@ function orientationOf(sym, entry, slot, partner) {
  * A non-cluster /s/ or /z/ — sitting under or over a vowel — is left
  * whole. See AVATARIAN.md §12.6.
  */
+/**
+ * PER-BLOCK TWEAKS, set by hand in the designer's block review page and
+ * shipped as window.AVATARIAN_BLOCK_TWEAKS (designs/blocks/tweaks.json), keyed
+ * "top|bottom" in IPA:
+ *
+ *   dots  how far /z/'s dots drop, in viewBox units, where both survive
+ *         (under /m/: `m|z`).
+ *
+ * THE APPROXIMANT'S LINE RUNS THE FULL BLOCK. In a C-C block /l/ and /w/
+ * (left) and /ɹ/ and /j/ (right) draw a cluster form whose long side stops
+ * at the seam; the PARTNER always carries that line on through its own rows
+ * as a "rail" (`l|d`, `s|l`, `ʃ|l`, `m|j`). Where the partner already has a
+ * stroke there (/k/'s side) the rail just lies on top of it.
+ */
+const BLOCK_TWEAKS = window.AVATARIAN_BLOCK_TWEAKS || {};
+const RAIL_SIDE = { "l": 18, "w": 18, "ɹ": 82, "j": 82 };
+
+function blockTweak(sym, slot, partner) {
+  if (partner == null) return {};
+  const p = parseSymbol(partner).sym;
+  const key = slot === "top" ? sym + "|" + p : p + "|" + sym;
+  return (window.AVATARIAN_BLOCK_TWEAKS || BLOCK_TWEAKS)[key] || {};
+}
+
+/** True when `sym` draws its cluster form beside `partner` in `slot`. */
+function usesClusterForm(sym, slot, partner) {
+  const entry = GLYPHS[sym];
+  if (!entry || !entry.variants || !entry.variants.cluster || !isClusterPartner(partner)) return false;
+  const p = parseSymbol(partner).sym;
+  const rlPair = (sym === "ɹ" || sym === "l") && (p === "ɹ" || p === "l") && p !== sym;
+  return !rlPair || slot === "bottom";
+}
+
+/**
+ * The x of the rail this glyph carries for its partner, or null. Only the
+ * glyph BESIDE the approximant draws it; the approximant's own stroke
+ * already reaches the seam.
+ */
+function railFor(sym, slot, partner) {
+  if (!isClusterPartner(partner) || isVowelSymbol(sym)) return null;
+  const p = parseSymbol(partner).sym;
+  const other = slot === "top" ? "bottom" : "top";
+  if (!(p in RAIL_SIDE) || !usesClusterForm(p, other, sym)) return null;
+  return RAIL_SIDE[p];
+}
+
 function clusterForm(sym, svg, partner, slot, flipped) {
   if (sym === "s") {
     // Place the vertex so the miter TIP lands on the seam and fuses with the
@@ -328,7 +374,10 @@ function clusterForm(sym, svg, partner, slot, flipped) {
       (c, cx) => ((+cx < 50) === (side === "left") ? "" : c));
     if (p === "ɹ") return drop("right");                             // keep left
     if (p === "l") return drop("left");                              // keep right
-    if (p === "m") return svg;                                       // keep both
+    if (p === "m") {                                                 // keep both
+      const dy = +(blockTweak(sym, slot, partner).dots || 0);
+      return dy ? svg.replace(/(<circle [^>]*cy=")([\d.]+)/g, (m, a, cy) => a + (+cy + dy)) : svg;
+    }
     return svg.replace(/<circle[^>]*>/g, "");
   }
   return svg;
@@ -397,8 +446,13 @@ function makeGlyph(token, slot, partner) {
     // beside me sits in a C-C block, so it uses its own cluster form if it
     // has one). A matched cluster port replaces ccForm; a base one becomes
     // connForm and rides the ordinary by-slot flip.
+    // A rail (see railFor) carries the approximant's line through the block,
+    // so neither glyph needs its port there.
+    const other = slot === "top" ? "bottom" : "top";
+    const railed = partner != null
+      && (railFor(sym, slot, partner) != null || railFor(parseSymbol(partner).sym, other, token) != null);
     let connForm = null;
-    if (partner != null) {
+    if (partner != null && !railed) {
       const myPorts = (ccForm ? entry.clusterPorts : entry.ports) || null;
       const pEntry = GLYPHS[parseSymbol(partner).sym];
       if (myPorts && pEntry) {
@@ -429,7 +483,14 @@ function makeGlyph(token, slot, partner) {
     // insets, /z/ drops its dots.
     const drawForm = ccForm || connForm || form;
     const base = drawForm.svg;
-    const svg = isClusterPartner(partner) ? clusterForm(sym, base, partner, slot, flipped) : base;
+    let svg = isClusterPartner(partner) ? clusterForm(sym, base, partner, slot, flipped) : base;
+    // A rail (see railFor) is a full-height line on the approximant's
+    // side. It is symmetric top to bottom, so a flipped glyph needs no care.
+    const rail = railFor(sym, slot, partner);
+    if (rail != null) {
+      svg = svg.replace("</svg>", `<path d="M ${rail} 18 L ${rail} 82"/></svg>`);
+      span.dataset.rail = rail < 50 ? "l" : "r";
+    }
     // Both drawings ride along and CSS shows one. The flat copy is the
     // same glyph re-laid-out at 4/5 height rather than a squashed copy
     // of the square one, so stroke weight and dots match exactly in
