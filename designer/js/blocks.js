@@ -487,6 +487,34 @@
   size.addEventListener("input", applySize);
   applySize();
 
+  // The panel's width: drag its left edge, double-click to reset. Kept per
+  // browser so the source images stay as big as you last made them.
+  const panel = $("#panel");
+  const grip = $("#resize");
+  const setWidth = (w) => {
+    w = Math.round(Math.min(Math.max(w, 260), window.innerWidth - 240));
+    panel.style.width = w + "px";
+    return w;
+  };
+  try { const w = +localStorage.getItem("blocks-panel"); if (w) setWidth(w); } catch (e) { /* storage off */ }
+  grip.addEventListener("pointerdown", (e) => {
+    const x0 = e.clientX, w0 = panel.offsetWidth;
+    grip.setPointerCapture(e.pointerId);
+    grip.classList.add("dragging");
+    const move = (ev) => setWidth(w0 + x0 - ev.clientX);
+    const up = () => {
+      grip.removeEventListener("pointermove", move);
+      grip.classList.remove("dragging");
+      try { localStorage.setItem("blocks-panel", panel.offsetWidth); } catch (err) { /* storage off */ }
+    };
+    grip.addEventListener("pointermove", move);
+    grip.addEventListener("pointerup", up, { once: true });
+  });
+  grip.addEventListener("dblclick", () => {
+    panel.style.width = "";
+    try { localStorage.removeItem("blocks-panel"); } catch (e) { /* storage off */ }
+  });
+
   const saved = (() => { try { return localStorage.getItem("designer-theme"); } catch (e) { return null; } })();
   if (saved) document.documentElement.dataset.theme = saved;
   $("#theme-btn").addEventListener("click", () => {

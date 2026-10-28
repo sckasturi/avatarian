@@ -83,3 +83,7 @@
 
 .br-lightbox { position: fixed; inset: 0; z-index: 50; background: rgb(0 0 0 / 0.85); padding: 16px; }
 .br-lightbox .br-zoom { height: 100%; background: transparent; }
+
+.br-resize { flex: none; width: 6px; margin-right: -3px; z-index: 4; cursor: col-resize; touch-action: none; }
+.br-resize:hover, .br-resize.dragging { background: var(--accent); opacity: 0.5; }
+.br-main:has(.br-panel[hidden]) .br-resize { display: none; }
