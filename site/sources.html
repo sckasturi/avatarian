@@ -48,6 +48,7 @@
   .source-list {
     display: grid; gap: 16px; margin-top: 20px; align-items: start;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+    container-type: inline-size;
   }
   /* A category groups the slides of one post / signs of one episode
      (instagram-1.1, .2, …) under a header. Lone sources have no header. */
@@ -90,9 +91,21 @@
 
   /* A word-heavy source takes up more width instead of towering: it spans
      extra grid columns, so its words tile wide and all of them show. The
-     grid clamps the span to however many columns actually fit. */
+     grid does NOT clamp a span to the columns that fit (it adds columns off
+     the edge instead), so cap it here: 3 columns need 3×360 + 2×16 px of
+     list, 2 need 2×360 + 16. */
   .source-card.span2 { grid-column: span 2; }
   .source-card.span3 { grid-column: span 3; }
+  @container (max-width: 1111.98px) { .source-card.span3 { grid-column: span 2; } }
+  @container (max-width: 735.98px) {
+    .source-card.span2, .source-card.span3 { grid-column: auto; }
+  }
+  /* Phone width: a thumbnail beside the words leaves them a sliver, so put
+     the image above them and give the words the card's full width. */
+  @container (max-width: 479.98px) {
+    .source-card { flex-direction: column; gap: 12px; }
+    .source-body { width: 100%; }
+  }
   .source-card {
     background: var(--card); border: 1px solid var(--line);
     border-radius: 12px; padding: 16px; display: flex; gap: 16px;
@@ -136,9 +149,24 @@
   .source-where a { color: var(--accent); font-size: 0.85rem; }
   .source-where span { color: var(--muted-2); font-size: 0.85rem; }
   /* Who translated / transcribed this source, when the source records it.
-     A quiet credit line under the id, so a reading is attributable to the
-     person who made it. */
-  .source-author { color: var(--muted-2); font-size: 0.85rem; }
+     Kept out of the way: a credited source's `where` label gets a faint
+     dotted underline, and hovering it (or tapping it, on a phone) shows the
+     credit in a small popup. It's in the page all along, so screen readers
+     get it too. */
+  .has-credit { position: relative; cursor: help; }
+  .has-credit > span, .has-credit > a {
+    text-decoration: underline dotted var(--muted-2); text-underline-offset: 3px;
+  }
+  .has-credit:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  .source-author {
+    position: absolute; left: 0; top: calc(100% + 6px); z-index: 5;
+    white-space: nowrap; color: var(--ink); font-size: 0.82rem;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+    padding: 4px 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    opacity: 0; visibility: hidden; transition: opacity 0.12s;
+  }
+  .has-credit:hover .source-author,
+  .has-credit:focus-within .source-author { opacity: 1; visibility: visible; }
   .source-author a { color: var(--accent); text-decoration: none; }
   .source-author a:hover, .source-author a:focus-visible { text-decoration: underline; }
   .source-count { color: var(--muted); font-size: 0.82rem; white-space: nowrap; }
@@ -441,8 +469,11 @@ function sourceCard(id) {
   idEl.title = "Link to this source";
   info.appendChild(idEl);
 
+  // The credit popup hangs off the `where` label; a source with no `where`
+  // gets a plain "credit" label to hang it on instead.
+  let whereEl = null;
   if (s.where) {
-    const where = document.createElement("span");
+    const where = whereEl = document.createElement("span");
     where.className = "source-where";
     if (/^https?:\/\//.test(s.where)) {
       const a = document.createElement("a");
@@ -490,7 +521,22 @@ function sourceCard(id) {
       } else {
         au.append(who.name);
       }
-      info.appendChild(au);
+      au.id = "credit-" + id;
+      let host = whereEl;
+      if (!host) {
+        host = document.createElement("span");
+        host.className = "source-where";
+        const sp = document.createElement("span");
+        sp.textContent = "credit";
+        host.appendChild(sp);
+        info.insertBefore(host, idEl.nextSibling);
+      }
+      host.classList.add("has-credit");
+      host.setAttribute("aria-describedby", au.id);
+      // A plain-text label isn't focusable, so make it so: that's what lets
+      // a tap (phone) or Tab (keyboard) open the popup.
+      if (!host.querySelector("a")) host.tabIndex = 0;
+      host.appendChild(au);
     }
   }
 

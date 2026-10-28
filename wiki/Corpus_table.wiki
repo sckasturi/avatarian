@@ -9,7 +9,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | academy || {{Avatarian|uh - k a d uh m ee|academy}}<ref name="toph-letter" /><ref name="beifong-academy-banner">''beifong-academy-banner'' — movie 0:20:16</ref> || /ə k æ d ə m i/ || 2
 |-
-| access || {{Avatarian|a k s e s -|access}}<ref name="sevenhavens-101.9">''sevenhavens-101.9'' — A7H S01E01 21:02</ref> || /æ k s ɛ s/ || 1
+| access || {{Avatarian|a k s e s -|access}}<ref name="sevenhavens-101.9">''sevenhavens-101.9'' — ASH 101 21:02</ref> || /æ k s ɛ s/ || 1
 |-
 | Afflicted || {{Avatarian|uh f l i k t uh d|Afflicted}}<ref name="episodes4-6">''episodes4-6'' — [https://www.instagram.com/p/Dd4I9kLmLyW/?img_index=2 post]</ref> || /ə f l ɪ k t ə d/ || 1
 |-
@@ -65,7 +65,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | Battle || {{Avatarian|b a t uh l -|Battle}}<ref name="episodes10-13" /> || /b æ t ə l/ || 1
 |-
-| bay || {{Avatarian|b ey|bay}}<ref name="sevenhavens-101.7">''sevenhavens-101.7'' — A7H S01E01 20:55</ref> || /b e/ || 1
+| bay || {{Avatarian|b ey|bay}}<ref name="sevenhavens-101.7">''sevenhavens-101.7'' — ASH 101 20:55</ref> || /b e/ || 1
 |-
 | be || {{Avatarian|b ee|be}}<ref name="katara-letter" /><ref name="instagram-1.4">''instagram-1.4'' — [https://www.instagram.com/p/DbYdfaFDJmt/?img_index=4 post]</ref> || /b i/ || 3
 |-
@@ -89,7 +89,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | bloom || {{Avatarian|b l oo m|bloom}}<ref name="instagram-2.2" /> || /b l u m/ || 1
 |-
-| books || {{Avatarian|b uu k s|books}}<ref name="sevenhavens-101.3">''sevenhavens-101.3'' — A7H S01E01 02:44</ref> || /b ʊ k s/ || 1
+| books || {{Avatarian|b uu k s|books}}<ref name="sevenhavens-101.3">''sevenhavens-101.3'' — ASH 101 02:44</ref> || /b ʊ k s/ || 1
 |-
 | brave || {{Avatarian|b r ey - i v|brave}}<ref name="instagram-1.4" /> || /b ɹ e ɪ v/ || 1
 |-
@@ -133,7 +133,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | criminals || {{Avatarian|k r i - m uh n uh l z|criminals}}<ref name="instagram-2.2" /> || /k ɹ ɪ m ə n ə l z/ || 1
 |-
-| curry || {{Avatarian|k uh r ee|curry}}<ref name="sevenhavens-101.4">''sevenhavens-101.4'' — A7H S01E01 14:06</ref> || /k ə ɹ i/ || 1
+| curry || {{Avatarian|k uh r ee|curry}}<ref name="sevenhavens-101.4">''sevenhavens-101.4'' — ASH 101 14:06</ref> || /k ə ɹ i/ || 1
 |-
 | decree || {{Avatarian|d i k r ee -|decree}}<ref name="zuko-stamp" /> || /d ɪ k ɹ i/ || 1
 |-
@@ -153,13 +153,13 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | draw || {{Avatarian|d r aw -|draw}}<ref name="instagram-2.1" /> || /d ɹ ɔ/ || 1
 |-
-| drinks || {{Avatarian|d r i ng k s|drinks}}<ref name="sevenhavens-101-102">''sevenhavens-101-102'' — A7H S01E01 10:17 and S01E02 10:19</ref> || /d ɹ ɪ ŋ k s/ || 1
+| drinks || {{Avatarian|d r i ng k s|drinks}}<ref name="sevenhavens-101-102">''sevenhavens-101-102'' — ASH 101 10:17 and ASH 102 10:19</ref> || /d ɹ ɪ ŋ k s/ || 1
 |-
 | ear || {{Avatarian|ee r|ear}}<ref name="instagram-2.2" /> || /i ɹ/ || 2
 |-
 | earth || {{Avatarian|uh r th -|earth}}<ref name="sdcc-2" /> || /ə ɹ θ/ || 1
 |-
-| Ellora || {{Avatarian|e - l oh r uh|Ellora}}<ref name="sevenhavens-101.2">''sevenhavens-101.2'' — A7H S01E01 02:39</ref><ref name="sevenhavens-101-102" /> || /ɛ l oʊ ɹ ə/ || 2
+| Ellora || {{Avatarian|e - l oh r uh|Ellora}}<ref name="sevenhavens-101.2">''sevenhavens-101.2'' — ASH 101 02:39</ref><ref name="sevenhavens-101-102" /> || /ɛ l oʊ ɹ ə/ || 2
 |-
 | energies || {{Avatarian|e - n uh r - j ee z -|energies}}<ref name="instagram-2.2" /> || /ɛ n ə ɹ dʒ i z/ || 1
 |-
@@ -171,7 +171,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | evil || {{Avatarian|ee - v uh l -|evil}}<ref name="instagram-3.1" /> || /i v ə l/ || 1
 |-
-| exit || {{Avatarian|e g z i t -|exit}}<ref name="sevenhavens-103.1">''sevenhavens-103.1'' — A7H S01E03 08:21</ref> || /ɛ g z ɪ t/ || 1
+| exit || {{Avatarian|e g z i t -|exit}}<ref name="sevenhavens-103.1">''sevenhavens-103.1'' — ASH 103 08:21</ref> || /ɛ g z ɪ t/ || 1
 |-
 | Faceless || {{Avatarian|f ey s$ l uh s|Faceless}}<ref name="episodes4-6" /> || /f e s l ə s/ || 1
 |-
@@ -285,7 +285,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | kids || {{Avatarian|k i d z|kids}}<ref name="instagram-3.2" /> || /k ɪ d z/ || 1
 |-
-| Korra || {{Avatarian|k oh r uh|Korra}}<ref name="sdcc-3" /><ref name="sevenhavens-101.5">''sevenhavens-101.5'' — A7H S01E01 15:35</ref> || /k oʊ ɹ ə/ || 2
+| Korra || {{Avatarian|k oh r uh|Korra}}<ref name="sdcc-3" /><ref name="sevenhavens-101.5">''sevenhavens-101.5'' — ASH 101 15:35</ref> || /k oʊ ɹ ə/ || 2
 |-
 | Language || {{Avatarian|l ey ng - g w uh j|Language}}<ref name="sdcc-1" /> || /l e ŋ g w ə dʒ/ || 1
 |-
@@ -375,7 +375,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | out || {{Avatarian|ow t|out}}<ref name="toph-letter" /><ref name="katara-letter" /> || /aʊ t/ || 2
 |-
-| outpost || {{Avatarian|ow t p oh s t|outpost}}<ref name="sevenhavens-101.1">''sevenhavens-101.1'' — A7H S01E01 02:21</ref> || /aʊ t p oʊ s t/ || 1
+| outpost || {{Avatarian|ow t p oh s t|outpost}}<ref name="sevenhavens-101.1">''sevenhavens-101.1'' — ASH 101 02:21</ref> || /aʊ t p oʊ s t/ || 1
 |-
 | pair || {{Avatarian|p e r -|pair}}<ref name="instagram-3.3" /> || /p ɛ ɹ/ || 1
 |-
@@ -405,7 +405,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | raise || {{Avatarian|r ey i z|raise}}<ref name="instagram-2.2" /> || /ɹ e ɪ z/ || 1
 |-
-| ramen || {{Avatarian|r ah m e n -|ramen}}<ref name="sevenhavens-101.6">''sevenhavens-101.6'' — A7H S01E01 15:56</ref> || /ɹ ɑ m ɛ n/ || 1
+| ramen || {{Avatarian|r ah m e n -|ramen}}<ref name="sevenhavens-101.6">''sevenhavens-101.6'' — ASH 101 15:56</ref> || /ɹ ɑ m ɛ n/ || 1
 |-
 | really || {{Avatarian|r i l ee|really}}<ref name="toph-letter" /> || /ɹ ɪ l i/ || 1
 |-
@@ -413,7 +413,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | rest || {{Avatarian|r e s$ t|rest}}<ref name="katara-letter" /> || /ɹ ɛ s t/ || 1
 |-
-| rooftop || {{Avatarian|r oo f - t ah p -|rooftop}}<ref name="sevenhavens-101.8">''sevenhavens-101.8'' — A7H S01E01 21:00</ref> || /ɹ u f t ɑ p/ || 1
+| rooftop || {{Avatarian|r oo f - t ah p -|rooftop}}<ref name="sevenhavens-101.8">''sevenhavens-101.8'' — ASH 101 21:00</ref> || /ɹ u f t ɑ p/ || 1
 |-
 | Root || {{Avatarian|r oo t -|Root}}<ref name="episodes10-13" /> || /ɹ u t/ || 1
 |-
@@ -431,7 +431,7 @@ The attested Avatarian corpus: every word someone has been seen to write, drawn 
 |-
 | seagull || {{Avatarian|s * g * l -|seagull}}<ref name="instagram-3.1" /> || /s * g * l/ || 1
 |-
-| seal || {{Avatarian|s ee l -|seal}}<ref name="sevenhavens-103.2">''sevenhavens-103.2'' — A7H S01E03 10:21</ref> || /s i l/ || 1
+| seal || {{Avatarian|s ee l -|seal}}<ref name="sevenhavens-103.2">''sevenhavens-103.2'' — ASH 103 10:21</ref> || /s i l/ || 1
 |-
 | seaweed || {{Avatarian|s ee w ee d -|seaweed}}<ref name="instagram-1.3" /><ref name="instagram-3.3" /> || /s i w i d/ || 2
 |-
