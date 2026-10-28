@@ -44,3 +44,6 @@ CORPUS.md
 !.dev.vars.example
 .env*
 !.env.example
+
+# Block review notes from the designer (designer/blocks.html) — local only.
+feedback/
