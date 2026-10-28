@@ -122,7 +122,12 @@
     color: var(--muted-2); font-size: 0.78rem; text-align: center; padding: 8px;
   }
   .source-body { flex: 1 1 auto; min-width: 0; }
-  .source-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; }
+  /* Two parts: the info (id, links, credit) wraps as it needs to; the meta
+     (word count + collapse) stays pinned top-right, so a narrow card never
+     strands it on a line of its own. */
+  .source-head { display: flex; align-items: baseline; gap: 12px; }
+  .source-info { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+  .source-meta { flex: 0 0 auto; display: flex; align-items: baseline; }
   .source-id { font-weight: 700; font-size: 1.02rem; color: inherit; text-decoration: none; }
   .source-id:hover, .source-id:focus-visible { color: var(--accent); }
   /* A faint ¶-style anchor mark, so it reads as "click to link here". */
@@ -136,7 +141,7 @@
   .source-author { color: var(--muted-2); font-size: 0.85rem; }
   .source-author a { color: var(--accent); text-decoration: none; }
   .source-author a:hover, .source-author a:focus-visible { text-decoration: underline; }
-  .source-count { color: var(--muted); font-size: 0.82rem; margin-left: auto; white-space: nowrap; }
+  .source-count { color: var(--muted); font-size: 0.82rem; white-space: nowrap; }
   /* The transcription the corpus was read off. Italic so it reads as a
      quotation of the image rather than as the page's own prose. */
   .source-what {
@@ -396,9 +401,10 @@ function sourceCard(id) {
   // A stable anchor so a single source is directly linkable:
   // sources.html#source-<id> jumps to and rings this card.
   el.id = "source-" + id;
-  // Filter target: the id, the venue/URL, and the transcription text, so
-  // searching "festival" or "instagram" or a venue name all work.
-  el.dataset.hay = (id + " " + (s.where || "") + " " + (s.what || "")).toLowerCase();
+  // Filter target: the id, the venue/URL, the transcription text, and who
+  // translated it, so searching "festival", "instagram" or "Bundas" all work.
+  const credit = typeof s.credit === "string" ? s.credit : (s.credit && s.credit.name) || "";
+  el.dataset.hay = (id + " " + (s.where || "") + " " + (s.what || "") + " " + credit).toLowerCase();
 
   const href = sourceHref(id);
   if (s.image) {
@@ -423,6 +429,9 @@ function sourceCard(id) {
 
   const head = document.createElement("div");
   head.className = "source-head";
+  const info = document.createElement("div");
+  info.className = "source-info";
+  head.appendChild(info);
   // The id doubles as the link to this card — click it (or copy its address)
   // to share a link straight to this one source.
   const idEl = document.createElement("a");
@@ -430,7 +439,7 @@ function sourceCard(id) {
   idEl.href = "#source-" + id;
   idEl.textContent = id;
   idEl.title = "Link to this source";
-  head.appendChild(idEl);
+  info.appendChild(idEl);
 
   if (s.where) {
     const where = document.createElement("span");
@@ -445,7 +454,7 @@ function sourceCard(id) {
       sp.textContent = s.where;
       where.appendChild(sp);
     }
-    head.appendChild(where);
+    info.appendChild(where);
   }
 
   // Extra named links a source carries (schema: `links: [{text, url}]`).
@@ -461,14 +470,14 @@ function sourceCard(id) {
     a.href = lk.url; a.target = "_blank"; a.rel = "noopener";
     a.textContent = (lk.text || "link") + " ↗";
     w.appendChild(a);
-    head.appendChild(w);
+    info.appendChild(w);
   }
 
-  // Who did the reading, when the source names one. `author` is optional
+  // Who did the reading, when the source names one. `credit` is optional
   // and may be a plain name or `{name, url}` (a wiki/Reddit profile). It
   // rides through build_corpus verbatim like the rest of the source object.
-  if (s.author) {
-    const who = typeof s.author === "string" ? { name: s.author } : s.author;
+  if (s.credit) {
+    const who = typeof s.credit === "string" ? { name: s.credit } : s.credit;
     if (who && who.name) {
       const au = document.createElement("span");
       au.className = "source-author";
@@ -481,14 +490,17 @@ function sourceCard(id) {
       } else {
         au.append(who.name);
       }
-      head.appendChild(au);
+      info.appendChild(au);
     }
   }
 
+  const meta = document.createElement("div");
+  meta.className = "source-meta";
+  head.appendChild(meta);
   const cnt = document.createElement("span");
   cnt.className = "source-count";
   cnt.textContent = words.length === 1 ? "1 word" : words.length + " words";
-  head.appendChild(cnt);
+  meta.appendChild(cnt);
 
   // Collapse this one source down to its head row.
   const collapse = document.createElement("button");
@@ -499,7 +511,7 @@ function sourceCard(id) {
   collapse.title = "Collapse this source";
   collapse.addEventListener("click",
     () => setCardCollapsed(el, !el.classList.contains("is-collapsed")));
-  head.appendChild(collapse);
+  meta.appendChild(collapse);
   body.appendChild(head);
 
   if (s.what) {

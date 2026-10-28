@@ -26,6 +26,22 @@
 
 const $ = (id) => document.getElementById(id);
 
+// Who translated a source lives in `credit` (shown on the sources page).
+// It may be a plain name or {name, url}. Older sources stored it as
+// `author`; read that too, and move it to `credit` on the next save.
+function creditName(source) {
+  const c = source.credit || source.author;
+  return (typeof c === "object" && c) ? (c.name || "") : (c || "");
+}
+// Dropped when blank, so an empty field never leaves "" in the file.
+// A stored {name, url} keeps its url.
+function setCredit(source, name) {
+  const old = source.credit || source.author;
+  delete source.author;
+  if (!name) { delete source.credit; return; }
+  source.credit = (typeof old === "object" && old && old.url) ? { ...old, name } : name;
+}
+
 const state = {
   sources: {},
   entries: [],
@@ -673,12 +689,7 @@ function showSource(name) {
   $("srcName").value = name;
   $("srcWhat").value = source.what || "";
   $("srcWhere").value = source.where || "";
-  // author may be a plain string or {name, url}; the editor only sets the
-  // name, so show whichever form is stored.
-  $("srcAuthor").value =
-    typeof source.author === "object" && source.author
-      ? (source.author.name || "")
-      : (source.author || "");
+  $("srcAuthor").value = creditName(source);
   const img = $("sourceImage");
   if (source.image) {
     img.src = "/images/" + source.image + "?t=" + Date.now();
@@ -1197,10 +1208,7 @@ function addMoreToSource(name) {
   $("impName").value = name;
   $("impWhat").value = source.what || "";
   $("impWhere").value = source.where || "";
-  $("impAuthor").value =
-    typeof source.author === "object" && source.author
-      ? (source.author.name || "")
-      : (source.author || "");
+  $("impAuthor").value = creditName(source);
 
   // Reuse the source's own image as the import's image. A fresh drop or
   // Instagram fetch still overwrites it, but by default "add more" keeps
@@ -1696,19 +1704,7 @@ function commitImport() {
   const source = state.sources[name] || {};
   source.what = $("impWhat").value.trim();
   source.where = $("impWhere").value.trim();
-  // Optional credit — keep the JSON clean by dropping it when blank rather
-  // than storing an empty string. A stored {name,url} author is left as-is
-  // unless the field text disagrees with its name.
-  const author = $("impAuthor").value.trim();
-  if (author) {
-    if (typeof source.author === "object" && source.author && source.author.url) {
-      source.author = { ...source.author, name: author };
-    } else {
-      source.author = author;
-    }
-  } else {
-    delete source.author;
-  }
+  setCredit(source, $("impAuthor").value.trim());
   if (importImage) source.image = importImage;
   state.sources[name] = source;
 
@@ -2317,18 +2313,10 @@ function wire() {
     });
   }
 
-  // Author is optional and dropped when blank, so an empty field never
-  // leaves an empty string in the file. A stored {name,url} keeps its url.
   $("srcAuthor").addEventListener("input", () => {
     const source = state.sources[$("source").value];
     if (!source) return;
-    const v = $("srcAuthor").value.trim();
-    if (v) {
-      source.author = (typeof source.author === "object" && source.author && source.author.url)
-        ? { ...source.author, name: v } : v;
-    } else {
-      delete source.author;
-    }
+    setCredit(source, $("srcAuthor").value.trim());
     markDirty();
   });
 
