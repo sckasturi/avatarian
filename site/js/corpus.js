@@ -318,6 +318,12 @@ window.AVATARIAN_CORPUS = {
       "where": "ASH 107 08:07",
       "image": "sevenhavens-107.3.png",
       "credit": "Bundas"
+    },
+    "reddit.5": {
+      "what": "Ellora warmly receives\nthe envoys from afar\nwith love and trust",
+      "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xhs3z6/fourth_dispatch_from_the_white_lotus/",
+      "image": "reddit.5.1.png",
+      "credit": "TechFilmer"
     }
   },
   "words": {
@@ -386,13 +392,14 @@ window.AVATARIAN_CORPUS = {
         "d",
         "∅"
       ],
-      "count": 9,
+      "count": 10,
       "sources": [
         "toph-letter",
         "katara-letter",
         "instagram-1.3",
         "instagram-3.3",
-        "sevenhavens-105.4"
+        "sevenhavens-105.4",
+        "reddit.5"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -937,13 +944,14 @@ window.AVATARIAN_CORPUS = {
             "ð",
             "i"
           ],
-          "count": 8,
+          "count": 9,
           "sources": [
             "sdcc.1",
             "sevenhavens-105.1",
             "sevenhavens-105.2",
             "sevenhavens-105.4",
-            "sevenhavens-105.5"
+            "sevenhavens-105.5",
+            "reddit.5"
           ],
           "confidence": "certain"
         },
@@ -2241,7 +2249,23 @@ window.AVATARIAN_CORPUS = {
         "instagram-3.1"
       ],
       "confidence": "certain",
-      "source": "instagram-3.1"
+      "source": "instagram-3.1",
+      "alternates": [
+        {
+          "ipa": [
+            "f",
+            "ɹ",
+            "ʌ",
+            "m"
+          ],
+          "count": 1,
+          "sources": [
+            "reddit.5"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true
     },
     "humansitters": {
       "ipa": [
@@ -4657,9 +4681,10 @@ window.AVATARIAN_CORPUS = {
         "z",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "sevenhavens-book1.3"
+        "sevenhavens-book1.3",
+        "reddit.5"
       ],
       "confidence": "certain",
       "source": "sevenhavens-book1.3",
@@ -4875,6 +4900,24 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "sevenhavens-101.2",
+      "alternates": [
+        {
+          "ipa": [
+            "ɛ",
+            "∅",
+            "l",
+            "ɔ",
+            "ɹ",
+            "ə"
+          ],
+          "count": 1,
+          "sources": [
+            "reddit.5"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true,
       "gloss": "Ellora"
     },
     "books": {
@@ -5582,7 +5625,23 @@ window.AVATARIAN_CORPUS = {
         "sevenhavens-105.5"
       ],
       "confidence": "certain",
-      "source": "sevenhavens-105.5"
+      "source": "sevenhavens-105.5",
+      "alternates": [
+        {
+          "ipa": [
+            "w",
+            "ɪ",
+            "ð",
+            "∅"
+          ],
+          "count": 1,
+          "sources": [
+            "reddit.5"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true
     },
     "possible": {
       "ipa": [
@@ -5816,9 +5875,10 @@ window.AVATARIAN_CORPUS = {
         "v",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "reddit.2"
+        "reddit.2",
+        "reddit.5"
       ],
       "confidence": "certain",
       "source": "reddit.2",
@@ -6077,6 +6137,70 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-107.3",
       "gloss": "Mako"
+    },
+    "warmly": {
+      "ipa": [
+        "w",
+        "ɔ",
+        "ɹ",
+        "m",
+        "l",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.5"
+      ],
+      "confidence": "certain",
+      "source": "reddit.5"
+    },
+    "receives": {
+      "ipa": [
+        "ɹ",
+        "ə",
+        "s",
+        "i",
+        "v",
+        "z"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.5"
+      ],
+      "confidence": "certain",
+      "source": "reddit.5"
+    },
+    "afar": {
+      "ipa": [
+        "ə",
+        "∅",
+        "f",
+        "ɑ",
+        "ɹ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.5"
+      ],
+      "confidence": "certain",
+      "source": "reddit.5"
+    },
+    "trust": {
+      "ipa": [
+        "t",
+        "ɹ",
+        "ʌ",
+        "s",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.5"
+      ],
+      "confidence": "certain",
+      "source": "reddit.5"
     }
   },
   "conventions": {

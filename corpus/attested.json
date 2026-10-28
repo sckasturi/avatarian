@@ -337,6 +337,12 @@
       "where": "ASH 107 08:07",
       "image": "sevenhavens-107.3.png",
       "credit": "Bundas"
+    },
+    "reddit.5": {
+      "what": "Ellora warmly receives\nthe envoys from afar\nwith love and trust",
+      "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xhs3z6/fourth_dispatch_from_the_white_lotus/",
+      "image": "reddit.5.1.png",
+      "credit": "TechFilmer"
     }
   },
   "entries": [
@@ -3376,6 +3382,73 @@
       "confidence": "certain",
       "gloss": "Mako",
       "source": "sevenhavens-107.3"
+    },
+    {
+      "key": "afar",
+      "spelling": "ə ∅ f ɑ ɹ ∅",
+      "source": "reddit.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "and",
+      "spelling": "æ n d ∅",
+      "source": "reddit.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "ellora",
+      "spelling": "ɛ ∅ l ɔ ɹ ə",
+      "source": "reddit.5",
+      "confidence": "certain",
+      "gloss": "Ellora"
+    },
+    {
+      "key": "envoys",
+      "spelling": "ɛ n v ɔɪ z ∅",
+      "source": "reddit.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "from",
+      "spelling": "f ɹ ʌ m",
+      "source": "reddit.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "love",
+      "spelling": "l ʌ v ∅",
+      "source": "reddit.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "receives",
+      "spelling": "ɹ ə s i v z",
+      "source": "reddit.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "the",
+      "spelling": "ð i",
+      "source": "reddit.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "trust",
+      "spelling": "t ɹ ʌ s t ∅",
+      "source": "reddit.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "warmly",
+      "spelling": "w ɔ ɹ m l i",
+      "source": "reddit.5",
+      "confidence": "certain"
+    },
+    {
+      "key": "with",
+      "spelling": "w ɪ ð ∅",
+      "source": "reddit.5",
+      "confidence": "certain"
     }
   ]
 }
