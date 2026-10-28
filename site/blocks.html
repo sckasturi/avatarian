@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Avatarian Blocks</title>
+<meta name="description" content="Every pairing of two Avatarian glyphs, drawn the way the translator draws them, with the sources that write each block." />
+<link rel="icon" href="favicon.svg?v=1" type="image/svg+xml" />
+<meta name="theme-color" content="#2a211b" />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="stylesheet" href="css/blocks.css?v=81" />
+<link rel="stylesheet" href="css/style.css?v=76" />
+<link rel="stylesheet" href="css/blockgrid.css?v=1" />
+</head>
+<!-- Not linked from the other pages: a view to send people. The designer's
+     designer/blocks.html is the same grid with review tools on top. -->
+<body class="blocks-page site-blocks">
+
+<div class="page-head">
+  <h1>Blocks</h1>
+  <a class="backlink" href="index.html">Translator</a>
+  <a class="backlink" href="corpus.html">Corpus</a>
+  <a class="backlink" href="sources.html">Sources</a>
+  <span class="spacer"></span>
+  <button class="theme-toggle" id="themeToggle" type="button"></button>
+</div>
+
+<div class="br-controls">
+  <div class="br-tabs" role="tablist">
+    <button class="br-tab" data-kind="cc" role="tab">C–C <span></span></button>
+    <button class="br-tab" data-kind="vc" role="tab">V–C <span></span></button>
+    <button class="br-tab" data-kind="cv" role="tab">C–V <span></span></button>
+  </div>
+  <label>show
+    <select id="show">
+      <option value="seen" selected>seen in the corpus</option>
+      <option value="all">everything</option>
+    </select>
+  </label>
+  <label>size <input id="size" type="range" min="18" max="48" value="28"></label>
+  <span class="br-hint">Rows are the top glyph, columns the bottom. The small number is how many
+    corpus words use that block. Click one to see the sources that write it; arrow keys move.</span>
+</div>
+
+<main class="br-main">
+  <div class="br-scroll"><table id="matrix" class="br-matrix"></table></div>
+  <div class="br-resize" id="resize" title="drag to resize · double-click to reset"></div>
+  <aside id="panel" class="br-panel" hidden>
+    <div class="br-big" id="big"></div>
+    <div class="br-title" id="title"></div>
+    <div class="br-seen" id="seen"></div>
+    <div class="br-nav">
+      <button id="prev" class="theme-toggle">← prev</button>
+      <button id="next" class="theme-toggle">next →</button>
+    </div>
+    <div class="br-sources" id="sources"></div>
+  </aside>
+</main>
+
+<script src="js/manifest.js?v=81"></script>
+<script src="js/corpus.js?v=77"></script>
+<script src="js/g2p.js?v=79"></script>
+<script src="js/sounds.js?v=76"></script>
+<script src="js/render.js?v=81"></script>
+<script>
+"use strict";
+// --- theme toggle (same behaviour as the rest of the site) --------------
+const themeBtn = document.getElementById("themeToggle");
+const THEME_LABELS = { auto: "◐ Theme: auto", light: "☀ Theme: light", dark: "☾ Theme: dark" };
+const THEME_ORDER = ["auto", "light", "dark"];
+function applyTheme(mode) {
+  if (mode === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", mode);
+  themeBtn.textContent = THEME_LABELS[mode];
+  themeBtn.setAttribute("aria-label", "Colour theme: " + mode + ". Click to change.");
+}
+let themeMode = "auto";
+try { themeMode = localStorage.getItem("avatarian-theme") || "auto"; } catch (e) { /* storage off */ }
+if (!THEME_ORDER.includes(themeMode)) themeMode = "auto";
+applyTheme(themeMode);
+themeBtn.addEventListener("click", () => {
+  themeMode = THEME_ORDER[(THEME_ORDER.indexOf(themeMode) + 1) % THEME_ORDER.length];
+  try {
+    if (themeMode === "auto") localStorage.removeItem("avatarian-theme");
+    else localStorage.setItem("avatarian-theme", themeMode);
+  } catch (e) { /* storage off */ }
+  applyTheme(themeMode);
+});
+</script>
+<script src="js/blockgrid.js?v=1"></script>
+</body>
+</html>

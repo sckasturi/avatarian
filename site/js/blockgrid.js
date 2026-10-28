@@ -1,9 +1,14 @@
 /**
- * Block review — every pairing of two glyphs, drawn by the site's own
- * renderer, in a matrix per block type, with a note and a good/wrong mark
- * per block. Feedback is saved to feedback/blocks.json through
- * tools/designer_server.py (/api/block-feedback), keyed "top|bottom" in IPA,
- * so it can be read back later to decide how blocks should be designed.
+ * The block grid — every pairing of two glyphs, drawn by the site's own
+ * renderer, in a matrix per block type, with the corpus sources that write
+ * each block in a side panel.
+ *
+ * Two pages use it. site/blocks.html is the shareable view: look and read
+ * the sources, nothing else. designer/blocks.html adds REVIEW mode (its
+ * <body data-review>): a note and a good/wrong mark per block, saved to
+ * feedback/blocks.json through tools/designer_server.py
+ * (/api/block-feedback), keyed "top|bottom" in IPA, and the per-block
+ * tweaks (designs/blocks/tweaks.json).
  *
  * Rows are the top glyph, columns the bottom glyph:
  *   C–C   consonant over consonant (the one-row overlap)
@@ -12,6 +17,11 @@
  */
 (function () {
   const $ = (s) => document.querySelector(s);
+  const on = (s, ev, fn) => { const el = $(s); if (el) el.addEventListener(ev, fn); };
+  const REVIEW = document.body.hasAttribute("data-review");
+  // Where the source images are, relative to the page (the designer serves
+  // the site's under /site/).
+  const SOURCE_BASE = document.body.dataset.sources || "sources/";
   const GLYPHS = window.AVATARIAN_GLYPHS || {};
   const drawn = (type) => Object.entries(GLYPHS)
     .filter(([, g]) => g.type === type && g.status !== "PLACEHOLDER")
@@ -130,6 +140,7 @@
 
   function matches(key) {
     const f = feedback[key] || {};
+    if (!$("#show")) return true;
     switch ($("#show").value) {
       case "unreviewed": return !f.status;
       case "bad": return f.status === "bad";
@@ -152,11 +163,11 @@
       def.rows.forEach((t) => def.cols.forEach((b) => {
         if ((feedback[keyOf(t, b)] || {}).status) reviewed++;
       }));
-      document.querySelector(`.br-tab[data-kind="${k}"] span`).textContent = `${reviewed}/${total}`;
+      document.querySelector(`.br-tab[data-kind="${k}"] span`).textContent = REVIEW ? `${reviewed}/${total}` : total;
       all += total;
       done += reviewed;
     }
-    $("#progress").textContent = `${done} of ${all} reviewed`;
+    if ($("#progress")) $("#progress").textContent = `${done} of ${all} reviewed`;
   }
 
   // ── the side panel ─────────────────────────────────────────────────
@@ -183,6 +194,7 @@
       ? `In the corpus: ${words.slice(0, 12).join(", ")}${words.length > 12 ? ` (+${words.length - 12} more)` : ""}`
       : "Not seen in the corpus.";
     showSources(key);
+    if (!REVIEW) return;
     showTweaks(rows[r], cols[c]);
     const f = feedback[key] || {};
     $("#note").value = f.note || "";
@@ -213,7 +225,7 @@
       const s = SOURCES[id];
       view.innerHTML = "";
       if (s.image) {
-        const src = "/site/sources/" + encodeURIComponent(s.image);
+        const src = SOURCE_BASE + encodeURIComponent(s.image);
         const stage = zoomer(src, id);
         const full = document.createElement("button");
         full.className = "br-zoom-full";
@@ -331,9 +343,10 @@
   // Saved to designs/blocks/tweaks.json as you drag, drawn live here, and
   // only reach the site and wiki when shipped. Today that is /z/'s dot drop
   // where both dots survive (under /m/).
+  // Outside review mode the shipped tweaks in manifest.js stand as they are.
   let tweaks = {};
   let shipped = JSON.stringify(window.AVATARIAN_BLOCK_TWEAKS || {});
-  window.AVATARIAN_BLOCK_TWEAKS = tweaks;
+  if (REVIEW) window.AVATARIAN_BLOCK_TWEAKS = tweaks;
   const keepsDots = (t, b) => (t === "z" && b === "m") || (t === "m" && b === "z");
   function showTweaks(top, bottom) {
     const box = $("#tweak-dots");
@@ -361,7 +374,7 @@
     }
   }
   let dotsTimer = null;
-  $("#dots").addEventListener("input", () => {
+  on("#dots", "input", () => {
     const key = currentKey();
     const dots = +$("#dots").value;
     $("#dots-val").textContent = dots;
@@ -375,7 +388,7 @@
       body: JSON.stringify({ key, dots }),
     }), 300);
   });
-  $("#ship-tweaks").addEventListener("click", async () => {
+  on("#ship-tweaks", "click", async () => {
     $("#tweak-state").textContent = "shipping…";
     try {
       const res = await (await fetch("/api/block-tweaks/ship", { method: "POST" })).json();
@@ -475,7 +488,7 @@
   }
 
   let noteTimer = null;
-  $("#note").addEventListener("input", () => {
+  on("#note", "input", () => {
     const key = currentKey();
     if (!key) return;
     clearTimeout(noteTimer);
@@ -509,9 +522,9 @@
     }
   }
 
-  $("#prev").addEventListener("click", () => step(0, -1));
-  $("#next").addEventListener("click", () => step(0, 1));
-  $("#next-un").addEventListener("click", nextUnreviewed);
+  on("#prev", "click", () => step(0, -1));
+  on("#next", "click", () => step(0, 1));
+  on("#next-un", "click", nextUnreviewed);
 
   document.addEventListener("keydown", (e) => {
     if (e.target.matches("textarea, input, select")) {
@@ -523,6 +536,7 @@
     else if (k === "ArrowLeft") step(0, -1);
     else if (k === "ArrowDown") step(1, 0);
     else if (k === "ArrowUp") step(-1, 0);
+    else if (!REVIEW) return;
     else if (k === "g") setStatus("good");
     else if (k === "b") setStatus("bad");
     else if (k === "c") setStatus("");
@@ -542,7 +556,7 @@
   }
   document.querySelectorAll(".br-tab").forEach((b) =>
     b.addEventListener("click", () => setKind(b.dataset.kind)));
-  $("#show").addEventListener("change", applyFilter);
+  on("#show", "change", applyFilter);
   const size = $("#size");
   const applySize = () => $("#matrix").style.setProperty("--av-size", size.value + "px");
   size.addEventListener("input", applySize);
@@ -558,7 +572,7 @@
     return w;
   };
   try { const w = +localStorage.getItem("blocks-panel"); if (w) setWidth(w); } catch (e) { /* storage off */ }
-  grip.addEventListener("pointerdown", (e) => {
+  if (grip) grip.addEventListener("pointerdown", (e) => {
     const x0 = e.clientX, w0 = panel.offsetWidth;
     grip.setPointerCapture(e.pointerId);
     grip.classList.add("dragging");
@@ -571,14 +585,15 @@
     grip.addEventListener("pointermove", move);
     grip.addEventListener("pointerup", up, { once: true });
   });
-  grip.addEventListener("dblclick", () => {
+  if (grip) grip.addEventListener("dblclick", () => {
     panel.style.width = "";
     try { localStorage.removeItem("blocks-panel"); } catch (e) { /* storage off */ }
   });
 
-  const saved = (() => { try { return localStorage.getItem("designer-theme"); } catch (e) { return null; } })();
+  // The designer's own theme button; the site page runs the site's toggle.
+  const saved = REVIEW && (() => { try { return localStorage.getItem("designer-theme"); } catch (e) { return null; } })();
   if (saved) document.documentElement.dataset.theme = saved;
-  $("#theme-btn").addEventListener("click", () => {
+  on("#theme-btn", "click", () => {
     const now = document.documentElement.dataset.theme;
     const next = now === "dark" ? "light" : now === "light" ? "" : "dark";
     try {
@@ -587,7 +602,7 @@
     } catch (e) { /* storage off */ }
   });
 
-  $("#copy-all").addEventListener("click", async () => {
+  on("#copy-all", "click", async () => {
     const lines = [];
     for (const [k, def] of Object.entries(KINDS)) {
       def.rows.forEach((t) => def.cols.forEach((b) => {
@@ -608,10 +623,11 @@
   });
 
   // ── boot ───────────────────────────────────────────────────────────
-  Promise.all([
+  const none = Promise.resolve({});
+  Promise.all(REVIEW ? [
     fetch("/api/block-feedback", { cache: "no-store" }).then((r) => r.json()).catch(() => ({})),
     fetch("/api/block-tweaks", { cache: "no-store" }).then((r) => r.json()).catch(() => ({})),
-  ])
+  ] : [none, none])
     .then(([data, tw]) => {
       feedback = data || {};
       // The saved tweaks, shipped or not, so what you see is what you set.

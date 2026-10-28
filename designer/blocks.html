@@ -9,9 +9,9 @@
      what the product draws. -->
 <link rel="stylesheet" href="/site/css/blocks.css">
 <link rel="stylesheet" href="css/designer.css">
-<link rel="stylesheet" href="css/blocks.css">
+<link rel="stylesheet" href="/site/css/blockgrid.css">
 </head>
-<body class="blocks-page">
+<body class="blocks-page" data-review data-sources="/site/sources/">
 
 <header class="bar">
   <div class="bar-left">
@@ -35,12 +35,12 @@
   </div>
   <label>show
     <select id="show">
+      <option value="seen" selected>seen in the corpus</option>
       <option value="all">everything</option>
       <option value="unreviewed">not reviewed yet</option>
       <option value="bad">marked wrong</option>
       <option value="good">marked good</option>
       <option value="noted">has a note</option>
-      <option value="seen">seen in the corpus</option>
     </select>
   </label>
   <label>size <input id="size" type="range" min="18" max="48" value="28"></label>
@@ -84,6 +84,6 @@
 <script src="/site/js/g2p.js"></script>
 <script src="/site/js/sounds.js"></script>
 <script src="/site/js/render.js"></script>
-<script src="js/blocks.js"></script>
+<script src="/site/js/blockgrid.js"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
-/* Block review page (blocks.html). Colours come from designer.css. */
+/* The block grid (site/blocks.html, and designer/blocks.html in review
+ * mode). Colours are the shared tokens both style sheets define. */
 
 .blocks-page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 .btn-link { text-decoration: none; display: inline-flex; align-items: center; }
@@ -32,8 +33,8 @@
   background: var(--surface); border: 2px solid transparent; line-height: 0;
 }
 .br-cell:hover { border-color: var(--line); }
-.br-cell.sel { border-color: var(--sel); }
-.br-cell.good { background: color-mix(in srgb, var(--ok) 14%, var(--surface)); border-color: var(--ok); }
+.br-cell.sel { border-color: var(--sel, var(--accent)); }
+.br-cell.good { background: color-mix(in srgb, var(--ok, #3f7d4e) 14%, var(--surface)); border-color: var(--ok, #3f7d4e); }
 .br-cell.bad { background: color-mix(in srgb, var(--warn) 14%, var(--surface)); border-color: var(--warn); }
 .br-cell.dim { opacity: 0.18; }
 .br-cell .avatarian-word { margin: 0; color: var(--ink); }
@@ -53,7 +54,7 @@
 .br-title .fine { font-weight: 400; color: var(--muted); font-size: 13px; }
 .br-seen { font-size: 12px; color: var(--muted); line-height: 1.5; }
 .br-status, .br-nav { display: flex; gap: 6px; flex-wrap: wrap; }
-.br-status button.on[data-status="good"] { border-color: var(--ok); color: var(--ok); }
+.br-status button.on[data-status="good"] { border-color: var(--ok, #3f7d4e); color: var(--ok, #3f7d4e); }
 .br-status button.on[data-status="bad"] { border-color: var(--warn); color: var(--warn); }
 #note { width: 100%; box-sizing: border-box; font: 13px/1.45 inherit; padding: 8px; border-radius: 8px;
   border: 1px solid var(--line); background: var(--surface); color: var(--ink); resize: vertical; }
@@ -91,3 +92,13 @@
 .br-tweak { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12px; color: var(--muted);
   padding: 8px; border: 1px dashed var(--line); border-radius: 8px; }
 .br-tweak input[type=range] { vertical-align: middle; width: 120px; }
+
+/* The site's copy: full width rather than the site's 1240px column, and on
+ * a phone the panel drops below the grid instead of sitting beside it. */
+body.site-blocks { max-width: none; padding: 0; }
+.site-blocks .page-head { padding: 12px 16px 8px; }
+@media (max-width: 760px) {
+  .site-blocks .br-main { flex-direction: column; }
+  .site-blocks .br-resize { display: none; }
+  .site-blocks .br-panel { width: auto !important; border-left: 0; border-top: 1px solid var(--line); max-height: 55vh; }
+}
