@@ -46,7 +46,7 @@
   <label>size <input id="size" type="range" min="18" max="48" value="28"></label>
   <span class="br-hint">Rows are the top glyph, columns the bottom. Click a block to mark it and leave a note.
     A small number is how many corpus words use that block. Keys: <kbd>g</kbd> good, <kbd>b</kbd> wrong,
-    <kbd>c</kbd> clear, arrows to move, <kbd>n</kbd> next unreviewed.</span>
+    <kbd>c</kbd> clear, arrows to move, <kbd>n</kbd> next unreviewed, <kbd>1</kbd>–<kbd>9</kbd> quick notes.</span>
 </div>
 
 <main class="br-main">
@@ -61,13 +61,15 @@
       <button data-status="bad" class="ghost">✗ wrong <kbd>b</kbd></button>
       <button data-status="" class="ghost">clear <kbd>c</kbd></button>
     </div>
-    <textarea id="note" rows="6" placeholder="What looks wrong? e.g. the strokes don't meet at the seam, the dot collides with the stroke above, should fuse like in 'still'…"></textarea>
+    <textarea id="note" rows="4" placeholder="What looks wrong? Typing marks the block wrong. One complaint per line; each line becomes a quick pick below."></textarea>
     <div class="br-save" id="save"></div>
+    <div class="br-presets" id="presets"></div>
     <div class="br-nav">
       <button id="prev" class="ghost">← prev</button>
       <button id="next-un" class="ghost">next unreviewed <kbd>n</kbd></button>
       <button id="next" class="ghost">next →</button>
     </div>
+    <div class="br-sources" id="sources"></div>
   </aside>
 </main>
 

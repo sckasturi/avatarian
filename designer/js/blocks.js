@@ -34,20 +34,35 @@
   // ── how often each block occurs in the corpus ──────────────────────
   // Paired exactly as the site pairs them: marks (punctuation, numerals,
   // the possessive) break the run, and each run is resolved on its own.
+  // Every spelling counts (a contested word's alternates too), and each
+  // block remembers which sources wrote it, in which words, for the tabs.
+  const CORPUS = window.AVATARIAN_CORPUS || {};
+  const SOURCES = CORPUS.sources || {};
   const seen = {};           // key -> [word, …]
-  for (const [word, entry] of Object.entries((window.AVATARIAN_CORPUS || {}).words || {})) {
+  const bySource = {};       // key -> { source: [word, …] }
+  function blocksOf(ipa) {
+    const keys = [];
     let run = [];
     const flush = () => {
-      if (run.length) resolveBlocks(run).forEach(({ top, bottom }) => {
-        const k = keyOf(parseSymbol(top).sym, parseSymbol(bottom).sym);
-        (seen[k] = seen[k] || []).includes(word) || seen[k].push(word);
-      });
+      if (run.length) resolveBlocks(run).forEach(({ top, bottom }) =>
+        keys.push(keyOf(parseSymbol(top).sym, parseSymbol(bottom).sym)));
       run = [];
     };
-    for (const tok of entry.ipa || []) {
+    for (const tok of ipa || []) {
       if (isMark(parseSymbol(tok).sym)) flush(); else run.push(tok);
     }
     flush();
+    return keys;
+  }
+  const addOnce = (list, x) => { if (!list.includes(x)) list.push(x); };
+  for (const [word, entry] of Object.entries(CORPUS.words || {})) {
+    for (const sp of [entry, ...(entry.alternates || [])]) {
+      for (const k of blocksOf(sp.ipa)) {
+        addOnce(seen[k] = seen[k] || [], word);
+        const per = bySource[k] = bySource[k] || {};
+        for (const src of sp.sources || []) addOnce(per[src] = per[src] || [], word);
+      }
+    }
   }
 
   // ── the matrix ─────────────────────────────────────────────────────
@@ -167,11 +182,128 @@
     $("#seen").textContent = words.length
       ? `In the corpus: ${words.slice(0, 12).join(", ")}${words.length > 12 ? ` (+${words.length - 12} more)` : ""}`
       : "Not seen in the corpus.";
+    showSources(key);
     const f = feedback[key] || {};
     $("#note").value = f.note || "";
     statusButtons(f.status);
+    presets();
     $("#save").textContent = f.updated ? `saved ${f.updated.replace("T", " ").replace("Z", " UTC")}` : "";
     if (focus) $("#note").blur();
+  }
+
+  // ── where the block is written: one tab per source ─────────────────
+  // Sources with the most words using the block first. The image opens
+  // full size on click; the words from that source are drawn under it.
+  let srcTab = null;         // the source last looked at, kept across blocks
+  function showSources(key) {
+    const box = $("#sources");
+    const per = bySource[key] || {};
+    const ids = Object.keys(per).filter((id) => SOURCES[id])
+      .sort((a, b) => per[b].length - per[a].length || a.localeCompare(b));
+    box.innerHTML = "";
+    if (!ids.length) return;
+    const tabs = document.createElement("div");
+    tabs.className = "br-src-tabs";
+    const view = document.createElement("div");
+    view.className = "br-src-view";
+    const open = (id) => {
+      srcTab = id;
+      tabs.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.id === id));
+      const s = SOURCES[id];
+      view.innerHTML = "";
+      if (s.image) {
+        const img = document.createElement("img");
+        img.src = "/site/sources/" + encodeURIComponent(s.image);
+        img.alt = id;
+        img.title = "click to open full size";
+        img.addEventListener("click", () => lightbox(img.src));
+        view.appendChild(img);
+      }
+      const words = document.createElement("div");
+      words.className = "br-src-words";
+      for (const w of per[id]) {
+        const item = document.createElement("span");
+        const art = document.createElement("span");
+        const e = CORPUS.words[w];
+        const sp = [e, ...(e.alternates || [])].find((x) => (x.sources || []).includes(id)) || e;
+        renderAvatarian(sp.ipa, art);
+        item.appendChild(art);
+        item.append(" " + w);
+        words.appendChild(item);
+      }
+      view.appendChild(words);
+      const meta = document.createElement("div");
+      meta.className = "br-src-meta";
+      meta.textContent = [s.where, s.credit && "credit: " + s.credit].filter(Boolean).join(" · ");
+      view.appendChild(meta);
+    };
+    for (const id of ids) {
+      const b = document.createElement("button");
+      b.dataset.id = id;
+      b.textContent = id + (per[id].length > 1 ? ` ·${per[id].length}` : "");
+      b.title = (SOURCES[id].what || "").slice(0, 300);
+      b.addEventListener("click", () => open(id));
+      tabs.appendChild(b);
+    }
+    box.append(tabs, view);
+    open(ids.includes(srcTab) ? srcTab : ids[0]);
+  }
+
+  function lightbox(src) {
+    const lb = document.createElement("div");
+    lb.className = "br-lightbox";
+    const img = document.createElement("img");
+    img.src = src;
+    lb.appendChild(img);
+    const close = () => { lb.remove(); document.removeEventListener("keydown", esc, true); };
+    const esc = (e) => { if (e.key === "Escape") { e.stopPropagation(); close(); } };
+    lb.addEventListener("click", close);
+    document.addEventListener("keydown", esc, true);
+    document.body.appendChild(lb);
+  }
+
+  // ── quick notes ────────────────────────────────────────────────────
+  // Every distinct line written in any note becomes a pick, most used
+  // first, so a complaint typed once can be reapplied with 1–9. Picking
+  // toggles the line in the current note. A note always means "wrong".
+  let presetList = [];
+  function noteLines(note) {
+    return (note || "").split("\n").map((l) => l.trim()).filter(Boolean);
+  }
+  function presets() {
+    const uses = new Map();
+    for (const f of Object.values(feedback)) {
+      for (const l of new Set(noteLines(f.note))) uses.set(l, (uses.get(l) || 0) + 1);
+    }
+    presetList = [...uses].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([l]) => l);
+    const mine = new Set(noteLines($("#note").value));
+    const box = $("#presets");
+    box.innerHTML = "";
+    presetList.forEach((l, i) => {
+      const b = document.createElement("button");
+      b.className = "ghost" + (mine.has(l) ? " on" : "");
+      b.innerHTML = (i < 9 ? `<kbd>${i + 1}</kbd> ` : "") + escapeHtml(l)
+        + ` <span class="uses">${uses.get(l)}</span>`;
+      b.addEventListener("click", () => pick(i));
+      box.appendChild(b);
+    });
+  }
+  function escapeHtml(t) {
+    return t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  }
+  function pick(i) {
+    const key = currentKey();
+    const line = presetList[i];
+    if (!key || line == null) return;
+    const lines = noteLines($("#note").value);
+    const at = lines.indexOf(line);
+    if (at >= 0) lines.splice(at, 1); else lines.push(line);
+    const note = lines.join("\n");
+    $("#note").value = note;
+    clearTimeout(noteTimer);
+    const patch = { note };
+    if (note && (feedback[key] || {}).status !== "bad") { patch.status = "bad"; statusButtons("bad"); }
+    save(key, patch);
   }
 
   function currentKey() {
@@ -200,6 +332,7 @@
       if (res.saved) feedback[key] = res.saved; else delete feedback[key];
       if (key === currentKey()) {
         $("#save").textContent = res.saved ? "saved" : "cleared";
+        presets();
       }
     } catch (e) {
       $("#save").textContent = "not saved: " + (e.message || e);
@@ -223,7 +356,13 @@
     clearTimeout(noteTimer);
     $("#save").textContent = "…";
     const note = $("#note").value;
-    noteTimer = setTimeout(() => save(key, { note }), 600);
+    // Writing anything means the block is wrong; mark it straight away.
+    const patch = { note };
+    if (note.trim() && (feedback[key] || {}).status !== "bad") {
+      patch.status = "bad";
+      statusButtons("bad");
+    }
+    noteTimer = setTimeout(() => save(key, patch), 600);
   });
 
   document.querySelectorAll(".br-status button").forEach((b) =>
@@ -264,6 +403,7 @@
     else if (k === "c") setStatus("");
     else if (k === "n") nextUnreviewed();
     else if (k === "Enter" && sel) { $("#note").focus(); }
+    else if (/^[1-9]$/.test(k) && !e.metaKey && !e.ctrlKey) pick(+k - 1);
     else return;
     e.preventDefault();
   });

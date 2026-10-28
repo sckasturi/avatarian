@@ -43,7 +43,7 @@
   background: var(--accent); }
 
 .br-panel {
-  width: 320px; flex: none; border-left: 1px solid var(--line); background: var(--card);
+  width: 360px; flex: none; border-left: 1px solid var(--line); background: var(--card);
   padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow: auto;
 }
 .br-big { --av-size: 96px; display: flex; justify-content: center; padding: 12px;
@@ -58,3 +58,24 @@
 #note { width: 100%; box-sizing: border-box; font: 13px/1.45 inherit; padding: 8px; border-radius: 8px;
   border: 1px solid var(--line); background: var(--surface); color: var(--ink); resize: vertical; }
 .br-save { font-size: 12px; color: var(--faint); min-height: 1em; }
+
+.br-presets { display: flex; flex-direction: column; gap: 4px; }
+.br-presets button { text-align: left; font-size: 12px; padding: 4px 8px; white-space: normal; }
+.br-presets button.on { border-color: var(--warn); color: var(--warn); }
+.br-presets .uses { color: var(--faint); font-size: 11px; }
+
+.br-sources { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+.br-src-tabs { display: flex; flex-wrap: wrap; gap: 4px; }
+.br-src-tabs button { font: 11px ui-monospace, Menlo, monospace; padding: 2px 6px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; }
+.br-src-tabs button.on { border-color: var(--accent); color: var(--ink); background: var(--hover); }
+.br-src-view img { width: 100%; border-radius: 8px; cursor: zoom-in; display: block; background: var(--surface); }
+.br-src-words { --av-size: 22px; display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 8px;
+  font-size: 12px; color: var(--muted); }
+.br-src-words > span { display: inline-flex; align-items: center; gap: 4px; }
+.br-src-words .avatarian-word { margin: 0; color: var(--ink); }
+.br-src-meta { font-size: 11px; color: var(--faint); margin-top: 6px; }
+
+.br-lightbox { position: fixed; inset: 0; z-index: 50; background: rgb(0 0 0 / 0.85);
+  overflow: auto; display: flex; cursor: zoom-out; }
+.br-lightbox img { margin: auto; max-width: none; }

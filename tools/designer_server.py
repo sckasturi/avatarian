@@ -51,6 +51,7 @@ import pathlib
 import re
 import subprocess
 import sys
+import urllib.parse
 from datetime import datetime, timezone
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
@@ -85,7 +86,12 @@ SITE_FILES = {
     "js/manifest.js", "js/corpus.js", "js/render.js", "js/g2p.js",
     "js/sounds.js", "css/blocks.css",
 }
-SITE_TYPES = {".js": "application/javascript", ".css": "text/css"}
+SITE_TYPES = {".js": "application/javascript", ".css": "text/css",
+              ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+              ".webp": "image/webp", ".gif": "image/gif"}
+# The source images too (site/sources/*), for the block review's source
+# tabs: one plain filename, no subfolders, an image suffix.
+SOURCE_IMAGE = re.compile(r"sources/[A-Za-z0-9._-]+\.(png|jpe?g|webp|gif)")
 
 # A word that puts the sound somewhere obvious, for the picker. Canon
 # spellings where there is one, since those are the shapes being matched.
@@ -384,7 +390,8 @@ class Handler(SimpleHTTPRequestHandler):
     def send_site(self, rel):
         """One of the main site's own files, so the live preview is drawn
         by the product's code rather than a copy of it."""
-        if rel not in SITE_FILES:
+        rel = urllib.parse.unquote(rel)
+        if rel not in SITE_FILES and not (SOURCE_IMAGE.fullmatch(rel) and ".." not in rel):
             return self.send_error(404)
         path = SITE / rel
         try:
@@ -392,8 +399,8 @@ class Handler(SimpleHTTPRequestHandler):
         except OSError:
             return self.send_error(404)
         self.send_response(200)
-        self.send_header("Content-Type", SITE_TYPES.get(path.suffix, "text/plain")
-                         + "; charset=utf-8")
+        ctype = SITE_TYPES.get(path.suffix.lower(), "text/plain")
+        self.send_header("Content-Type", ctype if ctype.startswith("image/") else ctype + "; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
