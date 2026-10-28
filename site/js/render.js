@@ -317,14 +317,14 @@ function orientationOf(sym, entry, slot, partner) {
  *   dots  how far /z/'s dots drop, in viewBox units, where both survive
  *         (under /m/: `m|z`).
  *
- * THE APPROXIMANT'S LINE RUNS THE FULL BLOCK. In a C-C block /l/ and /w/
- * (left) and /ɹ/ (right) draw a cluster form whose long side stops at the
- * seam; the PARTNER always carries that line on through its own rows as a
- * "rail" (`l|d`, `s|l`, `ʃ|l`). /j/ is the exception: its line stays put. Where the partner already has a
+ * THE APPROXIMANT'S LINE RUNS THE FULL BLOCK. In a C-C block /l/ (left)
+ * and /ɹ/ (right) draw a cluster form whose long side stops at the seam;
+ * the PARTNER always carries that line on through its own rows as a "rail"
+ * (`l|d`, `s|l`, `ʃ|l`). /w/ and /j/ keep theirs at the seam, for now. Where the partner already has a
  * stroke there (/k/'s side) the rail just lies on top of it.
  */
 const BLOCK_TWEAKS = window.AVATARIAN_BLOCK_TWEAKS || {};
-const RAIL_SIDE = { "l": 18, "w": 18, "ɹ": 82 };   // not /j/: its line stays at the seam
+const RAIL_SIDE = { "l": 18, "ɹ": 82 };   // not /w/ or /j/: their lines stay at the seam
 
 function blockTweak(sym, slot, partner) {
   if (partner == null) return {};

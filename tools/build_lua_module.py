@@ -313,7 +313,7 @@ end
 -- The rail a glyph carries for an approximant partner (render.js railFor): in
 -- every C-C block the approximant's long side runs on through the partner, as
 -- its own span over the glyph.
-local RAIL_SIDE = { ["l"]="l", ["w"]="l", ["ɹ"]="r" }   -- not /j/, as in render.js
+local RAIL_SIDE = { ["l"]="l", ["ɹ"]="r" }   -- not /w/ or /j/, as in render.js
 local function railSpan(token, slot, partner)
   local sym = parseSymbol(token)
   local pSym = parseSymbol(partner)
