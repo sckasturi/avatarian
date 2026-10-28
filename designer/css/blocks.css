@@ -69,13 +69,17 @@
 .br-src-tabs button { font: 11px ui-monospace, Menlo, monospace; padding: 2px 6px; border-radius: 6px;
   border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; }
 .br-src-tabs button.on { border-color: var(--accent); color: var(--ink); background: var(--hover); }
-.br-src-view img { width: 100%; border-radius: 8px; cursor: zoom-in; display: block; background: var(--surface); }
+.br-zoom { position: relative; height: 280px; overflow: hidden; border-radius: 8px; background: var(--surface);
+  cursor: grab; touch-action: none; user-select: none; }
+.br-zoom.dragging { cursor: grabbing; }
+.br-zoom img { position: absolute; left: 0; top: 0; transform-origin: 0 0; max-width: none; }
+.br-zoom-full { position: absolute; right: 6px; top: 6px; z-index: 1; width: 26px; height: 26px; padding: 0;
+  border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
 .br-src-words { --av-size: 22px; display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 8px;
   font-size: 12px; color: var(--muted); }
 .br-src-words > span { display: inline-flex; align-items: center; gap: 4px; }
 .br-src-words .avatarian-word { margin: 0; color: var(--ink); }
 .br-src-meta { font-size: 11px; color: var(--faint); margin-top: 6px; }
 
-.br-lightbox { position: fixed; inset: 0; z-index: 50; background: rgb(0 0 0 / 0.85);
-  overflow: auto; display: flex; cursor: zoom-out; }
-.br-lightbox img { margin: auto; max-width: none; }
+.br-lightbox { position: fixed; inset: 0; z-index: 50; background: rgb(0 0 0 / 0.85); padding: 16px; }
+.br-lightbox .br-zoom { height: 100%; background: transparent; }

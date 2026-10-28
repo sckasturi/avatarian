@@ -212,12 +212,15 @@
       const s = SOURCES[id];
       view.innerHTML = "";
       if (s.image) {
-        const img = document.createElement("img");
-        img.src = "/site/sources/" + encodeURIComponent(s.image);
-        img.alt = id;
-        img.title = "click to open full size";
-        img.addEventListener("click", () => lightbox(img.src));
-        view.appendChild(img);
+        const src = "/site/sources/" + encodeURIComponent(s.image);
+        const stage = zoomer(src, id);
+        const full = document.createElement("button");
+        full.className = "br-zoom-full";
+        full.textContent = "⤢";
+        full.title = "open full window";
+        full.addEventListener("click", () => lightbox(src, id));
+        stage.appendChild(full);
+        view.appendChild(stage);
       }
       const words = document.createElement("div");
       words.className = "br-src-words";
@@ -249,15 +252,76 @@
     open(ids.includes(srcTab) ? srcTab : ids[0]);
   }
 
-  function lightbox(src) {
-    const lb = document.createElement("div");
-    lb.className = "br-lightbox";
+  // ── a source image you can zoom and move around ───────────────────
+  // Scroll (or pinch) zooms at the pointer, drag moves, double-click fits
+  // the image back in the box. Used in the panel and in the full window.
+  function zoomer(src, alt) {
+    const stage = document.createElement("div");
+    stage.className = "br-zoom";
+    stage.title = "scroll to zoom · drag to move · double-click to fit";
     const img = document.createElement("img");
     img.src = src;
-    lb.appendChild(img);
+    img.alt = alt;
+    img.draggable = false;
+    stage.appendChild(img);
+    let s = 1, x = 0, y = 0, fit = 1;
+    const apply = () => { img.style.transform = `translate(${x}px, ${y}px) scale(${s})`; };
+    const reset = () => {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      const w = img.naturalWidth, h = img.naturalHeight;
+      if (!w || !W) return;
+      fit = Math.min(W / w, H / h);
+      s = fit;
+      x = (W - w * s) / 2;
+      y = (H - h * s) / 2;
+      apply();
+    };
+    img.addEventListener("load", reset);
+    new ResizeObserver(reset).observe(stage);
+    stage.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const r = stage.getBoundingClientRect();
+      const px = e.clientX - r.left, py = e.clientY - r.top;
+      const k = Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.002));
+      const ns = Math.min(Math.max(s * k, fit * 0.5), 12);
+      x = px - (px - x) * (ns / s);
+      y = py - (py - y) * (ns / s);
+      s = ns;
+      apply();
+    }, { passive: false });
+    let drag = null;
+    stage.addEventListener("pointerdown", (e) => {
+      if (e.target.closest("button")) return;
+      drag = { px: e.clientX, py: e.clientY, x, y };
+      stage.setPointerCapture(e.pointerId);
+      stage.classList.add("dragging");
+    });
+    stage.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      x = drag.x + e.clientX - drag.px;
+      y = drag.y + e.clientY - drag.py;
+      apply();
+    });
+    const end = () => { drag = null; stage.classList.remove("dragging"); };
+    stage.addEventListener("pointerup", end);
+    stage.addEventListener("pointercancel", end);
+    stage.addEventListener("dblclick", reset);
+    return stage;
+  }
+
+  function lightbox(src, alt) {
+    const lb = document.createElement("div");
+    lb.className = "br-lightbox";
+    const stage = zoomer(src, alt);
+    const x = document.createElement("button");
+    x.className = "br-zoom-full";
+    x.textContent = "✕";
+    x.title = "close (Esc)";
+    stage.appendChild(x);
+    lb.appendChild(stage);
     const close = () => { lb.remove(); document.removeEventListener("keydown", esc, true); };
     const esc = (e) => { if (e.key === "Escape") { e.stopPropagation(); close(); } };
-    lb.addEventListener("click", close);
+    x.addEventListener("click", close);
     document.addEventListener("keydown", esc, true);
     document.body.appendChild(lb);
   }
