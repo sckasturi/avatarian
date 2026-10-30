@@ -324,6 +324,18 @@ window.AVATARIAN_CORPUS = {
       "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xhs3z6/fourth_dispatch_from_the_white_lotus/",
       "image": "reddit.5.1.png",
       "credit": "TechFilmer"
+    },
+    "sevenhavens-110.1": {
+      "what": "Nisha's poster – \"seeking\"",
+      "where": "A7H S01E10 04:13",
+      "image": "sevenhavens-110.1.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-110.2": {
+      "what": "prison entrance – ward",
+      "where": "A7H S01E10 19:58",
+      "image": "sevenhavens-110.2.png",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -6138,14 +6150,14 @@ window.AVATARIAN_CORPUS = {
       "source": "sevenhavens-107.3",
       "gloss": "Mako"
     },
-    "warmly": {
+    "afar": {
       "ipa": [
-        "w",
-        "ɔ",
+        "ə",
+        "∅",
+        "f",
+        "ɑ",
         "ɹ",
-        "m",
-        "l",
-        "i"
+        "∅"
       ],
       "count": 1,
       "sources": [
@@ -6170,22 +6182,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "reddit.5"
     },
-    "afar": {
-      "ipa": [
-        "ə",
-        "∅",
-        "f",
-        "ɑ",
-        "ɹ",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.5"
-      ],
-      "confidence": "certain",
-      "source": "reddit.5"
-    },
     "trust": {
       "ipa": [
         "t",
@@ -6201,6 +6197,54 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "reddit.5"
+    },
+    "warmly": {
+      "ipa": [
+        "w",
+        "ɔ",
+        "ɹ",
+        "m",
+        "l",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.5"
+      ],
+      "confidence": "certain",
+      "source": "reddit.5"
+    },
+    "seeking": {
+      "ipa": [
+        "s",
+        "i",
+        "k",
+        "ɪ",
+        "ŋ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-110.1"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-110.1",
+      "gloss": "seeking"
+    },
+    "ward": {
+      "ipa": [
+        "w",
+        "ɔ",
+        "ɹ",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-110.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-110.2",
+      "gloss": "ward"
     }
   },
   "conventions": {
