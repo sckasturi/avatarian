@@ -1,0 +1,24 @@
+{
+  "_submission": {
+    "at": "2026-10-30T10:16:10.688Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "batch": "9cg0kz",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "sevenhavens-110.2",
+    "what": "prison entrance – ward",
+    "where": "A7H S01E10 19:58",
+    "image": "sevenhavens-110.2.png",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "ward",
+      "spelling": "w ɔ ɹ d",
+      "source": "sevenhavens-110.2",
+      "confidence": "certain"
+    }
+  ]
+}
