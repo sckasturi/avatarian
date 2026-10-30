@@ -1,0 +1,48 @@
+{
+  "_submission": {
+    "at": "2026-10-30T10:24:11.024Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "batch": "n1hd5e",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "sevenhavens-111.3",
+    "what": "reactor screen – reactor / lock / tunnel / normal / turbine",
+    "where": "A7H S01E11 07:50",
+    "image": "sevenhavens-111.3.png",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "reactor",
+      "spelling": "ɹ i æ k t ə ɹ ∅",
+      "source": "sevenhavens-111.3",
+      "confidence": "certain"
+    },
+    {
+      "key": "lock",
+      "spelling": "l ɑ k ∅",
+      "source": "sevenhavens-111.3",
+      "confidence": "certain"
+    },
+    {
+      "key": "tunnel",
+      "spelling": "t ʌ n ʌ l ∅",
+      "source": "sevenhavens-111.3",
+      "confidence": "certain"
+    },
+    {
+      "key": "normal",
+      "spelling": "n ɔ ɹ m ə l",
+      "source": "sevenhavens-111.3",
+      "confidence": "certain"
+    },
+    {
+      "key": "turbine",
+      "spelling": "t ə ɹ b aɪ n",
+      "source": "sevenhavens-111.3",
+      "confidence": "certain"
+    }
+  ]
+}
