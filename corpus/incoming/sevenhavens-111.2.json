@@ -1,0 +1,24 @@
+{
+  "_submission": {
+    "at": "2026-10-30T10:24:11.024Z",
+    "via": "contribute.html",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "batch": "n1hd5e",
+    "submitter": "Bundas"
+  },
+  "source": {
+    "name": "sevenhavens-111.2",
+    "what": "valve 1-4",
+    "where": "A7H S01E11 07:46",
+    "image": "sevenhavens-111.2.png",
+    "credit": "Bundas"
+  },
+  "entries": [
+    {
+      "key": "valve",
+      "spelling": "v æ l v",
+      "source": "sevenhavens-111.2",
+      "confidence": "certain"
+    }
+  ]
+}
