@@ -355,6 +355,24 @@
       "where": "A7H S01E10 19:58",
       "image": "sevenhavens-110.2.png",
       "credit": "Bundas"
+    },
+    "sevenhavens-111.1": {
+      "what": "blueprint – reactor / tunnel 1 / tunnel 2",
+      "where": "A7H S01E11 06:34",
+      "image": "sevenhavens-111.1.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-111.2": {
+      "what": "valve 1-4",
+      "where": "A7H S01E11 07:46",
+      "image": "sevenhavens-111.2.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-111.3": {
+      "what": "reactor screen – reactor / lock / tunnel / normal / turbine",
+      "where": "A7H S01E11 07:50",
+      "image": "sevenhavens-111.3.png",
+      "credit": "Bundas"
     }
   },
   "entries": [
@@ -3475,6 +3493,62 @@
       "confidence": "certain",
       "gloss": "ward",
       "source": "sevenhavens-110.2"
+    },
+    {
+      "key": "reactor",
+      "spelling": "ɹ i æ k t ə ɹ ∅",
+      "confidence": "certain",
+      "gloss": "reactor",
+      "source": "sevenhavens-111.1"
+    },
+    {
+      "key": "tunnel",
+      "spelling": "t ʌ n ʌ l ∅",
+      "confidence": "certain",
+      "gloss": "tunnel",
+      "source": "sevenhavens-111.1"
+    },
+    {
+      "key": "valve",
+      "spelling": "v æ l v",
+      "confidence": "certain",
+      "gloss": "valve",
+      "source": "sevenhavens-111.2"
+    },
+    {
+      "key": "lock",
+      "spelling": "l ɑ k ∅",
+      "confidence": "certain",
+      "gloss": "lock",
+      "source": "sevenhavens-111.3"
+    },
+    {
+      "key": "normal",
+      "spelling": "n ɔ ɹ m ə l",
+      "confidence": "certain",
+      "gloss": "normal",
+      "source": "sevenhavens-111.3"
+    },
+    {
+      "key": "reactor",
+      "spelling": "ɹ i æ k t ə ɹ ∅",
+      "confidence": "certain",
+      "gloss": "reactor",
+      "source": "sevenhavens-111.3"
+    },
+    {
+      "key": "tunnel",
+      "spelling": "t ʌ n ʌ l ∅",
+      "confidence": "certain",
+      "gloss": "tunnel",
+      "source": "sevenhavens-111.3"
+    },
+    {
+      "key": "turbine",
+      "spelling": "t ə ɹ b aɪ n",
+      "confidence": "certain",
+      "gloss": "turbine",
+      "source": "sevenhavens-111.3"
     }
   ]
 }

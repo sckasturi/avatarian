@@ -336,6 +336,24 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E10 19:58",
       "image": "sevenhavens-110.2.png",
       "credit": "Bundas"
+    },
+    "sevenhavens-111.1": {
+      "what": "blueprint – reactor / tunnel 1 / tunnel 2",
+      "where": "A7H S01E11 06:34",
+      "image": "sevenhavens-111.1.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-111.2": {
+      "what": "valve 1-4",
+      "where": "A7H S01E11 07:46",
+      "image": "sevenhavens-111.2.png",
+      "credit": "Bundas"
+    },
+    "sevenhavens-111.3": {
+      "what": "reactor screen – reactor / lock / tunnel / normal / turbine",
+      "where": "A7H S01E11 07:50",
+      "image": "sevenhavens-111.3.png",
+      "credit": "Bundas"
     }
   },
   "words": {
@@ -6245,6 +6263,108 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-110.2",
       "gloss": "ward"
+    },
+    "reactor": {
+      "ipa": [
+        "ɹ",
+        "i",
+        "æ",
+        "k",
+        "t",
+        "ə",
+        "ɹ",
+        "∅"
+      ],
+      "count": 2,
+      "sources": [
+        "sevenhavens-111.1",
+        "sevenhavens-111.3"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-111.1",
+      "gloss": "reactor"
+    },
+    "tunnel": {
+      "ipa": [
+        "t",
+        "ʌ",
+        "n",
+        "ʌ",
+        "l",
+        "∅"
+      ],
+      "count": 2,
+      "sources": [
+        "sevenhavens-111.1",
+        "sevenhavens-111.3"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-111.1",
+      "gloss": "tunnel"
+    },
+    "valve": {
+      "ipa": [
+        "v",
+        "æ",
+        "l",
+        "v"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-111.2"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-111.2",
+      "gloss": "valve"
+    },
+    "lock": {
+      "ipa": [
+        "l",
+        "ɑ",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-111.3"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-111.3",
+      "gloss": "lock"
+    },
+    "normal": {
+      "ipa": [
+        "n",
+        "ɔ",
+        "ɹ",
+        "m",
+        "ə",
+        "l"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-111.3"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-111.3",
+      "gloss": "normal"
+    },
+    "turbine": {
+      "ipa": [
+        "t",
+        "ə",
+        "ɹ",
+        "b",
+        "aɪ",
+        "n"
+      ],
+      "count": 1,
+      "sources": [
+        "sevenhavens-111.3"
+      ],
+      "confidence": "certain",
+      "source": "sevenhavens-111.3",
+      "gloss": "turbine"
     }
   },
   "conventions": {
