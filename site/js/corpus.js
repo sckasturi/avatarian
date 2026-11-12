@@ -354,6 +354,12 @@ window.AVATARIAN_CORPUS = {
       "where": "A7H S01E11 07:50",
       "image": "sevenhavens-111.3.png",
       "credit": "Bundas"
+    },
+    "reddit.6": {
+      "what": "Does infamy mean evil / Was the cataclysm the end or an entarance / Jae / Geet Ruhi / Pavi / Sand or glass / Drastic or just / Would you rethink everything / Are you afraid / Do you know this song hunger / Nisha Karthik strike or defend / Freedom treason",
+      "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xtn3e7/fifth_dispatch_from_the_white_lotus/",
+      "image": "reddit.1.webp",
+      "credit": "TechFilmer"
     }
   },
   "words": {
@@ -954,7 +960,7 @@ window.AVATARIAN_CORPUS = {
         "ð",
         "ə"
       ],
-      "count": 17,
+      "count": 19,
       "sources": [
         "toph-letter",
         "katara-letter",
@@ -964,7 +970,8 @@ window.AVATARIAN_CORPUS = {
         "sevenhavens-book1.1",
         "sevenhavens-book1.2",
         "sevenhavens-book1.3",
-        "sevenhavens-book1.4"
+        "sevenhavens-book1.4",
+        "reddit.6"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -1075,13 +1082,14 @@ window.AVATARIAN_CORPUS = {
         "j",
         "u"
       ],
-      "count": 9,
+      "count": 12,
       "sources": [
         "toph-letter",
         "katara-letter",
         "instagram-3.2",
         "sevenhavens-105.5",
-        "reddit.4"
+        "reddit.4",
+        "reddit.6"
       ],
       "confidence": "certain",
       "source": "toph-letter",
@@ -1217,13 +1225,15 @@ window.AVATARIAN_CORPUS = {
         "ɑ",
         "ɹ"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "katara-letter",
-        "sevenhavens-105.4"
+        "sevenhavens-105.4",
+        "reddit.6"
       ],
       "confidence": "certain",
-      "source": "katara-letter"
+      "source": "katara-letter",
+      "gloss": "Are"
     },
     "be": {
       "ipa": [
@@ -1319,12 +1329,14 @@ window.AVATARIAN_CORPUS = {
         "d",
         "u"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "katara-letter"
+        "katara-letter",
+        "reddit.6"
       ],
       "confidence": "certain",
-      "source": "katara-letter"
+      "source": "katara-letter",
+      "gloss": "Do"
     },
     "everything": {
       "ipa": [
@@ -1337,12 +1349,14 @@ window.AVATARIAN_CORPUS = {
         "ŋ",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "katara-letter"
+        "katara-letter",
+        "reddit.6"
       ],
       "confidence": "certain",
-      "source": "katara-letter"
+      "source": "katara-letter",
+      "gloss": "everything"
     },
     "gather": {
       "ipa": [
@@ -1876,13 +1890,15 @@ window.AVATARIAN_CORPUS = {
         "s",
         "∅"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "instagram-1.1",
-        "sevenhavens-105.5"
+        "sevenhavens-105.5",
+        "reddit.6"
       ],
       "confidence": "certain",
-      "source": "instagram-1.1"
+      "source": "instagram-1.1",
+      "gloss": "this"
     },
     "trends": {
       "ipa": [
@@ -2250,7 +2266,24 @@ window.AVATARIAN_CORPUS = {
         "instagram-3.1"
       ],
       "confidence": "certain",
-      "source": "instagram-3.1"
+      "source": "instagram-3.1",
+      "alternates": [
+        {
+          "ipa": [
+            "i",
+            "v",
+            "ə",
+            "l"
+          ],
+          "count": 1,
+          "sources": [
+            "reddit.6"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true,
+      "gloss": "evil"
     },
     "fresh": {
       "ipa": [
@@ -3243,7 +3276,24 @@ window.AVATARIAN_CORPUS = {
         "instagram-2.2"
       ],
       "confidence": "certain",
-      "source": "instagram-2.2"
+      "source": "instagram-2.2",
+      "alternates": [
+        {
+          "ipa": [
+            "dʒ",
+            "ʌ",
+            "s",
+            "t"
+          ],
+          "count": 1,
+          "sources": [
+            "reddit.6"
+          ],
+          "confidence": "certain"
+        }
+      ],
+      "contested": true,
+      "gloss": "just"
     },
     "listen": {
       "ipa": [
@@ -5519,10 +5569,11 @@ window.AVATARIAN_CORPUS = {
         "n",
         "oʊ"
       ],
-      "count": 2,
+      "count": 3,
       "sources": [
         "sevenhavens-105.5",
-        "reddit.2"
+        "reddit.2",
+        "reddit.6"
       ],
       "confidence": "certain",
       "source": "sevenhavens-105.5",
@@ -5779,9 +5830,10 @@ window.AVATARIAN_CORPUS = {
         "v",
         "i"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "reddit.1"
+        "reddit.1",
+        "reddit.6"
       ],
       "confidence": "certain",
       "source": "reddit.1",
@@ -5841,13 +5893,14 @@ window.AVATARIAN_CORPUS = {
         "d",
         "∅"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "reddit.1"
+        "reddit.1",
+        "reddit.6"
       ],
       "confidence": "certain",
       "source": "reddit.1",
-      "gloss": "would"
+      "gloss": "would · Would"
     },
     "cannot": {
       "ipa": [
@@ -5981,9 +6034,10 @@ window.AVATARIAN_CORPUS = {
         "ʃ",
         "ə"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "reddit.3"
+        "reddit.3",
+        "reddit.6"
       ],
       "confidence": "certain",
       "source": "reddit.3",
@@ -6060,9 +6114,10 @@ window.AVATARIAN_CORPUS = {
         "dʒ",
         "e"
       ],
-      "count": 1,
+      "count": 2,
       "sources": [
-        "reddit.4"
+        "reddit.4",
+        "reddit.6"
       ],
       "confidence": "certain",
       "source": "reddit.4",
@@ -6365,6 +6420,372 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "sevenhavens-111.3",
       "gloss": "turbine"
+    },
+    "does": {
+      "ipa": [
+        "d",
+        "ʌ",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Does"
+    },
+    "infamy": {
+      "ipa": [
+        "ɪ",
+        "n",
+        "f",
+        "ə",
+        "m",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "infamy"
+    },
+    "mean": {
+      "ipa": [
+        "m",
+        "i",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "mean"
+    },
+    "was": {
+      "ipa": [
+        "w",
+        "ɑ",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "was"
+    },
+    "cataclysm": {
+      "ipa": [
+        "k",
+        "æ",
+        "t",
+        "ə",
+        "k",
+        "l",
+        "ɪ",
+        "s",
+        "ə",
+        "m"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "cataclysm"
+    },
+    "end": {
+      "ipa": [
+        "ɛ",
+        "n",
+        "d",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "end"
+    },
+    "or": {
+      "ipa": [
+        "ɔ",
+        "ɹ"
+      ],
+      "count": 4,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "or"
+    },
+    "entarance": {
+      "ipa": [
+        "ɛ",
+        "n",
+        "t",
+        "ɹ",
+        "ə",
+        "n",
+        "s",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "entarance"
+    },
+    "geet": {
+      "ipa": [
+        "g",
+        "i",
+        "t",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Geet"
+    },
+    "ruhi": {
+      "ipa": [
+        "ɹ",
+        "u",
+        "h",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Ruhi"
+    },
+    "sand": {
+      "ipa": [
+        "s",
+        "æ",
+        "n",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Sand"
+    },
+    "glass": {
+      "ipa": [
+        "g",
+        "l",
+        "æ",
+        "s"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "glass"
+    },
+    "drastic": {
+      "ipa": [
+        "d",
+        "ɹ",
+        "æ",
+        "s",
+        "t",
+        "ɪ",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Drastic"
+    },
+    "rethink": {
+      "ipa": [
+        "ɹ",
+        "i",
+        "θ",
+        "ɪ",
+        "ŋ",
+        "k"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "rethink"
+    },
+    "afraid": {
+      "ipa": [
+        "ə",
+        "f",
+        "ɹ",
+        "e",
+        "ɪ",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "afraid"
+    },
+    "song": {
+      "ipa": [
+        "s",
+        "ɔ",
+        "ŋ",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "song"
+    },
+    "hunger": {
+      "ipa": [
+        "h",
+        "ʌ",
+        "ŋ",
+        "g",
+        "ə",
+        "ɹ"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "hunger"
+    },
+    "karthik": {
+      "ipa": [
+        "k",
+        "ɑ",
+        "ɹ",
+        "∅",
+        "θ",
+        "ɪ",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Karthik"
+    },
+    "strike": {
+      "ipa": [
+        "s",
+        "t",
+        "ɹ",
+        "aɪ",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "strike"
+    },
+    "defend": {
+      "ipa": [
+        "d",
+        "ɪ",
+        "f",
+        "ɛ",
+        "n",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "defend"
+    },
+    "freedom": {
+      "ipa": [
+        "f",
+        "ɹ",
+        "i",
+        "∅",
+        "d",
+        "ə",
+        "m",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Freedom"
+    },
+    "treason": {
+      "ipa": [
+        "t",
+        "ɹ",
+        "i",
+        "∅",
+        "z",
+        "ə",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "treason"
     }
   },
   "conventions": {

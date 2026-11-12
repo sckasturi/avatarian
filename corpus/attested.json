@@ -373,6 +373,12 @@
       "where": "A7H S01E11 07:50",
       "image": "sevenhavens-111.3.png",
       "credit": "Bundas"
+    },
+    "reddit.6": {
+      "what": "Does infamy mean evil / Was the cataclysm the end or an entarance / Jae / Geet Ruhi / Pavi / Sand or glass / Drastic or just / Would you rethink everything / Are you afraid / Do you know this song hunger / Nisha Karthik strike or defend / Freedom treason",
+      "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xtn3e7/fifth_dispatch_from_the_white_lotus/",
+      "image": "reddit.1.webp",
+      "credit": "TechFilmer"
     }
   },
   "entries": [
@@ -3549,6 +3555,254 @@
       "confidence": "certain",
       "gloss": "turbine",
       "source": "sevenhavens-111.3"
+    },
+    {
+      "key": "afraid",
+      "spelling": "ə f ɹ e ɪ d",
+      "confidence": "certain",
+      "gloss": "afraid",
+      "source": "reddit.6"
+    },
+    {
+      "key": "are",
+      "spelling": "ɑ ɹ",
+      "confidence": "certain",
+      "gloss": "Are",
+      "source": "reddit.6"
+    },
+    {
+      "key": "cataclysm",
+      "spelling": "k æ t ə k l ɪ s ə m",
+      "confidence": "certain",
+      "gloss": "cataclysm",
+      "source": "reddit.6"
+    },
+    {
+      "key": "defend",
+      "spelling": "d ɪ f ɛ n d",
+      "confidence": "certain",
+      "gloss": "defend",
+      "source": "reddit.6"
+    },
+    {
+      "key": "do",
+      "spelling": "d u",
+      "confidence": "certain",
+      "gloss": "Do",
+      "source": "reddit.6"
+    },
+    {
+      "key": "does",
+      "spelling": "d ʌ z ∅",
+      "confidence": "certain",
+      "gloss": "Does",
+      "source": "reddit.6"
+    },
+    {
+      "key": "drastic",
+      "spelling": "d ɹ æ s t ɪ k ∅",
+      "confidence": "certain",
+      "gloss": "Drastic",
+      "source": "reddit.6"
+    },
+    {
+      "key": "end",
+      "spelling": "ɛ n d ∅",
+      "confidence": "certain",
+      "gloss": "end",
+      "source": "reddit.6"
+    },
+    {
+      "key": "entarance",
+      "spelling": "ɛ n t ɹ ə n s ∅",
+      "confidence": "certain",
+      "gloss": "entarance",
+      "source": "reddit.6"
+    },
+    {
+      "key": "everything",
+      "spelling": "ɛ v ɹ i θ ɪ ŋ ∅",
+      "confidence": "certain",
+      "gloss": "everything",
+      "source": "reddit.6"
+    },
+    {
+      "key": "evil",
+      "spelling": "i v ə l",
+      "confidence": "certain",
+      "gloss": "evil",
+      "source": "reddit.6"
+    },
+    {
+      "key": "freedom",
+      "spelling": "f ɹ i ∅ d ə m ∅",
+      "confidence": "certain",
+      "gloss": "Freedom",
+      "source": "reddit.6"
+    },
+    {
+      "key": "geet",
+      "spelling": "g i t ∅",
+      "confidence": "certain",
+      "gloss": "Geet",
+      "source": "reddit.6"
+    },
+    {
+      "key": "glass",
+      "spelling": "g l æ s",
+      "confidence": "certain",
+      "gloss": "glass",
+      "source": "reddit.6"
+    },
+    {
+      "key": "hunger",
+      "spelling": "h ʌ ŋ g ə ɹ",
+      "confidence": "certain",
+      "gloss": "hunger",
+      "source": "reddit.6"
+    },
+    {
+      "key": "infamy",
+      "spelling": "ɪ n f ə m i",
+      "confidence": "certain",
+      "gloss": "infamy",
+      "source": "reddit.6"
+    },
+    {
+      "key": "jae",
+      "spelling": "dʒ e",
+      "confidence": "certain",
+      "gloss": "Jae",
+      "source": "reddit.6"
+    },
+    {
+      "key": "just",
+      "spelling": "dʒ ʌ s t",
+      "confidence": "certain",
+      "gloss": "just",
+      "source": "reddit.6"
+    },
+    {
+      "key": "karthik",
+      "spelling": "k ɑ ɹ ∅ θ ɪ k ∅",
+      "confidence": "certain",
+      "gloss": "Karthik",
+      "source": "reddit.6"
+    },
+    {
+      "key": "know",
+      "spelling": "n oʊ",
+      "confidence": "certain",
+      "gloss": "know",
+      "source": "reddit.6"
+    },
+    {
+      "key": "mean",
+      "spelling": "m i n ∅",
+      "confidence": "certain",
+      "gloss": "mean",
+      "source": "reddit.6"
+    },
+    {
+      "key": "nisha",
+      "spelling": "n ɪ ʃ ə",
+      "confidence": "certain",
+      "gloss": "Nisha",
+      "source": "reddit.6"
+    },
+    {
+      "key": "or",
+      "spelling": "ɔ ɹ",
+      "confidence": "certain",
+      "gloss": "or",
+      "times": 4,
+      "source": "reddit.6"
+    },
+    {
+      "key": "pavi",
+      "spelling": "p ʌ v i",
+      "confidence": "certain",
+      "gloss": "Pavi",
+      "source": "reddit.6"
+    },
+    {
+      "key": "rethink",
+      "spelling": "ɹ i θ ɪ ŋ k",
+      "confidence": "certain",
+      "gloss": "rethink",
+      "source": "reddit.6"
+    },
+    {
+      "key": "ruhi",
+      "spelling": "ɹ u h i",
+      "confidence": "certain",
+      "gloss": "Ruhi",
+      "source": "reddit.6"
+    },
+    {
+      "key": "sand",
+      "spelling": "s æ n d",
+      "confidence": "certain",
+      "gloss": "Sand",
+      "source": "reddit.6"
+    },
+    {
+      "key": "song",
+      "spelling": "s ɔ ŋ ∅",
+      "confidence": "certain",
+      "gloss": "song",
+      "source": "reddit.6"
+    },
+    {
+      "key": "strike",
+      "spelling": "s t ɹ aɪ k ∅",
+      "confidence": "certain",
+      "gloss": "strike",
+      "source": "reddit.6"
+    },
+    {
+      "key": "the",
+      "spelling": "ð ə",
+      "confidence": "certain",
+      "gloss": "the",
+      "times": 2,
+      "source": "reddit.6"
+    },
+    {
+      "key": "this",
+      "spelling": "ð ɪ s ∅",
+      "confidence": "certain",
+      "gloss": "this",
+      "source": "reddit.6"
+    },
+    {
+      "key": "treason",
+      "spelling": "t ɹ i ∅ z ə n ∅",
+      "confidence": "certain",
+      "gloss": "treason",
+      "source": "reddit.6"
+    },
+    {
+      "key": "was",
+      "spelling": "w ɑ z ∅",
+      "confidence": "certain",
+      "gloss": "was",
+      "source": "reddit.6"
+    },
+    {
+      "key": "would",
+      "spelling": "w ʊ d ∅",
+      "confidence": "certain",
+      "gloss": "Would",
+      "source": "reddit.6"
+    },
+    {
+      "key": "you",
+      "spelling": "j u",
+      "confidence": "certain",
+      "gloss": "you",
+      "times": 3,
+      "source": "reddit.6"
     }
   ]
 }
