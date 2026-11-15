@@ -37,9 +37,13 @@ GROUPS = [
     ("geometry", [sys.executable, "tools/check_geom.py"]),
     ("python", [sys.executable, "-m", "unittest", "discover",
                 "-s", "tests", "-p", "test_*.py", "-q"]),
-    # A glob, not "tests/" — passing the directory makes node try to
-    # REQUIRE it as a module, which fails on a folder with no index.
-    ("node", ["node", "--test", "tests/*.test.js"]),
+    # The files by name, not "tests/" — passing the directory makes node try
+    # to REQUIRE it as a module, which fails on a folder with no index — and
+    # not a "tests/*.test.js" pattern either: node only expands that itself
+    # from v21, so on node 20 (what CI runs) it found nothing and failed.
+    ("node", ["node", "--test",
+              *sorted(str(p.relative_to(ROOT))
+                      for p in (ROOT / "tests").glob("*.test.js"))]),
 ]
 
 
