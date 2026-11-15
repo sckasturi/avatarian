@@ -50,7 +50,20 @@ const CONFIDENCE = new Set(["certain", "probable", "unclear"]);
 // They are not counted toward the even-blocks rule — mirrors
 // build_corpus.py's PUNCTUATION, so a spelling the corpus accepts (e.g. the
 // possessive "she's" -> `ʃ i 's`) is not rejected here first.
-const PUNCTUATION = new Set([",", ".", "?", "!", "--", "'s"]);
+// Kept in step with PUNCTUATION in tools/build_corpus.py — the colon was
+// missing here, so a spelling the validator accepts was refused at the door.
+const PUNCTUATION = new Set([",", ".", ":", "?", "!", "--", "'s"]);
+
+// How long a stranger's free text may be. Generous — the longest real
+// values in the corpus are a fraction of these — but finite, so one
+// submission cannot carry a megabyte of text into the repo.
+const MAX_TEXT = {
+  key: 80, spelling: 400, gloss: 120, note: 500,
+  what: 300, where: 300, credit: 80, submitter: 80,
+};
+function tooLong(value, field) {
+  return String(value == null ? "" : value).trim().length > MAX_TEXT[field];
+}
 
 // Anti-spam ceiling per IP per day. A real contributor files a handful; a
 // script files thousands. Tune in wrangler.toml if you like.
@@ -78,6 +91,22 @@ export default {
       return json({ ok: false, error: "The submission service hit an "
         + "unexpected error. Nothing was recorded." }, 500, origin);
     }
+  },
+
+  // The pure pieces, reachable from tests/worker.test.js. Hung off the
+  // default export rather than exported by name: the Workers runtime reads
+  // a module's named exports as entrypoints, and these are not that.
+  internals: {
+    get validate() { return validate; },
+    get buildStaged() { return buildStaged; },
+    get prTitle() { return prTitle; },
+    get prBody() { return prBody; },
+    get safeStem() { return safeStem; },
+    get oneLine() { return oneLine; },
+    get codeSpan() { return codeSpan; },
+    get sniffImage() { return sniffImage; },
+    get wrapPkcs1ToPkcs8() { return wrapPkcs1ToPkcs8; },
+    get derLen() { return derLen; },
   },
 };
 
@@ -147,10 +176,19 @@ function validate(body) {
   if (!sources.length) return "The submission has no images.";
   if (sources.length > 24) return "That is too many images for one submission.";
 
+  if (tooLong(body && body.submitter, "submitter")) {
+    return `Your name is too long (${MAX_TEXT.submitter} characters at most).`;
+  }
   let totalBytes = 0;
   for (const src of sources) {
     const where = src && src.where
       ? `"${String(src.where).slice(0, 40)}"` : "an image";
+    for (const field of ["what", "where", "credit"]) {
+      if (tooLong(src && src[field], field)) {
+        return `The "${field}" text on ${where} is too long `
+          + `(${MAX_TEXT[field]} characters at most).`;
+      }
+    }
     const entries = src && src.entries;
     if (!Array.isArray(entries) || entries.length === 0) {
       return `${where} has no sightings.`;
@@ -161,6 +199,12 @@ function validate(body) {
     for (const e of entries) {
       const key = String(e && e.key || "").trim();
       if (!key) return `A sighting on ${where} is missing its word.`;
+      for (const field of ["key", "spelling", "gloss", "note"]) {
+        if (tooLong(e[field], field)) {
+          return `"${key.slice(0, 40)}" has a ${field === "key" ? "word" : field} `
+            + `that is too long (${MAX_TEXT[field]} characters at most).`;
+        }
+      }
       const tokens = String(e && e.spelling || "").split(" ").filter(Boolean);
       if (tokens.length === 0) return `"${key}" has no spelling.`;
       // The whole-blocks rule: two slots per block, so an even count — but
@@ -187,6 +231,12 @@ function validate(body) {
         + `(${Object.keys(IMAGE_EXT).join(", ")}).`;
     }
     // base64 decodes to ~3/4 its length; check before allocating.
+    // The file must BE what it says it is: the declared type picks the
+    // extension it is committed under and the page serves it by.
+    const actual = sniffImage(parsed.base64);
+    if (actual !== parsed.mime) {
+      return `${where}'s image is not a valid ${IMAGE_EXT[parsed.mime]} file.`;
+    }
     const bytes = parsed.base64.length * 0.75;
     if (bytes > MAX_IMAGE) return `${where}'s image is over the 24 MB limit.`;
     totalBytes += bytes;
@@ -197,7 +247,26 @@ function validate(body) {
   if (body && body.category && !safeStem(body.category)) {
     return "The category has no usable characters.";
   }
+  // Two images that would be filed under one name (the same slide number
+  // twice) can't both be committed: the second write fails half-way through
+  // the batch. Say so here, before anything touches GitHub.
+  const cat = safeStem(body && body.category);
+  if (cat) {
+    const seen = new Set();
+    for (const [i, src] of sources.entries()) {
+      const slide = slideOf(src, i);
+      if (seen.has(slide)) {
+        return `Two images are both numbered ${slide} — give each its own number.`;
+      }
+      seen.add(slide);
+    }
+  }
   return null;
+}
+
+/** The slide number an image is filed under: its own, else its position. */
+function slideOf(src, index) {
+  return Number.isInteger(src && src.slide) && src.slide > 0 ? src.slide : index + 1;
 }
 
 // ---------------------------------------------------------------------
@@ -216,7 +285,7 @@ function buildStaged(body, request) {
   const ua = (request.headers.get("User-Agent") || "").slice(0, 200);
 
   const items = sources.map((src, i) => {
-    const slide = Number.isInteger(src.slide) && src.slide > 0 ? src.slide : i + 1;
+    const slide = slideOf(src, i);
     const name = cat ? `${cat}.${slide}` : `submission-${batchId}-${i + 1}`;
     const parsed = parseDataUrl(src.image.dataUrl);
     const imageFile = `${name}.${IMAGE_EXT[parsed.mime]}`;
@@ -294,27 +363,39 @@ async function openPullRequest(env, staged) {
     ref: `refs/heads/${branch}`, sha: baseSha,
   });
 
-  // 3. Each image into site/sources/ (the deployed copy the corpus page
-  //    links to and build_corpus.check looks for), then its staged JSON.
-  for (const item of staged.items) {
-    await putFile(token, owner, repo, branch,
-      `site/sources/${item.imageFile}`, item.imageBase64,
-      `corpus: reference image for ${item.name} (community submission)`);
-    await putFile(token, owner, repo, branch,
-      `corpus/incoming/${item.slug}.json`, utf8ToBase64(item.submissionJson),
-      `corpus: stage ${item.words.join(", ")} from ${item.name} `
-      + `(community submission)`);
-  }
+  // From here on the branch exists, so a failure must take it back down:
+  // a half-filled branch with no pull request is invisible to the review
+  // console and would otherwise sit in the repo for good.
+  try {
+    // 3. Each image into site/sources/ (the deployed copy the corpus page
+    //    links to and build_corpus.check looks for), then its staged JSON.
+    for (const item of staged.items) {
+      await putFile(token, owner, repo, branch,
+        `site/sources/${item.imageFile}`, item.imageBase64,
+        `corpus: reference image for ${item.name} (community submission)`);
+      await putFile(token, owner, repo, branch,
+        `corpus/incoming/${item.slug}.json`, utf8ToBase64(item.submissionJson),
+        oneLine(`corpus: stage ${item.words.join(", ")} from ${item.name} `
+          + `(community submission)`));
+    }
 
-  // 4. One pull request for the whole batch.
+    // 4. One pull request for the whole batch.
+    const pr = await gh(token, `/repos/${owner}/${repo}/pulls`, "POST", {
+      title: prTitle(staged), head: branch, base, body: prBody(staged),
+    });
+    return pr.html_url;
+  } catch (err) {
+    await gh(token, `/repos/${owner}/${repo}/git/refs/heads/${branch}`, "DELETE")
+      .catch((e) => console.error("could not remove branch", branch, e));
+    throw err;
+  }
+}
+
+function prTitle(staged) {
   const n = staged.items.length;
-  const title = n > 1
+  return oneLine(n > 1
     ? `corpus: ${staged.category || staged.items[0].name} (${n} images, community submission)`
-    : `corpus: ${staged.items[0].words.join(", ")} (community submission)`;
-  const pr = await gh(token, `/repos/${owner}/${repo}/pulls`, "POST", {
-    title, head: branch, base, body: prBody(staged),
-  });
-  return pr.html_url;
+    : `corpus: ${staged.items[0].words.join(", ")} (community submission)`);
 }
 
 function prBody(staged) {
@@ -328,7 +409,7 @@ function prBody(staged) {
   }
   lines.push(`**Submitted by:** ${staged.submitter ? escapeMd(staged.submitter) : "_anonymous_"}`, ``);
   for (const item of staged.items) {
-    lines.push(`- \`${item.name}\` — ${item.words.map((w) => `\`${w}\``).join(", ")}`
+    lines.push(`- \`${item.name}\` — ${item.words.map((w) => `\`${codeSpan(w)}\``).join(", ")}`
       + (item.credit ? ` · read by ${escapeMd(item.credit)}` : ""));
   }
   lines.push(
@@ -541,6 +622,43 @@ function escapeMd(s) {
     .replace(/[\r\n]+/g, " ")
     .replace(/[\\`*_{}\[\]()#+\-.!|<>~@]/g, (c) => "\\" + c)
     .slice(0, 120);
+}
+
+/**
+ * A stranger's text on ONE line of bounded length, for a PR title or a
+ * commit subject: a word key is free text, and a newline in it would
+ * otherwise start a commit body, or a title would run to kilobytes.
+ */
+function oneLine(s, max = 200) {
+  const flat = String(s || "").replace(/\s+/g, " ").trim();
+  return flat.length > max ? flat.slice(0, max - 1) + "…" : flat;
+}
+
+/**
+ * A stranger's text for the inside of a markdown `code span`: a backtick
+ * would close the span and let the rest render as markdown (mentions,
+ * links, images), so backticks and line breaks are taken out.
+ */
+function codeSpan(s) {
+  return String(s || "").replace(/[`\r\n]+/g, " ").trim().slice(0, 80);
+}
+
+/**
+ * The image type a file's first bytes say it is, or null. Looks only at
+ * the signature: enough to refuse HTML or a script sent as "image/png".
+ */
+function sniffImage(base64) {
+  let head;
+  try {
+    head = atob(String(base64).slice(0, 16));       // the first 12 bytes
+  } catch {
+    return null;
+  }
+  if (head.startsWith("\x89PNG\r\n\x1a\n")) return "image/png";
+  if (head.startsWith("\xff\xd8\xff")) return "image/jpeg";
+  if (head.startsWith("GIF87a") || head.startsWith("GIF89a")) return "image/gif";
+  if (head.startsWith("RIFF") && head.slice(8, 12) === "WEBP") return "image/webp";
+  return null;
 }
 
 function parseDataUrl(s) {

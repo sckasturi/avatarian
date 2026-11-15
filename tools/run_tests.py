@@ -9,10 +9,13 @@ Three groups, and one that can't be here:
   geometry   tools/check_geom.py — proves designer/js/geom.js still
              matches tools/glyphspec.py, ~243 generated cases. This
              predates the suite; it is folded in so there is one command.
-  python     tests/test_*.py — the corpus validator and the save path.
+  python     tests/test_*.py — the corpus validator and the save path,
+             folding submissions, shipping a design, and the local
+             servers' cross-site guard.
   node       tests/*.test.js — the block model, the sounds syntax, the
              lookup chain and reverse-decode, run against the site's own
-             files in a shared context (see tests/harness.js).
+             files in a shared context (see tests/harness.js); plus the
+             contribution Worker's pure pieces.
 
   browser    tests/recognise.html — the recogniser samples SVG paths with
              getPointAtLength, which node has no answer for. Open the

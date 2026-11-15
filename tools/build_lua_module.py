@@ -20,7 +20,7 @@ import json, re, sys, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "site" / "js" / "manifest.js"
 SOUNDS = ROOT / "site" / "js" / "sounds.js"
-OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "wiki" / "Module_Avatarian.lua"
+OUT = ROOT / "wiki" / "Module_Avatarian.lua"
 
 
 def brace_object(src, after):
@@ -70,7 +70,9 @@ def lua_map(name, pairs):
     return f"local {name} = {{{body}}}"
 
 
-def main():
+def main(out=None):
+    """Write the file. `out` overrides the default path under wiki/."""
+    out = pathlib.Path(out) if out else OUT
     man = MANIFEST.read_text(encoding="utf-8")
     snd = SOUNDS.read_text(encoding="utf-8")
     glyphs = brace_object(man, "AVATARIAN_GLYPHS")
@@ -116,8 +118,8 @@ def main():
         "}",
     ])
 
-    OUT.write_text(LOGIC.replace("--[[DATA]]--", data), encoding="utf-8")
-    print(f"Wrote {OUT} — {len(glyph_rows)} glyphs, {round(OUT.stat().st_size / 1024, 1)} KB")
+    out.write_text(LOGIC.replace("--[[DATA]]--", data), encoding="utf-8")
+    print(f"Wrote {out} — {len(glyph_rows)} glyphs, {round(out.stat().st_size / 1024, 1)} KB")
 
 
 # The renderer. Everything below the DATA marker is hand-written Lua ported from
@@ -505,4 +507,4 @@ return p
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1] if len(sys.argv) > 1 else None)

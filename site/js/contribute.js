@@ -62,54 +62,8 @@ const state = {
   submitting: false,
 };
 
-// ---------------------------------------------------------------------
-// Spelling <-> symbols  (verbatim from the workbench — the box takes the
-// same ASCII codes the main site does, and stores IPA)
-// ---------------------------------------------------------------------
-
-function spellingToIPA(text) {
-  return soundTextToWords(text).flatMap((w) => w.ipa);
-}
-
-function ipaToSpelling(ipa) {
-  return ipa && ipa.length ? wordsToSoundText([{ word: "", ipa }]) : "";
-}
-
-/** Blocks, as the renderer will pair them: two symbols each, in order. */
-function blocksOf(ipa) {
-  const out = [];
-  for (let i = 0; i < ipa.length; i += 2) out.push([ipa[i], ipa[i + 1] ?? "∅"]);
-  return out;
-}
-
-/**
- * What the model would write for a word: its derived pronunciation,
- * paired two at a time, with a null on the odd end. This is the
- * prediction an attested spelling is interesting *against*.
- *
- * `derivedLookup` rather than `lookupWord` on purpose: the corpus must
- * not seed a transcription that is about to be compared against the
- * corpus — asking the model what it thinks while it is not allowed to
- * consult the answer.
- */
-function derivedSpelling(word) {
-  const { ipa, tier } = derivedLookup(word);
-  if (!ipa.length) return null;
-  const tokens = ipa.slice();
-  if (tokens.length % 2) tokens.push("∅");
-  return { tokens, tier };
-}
-
-/**
- * The lookup key for a word, normalised the way the corpus stores keys.
- * Mirrors build_corpus.normalise_key (via normaliseWord from g2p.js), so
- * "Zuko" and "zuko" are one word and a key the validator would bounce is
- * never built here. The word as typed is kept as the gloss.
- */
-function corpusKey(word) {
-  return String(word || "").trim().split(/\s+/)
-    .map(normaliseWord).filter(Boolean).join(" ");
-}
+// Spelling <-> symbols, the palette, and the repeat-counting are shared
+// with the workbench: see site/js/transcribe.js.
 
 // ---------------------------------------------------------------------
 // Status + problems
@@ -152,19 +106,6 @@ function readSourceFields() {
 // ---------------------------------------------------------------------
 // The reference image (kept in memory, sent with the submission)
 // ---------------------------------------------------------------------
-
-/** Drag-and-drop onto one zone. */
-function wireDrop(zone, onFile) {
-  const stop = (e) => { e.preventDefault(); e.stopPropagation(); };
-  zone.addEventListener("dragover", (e) => { stop(e); zone.classList.add("is-over"); });
-  zone.addEventListener("dragleave", (e) => { stop(e); zone.classList.remove("is-over"); });
-  zone.addEventListener("drop", (e) => {
-    stop(e);
-    zone.classList.remove("is-over");
-    const file = e.dataTransfer?.files?.[0];
-    if (file) onFile(file);
-  });
-}
 
 async function imageDropped(file) {
   if (!IMAGE_TYPES[file.type]) {
@@ -217,10 +158,6 @@ function soundTarget() {
   return $("impText");
 }
 
-function trackSoundField(el) {
-  el.addEventListener("focus", () => { activeSoundField = el; });
-}
-
 /** Tell whatever owns the field that it changed. */
 function afterSoundEdit(box) {
   box.dispatchEvent(new Event("input", { bubbles: true }));
@@ -266,30 +203,6 @@ function deleteToken() {
   afterSoundEdit(box);
 }
 
-function buildPalette() {
-  const box = $("palette");
-  const glyphs = window.AVATARIAN_GLYPHS || {};
-  const order = { consonant: 0, vowel: 1 };
-  const rows = Object.entries(glyphs)
-    .map(([ipa, entry]) => ({ ipa, entry }))
-    .sort((a, b) =>
-      (order[a.entry.type] ?? 2) - (order[b.entry.type] ?? 2)
-      || a.entry.name.localeCompare(b.entry.name));
-
-  for (const { ipa, entry } of rows) {
-    const code = IPA_TO_CODE[ipa] || ipa;
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "pal-btn";
-    btn.title = `${code} — ${ipa}`;
-    btn.innerHTML = `<span>${entry.flat || entry.svg}</span>`
-      + `<span class="pal-code"></span>`;
-    btn.querySelector(".pal-code").textContent = code;
-    btn.addEventListener("click", () => insertToken(code));
-    box.appendChild(btn);
-  }
-}
-
 // ---------------------------------------------------------------------
 // Transcribing the source
 // ---------------------------------------------------------------------
@@ -315,39 +228,6 @@ let importSeeded = new Map();
 let importConfirmed = new Set();
 
 /**
- * English in, a first draft of the sounds out. Odd counts get the
- * trailing null the block model requires. Mid-word nulls are deliberately
- * NOT guessed — canon puts them where the model cannot derive them (this
- * is what `appa` is), so leaving them out keeps the draft honestly wrong
- * rather than invisibly wrong.
- */
-function deriveFromEnglish() {
-  const words = ($("impEnglish").value.match(/[A-Za-z][A-Za-z'’-]*/g) || []);
-  if (!words.length) {
-    showProblems(["Type an English line first."]);
-    return;
-  }
-  importSeeded = new Map();
-  importConfirmed = new Set();
-
-  const chunks = [], missing = [];
-  for (const word of words) {
-    const { ipa } = derivedLookup(word);
-    if (!ipa.length) { missing.push(word); continue; }
-    const tokens = ipa.slice();
-    if (tokens.length % 2) tokens.push("∅");
-    importSeeded.set(corpusKey(word), tokens.join(" "));
-    chunks.push(`${ipaToSpelling(tokens)} (${word})`);
-  }
-  $("impText").value = chunks.join(" / ");
-  parseImport();
-  showProblems(missing.length
-    ? [`No pronunciation for: ${missing.join(", ")}. Those words were left `
-       + `out — spell them by hand.`]
-    : []);
-}
-
-/**
  * Split the transcription into words and work out what each one is.
  * A caption wins over a suggestion: if you already know the word, saying
  * so is not something the reverse-decode should overrule.
@@ -370,34 +250,6 @@ function parseImport() {
   });
   recountRows();
   renderImportRows();
-}
-
-/**
- * Work out each row's relation, then fold repeats onto the row that first
- * recorded them. A repeat is not thrown away: the word really was written
- * that many times, and three renderings rule out a slip of the pen in a
- * way one does not. It is counted on the FIRST row, so the source yields
- * one entry carrying `times` rather than N the validator would reject.
- */
-function recountRows() {
-  importRows.forEach((row) => {
-    row.relation = importRelation(row);
-    row.times = 1;
-  });
-  for (const row of importRows) {
-    if ((row.relation || {}).kind !== "repeat") continue;
-    const first = importRows[row.relation.at];
-    if (first) first.times += 1;
-  }
-}
-
-function repaintAllFlags() {
-  for (const row of importRows) {
-    if (!row.flagBox) continue;
-    row.el.classList.toggle("is-unchecked", row.needsCheck && !row.checked);
-    row.el.classList.toggle("is-repeat", (row.relation || {}).kind === "repeat");
-    paintFlags(row, row.flagBox);
-  }
 }
 
 /**
@@ -445,18 +297,6 @@ function importRelation(row) {
       : { kind: "conflict", spelling: (attested.ipa || []).join(" ") };
   }
   return { kind: "new" };
-}
-
-/** Is this row still exactly what the model wrote for it? */
-function seedUnchanged(row) {
-  const seed = importSeeded.get(corpusKey(row.word));
-  return seed !== undefined && seed === row.ipa.join(" ");
-}
-
-/** Rewrite the transcription box from the rows, so a row edit lands there. */
-function syncImportText() {
-  $("impText").value = wordsToSoundText(
-    importRows.map((r) => ({ word: r.word || "", ipa: r.ipa })));
 }
 
 /**

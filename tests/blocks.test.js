@@ -4,8 +4,8 @@
  * These are the structural claims the whole script rests on, and the
  * cases are attested spellings rather than invented ones — so a change
  * to pairing, nulls or heights is checked against every word anybody has
- * actually seen written, at once. That is what `CORPUS.md` §4 means by
- * the corpus being a research instrument and not just an accuracy patch.
+ * actually seen written, at once. That is what makes the corpus a
+ * research instrument and not just an accuracy patch.
  *
  * The 9-row test does something a normal test doesn't: it **reports the
  * C-C blocks rather than failing on them**. A C-C block is two full-size
@@ -58,7 +58,7 @@ test("pairing an even list is the exact inverse of flattening it", () => {
   // This is the property the corpus format depends on: a finished
   // spelling is stored flat, and pairing has to give the blocks back
   // unchanged. If it ever stopped being true, every entry would need a
-  // second render path — which is what CORPUS.md originally assumed.
+  // second render path — which is what the first design assumed.
   for (const entry of entries(ctx)) {
     if (entry.ipa.length % 2) continue;
     const flat = pairUp(entry.ipa).flatMap(b => [b.top, b.bottom]);

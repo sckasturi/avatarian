@@ -35,6 +35,7 @@ no way to write an entry through the UI that the CLI would reject.
 """
 
 import json
+import os
 import pathlib
 import shutil
 import sys
@@ -88,7 +89,7 @@ HEADER = """/* Auto-generated — do not edit by hand.
  *
  * The attested corpus: words somebody has SEEN written in Avatarian,
  * stored as the finished block structure flattened two-slots-per-block,
- * in IPA. See CORPUS.md.
+ * in IPA.
  *
  * This wins the lookup chain in g2p.js, ahead of EXCEPTIONS. Everything
  * below it produces phonemes and lets pairUp() choose the blocks; these
@@ -463,6 +464,16 @@ def compile_record(sightings, source_order):
     return record
 
 
+def write_atomic(path, text):
+    """Write a file so that it is either the old contents or the new, never
+    half of one: write beside it, then rename over it. A save that dies
+    part-way (a full disk, a closed laptop) must not leave attested.json
+    truncated."""
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    os.replace(tmp, path)
+
+
 def write_js(sources, records, conventions=None):
     payload = {"sources": sources, "words": records}
     # Emitted under their own key, apart from `words`, and only when there
@@ -471,7 +482,7 @@ def write_js(sources, records, conventions=None):
     if conventions:
         payload["conventions"] = conventions
     body = json.dumps(payload, ensure_ascii=False, indent=2)
-    DST.write_text(f"{HEADER}window.AVATARIAN_CORPUS = {body};\n", encoding="utf-8")
+    write_atomic(DST, f"{HEADER}window.AVATARIAN_CORPUS = {body};\n")
     return DST
 
 
@@ -487,9 +498,14 @@ def order_entries(data):
                                  normalise_key(e.get("key", ""))))
 
 
-def sync_images():
-    """Copy filed reference images into the deployed site (site/sources/)
-    so the public corpus page can link to a source.
+def sync_images(data=None):
+    """Copy the reference images the corpus CITES into the deployed site
+    (site/sources/) so the public corpus page can link to a source.
+
+    Only cited images: corpus/sources/ is a working folder and collects
+    re-drops, renamed leftovers and pictures not yet filed against a
+    source, none of which should be published. An image starts shipping
+    the moment a saved source names it.
 
     Additive: it never deletes, so running on a fresh clone — where
     corpus/sources/ is empty but site/sources/ holds the committed images
@@ -497,11 +513,16 @@ def sync_images():
     """
     if not IMAGES.exists():
         return
+    if data is None:
+        data = load() if SRC.exists() else {}
+    cited = {s.get("image") for s in (data.get("sources") or {}).values()
+             if isinstance(s, dict) and s.get("image")}
     SITE_IMAGES.mkdir(parents=True, exist_ok=True)
-    for src in IMAGES.iterdir():
-        if not src.is_file() or src.name == ".gitkeep":
+    for name in sorted(cited):
+        src = IMAGES / name
+        if not src.is_file():
             continue
-        dst = SITE_IMAGES / src.name
+        dst = SITE_IMAGES / name
         if not dst.exists() or src.stat().st_mtime > dst.stat().st_mtime:
             shutil.copy2(src, dst)
 
@@ -515,22 +536,27 @@ def save(data):
     `_readme` and any other top-level keys are carried through from the
     file on disk, so the notes at the top survive a save from the UI.
     """
+    # Order FIRST, then compile from the ordered entries. The JS lists words
+    # in the order their first sighting appears, so compiling from the
+    # caller's order (a fold appends) made corpus.js differ from what a
+    # plain `build_corpus.py` run writes from the very file saved here.
+    data = {"sources": data.get("sources") or {},
+            "entries": order_entries(data)}
     errors, records = check(data)
     if errors:
         return errors, None
 
     out = load() if SRC.exists() else {}
-    out["sources"] = data.get("sources") or {}
-    out["entries"] = order_entries(data)
+    out["sources"] = data["sources"]
+    out["entries"] = data["entries"]
     SRC.parent.mkdir(parents=True, exist_ok=True)
-    SRC.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n",
-                   encoding="utf-8")
+    write_atomic(SRC, json.dumps(out, ensure_ascii=False, indent=2) + "\n")
     # The generated file carries the conventions too, so a corpus save
     # never drops the spellings you have decided on. They come off disk,
     # already validated when they were saved through save_conventions().
     _, conventions = check_conventions(load_conventions())
     write_js(out["sources"], records, conventions)
-    sync_images()
+    sync_images(out)
     return [], records
 
 
@@ -553,8 +579,8 @@ def save_conventions(conventions):
     out = load_conventions()
     out["conventions"] = order_conventions({"conventions": conventions})
     CONVENTIONS_SRC.parent.mkdir(parents=True, exist_ok=True)
-    CONVENTIONS_SRC.write_text(
-        json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_atomic(CONVENTIONS_SRC,
+                 json.dumps(out, ensure_ascii=False, indent=2) + "\n")
 
     data = load() if SRC.exists() else {"sources": {}, "entries": []}
     _, records = check(data)
@@ -581,7 +607,7 @@ def main():
         return 1
 
     write_js(data.get("sources") or {}, records, conventions)
-    sync_images()
+    sync_images(data)
     phrases = sum(1 for k in records if " " in k)
     unsure = sum(1 for v in records.values() if v["confidence"] != "certain")
     sightings = len(data.get("entries") or [])

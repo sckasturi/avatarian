@@ -56,13 +56,13 @@ import subprocess
 import sys
 import urllib.parse
 from datetime import datetime, timezone
-from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 import glyphspec                                        # noqa: E402
 import build_glyphs as bg                               # noqa: E402
 import promote as promote_mod                           # noqa: E402
+from localserver import LocalHandler, serve              # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WEB = ROOT / "designer"
@@ -90,9 +90,6 @@ SITE_FILES = {
     "js/manifest.js", "js/corpus.js", "js/render.js", "js/g2p.js",
     "js/sounds.js", "css/blocks.css", "js/blockgrid.js", "css/blockgrid.css",
 }
-SITE_TYPES = {".js": "application/javascript", ".css": "text/css",
-              ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
-              ".webp": "image/webp", ".gif": "image/gif"}
 # The source images too (site/sources/*), for the block review's source
 # tabs: one plain filename, no subfolders, an image suffix.
 SOURCE_IMAGE = re.compile(r"sources/[A-Za-z0-9._-]+\.(png|jpe?g|webp|gif)")
@@ -371,12 +368,7 @@ def ship_tweaks():
     import build_lua_module
     import build_css_only
     for mod in (build_manifest, build_lua_module, build_css_only):
-        mod = importlib.reload(mod)
-        if mod is build_css_only:
-            # It reads its output path off sys.argv at import, which here
-            # is the server's own command line.
-            mod.OUT = ROOT / "wiki" / "Avatarian-css-only.css"
-        mod.main()
+        importlib.reload(mod).main()
     return {"shipped": load_tweaks()}
 
 
@@ -391,38 +383,10 @@ def load_designs():
     return out
 
 
-class Handler(SimpleHTTPRequestHandler):
-    def __init__(self, *a, **kw):
-        super().__init__(*a, directory=str(WEB), **kw)
-
-    # --- plumbing ---------------------------------------------------------
-
-    def send_json(self, payload, status=200):
-        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-        self.send_response(status)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store")
-        self.end_headers()
-        self.wfile.write(body)
-
-    def read_json(self):
-        length = int(self.headers.get("Content-Length") or 0)
-        if not length:
-            return None
-        return json.loads(self.rfile.read(length).decode("utf-8"))
-
-    def end_headers(self):
-        # The main site is bitten regularly by aggressive caching of its
-        # generated files; a designer that serves a stale editor after an
-        # edit would waste the same afternoon.
-        if not self.path.startswith("/api/"):
-            self.send_header("Cache-Control", "no-store")
-        super().end_headers()
-
-    def log_message(self, fmt, *args):
-        if self.path.startswith("/api/") and self.command != "GET":
-            sys.stderr.write("%s %s\n" % (self.command, self.path))
+class Handler(LocalHandler):
+    WEB = WEB
+    SITE = SITE
+    SITE_FILES = SITE_FILES
 
     def stem(self, prefix):
         name = self.path[len(prefix):].strip("/")
@@ -440,26 +404,15 @@ class Handler(SimpleHTTPRequestHandler):
         if self.path == "/api/block-tweaks":
             return self.send_json(load_tweaks())
         if self.path.startswith("/site/"):
-            return self.send_site(self.path[len("/site/"):].split("?")[0])
+            return self.send_site(urllib.parse.unquote(
+                self.path[len("/site/"):].split("?")[0]))
         return super().do_GET()
 
-    def send_site(self, rel):
-        """One of the main site's own files, so the live preview is drawn
-        by the product's code rather than a copy of it."""
-        rel = urllib.parse.unquote(rel)
-        if rel not in SITE_FILES and not (SOURCE_IMAGE.fullmatch(rel) and ".." not in rel):
-            return self.send_error(404)
-        path = SITE / rel
-        try:
-            body = path.read_bytes()
-        except OSError:
-            return self.send_error(404)
-        self.send_response(200)
-        ctype = SITE_TYPES.get(path.suffix.lower(), "text/plain")
-        self.send_header("Content-Type", ctype if ctype.startswith("image/") else ctype + "; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
+    def site_allows(self, rel):
+        """The allow-listed files, plus the source images for the block
+        review's source tabs."""
+        return rel in SITE_FILES or bool(
+            SOURCE_IMAGE.fullmatch(rel) and ".." not in rel)
 
     def do_POST(self):
         # Checked before the per-name route: "-all" is not a valid stem,
@@ -587,14 +540,10 @@ class Handler(SimpleHTTPRequestHandler):
 
 def main():
     DESIGNS.mkdir(exist_ok=True)
-    server = HTTPServer(("127.0.0.1", PORT), Handler)
     n = len(list(DESIGNS.glob("*.json")))
     print(f"Glyph designer on http://localhost:{PORT}/")
     print(f"Designs in {DESIGNS.relative_to(ROOT)}/ — {n} saved.")
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print("\nstopped")
+    serve(Handler, PORT)
 
 
 if __name__ == "__main__":

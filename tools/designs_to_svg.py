@@ -109,7 +109,11 @@ def report():
         print()
 
     known = {r["name"] for r in rows}
-    orphans = [n for n in designs if n not in known]
+    # A `<name>_cluster` design is that sound's cluster form, read by the
+    # build straight off disk — it belongs to `<name>`, so it is no orphan.
+    def base(n):
+        return n[:-len(bg.CLUSTER_SUFFIX)] if n.endswith(bg.CLUSTER_SUFFIX) else n
+    orphans = [n for n in designs if base(n) not in known]
     if orphans:
         print("designs with no matching sound:", ", ".join(orphans), "\n")
 

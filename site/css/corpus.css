@@ -1,0 +1,155 @@
+/* The corpus page (corpus.html). */
+
+  /* Corpus page only. Everything structural is in style.css / blocks.css;
+     this is the grid of words and its controls. */
+  .backlink { font-weight: bold; font-size: 0.95rem; }
+  .corpus-controls {
+    display: flex; gap: 10px 14px; flex-wrap: wrap; align-items: center;
+    margin: 18px 0 2px;
+  }
+  .corpus-controls input[type="search"],
+  .corpus-controls select {
+    font: inherit; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+  }
+  .corpus-controls input[type="search"] { min-width: 12rem; flex: 1 1 12rem; }
+  .corpus-controls .filter-toggle {
+    font: inherit; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+    cursor: pointer;
+  }
+  .corpus-controls .filter-toggle:hover { border-color: var(--accent); }
+  /* Pressed: reads as "on" with the same accent the contested cards use. */
+  .corpus-controls .filter-toggle[aria-pressed="true"] {
+    border-color: var(--accent); color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+  .corpus-count { color: var(--muted); font-size: 0.9rem; }
+
+  /* Structural search — a collapsible builder over the block data. The
+     three dropdowns write the query box, the box parses back to them, and
+     either one filters the grid and rings the matching blocks. */
+  .adv-search {
+    margin: 8px 0 2px; border: 1px solid var(--line);
+    border-radius: 10px; background: var(--surface);
+  }
+  .adv-search > summary {
+    cursor: pointer; padding: 9px 12px; color: var(--ink);
+    font-size: 0.92rem; user-select: none; list-style-position: inside;
+  }
+  .adv-search > summary:hover { color: var(--accent); }
+  .adv-search[open] > summary { border-bottom: 1px solid var(--line); }
+  /* Slide the panel open/closed where the browser can size hidden content
+     (Chromium, newer Safari/Firefox); elsewhere it toggles instantly. */
+  @supports (interpolate-size: allow-keywords) {
+    :root { interpolate-size: allow-keywords; }
+  }
+  .adv-search::details-content {
+    height: 0; overflow: clip;
+    transition: height 0.25s ease, content-visibility 0.25s ease;
+    transition-behavior: allow-discrete;
+  }
+  .adv-search[open]::details-content { height: auto; }
+  @media (prefers-reduced-motion: reduce) {
+    .adv-search::details-content { transition: none; }
+  }
+  .adv-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .adv-builder { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; }
+  .adv-builder label, .adv-query label {
+    display: flex; flex-direction: column; gap: 4px;
+    font-size: 0.78rem; color: var(--muted);
+  }
+  .adv-builder select, .adv-query input[type="text"] {
+    font: inherit; color: var(--ink); background: var(--card);
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+  }
+  .adv-query { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+  .adv-query input[type="text"] {
+    width: 100%; box-sizing: border-box;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .adv-note { margin: 0; font-size: 0.85rem; color: var(--muted); min-height: 1.15em; }
+  .adv-note.is-error { color: var(--accent); }
+  .adv-help { margin: 0; font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .adv-help code {
+    background: var(--card); padding: 1px 5px; border-radius: 5px;
+    border: 1px solid var(--line); font-size: 0.92em;
+  }
+  /* A block the current query matched — rung, not filled, so the glyphs
+     stay legible. outline keeps it out of the layout. */
+  .avatarian-block.q-hit {
+    outline: 2px solid var(--accent); outline-offset: 1px; border-radius: 4px;
+  }
+
+  .legend { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
+  .legend u { text-decoration-color: var(--accent); text-underline-offset: 3px; }
+
+  /* Cards flow and each sizes to its word, so a long word gets a wider
+     card (spanning what would be several columns) and always stays on
+     ONE line rather than wrapping. */
+  .word-grid {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    align-items: flex-start; margin-top: 20px;
+  }
+  .word-card {
+    flex: 0 0 auto; min-width: 92px; position: relative;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; padding: 16px 16px 12px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .word-card:hover, .word-card:focus-visible {
+    border-color: var(--accent); box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+    outline: none;
+  }
+  /* `display:flex` above would otherwise beat the [hidden] attribute's
+     display:none, so filtering set the flag but never hid the card. */
+  .word-card[hidden] { display: none; }
+  /* An exact search match, pulled to the front and ringed. */
+  .word-card.is-exact { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .word-card .avatarian-word { --av-size: 40px; margin: 0; }
+  .word-card .draw { min-height: calc(40px * 1.8); display: flex;
+    align-items: center; justify-content: center; }
+
+  /* The source preview that appears on hover/focus — a floating panel so
+     it is never clipped by a card edge or the grid. */
+  /* The source preview popup (#pop / #pop2) now lives in css/sourcepop.css,
+     shared with the translator. */
+  /* B4 (decided): a line under attested words. Everything here is
+     attested, so this doubles as the legend for the mark the translator
+     uses. */
+  .word-en {
+    font-weight: 600; color: var(--ink);
+    text-decoration: underline; text-decoration-color: var(--accent);
+    text-underline-offset: 3px; text-decoration-thickness: 1px;
+  }
+  /* The pronunciation as text, under the word: the IPA the block spelling
+     encodes, and the same sounds in the translator's readable respelling. */
+  .word-ipa {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.72rem; line-height: 1.35; color: var(--ink);
+    opacity: 0.75; word-break: break-word;
+  }
+  .word-sounds {
+    font-size: 0.72rem; line-height: 1.35; color: var(--muted);
+    word-break: break-word;
+  }
+  .word-meta { color: var(--muted); font-size: 0.76rem; line-height: 1.5; }
+  .word-card.is-contested { border-color: var(--accent); }
+  .tag {
+    display: inline-block; font-size: 0.68rem; letter-spacing: 0.03em;
+    text-transform: uppercase; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 999px; padding: 1px 7px;
+  }
+  /* A contested word flags its other spellings inline in the meta line;
+     the hover preview is where you see how each source actually drew it. */
+  .word-meta .alt-flag { color: var(--accent); }
+  .empty { color: var(--muted); margin-top: 24px; }
+  /* An open call to contribute new sightings. */
+  .contribute {
+    color: var(--muted); font-size: 0.85rem; margin: 10px 0 0;
+    padding: 8px 12px; border-left: 2px solid var(--accent);
+    background: var(--surface); border-radius: 0 8px 8px 0;
+  }
+  .contribute a { color: var(--accent); }
+  .mark-unread { opacity: 0.6; }

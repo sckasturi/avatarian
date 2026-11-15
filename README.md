@@ -26,7 +26,7 @@ corpus/          attested.json — words seen written, with their source images;
 designs/         one JSON per glyph, as drawn on the lattice
 tools/           the build scripts and the two local editor servers
 contrib-worker/  the Cloudflare Worker behind the public contribute page
-tests/           block model, sounds syntax, corpus validator (no deps)
+tests/           block model, sounds syntax, corpus validator, the Worker's checks (no deps)
 ```
 
 Deeper docs:
@@ -61,7 +61,14 @@ python3 tools/build_glyphs.py && python3 tools/build_manifest.py   # glyph SVGs 
 python3 tools/build_corpus.py                                      # attested.json -> site/js/corpus.js
 python3 tools/build_lua_module.py                                  # -> wiki/Module_Avatarian.lua
 python3 tools/build_css_only.py                                    # -> wiki/Avatarian-css-only.css
-python3 tools/build_corpus_wikitable.py                            # the corpus as a wiki table
+```
+
+The pronunciation dictionary (`site/js/lexicon.js`) is generated too, but
+from CMUdict, which is not in this repo — it only needs rebuilding if the
+dictionary itself changes:
+
+```bash
+python3 tools/build_lexicon.py path/to/cmudict.dict                # -> site/js/lexicon.js
 ```
 
 ## Test
@@ -137,3 +144,13 @@ a PR. CI validates it identically either way.
 
 See **`AVATARIAN.md` § Credit** — the single place credits are maintained
 (the decipherment sources, the author, and the pronunciation dictionary).
+
+## License
+
+- **Code** — MIT, see [`LICENSE`](LICENSE).
+- **Glyph drawings and the corpus** — CC BY 4.0, see
+  [`LICENSE-DATA.md`](LICENSE-DATA.md), which also lists what is *not*
+  covered: the script itself, the decipherment, and the source images, which
+  belong to their owners.
+- **Pronunciation dictionary** — derived from the CMU Pronouncing Dictionary;
+  its licence is in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md).

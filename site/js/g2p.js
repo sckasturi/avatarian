@@ -30,13 +30,13 @@
  * The corpus differs from the rest IN KIND, not just in priority. The
  * others answer "what does this word sound like" and let pairUp() decide
  * the blocks; a corpus entry is the finished block structure, nulls and
- * all. That is why `appa` can live there and nowhere else. See CORPUS.md.
+ * all. That is why `appa` can live there and nowhere else.
  */
 
 // A CONFIRMED WORD LEAVES THIS TABLE. It does not get corrected here —
 // it lives in corpus/attested.json, which records the spelling somebody
 // SAW rather than a reading of it, and which wins above this table
-// anyway. Nineteen words were removed this way (session 12, TODO 33):
+// anyway. Nineteen words were removed this way:
 //
 //   the of to and you your are is have when come do no be me
 //   what katara bending metalbending
@@ -47,7 +47,7 @@
 // right thing because the corpus wins, but `derivedLookup` reads this
 // table directly and so the workbench's "against the model" panel was
 // being told canon disagreed with the model when the wrong reading was
-// the model's. That is `toph` again (TODO item 24).
+// the model's. That is `toph` again.
 //
 // The model's honest answer for those words is now CMU's, one layer
 // down, which is what the panel should have been comparing against all
@@ -71,12 +71,12 @@ const EXCEPTIONS = {
 
   // --- the Avatar vocabulary, NOT YET CHECKED against any sample ---
   // Ordinary guesses from English spelling. Every one is provisional
-  // until somebody has seen the word written — TODO item 24 — and two
+  // until somebody has seen the word written, and two
   // of the first four audited (`aang`, `toph`) turned out wrong, so
   // expect more. A word that gets confirmed does NOT get corrected
   // here: it moves to corpus/attested.json, which records the observed
   // spelling rather than a reading of it, and which wins above this
-  // table. See CORPUS.md.
+  // table.
   "world": "w ə ɹ l d", "water": "w ɔ t ə ɹ",
   "earth": "ə ɹ θ", "air": "e ɹ", "avatar": "æ v ə t ɑ ɹ",
   "sokka": "s ɑ k ə",
@@ -368,7 +368,7 @@ function normaliseWord(word) {
 
 /**
  * Which layer of the chain answered, so the UI can say how much to trust
- * a spelling (TODO item 21, CORPUS.md §3):
+ * a spelling:
  *
  *   attested  somebody has seen this written              corpus
  *   derived   the sounds are known, the blocks inferred   EXCEPTIONS / lexicon

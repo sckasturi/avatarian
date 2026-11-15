@@ -13,7 +13,7 @@ import json, re, sys, urllib.parse, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "site" / "js" / "manifest.js"
-OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "wiki" / "Avatarian-css-only.css"
+OUT = ROOT / "wiki" / "Avatarian-css-only.css"
 
 
 def glyphs():
@@ -155,7 +155,9 @@ def toc_rules():
     return out
 
 
-def main():
+def main(out=None):
+    """Write the file. `out` overrides the default path under wiki/."""
+    out = pathlib.Path(out) if out else OUT
     rules = []
     for g in glyphs().values():
         if g.get("status") == "PLACEHOLDER":
@@ -188,9 +190,9 @@ def main():
             for dy in sorted({t["dots"] for t in block_tweaks().values() if t.get("dots")}):
                 moved = re.sub(r'(<circle [^>]*cy=")([\d.]+)', lambda m: f"{m.group(1)}{float(m.group(2)) + dy:g}", base)
                 rules.append(f'.g-z_d{dy:g}{{-webkit-mask-image:url("{mask_uri(moved)}")}}')
-    OUT.write_text(LAYOUT + "\n".join(rules + toc_rules()) + "\n", encoding="utf-8")
-    print(f"Wrote {OUT} — {len(rules)} glyph classes, {round(OUT.stat().st_size / 1024, 1)} KB")
+    out.write_text(LAYOUT + "\n".join(rules + toc_rules()) + "\n", encoding="utf-8")
+    print(f"Wrote {out} — {len(rules)} glyph classes, {round(out.stat().st_size / 1024, 1)} KB")
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1] if len(sys.argv) > 1 else None)

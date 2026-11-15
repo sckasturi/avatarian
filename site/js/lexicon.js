@@ -6,7 +6,13 @@
  * mapping decisions, the important one being that unstressed AH
  * becomes schwa, which is what finally gives the site vowel
  * reduction. g2p.js's rules stay the fallback for anything not
- * in here. CMU dictionary: BSD-style licence.
+ * in here.
+ *
+ * Derived from the CMU Pronouncing Dictionary,
+ * Copyright (C) 1993-2015 Carnegie Mellon University. All rights
+ * reserved. Redistributed under its licence, reproduced in full in
+ * THIRD-PARTY-NOTICES.md at the root of the repository
+ * (https://github.com/sckasturi/avatarian).
  *
  * FORMAT: one entry per line, `<n><suffix> <codes>`, sorted.
  * `n` is a single character: reuse that many leading characters

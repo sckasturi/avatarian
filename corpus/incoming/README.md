@@ -33,7 +33,7 @@ fold into the real corpus is a reviewed, validated step you run.
 Self-contained, so it can be validated and promoted on its own. The
 `source` block is keyed the same as an `attested.json` source; the entries
 are ordinary corpus entries (finished block structure, flattened two slots
-per block, in IPA — see [CORPUS.md](../../CORPUS.md)).
+per block, in IPA — the format `tools/build_corpus.py` documents and checks).
 
 ```json
 {

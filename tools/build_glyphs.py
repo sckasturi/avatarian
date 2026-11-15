@@ -14,33 +14,38 @@ Design system
   viewBox      0 0 100 100 for every glyph (uniform metrics)
   stroke       currentColor, width 9, square caps + miter joins
   dots         filled circles at r = UNIT/2, so a dot fills one grid cell
-  safe area    inset 16 from each edge for consonants
-  vowels       drawn small/wide, they sit in the lower 1/4 of a block
+  lattice      5x5 cells of 16 units, centred with a 10-unit margin
+  vowels       also ship as a flattened 100x80 copy (see "Flat" below)
+
+The drawing system's numbers (stroke, lattice unit, flat ratio, mark box)
+are defined once, in tools/glyphspec.py, and imported here.
 
 Run:  python3 tools/build_glyphs.py
 """
 
+import copy
 import json
 import pathlib
 import re
+import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+
+import glyphspec                                        # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "site" / "assets" / "glyphs"
 MANIFEST_JSON = ROOT / "site" / "assets" / "glyph_manifest.json"
 
-SW = 9          # stroke width
+SW = glyphspec.SW        # stroke width
+UNIT = glyphspec.UNIT    # svg units per lattice cell
 
-# A dot is the same weight as a stroke, so its radius is the stroke's
-# half-width. Measured off the reference: in the /aɪ/ photo the rule and
-# the dots either side of it are the same thickness to the pixel.
-#
-# Derived from SW so the two can't drift. They had: dots were authored
-# at 6.5, with several at 7 and 8, against a stroke of 9 — up to nearly
-# twice the weight, which reads as beads sitting on the writing rather
-# than part of it. Don't reintroduce a per-glyph radius without a
-# reference that actually shows a heavier dot.
-UNIT = 16       # svg units per lattice cell
-DOT = UNIT / 2  # circle fills one grid square
+# A dot fills one grid square: radius UNIT/2, so its diameter is a whole
+# lattice cell. One size for the whole set — dots were once authored at
+# 6.5, 7 and 8 by eye, which read as beads of different weights. A design
+# may still ask for glyphspec's `s` or `l` dot where a reference clearly
+# shows one; don't reach for them otherwise.
+DOT = glyphspec.DOT_SIZES[glyphspec.DEFAULT_DOT]
 
 # Vowels are authored at the same weight as everything else. When the
 # proportional-height mode is on they get stretched (full width, 4/5
@@ -51,11 +56,7 @@ DOT = UNIT / 2  # circle fills one grid square
 # equal-height mode, where there is no stretch at all.
 VOWEL_SW = SW
 
-HEADER = (
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" '
-    'fill="none" stroke="currentColor" stroke-width="{sw}" '
-    'stroke-linecap="square" stroke-linejoin="miter">'
-)
+HEADER = glyphspec.HEADER
 
 
 def svg(body, sw=SW, box=100, w=100):
@@ -84,10 +85,9 @@ def svg(body, sw=SW, box=100, w=100):
 # square set exactly, whichever height mode is on.
 #
 # The script's own units: a consonant is 5 tall, a vowel 4, and the two
-# stack flush, so a consonant over a vowel is 9 units. Kept in step with
-# tools/glyphspec.py, which the designer and designs/ both go through.
+# stack flush, so a consonant over a vowel is 9 units.
 
-FLAT = 0.8          # 4/5
+FLAT = glyphspec.FLAT    # 4/5
 FLAT_SUFFIX = "_flat"
 FLAT_BOX = 100 * FLAT
 CLUSTER_SUFFIX = "_cluster"        # a glyph's independently-drawn cluster (C-C) form
@@ -208,7 +208,7 @@ def mark(cols, body):
 # ---------------------------------------------------------------------------
 
 CONSONANTS = {
-    "p": path("M 50 18 L 18 50 L 50 82 L 82 50 L 66 34 L 50 18 Z"),
+    "p": path("M 50 18 L 18 50 L 50 82 L 82 50 L 50 18 Z"),
     "b": path("M 18 82 A 54.67 54.67 0 0 1 82 18 L 82 82") + dot(50, 58),
     "t": path("M 18 18 L 82 18 L 82 82")
          + path("M 18 50 L 18 82 L 50 82 L 50 50 L 18 50 Z"),
@@ -236,7 +236,6 @@ CONSONANTS = {
     # Orientation is NOT by slot: /s/ appears both ways in the same slot, which
     # no flip rule can produce. It mirrors above another consonant (11 of 12
     # attested) and nowhere else (0 of 20). See render.js TURNS_ABOVE_CLUSTER.
-    # TODO item 30.
     "s": path("M 18 82 L 50 18 L 82 82") + dot(50, 66),
     # Traced from the reference (z.svg): the stem bends into each leg on a
     # 1-unit radius (smooth outside shoulders, sharp crotch), the legs run at
@@ -400,10 +399,13 @@ PUNCT_TO_NAME = {".": "period", ":": "colon", ",": "comma", "?": "question",
 # the punctuation — nine rows, unpaired, beside the word — but five columns
 # wide, a letter's full width, so it can be drawn anywhere in the line.
 WORD_MARKS = {"'s": "possessive"}
-MARK_FULL_BOX = 164   # viewBox height, every mark (9*16 + 2*10)
-MARK_FULL_UNIT = 16   # one lattice column
-MARK_FULL_MARGIN = 10  # clearance either side
-def mark_width(cols):  # viewBox width for a mark that many columns wide
+MARK_FULL_BOX = int(glyphspec.MARK_FULL_BOX_H)    # viewBox height, every mark
+MARK_FULL_UNIT = UNIT                             # one lattice column
+MARK_FULL_MARGIN = int(glyphspec.MARGIN_X)        # clearance either side
+
+
+def mark_width(cols):
+    """viewBox width for a mark that many columns wide."""
     return cols * MARK_FULL_UNIT + 2 * MARK_FULL_MARGIN
 
 
@@ -602,7 +604,6 @@ def port_variants(design, base_body, form):
     nodes, one variant per column. Empty when the design has none. A glyph
     with ports on two sides (like /p/, for /l/ and /r/) gets a variant per
     column, and render.js draws only the one its block partner shares."""
-    import glyphspec
     if not design:
         return {}
     frame = glyphspec.frame_for(design.get("type", "consonant"), form,
@@ -620,8 +621,6 @@ def load_clusters():
     rendered through glyphspec — a glyph with one draws THIS in a two-consonant
     block instead of its base form. /r/'s cluster form mirrors /l/'s, keeping
     the l/r pair. No file means the glyph behaves as before (flip rules)."""
-    import copy
-    import glyphspec
     out, ports = {}, {}
     if DESIGNS.is_dir():
         for p in sorted(DESIGNS.glob(f"*{CLUSTER_SUFFIX}.json")):
@@ -713,12 +712,6 @@ def refresh():
 def main():
     refresh()
     OUT.mkdir(parents=True, exist_ok=True)
-
-    # remove the old raster set so nothing stale is served
-    removed = 0
-    for old in OUT.glob("*.png"):
-        old.unlink()
-        removed += 1
 
     # Per-column connection variants. A glyph's base and cluster forms each
     # keep a "_connect_<col>" file per port; render.js draws one when the
@@ -835,7 +828,7 @@ def main():
     )
 
     n_ph = sum(1 for v in manifest.values() if v["status"] == "PLACEHOLDER")
-    print(f"Removed {removed} old PNG(s), {len(stale)} stale SVG(s)"
+    print(f"Removed {len(stale)} stale SVG(s)"
           f"{': ' + ', '.join(p.name for p in stale) if stale else ''}.")
     print(f"Drew {len(drawn)} glyphs, {n_ph} placeholder(s).")
     print(f"Manifest: {len(manifest)} entries -> {MANIFEST_JSON.relative_to(ROOT)}")

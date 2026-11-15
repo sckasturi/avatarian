@@ -17,8 +17,9 @@ live on the next Pages deploy. REJECT closes the PR.
 
 It shells out to `gh` (already authenticated) for everything on GitHub, and
 to `git` for the local fold + push, so it inherits your credentials rather
-than holding any of its own. It binds to 127.0.0.1 and is not hardened —
-don't expose it.
+than holding any of its own. It binds to 127.0.0.1 and refuses cross-site
+requests (tools/localserver.py), but it is not otherwise hardened — don't
+expose it.
 
 API
 ---
@@ -33,13 +34,15 @@ import json
 import pathlib
 import re
 import subprocess
+import functools
 import sys
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from urllib.parse import parse_qs, urlparse
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 import build_corpus                                      # noqa: E402
 import promote_corpus                                    # noqa: E402
+from localserver import IMAGE_TYPES, LocalHandler, serve  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WEB = ROOT / "review"
@@ -53,11 +56,11 @@ SITE_FILES = {
     "js/manifest.js", "js/corpus.js", "js/sounds.js", "js/render.js",
     "css/blocks.css",
 }
-SITE_TYPES = {".js": "application/javascript", ".css": "text/css"}
-IMAGE_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
-               ".webp": "image/webp", ".gif": "image/gif"}
-
-CONTRIB_BRANCH = re.compile(r"^contrib/")
+# A whole branch name, not just its prefix: it is interpolated into a
+# GitHub API URL, so it must not be able to carry a `&` or a `#`.
+CONTRIB_BRANCH = re.compile(r"^contrib/[A-Za-z0-9._-]+$")
+# Everything an approve may change, and so everything its commit stages.
+PROMOTE_PATHS = ["corpus", "site/js/corpus.js", "site/sources"]
 SAFE_PATH = re.compile(r"^site/sources/[A-Za-z0-9._-]+$")
 
 
@@ -74,39 +77,23 @@ def gh_json(args):
     return json.loads(out or "null")
 
 
+@functools.lru_cache(maxsize=1)
 def repo_slug():
-    """owner/name for the current repo, from gh."""
+    """owner/name for the current repo, from gh. Asked once: it does not
+    change while the console runs, and every image request needs it."""
     data = gh_json(["repo", "view", "--json", "owner,name"])
     return data["owner"]["login"], data["name"]
 
 
-class Handler(SimpleHTTPRequestHandler):
-    def __init__(self, *a, **kw):
-        super().__init__(*a, directory=str(WEB), **kw)
-
-    # --- plumbing ---------------------------------------------------------
-
-    def send_json(self, payload, status=200):
-        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-        self.send_response(status)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store")
-        self.end_headers()
-        self.wfile.write(body)
-
-    def read_json(self):
-        length = int(self.headers.get("Content-Length") or 0)
-        return json.loads(self.rfile.read(length).decode("utf-8")) if length else {}
-
-    def log_message(self, fmt, *args):
-        if self.command != "GET":
-            sys.stderr.write("%s %s\n" % (self.command, self.path))
+class Handler(LocalHandler):
+    WEB = WEB
+    SITE = SITE
+    SITE_FILES = SITE_FILES
 
     # --- routes -----------------------------------------------------------
 
     def do_GET(self):
-        path = self.path.split("?")[0]
+        path = self.route()
         try:
             if path == "/api/submissions":
                 return self.get_submissions()
@@ -119,7 +106,7 @@ class Handler(SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):
-        path = self.path.split("?")[0]
+        path = self.route()
         try:
             if path == "/api/approve":
                 return self.approve()
@@ -128,21 +115,6 @@ class Handler(SimpleHTTPRequestHandler):
         except Exception as e:                           # noqa: BLE001
             return self.send_json({"error": f"{type(e).__name__}: {e}"}, 400)
         return self.send_error(404)
-
-    def send_site(self, rel):
-        if rel not in SITE_FILES:
-            return self.send_error(404)
-        p = SITE / rel
-        try:
-            body = p.read_bytes()
-        except OSError:
-            return self.send_error(404)
-        self.send_response(200)
-        self.send_header("Content-Type",
-                         SITE_TYPES.get(p.suffix, "text/plain") + "; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
 
     # --- submissions ------------------------------------------------------
 
@@ -199,11 +171,10 @@ class Handler(SimpleHTTPRequestHandler):
         return self.send_json({"submissions": out, "repo": f"{owner}/{repo}"})
 
     def get_image(self):
-        from urllib.parse import parse_qs, urlparse
         q = parse_qs(urlparse(self.path).query)
         branch = (q.get("branch") or [""])[0]
         path = (q.get("path") or [""])[0]
-        if not branch or not SAFE_PATH.match(path):
+        if not CONTRIB_BRANCH.match(branch) or not SAFE_PATH.match(path):
             return self.send_error(404)
         owner, repo = repo_slug()
         p = subprocess.run(
@@ -213,12 +184,8 @@ class Handler(SimpleHTTPRequestHandler):
         if p.returncode != 0:
             return self.send_error(404)
         suffix = pathlib.Path(path).suffix.lower()
-        self.send_response(200)
-        self.send_header("Content-Type", IMAGE_TYPES.get(suffix, "application/octet-stream"))
-        self.send_header("Content-Length", str(len(p.stdout)))
-        self.send_header("Cache-Control", "no-store")
-        self.end_headers()
-        self.wfile.write(p.stdout)
+        self.send_bytes(p.stdout,
+                        IMAGE_TYPES.get(suffix, "application/octet-stream"))
 
     # --- actions ----------------------------------------------------------
 
@@ -232,7 +199,7 @@ class Handler(SimpleHTTPRequestHandler):
         front, every edit is validated before GitHub is touched, and each
         step's output is returned so a failure says exactly how far it got.
         """
-        body = self.read_json()
+        body = self.read_json() or {}
         number = int(body.get("number"))
         sources = body.get("sources")
         if not isinstance(sources, list):
@@ -285,7 +252,7 @@ class Handler(SimpleHTTPRequestHandler):
                         "out": (out or "").strip(), "err": (err or "").strip()})
             return ok
 
-        # Refuse on a dirty tree — the commit below stages everything.
+        # Refuse on a dirty tree, so the fold lands in a commit of its own.
         ok, out, _ = run(["git", "status", "--porcelain"])
         if out.strip():
             return self.send_json({
@@ -320,7 +287,8 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.send_json({"error": f"promote failed for {s['slug']} — see the log",
                                        "log": log}, 500)
 
-        if not step("stage", ["git", "add", "-A"]):
+        # Only the paths a promote changes — never the whole tree.
+        if not step("stage", ["git", "add", "-A", "--", *PROMOTE_PATHS]):
             return self.send_json({"error": "git add failed", "log": log}, 500)
         # One commit for the batch. Name it by the shared category when there
         # is one, else by the count.
@@ -340,7 +308,7 @@ class Handler(SimpleHTTPRequestHandler):
         return self.send_json({"ok": True, "log": log})
 
     def reject(self):
-        body = self.read_json()
+        body = self.read_json() or {}
         number = int(body.get("number"))
         comment = str(body.get("comment") or "").strip()
         argv = ["gh", "pr", "close", str(number), "--delete-branch"]
@@ -363,12 +331,8 @@ def main():
         print(f"Could not reach GitHub via gh: {e}\n"
               f"Run `gh auth login` first.", file=sys.stderr)
         return 1
-    server = HTTPServer(("127.0.0.1", PORT), Handler)
     print(f"Review console on http://localhost:{PORT}/  ({owner}/{repo})")
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print("\nstopped")
+    serve(Handler, PORT)
     return 0
 
 

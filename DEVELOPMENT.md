@@ -28,7 +28,8 @@ Wiki (Fandom).
 
 ```
 site/            <- deploy this folder to GitHub Pages / Cloudflare Pages
-  index.html       the whole app: English↔Avatarian, glyph reference
+  index.html       the translator: English↔Avatarian, glyph reference
+  js/translator.js the translator page's own script (the others are shared)
   js/g2p.js        English -> IPA (corpus, then dictionary, then rules)
   js/sounds.js     the ASCII sounds syntax, in and out (site + designer)
   js/render.js     IPA -> Avatarian glyphs (the site; the wiki uses a Lua port)
@@ -37,8 +38,12 @@ site/            <- deploy this folder to GitHub Pages / Cloudflare Pages
   js/recognise.js  draw a glyph -> ranked matches (samples manifest.js)
   js/draw.js       the drawing pad, shared with the workbench
   js/reverse.js    sounds -> likely English words, fuzzy (site + workbench)
+  js/transcribe.js the transcription pieces the workbench and the public
+                   contribute page share (palette, repeat-counting, keys)
+  js/corpuspage.js, js/sourcespage.js   the corpus and sources pages' scripts
   css/blocks.css   block layout (site + wiki + the designer's live preview)
   css/style.css    the page around it
+  css/corpus.css, css/sources.css       those two pages' own styles
   assets/glyphs/   one clean SVG per phoneme
   assets/glyph_manifest.json   generated index of glyph files + status
   assets/reference/            generated — traced shapes from the key
@@ -77,10 +82,11 @@ tools/
   glyphspec.py          the design format + the one way to render it
   designer_server.py    serves designer/ and writes designs/ (port 8792)
   corpus_server.py      serves workbench/ and writes corpus/ (port 8793)
+  localserver.py        what the local servers share, including the check
+                        that refuses requests from other websites
   build_corpus.py       validates corpus/attested.json -> js/corpus.js
   build_lua_module.py   the wiki renderer: Module:Avatarian (Lua port of render.js)
   build_css_only.py     the wiki glyph styles: the av-* CSS-only stylesheet
-  build_corpus_wikitable.py  the corpus as a MediaWiki table
   run_tests.py          the whole suite, one command
 
   designs_to_svg.py     a design -> SVG, or -> a build_glyphs.py entry
@@ -100,7 +106,6 @@ wiki/            <- paste these into the Fandom wiki, once. NO JAVASCRIPT:
   Module_Avatarian.lua          generated: Module:Avatarian, the Lua renderer
   Avatarian-css-only.css        generated: the av-* glyph shapes + block layout
   TESTING.md                    how to test on a personal account first
-  Corpus_table.wiki             generated: the corpus as a {{Avatarian}} table
 
 ```
 

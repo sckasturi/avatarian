@@ -26,7 +26,13 @@ tests/recognise.html      open it in a browser
 | `g2p.test.js` | the lookup chain and its order |
 | `reverse.test.js` | fuzzy reverse-decode |
 | `lua_golden.test.js` | the wiki's Lua renderer == `render.js`, over the whole corpus |
+| `corpusquery.test.js` | the corpus page's search syntax |
+| `worker.test.js` | the contribution Worker: its pre-filter, staging, and PR text escaping |
 | `test_build_corpus.py` | the corpus validator and the save path |
+| `test_promote_corpus.py` | folding a community submission into the corpus |
+| `test_promote.py` | the source edit that ships a design into `build_glyphs.py` |
+| `test_connections.py` | connection strokes to the block seam |
+| `test_localserver.py` | the local servers refuse requests from other websites |
 | `recognise.html` | draw-to-recognise accuracy (browser only) |
 
 `lua_golden.test.js` renders every corpus word through both the shipped

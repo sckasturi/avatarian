@@ -32,11 +32,6 @@
           "y": 2.5,
           "seg": "line",
           "connect": "down"
-        },
-        {
-          "x": 3.5,
-          "y": 1.5,
-          "seg": "line"
         }
       ],
       "closeSeg": {
@@ -299,16 +294,6 @@
           2.504,
           0.457
         ]
-      ]
-    },
-    {
-      "kind": "path",
-      "closed": false,
-      "nodes": [
-        {
-          "x": 0.5,
-          "y": 2.5
-        }
       ]
     }
   ],

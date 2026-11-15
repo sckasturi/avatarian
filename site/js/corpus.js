@@ -4,7 +4,7 @@
  *
  * The attested corpus: words somebody has SEEN written in Avatarian,
  * stored as the finished block structure flattened two-slots-per-block,
- * in IPA. See CORPUS.md.
+ * in IPA.
  *
  * This wins the lookup chain in g2p.js, ahead of EXCEPTIONS. Everything
  * below it produces phonemes and lets pairUp() choose the blocks; these
@@ -34,67 +34,67 @@ window.AVATARIAN_CORPUS = {
     "instagram-1.1": {
       "what": "still waters / trends this june / balloon festival / peeep farm / sad fish / noodle house / garden gems / free cabbages",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=1",
-      "image": "instagram-1-1.png"
+      "image": "instagram-1-1.webp"
     },
     "instagram-2.1": {
       "what": "joyful journey / salon / looking for hair models / biggest hand contest / ages 0-7 draw your fav animal / mama / cherries on top",
       "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=1",
-      "image": "instagram-2-1.png"
+      "image": "instagram-2-1.webp"
     },
     "instagram-3.1": {
       "what": "evil seagull / save beaverfish / fresh from my garden / bao pie / looking for humansitters / miao / warrior within / courage in every step",
       "where": "https://www.instagram.com/mmara_art/p/DboCKbiDL_v/?img_index=1",
-      "image": "instagram-3-1.png"
+      "image": "instagram-3-1.webp"
     },
     "instagram-1.2": {
       "what": "sula's baking class / frozen cream cakes / bending performance / ignite / cancel school / panda ballet / balance / catfish meal card / flame temple / of",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=2",
-      "image": "instagram-1-2.png"
+      "image": "instagram-1-2.webp"
     },
     "instagram-1.3": {
       "what": "the republic city post / woong's seaweed soup / organic, gluten free and vegan food / new menu item / fanny is missing / 20,000",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=3",
-      "image": "instagram-1-3.png"
+      "image": "instagram-1-3.webp"
     },
     "instagram-1.4": {
       "what": "stillness / year of the tiger / enjoy / journey / be brave / courage / night / quiet",
       "where": "https://www.instagram.com/p/DbYdfaFDJmt/?img_index=4",
-      "image": "instagram-1-4.png"
+      "image": "instagram-1-4.webp"
     },
     "instagram-2.2": {
       "what": "ear to ear mute choir / no sound just listen / new pet fish available / raise your energies / bloom wanted criminals",
       "where": "https://www.instagram.com/p/DbbT9_BjMv2/?img_index=2",
-      "image": "instagram-2-2.png"
+      "image": "instagram-2-2.webp"
     },
     "instagram-3.2": {
       "what": "let's talk / free stickers / cabbage kids / lost my mind / you too? / new fire tomato",
       "where": "https://www.instagram.com/p/DboCKbiDL_v/?img_index=2",
-      "image": "instagram-3-2.png"
+      "image": "instagram-3-2.webp"
     },
     "instagram-3.3": {
       "what": "joy's baked goods / the best / no phone number / always freshly baked / narrok's seaweed noodlery / hand pulled / heng's foot wear / warm and cozy!!! / come and get your pair now! / yue jewelery / timeless waterproof treasures / at every pond / white lotus festival / please come / fresh fruit forever / i don't do discounts / try today / melon milk / mmm / mak made / entry is not free",
       "where": "https://www.instagram.com/p/DboCKbiDL_v/?img_index=3",
-      "image": "instagram-3-3.png"
+      "image": "instagram-3-3.webp"
     },
     "zuko-stamp": {
       "what": "zuko's stamp - by royal decree of fire lord zuko",
       "where": "https://www.instagram.com/p/DcBlbbJlHWB?img_index=1",
-      "image": "zuko-stamp.png"
+      "image": "zuko-stamp.webp"
     },
     "sdcc.1": {
       "what": "Avatarian: The Unique Written Language of the Avatar World",
       "where": "San Diego Comic-Con",
-      "image": "sdcc-1.png"
+      "image": "sdcc-1.webp"
     },
     "sdcc.2": {
       "what": "water / earth / fire / air",
       "where": "san diego comic con 2026",
-      "image": "sdcc-2.png"
+      "image": "sdcc-2.webp"
     },
     "sdcc.3": {
       "what": "Avatar / Korra / theater / show / games / treats / festival / aquaduct / written",
       "where": "san diego comic con 2026",
-      "image": "sdcc-3.png"
+      "image": "sdcc-3.webp"
     },
     "movie.1": {
       "what": "Sonam statue",
@@ -104,7 +104,7 @@ window.AVATARIAN_CORPUS = {
     "7h-promo.1": {
       "what": "1 month",
       "where": "https://www.instagram.com/p/DdEzLNeEdK8/",
-      "image": "7h-promo.png"
+      "image": "7h-promo.webp"
     },
     "movie.2": {
       "what": "Beifong academy banner",
@@ -127,7 +127,7 @@ window.AVATARIAN_CORPUS = {
     "movie.4": {
       "what": "\"Skip's fishing supplies\" shop banner",
       "where": "movie 1:23:14-1:23:15 (never seen fully just parts - attached image is cut together), also seen at 0:10:52, 1:14:12, and 1:30:56",
-      "image": "submission-iceibt.png",
+      "image": "submission-iceibt.webp",
       "credit": "Bundas"
     },
     "movie.7": {
@@ -165,7 +165,7 @@ window.AVATARIAN_CORPUS = {
     "7h-promo.2": {
       "what": "7h-promo: 1 week",
       "where": "https://www.instagram.com/p/Dd_iuUomsv_/?img_index=1&stkn=ZHkyMXZpcWhrcGRy",
-      "image": "submission-bljdgh.png"
+      "image": "submission-bljdgh.webp"
     },
     "sevenhavens-101.1": {
       "what": "Ellora sign: outpost 7",
@@ -242,39 +242,39 @@ window.AVATARIAN_CORPUS = {
     "sevenhavens-105.1": {
       "what": "The Avatar hides amongst us",
       "where": "ASH 105 02:33",
-      "image": "sevenhavens-105.1.png"
+      "image": "sevenhavens-105.1.webp"
     },
     "sevenhavens-105.2": {
       "what": "Leaflet - The Avatar is hiding within the Brigade, posing as a young earthbender",
       "where": "ASH 105 07:45 perspective-corrected",
-      "image": "sevenhavens-105.2.png"
+      "image": "sevenhavens-105.2.webp"
     },
     "sevenhavens-105.3": {
       "what": "Datu's journal - journal",
       "where": "ASH 105 10:07",
-      "image": "sevenhavens-105.3.png",
+      "image": "sevenhavens-105.3.webp",
       "credit": "Bundas"
     },
     "sevenhavens-105.4": {
       "what": "Page in Datu's journal - The Council and the Bending Brigade are liars and traitors to Ellora and must be exposed by any means necessary, even force",
       "where": "ASH 105 10:21",
-      "image": "sevenhavens-105.4.png",
+      "image": "sevenhavens-105.4.webp",
       "credit": "Bundas"
     },
     "sevenhavens-105.5": {
       "what": "Letter to Karthik - We have the Avatar. She's a young girl here in Ellora. If you want to know more, send this rattle-raven back with a message.",
       "where": "ASH 105 15:33",
-      "image": "sevenhavens-105.5.png"
+      "image": "sevenhavens-105.5.webp"
     },
     "sevenhavens-104.1": {
       "what": "Uki's map - possible spots",
       "where": "ASH 103 06:31",
-      "image": "sevenhavens-104.1.png"
+      "image": "sevenhavens-104.1.webp"
     },
     "sevenhavens-106.1": {
       "what": "Agam's Bakery",
       "where": "ASH 106 09:12",
-      "image": "sevenhavens-106.1.png",
+      "image": "sevenhavens-106.1.webp",
       "credit": "Bundas"
     },
     "reddit.1": {
@@ -286,73 +286,73 @@ window.AVATARIAN_CORPUS = {
     "reddit.2": {
       "what": "Those who know Daemin cannot help but love him",
       "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
-      "image": "reddit.2.png",
+      "image": "reddit.2.webp",
       "credit": "TechFilmer"
     },
     "reddit.3": {
       "what": "Seven havens look upon Nisha see your Avatar",
       "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
-      "image": "reddit.3.png",
+      "image": "reddit.3.webp",
       "credit": "TechFilmer"
     },
     "reddit.4": {
       "what": "Jae you may not feel it but there is greatness within you.",
       "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xbr61u/third_dispatch_from_the_white_lotus/",
-      "image": "reddit.4.png",
+      "image": "reddit.4.webp",
       "credit": "TechFilmer"
     },
     "sevenhavens-107.1": {
       "what": "Video 1",
       "where": "ASH 107 06:42",
-      "image": "sevenhavens-107.1.png",
+      "image": "sevenhavens-107.1.webp",
       "credit": "Bundas"
     },
     "sevenhavens-107.2": {
       "what": "Future Industries",
       "where": "ASH 107 06:57",
-      "image": "sevenhavens-107.2.png",
+      "image": "sevenhavens-107.2.webp",
       "credit": "Bundas"
     },
     "sevenhavens-107.3": {
       "what": "Poster of pabu – \"Mako\"",
       "where": "ASH 107 08:07",
-      "image": "sevenhavens-107.3.png",
+      "image": "sevenhavens-107.3.webp",
       "credit": "Bundas"
     },
     "reddit.5": {
       "what": "Ellora warmly receives\nthe envoys from afar\nwith love and trust",
       "where": "https://www.reddit.com/r/TheLastAirbender/comments/1xhs3z6/fourth_dispatch_from_the_white_lotus/",
-      "image": "reddit.5.1.png",
+      "image": "reddit.5.1.webp",
       "credit": "TechFilmer"
     },
     "sevenhavens-110.1": {
       "what": "Nisha's poster – \"seeking\"",
       "where": "A7H S01E10 04:13",
-      "image": "sevenhavens-110.1.png",
+      "image": "sevenhavens-110.1.webp",
       "credit": "Bundas"
     },
     "sevenhavens-110.2": {
       "what": "prison entrance – ward",
       "where": "A7H S01E10 19:58",
-      "image": "sevenhavens-110.2.png",
+      "image": "sevenhavens-110.2.webp",
       "credit": "Bundas"
     },
     "sevenhavens-111.1": {
       "what": "blueprint – reactor / tunnel 1 / tunnel 2",
       "where": "A7H S01E11 06:34",
-      "image": "sevenhavens-111.1.png",
+      "image": "sevenhavens-111.1.webp",
       "credit": "Bundas"
     },
     "sevenhavens-111.2": {
       "what": "valve 1-4",
       "where": "A7H S01E11 07:46",
-      "image": "sevenhavens-111.2.png",
+      "image": "sevenhavens-111.2.webp",
       "credit": "Bundas"
     },
     "sevenhavens-111.3": {
       "what": "reactor screen – reactor / lock / tunnel / normal / turbine",
       "where": "A7H S01E11 07:50",
-      "image": "sevenhavens-111.3.png",
+      "image": "sevenhavens-111.3.webp",
       "credit": "Bundas"
     },
     "reddit.6": {
@@ -6421,29 +6421,14 @@ window.AVATARIAN_CORPUS = {
       "source": "sevenhavens-111.3",
       "gloss": "turbine"
     },
-    "does": {
+    "afraid": {
       "ipa": [
-        "d",
-        "ʌ",
-        "z",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "Does"
-    },
-    "infamy": {
-      "ipa": [
-        "ɪ",
-        "n",
-        "f",
         "ə",
-        "m",
-        "i"
+        "f",
+        "ɹ",
+        "e",
+        "ɪ",
+        "d"
       ],
       "count": 1,
       "sources": [
@@ -6451,37 +6436,7 @@ window.AVATARIAN_CORPUS = {
       ],
       "confidence": "certain",
       "source": "reddit.6",
-      "gloss": "infamy"
-    },
-    "mean": {
-      "ipa": [
-        "m",
-        "i",
-        "n",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "mean"
-    },
-    "was": {
-      "ipa": [
-        "w",
-        "ɑ",
-        "z",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "was"
+      "gloss": "afraid"
     },
     "cataclysm": {
       "ipa": [
@@ -6504,6 +6459,57 @@ window.AVATARIAN_CORPUS = {
       "source": "reddit.6",
       "gloss": "cataclysm"
     },
+    "defend": {
+      "ipa": [
+        "d",
+        "ɪ",
+        "f",
+        "ɛ",
+        "n",
+        "d"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "defend"
+    },
+    "does": {
+      "ipa": [
+        "d",
+        "ʌ",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Does"
+    },
+    "drastic": {
+      "ipa": [
+        "d",
+        "ɹ",
+        "æ",
+        "s",
+        "t",
+        "ɪ",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Drastic"
+    },
     "end": {
       "ipa": [
         "ɛ",
@@ -6518,19 +6524,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "reddit.6",
       "gloss": "end"
-    },
-    "or": {
-      "ipa": [
-        "ɔ",
-        "ɹ"
-      ],
-      "count": 4,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "or"
     },
     "entarance": {
       "ipa": [
@@ -6551,6 +6544,25 @@ window.AVATARIAN_CORPUS = {
       "source": "reddit.6",
       "gloss": "entarance"
     },
+    "freedom": {
+      "ipa": [
+        "f",
+        "ɹ",
+        "i",
+        "∅",
+        "d",
+        "ə",
+        "m",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Freedom"
+    },
     "geet": {
       "ipa": [
         "g",
@@ -6565,6 +6577,119 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "reddit.6",
       "gloss": "Geet"
+    },
+    "glass": {
+      "ipa": [
+        "g",
+        "l",
+        "æ",
+        "s"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "glass"
+    },
+    "hunger": {
+      "ipa": [
+        "h",
+        "ʌ",
+        "ŋ",
+        "g",
+        "ə",
+        "ɹ"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "hunger"
+    },
+    "infamy": {
+      "ipa": [
+        "ɪ",
+        "n",
+        "f",
+        "ə",
+        "m",
+        "i"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "infamy"
+    },
+    "karthik": {
+      "ipa": [
+        "k",
+        "ɑ",
+        "ɹ",
+        "∅",
+        "θ",
+        "ɪ",
+        "k",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "Karthik"
+    },
+    "mean": {
+      "ipa": [
+        "m",
+        "i",
+        "n",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "mean"
+    },
+    "or": {
+      "ipa": [
+        "ɔ",
+        "ɹ"
+      ],
+      "count": 4,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "or"
+    },
+    "rethink": {
+      "ipa": [
+        "ɹ",
+        "i",
+        "θ",
+        "ɪ",
+        "ŋ",
+        "k"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "rethink"
     },
     "ruhi": {
       "ipa": [
@@ -6596,74 +6721,6 @@ window.AVATARIAN_CORPUS = {
       "source": "reddit.6",
       "gloss": "Sand"
     },
-    "glass": {
-      "ipa": [
-        "g",
-        "l",
-        "æ",
-        "s"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "glass"
-    },
-    "drastic": {
-      "ipa": [
-        "d",
-        "ɹ",
-        "æ",
-        "s",
-        "t",
-        "ɪ",
-        "k",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "Drastic"
-    },
-    "rethink": {
-      "ipa": [
-        "ɹ",
-        "i",
-        "θ",
-        "ɪ",
-        "ŋ",
-        "k"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "rethink"
-    },
-    "afraid": {
-      "ipa": [
-        "ə",
-        "f",
-        "ɹ",
-        "e",
-        "ɪ",
-        "d"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "afraid"
-    },
     "song": {
       "ipa": [
         "s",
@@ -6678,42 +6735,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "reddit.6",
       "gloss": "song"
-    },
-    "hunger": {
-      "ipa": [
-        "h",
-        "ʌ",
-        "ŋ",
-        "g",
-        "ə",
-        "ɹ"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "hunger"
-    },
-    "karthik": {
-      "ipa": [
-        "k",
-        "ɑ",
-        "ɹ",
-        "∅",
-        "θ",
-        "ɪ",
-        "k",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "Karthik"
     },
     "strike": {
       "ipa": [
@@ -6731,42 +6752,6 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "reddit.6",
       "gloss": "strike"
-    },
-    "defend": {
-      "ipa": [
-        "d",
-        "ɪ",
-        "f",
-        "ɛ",
-        "n",
-        "d"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "defend"
-    },
-    "freedom": {
-      "ipa": [
-        "f",
-        "ɹ",
-        "i",
-        "∅",
-        "d",
-        "ə",
-        "m",
-        "∅"
-      ],
-      "count": 1,
-      "sources": [
-        "reddit.6"
-      ],
-      "confidence": "certain",
-      "source": "reddit.6",
-      "gloss": "Freedom"
     },
     "treason": {
       "ipa": [
@@ -6786,6 +6771,21 @@ window.AVATARIAN_CORPUS = {
       "confidence": "certain",
       "source": "reddit.6",
       "gloss": "treason"
+    },
+    "was": {
+      "ipa": [
+        "w",
+        "ɑ",
+        "z",
+        "∅"
+      ],
+      "count": 1,
+      "sources": [
+        "reddit.6"
+      ],
+      "confidence": "certain",
+      "source": "reddit.6",
+      "gloss": "was"
     }
   },
   "conventions": {

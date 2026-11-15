@@ -250,41 +250,19 @@
 <!-- The product's own code draws the preview, parses the sounds, suggests
      the words, and compares against the model. lexicon.js is the 1.6 MB
      pronunciation dictionary the reverse-decode searches. -->
-<script src="js/manifest.js?v=81"></script>
-<script src="js/corpus.js?v=82"></script>
-<script src="js/lexicon.js?v=76"></script>
-<script src="js/g2p.js?v=79"></script>
-<script src="js/sounds.js?v=76"></script>
-<script src="js/render.js?v=81"></script>
-<script src="js/recognise.js?v=76"></script>
-<script src="js/reverse.js?v=76"></script>
-<script src="js/draw.js?v=76"></script>
+<script defer src="js/manifest.js?v=82"></script>
+<script defer src="js/corpus.js?v=83"></script>
+<script defer src="js/lexicon.js?v=77"></script>
+<script defer src="js/g2p.js?v=79"></script>
+<script defer src="js/sounds.js?v=76"></script>
+<script defer src="js/render.js?v=81"></script>
+<script defer src="js/recognise.js?v=76"></script>
+<script defer src="js/reverse.js?v=76"></script>
+<script defer src="js/draw.js?v=76"></script>
 
-<script>
-"use strict";
 
-// --- theme toggle (same behaviour as the rest of the site) --------------
-const themeBtn = document.getElementById("themeToggle");
-const THEME_LABELS = { auto: "◐ Theme: auto", light: "☀ Theme: light", dark: "☾ Theme: dark" };
-const THEME_ORDER = ["auto", "light", "dark"];
-function applyTheme(mode) {
-  if (mode === "auto") document.documentElement.removeAttribute("data-theme");
-  else document.documentElement.setAttribute("data-theme", mode);
-  themeBtn.textContent = THEME_LABELS[mode];
-  themeBtn.setAttribute("aria-label", "Colour theme: " + mode + ". Click to change.");
-}
-let themeMode = localStorage.getItem("avatarian-theme") || "auto";
-if (!THEME_ORDER.includes(themeMode)) themeMode = "auto";
-applyTheme(themeMode);
-themeBtn.addEventListener("click", () => {
-  themeMode = THEME_ORDER[(THEME_ORDER.indexOf(themeMode) + 1) % THEME_ORDER.length];
-  if (themeMode === "auto") localStorage.removeItem("avatarian-theme");
-  else localStorage.setItem("avatarian-theme", themeMode);
-  applyTheme(themeMode);
-});
-</script>
-
-<script src="js/contribute.js?v=76"></script>
-<script src="js/notice.js?v=76"></script>
+<script defer src="js/theme.js?v=1"></script>
+<script defer src="js/transcribe.js?v=1"></script>
+<script defer src="js/contribute.js?v=77"></script>
 </body>
 </html>

@@ -399,8 +399,8 @@ input:focus, textarea:focus, select:focus {
   border: 1px solid var(--accent); border-left-width: 3px; border-radius: 6px;
   background: var(--surface); font-size: 0.85rem; color: var(--muted);
 }
-/* [hidden] loses to any display rule — the site shipped this exact bug in
-   session 7 and showed a warning banner to everyone for a week. */
+/* [hidden] loses to any display rule — the site once shipped this exact bug
+   and showed a warning banner to everyone for a week. */
 .dupe[hidden] { display: none; }
 
 .suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 0 14px; }

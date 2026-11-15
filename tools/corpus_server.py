@@ -48,12 +48,12 @@ import pathlib
 import re
 import subprocess
 import sys
-from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 import build_corpus                                     # noqa: E402
 import instagram                                        # noqa: E402
+from localserver import LocalHandler, serve              # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WEB = ROOT / "workbench"
@@ -68,20 +68,23 @@ PORT = 8793
 SITE_FILES = {
     "js/manifest.js", "js/corpus.js", "js/lexicon.js", "js/g2p.js",
     "js/sounds.js", "js/render.js", "js/recognise.js", "js/draw.js",
-    "js/reverse.js", "css/blocks.css",
+    "js/reverse.js", "js/transcribe.js", "css/blocks.css",
 }
-SITE_TYPES = {".js": "application/javascript", ".css": "text/css"}
-
 IMAGE_TYPES = {
     "image/png": ".png", "image/jpeg": ".jpg", "image/webp": ".webp",
     "image/gif": ".gif",
 }
+MIME_OF = {ext: mime for mime, ext in IMAGE_TYPES.items()}
 FILE_OK = re.compile(r"^[A-Za-z0-9._-]+$")
 DATA_URL = re.compile(r"^data:([\w/+.-]+);base64,(.*)$", re.S)
 
 # A reference photo can be big, but nothing legitimate here is enormous,
 # and an accidental 200 MB paste should fail fast rather than eat memory.
 MAX_IMAGE = 24 * 1024 * 1024
+# An image arrives as a base64 data: URL inside JSON, which is a third
+# larger than the image itself — so the body cap has to be, too, or the
+# real limit is 18 MB while the message says 24.
+MAX_BODY = MAX_IMAGE * 4 // 3 + 64 * 1024
 
 
 def safe_stem(name):
@@ -110,53 +113,16 @@ def unique_path(stem, suffix):
     return path
 
 
-class Handler(SimpleHTTPRequestHandler):
-    def __init__(self, *a, **kw):
-        super().__init__(*a, directory=str(WEB), **kw)
-
-    # --- plumbing ---------------------------------------------------------
-
-    def send_json(self, payload, status=200):
-        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-        self.send_response(status)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store")
-        self.end_headers()
-        self.wfile.write(body)
-
-    def read_json(self):
-        length = int(self.headers.get("Content-Length") or 0)
-        if length > MAX_IMAGE:
-            raise ValueError("body too large")
-        if not length:
-            return None
-        return json.loads(self.rfile.read(length).decode("utf-8"))
-
-    def end_headers(self):
-        if not self.path.startswith("/api/"):
-            self.send_header("Cache-Control", "no-store")
-        super().end_headers()
-
-    def log_message(self, fmt, *args):
-        if self.path.startswith("/api/") and self.command != "GET":
-            sys.stderr.write("%s %s\n" % (self.command, self.path))
-
-    def send_file(self, path, content_type):
-        try:
-            body = path.read_bytes()
-        except OSError:
-            return self.send_error(404)
-        self.send_response(200)
-        self.send_header("Content-Type", content_type)
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
+class Handler(LocalHandler):
+    WEB = WEB
+    SITE = SITE
+    SITE_FILES = SITE_FILES
+    MAX_BODY = MAX_BODY
 
     # --- routes -----------------------------------------------------------
 
     def do_GET(self):
-        path = self.path.split("?")[0]
+        path = self.route()
         if path == "/api/corpus":
             return self.get_corpus()
         if path.startswith("/site/"):
@@ -182,22 +148,14 @@ class Handler(SimpleHTTPRequestHandler):
             "count": len(records),
         })
 
-    def send_site(self, rel):
-        if rel not in SITE_FILES:
-            return self.send_error(404)
-        path = SITE / rel
-        self.send_file(path, SITE_TYPES.get(path.suffix, "text/plain")
-                       + "; charset=utf-8")
-
     def send_image(self, name):
         if not FILE_OK.match(name):
             return self.send_error(404)
         path = IMAGES / name
-        suffix = {v: k for k, v in IMAGE_TYPES.items()}
-        self.send_file(path, suffix.get(path.suffix, "application/octet-stream"))
+        self.send_file(path, MIME_OF.get(path.suffix, "application/octet-stream"))
 
     def do_POST(self):
-        path = self.path.split("?")[0]
+        path = self.route()
         try:
             if path == "/api/corpus":
                 return self.save_corpus()
@@ -353,7 +311,6 @@ def main():
     IMAGES.mkdir(parents=True, exist_ok=True)
     data = build_corpus.load() if build_corpus.SRC.exists() else {}
     problems, records = build_corpus.check(data)
-    server = HTTPServer(("127.0.0.1", PORT), Handler)
     print(f"Transcription workbench on http://localhost:{PORT}/")
     print(f"Corpus: {len(records)} entries, "
           f"{len(data.get('sources') or {})} sources, "
@@ -361,10 +318,7 @@ def main():
     if problems:
         print(f"{len(problems)} problem(s) in the corpus — the workbench "
               f"will show them.")
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print("\nstopped")
+    serve(Handler, PORT)
 
 
 if __name__ == "__main__":

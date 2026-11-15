@@ -34,18 +34,10 @@ jobs:
         with:
           python-version: "3.x"
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
       # The submission gate: fold every staged file into the corpus in
       # memory and validate. Writes nothing; fails the job on any problem,
       # printing the exact messages a maintainer would see in the workbench.
       - name: Validate staged submissions
         run: python3 tools/promote_corpus.py --check
 
-      # The full suite. No dependencies to install — stdlib + node's built-in
-      # runner — and much of it IS the corpus, so it grows coverage as words
-      # are added. Belt and braces beside the fold check above.
-      - name: Run the test suite
-        run: python3 tools/run_tests.py
+      # The full suite runs on every pull request too: see tests.yml.
