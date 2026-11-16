@@ -147,6 +147,12 @@
       case "good": return f.status === "good";
       case "noted": return !!f.note;
       case "seen": return !!seen[key];
+      // Blocks where one glyph's stroke runs on into the other (render.js
+      // joinsFor) — the ones worth a look for how far it runs.
+      case "joined": {
+        const [t, b] = key.split("|");
+        return !!seen[key] && joinsFor(t, "top", b).length + joinsFor(b, "bottom", t).length > 0;
+      }
       default: return true;
     }
   }
@@ -341,22 +347,43 @@
 
   // ── per-block tweaks (render.js BLOCK_TWEAKS) ─────────────────────
   // Saved to designs/blocks/tweaks.json as you drag, drawn live here, and
-  // only reach the site and wiki when shipped. Today that is /z/'s dot drop
-  // where both dots survive (under /m/).
+  // only reach the site and wiki when shipped: how far a join runs (`reach`,
+  // any block), and /z/'s dot drop where both dots survive (under /m/).
   // Outside review mode the shipped tweaks in manifest.js stand as they are.
   let tweaks = {};
   let shipped = JSON.stringify(window.AVATARIAN_BLOCK_TWEAKS || {});
   if (REVIEW) window.AVATARIAN_BLOCK_TWEAKS = tweaks;
   const keepsDots = (t, b) => (t === "z" && b === "m") || (t === "m" && b === "z");
   function showTweaks(top, bottom) {
-    const box = $("#tweak-dots");
-    box.hidden = !keepsDots(top, bottom);
-    if (box.hidden) return;
-    const v = (tweaks[keyOf(top, bottom)] || {}).dots || 0;
+    const t = tweaks[keyOf(top, bottom)] || {};
+    $("#reach").value = t.reach || "";
+    // A glyph with alternate drawings (render.js resolveGlyph) offers them
+    // for its slot; one with none shows no menu.
+    for (const [slot, sym] of [["top", top], ["bottom", bottom]]) {
+      const labels = Object.keys((GLYPHS[sym] || {}).variants || {}).filter((v) => v !== "cluster");
+      $("#tweak-alt-" + slot).hidden = !labels.length;
+      const sel = $("#alt-" + slot);
+      sel.innerHTML = "";
+      for (const v of ["", ...labels]) sel.add(new Option(v || "usual", v));
+      sel.value = labels.includes(t[slot]) ? t[slot] : "";
+    }
+    $("#tweak-dots").hidden = !keepsDots(top, bottom);
+    const v = t.dots || 0;
     $("#dots").value = v;
     $("#dots-val").textContent = v;
     tweakState();
   }
+  /** Set or clear one field of a block's tweak, redraw, and save it. */
+  function setTweak(key, field, value) {
+    if (value) tweaks[key] = { ...(tweaks[key] || {}), [field]: value };
+    else if (tweaks[key]) { delete tweaks[key][field]; if (!Object.keys(tweaks[key]).length) delete tweaks[key]; }
+    redraw(key);
+    tweakState();
+  }
+  const putTweak = (body) => fetch("/api/block-tweaks", {
+    method: "PUT", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
   function tweakState() {
     $("#tweak-state").textContent = JSON.stringify(tweaks) === shipped ? "shipped" : "not shipped yet";
   }
@@ -378,16 +405,26 @@
     const key = currentKey();
     const dots = +$("#dots").value;
     $("#dots-val").textContent = dots;
-    if (dots) tweaks[key] = { ...(tweaks[key] || {}), dots };
-    else if (tweaks[key]) { delete tweaks[key].dots; if (!Object.keys(tweaks[key]).length) delete tweaks[key]; }
-    redraw(key);
-    tweakState();
+    setTweak(key, "dots", dots);
     clearTimeout(dotsTimer);
-    dotsTimer = setTimeout(() => fetch("/api/block-tweaks", {
-      method: "PUT", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key, dots }),
-    }), 300);
+    dotsTimer = setTimeout(() => putTweak({ key, dots }), 300);
   });
+  // How far a join runs in this block (render.js joinsFor).
+  on("#reach", "change", () => {
+    const key = currentKey();
+    const reach = $("#reach").value;
+    setTweak(key, "reach", reach);
+    putTweak({ key, reach });
+  });
+  // Which alternate drawing a slot's glyph uses in this block.
+  for (const slot of ["top", "bottom"]) {
+    on("#alt-" + slot, "change", () => {
+      const key = currentKey();
+      const label = $("#alt-" + slot).value;
+      setTweak(key, slot, label);
+      putTweak({ key, [slot]: label });
+    });
+  }
   on("#ship-tweaks", "click", async () => {
     $("#tweak-state").textContent = "shipping…";
     try {
@@ -518,7 +555,10 @@
     for (let i = 0; i < total; i++) {
       const n = (start + i) % total;
       const r = Math.floor(n / cols.length), c = n % cols.length;
-      if (!(feedback[keyOf(rows[r], cols[c])] || {}).status) return select(r, c);
+      // Stay inside the current "show" filter, so `n` walks only the blocks
+      // on screen (e.g. every join not yet looked at).
+      const key = keyOf(rows[r], cols[c]);
+      if (!(feedback[key] || {}).status && matches(key)) return select(r, c);
     }
   }
 

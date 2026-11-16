@@ -981,14 +981,13 @@ window.AVATARIAN_CORPUS = {
             "ð",
             "i"
           ],
-          "count": 9,
+          "count": 8,
           "sources": [
             "sdcc.1",
             "sevenhavens-105.1",
             "sevenhavens-105.2",
             "sevenhavens-105.4",
-            "sevenhavens-105.5",
-            "reddit.5"
+            "sevenhavens-105.5"
           ],
           "confidence": "certain"
         },
@@ -997,9 +996,10 @@ window.AVATARIAN_CORPUS = {
             "ð",
             "ʌ"
           ],
-          "count": 1,
+          "count": 2,
           "sources": [
-            "reddit.1"
+            "reddit.1",
+            "reddit.5"
           ],
           "confidence": "certain"
         }
@@ -4970,34 +4970,17 @@ window.AVATARIAN_CORPUS = {
         "ɹ",
         "ə"
       ],
-      "count": 5,
+      "count": 6,
       "sources": [
         "sevenhavens-101.2",
         "sevenhavens-101.10",
         "sevenhavens-105.4",
         "sevenhavens-105.5",
-        "reddit.1"
+        "reddit.1",
+        "reddit.5"
       ],
       "confidence": "certain",
       "source": "sevenhavens-101.2",
-      "alternates": [
-        {
-          "ipa": [
-            "ɛ",
-            "∅",
-            "l",
-            "ɔ",
-            "ɹ",
-            "ə"
-          ],
-          "count": 1,
-          "sources": [
-            "reddit.5"
-          ],
-          "confidence": "certain"
-        }
-      ],
-      "contested": true,
       "gloss": "Ellora"
     },
     "books": {
@@ -6598,7 +6581,7 @@ window.AVATARIAN_CORPUS = {
         "h",
         "ʌ",
         "ŋ",
-        "g",
+        "∅",
         "ə",
         "ɹ"
       ],

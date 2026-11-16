@@ -2,11 +2,7 @@
   "p": {
     "file": "p.svg",
     "status": "drawn",
-    "type": "consonant",
-    "ports": {
-      "0.5": "p_connect_0_5.svg",
-      "4.5": "p_connect_4_5.svg"
-    }
+    "type": "consonant"
   },
   "b": {
     "file": "b.svg",
@@ -26,7 +22,10 @@
   "k": {
     "file": "k.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "variants": {
+      "low": "k_alt_low.svg"
+    }
   },
   "g": {
     "file": "g.svg",
@@ -88,7 +87,10 @@
   "z": {
     "file": "z.svg",
     "status": "drawn",
-    "type": "consonant"
+    "type": "consonant",
+    "ports": {
+      "2.5": "z_connect_2_5.svg"
+    }
   },
   "ʃ": {
     "file": "sh.svg",

@@ -36,6 +36,7 @@
   <label>show
     <select id="show">
       <option value="seen" selected>seen in the corpus</option>
+      <option value="joined">seen, with a join</option>
       <option value="all">everything</option>
       <option value="unreviewed">not reviewed yet</option>
       <option value="bad">marked wrong</option>
@@ -65,8 +66,23 @@
     <textarea id="note" rows="4" placeholder="What looks wrong? Typing marks the block wrong. One complaint per line; each line becomes a quick pick below."></textarea>
     <div class="br-save" id="save"></div>
     <div class="br-presets" id="presets"></div>
-    <div class="br-tweak" id="tweak-dots" hidden>
-      <label>dot drop <input id="dots" type="range" min="0" max="12" step="1" value="0"> <span id="dots-val">0</span></label>
+    <div class="br-tweak" id="tweaks">
+      <label title="How far a join runs in this block: a stroke from one glyph on to its partner's ink (render.js joinsFor). auto = to the first ink, but never into a 3-row vowel or a null.">join
+        <select id="reach">
+          <option value="">auto</option>
+          <option value="none">none</option>
+          <option value="open">rise into the opening</option>
+          <option value="first">to first ink</option>
+          <option value="second">through to second ink</option>
+        </select>
+      </label>
+      <label id="tweak-alt-top" hidden title="Which drawing the TOP glyph uses in this block. Alternates are made in the glyph designer (+ alt) and shipped from there.">top drawn as
+        <select id="alt-top"></select>
+      </label>
+      <label id="tweak-alt-bottom" hidden title="Which drawing the BOTTOM glyph uses in this block. Alternates are made in the glyph designer (+ alt) and shipped from there.">bottom drawn as
+        <select id="alt-bottom"></select>
+      </label>
+      <label id="tweak-dots" hidden>dot drop <input id="dots" type="range" min="0" max="12" step="1" value="0"> <span id="dots-val">0</span></label>
       <button id="ship-tweaks" class="ghost" title="Bake the tweaks into the site's manifest.js and the wiki's Lua and CSS (local files; nothing is pushed)">ship tweaks</button>
       <div class="br-save" id="tweak-state"></div>
     </div>

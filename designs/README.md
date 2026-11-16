@@ -24,6 +24,13 @@ every glyph rather than needing 40 paths re-authored.
 
 `name` matches the file stem and `IPA_TO_NAME` in `tools/build_glyphs.py`.
 
+## Alternate drawings
+
+`<name>_alt_<label>.json` is a second drawing of glyph `<name>` (`k_alt_low`).
+The designer's **+ alt** button creates one as a copy of the open glyph;
+"ship it" rebuilds, and the block review page then offers it per block
+("top drawn as" / "bottom drawn as"). See AVATARIAN.md §11.
+
 ## The format
 
 ```jsonc
@@ -65,12 +72,19 @@ one, so *n* nodes carry *n−1* segments (*n* when `closed`).
 
 A node may also carry **`"connect"`** — one of `up`, `down`, `left`,
 `right`, or the four diagonals (`up-left`, `up-right`, `down-left`,
-`down-right`). It grows a straight stroke *from* that node to the glyph's
-edge in that direction, so the stroke reaches the block seam and meets the
-partner glyph reaching the same seam — stroke-level fusion as one mark per
-node, not a redraw (`connection_paths` in `glyphspec.py`, mirrored in
-`geom.js`). In the designer, select a node and pick a direction from the
+`down-right`). **`up` and `down` make the node an emitter:** in a block, a
+stroke grows from it across the seam to the partner glyph's first ink in
+that column — a *join*, worked out for every pairing from this one mark
+(AVATARIAN.md §11; `joinsFor` in `render.js`). Mark only a stroke end that
+should reach its partner whoever that is — a vowel's centre stem — because
+it will. In the designer, select a node and pick a direction from the
 **connect** compass; the centre dot clears it.
+
+The designer's own canvas previews a `connect` as a stroke to the glyph's
+edge (`connection_paths` in `glyphspec.py`, mirrored in `geom.js`), which is
+where the join starts, not where it ends; the block review page shows the
+real thing. The sideways and diagonal directions preview the same way but
+nothing in a block reads them yet.
 
 | `connect` | the extension |
 | --------- | ------------- |

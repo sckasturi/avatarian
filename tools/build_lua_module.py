@@ -70,6 +70,13 @@ def lua_map(name, pairs):
     return f"local {name} = {{{body}}}"
 
 
+def lua_ink(ink):
+    """{column: [[y0, y1], ...]} as a Lua table keyed by the column number."""
+    return "{" + ",".join(
+        "[%s]={%s}" % (col, ",".join("{" + ",".join("%d" % n for n in h) + "}" for h in hits))
+        for col, hits in ink.items() if hits) + "}"
+
+
 def main(out=None):
     """Write the file. `out` overrides the default path under wiki/."""
     out = pathlib.Path(out) if out else OUT
@@ -94,6 +101,42 @@ def main(out=None):
             fields.append("flips=true")
         if (g.get("variants") or {}).get("cluster"):
             fields.append("cluster=true")
+        # Joins (render.js joinsFor): the glyph's emitters, and where its ink
+        # sits on the columns emitters use — `ink` for the base form, `cink`
+        # for the cluster form.
+        if g.get("emit"):
+            fields.append("emit={" + ",".join("{%d,%d,%d}" % tuple(e) for e in g["emit"]) + "}")
+        if any(g.get("ink", {}).values()):
+            fields.append("ink=" + lua_ink(g["ink"]))
+        cink = ((g.get("variants") or {}).get("cluster") or {}).get("ink") or {}
+        if any(cink.values()):
+            fields.append("cink=" + lua_ink(cink))
+        # Dots that block a join, the same two ways.
+        if g.get("dots"):
+            fields.append("dots=" + lua_ink(g["dots"]))
+        cdots = ((g.get("variants") or {}).get("cluster") or {}).get("dots")
+        if cdots:
+            fields.append("cdots=" + lua_ink(cdots))
+        if g.get("gaps"):
+            fields.append("gaps=" + lua_ink(g["gaps"]))
+        cgaps = ((g.get("variants") or {}).get("cluster") or {}).get("gaps")
+        if cgaps:
+            fields.append("cgaps=" + lua_ink(cgaps))
+        # Alternate drawings (render.js resolveGlyph `alt`): the mask class
+        # each is drawn with, and its own ink profile for joins into it.
+        alts = []
+        for label, v in sorted((g.get("variants") or {}).items()):
+            if label == "cluster":
+                continue
+            f = [f"name={lua_str(v['name'])}"]
+            if v.get("emit"):
+                f.append("emit={" + ",".join("{%d,%d,%d}" % tuple(e) for e in v["emit"]) + "}")
+            for k in ("ink", "dots", "gaps"):
+                if any((v.get(k) or {}).values()):
+                    f.append(f"{k}=" + lua_ink(v[k]))
+            alts.append(f"[{lua_str(label)}]={{{', '.join(f)}}}")
+        if alts:
+            fields.append("alts={" + ", ".join(alts) + "}")
         glyph_rows.append(f"  [{lua_str(key)}]={{{', '.join(fields)}}},")
         # A mark whose box is wider than the 1-column 36 gets a wide class so
         # its mask keeps proportion: av-wide for 2 columns (`?`, at 52),
@@ -113,6 +156,12 @@ def main(out=None):
         # Per-block tweaks (render.js BLOCK_TWEAKS): how far /z/'s dots drop
         # where both survive.
         "local BLOCK_DOTS = {" + ", ".join(f"[{lua_str(k)}]={t['dots']:g}" for k, t in sorted(tweaks.items()) if t.get("dots")) + "}",
+        # ... and how far a join runs in a block (render.js joinsFor `reach`).
+        "local BLOCK_REACH = {" + ", ".join(f"[{lua_str(k)}]={lua_str(t['reach'])}" for k, t in sorted(tweaks.items()) if t.get("reach")) + "}",
+        # ... and which alternate drawing a slot's glyph uses in a block.
+        "local BLOCK_ALT = {" + ", ".join(
+            f"[{lua_str(k)}]={{" + ", ".join(f"{s}={lua_str(t[s])}" for s in ("top", "bottom") if t.get(s)) + "}"
+            for k, t in sorted(tweaks.items()) if t.get("top") or t.get("bottom")) + "}",
         "local GLYPH = {",
         "\n".join(glyph_rows),
         "}",
@@ -226,20 +275,18 @@ local function esc(s)
   return (s:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub('"', "&quot;"))
 end
 
--- One glyph span: stem class (g-name, plus _c for a cluster form), height class,
--- av-4row, av-flipped. The cluster/flip choice mirrors makeGlyph in render.js.
--- SVG-level tweaks it makes (/s/'s inset vertex, /z/'s dropped dots) have no
--- CSS-only class and are intentionally not reproduced — the mask path has none.
-local function glyphSpan(token, slot, partner)
-  local sym, forced, variant = parseSymbol(token)
-  if sym == UNREADABLE then
-    return '<span class="av-glyph av-consonant g-unreadable"></span>'
+-- Which form a slot draws and which way up (render.js resolveGlyph): the
+-- cluster form in a C-C block (the r/l pair's top glyph excepted), flipped by
+-- its own rule. Shared by glyphSpan and joinSpans, which asks it of the partner.
+local function resolveGlyph(sym, forced, variant, e, slot, partner)
+  -- A block can name an alternate drawing for this slot (BLOCK_ALT); typed
+  -- overrides say otherwise and win. Third result: the alternate's row.
+  if not forced and not variant and partner ~= nil and e.alts then
+    local pSym = parseSymbol(partner)
+    local key = slot == "top" and (sym .. "|" .. pSym) or (pSym .. "|" .. sym)
+    local alt = e.alts[(BLOCK_ALT[key] or {})[slot] or ""]
+    if alt then return false, false, alt end
   end
-  local e = GLYPH[sym]
-  if not e then
-    return '<span class="av-glyph av-missing" title="' .. esc(sym) .. '"></span>'
-  end
-
   local wantCluster = variant == "cluster"
   local useCluster = false
   if e.cluster then
@@ -262,12 +309,34 @@ local function glyphSpan(token, slot, partner)
     end
     flipped = orientation == "bottom"
   end
+  return useCluster, flipped
+end
+
+-- One glyph span: stem class (g-name, plus _c for a cluster form), height class,
+-- av-4row, av-flipped. The cluster/flip choice mirrors makeGlyph in render.js.
+-- SVG-level tweaks it makes (/s/'s inset vertex, /z/'s dropped dots) have no
+-- CSS-only class and are intentionally not reproduced — the mask path has none.
+local joinSpans   -- defined below; glyphSpan asks it whether a dot is replaced
+
+local function glyphSpan(token, slot, partner)
+  local sym, forced, variant = parseSymbol(token)
+  if sym == UNREADABLE then
+    return '<span class="av-glyph av-consonant g-unreadable"></span>'
+  end
+  local e = GLYPH[sym]
+  if not e then
+    return '<span class="av-glyph av-missing" title="' .. esc(sym) .. '"></span>'
+  end
+
+  local useCluster, flipped, alt = resolveGlyph(sym, forced, variant, e, slot, partner)
 
   -- Stem class: the glyph name, plus a cluster form. /s/ and /z/ redraw in a
   -- C-C block (clusterForm in render.js): /s/ insets its vertex when the point
   -- faces the one-row overlap, /z/ drops the dot(s) that overlap rides up.
   local stem = e.name .. (useCluster and "_c" or "")
-  if not useCluster and isClusterPartner(partner) then
+  if alt then
+    stem = alt.name     -- drawn exactly as its design has it
+  elseif not useCluster and isClusterPartner(partner) then
     if sym == "s" then
       local pointAtOverlap
       if slot == "top" then pointAtOverlap = flipped else pointAtOverlap = not flipped end
@@ -282,6 +351,11 @@ local function glyphSpan(token, slot, partner)
         stem = dy and ("z_d" .. dy) or "z"      -- ... dropped `dy` if the block says so
       else stem = "z_none" end
     end
+  end
+  -- The partner's stem replaces a dot at the seam (/b/ over a stem).
+  if partner ~= nil then
+    local _, dot = joinSpans(partner, slot == "top" and "bottom" or "top", token)
+    if dot then stem = stem .. "_nodot" end
   end
   local cls = "av-glyph g-" .. stem .. " " .. HEIGHT[e.type]
   if e.rows == 4 then cls = cls .. " av-4row" end
@@ -317,15 +391,145 @@ end
 -- its own span over the glyph.
 local RAIL_SIDE = { ["l"]="l", ["ɹ"]="r" }   -- not /w/ or /j/, as in render.js
 local function railSpan(token, slot, partner)
-  local sym = parseSymbol(token)
+  local sym, forced, variant = parseSymbol(token)
   local pSym = parseSymbol(partner)
   if not RAIL_SIDE[pSym] or sym == UNREADABLE then return "" end   -- `*` draws no rail, as in render.js
+  if GLYPH[sym] then   -- an alternate drawing carries no rail
+    local _, _, alt = resolveGlyph(sym, forced, variant, GLYPH[sym], slot, partner)
+    if alt then return "" end
+  end
   if not (slotIsConsonant(token) and isClusterPartner(partner)) then return "" end
   local pe = GLYPH[pSym]
   if not (pe and pe.cluster) then return "" end
   local rlPair = (pSym == "ɹ" or pSym == "l") and (sym == "ɹ" or sym == "l") and pSym ~= sym
   if rlPair and slot == "bottom" then return "" end   -- the partner is on top: base form
   return '<span class="av-rail av-rail-' .. RAIL_SIDE[pSym] .. '"></span>'
+end
+
+-- JOINS (render.js joinsFor): a stroke from an emitter on one glyph on to its
+-- partner's first ink in that column. The site draws it inside the glyph's
+-- SVG; a mask can't take a second layer, so here each join is its own span in
+-- the slot, like a rail. Geometry is in viewBox units (100 to the 1.25em box).
+local TALL = { consonant=true, null_consonant=true }
+local function boxHeight(e) return TALL[e.type] and 100 or 80 end
+
+-- Where a glyph's box sits in its block, as the stylesheet stacks it.
+local function placeGlyph(e, flipped, slot, topHeight, cc)
+  local H = boxHeight(e)
+  local threeRow = H == 80 and e.rows ~= 4
+  local shift = 0
+  if threeRow and slot == "top" and not flipped then shift = -16 end
+  if threeRow and slot == "bottom" and flipped then shift = 16 end
+  local y0 = 0
+  if slot == "bottom" then y0 = topHeight - (cc and 36 or 18) end
+  return { y0 = y0, H = H, shift = shift, flipped = flipped }
+end
+
+local function toSlot(pl, y)
+  return pl.shift + (pl.flipped and (pl.H - y) or y)
+end
+
+local function receivesJoin(e)
+  return e.type == "consonant" or (e.type == "vowel" and e.rows == 4)
+end
+
+-- Viewbox units -> em, as a fixed four-decimal string (100 units = 1.25em),
+-- built from integers so the JS test serialiser prints the same bytes.
+local function em(u)
+  local n = math.floor(u * 125 + 0.5)
+  local neg = n < 0
+  if neg then n = -n end
+  return (neg and "-" or "") .. string.format("%d.%04d", math.floor(n / 10000), n % 10000)
+end
+
+local JOIN_MAX = 40   -- render.js JOIN_MAX
+local JOIN_OPEN = 20  -- render.js JOIN_OPEN
+local JOIN_DOT = 20   -- render.js JOIN_DOT
+local JOIN_W = 13   -- the mask's display stroke weight (build_css_only.py)
+function joinSpans(token, slot, partner)
+  if partner == nil then return "" end
+  local sym, forced, variant = parseSymbol(token)
+  local pSym, pForced, pVariant = parseSymbol(partner)
+  local me, them = GLYPH[sym], GLYPH[pSym]
+  if not (me and them) then return "" end
+  local other = slot == "top" and "bottom" or "top"
+  local myCluster, myFlipped, myAlt = resolveGlyph(sym, forced, variant, me, slot, partner)
+  local theirCluster, theirFlipped, theirAlt = resolveGlyph(pSym, pForced, pVariant, them, other, token)
+  -- A cluster form does not emit; an alternate has emitters of its own.
+  local emit = myAlt and myAlt.emit or (not myAlt and me.emit) or nil
+  if myCluster or not emit then return "" end
+  local key = slot == "top" and (sym .. "|" .. pSym) or (pSym .. "|" .. sym)
+  local reach = BLOCK_REACH[key]
+  if reach == "none" then return "" end
+  local explicit = reach == "open" or reach == "first" or reach == "second"
+  if not explicit and not receivesJoin(them) then return "" end
+  local cc = me.type == "consonant" and them.type == "consonant"
+  local topHeight = boxHeight(slot == "top" and me or them)
+  local mine = placeGlyph(me, myFlipped, slot, topHeight, cc)
+  local theirs = placeGlyph(them, theirFlipped, other, topHeight, cc)
+  local ink = (theirCluster and them.cink or them.ink) or {}
+  local dots = (theirCluster and them.cdots or them.dots) or {}
+  local gaps = (theirCluster and them.cgaps or them.gaps) or {}
+  if theirAlt then ink, dots, gaps = theirAlt.ink or {}, theirAlt.dots or {}, theirAlt.gaps or {} end
+  local out, tookDot = {}, false
+  for _, em3 in ipairs(emit) do
+    local x, y, dir = em3[1], em3[2], em3[3]
+    local D = mine.flipped and -dir or dir
+    if D == (slot == "top" and 1 or -1) then
+      local Y = mine.y0 + toSlot(mine, y)
+      local hits = {}
+      for _, h in ipairs(ink[x] or {}) do
+        local u, v = theirs.y0 + toSlot(theirs, h[1]), theirs.y0 + toSlot(theirs, h[2])
+        local lo, hi = math.min(u, v), math.max(u, v)
+        local behind
+        if D > 0 then behind = hi < Y else behind = lo > Y end
+        if not behind then
+          hits[#hits + 1] = { len = math.max(0, D > 0 and (lo - Y) or (Y - hi)) }
+        end
+      end
+      for _, g in ipairs(gaps[x] or {}) do   -- a mouth the stem closes
+        local d = (theirs.y0 + toSlot(theirs, g[1]) - Y) * D
+        if d > 0 then hits[#hits + 1] = { len = d, bar = g } end
+      end
+      for _, h in ipairs(dots[x] or {}) do   -- a dot at the seam receives it
+        local u = (theirs.y0 + toSlot(theirs, h[1]) - Y) * D
+        local v = (theirs.y0 + toSlot(theirs, h[2]) - Y) * D
+        local near = math.min(u, v)
+        if near > 0 and near <= JOIN_DOT then hits[#hits + 1] = { len = math.max(u, v), dot = true } end
+      end
+      if #hits > 0 then
+        -- stable order for equal lengths is not needed: the kinds never tie
+        table.sort(hits, function(m, n) return m.len < n.len end)
+        local hit = hits[math.min(reach == "second" and 2 or 1, #hits)]
+        local len = hit.len
+        local blocked = false   -- a dot in the way; an explicit reach stands
+        -- too deep: rise into the opening and stop short (render.js JOIN_OPEN)
+        local open = not hit.bar and not hit.dot and len > JOIN_OPEN
+          and (reach == "open" or (not explicit and len > JOIN_MAX))
+        if not explicit and not hit.dot then
+          for _, h in ipairs(dots[x] or {}) do
+            local u = (theirs.y0 + toSlot(theirs, h[1]) - Y) * D
+            local v = (theirs.y0 + toSlot(theirs, h[2]) - Y) * D
+            if math.max(u, v) > 0 and math.min(u, v) < len then blocked = true end
+          end
+        end
+        if open then len = JOIN_OPEN end
+        if len > 0 and not blocked then
+          if hit.dot then tookDot = true end
+          local a = toSlot(mine, y)
+          local b = a + D * len
+          out[#out + 1] = '<span class="av-join" style="margin-left:' .. em(x - 50 - JOIN_W / 2)
+            .. 'em;top:' .. em(math.min(a, b)) .. 'em;height:' .. em(math.abs(b - a)) .. 'em"></span>'
+          if hit.bar and not open then   -- the bar across the mouth it closes
+            out[#out + 1] = '<span class="av-join" style="margin-left:' .. em(hit.bar[2] - 50)
+              .. 'em;top:' .. em(b - JOIN_W / 2) .. 'em;width:' .. em(hit.bar[3] - hit.bar[2])
+              .. 'em;height:' .. em(JOIN_W) .. 'em"></span>'
+          end
+        end
+      end
+    end
+  end
+  return table.concat(out), tookDot
 end
 
 -- Render one word's IPA sequence into blocks. Punctuation is NOT paired: it
@@ -337,9 +541,9 @@ local function renderWord(seq)
       local cc = slotIsConsonant(blk.top) and slotIsConsonant(blk.bottom)
       out[#out + 1] = '<span class="av-block' .. (cc and " av-cc" or "") .. '">'
         .. '<span class="av-slot av-slot-top">' .. glyphSpan(blk.top, "top", blk.bottom)
-        .. railSpan(blk.top, "top", blk.bottom) .. '</span>'
+        .. railSpan(blk.top, "top", blk.bottom) .. joinSpans(blk.top, "top", blk.bottom) .. '</span>'
         .. '<span class="av-slot av-slot-bottom">' .. glyphSpan(blk.bottom, "bottom", blk.top)
-        .. railSpan(blk.bottom, "bottom", blk.top) .. '</span>'
+        .. railSpan(blk.bottom, "bottom", blk.top) .. joinSpans(blk.bottom, "bottom", blk.top) .. '</span>'
         .. '</span>'
     end
     run = {}

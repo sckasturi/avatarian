@@ -11,48 +11,50 @@ local READABLE_ALIASES = {["o"]="ɑ", ["ay"]="e", ["ai"]="e", ["au"]="ɔ", ["or"
 local SOUND_ALIASES = {["-"]="∅", ["_"]="∅", ["-c"]="∅c", ["@"]="0", ["’s"]="'s", ["eɪ"]="e", ["ej"]="e", ["ɝ"]="ə", ["ɜr"]="ə", ["ɜ"]="ə", ["ɑː"]="ɑ", ["iː"]="i", ["uː"]="u"}
 local MARK_WIDE = {[":"]="av-wide", ["?"]="av-wide", ["--"]="av-wide3", ["0"]="av-wide3", ["1"]="av-wide3", ["2"]="av-wide3", ["3"]="av-wide3", ["4"]="av-wide3", ["5"]="av-wide3", ["6"]="av-wide3", ["7"]="av-wide3", ["8"]="av-wide3", ["9"]="av-wide3", ["'s"]="av-wide3"}
 local BLOCK_DOTS = {["m|z"]=6}
+local BLOCK_REACH = {["l|z"]="none", ["v|e"]="open", ["w|ʊ"]="first", ["ɹ|z"]="none", ["ʃ|u"]="first", ["ʃ|ɪ"]="first"}
+local BLOCK_ALT = {["ŋ|k"]={bottom="low"}}
 local GLYPH = {
-  ["p"]={name="p", type="consonant"},
-  ["b"]={name="b", type="consonant"},
-  ["t"]={name="t", type="consonant"},
-  ["d"]={name="d", type="consonant"},
-  ["k"]={name="k", type="consonant"},
-  ["g"]={name="g", type="consonant"},
-  ["m"]={name="m", type="consonant"},
-  ["n"]={name="n", type="consonant"},
-  ["ŋ"]={name="ng", type="consonant"},
-  ["tʃ"]={name="ch", type="consonant"},
-  ["dʒ"]={name="j_dz", type="consonant"},
-  ["f"]={name="f", type="consonant"},
-  ["v"]={name="v", type="consonant"},
-  ["θ"]={name="th", type="consonant"},
-  ["ð"]={name="dh", type="consonant"},
-  ["s"]={name="s", type="consonant"},
-  ["z"]={name="z", type="consonant"},
-  ["ʃ"]={name="sh", type="consonant"},
-  ["ʒ"]={name="zh", type="consonant"},
-  ["h"]={name="h", type="consonant"},
-  ["w"]={name="w", type="consonant", cluster=true},
-  ["j"]={name="y", type="consonant", cluster=true},
-  ["ɹ"]={name="r", type="consonant", cluster=true},
-  ["l"]={name="l", type="consonant", cluster=true},
-  ["i"]={name="i", type="vowel"},
-  ["ɪ"]={name="ih", type="vowel", rows=4, flips=true},
-  ["e"]={name="ei", type="vowel", rows=4, flips=true},
-  ["ɛ"]={name="eh", type="vowel"},
-  ["æ"]={name="ae", type="vowel", flips=true},
-  ["ʌ"]={name="uh", type="vowel"},
-  ["ə"]={name="schwa", type="vowel", flips=true},
-  ["u"]={name="uu", type="vowel", rows=4},
-  ["ʊ"]={name="oo", type="vowel", rows=4},
-  ["oʊ"]={name="ow", type="vowel"},
-  ["ɔ"]={name="aw", type="vowel"},
-  ["ɑ"]={name="ah", type="vowel", rows=4, flips=true},
-  ["aɪ"]={name="ai", type="vowel", flips=true},
-  ["aʊ"]={name="au", type="vowel", rows=4},
-  ["ɔɪ"]={name="oi", type="vowel", rows=4, flips=true},
-  ["∅"]={name="null_v", type="null"},
-  ["∅c"]={name="null_c", type="null_consonant"},
+  ["p"]={name="p", type="consonant", ink={[18]={{50,50}},[50]={{18,18},{82,82}}}},
+  ["b"]={name="b", type="consonant", ink={[18]={{57,82}},[50]={{22,22}}}, dots={[50]={{66,82}}}},
+  ["t"]={name="t", type="consonant", ink={[18]={{18,18},{50,82}},[50]={{18,18},{50,82}}}},
+  ["d"]={name="d", type="consonant", ink={[18]={{18,58},{82,82}},[50]={{22,22},{82,82}}}},
+  ["k"]={name="k", type="consonant", ink={[18]={{18,82}},[50]={{18,50},{82,82}}}, alts={["low"]={name="k_alt_low", emit={{18,18,-1}}, ink={[18]={{18,82}},[50]={{50,82}}}}}},
+  ["g"]={name="g", type="consonant", ink={[18]={{18,82}},[50]={{18,18}}}, dots={[50]={{42,58}}}, gaps={[50]={{82,34,66}}}},
+  ["m"]={name="m", type="consonant", ink={[18]={{42,58}},[50]={{18,18},{82,82}}}, dots={[50]={{42,58}}}},
+  ["n"]={name="n", type="consonant", ink={[18]={{38,50},{82,82}},[50]={{18,18},{82,82}}}, dots={[50]={{42,58}}}},
+  ["ŋ"]={name="ng", type="consonant", ink={[18]={{41,41},{63,63}},[50]={{18,18}}}, gaps={[50]={{82,34,66}}}},
+  ["tʃ"]={name="ch", type="consonant", ink={[18]={{18,50},{82,82}},[50]={{18,18},{50,50},{82,82}}}},
+  ["dʒ"]={name="j_dz", type="consonant", ink={[18]={{18,82}},[50]={{18,58},{82,82}}}},
+  ["f"]={name="f", type="consonant", ink={[18]={{18,18},{79,79}},[50]={{34,34}}}},
+  ["v"]={name="v", type="consonant", ink={[18]={{18,18},{81,81}},[50]={{18,18},{58,58}}}},
+  ["θ"]={name="th", type="consonant", ink={[18]={{18,18},{69,82}},[50]={{18,42}}}},
+  ["ð"]={name="dh", type="consonant", ink={[18]={{18,29}},[50]={{18,18},{73,73}}}, dots={[18]={{74,90}}}},
+  ["s"]={name="s", type="consonant", ink={[18]={{81,81}},[50]={{19,19}}}, dots={[50]={{58,74}}}},
+  ["z"]={name="z", type="consonant", emit={{50,18,-1}}, ink={[18]={{69,82}},[50]={{18,33}}}, dots={[18]={{18,34}}}},
+  ["ʃ"]={name="sh", type="consonant", ink={[18]={{50,50},{82,82}},[50]={{18,18},{50,50}}}},
+  ["ʒ"]={name="zh", type="consonant", ink={[18]={{42,82}},[50]={{18,18}}}},
+  ["h"]={name="h", type="consonant", ink={[18]={{18,18},{82,82}},[50]={{18,18},{26,26},{74,74},{82,82}}}},
+  ["w"]={name="w", type="consonant", cluster=true, ink={[18]={{18,82}},[50]={{42,42},{82,82}}}, cink={[18]={{18,82}},[50]={{58,58}}}},
+  ["j"]={name="y", type="consonant", cluster=true, ink={[18]={{58,58},{82,82}},[50]={{42,42},{82,82}}}, cink={[18]={{42,42}},[50]={{58,58}}}},
+  ["ɹ"]={name="r", type="consonant", cluster=true, ink={[18]={{18,58}},[50]={{18,18},{82,82}}}, cink={[18]={{78,78}},[50]={{50,50},{82,82}}}},
+  ["l"]={name="l", type="consonant", cluster=true, ink={[18]={{18,82}},[50]={{18,18},{82,82}}}, cink={[18]={{18,82}},[50]={{50,50},{82,82}}}},
+  ["i"]={name="i", type="vowel", ink={[18]={{32,32},{64,64}},[50]={{32,32},{64,64}}}},
+  ["ɪ"]={name="ih", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16},{48,48}},[50]={{16,16},{48,64}}}},
+  ["e"]={name="ei", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16},{48,48}},[50]={{16,64}}}},
+  ["ɛ"]={name="eh", type="vowel", ink={[18]={{32,32},{64,64}},[50]={{48,48}}}},
+  ["æ"]={name="ae", type="vowel", flips=true, ink={[18]={{36,36}},[50]={{64,64}}}, dots={[50]={{32,48}}}},
+  ["ʌ"]={name="uh", type="vowel", ink={[18]={{32,32},{64,64}}}, gaps={[50]={{32,34,66},{64,34,66}}}},
+  ["ə"]={name="schwa", type="vowel", flips=true, ink={[18]={{32,32}},[50]={{48,48}}}, dots={[18]={{56,72}}}},
+  ["u"]={name="uu", type="vowel", rows=4, emit={{50,16,-1}}, ink={[18]={{32,64}},[50]={{16,64}}}},
+  ["ʊ"]={name="oo", type="vowel", rows=4, emit={{50,16,-1}}, ink={[50]={{16,64}}}, dots={[18]={{24,40},{56,72}}}},
+  ["oʊ"]={name="ow", type="vowel", ink={[18]={{32,64}},[50]={{32,64}}}},
+  ["ɔ"]={name="aw", type="vowel", ink={[18]={{64,64}},[50]={{64,64}}}, dots={[18]={{24,40}}}},
+  ["ɑ"]={name="ah", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16}},[50]={{39,64}}}},
+  ["aɪ"]={name="ai", type="vowel", flips=true, ink={[18]={{32,32}},[50]={{32,32}}}, dots={[18]={{56,72}}}},
+  ["aʊ"]={name="au", type="vowel", rows=4, ink={[50]={{24,24},{56,56}}}, dots={[18]={{16,32},{48,64}}}},
+  ["ɔɪ"]={name="oi", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,48}},[50]={{16,16},{48,64}}}},
+  ["∅"]={name="null_v", type="null", ink={[18]={{36,36}},[50]={{64,64}}}},
+  ["∅c"]={name="null_c", type="null_consonant", ink={[18]={{18,82}},[50]={{82,82}}}},
   ["."]={name="period", type="mark_full"},
   [":"]={name="colon", type="mark_full"},
   [","]={name="comma", type="mark_full"},
@@ -162,20 +164,18 @@ local function esc(s)
   return (s:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub('"', "&quot;"))
 end
 
--- One glyph span: stem class (g-name, plus _c for a cluster form), height class,
--- av-4row, av-flipped. The cluster/flip choice mirrors makeGlyph in render.js.
--- SVG-level tweaks it makes (/s/'s inset vertex, /z/'s dropped dots) have no
--- CSS-only class and are intentionally not reproduced — the mask path has none.
-local function glyphSpan(token, slot, partner)
-  local sym, forced, variant = parseSymbol(token)
-  if sym == UNREADABLE then
-    return '<span class="av-glyph av-consonant g-unreadable"></span>'
+-- Which form a slot draws and which way up (render.js resolveGlyph): the
+-- cluster form in a C-C block (the r/l pair's top glyph excepted), flipped by
+-- its own rule. Shared by glyphSpan and joinSpans, which asks it of the partner.
+local function resolveGlyph(sym, forced, variant, e, slot, partner)
+  -- A block can name an alternate drawing for this slot (BLOCK_ALT); typed
+  -- overrides say otherwise and win. Third result: the alternate's row.
+  if not forced and not variant and partner ~= nil and e.alts then
+    local pSym = parseSymbol(partner)
+    local key = slot == "top" and (sym .. "|" .. pSym) or (pSym .. "|" .. sym)
+    local alt = e.alts[(BLOCK_ALT[key] or {})[slot] or ""]
+    if alt then return false, false, alt end
   end
-  local e = GLYPH[sym]
-  if not e then
-    return '<span class="av-glyph av-missing" title="' .. esc(sym) .. '"></span>'
-  end
-
   local wantCluster = variant == "cluster"
   local useCluster = false
   if e.cluster then
@@ -198,12 +198,34 @@ local function glyphSpan(token, slot, partner)
     end
     flipped = orientation == "bottom"
   end
+  return useCluster, flipped
+end
+
+-- One glyph span: stem class (g-name, plus _c for a cluster form), height class,
+-- av-4row, av-flipped. The cluster/flip choice mirrors makeGlyph in render.js.
+-- SVG-level tweaks it makes (/s/'s inset vertex, /z/'s dropped dots) have no
+-- CSS-only class and are intentionally not reproduced — the mask path has none.
+local joinSpans   -- defined below; glyphSpan asks it whether a dot is replaced
+
+local function glyphSpan(token, slot, partner)
+  local sym, forced, variant = parseSymbol(token)
+  if sym == UNREADABLE then
+    return '<span class="av-glyph av-consonant g-unreadable"></span>'
+  end
+  local e = GLYPH[sym]
+  if not e then
+    return '<span class="av-glyph av-missing" title="' .. esc(sym) .. '"></span>'
+  end
+
+  local useCluster, flipped, alt = resolveGlyph(sym, forced, variant, e, slot, partner)
 
   -- Stem class: the glyph name, plus a cluster form. /s/ and /z/ redraw in a
   -- C-C block (clusterForm in render.js): /s/ insets its vertex when the point
   -- faces the one-row overlap, /z/ drops the dot(s) that overlap rides up.
   local stem = e.name .. (useCluster and "_c" or "")
-  if not useCluster and isClusterPartner(partner) then
+  if alt then
+    stem = alt.name     -- drawn exactly as its design has it
+  elseif not useCluster and isClusterPartner(partner) then
     if sym == "s" then
       local pointAtOverlap
       if slot == "top" then pointAtOverlap = flipped else pointAtOverlap = not flipped end
@@ -218,6 +240,11 @@ local function glyphSpan(token, slot, partner)
         stem = dy and ("z_d" .. dy) or "z"      -- ... dropped `dy` if the block says so
       else stem = "z_none" end
     end
+  end
+  -- The partner's stem replaces a dot at the seam (/b/ over a stem).
+  if partner ~= nil then
+    local _, dot = joinSpans(partner, slot == "top" and "bottom" or "top", token)
+    if dot then stem = stem .. "_nodot" end
   end
   local cls = "av-glyph g-" .. stem .. " " .. HEIGHT[e.type]
   if e.rows == 4 then cls = cls .. " av-4row" end
@@ -253,15 +280,145 @@ end
 -- its own span over the glyph.
 local RAIL_SIDE = { ["l"]="l", ["ɹ"]="r" }   -- not /w/ or /j/, as in render.js
 local function railSpan(token, slot, partner)
-  local sym = parseSymbol(token)
+  local sym, forced, variant = parseSymbol(token)
   local pSym = parseSymbol(partner)
   if not RAIL_SIDE[pSym] or sym == UNREADABLE then return "" end   -- `*` draws no rail, as in render.js
+  if GLYPH[sym] then   -- an alternate drawing carries no rail
+    local _, _, alt = resolveGlyph(sym, forced, variant, GLYPH[sym], slot, partner)
+    if alt then return "" end
+  end
   if not (slotIsConsonant(token) and isClusterPartner(partner)) then return "" end
   local pe = GLYPH[pSym]
   if not (pe and pe.cluster) then return "" end
   local rlPair = (pSym == "ɹ" or pSym == "l") and (sym == "ɹ" or sym == "l") and pSym ~= sym
   if rlPair and slot == "bottom" then return "" end   -- the partner is on top: base form
   return '<span class="av-rail av-rail-' .. RAIL_SIDE[pSym] .. '"></span>'
+end
+
+-- JOINS (render.js joinsFor): a stroke from an emitter on one glyph on to its
+-- partner's first ink in that column. The site draws it inside the glyph's
+-- SVG; a mask can't take a second layer, so here each join is its own span in
+-- the slot, like a rail. Geometry is in viewBox units (100 to the 1.25em box).
+local TALL = { consonant=true, null_consonant=true }
+local function boxHeight(e) return TALL[e.type] and 100 or 80 end
+
+-- Where a glyph's box sits in its block, as the stylesheet stacks it.
+local function placeGlyph(e, flipped, slot, topHeight, cc)
+  local H = boxHeight(e)
+  local threeRow = H == 80 and e.rows ~= 4
+  local shift = 0
+  if threeRow and slot == "top" and not flipped then shift = -16 end
+  if threeRow and slot == "bottom" and flipped then shift = 16 end
+  local y0 = 0
+  if slot == "bottom" then y0 = topHeight - (cc and 36 or 18) end
+  return { y0 = y0, H = H, shift = shift, flipped = flipped }
+end
+
+local function toSlot(pl, y)
+  return pl.shift + (pl.flipped and (pl.H - y) or y)
+end
+
+local function receivesJoin(e)
+  return e.type == "consonant" or (e.type == "vowel" and e.rows == 4)
+end
+
+-- Viewbox units -> em, as a fixed four-decimal string (100 units = 1.25em),
+-- built from integers so the JS test serialiser prints the same bytes.
+local function em(u)
+  local n = math.floor(u * 125 + 0.5)
+  local neg = n < 0
+  if neg then n = -n end
+  return (neg and "-" or "") .. string.format("%d.%04d", math.floor(n / 10000), n % 10000)
+end
+
+local JOIN_MAX = 40   -- render.js JOIN_MAX
+local JOIN_OPEN = 20  -- render.js JOIN_OPEN
+local JOIN_DOT = 20   -- render.js JOIN_DOT
+local JOIN_W = 13   -- the mask's display stroke weight (build_css_only.py)
+function joinSpans(token, slot, partner)
+  if partner == nil then return "" end
+  local sym, forced, variant = parseSymbol(token)
+  local pSym, pForced, pVariant = parseSymbol(partner)
+  local me, them = GLYPH[sym], GLYPH[pSym]
+  if not (me and them) then return "" end
+  local other = slot == "top" and "bottom" or "top"
+  local myCluster, myFlipped, myAlt = resolveGlyph(sym, forced, variant, me, slot, partner)
+  local theirCluster, theirFlipped, theirAlt = resolveGlyph(pSym, pForced, pVariant, them, other, token)
+  -- A cluster form does not emit; an alternate has emitters of its own.
+  local emit = myAlt and myAlt.emit or (not myAlt and me.emit) or nil
+  if myCluster or not emit then return "" end
+  local key = slot == "top" and (sym .. "|" .. pSym) or (pSym .. "|" .. sym)
+  local reach = BLOCK_REACH[key]
+  if reach == "none" then return "" end
+  local explicit = reach == "open" or reach == "first" or reach == "second"
+  if not explicit and not receivesJoin(them) then return "" end
+  local cc = me.type == "consonant" and them.type == "consonant"
+  local topHeight = boxHeight(slot == "top" and me or them)
+  local mine = placeGlyph(me, myFlipped, slot, topHeight, cc)
+  local theirs = placeGlyph(them, theirFlipped, other, topHeight, cc)
+  local ink = (theirCluster and them.cink or them.ink) or {}
+  local dots = (theirCluster and them.cdots or them.dots) or {}
+  local gaps = (theirCluster and them.cgaps or them.gaps) or {}
+  if theirAlt then ink, dots, gaps = theirAlt.ink or {}, theirAlt.dots or {}, theirAlt.gaps or {} end
+  local out, tookDot = {}, false
+  for _, em3 in ipairs(emit) do
+    local x, y, dir = em3[1], em3[2], em3[3]
+    local D = mine.flipped and -dir or dir
+    if D == (slot == "top" and 1 or -1) then
+      local Y = mine.y0 + toSlot(mine, y)
+      local hits = {}
+      for _, h in ipairs(ink[x] or {}) do
+        local u, v = theirs.y0 + toSlot(theirs, h[1]), theirs.y0 + toSlot(theirs, h[2])
+        local lo, hi = math.min(u, v), math.max(u, v)
+        local behind
+        if D > 0 then behind = hi < Y else behind = lo > Y end
+        if not behind then
+          hits[#hits + 1] = { len = math.max(0, D > 0 and (lo - Y) or (Y - hi)) }
+        end
+      end
+      for _, g in ipairs(gaps[x] or {}) do   -- a mouth the stem closes
+        local d = (theirs.y0 + toSlot(theirs, g[1]) - Y) * D
+        if d > 0 then hits[#hits + 1] = { len = d, bar = g } end
+      end
+      for _, h in ipairs(dots[x] or {}) do   -- a dot at the seam receives it
+        local u = (theirs.y0 + toSlot(theirs, h[1]) - Y) * D
+        local v = (theirs.y0 + toSlot(theirs, h[2]) - Y) * D
+        local near = math.min(u, v)
+        if near > 0 and near <= JOIN_DOT then hits[#hits + 1] = { len = math.max(u, v), dot = true } end
+      end
+      if #hits > 0 then
+        -- stable order for equal lengths is not needed: the kinds never tie
+        table.sort(hits, function(m, n) return m.len < n.len end)
+        local hit = hits[math.min(reach == "second" and 2 or 1, #hits)]
+        local len = hit.len
+        local blocked = false   -- a dot in the way; an explicit reach stands
+        -- too deep: rise into the opening and stop short (render.js JOIN_OPEN)
+        local open = not hit.bar and not hit.dot and len > JOIN_OPEN
+          and (reach == "open" or (not explicit and len > JOIN_MAX))
+        if not explicit and not hit.dot then
+          for _, h in ipairs(dots[x] or {}) do
+            local u = (theirs.y0 + toSlot(theirs, h[1]) - Y) * D
+            local v = (theirs.y0 + toSlot(theirs, h[2]) - Y) * D
+            if math.max(u, v) > 0 and math.min(u, v) < len then blocked = true end
+          end
+        end
+        if open then len = JOIN_OPEN end
+        if len > 0 and not blocked then
+          if hit.dot then tookDot = true end
+          local a = toSlot(mine, y)
+          local b = a + D * len
+          out[#out + 1] = '<span class="av-join" style="margin-left:' .. em(x - 50 - JOIN_W / 2)
+            .. 'em;top:' .. em(math.min(a, b)) .. 'em;height:' .. em(math.abs(b - a)) .. 'em"></span>'
+          if hit.bar and not open then   -- the bar across the mouth it closes
+            out[#out + 1] = '<span class="av-join" style="margin-left:' .. em(hit.bar[2] - 50)
+              .. 'em;top:' .. em(b - JOIN_W / 2) .. 'em;width:' .. em(hit.bar[3] - hit.bar[2])
+              .. 'em;height:' .. em(JOIN_W) .. 'em"></span>'
+          end
+        end
+      end
+    end
+  end
+  return table.concat(out), tookDot
 end
 
 -- Render one word's IPA sequence into blocks. Punctuation is NOT paired: it
@@ -273,9 +430,9 @@ local function renderWord(seq)
       local cc = slotIsConsonant(blk.top) and slotIsConsonant(blk.bottom)
       out[#out + 1] = '<span class="av-block' .. (cc and " av-cc" or "") .. '">'
         .. '<span class="av-slot av-slot-top">' .. glyphSpan(blk.top, "top", blk.bottom)
-        .. railSpan(blk.top, "top", blk.bottom) .. '</span>'
+        .. railSpan(blk.top, "top", blk.bottom) .. joinSpans(blk.top, "top", blk.bottom) .. '</span>'
         .. '<span class="av-slot av-slot-bottom">' .. glyphSpan(blk.bottom, "bottom", blk.top)
-        .. railSpan(blk.bottom, "bottom", blk.top) .. '</span>'
+        .. railSpan(blk.bottom, "bottom", blk.top) .. joinSpans(blk.bottom, "bottom", blk.top) .. '</span>'
         .. '</span>'
     end
     run = {}

@@ -80,6 +80,7 @@ tools/
   extract_reference.py  cuts the key chart into one traced SVG per sound
   build_manifest.py     re-embeds both sets into js/manifest.js
   glyphspec.py          the design format + the one way to render it
+  inkprofile.py         where each glyph's ink sits per column, for joins
   designer_server.py    serves designer/ and writes designs/ (port 8792)
   corpus_server.py      serves workbench/ and writes corpus/ (port 8793)
   localserver.py        what the local servers share, including the check
@@ -309,11 +310,14 @@ because they draw the same blocks.
 
 **What still differs from canon:** in the reference, adjacent glyphs are
 hand-lettered so their strokes interlock and share edges, and blocks are
-visibly skewed/organic. This renders glyphs as discrete raster images
-butted together, so it reproduces the *structure* correctly but not the
-stroke-level fusion. Getting that would need the glyphs redrawn as vectors
-with defined connection points — a worthwhile v2, but a different kind of
-project (real type design) rather than a layout tweak.
+visibly skewed/organic. This renders each glyph as a discrete drawing, so
+it reproduces the *structure* correctly, and the fusion that can be worked
+out rather than drawn: rails, and **joins** — a stroke marked as an emitter
+runs on to its partner's ink, computed for every pairing from a per-glyph
+ink profile (`tools/inkprofile.py`, `joinsFor` in `render.js`, AVATARIAN.md
+§11). Per-pair exceptions are parameters in `designs/blocks/tweaks.json`,
+set in the block review page. What is left needs a drawing per glyph (never
+per pair) and is listed there.
 
 ## The glyphs
 
@@ -705,8 +709,9 @@ The wiki just draws exactly what you hand it.
 
 ## Known limitations
 
-- Glyphs are butted together, not stroke-level fused/interlocking like
-  hand-lettered canon (see "Why this isn't a literal font").
+- Fusion is rails and joins only; shapes that are REDRAWN beside a partner
+  (/f/ under a stem, /v/ over one, /p/ beside a rail) are not yet
+  (AVATARIAN.md §11).
 - G2P is rule-based, not dictionary-grade: unusual words and names may need
   a hand-edit in the Sounds box or an `EXCEPTIONS` entry.
 - /x/ (the velar fricative) is not in the set — no source shows a glyph for

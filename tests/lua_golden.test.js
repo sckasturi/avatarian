@@ -90,6 +90,7 @@ function serializeGlyph(g) {
       if (cy && cy !== 26) name = "z_d" + (cy - 26);   // BLOCK_TWEAKS `dots`
     }
   }
+  if (g.dataset.nodot) name += "_nodot";   // a partner's stem replaced its dot
   const stem = "g-" + name;
   let height = "";
   for (const [k, v] of Object.entries(HEIGHT)) if (g._c.has(k)) height = v;
@@ -97,7 +98,29 @@ function serializeGlyph(g) {
   if (g._c.has("avatarian-4row")) cls += " av-4row";
   if (g._c.has("avatarian-flipped")) cls += " av-flipped";
   const rail = g.dataset.rail ? '<span class="av-rail av-rail-' + g.dataset.rail + '"></span>' : "";
-  return '<span class="' + cls + '"></span>' + rail;
+  return '<span class="' + cls + '"></span>' + rail + joinSpans(g.dataset.join);
+}
+
+// A join as the wiki draws it: render.js records each one on the glyph as
+// "x,a,b" (column, and the stroke's two ends in the slot's box, in viewBox
+// units); the Lua writes it as an av-join span sized in em at the masks' 13
+// weight. em() matches the Lua's: four decimals built from integers.
+function em(u) {
+  let n = Math.floor(u * 125 + 0.5);
+  const neg = n < 0;
+  if (neg) n = -n;
+  return (neg ? "-" : "") + Math.floor(n / 10000) + "." + String(n % 10000).padStart(4, "0");
+}
+function joinSpans(join) {
+  if (!join) return "";
+  return join.split(";").map((j) => {
+    const [x, a, b, x0, x1] = j.split(",").map(Number);
+    return '<span class="av-join" style="margin-left:' + em(x - 50 - 6.5) + 'em;top:'
+      + em(Math.min(a, b)) + 'em;height:' + em(Math.abs(b - a)) + 'em"></span>'
+      // a join that closes a mouth carries the bar's two ends as well
+      + (x0 === undefined ? "" : '<span class="av-join" style="margin-left:' + em(x0 - 50)
+        + 'em;top:' + em(b - 6.5) + 'em;width:' + em(x1 - x0) + 'em;height:' + em(13) + 'em"></span>');
+  }).join("");
 }
 
 function serializeWord(container) {

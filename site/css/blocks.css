@@ -55,6 +55,9 @@
 
 .avatarian-glyph { display: inline-block; line-height: 0; color: var(--ink); }
 .avatarian-glyph svg { display: block; width: 100%; height: 100%; }
+/* A join (render.js joinsFor) is a stroke that leaves its glyph's box to
+   reach the partner's ink, so the box must not clip it. */
+.avatarian-glyph svg { overflow: visible; }
 /* Consonants: 5 units square. Vowels: 4 units tall, full width — 4/5.
    3-row vowels leave the top row of their 4-row viewBox empty (gap);
    4-row vowels fill it (bridge to the consonant above). */

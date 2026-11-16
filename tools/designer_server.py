@@ -82,6 +82,7 @@ FEEDBACK = ROOT / "feedback" / "blocks.json"
 TWEAKS = DESIGNS / "blocks" / "tweaks.json"
 
 NAME_OK = re.compile(r"^[a-z0-9_]+$")
+ALT_LABEL = re.compile(r"^[a-z0-9]{1,16}$")
 
 # The only files under site/ the designer may read. An allow-list rather
 # than a path check: this server exists to write to designs/, and the
@@ -218,7 +219,30 @@ def catalog():
             "currentFlat": None,
         })
 
-    order = {"consonant": 0, "vowel": 1, "mark": 2, "numeral": 3, "cluster": 4}
+    # Alternate drawings (see ALTS in build_glyphs): one row per design file
+    # designs/<name>_alt_<label>.json, made by new_alternate().
+    by_name = {r["name"]: r for r in rows}
+    for p in sorted(DESIGNS.glob(f"*{bg.ALT_SUFFIX}*.json")):
+        base, _, label = p.stem.partition(bg.ALT_SUFFIX)
+        parent = by_name.get(base)
+        if not parent or not label:
+            continue
+        rows.append({
+            "name": p.stem, "ipa": None, "key": p.stem,
+            "type": parent["type"], "group": "alternate",
+            "grid": parent["grid"], "code": None, "example": None,
+            "placeholder": not (GLYPHS / f"{p.stem}.svg").exists(),
+            "flips": False, "rows": parent["rows"],
+            "note": f"alternate drawing of /{parent['key']}/ — \"{label}\". Used "
+                    "only in the blocks that pick it on the block review page; "
+                    "drawn as the block shows it, never flipped.",
+            # The usual drawing is the thing to trace against.
+            "reference": parent["current"],
+            "current": read(GLYPHS / f"{p.stem}.svg"),
+            "currentFlat": read(GLYPHS / f"{p.stem}{bg.FLAT_SUFFIX}.svg"),
+        })
+
+    order = {"consonant": 0, "vowel": 1, "mark": 2, "numeral": 3, "cluster": 4, "alternate": 5}
     # Numerals sort by value, not alphabetically by their spelled-out names.
     rows.sort(key=lambda r: (order[r["group"]],
                              r["key"] if r["group"] == "numeral" else r["name"]))
@@ -351,6 +375,27 @@ def save_tweak(entry):
             t["dots"] = dots
         else:
             t.pop("dots", None)
+    if "reach" in entry:
+        # How far a join runs in this block (render.js joinsFor); empty
+        # puts the block back on the default rule.
+        reach = str(entry["reach"] or "")
+        if reach not in ("", "none", "open", "first", "second"):
+            raise ValueError("reach must be none, open, first or second")
+        if reach:
+            t["reach"] = reach
+        else:
+            t.pop("reach", None)
+    for slot in ("top", "bottom"):
+        # Which ALTERNATE drawing that slot's glyph uses in this block
+        # (render.js resolveGlyph); empty puts it back on its usual form.
+        if slot in entry:
+            label = str(entry[slot] or "")
+            if label and not ALT_LABEL.match(label):
+                raise ValueError("an alternate's label is lowercase letters and digits")
+            if label:
+                t[slot] = label
+            else:
+                t.pop(slot, None)
     if t:
         data[key] = t
     else:
@@ -361,12 +406,43 @@ def save_tweak(entry):
     return data.get(key)
 
 
+def new_alternate(entry):
+    """Start an alternate drawing of a glyph: designs/<base>_alt_<label>.json,
+    seeded with the base glyph's own design so it opens as that shape, ready
+    to change. Refuses to overwrite one that exists."""
+    base, label = str(entry.get("base") or ""), str(entry.get("label") or "")
+    if base not in bg.NAME_TO_IPA or bg.ALT_SUFFIX in base:
+        raise ValueError("unknown glyph")
+    if not ALT_LABEL.match(label) or label == "cluster":
+        raise ValueError("a label is lowercase letters and digits, e.g. low")
+    name = f"{base}{bg.ALT_SUFFIX}{label}"
+    path = DESIGNS / f"{name}.json"
+    if path.exists():
+        raise ValueError(f"{name} already exists")
+    src = DESIGNS / f"{base}.json"
+    if not src.exists():
+        raise ValueError(f"/{base}/ has no saved design to start from — open and save it first")
+    design = json.loads(src.read_text(encoding="utf-8"))
+    design["name"] = name
+    design.pop("flips", None)
+    design["notes"] = f"alternate of {base}"
+    design["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    path.write_text(glyphspec.dumps(design), encoding="utf-8")
+    bg.refresh()
+    return {"created": name}
+
+
 def ship_tweaks():
     """Bake the tweaks into site/js/manifest.js, then regenerate the wiki's
     Lua module and CSS from it (both read the manifest)."""
+    import inkprofile
     import build_manifest
     import build_lua_module
     import build_css_only
+    # Reload what the builders import as well as the builders: reloading
+    # build_manifest alone keeps whatever inkprofile this server started
+    # with, and a ship then fails on anything added to it since.
+    importlib.reload(inkprofile)
     for mod in (build_manifest, build_lua_module, build_css_only):
         importlib.reload(mod).main()
     return {"shipped": load_tweaks()}
@@ -424,6 +500,11 @@ class Handler(LocalHandler):
                 return self.send_json(ship_tweaks())
             except Exception as e:                   # noqa: BLE001
                 return self.send_json({"error": f"{type(e).__name__}: {e}"}, 500)
+        if self.path == "/api/alternate":
+            try:
+                return self.send_json(new_alternate(self.read_json() or {}))
+            except Exception as e:                   # noqa: BLE001
+                return self.send_json({"error": f"{type(e).__name__}: {e}"}, 400)
         if self.path == "/api/resync":
             body = self.read_json() or {}
             try:
@@ -460,6 +541,10 @@ class Handler(LocalHandler):
         # A cluster form isn't pasted into build_glyphs — the build reads its
         # design (designs/<name>.json) straight off disk. So "promote" for one
         # is just a rebuild; nothing edits the source.
+        if bg.ALT_SUFFIX in name:
+            log = promote_mod.rebuild()
+            return self.send_json({"action": "rebuilt", "dict": "ALTS",
+                                   "name": name, "log": log})
         if name.endswith(bg.CLUSTER_SUFFIX):
             log = promote_mod.rebuild()
             return self.send_json({"action": "rebuilt", "dict": "CLUSTERS",

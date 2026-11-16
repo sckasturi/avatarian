@@ -19,8 +19,7 @@
         {
           "x": 0.5,
           "y": 2.5,
-          "seg": "line",
-          "connect": "down"
+          "seg": "line"
         },
         {
           "x": 2.5,
@@ -30,8 +29,7 @@
         {
           "x": 4.5,
           "y": 2.5,
-          "seg": "line",
-          "connect": "down"
+          "seg": "line"
         }
       ],
       "closeSeg": {

@@ -16,6 +16,10 @@ const API = {
     return send("PUT", `/api/designs/${name}`, design);
   },
   async remove(name) { return send("DELETE", `/api/designs/${name}`); },
+  /** Start an alternate drawing of `base`, seeded with its own design. */
+  async newAlternate(base, label) {
+    return send("POST", "/api/alternate", { base, label });
+  },
   async render(design) { return send("POST", "/api/render", design); },
   /** Ship a design into build_glyphs.py and rebuild. `allowInvented`
    *  is the second press on a sound that has no reference material. */

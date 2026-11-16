@@ -23,6 +23,11 @@ Run after editing glyphs or statuses:
 
 import json
 import pathlib
+import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import glyphspec                                        # noqa: E402
+import inkprofile                                       # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 GLYPHS = ROOT / "site" / "assets" / "glyphs"
@@ -33,6 +38,33 @@ DST = ROOT / "site" / "js" / "manifest.js"
 # Per-block tweaks set in the designer's block review page (render.js,
 # BLOCK_TWEAKS), keyed "top|bottom" in IPA.
 TWEAKS = ROOT / "designs" / "blocks" / "tweaks.json"
+DESIGNS = ROOT / "designs"
+EMIT_DIRS = {"up": -1, "down": 1}
+
+
+def emitters(stem):
+    """The JOIN emitters of designs/<stem>.json: every node marked
+    `connect: up|down`, as [x, y, dir] in the viewBox of the form that is
+    actually displayed (the flat one for a vowel-height glyph), dir -1 for
+    up and +1 for down. render.js `joinsFor` grows a stroke from each one to
+    the block partner's ink. See tools/inkprofile.py."""
+    try:
+        design = json.loads((DESIGNS / f"{stem}.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    kind = design.get("type", "consonant")
+    if kind == "mark_full":
+        return []
+    frame = glyphspec.frame_for(kind, "flat")
+    out = []
+    for shape in design.get("shapes", []):
+        for node in shape.get("nodes", []) if shape.get("kind") != "dot" else []:
+            d = EMIT_DIRS.get(node.get("connect"))
+            if d:
+                e = [round(frame.x(node["x"])), round(frame.y(node["y"])), d]
+                if e not in out:
+                    out.append(e)
+    return out
 
 
 def load_tweaks():
@@ -72,29 +104,9 @@ def main():
         if info.get("rows"):
             out[ipa]["rows"] = info["rows"]
 
-        # Per-column connection ports (render.js draws the one it shares with
-        # the block partner). {column: filename} -> {column: {svg[, flat]}},
-        # the flat copy folded in from portsFlat.
-        def inline_ports(field):
-            got = {}
-            for col, fname in (info.get(field) or {}).items():
-                fp = GLYPHS / fname
-                if fp.exists():
-                    got[col] = {"svg": fp.read_text(encoding="utf-8").strip()}
-                else:
-                    missing.append(fname)
-            return got
-
-        base_ports = inline_ports("ports")
-        for col, fname in (info.get("portsFlat") or {}).items():
-            fp = GLYPHS / fname
-            if col in base_ports and fp.exists():
-                base_ports[col]["flat"] = fp.read_text(encoding="utf-8").strip()
-        if base_ports:
-            out[ipa]["ports"] = base_ports
-        cluster_ports = inline_ports("clusterPorts")
-        if cluster_ports:
-            out[ipa]["clusterPorts"] = cluster_ports
+        emit = emitters(svg_path.stem)
+        if emit:
+            out[ipa]["emit"] = emit
         # The flattened copy used by proportional-height mode.
         if info.get("flat"):
             fpath = GLYPHS / info["flat"]
@@ -116,6 +128,10 @@ def main():
                     "name": vpath.stem,
                     "svg": vpath.read_text(encoding="utf-8").strip(),
                 }
+                # An alternate drawing carries its own emitters (a cluster
+                # form leaves its long side to the rail and has none).
+                if slot != "cluster" and emitters(vpath.stem):
+                    variants[slot]["emit"] = emitters(vpath.stem)
                 fname = (info.get("variantsFlat") or {}).get(slot)
                 fpath = GLYPHS / fname if fname else None
                 if fpath and fpath.exists():
@@ -124,6 +140,31 @@ def main():
                 out[ipa]["variants"] = variants
                 if info.get("variantsManual"):
                     out[ipa]["variantsManual"] = True
+
+    # Ink profiles: where each DISPLAYED form's strokes sit on every column
+    # an emitter uses, so a join can be worked out for any pairing without a
+    # drawing per pair (tools/inkprofile.py). Marks never share a block.
+    cols = sorted({e[0] for g in out.values()
+                   for f in [g, *(g.get("variants") or {}).values()]
+                   for e in f.get("emit", [])})
+    def profile(form):
+        svg = form.get("flat") or form["svg"]
+        form["ink"] = {str(x): inkprofile.column_hits(svg, x) for x in cols}
+        # Dots a join would have to pass through — they block it.
+        dots = {str(x): d for x in cols for d in [inkprofile.column_dots(svg, x)] if d}
+        if dots:
+            form["dots"] = dots
+        # Mouths a stem closes when it arrives (/g/'s foot).
+        gaps = {str(x): g for x in cols for g in [inkprofile.column_gaps(svg, x)] if g}
+        if gaps:
+            form["gaps"] = gaps
+
+    for g in out.values():
+        if g["type"].startswith("mark"):
+            continue
+        profile(g)
+        for v in (g.get("variants") or {}).values():
+            profile(v)
 
     ref = {}
     if REF_SRC.exists():

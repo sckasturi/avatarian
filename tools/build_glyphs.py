@@ -91,6 +91,11 @@ FLAT = glyphspec.FLAT    # 4/5
 FLAT_SUFFIX = "_flat"
 FLAT_BOX = 100 * FLAT
 CLUSTER_SUFFIX = "_cluster"        # a glyph's independently-drawn cluster (C-C) form
+# An ALTERNATE drawing of a glyph: designs/<name>_alt_<label>.json. One more
+# way to draw that one glyph, used only in the blocks that ask for it by
+# label (designs/blocks/tweaks.json `top` / `bottom`; render.js resolveGlyph)
+# — /k/ with its square dropped, under /ŋ/ (`rethink`).
+ALT_SUFFIX = "_alt_"
 CONNECT_SUFFIX = "_connect"        # a glyph's form with its connection stroke to the seam
 
 _TOKEN = re.compile(r"[A-Za-z]|-?\d*\.?\d+(?:[eE][-+]?\d+)?")
@@ -209,7 +214,7 @@ def mark(cols, body):
 
 CONSONANTS = {
     "p": path("M 50 18 L 18 50 L 50 82 L 82 50 L 50 18 Z"),
-    "b": path("M 18 82 A 54.67 54.67 0 0 1 82 18 L 82 82") + dot(50, 58),
+    "b": path("M 18 82 A 54.67 54.67 0 0 1 82 18 L 82 82") + dot(50, 74),
     "t": path("M 18 18 L 82 18 L 82 82")
          + path("M 18 50 L 18 82 L 50 82 L 50 50 L 18 50 Z"),
     "d": path("M 18 58 L 18 18 A 54.67 54.67 0 0 1 82 82 L 18 82"),
@@ -298,7 +303,7 @@ VOWELS = {
     "eh": path("M 18 40 A 42 52.5 0 0 1 50 60 A 42 52.5 0 0 0 82 80")
           + path("M 82 40 A 42 52.5 0 0 0 50 60 A 42 52.5 0 0 1 18 80"),
     "ae": path("M 18 40 L 18 40 A 32 40 0 0 0 82 40 L 82 40") + dot(50, 50),
-    "ai": dot(26, 70) + path("M 74 40 L 26 40") + dot(74, 70),
+    "ai": dot(18, 80) + path("M 82 40 L 18 40") + dot(82, 80),
     "uh": path("M 18 80 L 34 80")
           + path("M 18 40 L 34 40")
           + path("M 66 40 L 82 40")
@@ -662,6 +667,34 @@ def load_clusters():
 CLUSTERS, CLUSTER_PORTS = load_clusters()
 
 
+def load_alts():
+    """Alternate drawings, read from designs/<name>_alt_<label>.json and
+    rendered through glyphspec: {ipa: {label: body}}. Drawn exactly as the
+    block should show it — an alternate is never flipped."""
+    out = {}
+    if DESIGNS.is_dir():
+        for p in sorted(DESIGNS.glob(f"*{ALT_SUFFIX}*.json")):
+            base, _, label = p.stem.partition(ALT_SUFFIX)
+            ipa = NAME_TO_IPA.get(base)
+            if ipa is None or not label or label == "cluster":
+                continue
+            try:
+                d = json.loads(p.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            if not d.get("shapes"):
+                continue
+            plain = copy.deepcopy(d)      # `connect` marks are join emitters
+            for s in plain["shapes"]:     # (build_manifest), not ink
+                for n in s.get("nodes", []):
+                    n.pop("connect", None)
+            out.setdefault(ipa, {})[label] = glyphspec.body(plain)
+    return out
+
+
+ALTS = load_alts()
+
+
 def design_overrides():
     """(flips, rows) read out of designs/*.json, keyed by IPA. Missing or
     unreadable designs are simply not overrides — this is a build script
@@ -703,9 +736,10 @@ FLIPS, VOWEL_4ROW = effective_flags()
 
 
 def refresh():
-    global FLIPS, VOWEL_4ROW, CLUSTERS, CLUSTER_PORTS
+    global FLIPS, VOWEL_4ROW, CLUSTERS, CLUSTER_PORTS, ALTS
     FLIPS, VOWEL_4ROW = effective_flags()
     CLUSTERS, CLUSTER_PORTS = load_clusters()
+    ALTS = load_alts()
     return FLIPS, VOWEL_4ROW
 
 
@@ -772,6 +806,20 @@ def main():
             ports_flat[name] = port_files(
                 name, port_variants(d, flatten(body), "flat"), flat_form=True)
 
+    # Alternate drawings (see ALTS): one file per label, and a flat copy for
+    # a vowel-height glyph, exactly as its base form ships.
+    alt_files, alt_flat = {}, {}
+    for ipa, forms in ALTS.items():
+        name = IPA_TO_NAME[ipa]
+        for label, body in forms.items():
+            fname = f"{name}{ALT_SUFFIX}{label}.svg"
+            (OUT / fname).write_text(svg(body), encoding="utf-8")
+            alt_files.setdefault(ipa, {})[label] = fname
+            if name in VOWELS or name in MARKS_VOWEL:
+                ffname = f"{name}{ALT_SUFFIX}{label}{FLAT_SUFFIX}.svg"
+                (OUT / ffname).write_text(svg(flatten(body), box=FLAT_BOX), encoding="utf-8")
+                alt_flat.setdefault(ipa, {})[label] = ffname
+
     for name in PLACEHOLDERS:
         mark_ph = glyph_type(NAME_TO_IPA[name]) == "mark_full"
         (OUT / f"{name}.svg").write_text(
@@ -790,6 +838,7 @@ def main():
         | {f"{n}{FLAT_SUFFIX}.svg" for n in {**VOWELS, **MARKS_VOWEL}} \
         | {f"{IPA_TO_NAME[i]}{CLUSTER_SUFFIX}.svg" for i in CLUSTERS} \
         | port_svgs \
+        | {f for m in (alt_files, alt_flat) for files in m.values() for f in files.values()} \
         | {f"{n}.svg" for n in PLACEHOLDERS} | {"unknown.svg"}
     stale = [p for p in OUT.glob("*.svg") if p.name not in current]
     for p in stale:
@@ -808,6 +857,10 @@ def main():
             manifest[ipa]["flat"] = f"{name}{FLAT_SUFFIX}.svg"
         if ipa in CLUSTERS:
             manifest[ipa]["variants"] = {"cluster": f"{name}{CLUSTER_SUFFIX}.svg"}
+        if ipa in alt_files:
+            manifest[ipa].setdefault("variants", {}).update(alt_files[ipa])
+            if ipa in alt_flat:
+                manifest[ipa].setdefault("variantsFlat", {}).update(alt_flat[ipa])
         # Per-column connection ports: the base form's, the cluster form's, and
         # the base form's flat copy. render.js draws the variant on a column it
         # shares with the block partner.

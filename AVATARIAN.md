@@ -533,22 +533,83 @@ In the reference, glyphs are hand-lettered so adjacent strokes
 **interlock and share edges**, and blocks are visibly skewed and organic.
 This project renders each glyph as a discrete vector butted against its
 neighbours, so it reproduces the *structure* correctly — the pairing, the
-heights, the flips, the C-C overlap — but not, by default, the
-stroke-level fusion.
+heights, the flips, the C-C overlap — and, of the stroke-level fusion, the
+parts that can be worked out rather than drawn: rails (§6) and joins.
 
-**Connection ports** are the lightweight way in: a design node can carry a
-`connect` direction (designs/README.md), a **port** that grows a straight
-stroke from it to the block seam. Two glyphs fuse where they have a port on
-the **same lattice column** — each draws its half to the seam and the two
-meet there, reading as one continuous stroke. Because each half lives
-inside its own glyph's box, this is per-glyph static geometry (a `_connect`
-variant per column), so it ports to the CSS/Lua wiki renderer as well as
-the site; render.js draws a glyph's port variant only on a column its block
-partner also has. A glyph open at a column (say /g/ at the centre) simply
-has no port there, so nothing is drawn and nothing dangles. Set ports in
-the designer's **connect** compass — on *both* sides of each join, e.g.
-/p/ carries a left port for /l/ and a right one for /r/. Only vowels and
-the l/w clusters are marked so far; a join appears once both partners are.
+**Joins** are how the fusion that matters most is drawn. Most of what
+reads as two glyphs fusing in the clean printed sources (the Reddit
+dispatches) is one thing: a stemmed vowel's centre stroke does not stop at
+the block seam, it runs on to whatever its partner has drawn in that column
+— the bar under /n/ (`knew`), the arc inside /ð/ (`they`). A drawing per pair would be a drawing per *pair*; a join is
+worked out instead, from two things each glyph carries on its own:
+
+- **Emitters** — a design node marked `connect: up` or `down`
+  (designs/README.md; the designer's **connect** compass): "this stroke end
+  wants to reach the partner". Marked once per glyph. Today: the stems of
+  ɪ e u ʊ ɑ ɔɪ, and /z/'s.
+- **Ink profile** — where the glyph's strokes sit on each column an emitter
+  uses, read off its finished SVG at build time (`tools/inkprofile.py`).
+  Nobody maintains it.
+
+**The rule:** an emitter that faces its partner grows a straight stroke to
+the partner's *first ink* in that column, and ends cut square on that
+stroke's centre line. No ink there, no stroke. The partner needs no marking.
+
+Two things besides a stroke receive a stem:
+
+- a **mouth** — two loose stroke ends either side of the column, as in the
+  foot of /g/ (and /ŋ/). The stem runs to that height and a bar closes the
+  mouth, so /g/ over a stem is a full square (`games`, `garden`);
+- a **dot at the seam** — within about a row of the stem's end, as in the
+  foot of /b/. The stem *replaces* the dot: /b/ is drawn without it and the
+  stem runs up to where the dot's far edge was (`big`, `books`).
+
+What does not join, by default:
+
+- a **3-row vowel** — its empty row is a gap and stays one (`ellora`, `seven`);
+- a **null**;
+- anything with a **dot** standing further off in the column (/s/) — a stem
+  never runs through a dot, and does not rise toward one;
+- anything more than **2.5 rows** away (`JOIN_MAX`) — a stem does not climb
+  deep into its partner. Under /f/'s arch it *rises about a row into the
+  opening* and stops short of the crossing, touching nothing (`afar`);
+- a **cluster form** does not emit; its long side is the rail's business (§6).
+
+**Per-pair overrides** live in `designs/blocks/tweaks.json` as `reach`, set
+from the block review page's **join** menu (its "seen, with a join" filter
+lists the blocks to look at):
+
+| `reach` | |
+| --- | --- |
+| *(unset)* | the rule above |
+| `none` | no join in this block (`ɹ|z`, `l|z`) |
+| `open` | rise about a row toward the ink and stop short of it |
+| `first` | to the first ink even where the default declines |
+| `second` | on *through* the first ink to the next (under /w/: past its bar and up to its arc) |
+
+Both renderers draw the same joins from the same numbers: the site as a
+stroke inside the emitter's own SVG, the wiki as an `av-join` span sized by
+Module:Avatarian (`tests/joins.test.js`, `tests/lua_golden.test.js`).
+
+**Alternate drawings** cover what no stroke-growing rule can: a glyph that
+is simply drawn differently in some block. An alternate is one more design of
+that one glyph — `designs/<name>_alt_<label>.json`, started with the glyph
+designer's **+ alt** button as a copy of the usual drawing — and a block asks
+for it by label in `designs/blocks/tweaks.json` (`top` / `bottom`, set from
+the block review page's "drawn as" menus). It is drawn exactly as designed:
+never flipped, no rail, no join of its own, though a partner's stem still
+joins to its ink. The first one is /k/ `low`, its square dropped to the
+bottom, under /ŋ/ (`rethink` — the only sighting, so it is one block's
+exception and not a rule). Still one drawing per *glyph*, never per pair.
+
+**Still not reproduced**, and needing a drawing each (one per *glyph*, chosen
+by what arrives, never one per pair):
+
+- /f/ under a stem draws its top as a flat bar (`if`);
+- /v/ over a stem lands its tail on the centre and becomes that stem
+  (`receives`, `envoys`) — today the stem meets /v/'s curve and the tail
+  carries on past it;
+- /p/ beside a rail shrinks to sit clear of it (`help`).
 
 ---
 

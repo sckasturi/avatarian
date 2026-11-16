@@ -96,6 +96,11 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
 .av-rail{position:absolute;z-index:1;pointer-events:none;background-color:currentColor;top:calc(1.25em * .115);width:calc(1.25em * .13);height:calc(1.25em * .77)}
 .av-rail-l{left:calc(50% - 1.25em * .385)}
 .av-rail-r{left:calc(50% + 1.25em * .255)}
+/* A join (render.js joinsFor): one glyph's stroke carried on to its partner's
+ * ink. Module:Avatarian works out where and how long, and writes them on the
+ * span (margin-left from the slot's centre line, top, height, all in em); the
+ * weight is the masks' 13. Cut square on the partner's centre line. */
+.av-join{position:absolute;left:50%;z-index:1;pointer-events:none;background-color:currentColor;width:calc(1.25em * .13)}
 .av-block,.av-slot,.av-glyph,.av-mark{position:relative;z-index:1;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
 /* ===== glyph shapes ===== */
@@ -175,7 +180,16 @@ def main(out=None):
         # into the glyph above. The mask path can't mutate a baked SVG, so emit
         # a class per shape; Module_Avatarian.lua picks them by the same rule.
         # The class is still named s_inset for continuity with the Lua module.
+        # Alternate drawings (render.js resolveGlyph `alt`), one class each.
+        for label, v in sorted((g.get("variants") or {}).items()):
+            if label != "cluster" and (v.get("flat") or v.get("svg")):
+                rules.append(f'.g-{v["name"]}{{-webkit-mask-image:url("{mask_uri(v.get("flat") or v["svg"])}")}}')
         name, base = g["name"], svg
+        # A dot on the centre column that a partner's stem replaces (/b/ over
+        # a stem; render.js joinsFor `dot`) — the same glyph without it.
+        if base and g.get("dots"):
+            bare = re.sub(r'<circle cx="50"[^>]*>', "", base)
+            rules.append(f'.g-{name}_nodot{{-webkit-mask-image:url("{mask_uri(bare)}")}}')
         if name == "s" and base:
             rules.append(f'.g-s_inset{{-webkit-mask-image:url("{mask_uri(base.replace("L 50 18 L", "L 50 27 L"))}")}}')
         if name == "z" and base:

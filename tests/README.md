@@ -22,6 +22,7 @@ tests/recognise.html      open it in a browser
 | --- | --- |
 | `harness.js` | loads `site/js/*` into one context, the way a page does |
 | `blocks.test.js` | pairing, nulls, the nine-row model |
+| `joins.test.js` | which blocks join, how far, and that every join ends on real ink |
 | `sounds.test.js` | the ASCII syntax, captions, the round trip |
 | `g2p.test.js` | the lookup chain and its order |
 | `reverse.test.js` | fuzzy reverse-decode |

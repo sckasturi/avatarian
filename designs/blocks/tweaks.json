@@ -1,5 +1,26 @@
 {
+  "l|z": {
+    "reach": "none"
+  },
   "m|z": {
     "dots": 6
+  },
+  "v|e": {
+    "reach": "open"
+  },
+  "w|ʊ": {
+    "reach": "first"
+  },
+  "ŋ|k": {
+    "bottom": "low"
+  },
+  "ɹ|z": {
+    "reach": "none"
+  },
+  "ʃ|u": {
+    "reach": "first"
+  },
+  "ʃ|ɪ": {
+    "reach": "first"
   }
 }

@@ -314,8 +314,16 @@ function orientationOf(sym, entry, slot, partner) {
  * shipped as window.AVATARIAN_BLOCK_TWEAKS (designs/blocks/tweaks.json), keyed
  * "top|bottom" in IPA:
  *
- *   dots  how far /z/'s dots drop, in viewBox units, where both survive
- *         (under /m/: `m|z`).
+ *   dots   how far /z/'s dots drop, in viewBox units, where both survive
+ *          (under /m/: `m|z`).
+ *   reach  how far a join runs in this block: none | open | first | second
+ *          (see joinsFor).
+ *   top, bottom
+ *          the label of an ALTERNATE drawing that slot's glyph uses in this
+ *          block instead of its usual one (designs/<name>_alt_<label>.json;
+ *          `ŋ|k` bottom: /k/ with its square dropped, `rethink`). Drawn as
+ *          the block shows it: never flipped, no rail; its joins come from
+ *          its own `connect` marks.
  *
  * THE APPROXIMANT'S LINE RUNS THE FULL BLOCK. In a C-C block /l/ (left)
  * and /ɹ/ (right) draw a cluster form whose long side stops at the seam;
@@ -355,6 +363,197 @@ function railFor(sym, slot, partner) {
   return RAIL_SIDE[p];
 }
 
+/**
+ * Which form of a glyph a slot draws, and which way up — the decisions
+ * makeGlyph acts on, with no DOM in sight, so a glyph can ask the same of
+ * its block partner (joinsFor needs to know how the partner is drawn).
+ *
+ * In a two-consonant block, a glyph with an independently-drawn CLUSTER
+ * form (variants.cluster) draws it AS-IS, no flip — that is how /l/ and /r/
+ * change shape against a consonant. The r/l pair is the exception: its TOP
+ * glyph keeps its base form and only the BOTTOM takes the cluster form
+ * (world = r_v over l_c). A `_c` suffix asks for the cluster body
+ * explicitly, even with no consonant beside it.
+ *
+ * The cluster form is drawn in its bottom-slot orientation (the key's l_b
+ * tracing), so it STILL flips top-to-bottom when it lands in a TOP slot. An
+ * explicit `_c` has no slot to read, so it shows bottom-oriented (as drawn)
+ * and flips only when `$` forces the top orientation.
+ */
+function resolveGlyph(token, slot, partner) {
+  const { sym, forced, variant } = parseSymbol(token);
+  const entry = GLYPHS[sym];
+  if (!entry) return { sym, entry: null };
+  // An explicit $/% override wins; otherwise the glyph's own rule does.
+  // A DRAWN_BOTTOM_UP glyph's art is stored upside-down, so a raw forced
+  // orientation would pick the opposite visual form. Invert the forced
+  // value for those, so `$` means the top-slot form and `%` the bottom
+  // one for EVERY glyph — no per-glyph swap to remember.
+  let orientation = forced || orientationOf(sym, entry, slot, partner);
+  if (forced && DRAWN_BOTTOM_UP.has(sym)) {
+    orientation = forced === "top" ? "bottom" : "top";
+  }
+  // A block can name an alternate drawing for this slot (BLOCK_TWEAKS `top`
+  // / `bottom`). Typed overrides ($ % _c) say otherwise and win.
+  const alt = !forced && !variant ? blockTweak(sym, slot, partner)[slot] : null;
+  if (alt && entry.variants && entry.variants[alt]) {
+    return { sym, entry, ccForm: null, flipped: false, form: entry.variants[alt], alt };
+  }
+  const wantCluster = variant === "cluster";
+  let ccForm = null;
+  if (entry.variants && entry.variants.cluster) {
+    if (wantCluster) ccForm = entry.variants.cluster;
+    else if (usesClusterForm(sym, slot, partner)) ccForm = entry.variants.cluster;
+  }
+  const flipped = ccForm
+    ? (wantCluster ? forced === "top" : slot === "top")
+    : orientation === "bottom";
+  return { sym, entry, ccForm, flipped, form: ccForm || entry };
+}
+
+/**
+ * JOINS — one glyph's stroke running on until it meets its partner's ink.
+ *
+ * Most of what reads as two glyphs "fusing" in the sources is this and
+ * nothing more: a vowel's centre stem does not stop at the block seam, it
+ * carries on to whatever the partner has drawn in that column — the bar
+ * under /n/ (`knew`), the arc inside /ð/ (`they`), the crossing of /f/
+ * (`afar`). Drawing each pairing would be a drawing per PAIR; instead:
+ *
+ *   EMITTERS   a design node marked `connect: up|down` (the designer's
+ *              connect compass) says "this stroke end wants to reach the
+ *              partner". Marked once per glyph. manifest `emit`.
+ *   INK        the build records where every glyph's strokes sit on the
+ *              columns emitters use (tools/inkprofile.py). manifest `ink`.
+ *   THE RULE   an emitter that faces its partner grows a straight stroke
+ *              to the partner's FIRST ink in that column. No ink there, no
+ *              stroke — nothing dangles.
+ *
+ * So a join is worked out, never drawn, and the partner needs no marking.
+ *
+ * A 3-row vowel and a null take no join: the vowel's empty row is a gap
+ * that stays a gap (`ellora`, `seven`), and nothing attested runs into a
+ * null. A dot standing in the way blocks one. Only the base form emits; a cluster form's long side is the rail's
+ * business (railFor).
+ *
+ * `reach` in the block's tweak (designs/blocks/tweaks.json, set in the
+ * block review page) overrides the default per pair:
+ *
+ *   none     no join in this block
+ *   first    to the first ink, even into a 3-row vowel or a null
+ *   second   on THROUGH the first ink to the next (`would`: the stem
+ *            passes /w/'s bar and runs up to its arc)
+ *
+ * Geometry is in viewBox units (16 to a lattice row). A slot's box is 100
+ * tall for a consonant-height glyph and 80 for a vowel-height one, and the
+ * boxes overlap exactly as blocks.css stacks them.
+ */
+const JOIN_REACH = new Set(["none", "open", "first", "second"]);
+const JOIN_MAX = 40;   // 2.5 rows — the longest join the sources show
+// Where the ink is further off than that, the stem RISES this far into the
+// opening and stops, touching nothing. The end is cut butt, so 20 puts the
+// visible tip about one row past where the plain glyph's square cap ends.
+const JOIN_OPEN = 20;
+// A dot this close to the stem's end is REPLACED by it: the dot is not drawn
+// and the stem runs up to where its far edge was (/b/ over a stem, `big`,
+// `books`). A dot further off blocks the join instead.
+const JOIN_DOT = 20;
+const SLOT_PULL = 18, SLOT_PULL_CC = 36, ROW = 16;
+
+function boxHeight(entry) { return TALL_TYPES.has(entry.type) ? 100 : 80; }
+
+/** Where a resolved glyph's box sits in its block, as blocks.css lays it out. */
+function placeGlyph(r, slot, topHeight, cc) {
+  const H = boxHeight(r.entry);
+  const short = H === 80, threeRow = short && r.entry.rows !== 4;
+  // The 3-row shift rules of blocks.css: pulled up a row on top (unless
+  // flipped), pushed down a row at the bottom when flipped.
+  let shift = 0;
+  if (threeRow && slot === "top" && !r.flipped) shift = -ROW;
+  if (threeRow && slot === "bottom" && r.flipped) shift = ROW;
+  const y0 = slot === "top" ? 0 : topHeight - (cc ? SLOT_PULL_CC : SLOT_PULL);
+  return { y0, H, shift, flipped: r.flipped };
+}
+
+/** A y in a glyph's own viewBox -> a y in its slot's box. */
+function toSlot(pl, y) { return pl.shift + (pl.flipped ? pl.H - y : y); }
+
+/** Takes a join by default: a consonant, or a vowel that fills its top row. */
+function receivesJoin(entry) {
+  if (entry.type === "consonant") return true;
+  return entry.type === "vowel" && entry.rows === 4;
+}
+
+/**
+ * The joins `token` draws toward `partner`: [{ x, y, dir, len, a, b }].
+ * x/y/dir/len are in the glyph's OWN viewBox (a stroke from (x,y) running
+ * `len` along dir, so it rides the glyph's flip); a/b are the same stroke's
+ * two ends in the slot's box, for a renderer that cannot draw inside the
+ * glyph (the wiki's av-join span).
+ */
+function joinsFor(token, slot, partner) {
+  if (partner == null) return [];
+  const me = resolveGlyph(token, slot, partner);
+  const other = slot === "top" ? "bottom" : "top";
+  const them = resolveGlyph(partner, other, token);
+  // A cluster form does not emit; an alternate drawing has emitters of its own.
+  const emit = me.entry && (me.alt ? me.form.emit : me.entry.emit);
+  if (!me.entry || !them.entry || me.ccForm || !emit) return [];
+  const reach = blockTweak(me.sym, slot, partner).reach;
+  if (reach === "none") return [];
+  if (!JOIN_REACH.has(reach) && !receivesJoin(them.entry)) return [];
+  const cc = me.entry.type === "consonant" && them.entry.type === "consonant";
+  const top = slot === "top" ? me : them;
+  const mine = placeGlyph(me, slot, boxHeight(top.entry), cc);
+  const theirs = placeGlyph(them, other, boxHeight(top.entry), cc);
+  const out = [];
+  for (const [x, y, dir] of emit) {
+    const D = mine.flipped ? -dir : dir;            // direction on the page
+    if (D !== (slot === "top" ? 1 : -1)) continue;  // faces the outer edge
+    const Y = mine.y0 + toSlot(mine, y);
+    // Everything the stem could run to, as { len } from its end: the
+    // partner's strokes, a mouth it would close (`bar`), a dot at the seam.
+    const hits = [];
+    for (const [p, q] of (them.form.ink || {})[x] || []) {
+      const u = theirs.y0 + toSlot(theirs, p), v = theirs.y0 + toSlot(theirs, q);
+      const lo = Math.min(u, v), hi = Math.max(u, v);
+      if (D > 0 ? hi < Y : lo > Y) continue;        // behind the emitter
+      hits.push({ len: Math.max(0, D > 0 ? lo - Y : Y - hi) });
+    }
+    for (const [gy, x0, x1] of (them.form.gaps || {})[x] || []) {
+      const d = (theirs.y0 + toSlot(theirs, gy) - Y) * D;
+      if (d > 0) hits.push({ len: d, bar: [x0, x1] });
+    }
+    for (const [p, q] of (them.form.dots || {})[x] || []) {
+      const u = (theirs.y0 + toSlot(theirs, p) - Y) * D, v = (theirs.y0 + toSlot(theirs, q) - Y) * D;
+      const near = Math.min(u, v);
+      if (near > 0 && near <= JOIN_DOT) hits.push({ len: Math.max(u, v), dot: [p, q] });
+    }
+    if (!hits.length) continue;
+    hits.sort((m, n) => m.len - n.len);
+    const hit = hits[Math.min(reach === "second" ? 1 : 0, hits.length - 1)];
+    let len = hit.len;
+    if (len <= 0) continue;                         // already touching
+    // A stem does not climb deep into its partner looking for ink: under an
+    // arch (/f/ over /ɑ/, `afar`) it rises a little way into the opening and
+    // stops short of the crossing. Past JOIN_MAX that is the default; `reach`
+    // can ask for it (`open`) or for the full run (`first`) in any block.
+    const open = !hit.bar && !hit.dot && len > JOIN_OPEN && (reach === "open" || (!JOIN_REACH.has(reach) && len > JOIN_MAX));
+    // A dot standing in the column between the two blocks the join: a stem
+    // runs to a stroke, never through a dot (/s/'s, inside its caret). An
+    // explicit reach has been looked at by a person, and stands.
+    if (!JOIN_REACH.has(reach) && !hit.dot && ((them.form.dots || {})[x] || []).some(([p, q]) => {
+      const u = theirs.y0 + toSlot(theirs, p) - Y, v = theirs.y0 + toSlot(theirs, q) - Y;
+      return Math.max(u * D, v * D) > 0 && Math.min(u * D, v * D) < len;
+    })) continue;
+    if (open) len = JOIN_OPEN;      // after the dot check: no rise toward a dot
+    const a = toSlot(mine, y);
+    out.push({ x, y, dir, len, a, b: a + D * len, ...(open ? { open } : {}),
+      ...(hit.bar && !open ? { bar: hit.bar } : {}), ...(hit.dot ? { dot: hit.dot } : {}) });
+  }
+  return out;
+}
+
 function clusterForm(sym, svg, partner, slot, flipped) {
   if (sym === "s") {
     // Place the vertex so the miter TIP lands on the seam and fuses with the
@@ -384,7 +583,7 @@ function clusterForm(sym, svg, partner, slot, flipped) {
 }
 
 function makeGlyph(token, slot, partner) {
-  const { sym, forced, variant } = parseSymbol(token);
+  const { sym } = parseSymbol(token);
   const span = document.createElement("span");
 
   if (sym === UNREADABLE) {
@@ -408,85 +607,18 @@ function makeGlyph(token, slot, partner) {
   span.title = sym;
   if (entry) {
     const form = entry;
-    // An explicit $/% override wins; otherwise the glyph's own rule does.
-    // A DRAWN_BOTTOM_UP glyph's art is stored upside-down, so a raw forced
-    // orientation would pick the opposite visual form. Invert the forced
-    // value for those, so `$` means the top-slot form and `%` the bottom
-    // one for EVERY glyph — no per-glyph swap to remember.
-    let orientation = forced || orientationOf(sym, entry, slot, partner);
-    if (forced && DRAWN_BOTTOM_UP.has(sym)) {
-      orientation = forced === "top" ? "bottom" : "top";
-    }
-    // In a two-consonant block, a glyph with an independently-drawn CLUSTER
-    // form (form.variants.cluster) draws it AS-IS, no flip — that is how /l/
-    // and /r/ change shape against a consonant. The r/l pair is the exception:
-    // its TOP glyph keeps its base form and only the BOTTOM takes the cluster
-    // form (world = r_v over l_c; a hypothetical l/r = l_v over r_c). A glyph
-    // with no cluster form behaves exactly as before.
-    // A `_c` suffix (l_c, r_c) asks for the cluster body explicitly, even
-    // with no consonant beside it, so the form can be shown on its own.
-    // Otherwise the cluster body is chosen by context, as in a real block.
-    const wantCluster = variant === "cluster";
-    let ccForm = null;
-    if (form.variants && form.variants.cluster) {
-      if (wantCluster) {
-        ccForm = form.variants.cluster;
-      } else if (isClusterPartner(partner)) {
-        const pSym = parseSymbol(partner).sym;
-        const rlPair = (sym === "ɹ" || sym === "l")
-                       && (pSym === "ɹ" || pSym === "l") && pSym !== sym;
-        if (!rlPair || slot === "bottom") ccForm = form.variants.cluster;
-      }
-    }
-    // Per-column connection ports. A glyph draws its connect variant on a
-    // column it SHARES with the block partner, so each side's half-stroke
-    // meets the other at the seam — never poking into a partner that has no
-    // ink there. The base form's ports are `ports`, the cluster form's
-    // `clusterPorts`; the partner's form is read the same way (a consonant
-    // beside me sits in a C-C block, so it uses its own cluster form if it
-    // has one). A matched cluster port replaces ccForm; a base one becomes
-    // connForm and rides the ordinary by-slot flip.
-    // A rail (see railFor) carries the approximant's line through the block,
-    // so neither glyph needs its port there.
-    const other = slot === "top" ? "bottom" : "top";
-    const railed = partner != null
-      && (railFor(sym, slot, partner) != null || railFor(parseSymbol(partner).sym, other, token) != null);
-    let connForm = null;
-    if (partner != null && !railed) {
-      const myPorts = (ccForm ? entry.clusterPorts : entry.ports) || null;
-      const pEntry = GLYPHS[parseSymbol(partner).sym];
-      if (myPorts && pEntry) {
-        const meConsonant = !isVowelSymbol(sym) && !NULLS.has(sym);
-        const pCluster = meConsonant && pEntry.variants && pEntry.variants.cluster;
-        const pPorts = (pCluster ? pEntry.clusterPorts : pEntry.ports) || null;
-        const col = pPorts && Object.keys(myPorts).find((c) => c in pPorts);
-        if (col) {
-          if (ccForm) ccForm = myPorts[col];
-          else connForm = myPorts[col];
-        }
-      }
-    }
-    // The cluster form is drawn in its bottom-slot orientation (the key's l_b
-    // tracing), so it STILL flips top-to-bottom when it lands in a TOP slot.
-    // An explicit `_c` has no slot to read, so it shows bottom-oriented (as
-    // drawn) by default and flips only when `$` forces the top orientation:
-    // `r_c` bottom, `r_c$` top, `r_c%` bottom. A glyph with no cluster form
-    // flips by its own rule, as before.
-    let flipped;
-    if (ccForm) {
-      flipped = wantCluster ? forced === "top" : slot === "top";
-    } else {
-      flipped = orientation === "bottom";
-    }
+    // Which form, which way up — see resolveGlyph.
+    const { ccForm, flipped, alt, form: resolved } = resolveGlyph(token, slot, partner);
     if (flipped) span.classList.add("avatarian-flipped");
     // A few glyphs redraw in a C-C block (see clusterForm): /s/'s point
     // insets, /z/ drops its dots.
-    const drawForm = ccForm || connForm || form;
+    // An alternate (resolveGlyph) is drawn exactly as its design has it.
+    const drawForm = alt ? resolved : (ccForm || form);
     const base = drawForm.svg;
-    let svg = isClusterPartner(partner) ? clusterForm(sym, base, partner, slot, flipped) : base;
+    let svg = !alt && isClusterPartner(partner) ? clusterForm(sym, base, partner, slot, flipped) : base;
     // A rail (see railFor) is a full-height line on the approximant's
     // side. It is symmetric top to bottom, so a flipped glyph needs no care.
-    const rail = railFor(sym, slot, partner);
+    const rail = alt ? null : railFor(sym, slot, partner);
     if (rail != null) {
       svg = svg.replace("</svg>", `<path d="M ${rail} 18 L ${rail} 82"/></svg>`);
       span.dataset.rail = rail < 50 ? "l" : "r";
@@ -499,7 +631,35 @@ function makeGlyph(token, slot, partner) {
     // The <svg> elements are tagged directly rather than wrapped: a
     // wrapper <span> is inline, cannot take a height, and collapses the
     // SVG inside it to nothing.
-    span.innerHTML = svg + (drawForm.flat || "");
+    // Joins (see joinsFor): each one a stroke from an emitter to the
+    // partner's ink, drawn inside this glyph's own SVG so it takes the same
+    // weight, colour and flip. It runs past the box; blocks.css lets it.
+    // The far end is cut square ON the partner's centreline (a butt cap, not
+    // the glyphs' square one): its two corners are then at most half a
+    // stroke from that centreline, so they stay buried in the partner's
+    // stroke however it slants — a square cap pokes a corner out the far
+    // side of a diagonal (/v/ over a stem, `envoys`).
+    let flat = drawForm.flat || "";
+    const joins = joinsFor(token, slot, partner);
+    if (joins.length) {
+      // A join that closes a mouth (/g/'s foot) also draws the bar across it.
+      const strokes = joins.map((j) =>
+        `<path stroke-linecap="butt" d="M ${j.x} ${j.y} L ${j.x} ${j.y + j.dir * j.len}"/>`
+        + (j.bar ? `<path stroke-linecap="butt" d="M ${j.bar[0]} ${j.y + j.dir * j.len} L ${j.bar[1]} ${j.y + j.dir * j.len}"/>` : "")).join("");
+      if (flat) flat = flat.replace("</svg>", strokes + "</svg>");
+      else svg = svg.replace("</svg>", strokes + "</svg>");
+      span.dataset.join = joins.map((j) => [j.x, j.a, j.b, ...(j.bar || [])].join(",")).join(";");
+    }
+    // The other half of a join into a dot: the partner's stem replaces it,
+    // so this glyph leaves that dot out (/b/ over a stem).
+    for (const j of joinsFor(partner, slot === "top" ? "bottom" : "top", token)) {
+      if (!j.dot) continue;
+      const gone = new RegExp(`<circle cx="${j.x}" cy="${(j.dot[0] + j.dot[1]) / 2}"[^>]*>`);
+      svg = svg.replace(gone, "");
+      flat = flat.replace(gone, "");
+      span.dataset.nodot = "1";
+    }
+    span.innerHTML = svg + flat;
     const drawings = span.querySelectorAll("svg");
     drawings[0].classList.add("g-square");
     if (drawings[1]) drawings[1].classList.add("g-flat");
@@ -509,7 +669,7 @@ function makeGlyph(token, slot, partner) {
     // `%` keeps its by-slot meaning for plain glyphs; a cluster form records
     // "_c" and lets the avatarian-flipped class carry its orientation, so the
     // marker never contradicts the `_c$`/`_c%` a caller typed.
-    span.dataset.glyph = form.name + (ccForm ? "_c" : (flipped ? "%" : ""));
+    span.dataset.glyph = alt ? drawForm.name : form.name + (ccForm ? "_c" : (flipped ? "%" : ""));
     if (entry.status === "PLACEHOLDER") span.classList.add("avatarian-placeholder");
   } else {
     span.textContent = sym;
@@ -702,6 +862,7 @@ function makeMark(sym) {
 if (typeof module !== "undefined") {
   module.exports = {
     renderAvatarian, renderGlyph, pairUp, resolveBlocks, slotRows, glyphSVG, VOWELS,
+    resolveGlyph, joinsFor,
     NULL_IPA, NULL_C_IPA, NULLS, nullFor, isVowelSymbol, parseSymbol,
     PUNCTUATION, NUMERALS, WORD_MARKS, isMark,
   };

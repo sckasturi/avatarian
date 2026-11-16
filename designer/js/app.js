@@ -81,7 +81,8 @@ const App = {
   renderList() {
     const filter = ($("#filter").value || "").trim().toLowerCase();
     const groups = { consonant: "consonants", vowel: "vowels", mark: "marks",
-                     numeral: "numerals", cluster: "cluster forms" };
+                     numeral: "numerals", cluster: "cluster forms",
+                     alternate: "alternate drawings" };
     // `group` is the heading; `type` is the height class, and the two
     // nulls differ on it — both are marks, at different heights.
     const groupOf = (s) => s.group || s.type;
@@ -244,6 +245,23 @@ const App = {
   bindShip() {
     $$(".ship-btn").forEach((b) => b.addEventListener("click", () => this.ship(false)));
     $("#ship-all").addEventListener("click", () => this.shipAll(false));
+    // A second way to draw the open glyph, for the blocks that need one
+    // (picked per block on the block review page). It starts as a copy.
+    $("#new-alt").addEventListener("click", async () => {
+      const base = ((Store.current || {}).name || "").split("_alt_")[0];
+      if (!base) return;
+      const label = (prompt(`A short name for this alternate drawing of ${base} (letters and digits, e.g. "low"):`) || "")
+        .trim().toLowerCase();
+      if (!label) return;
+      try {
+        if (Store.design) await Store.save(Store.design);
+        const res = await API.newAlternate(base, label);
+        location.hash = res.created;
+        location.reload();
+      } catch (e) {
+        alert(String(e.message || e));
+      }
+    });
     $("#resync").addEventListener("click", () => this.resync(false));
   },
 
@@ -375,7 +393,9 @@ const App = {
     try {
       const res = await API.promote(name, allowInvented);
       note.className = "fine ok";
-      note.textContent = res.changed
+      note.textContent = res.action === "rebuilt"
+        ? "rebuilt — reload the site to see it"
+        : res.changed
         ? `${res.action} in ${res.dict}`
           + (res.placeholder ? ", out of PLACEHOLDERS" : "")
           + " · rebuilt — reload the site to see it"

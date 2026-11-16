@@ -3433,7 +3433,7 @@
     },
     {
       "key": "ellora",
-      "spelling": "ɛ ∅ l ɔ ɹ ə",
+      "spelling": "ɛ ∅ l oʊ ɹ ə",
       "source": "reddit.5",
       "confidence": "certain",
       "gloss": "Ellora"
@@ -3464,9 +3464,9 @@
     },
     {
       "key": "the",
-      "spelling": "ð i",
-      "source": "reddit.5",
-      "confidence": "certain"
+      "spelling": "ð ʌ",
+      "confidence": "certain",
+      "source": "reddit.5"
     },
     {
       "key": "trust",
@@ -3656,9 +3656,9 @@
     },
     {
       "key": "hunger",
-      "spelling": "h ʌ ŋ g ə ɹ",
-      "confidence": "certain",
+      "spelling": "h ʌ ŋ ∅ ə ɹ",
       "gloss": "hunger",
+      "confidence": "certain",
       "source": "reddit.6"
     },
     {

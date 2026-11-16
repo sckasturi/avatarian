@@ -1,0 +1,62 @@
+{
+  "name": "k_alt_low",
+  "ipa": "k",
+  "type": "consonant",
+  "grid": [
+    5,
+    5
+  ],
+  "notes": "alternate of k: square dropped to the bottom; the left bar rises to the partner (rethink)",
+  "shapes": [
+    {
+      "kind": "path",
+      "closed": false,
+      "nodes": [
+        {
+          "x": 0.5,
+          "y": 0.5,
+          "connect": "up"
+        },
+        {
+          "x": 0.5,
+          "y": 4.5,
+          "seg": "line"
+        },
+        {
+          "x": 4.5,
+          "y": 4.5,
+          "seg": "line"
+        }
+      ]
+    },
+    {
+      "kind": "path",
+      "closed": true,
+      "nodes": [
+        {
+          "x": 2.5,
+          "y": 4.5
+        },
+        {
+          "x": 2.5,
+          "y": 2.5,
+          "seg": "line"
+        },
+        {
+          "x": 4.5,
+          "y": 2.5,
+          "seg": "line"
+        },
+        {
+          "x": 4.5,
+          "y": 4.5,
+          "seg": "line"
+        }
+      ],
+      "closeSeg": {
+        "seg": "line"
+      }
+    }
+  ],
+  "updated": "2026-11-16T21:26:55Z"
+}
