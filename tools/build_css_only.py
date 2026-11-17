@@ -95,10 +95,11 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
 /* A rail (render.js railFor): the approximant's long side carried the
  * full height of its partner — x 18 or 82, y 18 to 82 of the 100 box, at the
  * 13 display weight, so 11.5% in and 77% tall. Its own span over the glyph,
- * since a mask can't take a second layer per block. */
-.av-rail{position:absolute;z-index:1;pointer-events:none;background-color:currentColor;top:calc(1.25em * .115);width:calc(1.25em * .13);height:calc(1.25em * .77)}
-.av-rail-l{left:calc(50% - 1.25em * .385)}
-.av-rail-r{left:calc(50% + 1.25em * .255)}
+ * since a mask can't take a second layer per block. Painted through a column
+ * mask in a box as wide as the glyph, like a join (.av-jx below): a bare
+ * rectangle snaps to whole pixels and came out offset from the partner's
+ * anti-aliased stroke it continues — a step at the seam (`p|ɹ`, `p|l`). */
+.av-rail{position:absolute;z-index:1;pointer-events:none;background-color:currentColor;top:calc(1.25em * .115);height:calc(1.25em * .77);left:50%;margin-left:-.625em;width:1.25em;-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:100% 100%}
 /* A join (render.js joinsFor): one glyph's stroke carried on to its partner's
  * ink. Module:Avatarian works out where and how long, and writes them on the
  * span (margin-left from the slot's centre line, top, height, all in em); the
@@ -268,6 +269,11 @@ def main(out=None):
     cols = sorted({e[0] for g in glyphs().values()
                    for f in [g, *(g.get("variants") or {}).values()]
                    for e in f.get("emit") or []})
+    rail = {"l": 18, "r": 82}   # a rail's column, by side (.av-rail above)
+    for side, x in rail.items():
+        strip = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">'
+                 f'<rect x="{x - 6.5:g}" y="0" width="13" height="100"/></svg>')
+        rules.append(f'.av-rail-{side}{{-webkit-mask-image:url("data:image/svg+xml,{urllib.parse.quote(strip, safe="")}")}}')
     for x in cols:
         strip = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">'
                  f'<rect x="{x - 6.5:g}" y="0" width="13" height="100"/></svg>')

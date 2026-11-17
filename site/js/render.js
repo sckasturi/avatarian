@@ -388,13 +388,15 @@ function railFor(sym, slot, partner) {
  * A corner that POINTS into the rail part-way down — /p/'s diamond, whose side
  * vertex sits on the rail's column (`p|ɹ`, `p|l`) — pokes its miter tip out
  * through the far side of the rail. Split that vertex into a short run along
- * the column (RAIL_CUT either side): both new joins then put their miter on
- * the rail's outer edge, and the run itself lies under the rail.
+ * the column (RAIL_CUT either side), set RAIL_INSET in from the rail's
+ * centre: both new joins put their miter that far inside the rail's outer
+ * edge, so the pixel snapping of the rail's box can't uncover it, and the
+ * run itself lies under the rail.
  *
  * build_css_only.py ports this (inkprofile.tuck_under_rail) for the wiki's
  * masks; keep the two in step.
  */
-const RAIL_CUT = 1;
+const RAIL_CUT = 1, RAIL_INSET = 3;
 function tuckUnderRail(svg, x) {
   const n = "(-?[\\d.]+)";
   const back = (ex, ey, px, py) => {
@@ -418,7 +420,8 @@ function tuckUnderRail(svg, x) {
       if ((px - x) * (nx - x) <= 0) return m;                   // not pointing at the rail
       if ((py - v) * (ny - v) >= 0) return m;                   // not a point either
       const a = v + Math.sign(py - v) * RAIL_CUT, b = v + Math.sign(ny - v) * RAIL_CUT;
-      return `${px} ${py} L ${x} ${a} L ${x} ${b} L ${nx} ${ny}`;
+      const cx = x + Math.sign(px - x) * RAIL_INSET;
+      return `${px} ${py} L ${cx} ${a} L ${cx} ${b} L ${nx} ${ny}`;
     });
 }
 

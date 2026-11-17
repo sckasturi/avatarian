@@ -253,6 +253,7 @@ def stem_cut(svg, x, y):
 
 HALF_STROKE = 4.5   # render.js HALF_STROKE
 RAIL_CUT = 1        # render.js RAIL_CUT
+RAIL_INSET = 3      # render.js RAIL_INSET
 
 
 def _js_num(v):
@@ -291,7 +292,8 @@ def tuck_under_rail(svg, x):
             return m.group(0)
         sign = lambda d: (d > 0) - (d < 0)
         a, b = v + sign(float(py) - v) * RAIL_CUT, v + sign(float(ny) - v) * RAIL_CUT
-        return f"{px} {py} L {xs} {_js_num(a)} L {xs} {_js_num(b)} L {nx} {ny}"
+        cx = _js_num(x + sign(float(px) - x) * RAIL_INSET)
+        return f"{px} {py} L {cx} {_js_num(a)} L {cx} {_js_num(b)} L {nx} {ny}"
 
     svg = re.sub(rf'([ML]) {n} {n} L {xs} (18|82)"', end, svg)
     svg = re.sub(rf'd="M {xs} (18|82) L {n} {n}', start, svg)
