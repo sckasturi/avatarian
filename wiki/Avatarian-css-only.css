@@ -10,9 +10,6 @@
 .av-word.av-solo{display:inline-flex;font-size:1.4em;padding-right:0;position:relative}
 .av-word-part{display:inline-flex;align-items:flex-start;vertical-align:middle;position:relative}
 .av-word-part+.av-word-part{margin-left:.5em}
-/* Module:Avatarian `grid` (a table of blocks): each cell's block sits in a bare
- * .av-word-part, sized here as .av-word would size it. */
-.av-grid td>.av-word-part{font-size:calc(1.25em / 2.05)}
 .av-block{display:inline-flex;flex-direction:column;align-items:center;margin-right:.05em}
 .av-block:last-child{margin-right:0}
 .av-slot{display:flex;justify-content:center}

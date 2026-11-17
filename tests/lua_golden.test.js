@@ -199,40 +199,6 @@ test("Lua module renders every corpus word identically to render.js", { skip: !h
     `${mismatches.length}/${words.length} words differ:\n\n` + mismatches.slice(0, 8).join("\n\n"));
 });
 
-test("the blocks page's grid draws each cell as the template draws that block", { skip: !haveLua && "lua not on PATH" }, () => {
-  // Module:Avatarian `grid` (User:TechFilmer/Avatarian blocks) is one call for
-  // a whole table; each cell must be the template's {{Avatarian|<top> <bottom>}}
-  // markup, less the copy-text layer and the outer .av-word (.av-grid sizes it).
-  // The page's own tables: C-C, V-C, C-V rows and columns.
-  const page = fs.readFileSync(path.join(__dirname, "..", "wiki", "Avatarian_blocks.wiki"), "utf8");
-  const [cc, vc] = [...page.matchAll(/\|rows=(.*)\n\|cols=(.*)/g)].map(m => [m[1], m[2]]);
-  const codes = cc[0], vowels = vc[0];
-  const driver =
-    `local p = dofile(${luaLit(LUA_MODULE)})\n` +
-    `local function cells(rows, cols)\n` +
-    `  local g = p._grid({rows=rows, cols=cols, tint="x", ["p r"]="waterproof"})\n` +
-    `  local n, bad = 0, 0\n` +
-    `  local list = {}\n` +
-    `  for cell in g:gmatch("<td[^>]*>(.-)</td>") do list[#list + 1] = cell end\n` +
-    `  local i = 0\n` +
-    `  for r in rows:gmatch("%S+") do for c in cols:gmatch("%S+") do\n` +
-    `    i = i + 1; n = n + 1\n` +
-    `    local want = p._main(r .. " " .. c, nil):gsub('<span class="av%-copy">.-</span>', "")\n` +
-    `    want = want:gsub('^<span class="av%-word"><span class="av%-word%-part">(.*)</span></span>$', '<span class="av-word-part">%1</span>')\n` +
-    `    if list[i] ~= want then bad = bad + 1; if bad == 1 then print("MISMATCH " .. r .. " " .. c .. "\\n" .. tostring(list[i]) .. "\\n" .. want) end end\n` +
-    `  end end\n` +
-    `  return n, bad, g\n` +
-    `end\n` +
-    `local n1, b1, g = cells(${luaLit(codes)}, ${luaLit(codes)})\n` +
-    `local n2, b2 = cells(${luaLit(vowels)}, ${luaLit(codes)})\n` +
-    `local n3, b3 = cells(${luaLit(codes)}, ${luaLit(vowels)})\n` +
-    `print("COUNT " .. (n1 + n2 + n3) .. " " .. (b1 + b2 + b3))\n` +
-    `print(g:match('<td style="x" title="waterproof">') and "TITLE ok" or "TITLE missing")\n`;
-  const out = runLua(driver);
-  assert.match(out, /COUNT \d+ 0\b/, out.slice(0, 1500));
-  assert.match(out, /TITLE ok/);
-});
-
 test("numerals render unpaired, at three columns, the same in both ports", { skip: !haveLua && "lua not on PATH" }, () => {
   const ctx = loadSite();
   ctx.document = makeDocument();

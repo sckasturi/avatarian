@@ -652,40 +652,4 @@ function p.render(frame)
   return p._main(args[1], args[2])
 end
 
--- A whole table of blocks in ONE call — User:TechFilmer/Avatarian blocks
--- (tools/build_blocks_page.py). A cell per call cost the parser ~1,300 module
--- invocations and every block a copy-text layer nobody selects in a chart.
---   {{#invoke:Avatarian|grid|rows=<codes>|cols=<codes>|tint=<css>|<top> <bottom>=<hover>|...}}
--- Rows are the top glyph, columns the bottom. A cell named by its two codes
--- is attested: it takes `tint` and the hover text as its title.
-function p._grid(args)
-  local function codes(s)
-    local t = {}
-    for c in (s or ""):gmatch("%S+") do t[#t + 1] = c end
-    return t
-  end
-  local function head(code)
-    return esc(code) .. "<br/><small>/" .. esc((parseSymbol(normaliseSound(code)))) .. "/</small>"
-  end
-  local rows, cols, tint = codes(args.rows), codes(args.cols), args.tint or ""
-  local out = { '<table class="wikitable av-grid" style="text-align:center"><tr><th>top ↓ bottom →</th>' }
-  for _, c in ipairs(cols) do out[#out + 1] = "<th>" .. head(c) .. "</th>" end
-  out[#out + 1] = "</tr>"
-  for _, r in ipairs(rows) do
-    out[#out + 1] = "<tr><th>" .. head(r) .. "</th>"
-    for _, c in ipairs(cols) do
-      local seen = args[r .. " " .. c]
-      local td = seen and ('<td style="' .. esc(tint) .. '" title="' .. esc(seen) .. '">') or "<td>"
-      -- One wrapper, not .av-word > .av-word-part: .av-grid sizes it (CSS).
-      out[#out + 1] = td .. '<span class="av-word-part">'
-        .. renderWord({ normaliseSound(r), normaliseSound(c) }) .. "</span></td>"
-    end
-    out[#out + 1] = "</tr>"
-  end
-  out[#out + 1] = "</table>"
-  return table.concat(out)
-end
-
-function p.grid(frame) return p._grid(frame.args) end
-
 return p
