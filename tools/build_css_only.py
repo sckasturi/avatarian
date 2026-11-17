@@ -11,6 +11,9 @@ Run:  python3 tools/build_css_only.py [out.css]   (default: wiki/Avatarian-css-o
 """
 import json, re, sys, urllib.parse, pathlib
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import inkprofile
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "site" / "js" / "manifest.js"
 OUT = ROOT / "wiki" / "Avatarian-css-only.css"
@@ -99,8 +102,14 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
 /* A join (render.js joinsFor): one glyph's stroke carried on to its partner's
  * ink. Module:Avatarian works out where and how long, and writes them on the
  * span (margin-left from the slot's centre line, top, height, all in em); the
- * weight is the masks' 13. Cut square on the partner's centre line. */
+ * weight is the masks' 13. Cut square on the partner's centre line.
+ * The stroke itself (.av-jx) is painted through a mask, one per column, in a
+ * box exactly as wide as the glyph: a bare rectangle snaps to whole pixels
+ * while the glyph's own stem is anti-aliased, and at text size the two came
+ * out different widths — a step halfway down the stem. Same box, same
+ * rasteriser, same edge. */
 .av-join{position:absolute;left:50%;z-index:1;pointer-events:none;background-color:currentColor;width:calc(1.25em * .13)}
+.av-jx{margin-left:-.625em;width:1.25em;-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:100% 100%}
 .av-block,.av-slot,.av-glyph,.av-mark{position:relative;z-index:1;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
 /* ===== glyph shapes ===== */
@@ -204,6 +213,33 @@ def main(out=None):
             for dy in sorted({t["dots"] for t in block_tweaks().values() if t.get("dots")}):
                 moved = re.sub(r'(<circle [^>]*cy=")([\d.]+)', lambda m: f"{m.group(1)}{float(m.group(2)) + dy:g}", base)
                 rules.append(f'.g-z_d{dy:g}{{-webkit-mask-image:url("{mask_uri(moved)}")}}')
+    # A joined stem is one strip (.av-jx) over the glyph WITHOUT its own stem,
+    # so the stem has a single anti-aliased edge all the way down. Every mask
+    # of a form that emits gets a stemless `_j` twin (inkprofile.stem_cut).
+    twins = []
+    for g in glyphs().values():
+        forms = [(g["name"], g)] + [(v["name"], v) for k, v in (g.get("variants") or {}).items() if k != "cluster"]
+        for name, f in forms:
+            for (x, y, _d), root in zip(f.get("emit") or [], f.get("root") or []):
+                if root is None:
+                    continue
+                for rule in rules:
+                    m = re.match(r'\.g-(%s(?:_[a-z0-9]+)*)\{-webkit-mask-image:url\("data:image/svg\+xml,([^"]*)"\)\}$' % re.escape(name), rule)
+                    if not m or m.group(1).endswith("_c") or m.group(1) in {n for n, _ in forms if n != name}:
+                        continue
+                    cut = inkprofile.stem_cut(urllib.parse.unquote(m.group(2)), x, y)
+                    if cut:
+                        twins.append(f'.g-{m.group(1)}_j{{-webkit-mask-image:url("data:image/svg+xml,{urllib.parse.quote(cut[1], safe="")}")}}')
+    rules += twins
+    # One mask per column a join can sit on (.av-jx above): the stroke as a
+    # 13-wide strip of a 100-wide box, stretched to whatever height the span has.
+    cols = sorted({e[0] for g in glyphs().values()
+                   for f in [g, *(g.get("variants") or {}).values()]
+                   for e in f.get("emit") or []})
+    for x in cols:
+        strip = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">'
+                 f'<rect x="{x - 6.5:g}" y="0" width="13" height="100"/></svg>')
+        rules.append(f'.av-jx-{x}{{-webkit-mask-image:url("data:image/svg+xml,{urllib.parse.quote(strip, safe="")}")}}')
     out.write_text(LAYOUT + "\n".join(rules + toc_rules()) + "\n", encoding="utf-8")
     print(f"Wrote {out} — {len(rules)} glyph classes, {round(out.stat().st_size / 1024, 1)} KB")
 

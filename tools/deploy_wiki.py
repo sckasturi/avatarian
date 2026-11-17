@@ -62,7 +62,7 @@ PAGES = {
     "User:TechFilmer/Avatarian.css": "wiki/Avatarian-css-only.css",
 }
 
-SUMMARY = "Sync from the avatarian repo (tools/deploy_wiki.py)"
+SUMMARY = "updating"
 
 
 def load_dotenv():

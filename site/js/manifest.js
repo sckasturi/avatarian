@@ -171,7 +171,10 @@ window.AVATARIAN_GLYPHS = {
               82
             ]
           ]
-        }
+        },
+        "root": [
+          82
+        ]
       }
     },
     "ink": {
@@ -670,7 +673,10 @@ window.AVATARIAN_GLYPHS = {
           34
         ]
       ]
-    }
+    },
+    "root": [
+      27.37
+    ]
   },
   "ʃ": {
     "name": "sh",
@@ -1105,7 +1111,10 @@ window.AVATARIAN_GLYPHS = {
           48
         ]
       ]
-    }
+    },
+    "root": [
+      48
+    ]
   },
   "e": {
     "name": "ei",
@@ -1149,7 +1158,10 @@ window.AVATARIAN_GLYPHS = {
           48
         ]
       ]
-    }
+    },
+    "root": [
+      16
+    ]
   },
   "ɛ": {
     "name": "eh",
@@ -1341,7 +1353,10 @@ window.AVATARIAN_GLYPHS = {
           64
         ]
       ]
-    }
+    },
+    "root": [
+      64
+    ]
   },
   "ʊ": {
     "name": "oo",
@@ -1389,7 +1404,10 @@ window.AVATARIAN_GLYPHS = {
           72
         ]
       ]
-    }
+    },
+    "root": [
+      64
+    ]
   },
   "oʊ": {
     "name": "ow",
@@ -1496,7 +1514,10 @@ window.AVATARIAN_GLYPHS = {
           16
         ]
       ]
-    }
+    },
+    "root": [
+      40
+    ]
   },
   "aɪ": {
     "name": "ai",
@@ -1618,7 +1639,10 @@ window.AVATARIAN_GLYPHS = {
           48
         ]
       ]
-    }
+    },
+    "root": [
+      48
+    ]
   },
   "∅": {
     "name": "null_v",

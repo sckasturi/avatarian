@@ -70,6 +70,17 @@ def lua_map(name, pairs):
     return f"local {name} = {{{body}}}"
 
 
+def lua_emit(form):
+    """A form's emitters as {x, y, dir[, root]} rows — `root` (manifest `root`)
+    is the far end of the emitter's own stem, where there is one."""
+    roots = form.get("root") or []
+    rows = []
+    for i, e in enumerate(form["emit"]):
+        r = roots[i] if i < len(roots) else None
+        rows.append("{%d,%d,%d" % tuple(e) + ("" if r is None else ",%g" % r) + "}")
+    return "{" + ",".join(rows) + "}"
+
+
 def lua_ink(ink):
     """{column: [[y0, y1], ...]} as a Lua table keyed by the column number."""
     return "{" + ",".join(
@@ -105,7 +116,7 @@ def main(out=None):
         # sits on the columns emitters use — `ink` for the base form, `cink`
         # for the cluster form.
         if g.get("emit"):
-            fields.append("emit={" + ",".join("{%d,%d,%d}" % tuple(e) for e in g["emit"]) + "}")
+            fields.append("emit=" + lua_emit(g))
         if any(g.get("ink", {}).values()):
             fields.append("ink=" + lua_ink(g["ink"]))
         cink = ((g.get("variants") or {}).get("cluster") or {}).get("ink") or {}
@@ -130,7 +141,7 @@ def main(out=None):
                 continue
             f = [f"name={lua_str(v['name'])}"]
             if v.get("emit"):
-                f.append("emit={" + ",".join("{%d,%d,%d}" % tuple(e) for e in v["emit"]) + "}")
+                f.append("emit=" + lua_emit(v))
             for k in ("ink", "dots", "gaps"):
                 if any((v.get(k) or {}).values()):
                     f.append(f"{k}=" + lua_ink(v[k]))
@@ -357,6 +368,9 @@ local function glyphSpan(token, slot, partner)
   if partner ~= nil then
     local _, dot = joinSpans(partner, slot == "top" and "bottom" or "top", token)
     if dot then stem = stem .. "_nodot" end
+    -- Its own stem, joined, is drawn by the join's strip: the mask without it.
+    local _, _, cut = joinSpans(token, slot, partner)
+    if cut then stem = stem .. "_j" end
   end
   local cls = "av-glyph g-" .. stem .. " " .. HEIGHT[e.type]
   if e.rows == 4 then cls = cls .. " av-4row" end
@@ -480,6 +494,7 @@ local JOIN_MAX = 40   -- render.js JOIN_MAX
 local JOIN_OPEN = 20  -- render.js JOIN_OPEN
 local JOIN_DOT = 20   -- render.js JOIN_DOT
 local JOIN_W = 13   -- the mask's display stroke weight (build_css_only.py)
+local JOIN_LAP = 3.5 -- how far into the stem's cap (6.5 long) a join starts
 function joinSpans(token, slot, partner)
   if partner == nil then return "" end
   local sym, forced, variant = parseSymbol(token)
@@ -505,7 +520,7 @@ function joinSpans(token, slot, partner)
   local dots = (theirCluster and them.cdots or them.dots) or {}
   local gaps = (theirCluster and them.cgaps or them.gaps) or {}
   if theirAlt then ink, dots, gaps = theirAlt.ink or {}, theirAlt.dots or {}, theirAlt.gaps or {} end
-  local out, tookDot = {}, false
+  local out, tookDot, cut = {}, false, false
   for _, em3 in ipairs(emit) do
     local x, y, dir = em3[1], em3[2], em3[3]
     local D = mine.flipped and -dir or dir
@@ -552,8 +567,18 @@ function joinSpans(token, slot, partner)
           if hit.dot then tookDot = true end
           local a = toSlot(mine, y)
           local b = a + D * len
-          out[#out + 1] = '<span class="av-join" style="margin-left:' .. em(x - 50 - JOIN_W / 2)
-            .. 'em;top:' .. em(math.min(a, b)) .. 'em;height:' .. em(math.abs(b - a)) .. 'em"></span>'
+          -- The stem's own square cap already runs JOIN_W/2 past `a`; start
+          -- inside it, a little short of its end. Laid over the whole cap,
+          -- the two anti-aliased layers read as a bolder stretch of stem
+          -- (render.js moves the stroke's end instead — one layer).
+          local a2 = a + D * math.min(JOIN_LAP, len)
+          -- Better: the whole stem as this one strip, from its far end
+          -- (cap included), over the glyph drawn without it (`_j` mask).
+          if em3[4] then
+            a2 = toSlot(mine, em3[4]) - D * JOIN_W / 2
+            cut = true
+          end
+          out[#out + 1] = '<span class="av-join av-jx av-jx-' .. x .. '" style="top:' .. em(math.min(a2, b)) .. 'em;height:' .. em(math.abs(b - a2)) .. 'em"></span>'
           if hit.bar and not open then   -- the bar across the mouth it closes
             out[#out + 1] = '<span class="av-join" style="margin-left:' .. em(hit.bar[2] - 50)
               .. 'em;top:' .. em(b - JOIN_W / 2) .. 'em;width:' .. em(hit.bar[3] - hit.bar[2])
@@ -563,7 +588,7 @@ function joinSpans(token, slot, partner)
       end
     end
   end
-  return table.concat(out), tookDot
+  return table.concat(out), tookDot, cut
 end
 
 -- Render one word's IPA sequence into blocks. Punctuation is NOT paired: it

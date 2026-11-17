@@ -19,7 +19,7 @@ local GLYPH = {
   ["b"]={name="b", type="consonant", ink={[18]={{61,82}},[50]={{22,22}},[82]={{18,82}}}, dots={[50]={{66,82}}}},
   ["t"]={name="t", type="consonant", ink={[18]={{18,18},{50,82}},[50]={{18,18},{50,82}},[82]={{18,82}}}},
   ["d"]={name="d", type="consonant", ink={[18]={{18,50},{82,82}},[50]={{22,22},{82,82}},[82]={{61,82}}}},
-  ["k"]={name="k", type="consonant", ink={[18]={{18,82}},[50]={{18,50},{82,82}},[82]={{18,50},{82,82}}}, alts={["low"]={name="k_alt_low", emit={{18,18,-1}}, ink={[18]={{18,82}},[50]={{50,82}},[82]={{50,82}}}}}},
+  ["k"]={name="k", type="consonant", ink={[18]={{18,82}},[50]={{18,50},{82,82}},[82]={{18,50},{82,82}}}, alts={["low"]={name="k_alt_low", emit={{18,18,-1,82}}, ink={[18]={{18,82}},[50]={{50,82}},[82]={{50,82}}}}}},
   ["g"]={name="g", type="consonant", ink={[18]={{18,82}},[50]={{18,18}},[82]={{18,82}}}, dots={[50]={{42,58}}}, gaps={[50]={{82,34,66}}}},
   ["m"]={name="m", type="consonant", ink={[18]={{50,50}},[50]={{18,18},{82,82}},[82]={{50,50}}}, dots={[50]={{42,58}}}},
   ["n"]={name="n", type="consonant", ink={[18]={{42,50},{82,82}},[50]={{18,18},{82,82}},[82]={{18,59}}}, dots={[50]={{42,58}}}},
@@ -31,7 +31,7 @@ local GLYPH = {
   ["θ"]={name="th", type="consonant", ink={[18]={{18,18},{73,82}},[50]={{18,42}},[82]={{18,18},{73,82}}}},
   ["ð"]={name="dh", type="consonant", ink={[18]={{20,20}},[50]={{18,18},{73,73}},[82]={{18,82}}}, dots={[18]={{74,90}}}},
   ["s"]={name="s", type="consonant", ink={[18]={{81,81}},[50]={{19,19}},[82]={{81,81}}}, dots={[50]={{66,82}}}},
-  ["z"]={name="z", type="consonant", emit={{50,18,-1}}, ink={[18]={{74,82}},[50]={{18,29}},[82]={{74,82}}}, dots={[18]={{18,34}},[82]={{18,34}}}},
+  ["z"]={name="z", type="consonant", emit={{50,18,-1,27.37}}, ink={[18]={{74,82}},[50]={{18,29}},[82]={{74,82}}}, dots={[18]={{18,34}},[82]={{18,34}}}},
   ["ʃ"]={name="sh", type="consonant", ink={[18]={{50,50},{82,82}},[50]={{18,18},{50,50}},[82]={{50,50},{82,82}}}},
   ["ʒ"]={name="zh", type="consonant", ink={[18]={{48,82}},[50]={{18,18}},[82]={{48,82}}}},
   ["h"]={name="h", type="consonant", ink={[18]={{18,18},{82,82}},[50]={{18,18},{26,26},{74,74},{82,82}},[82]={{18,18},{82,82}}}},
@@ -40,20 +40,20 @@ local GLYPH = {
   ["ɹ"]={name="r", type="consonant", cluster=true, ink={[18]={{18,52}},[50]={{18,18},{82,82}},[82]={{18,82}}}, cink={[18]={{78,78}},[50]={{50,50},{82,82}},[82]={{18,82}}}},
   ["l"]={name="l", type="consonant", cluster=true, ink={[18]={{18,82}},[50]={{18,18},{82,82}},[82]={{18,52}}}, cink={[18]={{18,82}},[50]={{50,50},{82,82}},[82]={{78,78}}}},
   ["i"]={name="i", type="vowel", ink={[18]={{32,32},{64,64}},[50]={{32,32},{64,64}},[82]={{32,32},{64,64}}}},
-  ["ɪ"]={name="ih", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16},{48,48}},[50]={{16,16},{48,64}},[82]={{16,48}}}},
-  ["e"]={name="ei", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16},{48,48}},[50]={{16,64}},[82]={{16,16},{48,48}}}},
+  ["ɪ"]={name="ih", type="vowel", rows=4, flips=true, emit={{50,64,1,48}}, ink={[18]={{16,16},{48,48}},[50]={{16,16},{48,64}},[82]={{16,48}}}},
+  ["e"]={name="ei", type="vowel", rows=4, flips=true, emit={{50,64,1,16}}, ink={[18]={{16,16},{48,48}},[50]={{16,64}},[82]={{16,16},{48,48}}}},
   ["ɛ"]={name="eh", type="vowel", ink={[18]={{32,32},{64,64}},[50]={{48,48}},[82]={{32,32},{64,64}}}},
   ["æ"]={name="ae", type="vowel", flips=true, ink={[18]={{36,36}},[50]={{64,64}},[82]={{36,36}}}, dots={[50]={{24,40}}}},
   ["ʌ"]={name="uh", type="vowel", ink={[18]={{32,32},{64,64}},[82]={{32,32},{64,64}}}, gaps={[50]={{32,34,66},{64,34,66}}}},
   ["ə"]={name="schwa", type="vowel", flips=true, ink={[18]={{32,32}},[50]={{48,48}},[82]={{64,64}}}, dots={[18]={{56,72}},[82]={{24,40}}}},
-  ["u"]={name="uu", type="vowel", rows=4, emit={{50,16,-1}}, ink={[18]={{32,64}},[50]={{16,64}},[82]={{32,64}}}},
-  ["ʊ"]={name="oo", type="vowel", rows=4, emit={{50,16,-1}}, ink={[50]={{16,64}}}, dots={[18]={{24,40},{56,72}},[82]={{24,40},{56,72}}}},
+  ["u"]={name="uu", type="vowel", rows=4, emit={{50,16,-1,64}}, ink={[18]={{32,64}},[50]={{16,64}},[82]={{32,64}}}},
+  ["ʊ"]={name="oo", type="vowel", rows=4, emit={{50,16,-1,64}}, ink={[50]={{16,64}}}, dots={[18]={{24,40},{56,72}},[82]={{24,40},{56,72}}}},
   ["oʊ"]={name="ow", type="vowel", ink={[18]={{32,64}},[50]={{32,64}}}, dots={[82]={{24,40},{56,72}}}},
   ["ɔ"]={name="aw", type="vowel", ink={[18]={{64,64}},[50]={{64,64}},[82]={{36,36}}}, dots={[18]={{24,40}}}},
-  ["ɑ"]={name="ah", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16}},[50]={{40,64}},[82]={{16,16}}}},
+  ["ɑ"]={name="ah", type="vowel", rows=4, flips=true, emit={{50,64,1,40}}, ink={[18]={{16,16}},[50]={{40,64}},[82]={{16,16}}}},
   ["aɪ"]={name="ai", type="vowel", flips=true, ink={[18]={{32,32}},[50]={{32,32}},[82]={{32,32}}}, dots={[18]={{56,72}},[82]={{56,72}}}},
   ["aʊ"]={name="au", type="vowel", rows=4, ink={[50]={{24,24},{56,56}},[82]={{40,40}}}, dots={[18]={{16,32},{48,64}}}},
-  ["ɔɪ"]={name="oi", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,48}},[50]={{16,16},{48,64}},[82]={{16,48}}}},
+  ["ɔɪ"]={name="oi", type="vowel", rows=4, flips=true, emit={{50,64,1,48}}, ink={[18]={{16,48}},[50]={{16,16},{48,64}},[82]={{16,48}}}},
   ["∅"]={name="null_v", type="null", ink={[18]={{36,36}},[50]={{64,64}},[82]={{36,36}}}},
   ["∅c"]={name="null_c", type="null_consonant", ink={[18]={{18,82}},[50]={{82,82}},[82]={{18,82}}}},
   ["."]={name="period", type="mark_full"},
@@ -246,6 +246,9 @@ local function glyphSpan(token, slot, partner)
   if partner ~= nil then
     local _, dot = joinSpans(partner, slot == "top" and "bottom" or "top", token)
     if dot then stem = stem .. "_nodot" end
+    -- Its own stem, joined, is drawn by the join's strip: the mask without it.
+    local _, _, cut = joinSpans(token, slot, partner)
+    if cut then stem = stem .. "_j" end
   end
   local cls = "av-glyph g-" .. stem .. " " .. HEIGHT[e.type]
   if e.rows == 4 then cls = cls .. " av-4row" end
@@ -369,6 +372,7 @@ local JOIN_MAX = 40   -- render.js JOIN_MAX
 local JOIN_OPEN = 20  -- render.js JOIN_OPEN
 local JOIN_DOT = 20   -- render.js JOIN_DOT
 local JOIN_W = 13   -- the mask's display stroke weight (build_css_only.py)
+local JOIN_LAP = 3.5 -- how far into the stem's cap (6.5 long) a join starts
 function joinSpans(token, slot, partner)
   if partner == nil then return "" end
   local sym, forced, variant = parseSymbol(token)
@@ -394,7 +398,7 @@ function joinSpans(token, slot, partner)
   local dots = (theirCluster and them.cdots or them.dots) or {}
   local gaps = (theirCluster and them.cgaps or them.gaps) or {}
   if theirAlt then ink, dots, gaps = theirAlt.ink or {}, theirAlt.dots or {}, theirAlt.gaps or {} end
-  local out, tookDot = {}, false
+  local out, tookDot, cut = {}, false, false
   for _, em3 in ipairs(emit) do
     local x, y, dir = em3[1], em3[2], em3[3]
     local D = mine.flipped and -dir or dir
@@ -441,8 +445,18 @@ function joinSpans(token, slot, partner)
           if hit.dot then tookDot = true end
           local a = toSlot(mine, y)
           local b = a + D * len
-          out[#out + 1] = '<span class="av-join" style="margin-left:' .. em(x - 50 - JOIN_W / 2)
-            .. 'em;top:' .. em(math.min(a, b)) .. 'em;height:' .. em(math.abs(b - a)) .. 'em"></span>'
+          -- The stem's own square cap already runs JOIN_W/2 past `a`; start
+          -- inside it, a little short of its end. Laid over the whole cap,
+          -- the two anti-aliased layers read as a bolder stretch of stem
+          -- (render.js moves the stroke's end instead — one layer).
+          local a2 = a + D * math.min(JOIN_LAP, len)
+          -- Better: the whole stem as this one strip, from its far end
+          -- (cap included), over the glyph drawn without it (`_j` mask).
+          if em3[4] then
+            a2 = toSlot(mine, em3[4]) - D * JOIN_W / 2
+            cut = true
+          end
+          out[#out + 1] = '<span class="av-join av-jx av-jx-' .. x .. '" style="top:' .. em(math.min(a2, b)) .. 'em;height:' .. em(math.abs(b - a2)) .. 'em"></span>'
           if hit.bar and not open then   -- the bar across the mouth it closes
             out[#out + 1] = '<span class="av-join" style="margin-left:' .. em(hit.bar[2] - 50)
               .. 'em;top:' .. em(b - JOIN_W / 2) .. 'em;width:' .. em(hit.bar[3] - hit.bar[2])
@@ -452,7 +466,7 @@ function joinSpans(token, slot, partner)
       end
     end
   end
-  return table.concat(out), tookDot
+  return table.concat(out), tookDot, cut
 end
 
 -- Render one word's IPA sequence into blocks. Punctuation is NOT paired: it

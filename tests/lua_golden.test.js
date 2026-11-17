@@ -91,6 +91,7 @@ function serializeGlyph(g) {
     }
   }
   if (g.dataset.nodot) name += "_nodot";   // a partner's stem replaced its dot
+  if (g.dataset.stem) name += "_j";        // its joined stem is the join's strip
   const stem = "g-" + name;
   let height = "";
   for (const [k, v] of Object.entries(HEIGHT)) if (g._c.has(k)) height = v;
@@ -106,7 +107,7 @@ function serializeGlyph(g) {
     railStyle = ' style="top:' + em(lo) + 'em;height:' + em(hi - lo) + 'em"';
   }
   const rail = g.dataset.rail ? '<span class="av-rail av-rail-' + g.dataset.rail + '"' + railStyle + '></span>' : "";
-  return '<span class="' + cls + '"></span>' + rail + joinSpans(g.dataset.join);
+  return '<span class="' + cls + '"></span>' + rail + joinSpans(g.dataset.join, g.dataset.stem);
 }
 
 // A join as the wiki draws it: render.js records each one on the glyph as
@@ -119,12 +120,17 @@ function em(u) {
   if (neg) n = -n;
   return (neg ? "-" : "") + Math.floor(n / 10000) + "." + String(n % 10000).padStart(4, "0");
 }
-function joinSpans(join) {
+function joinSpans(join, stem) {
   if (!join) return "";
-  return join.split(";").map((j) => {
+  const roots = (stem || "").split(";");
+  return join.split(";").map((j, i) => {
     const [x, a, b, x0, x1] = j.split(",").map(Number);
-    return '<span class="av-join" style="margin-left:' + em(x - 50 - 6.5) + 'em;top:'
-      + em(Math.min(a, b)) + 'em;height:' + em(Math.abs(b - a)) + 'em"></span>'
+    // The strip is the whole stem, from its far end's cap, where the glyph
+    // has such a stem (drawn without it); else it starts 3.5 into the cap.
+    const a2 = roots[i] ? Number(roots[i]) - Math.sign(b - a) * 6.5
+      : a + Math.sign(b - a) * Math.min(3.5, Math.abs(b - a));
+    return '<span class="av-join av-jx av-jx-' + x + '" style="top:'
+      + em(Math.min(a2, b)) + 'em;height:' + em(Math.abs(b - a2)) + 'em"></span>'
       // a join that closes a mouth carries the bar's two ends as well
       + (x0 === undefined ? "" : '<span class="av-join" style="margin-left:' + em(x0 - 50)
         + 'em;top:' + em(b - 6.5) + 'em;width:' + em(x1 - x0) + 'em;height:' + em(13) + 'em"></span>');

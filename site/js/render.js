@@ -562,7 +562,8 @@ function joinsFor(token, slot, partner) {
   const mine = placeGlyph(me, slot, boxHeight(top.entry), cc);
   const theirs = placeGlyph(them, other, boxHeight(top.entry), cc);
   const out = [];
-  for (const [x, y, dir] of emit) {
+  const roots = (me.alt ? me.form.root : me.entry.root) || [];
+  for (const [i, [x, y, dir]] of emit.entries()) {
     const D = mine.flipped ? -dir : dir;            // direction on the page
     if (D !== (slot === "top" ? 1 : -1)) continue;  // faces the outer edge
     const Y = mine.y0 + toSlot(mine, y);
@@ -604,6 +605,8 @@ function joinsFor(token, slot, partner) {
     if (open) len = JOIN_OPEN;      // after the dot check: no rise toward a dot
     const a = toSlot(mine, y);
     out.push({ x, y, dir, len, a, b: a + D * len, ...(open ? { open } : {}),
+      // the stem's other end, where the wiki starts its one-piece stem
+      ...(roots[i] == null ? {} : { root: toSlot(mine, roots[i]) }),
       ...(hit.bar && !open ? { bar: hit.bar } : {}), ...(hit.dot ? { dot: hit.dot } : {}) });
   }
   return out;
@@ -733,6 +736,7 @@ function makeGlyph(token, slot, partner) {
       if (flat) flat = grow(flat);
       else svg = grow(svg);
       span.dataset.join = joins.map((j) => [j.x, j.a, j.b, ...(j.bar || []).slice(0, 2)].join(",")).join(";");
+      if (joins.some((j) => j.root != null)) span.dataset.stem = joins.map((j) => j.root ?? "").join(";");
     }
     // The other half of a join into a dot: the partner's stem replaces it,
     // so this glyph leaves that dot out (/b/ over a stem).

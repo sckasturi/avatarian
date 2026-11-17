@@ -158,6 +158,13 @@ def main():
         gaps = {str(x): g for x in cols for g in [inkprofile.column_gaps(svg, x)] if g}
         if gaps:
             form["gaps"] = gaps
+        # Each emitter's stem, as the stroke the wiki lifts out and redraws
+        # at its joined length (inkprofile.stem_cut): the y of its other end,
+        # one per emitter, null where the emitter is not such a stroke.
+        if form.get("emit"):
+            cuts = [inkprofile.stem_cut(svg, e[0], e[1]) for e in form["emit"]]
+            if any(cuts):
+                form["root"] = [c and (int(c[0]) if c[0] == int(c[0]) else c[0]) for c in cuts]
 
     for g in out.values():
         if g["type"].startswith("mark"):

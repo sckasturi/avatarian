@@ -215,3 +215,37 @@ if __name__ == "__main__":
     for name in sys.argv[1:]:
         svg = pathlib.Path(name).read_text(encoding="utf-8")
         print(name, column_hits(svg, 50))
+
+
+def stem_cut(svg, x, y):
+    """The emitter at (x, y) as the loose end of a straight vertical stroke:
+    `(root, svg without that stroke)`, or None where it is not one.
+
+    `root` is the y of the stroke's other end — a corner, a junction, or the
+    far cap of a stroke that stands alone. The wiki draws a joined stem as one
+    strip from there to the partner's ink over the glyph WITHOUT its own stem
+    (build_css_only.py `_j` masks): a strip laid over the stem instead is
+    anti-aliased twice where the two overlap, and the stem changes weight
+    partway down. render.js gets the same result by moving the stroke's end.
+    """
+    n = r"([\d.]+)"
+    X, Y = re.escape(f"{x:g}"), re.escape(f"{y:g}")
+    roots = []
+    def keep(m):
+        roots.append(float(m.group(1)))
+        return ""
+    # the stroke is the whole path
+    out = re.sub(rf'<path d="M {X} {Y} L {X} {n}"/>', keep, svg)
+    out = re.sub(rf'<path d="M {X} {n} L {X} {Y}"/>', keep, out)
+    # ... or the first or last segment of a longer one
+    def head(m):
+        roots.append(float(m.group(1)))
+        return f'd="M {x:g} {m.group(1)} '
+    out = re.sub(rf'd="M {X} {Y} L {X} {n} ', head, out)
+    def tail(m):
+        roots.append(float(m.group(2)))
+        return f'{m.group(1)}"'
+    out = re.sub(rf'( {X} {n}) L {X} {Y}"', tail, out)
+    if not roots or len(set(roots)) != 1:
+        return None
+    return roots[0], out
