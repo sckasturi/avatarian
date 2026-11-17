@@ -38,6 +38,7 @@ USAGE
 -----
     python tools/deploy_wiki.py            # sync the pages
     python tools/deploy_wiki.py --check    # show what WOULD change; edit nothing
+    python tools/deploy_wiki.py --purge    # also purge PURGE when nothing changed
 
 Only the standard library is used — no pip install, same as the rest of the
 tooling.
@@ -66,6 +67,10 @@ PAGES = {
 }
 
 SUMMARY = "updating"
+
+# Pages drawn by the module and CSS: purged after either changes, so the wiki
+# re-renders them now instead of serving a cached copy of the old drawing.
+PURGE = ["User:TechFilmer/Avatarian blocks"]
 
 
 def load_dotenv():
@@ -135,6 +140,10 @@ class Wiki:
             return None
         return page["revisions"][0]["slots"]["main"]["content"]
 
+    def purge(self, titles):
+        self._call({"action": "purge"},
+                   post={"titles": "|".join(titles), "forcelinkupdate": "1"})
+
     def edit(self, title, text):
         self._call(
             {"action": "edit"},
@@ -199,6 +208,13 @@ def main(argv):
         else:
             wiki.edit(title, text)
             print(f"~ {title}: updated ({len(text)} bytes)")
+
+    if "--purge" in argv or (not check and changed):
+        if check:
+            print(f"would purge {', '.join(PURGE)}")
+        else:
+            wiki.purge(PURGE)
+            print(f"purged {', '.join(PURGE)}")
 
     verb = "would change" if check else "changed"
     print(f"\n{changed} page(s) {verb}; {len(PAGES) - changed} already current.")
