@@ -889,26 +889,33 @@ function buildKeyGrid() {
   const SECTIONS = {
     consonant: ["Consonants", null],
     vowel: ["Vowels", null],
-    null: ["Nulls", "written into empty slots, not a sound"],
-    numeral: ["Numerals", "one digit at a time, beside the writing"],
+    null: ["Nulls", null],
+    numeral: ["Numerals", null],
+    punctuation: ["Punctuation", null],
   };
+  // Punctuation and the possessive, in the order a sentence meets them.
+  const PUNCT_ORDER = [".", ",", ":", "?", "!", "--", "'s"];
+  const markName = (ipa) => (PUNCTUATION[ipa] || NUMERALS[ipa] || WORD_MARKS[ipa]).name;
 
-  ["consonant", "vowel", "null", "numeral"].forEach((kind) => {
+  ["consonant", "vowel", "null", "numeral", "punctuation"].forEach((kind) => {
     const entries = Object.entries(GLYPH_SET).filter(([ipa, i]) =>
       kind === "null" ? i.type === "null" || i.type === "null_consonant"
       : kind === "numeral" ? !!NUMERALS[ipa]
+      : kind === "punctuation" ? !!(PUNCTUATION[ipa] || WORD_MARKS[ipa])
       : i.type === kind
-    ).sort(([a], [b]) => kind === "numeral" ? a.localeCompare(b) : 0);
+    ).sort(([a], [b]) => kind === "numeral" ? a.localeCompare(b)
+      : kind === "punctuation" ? PUNCT_ORDER.indexOf(a) - PUNCT_ORDER.indexOf(b) : 0);
     if (!entries.length) return;
     keySection(wrap, SECTIONS[kind][0], SECTIONS[kind][1]);
 
     entries.forEach(([ipa, info]) => {
       const code = IPA_TO_CODE[ipa] || ipa;
+      const mark = kind === "numeral" || kind === "punctuation";
       wrap.appendChild(keyCell({
         code,
-        // A numeral is not a sound, so no IPA slashes: just its name.
-        title: kind === "numeral" ? NUMERALS[ipa].name : "/" + ipa + "/",
-        mark: kind === "numeral",
+        // A mark is not a sound, so no IPA slashes: just its name.
+        title: mark ? markName(ipa) : "/" + ipa + "/",
+        mark,
         drawn: info.status === "PLACEHOLDER" ? null : info.svg,
         note: info.status === "PLACEHOLDER" ? "no glyph anywhere yet" : null,
         cls: info.status === "PLACEHOLDER" ? "is-placeholder" : "",
