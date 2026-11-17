@@ -4,1501 +4,333 @@ Every block the script can make, drawn by [[Module:Avatarian]]. Rows are the '''
 __TOC__
 
 == C–C (consonant over consonant) ==
-{| class="wikitable" style="text-align:center"
-! top ↓ bottom →
-! p<br/><small>/p/</small>
-! b<br/><small>/b/</small>
-! t<br/><small>/t/</small>
-! d<br/><small>/d/</small>
-! k<br/><small>/k/</small>
-! g<br/><small>/g/</small>
-! m<br/><small>/m/</small>
-! n<br/><small>/n/</small>
-! ng<br/><small>/ŋ/</small>
-! ch<br/><small>/tʃ/</small>
-! j<br/><small>/dʒ/</small>
-! f<br/><small>/f/</small>
-! v<br/><small>/v/</small>
-! th<br/><small>/θ/</small>
-! dh<br/><small>/ð/</small>
-! s<br/><small>/s/</small>
-! z<br/><small>/z/</small>
-! sh<br/><small>/ʃ/</small>
-! zh<br/><small>/ʒ/</small>
-! h<br/><small>/h/</small>
-! w<br/><small>/w/</small>
-! y<br/><small>/j/</small>
-! r<br/><small>/ɹ/</small>
-! l<br/><small>/l/</small>
-|-
-! p<br/><small>/p/</small>
-| {{#invoke:Avatarian|render|p p}}
-| {{#invoke:Avatarian|render|p b}}
-| {{#invoke:Avatarian|render|p t}}
-| {{#invoke:Avatarian|render|p d}}
-| {{#invoke:Avatarian|render|p k}}
-| {{#invoke:Avatarian|render|p g}}
-| {{#invoke:Avatarian|render|p m}}
-| {{#invoke:Avatarian|render|p n}}
-| {{#invoke:Avatarian|render|p ng}}
-| {{#invoke:Avatarian|render|p ch}}
-| {{#invoke:Avatarian|render|p j}}
-| {{#invoke:Avatarian|render|p f}}
-| {{#invoke:Avatarian|render|p v}}
-| {{#invoke:Avatarian|render|p th}}
-| {{#invoke:Avatarian|render|p dh}}
-| {{#invoke:Avatarian|render|p s}}
-| {{#invoke:Avatarian|render|p z}}
-| {{#invoke:Avatarian|render|p sh}}
-| {{#invoke:Avatarian|render|p zh}}
-| {{#invoke:Avatarian|render|p h}}
-| {{#invoke:Avatarian|render|p w}}
-| {{#invoke:Avatarian|render|p y}}
-| style="background:rgba(40,150,80,.45)" title="waterproof" | {{#invoke:Avatarian|render|p r}}
-| style="background:rgba(40,150,80,.45)" title="please, supplies" | {{#invoke:Avatarian|render|p l}}
-|-
-! b<br/><small>/b/</small>
-| {{#invoke:Avatarian|render|b p}}
-| {{#invoke:Avatarian|render|b b}}
-| {{#invoke:Avatarian|render|b t}}
-| {{#invoke:Avatarian|render|b d}}
-| {{#invoke:Avatarian|render|b k}}
-| {{#invoke:Avatarian|render|b g}}
-| {{#invoke:Avatarian|render|b m}}
-| {{#invoke:Avatarian|render|b n}}
-| {{#invoke:Avatarian|render|b ng}}
-| {{#invoke:Avatarian|render|b ch}}
-| {{#invoke:Avatarian|render|b j}}
-| {{#invoke:Avatarian|render|b f}}
-| {{#invoke:Avatarian|render|b v}}
-| {{#invoke:Avatarian|render|b th}}
-| {{#invoke:Avatarian|render|b dh}}
-| {{#invoke:Avatarian|render|b s}}
-| {{#invoke:Avatarian|render|b z}}
-| {{#invoke:Avatarian|render|b sh}}
-| {{#invoke:Avatarian|render|b zh}}
-| {{#invoke:Avatarian|render|b h}}
-| {{#invoke:Avatarian|render|b w}}
-| {{#invoke:Avatarian|render|b y}}
-| style="background:rgba(40,150,80,.45)" title="brave, brigade" | {{#invoke:Avatarian|render|b r}}
-| style="background:rgba(40,150,80,.45)" title="bloom, republic" | {{#invoke:Avatarian|render|b l}}
-|-
-! t<br/><small>/t/</small>
-| {{#invoke:Avatarian|render|t p}}
-| {{#invoke:Avatarian|render|t b}}
-| {{#invoke:Avatarian|render|t t}}
-| {{#invoke:Avatarian|render|t d}}
-| {{#invoke:Avatarian|render|t k}}
-| {{#invoke:Avatarian|render|t g}}
-| {{#invoke:Avatarian|render|t m}}
-| {{#invoke:Avatarian|render|t n}}
-| {{#invoke:Avatarian|render|t ng}}
-| {{#invoke:Avatarian|render|t ch}}
-| {{#invoke:Avatarian|render|t j}}
-| {{#invoke:Avatarian|render|t f}}
-| {{#invoke:Avatarian|render|t v}}
-| {{#invoke:Avatarian|render|t th}}
-| {{#invoke:Avatarian|render|t dh}}
-| style="background:rgba(40,150,80,.45)" title="discounts, let's, spots" | {{#invoke:Avatarian|render|t s}}
-| {{#invoke:Avatarian|render|t z}}
-| {{#invoke:Avatarian|render|t sh}}
-| {{#invoke:Avatarian|render|t zh}}
-| {{#invoke:Avatarian|render|t h}}
-| {{#invoke:Avatarian|render|t w}}
-| {{#invoke:Avatarian|render|t y}}
-| style="background:rgba(40,150,80,.45)" title="entarance, entry, traitors, treason, treasures, treats, tremble, trends and 3 more" | {{#invoke:Avatarian|render|t r}}
-| {{#invoke:Avatarian|render|t l}}
-|-
-! d<br/><small>/d/</small>
-| {{#invoke:Avatarian|render|d p}}
-| {{#invoke:Avatarian|render|d b}}
-| {{#invoke:Avatarian|render|d t}}
-| {{#invoke:Avatarian|render|d d}}
-| {{#invoke:Avatarian|render|d k}}
-| {{#invoke:Avatarian|render|d g}}
-| {{#invoke:Avatarian|render|d m}}
-| {{#invoke:Avatarian|render|d n}}
-| {{#invoke:Avatarian|render|d ng}}
-| {{#invoke:Avatarian|render|d ch}}
-| {{#invoke:Avatarian|render|d j}}
-| {{#invoke:Avatarian|render|d f}}
-| {{#invoke:Avatarian|render|d v}}
-| {{#invoke:Avatarian|render|d th}}
-| {{#invoke:Avatarian|render|d dh}}
-| {{#invoke:Avatarian|render|d s}}
-| style="background:rgba(40,150,80,.45)" title="goods, hides, kids, trends" | {{#invoke:Avatarian|render|d z}}
-| {{#invoke:Avatarian|render|d sh}}
-| {{#invoke:Avatarian|render|d zh}}
-| {{#invoke:Avatarian|render|d h}}
-| {{#invoke:Avatarian|render|d w}}
-| {{#invoke:Avatarian|render|d y}}
-| style="background:rgba(40,150,80,.45)" title="drastic, draw, drinks" | {{#invoke:Avatarian|render|d r}}
-| {{#invoke:Avatarian|render|d l}}
-|-
-! k<br/><small>/k/</small>
-| {{#invoke:Avatarian|render|k p}}
-| {{#invoke:Avatarian|render|k b}}
-| style="background:rgba(40,150,80,.45)" title="afflicted, aquaduct, asked, detective" | {{#invoke:Avatarian|render|k t}}
-| {{#invoke:Avatarian|render|k d}}
-| {{#invoke:Avatarian|render|k k}}
-| {{#invoke:Avatarian|render|k g}}
-| {{#invoke:Avatarian|render|k m}}
-| {{#invoke:Avatarian|render|k n}}
-| {{#invoke:Avatarian|render|k ng}}
-| {{#invoke:Avatarian|render|k ch}}
-| {{#invoke:Avatarian|render|k j}}
-| {{#invoke:Avatarian|render|k f}}
-| {{#invoke:Avatarian|render|k v}}
-| {{#invoke:Avatarian|render|k th}}
-| {{#invoke:Avatarian|render|k dh}}
-| style="background:rgba(40,150,80,.45)" title="books, drinks" | {{#invoke:Avatarian|render|k s}}
-| {{#invoke:Avatarian|render|k z}}
-| {{#invoke:Avatarian|render|k sh}}
-| {{#invoke:Avatarian|render|k zh}}
-| {{#invoke:Avatarian|render|k h}}
-| style="background:rgba(40,150,80,.45)" title="choir, quiet" | {{#invoke:Avatarian|render|k w}}
-| {{#invoke:Avatarian|render|k y}}
-| style="background:rgba(40,150,80,.45)" title="cream, criminals, decree" | {{#invoke:Avatarian|render|k r}}
-| style="background:rgba(40,150,80,.45)" title="cataclysm, class" | {{#invoke:Avatarian|render|k l}}
-|-
-! g<br/><small>/g/</small>
-| {{#invoke:Avatarian|render|g p}}
-| {{#invoke:Avatarian|render|g b}}
-| {{#invoke:Avatarian|render|g t}}
-| {{#invoke:Avatarian|render|g d}}
-| {{#invoke:Avatarian|render|g k}}
-| {{#invoke:Avatarian|render|g g}}
-| {{#invoke:Avatarian|render|g m}}
-| {{#invoke:Avatarian|render|g n}}
-| {{#invoke:Avatarian|render|g ng}}
-| {{#invoke:Avatarian|render|g ch}}
-| {{#invoke:Avatarian|render|g j}}
-| {{#invoke:Avatarian|render|g f}}
-| {{#invoke:Avatarian|render|g v}}
-| {{#invoke:Avatarian|render|g th}}
-| {{#invoke:Avatarian|render|g dh}}
-| {{#invoke:Avatarian|render|g s}}
-| {{#invoke:Avatarian|render|g z}}
-| {{#invoke:Avatarian|render|g sh}}
-| {{#invoke:Avatarian|render|g zh}}
-| {{#invoke:Avatarian|render|g h}}
-| style="background:rgba(40,150,80,.45)" title="language" | {{#invoke:Avatarian|render|g w}}
-| {{#invoke:Avatarian|render|g y}}
-| style="background:rgba(40,150,80,.45)" title="greatness" | {{#invoke:Avatarian|render|g r}}
-| style="background:rgba(40,150,80,.45)" title="glass, gluten" | {{#invoke:Avatarian|render|g l}}
-|-
-! m<br/><small>/m/</small>
-| {{#invoke:Avatarian|render|m p}}
-| {{#invoke:Avatarian|render|m b}}
-| {{#invoke:Avatarian|render|m t}}
-| {{#invoke:Avatarian|render|m d}}
-| {{#invoke:Avatarian|render|m k}}
-| {{#invoke:Avatarian|render|m g}}
-| {{#invoke:Avatarian|render|m m}}
-| {{#invoke:Avatarian|render|m n}}
-| {{#invoke:Avatarian|render|m ng}}
-| {{#invoke:Avatarian|render|m ch}}
-| {{#invoke:Avatarian|render|m j}}
-| {{#invoke:Avatarian|render|m f}}
-| {{#invoke:Avatarian|render|m v}}
-| {{#invoke:Avatarian|render|m th}}
-| {{#invoke:Avatarian|render|m dh}}
-| {{#invoke:Avatarian|render|m s}}
-| style="background:rgba(40,150,80,.45)" title="games, gems" | {{#invoke:Avatarian|render|m z}}
-| {{#invoke:Avatarian|render|m sh}}
-| {{#invoke:Avatarian|render|m zh}}
-| {{#invoke:Avatarian|render|m h}}
-| {{#invoke:Avatarian|render|m w}}
-| style="background:rgba(40,150,80,.45)" title="mute" | {{#invoke:Avatarian|render|m y}}
-| {{#invoke:Avatarian|render|m r}}
-| {{#invoke:Avatarian|render|m l}}
-|-
-! n<br/><small>/n/</small>
-| {{#invoke:Avatarian|render|n p}}
-| {{#invoke:Avatarian|render|n b}}
-| style="background:rgba(40,150,80,.45)" title="moment, mount, students, want" | {{#invoke:Avatarian|render|n t}}
-| style="background:rgba(40,150,80,.45)" title="behind, bending, defend, earthbender, found, hand, metalbending, mind and 4 more" | {{#invoke:Avatarian|render|n d}}
-| {{#invoke:Avatarian|render|n k}}
-| {{#invoke:Avatarian|render|n g}}
-| {{#invoke:Avatarian|render|n m}}
-| {{#invoke:Avatarian|render|n n}}
-| {{#invoke:Avatarian|render|n ng}}
-| {{#invoke:Avatarian|render|n ch}}
-| style="background:rgba(40,150,80,.45)" title="change" | {{#invoke:Avatarian|render|n j}}
-| {{#invoke:Avatarian|render|n f}}
-| {{#invoke:Avatarian|render|n v}}
-| {{#invoke:Avatarian|render|n th}}
-| {{#invoke:Avatarian|render|n dh}}
-| style="background:rgba(40,150,80,.45)" title="balance, performance" | {{#invoke:Avatarian|render|n s}}
-| style="background:rgba(40,150,80,.45)" title="council, havens, means" | {{#invoke:Avatarian|render|n z}}
-| {{#invoke:Avatarian|render|n sh}}
-| {{#invoke:Avatarian|render|n zh}}
-| {{#invoke:Avatarian|render|n h}}
-| {{#invoke:Avatarian|render|n w}}
-| style="background:rgba(40,150,80,.45)" title="menu, new" | {{#invoke:Avatarian|render|n y}}
-| {{#invoke:Avatarian|render|n r}}
-| {{#invoke:Avatarian|render|n l}}
-|-
-! ng<br/><small>/ŋ/</small>
-| {{#invoke:Avatarian|render|ng p}}
-| {{#invoke:Avatarian|render|ng b}}
-| {{#invoke:Avatarian|render|ng t}}
-| {{#invoke:Avatarian|render|ng d}}
-| style="background:rgba(40,150,80,.45)" title="rethink" | {{#invoke:Avatarian|render|ng k}}
-| {{#invoke:Avatarian|render|ng g}}
-| {{#invoke:Avatarian|render|ng m}}
-| {{#invoke:Avatarian|render|ng n}}
-| {{#invoke:Avatarian|render|ng ng}}
-| {{#invoke:Avatarian|render|ng ch}}
-| {{#invoke:Avatarian|render|ng j}}
-| {{#invoke:Avatarian|render|ng f}}
-| {{#invoke:Avatarian|render|ng v}}
-| {{#invoke:Avatarian|render|ng th}}
-| {{#invoke:Avatarian|render|ng dh}}
-| {{#invoke:Avatarian|render|ng s}}
-| {{#invoke:Avatarian|render|ng z}}
-| {{#invoke:Avatarian|render|ng sh}}
-| {{#invoke:Avatarian|render|ng zh}}
-| {{#invoke:Avatarian|render|ng h}}
-| {{#invoke:Avatarian|render|ng w}}
-| {{#invoke:Avatarian|render|ng y}}
-| {{#invoke:Avatarian|render|ng r}}
-| {{#invoke:Avatarian|render|ng l}}
-|-
-! ch<br/><small>/tʃ/</small>
-| {{#invoke:Avatarian|render|ch p}}
-| {{#invoke:Avatarian|render|ch b}}
-| {{#invoke:Avatarian|render|ch t}}
-| {{#invoke:Avatarian|render|ch d}}
-| {{#invoke:Avatarian|render|ch k}}
-| {{#invoke:Avatarian|render|ch g}}
-| {{#invoke:Avatarian|render|ch m}}
-| {{#invoke:Avatarian|render|ch n}}
-| {{#invoke:Avatarian|render|ch ng}}
-| {{#invoke:Avatarian|render|ch ch}}
-| {{#invoke:Avatarian|render|ch j}}
-| {{#invoke:Avatarian|render|ch f}}
-| {{#invoke:Avatarian|render|ch v}}
-| {{#invoke:Avatarian|render|ch th}}
-| {{#invoke:Avatarian|render|ch dh}}
-| {{#invoke:Avatarian|render|ch s}}
-| {{#invoke:Avatarian|render|ch z}}
-| {{#invoke:Avatarian|render|ch sh}}
-| {{#invoke:Avatarian|render|ch zh}}
-| {{#invoke:Avatarian|render|ch h}}
-| {{#invoke:Avatarian|render|ch w}}
-| {{#invoke:Avatarian|render|ch y}}
-| {{#invoke:Avatarian|render|ch r}}
-| {{#invoke:Avatarian|render|ch l}}
-|-
-! j<br/><small>/dʒ/</small>
-| {{#invoke:Avatarian|render|j p}}
-| {{#invoke:Avatarian|render|j b}}
-| {{#invoke:Avatarian|render|j t}}
-| {{#invoke:Avatarian|render|j d}}
-| {{#invoke:Avatarian|render|j k}}
-| {{#invoke:Avatarian|render|j g}}
-| {{#invoke:Avatarian|render|j m}}
-| {{#invoke:Avatarian|render|j n}}
-| {{#invoke:Avatarian|render|j ng}}
-| {{#invoke:Avatarian|render|j ch}}
-| {{#invoke:Avatarian|render|j j}}
-| {{#invoke:Avatarian|render|j f}}
-| {{#invoke:Avatarian|render|j v}}
-| {{#invoke:Avatarian|render|j th}}
-| {{#invoke:Avatarian|render|j dh}}
-| {{#invoke:Avatarian|render|j s}}
-| {{#invoke:Avatarian|render|j z}}
-| {{#invoke:Avatarian|render|j sh}}
-| {{#invoke:Avatarian|render|j zh}}
-| {{#invoke:Avatarian|render|j h}}
-| {{#invoke:Avatarian|render|j w}}
-| {{#invoke:Avatarian|render|j y}}
-| {{#invoke:Avatarian|render|j r}}
-| {{#invoke:Avatarian|render|j l}}
-|-
-! f<br/><small>/f/</small>
-| {{#invoke:Avatarian|render|f p}}
-| {{#invoke:Avatarian|render|f b}}
-| style="background:rgba(40,150,80,.45)" title="left" | {{#invoke:Avatarian|render|f t}}
-| {{#invoke:Avatarian|render|f d}}
-| {{#invoke:Avatarian|render|f k}}
-| {{#invoke:Avatarian|render|f g}}
-| {{#invoke:Avatarian|render|f m}}
-| {{#invoke:Avatarian|render|f n}}
-| {{#invoke:Avatarian|render|f ng}}
-| {{#invoke:Avatarian|render|f ch}}
-| {{#invoke:Avatarian|render|f j}}
-| {{#invoke:Avatarian|render|f f}}
-| {{#invoke:Avatarian|render|f v}}
-| {{#invoke:Avatarian|render|f th}}
-| {{#invoke:Avatarian|render|f dh}}
-| {{#invoke:Avatarian|render|f s}}
-| {{#invoke:Avatarian|render|f z}}
-| {{#invoke:Avatarian|render|f sh}}
-| {{#invoke:Avatarian|render|f zh}}
-| {{#invoke:Avatarian|render|f h}}
-| {{#invoke:Avatarian|render|f w}}
-| style="background:rgba(40,150,80,.45)" title="future" | {{#invoke:Avatarian|render|f y}}
-| style="background:rgba(40,150,80,.45)" title="free, freedom, fresh, freshly, from, frozen, fruit" | {{#invoke:Avatarian|render|f r}}
-| style="background:rgba(40,150,80,.45)" title="flame" | {{#invoke:Avatarian|render|f l}}
-|-
-! v<br/><small>/v/</small>
-| {{#invoke:Avatarian|render|v p}}
-| {{#invoke:Avatarian|render|v b}}
-| {{#invoke:Avatarian|render|v t}}
-| {{#invoke:Avatarian|render|v d}}
-| {{#invoke:Avatarian|render|v k}}
-| {{#invoke:Avatarian|render|v g}}
-| {{#invoke:Avatarian|render|v m}}
-| {{#invoke:Avatarian|render|v n}}
-| {{#invoke:Avatarian|render|v ng}}
-| {{#invoke:Avatarian|render|v ch}}
-| {{#invoke:Avatarian|render|v j}}
-| {{#invoke:Avatarian|render|v f}}
-| {{#invoke:Avatarian|render|v v}}
-| {{#invoke:Avatarian|render|v th}}
-| {{#invoke:Avatarian|render|v dh}}
-| {{#invoke:Avatarian|render|v s}}
-| style="background:rgba(40,150,80,.45)" title="receives" | {{#invoke:Avatarian|render|v z}}
-| {{#invoke:Avatarian|render|v sh}}
-| {{#invoke:Avatarian|render|v zh}}
-| {{#invoke:Avatarian|render|v h}}
-| {{#invoke:Avatarian|render|v w}}
-| {{#invoke:Avatarian|render|v y}}
-| {{#invoke:Avatarian|render|v r}}
-| {{#invoke:Avatarian|render|v l}}
-|-
-! th<br/><small>/θ/</small>
-| {{#invoke:Avatarian|render|th p}}
-| {{#invoke:Avatarian|render|th b}}
-| {{#invoke:Avatarian|render|th t}}
-| {{#invoke:Avatarian|render|th d}}
-| {{#invoke:Avatarian|render|th k}}
-| {{#invoke:Avatarian|render|th g}}
-| {{#invoke:Avatarian|render|th m}}
-| {{#invoke:Avatarian|render|th n}}
-| {{#invoke:Avatarian|render|th ng}}
-| {{#invoke:Avatarian|render|th ch}}
-| {{#invoke:Avatarian|render|th j}}
-| {{#invoke:Avatarian|render|th f}}
-| {{#invoke:Avatarian|render|th v}}
-| {{#invoke:Avatarian|render|th th}}
-| {{#invoke:Avatarian|render|th dh}}
-| {{#invoke:Avatarian|render|th s}}
-| {{#invoke:Avatarian|render|th z}}
-| {{#invoke:Avatarian|render|th sh}}
-| {{#invoke:Avatarian|render|th zh}}
-| {{#invoke:Avatarian|render|th h}}
-| {{#invoke:Avatarian|render|th w}}
-| {{#invoke:Avatarian|render|th y}}
-| {{#invoke:Avatarian|render|th r}}
-| {{#invoke:Avatarian|render|th l}}
-|-
-! dh<br/><small>/ð/</small>
-| {{#invoke:Avatarian|render|dh p}}
-| {{#invoke:Avatarian|render|dh b}}
-| {{#invoke:Avatarian|render|dh t}}
-| {{#invoke:Avatarian|render|dh d}}
-| {{#invoke:Avatarian|render|dh k}}
-| {{#invoke:Avatarian|render|dh g}}
-| {{#invoke:Avatarian|render|dh m}}
-| {{#invoke:Avatarian|render|dh n}}
-| {{#invoke:Avatarian|render|dh ng}}
-| {{#invoke:Avatarian|render|dh ch}}
-| {{#invoke:Avatarian|render|dh j}}
-| {{#invoke:Avatarian|render|dh f}}
-| {{#invoke:Avatarian|render|dh v}}
-| {{#invoke:Avatarian|render|dh th}}
-| {{#invoke:Avatarian|render|dh dh}}
-| {{#invoke:Avatarian|render|dh s}}
-| {{#invoke:Avatarian|render|dh z}}
-| {{#invoke:Avatarian|render|dh sh}}
-| {{#invoke:Avatarian|render|dh zh}}
-| {{#invoke:Avatarian|render|dh h}}
-| {{#invoke:Avatarian|render|dh w}}
-| {{#invoke:Avatarian|render|dh y}}
-| {{#invoke:Avatarian|render|dh r}}
-| {{#invoke:Avatarian|render|dh l}}
-|-
-! s<br/><small>/s/</small>
-| style="background:rgba(40,150,80,.45)" title="exposed, spirits, spots" | {{#invoke:Avatarian|render|s p}}
-| {{#invoke:Avatarian|render|s b}}
-| style="background:rgba(40,150,80,.45)" title="amongst, best, festival, ghosts, industries, just, lost, must and 10 more" | {{#invoke:Avatarian|render|s t}}
-| {{#invoke:Avatarian|render|s d}}
-| style="background:rgba(40,150,80,.45)" title="school, skip's" | {{#invoke:Avatarian|render|s k}}
-| {{#invoke:Avatarian|render|s g}}
-| {{#invoke:Avatarian|render|s m}}
-| {{#invoke:Avatarian|render|s n}}
-| {{#invoke:Avatarian|render|s ng}}
-| {{#invoke:Avatarian|render|s ch}}
-| {{#invoke:Avatarian|render|s j}}
-| {{#invoke:Avatarian|render|s f}}
-| {{#invoke:Avatarian|render|s v}}
-| {{#invoke:Avatarian|render|s th}}
-| {{#invoke:Avatarian|render|s dh}}
-| {{#invoke:Avatarian|render|s s}}
-| {{#invoke:Avatarian|render|s z}}
-| {{#invoke:Avatarian|render|s sh}}
-| {{#invoke:Avatarian|render|s zh}}
-| {{#invoke:Avatarian|render|s h}}
-| {{#invoke:Avatarian|render|s w}}
-| {{#invoke:Avatarian|render|s y}}
-| {{#invoke:Avatarian|render|s r}}
-| style="background:rgba(40,150,80,.45)" title="faceless" | {{#invoke:Avatarian|render|s l}}
-|-
-! z<br/><small>/z/</small>
-| {{#invoke:Avatarian|render|z p}}
-| {{#invoke:Avatarian|render|z b}}
-| {{#invoke:Avatarian|render|z t}}
-| {{#invoke:Avatarian|render|z d}}
-| {{#invoke:Avatarian|render|z k}}
-| {{#invoke:Avatarian|render|z g}}
-| {{#invoke:Avatarian|render|z m}}
-| {{#invoke:Avatarian|render|z n}}
-| {{#invoke:Avatarian|render|z ng}}
-| {{#invoke:Avatarian|render|z ch}}
-| {{#invoke:Avatarian|render|z j}}
-| {{#invoke:Avatarian|render|z f}}
-| {{#invoke:Avatarian|render|z v}}
-| {{#invoke:Avatarian|render|z th}}
-| {{#invoke:Avatarian|render|z dh}}
-| {{#invoke:Avatarian|render|z s}}
-| {{#invoke:Avatarian|render|z z}}
-| {{#invoke:Avatarian|render|z sh}}
-| {{#invoke:Avatarian|render|z zh}}
-| {{#invoke:Avatarian|render|z h}}
-| {{#invoke:Avatarian|render|z w}}
-| {{#invoke:Avatarian|render|z y}}
-| {{#invoke:Avatarian|render|z r}}
-| {{#invoke:Avatarian|render|z l}}
-|-
-! sh<br/><small>/ʃ/</small>
-| {{#invoke:Avatarian|render|sh p}}
-| {{#invoke:Avatarian|render|sh b}}
-| {{#invoke:Avatarian|render|sh t}}
-| {{#invoke:Avatarian|render|sh d}}
-| {{#invoke:Avatarian|render|sh k}}
-| {{#invoke:Avatarian|render|sh g}}
-| {{#invoke:Avatarian|render|sh m}}
-| {{#invoke:Avatarian|render|sh n}}
-| {{#invoke:Avatarian|render|sh ng}}
-| {{#invoke:Avatarian|render|sh ch}}
-| {{#invoke:Avatarian|render|sh j}}
-| {{#invoke:Avatarian|render|sh f}}
-| {{#invoke:Avatarian|render|sh v}}
-| {{#invoke:Avatarian|render|sh th}}
-| {{#invoke:Avatarian|render|sh dh}}
-| {{#invoke:Avatarian|render|sh s}}
-| {{#invoke:Avatarian|render|sh z}}
-| {{#invoke:Avatarian|render|sh sh}}
-| {{#invoke:Avatarian|render|sh zh}}
-| {{#invoke:Avatarian|render|sh h}}
-| {{#invoke:Avatarian|render|sh w}}
-| {{#invoke:Avatarian|render|sh y}}
-| {{#invoke:Avatarian|render|sh r}}
-| style="background:rgba(40,150,80,.45)" title="freshly" | {{#invoke:Avatarian|render|sh l}}
-|-
-! zh<br/><small>/ʒ/</small>
-| {{#invoke:Avatarian|render|zh p}}
-| {{#invoke:Avatarian|render|zh b}}
-| {{#invoke:Avatarian|render|zh t}}
-| {{#invoke:Avatarian|render|zh d}}
-| {{#invoke:Avatarian|render|zh k}}
-| {{#invoke:Avatarian|render|zh g}}
-| {{#invoke:Avatarian|render|zh m}}
-| {{#invoke:Avatarian|render|zh n}}
-| {{#invoke:Avatarian|render|zh ng}}
-| {{#invoke:Avatarian|render|zh ch}}
-| {{#invoke:Avatarian|render|zh j}}
-| {{#invoke:Avatarian|render|zh f}}
-| {{#invoke:Avatarian|render|zh v}}
-| {{#invoke:Avatarian|render|zh th}}
-| {{#invoke:Avatarian|render|zh dh}}
-| {{#invoke:Avatarian|render|zh s}}
-| {{#invoke:Avatarian|render|zh z}}
-| {{#invoke:Avatarian|render|zh sh}}
-| {{#invoke:Avatarian|render|zh zh}}
-| {{#invoke:Avatarian|render|zh h}}
-| {{#invoke:Avatarian|render|zh w}}
-| {{#invoke:Avatarian|render|zh y}}
-| {{#invoke:Avatarian|render|zh r}}
-| {{#invoke:Avatarian|render|zh l}}
-|-
-! h<br/><small>/h/</small>
-| {{#invoke:Avatarian|render|h p}}
-| {{#invoke:Avatarian|render|h b}}
-| {{#invoke:Avatarian|render|h t}}
-| {{#invoke:Avatarian|render|h d}}
-| {{#invoke:Avatarian|render|h k}}
-| {{#invoke:Avatarian|render|h g}}
-| {{#invoke:Avatarian|render|h m}}
-| {{#invoke:Avatarian|render|h n}}
-| {{#invoke:Avatarian|render|h ng}}
-| {{#invoke:Avatarian|render|h ch}}
-| {{#invoke:Avatarian|render|h j}}
-| {{#invoke:Avatarian|render|h f}}
-| {{#invoke:Avatarian|render|h v}}
-| {{#invoke:Avatarian|render|h th}}
-| {{#invoke:Avatarian|render|h dh}}
-| {{#invoke:Avatarian|render|h s}}
-| {{#invoke:Avatarian|render|h z}}
-| {{#invoke:Avatarian|render|h sh}}
-| {{#invoke:Avatarian|render|h zh}}
-| {{#invoke:Avatarian|render|h h}}
-| {{#invoke:Avatarian|render|h w}}
-| {{#invoke:Avatarian|render|h y}}
-| {{#invoke:Avatarian|render|h r}}
-| {{#invoke:Avatarian|render|h l}}
-|-
-! w<br/><small>/w/</small>
-| {{#invoke:Avatarian|render|w p}}
-| {{#invoke:Avatarian|render|w b}}
-| {{#invoke:Avatarian|render|w t}}
-| {{#invoke:Avatarian|render|w d}}
-| {{#invoke:Avatarian|render|w k}}
-| {{#invoke:Avatarian|render|w g}}
-| {{#invoke:Avatarian|render|w m}}
-| {{#invoke:Avatarian|render|w n}}
-| {{#invoke:Avatarian|render|w ng}}
-| {{#invoke:Avatarian|render|w ch}}
-| {{#invoke:Avatarian|render|w j}}
-| {{#invoke:Avatarian|render|w f}}
-| {{#invoke:Avatarian|render|w v}}
-| {{#invoke:Avatarian|render|w th}}
-| {{#invoke:Avatarian|render|w dh}}
-| {{#invoke:Avatarian|render|w s}}
-| {{#invoke:Avatarian|render|w z}}
-| {{#invoke:Avatarian|render|w sh}}
-| {{#invoke:Avatarian|render|w zh}}
-| {{#invoke:Avatarian|render|w h}}
-| {{#invoke:Avatarian|render|w w}}
-| {{#invoke:Avatarian|render|w y}}
-| {{#invoke:Avatarian|render|w r}}
-| {{#invoke:Avatarian|render|w l}}
-|-
-! y<br/><small>/j/</small>
-| {{#invoke:Avatarian|render|y p}}
-| {{#invoke:Avatarian|render|y b}}
-| {{#invoke:Avatarian|render|y t}}
-| {{#invoke:Avatarian|render|y d}}
-| {{#invoke:Avatarian|render|y k}}
-| {{#invoke:Avatarian|render|y g}}
-| {{#invoke:Avatarian|render|y m}}
-| {{#invoke:Avatarian|render|y n}}
-| {{#invoke:Avatarian|render|y ng}}
-| {{#invoke:Avatarian|render|y ch}}
-| {{#invoke:Avatarian|render|y j}}
-| {{#invoke:Avatarian|render|y f}}
-| {{#invoke:Avatarian|render|y v}}
-| {{#invoke:Avatarian|render|y th}}
-| {{#invoke:Avatarian|render|y dh}}
-| {{#invoke:Avatarian|render|y s}}
-| {{#invoke:Avatarian|render|y z}}
-| {{#invoke:Avatarian|render|y sh}}
-| {{#invoke:Avatarian|render|y zh}}
-| {{#invoke:Avatarian|render|y h}}
-| {{#invoke:Avatarian|render|y w}}
-| {{#invoke:Avatarian|render|y y}}
-| {{#invoke:Avatarian|render|y r}}
-| {{#invoke:Avatarian|render|y l}}
-|-
-! r<br/><small>/ɹ/</small>
-| {{#invoke:Avatarian|render|r p}}
-| style="background:rgba(40,150,80,.45)" title="turbine" | {{#invoke:Avatarian|render|r b}}
-| style="background:rgba(40,150,80,.45)" title="part" | {{#invoke:Avatarian|render|r t}}
-| style="background:rgba(40,150,80,.45)" title="card, hard, lord, ward" | {{#invoke:Avatarian|render|r d}}
-| style="background:rgba(40,150,80,.45)" title="market" | {{#invoke:Avatarian|render|r k}}
-| {{#invoke:Avatarian|render|r g}}
-| style="background:rgba(40,150,80,.45)" title="farm, normal, warm, warmly" | {{#invoke:Avatarian|render|r m}}
-| style="background:rgba(40,150,80,.45)" title="journal" | {{#invoke:Avatarian|render|r n}}
-| {{#invoke:Avatarian|render|r ng}}
-| {{#invoke:Avatarian|render|r ch}}
-| {{#invoke:Avatarian|render|r j}}
-| {{#invoke:Avatarian|render|r f}}
-| {{#invoke:Avatarian|render|r v}}
-| {{#invoke:Avatarian|render|r th}}
-| {{#invoke:Avatarian|render|r dh}}
-| style="background:rgba(40,150,80,.45)" title="force, humansitters" | {{#invoke:Avatarian|render|r s}}
-| style="background:rgba(40,150,80,.45)" title="stickers, treasures, waters" | {{#invoke:Avatarian|render|r z}}
-| {{#invoke:Avatarian|render|r sh}}
-| {{#invoke:Avatarian|render|r zh}}
-| {{#invoke:Avatarian|render|r h}}
-| {{#invoke:Avatarian|render|r w}}
-| {{#invoke:Avatarian|render|r y}}
-| {{#invoke:Avatarian|render|r r}}
-| style="background:rgba(40,150,80,.45)" title="girl, world" | {{#invoke:Avatarian|render|r l}}
-|-
-! l<br/><small>/l/</small>
-| style="background:rgba(40,150,80,.45)" title="help" | {{#invoke:Avatarian|render|l p}}
-| {{#invoke:Avatarian|render|l b}}
-| {{#invoke:Avatarian|render|l t}}
-| style="background:rgba(40,150,80,.45)" title="pulled" | {{#invoke:Avatarian|render|l d}}
-| style="background:rgba(40,150,80,.45)" title="milk" | {{#invoke:Avatarian|render|l k}}
-| {{#invoke:Avatarian|render|l g}}
-| {{#invoke:Avatarian|render|l m}}
-| {{#invoke:Avatarian|render|l n}}
-| {{#invoke:Avatarian|render|l ng}}
-| {{#invoke:Avatarian|render|l ch}}
-| {{#invoke:Avatarian|render|l j}}
-| {{#invoke:Avatarian|render|l f}}
-| style="background:rgba(40,150,80,.45)" title="valve" | {{#invoke:Avatarian|render|l v}}
-| {{#invoke:Avatarian|render|l th}}
-| {{#invoke:Avatarian|render|l dh}}
-| style="background:rgba(40,150,80,.45)" title="sula's" | {{#invoke:Avatarian|render|l s}}
-| style="background:rgba(40,150,80,.45)" title="criminals, models" | {{#invoke:Avatarian|render|l z}}
-| {{#invoke:Avatarian|render|l sh}}
-| {{#invoke:Avatarian|render|l zh}}
-| {{#invoke:Avatarian|render|l h}}
-| {{#invoke:Avatarian|render|l w}}
-| {{#invoke:Avatarian|render|l y}}
-| {{#invoke:Avatarian|render|l r}}
-| {{#invoke:Avatarian|render|l l}}
-|}
+{{#invoke:Avatarian|grid
+|rows=p b t d k g m n ng ch j f v th dh s z sh zh h w y r l
+|cols=p b t d k g m n ng ch j f v th dh s z sh zh h w y r l
+|tint=background:rgba(40,150,80,.45)
+|p r=waterproof
+|p l=please, supplies
+|b r=brave, brigade
+|b l=bloom, republic
+|t s=discounts, let's, spots
+|t r=entarance, entry, traitors, treason, treasures, treats, tremble, trends and 3 more
+|d z=goods, hides, kids, trends
+|d r=drastic, draw, drinks
+|k t=afflicted, aquaduct, asked, detective
+|k s=books, drinks
+|k w=choir, quiet
+|k r=cream, criminals, decree
+|k l=cataclysm, class
+|g w=language
+|g r=greatness
+|g l=glass, gluten
+|m z=games, gems
+|m y=mute
+|n t=moment, mount, students, want
+|n d=behind, bending, defend, earthbender, found, hand, metalbending, mind and 4 more
+|n j=change
+|n s=balance, performance
+|n z=council, havens, means
+|n y=menu, new
+|ng k=rethink
+|f t=left
+|f y=future
+|f r=free, freedom, fresh, freshly, from, frozen, fruit
+|f l=flame
+|v z=receives
+|s p=exposed, spirits, spots
+|s t=amongst, best, festival, ghosts, industries, just, lost, must and 10 more
+|s k=school, skip's
+|s l=faceless
+|sh l=freshly
+|r b=turbine
+|r t=part
+|r d=card, hard, lord, ward
+|r k=market
+|r m=farm, normal, warm, warmly
+|r n=journal
+|r s=force, humansitters
+|r z=stickers, treasures, waters
+|r l=girl, world
+|l p=help
+|l d=pulled
+|l k=milk
+|l v=valve
+|l s=sula's
+|l z=criminals, models
+}}
 
 == V–C (vowel over consonant) ==
-{| class="wikitable" style="text-align:center"
-! top ↓ bottom →
-! p<br/><small>/p/</small>
-! b<br/><small>/b/</small>
-! t<br/><small>/t/</small>
-! d<br/><small>/d/</small>
-! k<br/><small>/k/</small>
-! g<br/><small>/g/</small>
-! m<br/><small>/m/</small>
-! n<br/><small>/n/</small>
-! ng<br/><small>/ŋ/</small>
-! ch<br/><small>/tʃ/</small>
-! j<br/><small>/dʒ/</small>
-! f<br/><small>/f/</small>
-! v<br/><small>/v/</small>
-! th<br/><small>/θ/</small>
-! dh<br/><small>/ð/</small>
-! s<br/><small>/s/</small>
-! z<br/><small>/z/</small>
-! sh<br/><small>/ʃ/</small>
-! zh<br/><small>/ʒ/</small>
-! h<br/><small>/h/</small>
-! w<br/><small>/w/</small>
-! y<br/><small>/j/</small>
-! r<br/><small>/ɹ/</small>
-! l<br/><small>/l/</small>
-|-
-! ee<br/><small>/i/</small>
-| {{#invoke:Avatarian|render|ee p}}
-| {{#invoke:Avatarian|render|ee b}}
-| style="background:rgba(40,150,80,.45)" title="treats" | {{#invoke:Avatarian|render|ee t}}
-| {{#invoke:Avatarian|render|ee d}}
-| {{#invoke:Avatarian|render|ee k}}
-| {{#invoke:Avatarian|render|ee g}}
-| style="background:rgba(40,150,80,.45)" title="cream" | {{#invoke:Avatarian|render|ee m}}
-| {{#invoke:Avatarian|render|ee n}}
-| {{#invoke:Avatarian|render|ee ng}}
-| {{#invoke:Avatarian|render|ee ch}}
-| {{#invoke:Avatarian|render|ee j}}
-| {{#invoke:Avatarian|render|ee f}}
-| style="background:rgba(40,150,80,.45)" title="even, evil" | {{#invoke:Avatarian|render|ee v}}
-| {{#invoke:Avatarian|render|ee th}}
-| {{#invoke:Avatarian|render|ee dh}}
-| {{#invoke:Avatarian|render|ee s}}
-| style="background:rgba(40,150,80,.45)" title="please" | {{#invoke:Avatarian|render|ee z}}
-| {{#invoke:Avatarian|render|ee sh}}
-| {{#invoke:Avatarian|render|ee zh}}
-| {{#invoke:Avatarian|render|ee h}}
-| {{#invoke:Avatarian|render|ee w}}
-| {{#invoke:Avatarian|render|ee y}}
-| style="background:rgba(40,150,80,.45)" title="ear" | {{#invoke:Avatarian|render|ee r}}
-| {{#invoke:Avatarian|render|ee l}}
-|-
-! i<br/><small>/ɪ/</small>
-| style="background:rgba(40,150,80,.45)" title="skip's" | {{#invoke:Avatarian|render|i p}}
-| {{#invoke:Avatarian|render|i b}}
-| style="background:rgba(40,150,80,.45)" title="it, spirits" | {{#invoke:Avatarian|render|i t}}
-| style="background:rgba(40,150,80,.45)" title="afraid, made" | {{#invoke:Avatarian|render|i d}}
-| style="background:rgba(40,150,80,.45)" title="baked, cakes" | {{#invoke:Avatarian|render|i k}}
-| style="background:rgba(40,150,80,.45)" title="ignite" | {{#invoke:Avatarian|render|i g}}
-| style="background:rgba(40,150,80,.45)" title="flame" | {{#invoke:Avatarian|render|i m}}
-| style="background:rgba(40,150,80,.45)" title="daemin, even, in, industries, infamy, into" | {{#invoke:Avatarian|render|i n}}
-| style="background:rgba(40,150,80,.45)" title="being, bending, drinks, going, metalbending" | {{#invoke:Avatarian|render|i ng}}
-| {{#invoke:Avatarian|render|i ch}}
-| {{#invoke:Avatarian|render|i j}}
-| style="background:rgba(40,150,80,.45)" title="if" | {{#invoke:Avatarian|render|i f}}
-| style="background:rgba(40,150,80,.45)" title="brave, detective, save" | {{#invoke:Avatarian|render|i v}}
-| {{#invoke:Avatarian|render|i th}}
-| {{#invoke:Avatarian|render|i dh}}
-| style="background:rgba(40,150,80,.45)" title="cataclysm" | {{#invoke:Avatarian|render|i s}}
-| style="background:rgba(40,150,80,.45)" title="always, is, raise" | {{#invoke:Avatarian|render|i z}}
-| {{#invoke:Avatarian|render|i sh}}
-| {{#invoke:Avatarian|render|i zh}}
-| {{#invoke:Avatarian|render|i h}}
-| {{#invoke:Avatarian|render|i w}}
-| {{#invoke:Avatarian|render|i y}}
-| style="background:rgba(40,150,80,.45)" title="spirits" | {{#invoke:Avatarian|render|i r}}
-| style="background:rgba(40,150,80,.45)" title="still, stillness" | {{#invoke:Avatarian|render|i l}}
-|-
-! ey<br/><small>/e/</small>
-| {{#invoke:Avatarian|render|ey p}}
-| {{#invoke:Avatarian|render|ey b}}
-| style="background:rgba(40,150,80,.45)" title="greatness, traitors" | {{#invoke:Avatarian|render|ey t}}
-| {{#invoke:Avatarian|render|ey d}}
-| {{#invoke:Avatarian|render|ey k}}
-| {{#invoke:Avatarian|render|ey g}}
-| {{#invoke:Avatarian|render|ey m}}
-| {{#invoke:Avatarian|render|ey n}}
-| style="background:rgba(40,150,80,.45)" title="aang" | {{#invoke:Avatarian|render|ey ng}}
-| {{#invoke:Avatarian|render|ey ch}}
-| style="background:rgba(40,150,80,.45)" title="agency" | {{#invoke:Avatarian|render|ey j}}
-| {{#invoke:Avatarian|render|ey f}}
-| {{#invoke:Avatarian|render|ey v}}
-| {{#invoke:Avatarian|render|ey th}}
-| {{#invoke:Avatarian|render|ey dh}}
-| {{#invoke:Avatarian|render|ey s}}
-| {{#invoke:Avatarian|render|ey z}}
-| {{#invoke:Avatarian|render|ey sh}}
-| {{#invoke:Avatarian|render|ey zh}}
-| {{#invoke:Avatarian|render|ey h}}
-| {{#invoke:Avatarian|render|ey w}}
-| {{#invoke:Avatarian|render|ey y}}
-| style="background:rgba(40,150,80,.45)" title="air" | {{#invoke:Avatarian|render|ey r}}
-| {{#invoke:Avatarian|render|ey l}}
-|-
-! e<br/><small>/ɛ/</small>
-| style="background:rgba(40,150,80,.45)" title="step" | {{#invoke:Avatarian|render|e p}}
-| {{#invoke:Avatarian|render|e b}}
-| {{#invoke:Avatarian|render|e t}}
-| {{#invoke:Avatarian|render|e d}}
-| style="background:rgba(40,150,80,.45)" title="exposed" | {{#invoke:Avatarian|render|e k}}
-| style="background:rgba(40,150,80,.45)" title="exit" | {{#invoke:Avatarian|render|e g}}
-| style="background:rgba(40,150,80,.45)" title="tremble" | {{#invoke:Avatarian|render|e m}}
-| style="background:rgba(40,150,80,.45)" title="anyway, end, enjoy, entarance, entry, envoys, trends" | {{#invoke:Avatarian|render|e n}}
-| {{#invoke:Avatarian|render|e ng}}
-| {{#invoke:Avatarian|render|e ch}}
-| {{#invoke:Avatarian|render|e j}}
-| {{#invoke:Avatarian|render|e f}}
-| style="background:rgba(40,150,80,.45)" title="everything" | {{#invoke:Avatarian|render|e v}}
-| {{#invoke:Avatarian|render|e th}}
-| {{#invoke:Avatarian|render|e dh}}
-| style="background:rgba(40,150,80,.45)" title="heng's, woong's" | {{#invoke:Avatarian|render|e s}}
-| {{#invoke:Avatarian|render|e z}}
-| style="background:rgba(40,150,80,.45)" title="fresh" | {{#invoke:Avatarian|render|e sh}}
-| {{#invoke:Avatarian|render|e zh}}
-| {{#invoke:Avatarian|render|e h}}
-| {{#invoke:Avatarian|render|e w}}
-| {{#invoke:Avatarian|render|e y}}
-| {{#invoke:Avatarian|render|e r}}
-| {{#invoke:Avatarian|render|e l}}
-|-
-! a<br/><small>/æ/</small>
-| {{#invoke:Avatarian|render|a p}}
-| {{#invoke:Avatarian|render|a b}}
-| style="background:rgba(40,150,80,.45)" title="at" | {{#invoke:Avatarian|render|a t}}
-| {{#invoke:Avatarian|render|a d}}
-| style="background:rgba(40,150,80,.45)" title="access, aquaduct, reactor" | {{#invoke:Avatarian|render|a k}}
-| {{#invoke:Avatarian|render|a g}}
-| style="background:rgba(40,150,80,.45)" title="am" | {{#invoke:Avatarian|render|a m}}
-| style="background:rgba(40,150,80,.45)" title="and" | {{#invoke:Avatarian|render|a n}}
-| {{#invoke:Avatarian|render|a ng}}
-| {{#invoke:Avatarian|render|a ch}}
-| {{#invoke:Avatarian|render|a j}}
-| style="background:rgba(40,150,80,.45)" title="after" | {{#invoke:Avatarian|render|a f}}
-| style="background:rgba(40,150,80,.45)" title="avatar, avatarian" | {{#invoke:Avatarian|render|a v}}
-| {{#invoke:Avatarian|render|a th}}
-| {{#invoke:Avatarian|render|a dh}}
-| style="background:rgba(40,150,80,.45)" title="asked, class, drastic, glass" | {{#invoke:Avatarian|render|a s}}
-| style="background:rgba(40,150,80,.45)" title="as" | {{#invoke:Avatarian|render|a z}}
-| {{#invoke:Avatarian|render|a sh}}
-| {{#invoke:Avatarian|render|a zh}}
-| {{#invoke:Avatarian|render|a h}}
-| {{#invoke:Avatarian|render|a w}}
-| {{#invoke:Avatarian|render|a y}}
-| {{#invoke:Avatarian|render|a r}}
-| {{#invoke:Avatarian|render|a l}}
-|-
-! u<br/><small>/ʌ/</small>
-| style="background:rgba(40,150,80,.45)" title="up, upon" | {{#invoke:Avatarian|render|u p}}
-| {{#invoke:Avatarian|render|u b}}
-| {{#invoke:Avatarian|render|u t}}
-| {{#invoke:Avatarian|render|u d}}
-| {{#invoke:Avatarian|render|u k}}
-| style="background:rgba(40,150,80,.45)" title="agam's" | {{#invoke:Avatarian|render|u g}}
-| style="background:rgba(40,150,80,.45)" title="agam's, from" | {{#invoke:Avatarian|render|u m}}
-| style="background:rgba(40,150,80,.45)" title="and" | {{#invoke:Avatarian|render|u n}}
-| style="background:rgba(40,150,80,.45)" title="amongst" | {{#invoke:Avatarian|render|u ng}}
-| {{#invoke:Avatarian|render|u ch}}
-| {{#invoke:Avatarian|render|u j}}
-| {{#invoke:Avatarian|render|u f}}
-| style="background:rgba(40,150,80,.45)" title="of" | {{#invoke:Avatarian|render|u v}}
-| {{#invoke:Avatarian|render|u th}}
-| {{#invoke:Avatarian|render|u dh}}
-| style="background:rgba(40,150,80,.45)" title="trust, us" | {{#invoke:Avatarian|render|u s}}
-| {{#invoke:Avatarian|render|u z}}
-| {{#invoke:Avatarian|render|u sh}}
-| {{#invoke:Avatarian|render|u zh}}
-| {{#invoke:Avatarian|render|u h}}
-| {{#invoke:Avatarian|render|u w}}
-| {{#invoke:Avatarian|render|u y}}
-| {{#invoke:Avatarian|render|u r}}
-| {{#invoke:Avatarian|render|u l}}
-|-
-! uh<br/><small>/ə/</small>
-| {{#invoke:Avatarian|render|uh p}}
-| style="background:rgba(40,150,80,.45)" title="possible" | {{#invoke:Avatarian|render|uh b}}
-| style="background:rgba(40,150,80,.45)" title="market, quiet, theater" | {{#invoke:Avatarian|render|uh t}}
-| style="background:rgba(40,150,80,.45)" title="afflicted" | {{#invoke:Avatarian|render|uh d}}
-| style="background:rgba(40,150,80,.45)" title="republic" | {{#invoke:Avatarian|render|uh k}}
-| {{#invoke:Avatarian|render|uh g}}
-| style="background:rgba(40,150,80,.45)" title="amongst, cataclysm, from" | {{#invoke:Avatarian|render|uh m}}
-| style="background:rgba(40,150,80,.45)" title="agency, avatarian, entarance, ruins" | {{#invoke:Avatarian|render|uh n}}
-| {{#invoke:Avatarian|render|uh ng}}
-| {{#invoke:Avatarian|render|uh ch}}
-| style="background:rgba(40,150,80,.45)" title="language" | {{#invoke:Avatarian|render|uh j}}
-| style="background:rgba(40,150,80,.45)" title="afflicted, afraid" | {{#invoke:Avatarian|render|uh f}}
-| style="background:rgba(40,150,80,.45)" title="festival, of" | {{#invoke:Avatarian|render|uh v}}
-| {{#invoke:Avatarian|render|uh th}}
-| {{#invoke:Avatarian|render|uh dh}}
-| style="background:rgba(40,150,80,.45)" title="faceless" | {{#invoke:Avatarian|render|uh s}}
-| {{#invoke:Avatarian|render|uh z}}
-| {{#invoke:Avatarian|render|uh sh}}
-| {{#invoke:Avatarian|render|uh zh}}
-| {{#invoke:Avatarian|render|uh h}}
-| {{#invoke:Avatarian|render|uh w}}
-| {{#invoke:Avatarian|render|uh y}}
-| style="background:rgba(40,150,80,.45)" title="choir, earth, earthbender, fire, hunger, liars, theater, traitors and 1 more" | {{#invoke:Avatarian|render|uh r}}
-| style="background:rgba(40,150,80,.45)" title="council, evil, festival, jewel, journal, normal, possible, royal" | {{#invoke:Avatarian|render|uh l}}
-|-
-! oo<br/><small>/u/</small>
-| {{#invoke:Avatarian|render|oo p}}
-| {{#invoke:Avatarian|render|oo b}}
-| style="background:rgba(40,150,80,.45)" title="fruit, mute" | {{#invoke:Avatarian|render|oo t}}
-| {{#invoke:Avatarian|render|oo d}}
-| {{#invoke:Avatarian|render|oo k}}
-| {{#invoke:Avatarian|render|oo g}}
-| style="background:rgba(40,150,80,.45)" title="bloom" | {{#invoke:Avatarian|render|oo m}}
-| {{#invoke:Avatarian|render|oo n}}
-| {{#invoke:Avatarian|render|oo ng}}
-| {{#invoke:Avatarian|render|oo ch}}
-| {{#invoke:Avatarian|render|oo j}}
-| style="background:rgba(40,150,80,.45)" title="waterproof" | {{#invoke:Avatarian|render|oo f}}
-| {{#invoke:Avatarian|render|oo v}}
-| style="background:rgba(40,150,80,.45)" title="truth" | {{#invoke:Avatarian|render|oo th}}
-| {{#invoke:Avatarian|render|oo dh}}
-| {{#invoke:Avatarian|render|oo s}}
-| {{#invoke:Avatarian|render|oo z}}
-| {{#invoke:Avatarian|render|oo sh}}
-| {{#invoke:Avatarian|render|oo zh}}
-| {{#invoke:Avatarian|render|oo h}}
-| {{#invoke:Avatarian|render|oo w}}
-| {{#invoke:Avatarian|render|oo y}}
-| {{#invoke:Avatarian|render|oo r}}
-| style="background:rgba(40,150,80,.45)" title="school" | {{#invoke:Avatarian|render|oo l}}
-|-
-! uu<br/><small>/ʊ/</small>
-| {{#invoke:Avatarian|render|uu p}}
-| {{#invoke:Avatarian|render|uu b}}
-| {{#invoke:Avatarian|render|uu t}}
-| {{#invoke:Avatarian|render|uu d}}
-| {{#invoke:Avatarian|render|uu k}}
-| {{#invoke:Avatarian|render|uu g}}
-| {{#invoke:Avatarian|render|uu m}}
-| {{#invoke:Avatarian|render|uu n}}
-| {{#invoke:Avatarian|render|uu ng}}
-| {{#invoke:Avatarian|render|uu ch}}
-| {{#invoke:Avatarian|render|uu j}}
-| {{#invoke:Avatarian|render|uu f}}
-| {{#invoke:Avatarian|render|uu v}}
-| {{#invoke:Avatarian|render|uu th}}
-| {{#invoke:Avatarian|render|uu dh}}
-| {{#invoke:Avatarian|render|uu s}}
-| {{#invoke:Avatarian|render|uu z}}
-| {{#invoke:Avatarian|render|uu sh}}
-| {{#invoke:Avatarian|render|uu zh}}
-| {{#invoke:Avatarian|render|uu h}}
-| {{#invoke:Avatarian|render|uu w}}
-| {{#invoke:Avatarian|render|uu y}}
-| {{#invoke:Avatarian|render|uu r}}
-| {{#invoke:Avatarian|render|uu l}}
-|-
-! oh<br/><small>/oʊ/</small>
-| {{#invoke:Avatarian|render|oh p}}
-| {{#invoke:Avatarian|render|oh b}}
-| {{#invoke:Avatarian|render|oh t}}
-| {{#invoke:Avatarian|render|oh d}}
-| {{#invoke:Avatarian|render|oh k}}
-| {{#invoke:Avatarian|render|oh g}}
-| {{#invoke:Avatarian|render|oh m}}
-| {{#invoke:Avatarian|render|oh n}}
-| {{#invoke:Avatarian|render|oh ng}}
-| {{#invoke:Avatarian|render|oh ch}}
-| {{#invoke:Avatarian|render|oh j}}
-| {{#invoke:Avatarian|render|oh f}}
-| {{#invoke:Avatarian|render|oh v}}
-| {{#invoke:Avatarian|render|oh th}}
-| {{#invoke:Avatarian|render|oh dh}}
-| {{#invoke:Avatarian|render|oh s}}
-| style="background:rgba(40,150,80,.45)" title="exposed" | {{#invoke:Avatarian|render|oh z}}
-| {{#invoke:Avatarian|render|oh sh}}
-| {{#invoke:Avatarian|render|oh zh}}
-| {{#invoke:Avatarian|render|oh h}}
-| {{#invoke:Avatarian|render|oh w}}
-| {{#invoke:Avatarian|render|oh y}}
-| {{#invoke:Avatarian|render|oh r}}
-| {{#invoke:Avatarian|render|oh l}}
-|-
-! aw<br/><small>/ɔ/</small>
-| {{#invoke:Avatarian|render|aw p}}
-| {{#invoke:Avatarian|render|aw b}}
-| {{#invoke:Avatarian|render|aw t}}
-| {{#invoke:Avatarian|render|aw d}}
-| {{#invoke:Avatarian|render|aw k}}
-| {{#invoke:Avatarian|render|aw g}}
-| {{#invoke:Avatarian|render|aw m}}
-| {{#invoke:Avatarian|render|aw n}}
-| {{#invoke:Avatarian|render|aw ng}}
-| {{#invoke:Avatarian|render|aw ch}}
-| {{#invoke:Avatarian|render|aw j}}
-| {{#invoke:Avatarian|render|aw f}}
-| {{#invoke:Avatarian|render|aw v}}
-| {{#invoke:Avatarian|render|aw th}}
-| {{#invoke:Avatarian|render|aw dh}}
-| {{#invoke:Avatarian|render|aw s}}
-| {{#invoke:Avatarian|render|aw z}}
-| {{#invoke:Avatarian|render|aw sh}}
-| {{#invoke:Avatarian|render|aw zh}}
-| {{#invoke:Avatarian|render|aw h}}
-| {{#invoke:Avatarian|render|aw w}}
-| {{#invoke:Avatarian|render|aw y}}
-| style="background:rgba(40,150,80,.45)" title="or, order, organic, storm" | {{#invoke:Avatarian|render|aw r}}
-| style="background:rgba(40,150,80,.45)" title="all, always" | {{#invoke:Avatarian|render|aw l}}
-|-
-! ah<br/><small>/ɑ/</small>
-| {{#invoke:Avatarian|render|ah p}}
-| {{#invoke:Avatarian|render|ah b}}
-| {{#invoke:Avatarian|render|ah t}}
-| {{#invoke:Avatarian|render|ah d}}
-| {{#invoke:Avatarian|render|ah k}}
-| {{#invoke:Avatarian|render|ah g}}
-| {{#invoke:Avatarian|render|ah m}}
-| style="background:rgba(40,150,80,.45)" title="on, upon" | {{#invoke:Avatarian|render|ah n}}
-| {{#invoke:Avatarian|render|ah ng}}
-| {{#invoke:Avatarian|render|ah ch}}
-| {{#invoke:Avatarian|render|ah j}}
-| {{#invoke:Avatarian|render|ah f}}
-| {{#invoke:Avatarian|render|ah v}}
-| {{#invoke:Avatarian|render|ah th}}
-| {{#invoke:Avatarian|render|ah dh}}
-| {{#invoke:Avatarian|render|ah s}}
-| {{#invoke:Avatarian|render|ah z}}
-| {{#invoke:Avatarian|render|ah sh}}
-| {{#invoke:Avatarian|render|ah zh}}
-| {{#invoke:Avatarian|render|ah h}}
-| {{#invoke:Avatarian|render|ah w}}
-| {{#invoke:Avatarian|render|ah y}}
-| style="background:rgba(40,150,80,.45)" title="are" | {{#invoke:Avatarian|render|ah r}}
-| {{#invoke:Avatarian|render|ah l}}
-|-
-! eye<br/><small>/aɪ/</small>
-| {{#invoke:Avatarian|render|eye p}}
-| {{#invoke:Avatarian|render|eye b}}
-| {{#invoke:Avatarian|render|eye t}}
-| {{#invoke:Avatarian|render|eye d}}
-| {{#invoke:Avatarian|render|eye k}}
-| {{#invoke:Avatarian|render|eye g}}
-| {{#invoke:Avatarian|render|eye m}}
-| style="background:rgba(40,150,80,.45)" title="turbine" | {{#invoke:Avatarian|render|eye n}}
-| {{#invoke:Avatarian|render|eye ng}}
-| {{#invoke:Avatarian|render|eye ch}}
-| {{#invoke:Avatarian|render|eye j}}
-| {{#invoke:Avatarian|render|eye f}}
-| {{#invoke:Avatarian|render|eye v}}
-| {{#invoke:Avatarian|render|eye th}}
-| {{#invoke:Avatarian|render|eye dh}}
-| {{#invoke:Avatarian|render|eye s}}
-| style="background:rgba(40,150,80,.45)" title="supplies" | {{#invoke:Avatarian|render|eye z}}
-| {{#invoke:Avatarian|render|eye sh}}
-| {{#invoke:Avatarian|render|eye zh}}
-| {{#invoke:Avatarian|render|eye h}}
-| {{#invoke:Avatarian|render|eye w}}
-| {{#invoke:Avatarian|render|eye y}}
-| {{#invoke:Avatarian|render|eye r}}
-| {{#invoke:Avatarian|render|eye l}}
-|-
-! ow<br/><small>/aʊ/</small>
-| {{#invoke:Avatarian|render|ow p}}
-| {{#invoke:Avatarian|render|ow b}}
-| style="background:rgba(40,150,80,.45)" title="out, outpost" | {{#invoke:Avatarian|render|ow t}}
-| {{#invoke:Avatarian|render|ow d}}
-| {{#invoke:Avatarian|render|ow k}}
-| {{#invoke:Avatarian|render|ow g}}
-| {{#invoke:Avatarian|render|ow m}}
-| style="background:rgba(40,150,80,.45)" title="discounts" | {{#invoke:Avatarian|render|ow n}}
-| {{#invoke:Avatarian|render|ow ng}}
-| {{#invoke:Avatarian|render|ow ch}}
-| {{#invoke:Avatarian|render|ow j}}
-| {{#invoke:Avatarian|render|ow f}}
-| {{#invoke:Avatarian|render|ow v}}
-| {{#invoke:Avatarian|render|ow th}}
-| {{#invoke:Avatarian|render|ow dh}}
-| {{#invoke:Avatarian|render|ow s}}
-| {{#invoke:Avatarian|render|ow z}}
-| {{#invoke:Avatarian|render|ow sh}}
-| {{#invoke:Avatarian|render|ow zh}}
-| {{#invoke:Avatarian|render|ow h}}
-| {{#invoke:Avatarian|render|ow w}}
-| {{#invoke:Avatarian|render|ow y}}
-| {{#invoke:Avatarian|render|ow r}}
-| {{#invoke:Avatarian|render|ow l}}
-|-
-! oy<br/><small>/ɔɪ/</small>
-| {{#invoke:Avatarian|render|oy p}}
-| {{#invoke:Avatarian|render|oy b}}
-| {{#invoke:Avatarian|render|oy t}}
-| {{#invoke:Avatarian|render|oy d}}
-| {{#invoke:Avatarian|render|oy k}}
-| {{#invoke:Avatarian|render|oy g}}
-| {{#invoke:Avatarian|render|oy m}}
-| {{#invoke:Avatarian|render|oy n}}
-| {{#invoke:Avatarian|render|oy ng}}
-| {{#invoke:Avatarian|render|oy ch}}
-| {{#invoke:Avatarian|render|oy j}}
-| {{#invoke:Avatarian|render|oy f}}
-| {{#invoke:Avatarian|render|oy v}}
-| {{#invoke:Avatarian|render|oy th}}
-| {{#invoke:Avatarian|render|oy dh}}
-| {{#invoke:Avatarian|render|oy s}}
-| {{#invoke:Avatarian|render|oy z}}
-| {{#invoke:Avatarian|render|oy sh}}
-| {{#invoke:Avatarian|render|oy zh}}
-| {{#invoke:Avatarian|render|oy h}}
-| {{#invoke:Avatarian|render|oy w}}
-| {{#invoke:Avatarian|render|oy y}}
-| {{#invoke:Avatarian|render|oy r}}
-| {{#invoke:Avatarian|render|oy l}}
-|}
+{{#invoke:Avatarian|grid
+|rows=ee i ey e a u uh oo uu oh aw ah eye ow oy
+|cols=p b t d k g m n ng ch j f v th dh s z sh zh h w y r l
+|tint=background:rgba(40,150,80,.45)
+|ee t=treats
+|ee m=cream
+|ee v=even, evil
+|ee z=please
+|ee r=ear
+|i p=skip's
+|i t=it, spirits
+|i d=afraid, made
+|i k=baked, cakes
+|i g=ignite
+|i m=flame
+|i n=daemin, even, in, industries, infamy, into
+|i ng=being, bending, drinks, going, metalbending
+|i f=if
+|i v=brave, detective, save
+|i s=cataclysm
+|i z=always, is, raise
+|i r=spirits
+|i l=still, stillness
+|ey t=greatness, traitors
+|ey ng=aang
+|ey j=agency
+|ey r=air
+|e p=step
+|e k=exposed
+|e g=exit
+|e m=tremble
+|e n=anyway, end, enjoy, entarance, entry, envoys, trends
+|e v=everything
+|e s=heng's, woong's
+|e sh=fresh
+|a t=at
+|a k=access, aquaduct, reactor
+|a m=am
+|a n=and
+|a f=after
+|a v=avatar, avatarian
+|a s=asked, class, drastic, glass
+|a z=as
+|u p=up, upon
+|u g=agam's
+|u m=agam's, from
+|u n=and
+|u ng=amongst
+|u v=of
+|u s=trust, us
+|uh b=possible
+|uh t=market, quiet, theater
+|uh d=afflicted
+|uh k=republic
+|uh m=amongst, cataclysm, from
+|uh n=agency, avatarian, entarance, ruins
+|uh j=language
+|uh f=afflicted, afraid
+|uh v=festival, of
+|uh s=faceless
+|uh r=choir, earth, earthbender, fire, hunger, liars, theater, traitors and 1 more
+|uh l=council, evil, festival, jewel, journal, normal, possible, royal
+|oo t=fruit, mute
+|oo m=bloom
+|oo f=waterproof
+|oo th=truth
+|oo l=school
+|oh z=exposed
+|aw r=or, order, organic, storm
+|aw l=all, always
+|ah n=on, upon
+|ah r=are
+|eye n=turbine
+|eye z=supplies
+|ow t=out, outpost
+|ow n=discounts
+}}
 
 == C–V (consonant over vowel) ==
-{| class="wikitable" style="text-align:center"
-! top ↓ bottom →
-! ee<br/><small>/i/</small>
-! i<br/><small>/ɪ/</small>
-! ey<br/><small>/e/</small>
-! e<br/><small>/ɛ/</small>
-! a<br/><small>/æ/</small>
-! u<br/><small>/ʌ/</small>
-! uh<br/><small>/ə/</small>
-! oo<br/><small>/u/</small>
-! uu<br/><small>/ʊ/</small>
-! oh<br/><small>/oʊ/</small>
-! aw<br/><small>/ɔ/</small>
-! ah<br/><small>/ɑ/</small>
-! eye<br/><small>/aɪ/</small>
-! ow<br/><small>/aʊ/</small>
-! oy<br/><small>/ɔɪ/</small>
-|-
-! p<br/><small>/p/</small>
-| {{#invoke:Avatarian|render|p ee}}
-| style="background:rgba(40,150,80,.45)" title="pick" | {{#invoke:Avatarian|render|p i}}
-| {{#invoke:Avatarian|render|p ey}}
-| style="background:rgba(40,150,80,.45)" title="pair, pet" | {{#invoke:Avatarian|render|p e}}
-| style="background:rgba(40,150,80,.45)" title="panda" | {{#invoke:Avatarian|render|p a}}
-| style="background:rgba(40,150,80,.45)" title="pavi, republic" | {{#invoke:Avatarian|render|p u}}
-| style="background:rgba(40,150,80,.45)" title="performance, republic, temple" | {{#invoke:Avatarian|render|p uh}}
-| {{#invoke:Avatarian|render|p oo}}
-| style="background:rgba(40,150,80,.45)" title="pulled" | {{#invoke:Avatarian|render|p uu}}
-| style="background:rgba(40,150,80,.45)" title="outpost, posing, post" | {{#invoke:Avatarian|render|p oh}}
-| {{#invoke:Avatarian|render|p aw}}
-| style="background:rgba(40,150,80,.45)" title="part, pond, possible" | {{#invoke:Avatarian|render|p ah}}
-| style="background:rgba(40,150,80,.45)" title="pie" | {{#invoke:Avatarian|render|p eye}}
-| {{#invoke:Avatarian|render|p ow}}
-| {{#invoke:Avatarian|render|p oy}}
-|-
-! b<br/><small>/b/</small>
-| style="background:rgba(40,150,80,.45)" title="be, being" | {{#invoke:Avatarian|render|b ee}}
-| style="background:rgba(40,150,80,.45)" title="behind, beneath, big, biggest, cabbages" | {{#invoke:Avatarian|render|b i}}
-| style="background:rgba(40,150,80,.45)" title="baked, bakery, baking, bay, beaverfish, beifong" | {{#invoke:Avatarian|render|b ey}}
-| style="background:rgba(40,150,80,.45)" title="bending, best, earthbender, metalbending" | {{#invoke:Avatarian|render|b e}}
-| style="background:rgba(40,150,80,.45)" title="back, balance, ballet, battle" | {{#invoke:Avatarian|render|b a}}
-| style="background:rgba(40,150,80,.45)" title="but" | {{#invoke:Avatarian|render|b u}}
-| style="background:rgba(40,150,80,.45)" title="available, balloon, cabbage, number, tremble" | {{#invoke:Avatarian|render|b uh}}
-| {{#invoke:Avatarian|render|b oo}}
-| style="background:rgba(40,150,80,.45)" title="books" | {{#invoke:Avatarian|render|b uu}}
-| {{#invoke:Avatarian|render|b oh}}
-| {{#invoke:Avatarian|render|b aw}}
-| {{#invoke:Avatarian|render|b ah}}
-| style="background:rgba(40,150,80,.45)" title="baihu, by" | {{#invoke:Avatarian|render|b eye}}
-| style="background:rgba(40,150,80,.45)" title="about, bao" | {{#invoke:Avatarian|render|b ow}}
-| {{#invoke:Avatarian|render|b oy}}
-|-
-! t<br/><small>/t/</small>
-| style="background:rgba(40,150,80,.45)" title="city, team" | {{#invoke:Avatarian|render|t ee}}
-| style="background:rgba(40,150,80,.45)" title="drastic, wanted" | {{#invoke:Avatarian|render|t i}}
-| style="background:rgba(40,150,80,.45)" title="gluten, humansitters, take" | {{#invoke:Avatarian|render|t ey}}
-| style="background:rgba(40,150,80,.45)" title="contest, detective, temple" | {{#invoke:Avatarian|render|t e}}
-| {{#invoke:Avatarian|render|t a}}
-| style="background:rgba(40,150,80,.45)" title="tunnel" | {{#invoke:Avatarian|render|t u}}
-| style="background:rgba(40,150,80,.45)" title="after, battle, cataclysm, doctor, item, lotus, metalbending, rattle and 8 more" | {{#invoke:Avatarian|render|t uh}}
-| style="background:rgba(40,150,80,.45)" title="into, to, too, two" | {{#invoke:Avatarian|render|t oo}}
-| {{#invoke:Avatarian|render|t uu}}
-| style="background:rgba(40,150,80,.45)" title="tomato" | {{#invoke:Avatarian|render|t oh}}
-| style="background:rgba(40,150,80,.45)" title="talk" | {{#invoke:Avatarian|render|t aw}}
-| style="background:rgba(40,150,80,.45)" title="avatar, avatarian, katara, rooftop, top, toph" | {{#invoke:Avatarian|render|t ah}}
-| style="background:rgba(40,150,80,.45)" title="tiger, timeless" | {{#invoke:Avatarian|render|t eye}}
-| {{#invoke:Avatarian|render|t ow}}
-| {{#invoke:Avatarian|render|t oy}}
-|-
-! d<br/><small>/d/</small>
-| style="background:rgba(40,150,80,.45)" title="video" | {{#invoke:Avatarian|render|d ee}}
-| style="background:rgba(40,150,80,.45)" title="bending, decree, defend, denied, detective, did, hiding" | {{#invoke:Avatarian|render|d i}}
-| style="background:rgba(40,150,80,.45)" title="today" | {{#invoke:Avatarian|render|d ey}}
-| style="background:rgba(40,150,80,.45)" title="daemin" | {{#invoke:Avatarian|render|d e}}
-| {{#invoke:Avatarian|render|d a}}
-| style="background:rgba(40,150,80,.45)" title="aquaduct, does" | {{#invoke:Avatarian|render|d u}}
-| style="background:rgba(40,150,80,.45)" title="academy, freedom, garden, industries, models, noodle, order, panda and 1 more" | {{#invoke:Avatarian|render|d uh}}
-| style="background:rgba(40,150,80,.45)" title="do" | {{#invoke:Avatarian|render|d oo}}
-| {{#invoke:Avatarian|render|d uu}}
-| style="background:rgba(40,150,80,.45)" title="dome" | {{#invoke:Avatarian|render|d oh}}
-| {{#invoke:Avatarian|render|d aw}}
-| style="background:rgba(40,150,80,.45)" title="doctor" | {{#invoke:Avatarian|render|d ah}}
-| {{#invoke:Avatarian|render|d eye}}
-| {{#invoke:Avatarian|render|d ow}}
-| {{#invoke:Avatarian|render|d oy}}
-|-
-! k<br/><small>/k/</small>
-| {{#invoke:Avatarian|render|k ee}}
-| style="background:rgba(40,150,80,.45)" title="baking, kids, looking, seeking" | {{#invoke:Avatarian|render|k i}}
-| style="background:rgba(40,150,80,.45)" title="cakes" | {{#invoke:Avatarian|render|k ey}}
-| {{#invoke:Avatarian|render|k e}}
-| style="background:rgba(40,150,80,.45)" title="academy, cabbage, cabbages, can, cancel, cannot, cataclysm, catfish" | {{#invoke:Avatarian|render|k a}}
-| style="background:rgba(40,150,80,.45)" title="come" | {{#invoke:Avatarian|render|k u}}
-| style="background:rgba(40,150,80,.45)" title="bakery, come, courage, curry, katara, stickers" | {{#invoke:Avatarian|render|k uh}}
-| {{#invoke:Avatarian|render|k oo}}
-| {{#invoke:Avatarian|render|k uu}}
-| style="background:rgba(40,150,80,.45)" title="cozy, korra, mako, zuko" | {{#invoke:Avatarian|render|k oh}}
-| {{#invoke:Avatarian|render|k aw}}
-| style="background:rgba(40,150,80,.45)" title="card, contest, karthik" | {{#invoke:Avatarian|render|k ah}}
-| {{#invoke:Avatarian|render|k eye}}
-| style="background:rgba(40,150,80,.45)" title="council" | {{#invoke:Avatarian|render|k ow}}
-| {{#invoke:Avatarian|render|k oy}}
-|-
-! g<br/><small>/g/</small>
-| style="background:rgba(40,150,80,.45)" title="geet" | {{#invoke:Avatarian|render|g ee}}
-| {{#invoke:Avatarian|render|g i}}
-| style="background:rgba(40,150,80,.45)" title="brigade, games" | {{#invoke:Avatarian|render|g ey}}
-| style="background:rgba(40,150,80,.45)" title="get" | {{#invoke:Avatarian|render|g e}}
-| style="background:rgba(40,150,80,.45)" title="gather, organic" | {{#invoke:Avatarian|render|g a}}
-| {{#invoke:Avatarian|render|g u}}
-| style="background:rgba(40,150,80,.45)" title="biggest, girl, tiger, vegan" | {{#invoke:Avatarian|render|g uh}}
-| {{#invoke:Avatarian|render|g oo}}
-| style="background:rgba(40,150,80,.45)" title="goods" | {{#invoke:Avatarian|render|g uu}}
-| style="background:rgba(40,150,80,.45)" title="ghosts, going" | {{#invoke:Avatarian|render|g oh}}
-| {{#invoke:Avatarian|render|g aw}}
-| style="background:rgba(40,150,80,.45)" title="garden" | {{#invoke:Avatarian|render|g ah}}
-| {{#invoke:Avatarian|render|g eye}}
-| {{#invoke:Avatarian|render|g ow}}
-| {{#invoke:Avatarian|render|g oy}}
-|-
-! m<br/><small>/m/</small>
-| style="background:rgba(40,150,80,.45)" title="academy, infamy, me, meal, mean, means, meet" | {{#invoke:Avatarian|render|m ee}}
-| style="background:rgba(40,150,80,.45)" title="milk, missing" | {{#invoke:Avatarian|render|m i}}
-| style="background:rgba(40,150,80,.45)" title="made, may" | {{#invoke:Avatarian|render|m ey}}
-| style="background:rgba(40,150,80,.45)" title="melon, menu, message, metalbending, moment, ramen" | {{#invoke:Avatarian|render|m e}}
-| style="background:rgba(40,150,80,.45)" title="mad, mak" | {{#invoke:Avatarian|render|m a}}
-| style="background:rgba(40,150,80,.45)" title="month, must" | {{#invoke:Avatarian|render|m u}}
-| style="background:rgba(40,150,80,.45)" title="animal, criminals, mama, performance" | {{#invoke:Avatarian|render|m uh}}
-| {{#invoke:Avatarian|render|m oo}}
-| {{#invoke:Avatarian|render|m uu}}
-| style="background:rgba(40,150,80,.45)" title="moment, momo, more" | {{#invoke:Avatarian|render|m oh}}
-| {{#invoke:Avatarian|render|m aw}}
-| style="background:rgba(40,150,80,.45)" title="mako, mama, market, models, tomato" | {{#invoke:Avatarian|render|m ah}}
-| style="background:rgba(40,150,80,.45)" title="mind, my" | {{#invoke:Avatarian|render|m eye}}
-| style="background:rgba(40,150,80,.45)" title="mount" | {{#invoke:Avatarian|render|m ow}}
-| {{#invoke:Avatarian|render|m oy}}
-|-
-! n<br/><small>/n/</small>
-| style="background:rgba(40,150,80,.45)" title="any, beneath, fanny, journey, need, unique" | {{#invoke:Avatarian|render|n ee}}
-| style="background:rgba(40,150,80,.45)" title="nisha, organic" | {{#invoke:Avatarian|render|n i}}
-| {{#invoke:Avatarian|render|n ey}}
-| style="background:rgba(40,150,80,.45)" title="necessary" | {{#invoke:Avatarian|render|n e}}
-| {{#invoke:Avatarian|render|n a}}
-| style="background:rgba(40,150,80,.45)" title="tunnel" | {{#invoke:Avatarian|render|n u}}
-| style="background:rgba(40,150,80,.45)" title="animal, criminals, energies, greatness, number, sonam, stillness" | {{#invoke:Avatarian|render|n uh}}
-| style="background:rgba(40,150,80,.45)" title="knew, noodle" | {{#invoke:Avatarian|render|n oo}}
-| {{#invoke:Avatarian|render|n uu}}
-| style="background:rgba(40,150,80,.45)" title="know, no" | {{#invoke:Avatarian|render|n oh}}
-| style="background:rgba(40,150,80,.45)" title="normal" | {{#invoke:Avatarian|render|n aw}}
-| style="background:rgba(40,150,80,.45)" title="cannot, not" | {{#invoke:Avatarian|render|n ah}}
-| style="background:rgba(40,150,80,.45)" title="denied, ignite, night" | {{#invoke:Avatarian|render|n eye}}
-| style="background:rgba(40,150,80,.45)" title="now" | {{#invoke:Avatarian|render|n ow}}
-| {{#invoke:Avatarian|render|n oy}}
-|-
-! ng<br/><small>/ŋ/</small>
-| {{#invoke:Avatarian|render|ng ee}}
-| {{#invoke:Avatarian|render|ng i}}
-| {{#invoke:Avatarian|render|ng ey}}
-| {{#invoke:Avatarian|render|ng e}}
-| {{#invoke:Avatarian|render|ng a}}
-| {{#invoke:Avatarian|render|ng u}}
-| {{#invoke:Avatarian|render|ng uh}}
-| {{#invoke:Avatarian|render|ng oo}}
-| {{#invoke:Avatarian|render|ng uu}}
-| {{#invoke:Avatarian|render|ng oh}}
-| {{#invoke:Avatarian|render|ng aw}}
-| {{#invoke:Avatarian|render|ng ah}}
-| {{#invoke:Avatarian|render|ng eye}}
-| {{#invoke:Avatarian|render|ng ow}}
-| {{#invoke:Avatarian|render|ng oy}}
-|-
-! ch<br/><small>/tʃ/</small>
-| {{#invoke:Avatarian|render|ch ee}}
-| {{#invoke:Avatarian|render|ch i}}
-| style="background:rgba(40,150,80,.45)" title="change" | {{#invoke:Avatarian|render|ch ey}}
-| style="background:rgba(40,150,80,.45)" title="cherries" | {{#invoke:Avatarian|render|ch e}}
-| {{#invoke:Avatarian|render|ch a}}
-| {{#invoke:Avatarian|render|ch u}}
-| {{#invoke:Avatarian|render|ch uh}}
-| style="background:rgba(40,150,80,.45)" title="future" | {{#invoke:Avatarian|render|ch oo}}
-| {{#invoke:Avatarian|render|ch uu}}
-| {{#invoke:Avatarian|render|ch oh}}
-| {{#invoke:Avatarian|render|ch aw}}
-| style="background:rgba(40,150,80,.45)" title="chakra" | {{#invoke:Avatarian|render|ch ah}}
-| {{#invoke:Avatarian|render|ch eye}}
-| {{#invoke:Avatarian|render|ch ow}}
-| {{#invoke:Avatarian|render|ch oy}}
-|-
-! j<br/><small>/dʒ/</small>
-| style="background:rgba(40,150,80,.45)" title="energies" | {{#invoke:Avatarian|render|j ee}}
-| style="background:rgba(40,150,80,.45)" title="cabbages" | {{#invoke:Avatarian|render|j i}}
-| style="background:rgba(40,150,80,.45)" title="jae" | {{#invoke:Avatarian|render|j ey}}
-| style="background:rgba(40,150,80,.45)" title="gems" | {{#invoke:Avatarian|render|j e}}
-| {{#invoke:Avatarian|render|j a}}
-| style="background:rgba(40,150,80,.45)" title="just" | {{#invoke:Avatarian|render|j u}}
-| style="background:rgba(40,150,80,.45)" title="ages, journal, journey, just" | {{#invoke:Avatarian|render|j uh}}
-| style="background:rgba(40,150,80,.45)" title="jewel, june" | {{#invoke:Avatarian|render|j oo}}
-| {{#invoke:Avatarian|render|j uu}}
-| {{#invoke:Avatarian|render|j oh}}
-| {{#invoke:Avatarian|render|j aw}}
-| {{#invoke:Avatarian|render|j ah}}
-| {{#invoke:Avatarian|render|j eye}}
-| {{#invoke:Avatarian|render|j ow}}
-| style="background:rgba(40,150,80,.45)" title="enjoy, joy's, joyful" | {{#invoke:Avatarian|render|j oy}}
-|-
-! f<br/><small>/f/</small>
-| style="background:rgba(40,150,80,.45)" title="beaverfish, feel" | {{#invoke:Avatarian|render|f ee}}
-| style="background:rgba(40,150,80,.45)" title="catfish, fish, fishing" | {{#invoke:Avatarian|render|f i}}
-| style="background:rgba(40,150,80,.45)" title="faceless" | {{#invoke:Avatarian|render|f ey}}
-| style="background:rgba(40,150,80,.45)" title="defend, festival" | {{#invoke:Avatarian|render|f e}}
-| style="background:rgba(40,150,80,.45)" title="fanny" | {{#invoke:Avatarian|render|f a}}
-| {{#invoke:Avatarian|render|f u}}
-| style="background:rgba(40,150,80,.45)" title="forever, infamy, joyful" | {{#invoke:Avatarian|render|f uh}}
-| style="background:rgba(40,150,80,.45)" title="food" | {{#invoke:Avatarian|render|f oo}}
-| style="background:rgba(40,150,80,.45)" title="foot" | {{#invoke:Avatarian|render|f uu}}
-| style="background:rgba(40,150,80,.45)" title="phone" | {{#invoke:Avatarian|render|f oh}}
-| style="background:rgba(40,150,80,.45)" title="beifong, for, force, performance" | {{#invoke:Avatarian|render|f aw}}
-| style="background:rgba(40,150,80,.45)" title="afar, farm" | {{#invoke:Avatarian|render|f ah}}
-| style="background:rgba(40,150,80,.45)" title="fire" | {{#invoke:Avatarian|render|f eye}}
-| style="background:rgba(40,150,80,.45)" title="found" | {{#invoke:Avatarian|render|f ow}}
-| {{#invoke:Avatarian|render|f oy}}
-|-
-! v<br/><small>/v/</small>
-| style="background:rgba(40,150,80,.45)" title="pavi, video" | {{#invoke:Avatarian|render|v ee}}
-| {{#invoke:Avatarian|render|v i}}
-| style="background:rgba(40,150,80,.45)" title="available, beaverfish" | {{#invoke:Avatarian|render|v ey}}
-| style="background:rgba(40,150,80,.45)" title="vegan" | {{#invoke:Avatarian|render|v e}}
-| style="background:rgba(40,150,80,.45)" title="valve" | {{#invoke:Avatarian|render|v a}}
-| {{#invoke:Avatarian|render|v u}}
-| style="background:rgba(40,150,80,.45)" title="every, evil, festival, forever, havens, raven, seven, survival" | {{#invoke:Avatarian|render|v uh}}
-| {{#invoke:Avatarian|render|v oo}}
-| {{#invoke:Avatarian|render|v uu}}
-| {{#invoke:Avatarian|render|v oh}}
-| {{#invoke:Avatarian|render|v aw}}
-| {{#invoke:Avatarian|render|v ah}}
-| style="background:rgba(40,150,80,.45)" title="survival" | {{#invoke:Avatarian|render|v eye}}
-| {{#invoke:Avatarian|render|v ow}}
-| style="background:rgba(40,150,80,.45)" title="envoys" | {{#invoke:Avatarian|render|v oy}}
-|-
-! th<br/><small>/θ/</small>
-| style="background:rgba(40,150,80,.45)" title="theater" | {{#invoke:Avatarian|render|th ee}}
-| style="background:rgba(40,150,80,.45)" title="everything, karthik, rethink, something" | {{#invoke:Avatarian|render|th i}}
-| {{#invoke:Avatarian|render|th ey}}
-| {{#invoke:Avatarian|render|th e}}
-| {{#invoke:Avatarian|render|th a}}
-| {{#invoke:Avatarian|render|th u}}
-| {{#invoke:Avatarian|render|th uh}}
-| {{#invoke:Avatarian|render|th oo}}
-| {{#invoke:Avatarian|render|th uu}}
-| {{#invoke:Avatarian|render|th oh}}
-| {{#invoke:Avatarian|render|th aw}}
-| {{#invoke:Avatarian|render|th ah}}
-| {{#invoke:Avatarian|render|th eye}}
-| {{#invoke:Avatarian|render|th ow}}
-| {{#invoke:Avatarian|render|th oy}}
-|-
-! dh<br/><small>/ð/</small>
-| style="background:rgba(40,150,80,.45)" title="the" | {{#invoke:Avatarian|render|dh ee}}
-| style="background:rgba(40,150,80,.45)" title="this, within" | {{#invoke:Avatarian|render|dh i}}
-| style="background:rgba(40,150,80,.45)" title="they" | {{#invoke:Avatarian|render|dh ey}}
-| style="background:rgba(40,150,80,.45)" title="then, there" | {{#invoke:Avatarian|render|dh e}}
-| {{#invoke:Avatarian|render|dh a}}
-| style="background:rgba(40,150,80,.45)" title="the" | {{#invoke:Avatarian|render|dh u}}
-| style="background:rgba(40,150,80,.45)" title="gather, the" | {{#invoke:Avatarian|render|dh uh}}
-| {{#invoke:Avatarian|render|dh oo}}
-| {{#invoke:Avatarian|render|dh uu}}
-| style="background:rgba(40,150,80,.45)" title="those" | {{#invoke:Avatarian|render|dh oh}}
-| {{#invoke:Avatarian|render|dh aw}}
-| {{#invoke:Avatarian|render|dh ah}}
-| {{#invoke:Avatarian|render|dh eye}}
-| {{#invoke:Avatarian|render|dh ow}}
-| {{#invoke:Avatarian|render|dh oy}}
-|-
-! s<br/><small>/s/</small>
-| style="background:rgba(40,150,80,.45)" title="agency, humansitters, receives, seal, seaweed, see, seeking" | {{#invoke:Avatarian|render|s ee}}
-| style="background:rgba(40,150,80,.45)" title="city, missing, sick" | {{#invoke:Avatarian|render|s i}}
-| style="background:rgba(40,150,80,.45)" title="save" | {{#invoke:Avatarian|render|s ey}}
-| style="background:rgba(40,150,80,.45)" title="access, message, necessary, send, seven" | {{#invoke:Avatarian|render|s e}}
-| style="background:rgba(40,150,80,.45)" title="sad, sand" | {{#invoke:Avatarian|render|s a}}
-| style="background:rgba(40,150,80,.45)" title="some, something" | {{#invoke:Avatarian|render|s u}}
-| style="background:rgba(40,150,80,.45)" title="cancel, listen, necessary, salon, supplies, survival" | {{#invoke:Avatarian|render|s uh}}
-| style="background:rgba(40,150,80,.45)" title="soon, soup, sula's" | {{#invoke:Avatarian|render|s oo}}
-| {{#invoke:Avatarian|render|s uu}}
-| style="background:rgba(40,150,80,.45)" title="sonam" | {{#invoke:Avatarian|render|s oh}}
-| style="background:rgba(40,150,80,.45)" title="song" | {{#invoke:Avatarian|render|s aw}}
-| {{#invoke:Avatarian|render|s ah}}
-| {{#invoke:Avatarian|render|s eye}}
-| style="background:rgba(40,150,80,.45)" title="sound" | {{#invoke:Avatarian|render|s ow}}
-| {{#invoke:Avatarian|render|s oy}}
-|-
-! z<br/><small>/z/</small>
-| style="background:rgba(40,150,80,.45)" title="cozy" | {{#invoke:Avatarian|render|z ee}}
-| style="background:rgba(40,150,80,.45)" title="exit, posing" | {{#invoke:Avatarian|render|z i}}
-| {{#invoke:Avatarian|render|z ey}}
-| {{#invoke:Avatarian|render|z e}}
-| {{#invoke:Avatarian|render|z a}}
-| {{#invoke:Avatarian|render|z u}}
-| style="background:rgba(40,150,80,.45)" title="frozen, horizon, treason" | {{#invoke:Avatarian|render|z uh}}
-| style="background:rgba(40,150,80,.45)" title="zuko" | {{#invoke:Avatarian|render|z oo}}
-| {{#invoke:Avatarian|render|z uu}}
-| {{#invoke:Avatarian|render|z oh}}
-| {{#invoke:Avatarian|render|z aw}}
-| {{#invoke:Avatarian|render|z ah}}
-| {{#invoke:Avatarian|render|z eye}}
-| {{#invoke:Avatarian|render|z ow}}
-| {{#invoke:Avatarian|render|z oy}}
-|-
-! sh<br/><small>/ʃ/</small>
-| style="background:rgba(40,150,80,.45)" title="she's" | {{#invoke:Avatarian|render|sh ee}}
-| style="background:rgba(40,150,80,.45)" title="fishing, shirshu" | {{#invoke:Avatarian|render|sh i}}
-| {{#invoke:Avatarian|render|sh ey}}
-| {{#invoke:Avatarian|render|sh e}}
-| {{#invoke:Avatarian|render|sh a}}
-| {{#invoke:Avatarian|render|sh u}}
-| style="background:rgba(40,150,80,.45)" title="nisha" | {{#invoke:Avatarian|render|sh uh}}
-| style="background:rgba(40,150,80,.45)" title="shirshu" | {{#invoke:Avatarian|render|sh oo}}
-| {{#invoke:Avatarian|render|sh uu}}
-| style="background:rgba(40,150,80,.45)" title="show" | {{#invoke:Avatarian|render|sh oh}}
-| {{#invoke:Avatarian|render|sh aw}}
-| {{#invoke:Avatarian|render|sh ah}}
-| {{#invoke:Avatarian|render|sh eye}}
-| {{#invoke:Avatarian|render|sh ow}}
-| {{#invoke:Avatarian|render|sh oy}}
-|-
-! zh<br/><small>/ʒ/</small>
-| {{#invoke:Avatarian|render|zh ee}}
-| {{#invoke:Avatarian|render|zh i}}
-| {{#invoke:Avatarian|render|zh ey}}
-| {{#invoke:Avatarian|render|zh e}}
-| {{#invoke:Avatarian|render|zh a}}
-| {{#invoke:Avatarian|render|zh u}}
-| style="background:rgba(40,150,80,.45)" title="treasures" | {{#invoke:Avatarian|render|zh uh}}
-| {{#invoke:Avatarian|render|zh oo}}
-| {{#invoke:Avatarian|render|zh uu}}
-| {{#invoke:Avatarian|render|zh oh}}
-| {{#invoke:Avatarian|render|zh aw}}
-| {{#invoke:Avatarian|render|zh ah}}
-| {{#invoke:Avatarian|render|zh eye}}
-| {{#invoke:Avatarian|render|zh ow}}
-| {{#invoke:Avatarian|render|zh oy}}
-|-
-! h<br/><small>/h/</small>
-| style="background:rgba(40,150,80,.45)" title="here, ruhi" | {{#invoke:Avatarian|render|h ee}}
-| style="background:rgba(40,150,80,.45)" title="him" | {{#invoke:Avatarian|render|h i}}
-| style="background:rgba(40,150,80,.45)" title="havens, hey" | {{#invoke:Avatarian|render|h ey}}
-| style="background:rgba(40,150,80,.45)" title="hair, help, heng's" | {{#invoke:Avatarian|render|h e}}
-| style="background:rgba(40,150,80,.45)" title="hand, have" | {{#invoke:Avatarian|render|h a}}
-| style="background:rgba(40,150,80,.45)" title="hunger" | {{#invoke:Avatarian|render|h u}}
-| style="background:rgba(40,150,80,.45)" title="horizon, hurry" | {{#invoke:Avatarian|render|h uh}}
-| style="background:rgba(40,150,80,.45)" title="baihu, humansitters, who" | {{#invoke:Avatarian|render|h oo}}
-| {{#invoke:Avatarian|render|h uu}}
-| style="background:rgba(40,150,80,.45)" title="hope" | {{#invoke:Avatarian|render|h oh}}
-| {{#invoke:Avatarian|render|h aw}}
-| style="background:rgba(40,150,80,.45)" title="hard" | {{#invoke:Avatarian|render|h ah}}
-| style="background:rgba(40,150,80,.45)" title="behind, hides, hiding" | {{#invoke:Avatarian|render|h eye}}
-| style="background:rgba(40,150,80,.45)" title="house, how" | {{#invoke:Avatarian|render|h ow}}
-| {{#invoke:Avatarian|render|h oy}}
-|-
-! w<br/><small>/w/</small>
-| style="background:rgba(40,150,80,.45)" title="seaweed, we, week" | {{#invoke:Avatarian|render|w ee}}
-| style="background:rgba(40,150,80,.45)" title="will, with, within" | {{#invoke:Avatarian|render|w i}}
-| style="background:rgba(40,150,80,.45)" title="always, anyway, wake" | {{#invoke:Avatarian|render|w ey}}
-| style="background:rgba(40,150,80,.45)" title="wear, when" | {{#invoke:Avatarian|render|w e}}
-| {{#invoke:Avatarian|render|w a}}
-| style="background:rgba(40,150,80,.45)" title="one, what" | {{#invoke:Avatarian|render|w u}}
-| style="background:rgba(40,150,80,.45)" title="aquaduct, world" | {{#invoke:Avatarian|render|w uh}}
-| style="background:rgba(40,150,80,.45)" title="woong's" | {{#invoke:Avatarian|render|w oo}}
-| style="background:rgba(40,150,80,.45)" title="would" | {{#invoke:Avatarian|render|w uu}}
-| {{#invoke:Avatarian|render|w oh}}
-| style="background:rgba(40,150,80,.45)" title="wanted, ward, warm, warmly, warrior, water, waterproof, waters" | {{#invoke:Avatarian|render|w aw}}
-| style="background:rgba(40,150,80,.45)" title="want, was, what" | {{#invoke:Avatarian|render|w ah}}
-| style="background:rgba(40,150,80,.45)" title="white" | {{#invoke:Avatarian|render|w eye}}
-| {{#invoke:Avatarian|render|w ow}}
-| {{#invoke:Avatarian|render|w oy}}
-|-
-! y<br/><small>/j/</small>
-| {{#invoke:Avatarian|render|y ee}}
-| style="background:rgba(40,150,80,.45)" title="year" | {{#invoke:Avatarian|render|y i}}
-| {{#invoke:Avatarian|render|y ey}}
-| {{#invoke:Avatarian|render|y e}}
-| {{#invoke:Avatarian|render|y a}}
-| style="background:rgba(40,150,80,.45)" title="young" | {{#invoke:Avatarian|render|y u}}
-| {{#invoke:Avatarian|render|y uh}}
-| style="background:rgba(40,150,80,.45)" title="unique, you, you're, yue" | {{#invoke:Avatarian|render|y oo}}
-| {{#invoke:Avatarian|render|y uu}}
-| style="background:rgba(40,150,80,.45)" title="your" | {{#invoke:Avatarian|render|y oh}}
-| style="background:rgba(40,150,80,.45)" title="your" | {{#invoke:Avatarian|render|y aw}}
-| {{#invoke:Avatarian|render|y ah}}
-| {{#invoke:Avatarian|render|y eye}}
-| {{#invoke:Avatarian|render|y ow}}
-| {{#invoke:Avatarian|render|y oy}}
-|-
-! r<br/><small>/ɹ/</small>
-| style="background:rgba(40,150,80,.45)" title="bakery, cherries, curry, every, everything, hurry, industries, necessary and 3 more" | {{#invoke:Avatarian|render|r ee}}
-| style="background:rgba(40,150,80,.45)" title="really, written" | {{#invoke:Avatarian|render|r i}}
-| style="background:rgba(40,150,80,.45)" title="afraid, raise, raven" | {{#invoke:Avatarian|render|r ey}}
-| style="background:rgba(40,150,80,.45)" title="forever, rest" | {{#invoke:Avatarian|render|r e}}
-| style="background:rgba(40,150,80,.45)" title="rattle" | {{#invoke:Avatarian|render|r a}}
-| {{#invoke:Avatarian|render|r u}}
-| style="background:rgba(40,150,80,.45)" title="chakra, courage, ellora, katara, korra, receives" | {{#invoke:Avatarian|render|r uh}}
-| style="background:rgba(40,150,80,.45)" title="rooftop, root, ruhi, ruins" | {{#invoke:Avatarian|render|r oo}}
-| {{#invoke:Avatarian|render|r uu}}
-| {{#invoke:Avatarian|render|r oh}}
-| {{#invoke:Avatarian|render|r aw}}
-| style="background:rgba(40,150,80,.45)" title="ramen" | {{#invoke:Avatarian|render|r ah}}
-| style="background:rgba(40,150,80,.45)" title="horizon, strike" | {{#invoke:Avatarian|render|r eye}}
-| {{#invoke:Avatarian|render|r ow}}
-| style="background:rgba(40,150,80,.45)" title="royal" | {{#invoke:Avatarian|render|r oy}}
-|-
-! l<br/><small>/l/</small>
-| style="background:rgba(40,150,80,.45)" title="really, warmly" | {{#invoke:Avatarian|render|l ee}}
-| style="background:rgba(40,150,80,.45)" title="afflicted, listen" | {{#invoke:Avatarian|render|l i}}
-| style="background:rgba(40,150,80,.45)" title="ballet, language" | {{#invoke:Avatarian|render|l ey}}
-| style="background:rgba(40,150,80,.45)" title="left, let's" | {{#invoke:Avatarian|render|l e}}
-| {{#invoke:Avatarian|render|l a}}
-| style="background:rgba(40,150,80,.45)" title="love" | {{#invoke:Avatarian|render|l u}}
-| style="background:rgba(40,150,80,.45)" title="available, balance, melon, timeless" | {{#invoke:Avatarian|render|l uh}}
-| style="background:rgba(40,150,80,.45)" title="lose" | {{#invoke:Avatarian|render|l oo}}
-| style="background:rgba(40,150,80,.45)" title="balloon, look, looking" | {{#invoke:Avatarian|render|l uu}}
-| style="background:rgba(40,150,80,.45)" title="ellora, lotus" | {{#invoke:Avatarian|render|l oh}}
-| style="background:rgba(40,150,80,.45)" title="lord, lost" | {{#invoke:Avatarian|render|l aw}}
-| style="background:rgba(40,150,80,.45)" title="lock" | {{#invoke:Avatarian|render|l ah}}
-| style="background:rgba(40,150,80,.45)" title="liars, lies" | {{#invoke:Avatarian|render|l eye}}
-| {{#invoke:Avatarian|render|l ow}}
-| {{#invoke:Avatarian|render|l oy}}
-|}
+{{#invoke:Avatarian|grid
+|rows=p b t d k g m n ng ch j f v th dh s z sh zh h w y r l
+|cols=ee i ey e a u uh oo uu oh aw ah eye ow oy
+|tint=background:rgba(40,150,80,.45)
+|p i=pick
+|p e=pair, pet
+|p a=panda
+|p u=pavi, republic
+|p uh=performance, republic, temple
+|p uu=pulled
+|p oh=outpost, posing, post
+|p ah=part, pond, possible
+|p eye=pie
+|b ee=be, being
+|b i=behind, beneath, big, biggest, cabbages
+|b ey=baked, bakery, baking, bay, beaverfish, beifong
+|b e=bending, best, earthbender, metalbending
+|b a=back, balance, ballet, battle
+|b u=but
+|b uh=available, balloon, cabbage, number, tremble
+|b uu=books
+|b eye=baihu, by
+|b ow=about, bao
+|t ee=city, team
+|t i=drastic, wanted
+|t ey=gluten, humansitters, take
+|t e=contest, detective, temple
+|t u=tunnel
+|t uh=after, battle, cataclysm, doctor, item, lotus, metalbending, rattle and 8 more
+|t oo=into, to, too, two
+|t oh=tomato
+|t aw=talk
+|t ah=avatar, avatarian, katara, rooftop, top, toph
+|t eye=tiger, timeless
+|d ee=video
+|d i=bending, decree, defend, denied, detective, did, hiding
+|d ey=today
+|d e=daemin
+|d u=aquaduct, does
+|d uh=academy, freedom, garden, industries, models, noodle, order, panda and 1 more
+|d oo=do
+|d oh=dome
+|d ah=doctor
+|k i=baking, kids, looking, seeking
+|k ey=cakes
+|k a=academy, cabbage, cabbages, can, cancel, cannot, cataclysm, catfish
+|k u=come
+|k uh=bakery, come, courage, curry, katara, stickers
+|k oh=cozy, korra, mako, zuko
+|k ah=card, contest, karthik
+|k ow=council
+|g ee=geet
+|g ey=brigade, games
+|g e=get
+|g a=gather, organic
+|g uh=biggest, girl, tiger, vegan
+|g uu=goods
+|g oh=ghosts, going
+|g ah=garden
+|m ee=academy, infamy, me, meal, mean, means, meet
+|m i=milk, missing
+|m ey=made, may
+|m e=melon, menu, message, metalbending, moment, ramen
+|m a=mad, mak
+|m u=month, must
+|m uh=animal, criminals, mama, performance
+|m oh=moment, momo, more
+|m ah=mako, mama, market, models, tomato
+|m eye=mind, my
+|m ow=mount
+|n ee=any, beneath, fanny, journey, need, unique
+|n i=nisha, organic
+|n e=necessary
+|n u=tunnel
+|n uh=animal, criminals, energies, greatness, number, sonam, stillness
+|n oo=knew, noodle
+|n oh=know, no
+|n aw=normal
+|n ah=cannot, not
+|n eye=denied, ignite, night
+|n ow=now
+|ch ey=change
+|ch e=cherries
+|ch oo=future
+|ch ah=chakra
+|j ee=energies
+|j i=cabbages
+|j ey=jae
+|j e=gems
+|j u=just
+|j uh=ages, journal, journey, just
+|j oo=jewel, june
+|j oy=enjoy, joy's, joyful
+|f ee=beaverfish, feel
+|f i=catfish, fish, fishing
+|f ey=faceless
+|f e=defend, festival
+|f a=fanny
+|f uh=forever, infamy, joyful
+|f oo=food
+|f uu=foot
+|f oh=phone
+|f aw=beifong, for, force, performance
+|f ah=afar, farm
+|f eye=fire
+|f ow=found
+|v ee=pavi, video
+|v ey=available, beaverfish
+|v e=vegan
+|v a=valve
+|v uh=every, evil, festival, forever, havens, raven, seven, survival
+|v eye=survival
+|v oy=envoys
+|th ee=theater
+|th i=everything, karthik, rethink, something
+|dh ee=the
+|dh i=this, within
+|dh ey=they
+|dh e=then, there
+|dh u=the
+|dh uh=gather, the
+|dh oh=those
+|s ee=agency, humansitters, receives, seal, seaweed, see, seeking
+|s i=city, missing, sick
+|s ey=save
+|s e=access, message, necessary, send, seven
+|s a=sad, sand
+|s u=some, something
+|s uh=cancel, listen, necessary, salon, supplies, survival
+|s oo=soon, soup, sula's
+|s oh=sonam
+|s aw=song
+|s ow=sound
+|z ee=cozy
+|z i=exit, posing
+|z uh=frozen, horizon, treason
+|z oo=zuko
+|sh ee=she's
+|sh i=fishing, shirshu
+|sh uh=nisha
+|sh oo=shirshu
+|sh oh=show
+|zh uh=treasures
+|h ee=here, ruhi
+|h i=him
+|h ey=havens, hey
+|h e=hair, help, heng's
+|h a=hand, have
+|h u=hunger
+|h uh=horizon, hurry
+|h oo=baihu, humansitters, who
+|h oh=hope
+|h ah=hard
+|h eye=behind, hides, hiding
+|h ow=house, how
+|w ee=seaweed, we, week
+|w i=will, with, within
+|w ey=always, anyway, wake
+|w e=wear, when
+|w u=one, what
+|w uh=aquaduct, world
+|w oo=woong's
+|w uu=would
+|w aw=wanted, ward, warm, warmly, warrior, water, waterproof, waters
+|w ah=want, was, what
+|w eye=white
+|y i=year
+|y u=young
+|y oo=unique, you, you're, yue
+|y oh=your
+|y aw=your
+|r ee=bakery, cherries, curry, every, everything, hurry, industries, necessary and 3 more
+|r i=really, written
+|r ey=afraid, raise, raven
+|r e=forever, rest
+|r a=rattle
+|r uh=chakra, courage, ellora, katara, korra, receives
+|r oo=rooftop, root, ruhi, ruins
+|r ah=ramen
+|r eye=horizon, strike
+|r oy=royal
+|l ee=really, warmly
+|l i=afflicted, listen
+|l ey=ballet, language
+|l e=left, let's
+|l u=love
+|l uh=available, balance, melon, timeless
+|l oo=lose
+|l uu=balloon, look, looking
+|l oh=ellora, lotus
+|l aw=lord, lost
+|l ah=lock
+|l eye=liars, lies
+}}

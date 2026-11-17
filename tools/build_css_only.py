@@ -51,7 +51,22 @@ def mask_uri(svg):
     # 13 is the canonical display weight). A -webkit-mask rasterizes the SVG as
     # authored and CSS can't reach inside it, so bake the 13 in here.
     svg = re.sub(r'stroke-width="[^"]*"', 'stroke-width="13"', svg)
-    return "data:image/svg+xml," + urllib.parse.quote(svg, safe="")
+    svg = svg.replace(' stroke-linejoin="miter"', "")   # the default, 131 times over
+    return svg_data(svg)
+
+
+def svg_data(svg):
+    """An SVG as a data URI, escaped no more than it must be: the SVG's own
+    quotes become single (the url() is double-quoted) and only % # < > are
+    percent-encoded. Fully percent-encoding tripled the stylesheet, which
+    every wiki page loads. svg_of() reads one back."""
+    s = svg.replace('"', "'").replace("%", "%25").replace("#", "%23")
+    return "data:image/svg+xml," + s.replace("<", "%3C").replace(">", "%3E").replace("\n", " ")
+
+
+def svg_of(data):
+    """The SVG text inside a data URI from svg_data (or a fully encoded one)."""
+    return urllib.parse.unquote(data).replace("'", '"')
 
 
 # NOTE: -webkit-mask ONLY. Fandom's CSS sanitizer rejects the unprefixed
@@ -69,6 +84,9 @@ LAYOUT = """/* ===== Avatarian — CSS-only renderer (no JavaScript) ===========
 .av-word.av-solo{display:inline-flex;font-size:1.4em;padding-right:0;position:relative}
 .av-word-part{display:inline-flex;align-items:flex-start;vertical-align:middle;position:relative}
 .av-word-part+.av-word-part{margin-left:.5em}
+/* Module:Avatarian `grid` (a table of blocks): each cell's block sits in a bare
+ * .av-word-part, sized here as .av-word would size it. */
+.av-grid td>.av-word-part{font-size:calc(1.25em / 2.05)}
 .av-block{display:inline-flex;flex-direction:column;align-items:center;margin-right:.05em}
 .av-block:last-child{margin-right:0}
 .av-slot{display:flex;justify-content:center}
@@ -147,7 +165,7 @@ def toc_rules():
         svg = (ROOT / "wiki" / "toc-words" / fname).read_text(encoding="utf-8").strip()
         vb = [float(v) for v in re.search(r'viewBox="([^"]+)"', svg).group(1).split()]
         width = TOC_WORD_HEIGHT * vb[2] / vb[3]
-        uri = "data:image/svg+xml," + urllib.parse.quote(svg, safe="")
+        uri = svg_data(svg)
         word = (f"width:{width:.3f}em;height:{TOC_WORD_HEIGHT}em;background-color:currentColor;"
                 f'-webkit-mask:url("{uri}") center/100% 100% no-repeat')
         a = f'.toc a[href="#{anchor}"]'
@@ -182,11 +200,11 @@ def tucks(rules):
         m = RULE.match(rule)
         if not m:
             continue
-        svg = urllib.parse.unquote(m.group(2))
+        svg = svg_of(m.group(2))
         for x in (18, 82):
             t = inkprofile.tuck_under_rail(svg, x)
             if t != svg:
-                out[f"{m.group(1)}_t{x}"] = f'.g-{m.group(1)}_t{x}{{-webkit-mask-image:url("data:image/svg+xml,{urllib.parse.quote(t, safe="")}")}}'
+                out[f"{m.group(1)}_t{x}"] = f'.g-{m.group(1)}_t{x}{{-webkit-mask-image:url("{svg_data(t)}")}}'
     return out
 
 
@@ -260,9 +278,9 @@ def main(out=None):
                     m = re.match(r'\.g-(%s(?:_[a-z0-9]+)*)\{-webkit-mask-image:url\("data:image/svg\+xml,([^"]*)"\)\}$' % re.escape(name), rule)
                     if not m or m.group(1).endswith("_c") or m.group(1) in {n for n, _ in forms if n != name}:
                         continue
-                    cut = inkprofile.stem_cut(urllib.parse.unquote(m.group(2)), x, y)
+                    cut = inkprofile.stem_cut(svg_of(m.group(2)), x, y)
                     if cut:
-                        twins.append(f'.g-{m.group(1)}_j{{-webkit-mask-image:url("data:image/svg+xml,{urllib.parse.quote(cut[1], safe="")}")}}')
+                        twins.append(f'.g-{m.group(1)}_j{{-webkit-mask-image:url("{svg_data(cut[1])}")}}')
     rules += twins
     # One mask per column a join can sit on (.av-jx above): the stroke as a
     # 13-wide strip of a 100-wide box, stretched to whatever height the span has.
@@ -273,11 +291,11 @@ def main(out=None):
     for side, x in rail.items():
         strip = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">'
                  f'<rect x="{x - 6.5:g}" y="0" width="13" height="100"/></svg>')
-        rules.append(f'.av-rail-{side}{{-webkit-mask-image:url("data:image/svg+xml,{urllib.parse.quote(strip, safe="")}")}}')
+        rules.append(f'.av-rail-{side}{{-webkit-mask-image:url("{svg_data(strip)}")}}')
     for x in cols:
         strip = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">'
                  f'<rect x="{x - 6.5:g}" y="0" width="13" height="100"/></svg>')
-        rules.append(f'.av-jx-{x}{{-webkit-mask-image:url("data:image/svg+xml,{urllib.parse.quote(strip, safe="")}")}}')
+        rules.append(f'.av-jx-{x}{{-webkit-mask-image:url("{svg_data(strip)}")}}')
     out.write_text(LAYOUT + "\n".join(rules + toc_rules()) + "\n", encoding="utf-8")
     print(f"Wrote {out} — {len(rules)} glyph classes, {round(out.stat().st_size / 1024, 1)} KB")
 
