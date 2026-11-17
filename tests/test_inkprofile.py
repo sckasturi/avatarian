@@ -35,6 +35,11 @@ class ColumnHits(unittest.TestCase):
         svg = SVG.format('<path d="M 18 50 A 32 32 0 0 1 82 50"/>')
         self.assertEqual(ink.column_hits(svg, 50), [[18, 18]])
 
+    def test_a_curve_brushing_the_column_is_a_point(self):
+        # A ring whose side touches x=82: near it for a long way, on it once.
+        svg = SVG.format('<path d="M 50 18 A 32 32 0 0 1 82 50 A 32 32 0 0 1 50 82"/>')
+        self.assertEqual(ink.column_hits(svg, 82), [[50, 50]])
+
     def test_a_closed_path_counts_its_closing_edge(self):
         svg = SVG.format('<path d="M 18 18 L 82 18 L 82 82 L 18 82 Z"/>')
         self.assertEqual(ink.column_hits(svg, 18), [[18, 82]])

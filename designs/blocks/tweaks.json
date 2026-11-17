@@ -2,8 +2,14 @@
   "l|z": {
     "reach": "none"
   },
+  "m|j": {
+    "rail": "first"
+  },
   "m|z": {
     "dots": 6
+  },
+  "n|j": {
+    "rail": "first"
   },
   "v|e": {
     "reach": "open"
@@ -13,6 +19,9 @@
   },
   "ŋ|k": {
     "bottom": "low"
+  },
+  "ɹ|m": {
+    "rail": "first"
   },
   "ɹ|z": {
     "reach": "none"

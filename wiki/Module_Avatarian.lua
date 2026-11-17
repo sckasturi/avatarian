@@ -13,48 +13,49 @@ local MARK_WIDE = {[":"]="av-wide", ["?"]="av-wide", ["--"]="av-wide3", ["0"]="a
 local BLOCK_DOTS = {["m|z"]=6}
 local BLOCK_REACH = {["l|z"]="none", ["v|e"]="open", ["w|ʊ"]="first", ["ɹ|z"]="none", ["ʃ|u"]="first", ["ʃ|ɪ"]="first"}
 local BLOCK_ALT = {["ŋ|k"]={bottom="low"}}
+local BLOCK_RAIL = {["m|j"]="first", ["n|j"]="first", ["ɹ|m"]="first"}
 local GLYPH = {
-  ["p"]={name="p", type="consonant", ink={[18]={{50,50}},[50]={{18,18},{82,82}}}},
-  ["b"]={name="b", type="consonant", ink={[18]={{57,82}},[50]={{22,22}}}, dots={[50]={{66,82}}}},
-  ["t"]={name="t", type="consonant", ink={[18]={{18,18},{50,82}},[50]={{18,18},{50,82}}}},
-  ["d"]={name="d", type="consonant", ink={[18]={{18,58},{82,82}},[50]={{22,22},{82,82}}}},
-  ["k"]={name="k", type="consonant", ink={[18]={{18,82}},[50]={{18,50},{82,82}}}, alts={["low"]={name="k_alt_low", emit={{18,18,-1}}, ink={[18]={{18,82}},[50]={{50,82}}}}}},
-  ["g"]={name="g", type="consonant", ink={[18]={{18,82}},[50]={{18,18}}}, dots={[50]={{42,58}}}, gaps={[50]={{82,34,66}}}},
-  ["m"]={name="m", type="consonant", ink={[18]={{42,58}},[50]={{18,18},{82,82}}}, dots={[50]={{42,58}}}},
-  ["n"]={name="n", type="consonant", ink={[18]={{38,50},{82,82}},[50]={{18,18},{82,82}}}, dots={[50]={{42,58}}}},
-  ["ŋ"]={name="ng", type="consonant", ink={[18]={{41,41},{63,63}},[50]={{18,18}}}, gaps={[50]={{82,34,66}}}},
-  ["tʃ"]={name="ch", type="consonant", ink={[18]={{18,50},{82,82}},[50]={{18,18},{50,50},{82,82}}}},
-  ["dʒ"]={name="j_dz", type="consonant", ink={[18]={{18,82}},[50]={{18,58},{82,82}}}},
-  ["f"]={name="f", type="consonant", ink={[18]={{18,18},{79,79}},[50]={{34,34}}}},
-  ["v"]={name="v", type="consonant", ink={[18]={{18,18},{81,81}},[50]={{18,18},{58,58}}}},
-  ["θ"]={name="th", type="consonant", ink={[18]={{18,18},{69,82}},[50]={{18,42}}}},
-  ["ð"]={name="dh", type="consonant", ink={[18]={{18,29}},[50]={{18,18},{73,73}}}, dots={[18]={{74,90}}}},
-  ["s"]={name="s", type="consonant", ink={[18]={{81,81}},[50]={{19,19}}}, dots={[50]={{58,74}}}},
-  ["z"]={name="z", type="consonant", emit={{50,18,-1}}, ink={[18]={{69,82}},[50]={{18,33}}}, dots={[18]={{18,34}}}},
-  ["ʃ"]={name="sh", type="consonant", ink={[18]={{50,50},{82,82}},[50]={{18,18},{50,50}}}},
-  ["ʒ"]={name="zh", type="consonant", ink={[18]={{42,82}},[50]={{18,18}}}},
-  ["h"]={name="h", type="consonant", ink={[18]={{18,18},{82,82}},[50]={{18,18},{26,26},{74,74},{82,82}}}},
-  ["w"]={name="w", type="consonant", cluster=true, ink={[18]={{18,82}},[50]={{42,42},{82,82}}}, cink={[18]={{18,82}},[50]={{58,58}}}},
-  ["j"]={name="y", type="consonant", cluster=true, ink={[18]={{58,58},{82,82}},[50]={{42,42},{82,82}}}, cink={[18]={{42,42}},[50]={{58,58}}}},
-  ["ɹ"]={name="r", type="consonant", cluster=true, ink={[18]={{18,58}},[50]={{18,18},{82,82}}}, cink={[18]={{78,78}},[50]={{50,50},{82,82}}}},
-  ["l"]={name="l", type="consonant", cluster=true, ink={[18]={{18,82}},[50]={{18,18},{82,82}}}, cink={[18]={{18,82}},[50]={{50,50},{82,82}}}},
-  ["i"]={name="i", type="vowel", ink={[18]={{32,32},{64,64}},[50]={{32,32},{64,64}}}},
-  ["ɪ"]={name="ih", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16},{48,48}},[50]={{16,16},{48,64}}}},
-  ["e"]={name="ei", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16},{48,48}},[50]={{16,64}}}},
-  ["ɛ"]={name="eh", type="vowel", ink={[18]={{32,32},{64,64}},[50]={{48,48}}}},
-  ["æ"]={name="ae", type="vowel", flips=true, ink={[18]={{36,36}},[50]={{64,64}}}, dots={[50]={{32,48}}}},
-  ["ʌ"]={name="uh", type="vowel", ink={[18]={{32,32},{64,64}}}, gaps={[50]={{32,34,66},{64,34,66}}}},
-  ["ə"]={name="schwa", type="vowel", flips=true, ink={[18]={{32,32}},[50]={{48,48}}}, dots={[18]={{56,72}}}},
-  ["u"]={name="uu", type="vowel", rows=4, emit={{50,16,-1}}, ink={[18]={{32,64}},[50]={{16,64}}}},
-  ["ʊ"]={name="oo", type="vowel", rows=4, emit={{50,16,-1}}, ink={[50]={{16,64}}}, dots={[18]={{24,40},{56,72}}}},
-  ["oʊ"]={name="ow", type="vowel", ink={[18]={{32,64}},[50]={{32,64}}}},
-  ["ɔ"]={name="aw", type="vowel", ink={[18]={{64,64}},[50]={{64,64}}}, dots={[18]={{24,40}}}},
-  ["ɑ"]={name="ah", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16}},[50]={{39,64}}}},
-  ["aɪ"]={name="ai", type="vowel", flips=true, ink={[18]={{32,32}},[50]={{32,32}}}, dots={[18]={{56,72}}}},
-  ["aʊ"]={name="au", type="vowel", rows=4, ink={[50]={{24,24},{56,56}}}, dots={[18]={{16,32},{48,64}}}},
-  ["ɔɪ"]={name="oi", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,48}},[50]={{16,16},{48,64}}}},
-  ["∅"]={name="null_v", type="null", ink={[18]={{36,36}},[50]={{64,64}}}},
-  ["∅c"]={name="null_c", type="null_consonant", ink={[18]={{18,82}},[50]={{82,82}}}},
+  ["p"]={name="p", type="consonant", ink={[18]={{50,50}},[50]={{18,18},{82,82}},[82]={{50,50}}}},
+  ["b"]={name="b", type="consonant", ink={[18]={{61,82}},[50]={{22,22}},[82]={{18,82}}}, dots={[50]={{66,82}}}},
+  ["t"]={name="t", type="consonant", ink={[18]={{18,18},{50,82}},[50]={{18,18},{50,82}},[82]={{18,82}}}},
+  ["d"]={name="d", type="consonant", ink={[18]={{18,50},{82,82}},[50]={{22,22},{82,82}},[82]={{61,82}}}},
+  ["k"]={name="k", type="consonant", ink={[18]={{18,82}},[50]={{18,50},{82,82}},[82]={{18,50},{82,82}}}, alts={["low"]={name="k_alt_low", emit={{18,18,-1}}, ink={[18]={{18,82}},[50]={{50,82}},[82]={{50,82}}}}}},
+  ["g"]={name="g", type="consonant", ink={[18]={{18,82}},[50]={{18,18}},[82]={{18,82}}}, dots={[50]={{42,58}}}, gaps={[50]={{82,34,66}}}},
+  ["m"]={name="m", type="consonant", ink={[18]={{50,50}},[50]={{18,18},{82,82}},[82]={{50,50}}}, dots={[50]={{42,58}}}},
+  ["n"]={name="n", type="consonant", ink={[18]={{42,50},{82,82}},[50]={{18,18},{82,82}},[82]={{18,59}}}, dots={[50]={{42,58}}}},
+  ["ŋ"]={name="ng", type="consonant", ink={[18]={{41,41},{63,63}},[50]={{18,18}},[82]={{41,41},{63,63}}}, gaps={[50]={{82,34,66}}}},
+  ["tʃ"]={name="ch", type="consonant", ink={[18]={{18,50},{82,82}},[50]={{18,18},{50,50},{82,82}},[82]={{18,82}}}},
+  ["dʒ"]={name="j_dz", type="consonant", ink={[18]={{18,82}},[50]={{18,58},{82,82}},[82]={{18,82}}}},
+  ["f"]={name="f", type="consonant", ink={[18]={{18,18},{78,78}},[50]={{22,22},{26,26}},[82]={{18,18},{73,82}}}},
+  ["v"]={name="v", type="consonant", ink={[18]={{18,18},{81,81}},[50]={{18,18},{58,58}},[82]={{18,27}}}, dots={[82]={{66,82}}}},
+  ["θ"]={name="th", type="consonant", ink={[18]={{18,18},{73,82}},[50]={{18,42}},[82]={{18,18},{73,82}}}},
+  ["ð"]={name="dh", type="consonant", ink={[18]={{20,20}},[50]={{18,18},{73,73}},[82]={{18,82}}}, dots={[18]={{74,90}}}},
+  ["s"]={name="s", type="consonant", ink={[18]={{81,81}},[50]={{19,19}},[82]={{81,81}}}, dots={[50]={{66,82}}}},
+  ["z"]={name="z", type="consonant", emit={{50,18,-1}}, ink={[18]={{74,82}},[50]={{18,29}},[82]={{74,82}}}, dots={[18]={{18,34}},[82]={{18,34}}}},
+  ["ʃ"]={name="sh", type="consonant", ink={[18]={{50,50},{82,82}},[50]={{18,18},{50,50}},[82]={{50,50},{82,82}}}},
+  ["ʒ"]={name="zh", type="consonant", ink={[18]={{48,82}},[50]={{18,18}},[82]={{48,82}}}},
+  ["h"]={name="h", type="consonant", ink={[18]={{18,18},{82,82}},[50]={{18,18},{26,26},{74,74},{82,82}},[82]={{18,18},{82,82}}}},
+  ["w"]={name="w", type="consonant", cluster=true, ink={[18]={{18,82}},[50]={{42,42},{82,82}},[82]={{58,58},{82,82}}}, cink={[18]={{18,82}},[50]={{58,58}},[82]={{42,42}}}},
+  ["j"]={name="y", type="consonant", cluster=true, ink={[18]={{58,58},{82,82}},[50]={{42,42},{82,82}},[82]={{18,82}}}, cink={[18]={{42,42}},[50]={{58,58}},[82]={{18,82}}}},
+  ["ɹ"]={name="r", type="consonant", cluster=true, ink={[18]={{18,52}},[50]={{18,18},{82,82}},[82]={{18,82}}}, cink={[18]={{78,78}},[50]={{50,50},{82,82}},[82]={{18,82}}}},
+  ["l"]={name="l", type="consonant", cluster=true, ink={[18]={{18,82}},[50]={{18,18},{82,82}},[82]={{18,52}}}, cink={[18]={{18,82}},[50]={{50,50},{82,82}},[82]={{78,78}}}},
+  ["i"]={name="i", type="vowel", ink={[18]={{32,32},{64,64}},[50]={{32,32},{64,64}},[82]={{32,32},{64,64}}}},
+  ["ɪ"]={name="ih", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16},{48,48}},[50]={{16,16},{48,64}},[82]={{16,48}}}},
+  ["e"]={name="ei", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16},{48,48}},[50]={{16,64}},[82]={{16,16},{48,48}}}},
+  ["ɛ"]={name="eh", type="vowel", ink={[18]={{32,32},{64,64}},[50]={{48,48}},[82]={{32,32},{64,64}}}},
+  ["æ"]={name="ae", type="vowel", flips=true, ink={[18]={{36,36}},[50]={{64,64}},[82]={{36,36}}}, dots={[50]={{24,40}}}},
+  ["ʌ"]={name="uh", type="vowel", ink={[18]={{32,32},{64,64}},[82]={{32,32},{64,64}}}, gaps={[50]={{32,34,66},{64,34,66}}}},
+  ["ə"]={name="schwa", type="vowel", flips=true, ink={[18]={{32,32}},[50]={{48,48}},[82]={{64,64}}}, dots={[18]={{56,72}},[82]={{24,40}}}},
+  ["u"]={name="uu", type="vowel", rows=4, emit={{50,16,-1}}, ink={[18]={{32,64}},[50]={{16,64}},[82]={{32,64}}}},
+  ["ʊ"]={name="oo", type="vowel", rows=4, emit={{50,16,-1}}, ink={[50]={{16,64}}}, dots={[18]={{24,40},{56,72}},[82]={{24,40},{56,72}}}},
+  ["oʊ"]={name="ow", type="vowel", ink={[18]={{32,64}},[50]={{32,64}}}, dots={[82]={{24,40},{56,72}}}},
+  ["ɔ"]={name="aw", type="vowel", ink={[18]={{64,64}},[50]={{64,64}},[82]={{36,36}}}, dots={[18]={{24,40}}}},
+  ["ɑ"]={name="ah", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,16}},[50]={{40,64}},[82]={{16,16}}}},
+  ["aɪ"]={name="ai", type="vowel", flips=true, ink={[18]={{32,32}},[50]={{32,32}},[82]={{32,32}}}, dots={[18]={{56,72}},[82]={{56,72}}}},
+  ["aʊ"]={name="au", type="vowel", rows=4, ink={[50]={{24,24},{56,56}},[82]={{40,40}}}, dots={[18]={{16,32},{48,64}}}},
+  ["ɔɪ"]={name="oi", type="vowel", rows=4, flips=true, emit={{50,64,1}}, ink={[18]={{16,48}},[50]={{16,16},{48,64}},[82]={{16,48}}}},
+  ["∅"]={name="null_v", type="null", ink={[18]={{36,36}},[50]={{64,64}},[82]={{36,36}}}},
+  ["∅c"]={name="null_c", type="null_consonant", ink={[18]={{18,82}},[50]={{82,82}},[82]={{18,82}}}},
   ["."]={name="period", type="mark_full"},
   [":"]={name="colon", type="mark_full"},
   [","]={name="comma", type="mark_full"},
@@ -279,20 +280,53 @@ end
 -- every C-C block the approximant's long side runs on through the partner, as
 -- its own span over the glyph.
 local RAIL_SIDE = { ["l"]="l", ["ɹ"]="r" }   -- not /w/ or /j/, as in render.js
+local RAIL_ASK = { ["l"]="l", ["ɹ"]="r", ["w"]="l", ["j"]="r" }   -- render.js RAIL_ASK
+local RAIL_X = { l=18, r=82 }
+local em   -- defined below, with the joins
+
 local function railSpan(token, slot, partner)
   local sym, forced, variant = parseSymbol(token)
   local pSym = parseSymbol(partner)
-  if not RAIL_SIDE[pSym] or sym == UNREADABLE then return "" end   -- `*` draws no rail, as in render.js
+  if sym == UNREADABLE then return "" end   -- `*` draws no rail, as in render.js
+  local key = slot == "top" and (sym .. "|" .. pSym) or (pSym .. "|" .. sym)
+  local mode = BLOCK_RAIL[key]
+  if mode == "none" then return "" end
+  local side = ((mode == "full" or mode == "first") and RAIL_ASK or RAIL_SIDE)[pSym]
+  if not side then return "" end
+  local flipped = false
   if GLYPH[sym] then   -- an alternate drawing carries no rail
-    local _, _, alt = resolveGlyph(sym, forced, variant, GLYPH[sym], slot, partner)
+    local _, f, alt = resolveGlyph(sym, forced, variant, GLYPH[sym], slot, partner)
     if alt then return "" end
+    flipped = f
   end
   if not (slotIsConsonant(token) and isClusterPartner(partner)) then return "" end
   local pe = GLYPH[pSym]
   if not (pe and pe.cluster) then return "" end
   local rlPair = (pSym == "ɹ" or pSym == "l") and (sym == "ɹ" or sym == "l") and pSym ~= sym
   if rlPair and slot == "bottom" then return "" end   -- the partner is on top: base form
-  return '<span class="av-rail av-rail-' .. RAIL_SIDE[pSym] .. '"></span>'
+  -- `first`: from the seam end to this glyph's first ink in the column
+  -- (render.js railReach), as displayed in the slot's box.
+  if mode == "first" and GLYPH[sym] then
+    local x = RAIL_X[side]
+    local seam = slot == "top" and 82 or 18
+    local from = flipped and (100 - seam) or seam
+    local d = from < 50 and 1 or -1
+    local best
+    for _, h in ipairs((GLYPH[sym].ink or {})[x] or {}) do
+      local dist = ((d > 0 and h[1] or h[2]) - from) * d
+      if dist >= 0 and (best == nil or dist < best) then best = dist end
+    end
+    if best then
+      if best == 0 then return "" end
+      local to = from + d * best
+      local a, b = flipped and (100 - from) or from, flipped and (100 - to) or to
+      local D = b > a and 1 or -1
+      local lo, hi = math.min(a - D * 6.5, b), math.max(a - D * 6.5, b)
+      return '<span class="av-rail av-rail-' .. side .. '" style="top:' .. em(lo)
+        .. 'em;height:' .. em(hi - lo) .. 'em"></span>'
+    end
+  end
+  return '<span class="av-rail av-rail-' .. side .. '"></span>'
 end
 
 -- JOINS (render.js joinsFor): a stroke from an emitter on one glyph on to its
@@ -324,7 +358,7 @@ end
 
 -- Viewbox units -> em, as a fixed four-decimal string (100 units = 1.25em),
 -- built from integers so the JS test serialiser prints the same bytes.
-local function em(u)
+function em(u)
   local n = math.floor(u * 125 + 0.5)
   local neg = n < 0
   if neg then n = -n end

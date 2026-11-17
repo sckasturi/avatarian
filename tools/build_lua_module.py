@@ -162,6 +162,7 @@ def main(out=None):
         "local BLOCK_ALT = {" + ", ".join(
             f"[{lua_str(k)}]={{" + ", ".join(f"{s}={lua_str(t[s])}" for s in ("top", "bottom") if t.get(s)) + "}"
             for k, t in sorted(tweaks.items()) if t.get("top") or t.get("bottom")) + "}",
+        "local BLOCK_RAIL = {" + ", ".join(f"[{lua_str(k)}]={lua_str(t['rail'])}" for k, t in sorted(tweaks.items()) if t.get("rail")) + "}",
         "local GLYPH = {",
         "\n".join(glyph_rows),
         "}",
@@ -390,20 +391,53 @@ end
 -- every C-C block the approximant's long side runs on through the partner, as
 -- its own span over the glyph.
 local RAIL_SIDE = { ["l"]="l", ["ɹ"]="r" }   -- not /w/ or /j/, as in render.js
+local RAIL_ASK = { ["l"]="l", ["ɹ"]="r", ["w"]="l", ["j"]="r" }   -- render.js RAIL_ASK
+local RAIL_X = { l=18, r=82 }
+local em   -- defined below, with the joins
+
 local function railSpan(token, slot, partner)
   local sym, forced, variant = parseSymbol(token)
   local pSym = parseSymbol(partner)
-  if not RAIL_SIDE[pSym] or sym == UNREADABLE then return "" end   -- `*` draws no rail, as in render.js
+  if sym == UNREADABLE then return "" end   -- `*` draws no rail, as in render.js
+  local key = slot == "top" and (sym .. "|" .. pSym) or (pSym .. "|" .. sym)
+  local mode = BLOCK_RAIL[key]
+  if mode == "none" then return "" end
+  local side = ((mode == "full" or mode == "first") and RAIL_ASK or RAIL_SIDE)[pSym]
+  if not side then return "" end
+  local flipped = false
   if GLYPH[sym] then   -- an alternate drawing carries no rail
-    local _, _, alt = resolveGlyph(sym, forced, variant, GLYPH[sym], slot, partner)
+    local _, f, alt = resolveGlyph(sym, forced, variant, GLYPH[sym], slot, partner)
     if alt then return "" end
+    flipped = f
   end
   if not (slotIsConsonant(token) and isClusterPartner(partner)) then return "" end
   local pe = GLYPH[pSym]
   if not (pe and pe.cluster) then return "" end
   local rlPair = (pSym == "ɹ" or pSym == "l") and (sym == "ɹ" or sym == "l") and pSym ~= sym
   if rlPair and slot == "bottom" then return "" end   -- the partner is on top: base form
-  return '<span class="av-rail av-rail-' .. RAIL_SIDE[pSym] .. '"></span>'
+  -- `first`: from the seam end to this glyph's first ink in the column
+  -- (render.js railReach), as displayed in the slot's box.
+  if mode == "first" and GLYPH[sym] then
+    local x = RAIL_X[side]
+    local seam = slot == "top" and 82 or 18
+    local from = flipped and (100 - seam) or seam
+    local d = from < 50 and 1 or -1
+    local best
+    for _, h in ipairs((GLYPH[sym].ink or {})[x] or {}) do
+      local dist = ((d > 0 and h[1] or h[2]) - from) * d
+      if dist >= 0 and (best == nil or dist < best) then best = dist end
+    end
+    if best then
+      if best == 0 then return "" end
+      local to = from + d * best
+      local a, b = flipped and (100 - from) or from, flipped and (100 - to) or to
+      local D = b > a and 1 or -1
+      local lo, hi = math.min(a - D * 6.5, b), math.max(a - D * 6.5, b)
+      return '<span class="av-rail av-rail-' .. side .. '" style="top:' .. em(lo)
+        .. 'em;height:' .. em(hi - lo) .. 'em"></span>'
+    end
+  end
+  return '<span class="av-rail av-rail-' .. side .. '"></span>'
 end
 
 -- JOINS (render.js joinsFor): a stroke from an emitter on one glyph on to its
@@ -435,7 +469,7 @@ end
 
 -- Viewbox units -> em, as a fixed four-decimal string (100 units = 1.25em),
 -- built from integers so the JS test serialiser prints the same bytes.
-local function em(u)
+function em(u)
   local n = math.floor(u * 125 + 0.5)
   local neg = n < 0
   if neg then n = -n end

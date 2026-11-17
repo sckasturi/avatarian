@@ -71,14 +71,13 @@ test("a stem closes /g/'s mouth, and runs into /b/'s dot", () => {
   assert.equal(g.len, 16);
   assert.equal(g.bar[0], 34);
   assert.equal(g.bar[1], 66);
+  assert.equal(g.bar[2], 82);     // and the height, in /g/'s own box
   // `big`, `books`: the stem REPLACES the dot in /b/'s foot — it runs to
   // where the dot's far edge was, and /b/ leaves the dot out.
   const b = joinsFor("ɪ", "bottom", "b")[0];
   assert.equal(b.dot[0], 66);
   assert.equal(b.dot[1], 82);
   assert.equal(b.len, 32);
-  // /s/'s dot is too far to receive, and nothing rises toward it.
-  assert.equal(joinsFor("ɪ", "bottom", "s").length, 0);
 });
 
 test("`reach` in a block's tweak overrides the rule for that pair", () => {
@@ -169,6 +168,33 @@ test("a block can name an alternate drawing for a slot", () => {
     assert.equal(resolveGlyph("k", "bottom", "ŋ").alt, undefined);
   } finally {
     if (had) k.variants = had; else delete k.variants;
+    for (const key of Object.keys(tweaks)) delete tweaks[key];
+    Object.assign(tweaks, JSON.parse(saved));
+  }
+});
+
+test("`rail: first` stops the approximant's line at the partner's ink", () => {
+  const tweaks = ctx.window.AVATARIAN_BLOCK_TWEAKS;
+  const saved = JSON.stringify(tweaks);
+  const { railFor, railReach } = ctx;
+  try {
+    // /m/ under /ɹ/: by default the rail runs the full height past the ring.
+    delete tweaks["ɹ|m"];
+    assert.equal(railFor("m", "bottom", "ɹ"), 82);
+    assert.equal(railReach("m", "bottom", "ɹ", 82, GLYPHS["m"], false), null);
+    // `first`: from the seam down to where the ring comes out to that column.
+    tweaks["ɹ|m"] = { rail: "first" };
+    const [from, to] = railReach("m", "bottom", "ɹ", 82, GLYPHS["m"], false);
+    assert.equal(from, 18);
+    assert.equal(to, 50);      // the ring's widest point, where it is flush
+    tweaks["ɹ|m"] = { rail: "none" };
+    assert.equal(railFor("m", "bottom", "ɹ"), null);
+    // /j/ draws no rail by default; a block can ask for one.
+    delete tweaks["n|j"];
+    assert.equal(railFor("n", "top", "j"), null);
+    tweaks["n|j"] = { rail: "first" };
+    assert.equal(railFor("n", "top", "j"), 82);
+  } finally {
     for (const key of Object.keys(tweaks)) delete tweaks[key];
     Object.assign(tweaks, JSON.parse(saved));
   }

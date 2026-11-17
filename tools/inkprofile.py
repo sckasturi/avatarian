@@ -29,6 +29,7 @@ STEP = 0.4          # sampling step along a path, viewBox units
 NEAR = 1.0          # a sample this close to the column counts as on it
 GAP = 2.0           # samples further apart than this are separate strokes
 POINT = 8.0         # a run shorter than this is a crossing, kept as a point
+ON = 0.1            # a sample this close is ON the column, not merely near it
 
 _TOKEN = re.compile(r"[MLACZmlacz]|-?\d*\.?\d+(?:[eE][-+]?\d+)?")
 
@@ -138,21 +139,32 @@ def path_points(d):
 def column_hits(svg, x):
     """The [y0, y1] intervals where the strokes of `svg` meet column `x`,
     sorted top to bottom, as whole viewBox units."""
-    ys = sorted(py for d in re.findall(r'<path[^>]* d="([^"]+)"', svg)
-                for px, py in path_points(d) if abs(px - x) <= NEAR)
+    near = sorted((py, abs(px - x)) for d in re.findall(r'<path[^>]* d="([^"]+)"', svg)
+                  for px, py in path_points(d) if abs(px - x) <= NEAR)
     runs = []
-    for y in ys:
-        if runs and y - runs[-1][1] <= GAP:
-            runs[-1][1] = y
+    for y, off in near:
+        if runs and y - runs[-1][-1][0] <= GAP:
+            runs[-1].append((y, off))
         else:
-            runs.append([y, y])
+            runs.append([(y, off)])
     out = []
-    for a, b in runs:
-        if b - a < POINT:
-            mid = round((a + b) / 2)
-            out.append([mid, mid])
-        else:
-            out.append([round(a), round(b)])
+    for run in runs:
+        a, b = run[0][0], run[-1][0]
+        if b - a >= POINT:
+            # A long run is a stroke lying ON the column — or a curve that only
+            # brushes it (the side of /m/'s ring). The curve stays within NEAR
+            # for a long way but is truly on the column at one place; keep
+            # that place, so a rail or join meets it flush and not a unit shy.
+            on = [y for y, off in run if off <= ON]
+            if on and on[-1] - on[0] >= POINT:
+                out.append([round(on[0]), round(on[-1])])
+                continue
+            if on:
+                a, b = on[0], on[-1]
+            else:
+                a = b = min(run, key=lambda s: s[1])[0]
+        mid = round((a + b) / 2)
+        out.append([mid, mid])
     return out
 
 

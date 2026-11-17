@@ -25,6 +25,12 @@ window.AVATARIAN_GLYPHS = {
           82,
           82
         ]
+      ],
+      "82": [
+        [
+          50,
+          50
+        ]
       ]
     }
   },
@@ -36,7 +42,7 @@ window.AVATARIAN_GLYPHS = {
     "ink": {
       "18": [
         [
-          57,
+          61,
           82
         ]
       ],
@@ -44,6 +50,12 @@ window.AVATARIAN_GLYPHS = {
         [
           22,
           22
+        ]
+      ],
+      "82": [
+        [
+          18,
+          82
         ]
       ]
     },
@@ -81,6 +93,12 @@ window.AVATARIAN_GLYPHS = {
           50,
           82
         ]
+      ],
+      "82": [
+        [
+          18,
+          82
+        ]
       ]
     }
   },
@@ -88,12 +106,12 @@ window.AVATARIAN_GLYPHS = {
     "name": "d",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 58 L 18 18 A 54.67 54.67 0 0 1 82 82 L 18 82\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 50 L 18 18 A 54.67 54.67 0 0 1 82 82 L 18 82\"/></svg>",
     "ink": {
       "18": [
         [
           18,
-          58
+          50
         ],
         [
           82,
@@ -107,6 +125,12 @@ window.AVATARIAN_GLYPHS = {
         ],
         [
           82,
+          82
+        ]
+      ],
+      "82": [
+        [
+          61,
           82
         ]
       ]
@@ -140,6 +164,12 @@ window.AVATARIAN_GLYPHS = {
               50,
               82
             ]
+          ],
+          "82": [
+            [
+              50,
+              82
+            ]
           ]
         }
       }
@@ -152,6 +182,16 @@ window.AVATARIAN_GLYPHS = {
         ]
       ],
       "50": [
+        [
+          18,
+          50
+        ],
+        [
+          82,
+          82
+        ]
+      ],
+      "82": [
         [
           18,
           50
@@ -179,6 +219,12 @@ window.AVATARIAN_GLYPHS = {
         [
           18,
           18
+        ]
+      ],
+      "82": [
+        [
+          18,
+          82
         ]
       ]
     },
@@ -208,8 +254,8 @@ window.AVATARIAN_GLYPHS = {
     "ink": {
       "18": [
         [
-          42,
-          58
+          50,
+          50
         ]
       ],
       "50": [
@@ -220,6 +266,12 @@ window.AVATARIAN_GLYPHS = {
         [
           82,
           82
+        ]
+      ],
+      "82": [
+        [
+          50,
+          50
         ]
       ]
     },
@@ -240,7 +292,7 @@ window.AVATARIAN_GLYPHS = {
     "ink": {
       "18": [
         [
-          38,
+          42,
           50
         ],
         [
@@ -256,6 +308,12 @@ window.AVATARIAN_GLYPHS = {
         [
           82,
           82
+        ]
+      ],
+      "82": [
+        [
+          18,
+          59
         ]
       ]
     },
@@ -288,6 +346,16 @@ window.AVATARIAN_GLYPHS = {
         [
           18,
           18
+        ]
+      ],
+      "82": [
+        [
+          41,
+          41
+        ],
+        [
+          63,
+          63
         ]
       ]
     },
@@ -331,6 +399,12 @@ window.AVATARIAN_GLYPHS = {
           82,
           82
         ]
+      ],
+      "82": [
+        [
+          18,
+          82
+        ]
       ]
     }
   },
@@ -356,6 +430,12 @@ window.AVATARIAN_GLYPHS = {
           82,
           82
         ]
+      ],
+      "82": [
+        [
+          18,
+          82
+        ]
       ]
     }
   },
@@ -363,7 +443,7 @@ window.AVATARIAN_GLYPHS = {
     "name": "f",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 A 51.6 51.6 0 0 1 50 34 A 61.38 61.38 0 0 1 82 82\"/><path d=\"M 82 18 A 51.6 51.6 0 0 0 50 34 A 61.38 61.38 0 0 0 18 82\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 18 A 66.6 66.6 0 0 1 58 26 A 68.04 68.04 0 0 1 82 82\"/><path d=\"M 82 18 A 44.1 44.1 0 0 0 50 26 A 75.82 75.82 0 0 0 18 82\"/></svg>",
     "ink": {
       "18": [
         [
@@ -371,14 +451,28 @@ window.AVATARIAN_GLYPHS = {
           18
         ],
         [
-          79,
-          79
+          78,
+          78
         ]
       ],
       "50": [
         [
-          34,
-          34
+          22,
+          22
+        ],
+        [
+          26,
+          26
+        ]
+      ],
+      "82": [
+        [
+          18,
+          18
+        ],
+        [
+          73,
+          82
         ]
       ]
     }
@@ -408,6 +502,20 @@ window.AVATARIAN_GLYPHS = {
           58,
           58
         ]
+      ],
+      "82": [
+        [
+          18,
+          27
+        ]
+      ]
+    },
+    "dots": {
+      "82": [
+        [
+          66,
+          82
+        ]
       ]
     }
   },
@@ -423,7 +531,7 @@ window.AVATARIAN_GLYPHS = {
           18
         ],
         [
-          69,
+          73,
           82
         ]
       ],
@@ -431,6 +539,16 @@ window.AVATARIAN_GLYPHS = {
         [
           18,
           42
+        ]
+      ],
+      "82": [
+        [
+          18,
+          18
+        ],
+        [
+          73,
+          82
         ]
       ]
     }
@@ -443,8 +561,8 @@ window.AVATARIAN_GLYPHS = {
     "ink": {
       "18": [
         [
-          18,
-          29
+          20,
+          20
         ]
       ],
       "50": [
@@ -455,6 +573,12 @@ window.AVATARIAN_GLYPHS = {
         [
           73,
           73
+        ]
+      ],
+      "82": [
+        [
+          18,
+          82
         ]
       ]
     },
@@ -471,7 +595,7 @@ window.AVATARIAN_GLYPHS = {
     "name": "s",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 82 L 50 18 L 82 82\"/><circle cx=\"50\" cy=\"66\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 82 L 50 18 L 82 82\"/><circle cx=\"50\" cy=\"74\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "ink": {
       "18": [
         [
@@ -484,13 +608,19 @@ window.AVATARIAN_GLYPHS = {
           19,
           19
         ]
+      ],
+      "82": [
+        [
+          81,
+          81
+        ]
       ]
     },
     "dots": {
       "50": [
         [
-          58,
-          74
+          66,
+          82
         ]
       ]
     }
@@ -499,7 +629,7 @@ window.AVATARIAN_GLYPHS = {
     "name": "z",
     "status": "drawn",
     "type": "consonant",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 50 27.37 A 16 16 0 0 0 54.69 38.69 L 74.97 59.03 A 23.86 23.86 0 0 1 82 75.94 L 82 82\"/><path d=\"M 50 18 L 50 27.37 A 16 16 0 0 1 45.31 38.69 L 25.03 59.03 A 23.86 23.86 0 0 0 18 75.94 L 18 82\"/><circle cx=\"26\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 50 18 L 50 27.37 A 16 16 0 0 0 54.69 38.69 L 74.97 59.03 A 23.86 23.86 0 0 1 82 75.94 L 82 82\"/><path d=\"M 50 18 L 50 27.37 A 16 16 0 0 1 45.31 38.69 L 25.03 59.03 A 23.86 23.86 0 0 0 18 75.94 L 18 82\"/><circle cx=\"18\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"26\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "emit": [
       [
         50,
@@ -510,19 +640,31 @@ window.AVATARIAN_GLYPHS = {
     "ink": {
       "18": [
         [
-          69,
+          74,
           82
         ]
       ],
       "50": [
         [
           18,
-          33
+          29
+        ]
+      ],
+      "82": [
+        [
+          74,
+          82
         ]
       ]
     },
     "dots": {
       "18": [
+        [
+          18,
+          34
+        ]
+      ],
+      "82": [
         [
           18,
           34
@@ -556,6 +698,16 @@ window.AVATARIAN_GLYPHS = {
           50,
           50
         ]
+      ],
+      "82": [
+        [
+          50,
+          50
+        ],
+        [
+          82,
+          82
+        ]
       ]
     }
   },
@@ -568,7 +720,7 @@ window.AVATARIAN_GLYPHS = {
     "ink": {
       "18": [
         [
-          42,
+          48,
           82
         ]
       ],
@@ -576,6 +728,12 @@ window.AVATARIAN_GLYPHS = {
         [
           18,
           18
+        ]
+      ],
+      "82": [
+        [
+          48,
+          82
         ]
       ]
     }
@@ -613,6 +771,16 @@ window.AVATARIAN_GLYPHS = {
           82,
           82
         ]
+      ],
+      "82": [
+        [
+          18,
+          18
+        ],
+        [
+          82,
+          82
+        ]
       ]
     }
   },
@@ -637,6 +805,12 @@ window.AVATARIAN_GLYPHS = {
               58,
               58
             ]
+          ],
+          "82": [
+            [
+              42,
+              42
+            ]
           ]
         }
       }
@@ -652,6 +826,16 @@ window.AVATARIAN_GLYPHS = {
         [
           42,
           42
+        ],
+        [
+          82,
+          82
+        ]
+      ],
+      "82": [
+        [
+          58,
+          58
         ],
         [
           82,
@@ -681,6 +865,12 @@ window.AVATARIAN_GLYPHS = {
               58,
               58
             ]
+          ],
+          "82": [
+            [
+              18,
+              82
+            ]
           ]
         }
       }
@@ -703,6 +893,12 @@ window.AVATARIAN_GLYPHS = {
         ],
         [
           82,
+          82
+        ]
+      ],
+      "82": [
+        [
+          18,
           82
         ]
       ]
@@ -733,6 +929,12 @@ window.AVATARIAN_GLYPHS = {
               82,
               82
             ]
+          ],
+          "82": [
+            [
+              18,
+              82
+            ]
           ]
         }
       }
@@ -741,7 +943,7 @@ window.AVATARIAN_GLYPHS = {
       "18": [
         [
           18,
-          58
+          52
         ]
       ],
       "50": [
@@ -751,6 +953,12 @@ window.AVATARIAN_GLYPHS = {
         ],
         [
           82,
+          82
+        ]
+      ],
+      "82": [
+        [
+          18,
           82
         ]
       ]
@@ -781,6 +989,12 @@ window.AVATARIAN_GLYPHS = {
               82,
               82
             ]
+          ],
+          "82": [
+            [
+              78,
+              78
+            ]
           ]
         }
       }
@@ -800,6 +1014,12 @@ window.AVATARIAN_GLYPHS = {
         [
           82,
           82
+        ]
+      ],
+      "82": [
+        [
+          18,
+          52
         ]
       ]
     }
@@ -822,6 +1042,16 @@ window.AVATARIAN_GLYPHS = {
         ]
       ],
       "50": [
+        [
+          32,
+          32
+        ],
+        [
+          64,
+          64
+        ]
+      ],
+      "82": [
         [
           32,
           32
@@ -868,6 +1098,12 @@ window.AVATARIAN_GLYPHS = {
           48,
           64
         ]
+      ],
+      "82": [
+        [
+          16,
+          48
+        ]
       ]
     }
   },
@@ -902,6 +1138,16 @@ window.AVATARIAN_GLYPHS = {
           16,
           64
         ]
+      ],
+      "82": [
+        [
+          16,
+          16
+        ],
+        [
+          48,
+          48
+        ]
       ]
     }
   },
@@ -927,6 +1173,16 @@ window.AVATARIAN_GLYPHS = {
           48,
           48
         ]
+      ],
+      "82": [
+        [
+          32,
+          32
+        ],
+        [
+          64,
+          64
+        ]
       ]
     }
   },
@@ -934,9 +1190,9 @@ window.AVATARIAN_GLYPHS = {
     "name": "ae",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 18 40 A 32 40 0 0 0 82 40 L 82 40\"/><circle cx=\"50\" cy=\"50\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 18 40 A 32 40 0 0 0 82 40 L 82 40\"/><circle cx=\"50\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "flips": true,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 18 32 A 32 32 0 0 0 82 32 L 82 32\"/><circle cx=\"50\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 18 32 A 32 32 0 0 0 82 32 L 82 32\"/><circle cx=\"50\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "ink": {
       "18": [
         [
@@ -949,13 +1205,19 @@ window.AVATARIAN_GLYPHS = {
           64,
           64
         ]
+      ],
+      "82": [
+        [
+          36,
+          36
+        ]
       ]
     },
     "dots": {
       "50": [
         [
-          32,
-          48
+          24,
+          40
         ]
       ]
     }
@@ -977,7 +1239,17 @@ window.AVATARIAN_GLYPHS = {
           64
         ]
       ],
-      "50": []
+      "50": [],
+      "82": [
+        [
+          32,
+          32
+        ],
+        [
+          64,
+          64
+        ]
+      ]
     },
     "gaps": {
       "50": [
@@ -1013,6 +1285,12 @@ window.AVATARIAN_GLYPHS = {
           48,
           48
         ]
+      ],
+      "82": [
+        [
+          64,
+          64
+        ]
       ]
     },
     "dots": {
@@ -1020,6 +1298,12 @@ window.AVATARIAN_GLYPHS = {
         [
           56,
           72
+        ]
+      ],
+      "82": [
+        [
+          24,
+          40
         ]
       ]
     }
@@ -1050,6 +1334,12 @@ window.AVATARIAN_GLYPHS = {
           16,
           64
         ]
+      ],
+      "82": [
+        [
+          32,
+          64
+        ]
       ]
     }
   },
@@ -1075,10 +1365,21 @@ window.AVATARIAN_GLYPHS = {
           16,
           64
         ]
-      ]
+      ],
+      "82": []
     },
     "dots": {
       "18": [
+        [
+          24,
+          40
+        ],
+        [
+          56,
+          72
+        ]
+      ],
+      "82": [
         [
           24,
           40
@@ -1094,8 +1395,8 @@ window.AVATARIAN_GLYPHS = {
     "name": "ow",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 18 80 L 50 80 L 50 40 L 18 40 Z\"/><circle cx=\"74\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"80\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 18 64 L 50 64 L 50 32 L 18 32 Z\"/><circle cx=\"74\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"74\" cy=\"64\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 40 L 18 80 L 50 80 L 50 40 L 18 40 Z\"/><circle cx=\"82\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"80\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 18 32 L 18 64 L 50 64 L 50 32 L 18 32 Z\"/><circle cx=\"82\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"82\" cy=\"64\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "ink": {
       "18": [
         [
@@ -1107,6 +1408,19 @@ window.AVATARIAN_GLYPHS = {
         [
           32,
           64
+        ]
+      ],
+      "82": []
+    },
+    "dots": {
+      "82": [
+        [
+          24,
+          40
+        ],
+        [
+          56,
+          72
         ]
       ]
     }
@@ -1115,9 +1429,9 @@ window.AVATARIAN_GLYPHS = {
     "name": "aw",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 40 A 32 40 0 0 1 50 80 L 18 80\"/><circle cx=\"26\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 40 A 32 40 0 0 1 50 80 L 18 80\"/><circle cx=\"18\" cy=\"40\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "note": "from source material outside the key chart",
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 32 A 32 32 0 0 1 50 64 L 18 64\"/><circle cx=\"26\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 32 A 32 32 0 0 1 50 64 L 18 64\"/><circle cx=\"18\" cy=\"32\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "ink": {
       "18": [
         [
@@ -1129,6 +1443,12 @@ window.AVATARIAN_GLYPHS = {
         [
           64,
           64
+        ]
+      ],
+      "82": [
+        [
+          36,
+          36
         ]
       ]
     },
@@ -1166,8 +1486,14 @@ window.AVATARIAN_GLYPHS = {
       ],
       "50": [
         [
-          39,
+          40,
           64
+        ]
+      ],
+      "82": [
+        [
+          16,
+          16
         ]
       ]
     }
@@ -1191,10 +1517,22 @@ window.AVATARIAN_GLYPHS = {
           32,
           32
         ]
+      ],
+      "82": [
+        [
+          32,
+          32
+        ]
       ]
     },
     "dots": {
       "18": [
+        [
+          56,
+          72
+        ]
+      ],
+      "82": [
         [
           56,
           72
@@ -1206,9 +1544,9 @@ window.AVATARIAN_GLYPHS = {
     "name": "au",
     "status": "drawn",
     "type": "vowel",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 50 A 20 25 0 0 0 42 50 A 20 25 0 0 0 82 50\"/><circle cx=\"26\" cy=\"30\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"26\" cy=\"70\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 50 A 20 25 0 0 0 42 50 A 20 25 0 0 0 82 50\"/><circle cx=\"18\" cy=\"30\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"18\" cy=\"70\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "rows": 4,
-    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 40 A 20 20 0 0 0 42 40 A 20 20 0 0 0 82 40\"/><circle cx=\"26\" cy=\"24\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"26\" cy=\"56\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
+    "flat": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 80.0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"9\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M 82 40 A 20 20 0 0 0 42 40 A 20 20 0 0 0 82 40\"/><circle cx=\"18\" cy=\"24\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/><circle cx=\"18\" cy=\"56\" r=\"8.0\" fill=\"currentColor\" stroke=\"none\"/></svg>",
     "ink": {
       "18": [],
       "50": [
@@ -1219,6 +1557,12 @@ window.AVATARIAN_GLYPHS = {
         [
           56,
           56
+        ]
+      ],
+      "82": [
+        [
+          40,
+          40
         ]
       ]
     },
@@ -1267,6 +1611,12 @@ window.AVATARIAN_GLYPHS = {
           48,
           64
         ]
+      ],
+      "82": [
+        [
+          16,
+          48
+        ]
       ]
     }
   },
@@ -1288,6 +1638,12 @@ window.AVATARIAN_GLYPHS = {
           64,
           64
         ]
+      ],
+      "82": [
+        [
+          36,
+          36
+        ]
       ]
     }
   },
@@ -1306,6 +1662,12 @@ window.AVATARIAN_GLYPHS = {
       "50": [
         [
           82,
+          82
+        ]
+      ],
+      "82": [
+        [
+          18,
           82
         ]
       ]
@@ -1586,8 +1948,14 @@ window.AVATARIAN_BLOCK_TWEAKS = {
   "l|z": {
     "reach": "none"
   },
+  "m|j": {
+    "rail": "first"
+  },
   "m|z": {
     "dots": 6
+  },
+  "n|j": {
+    "rail": "first"
   },
   "v|e": {
     "reach": "open"
@@ -1597,6 +1965,9 @@ window.AVATARIAN_BLOCK_TWEAKS = {
   },
   "ŋ|k": {
     "bottom": "low"
+  },
+  "ɹ|m": {
+    "rail": "first"
   },
   "ɹ|z": {
     "reach": "none"

@@ -385,6 +385,15 @@ def save_tweak(entry):
             t["reach"] = reach
         else:
             t.pop("reach", None)
+    if "rail" in entry:
+        # The approximant's line through its partner (render.js railFor).
+        rail = str(entry["rail"] or "")
+        if rail not in ("", "none", "full", "first"):
+            raise ValueError("rail must be none, full or first")
+        if rail:
+            t["rail"] = rail
+        else:
+            t.pop("rail", None)
     for slot in ("top", "bottom"):
         # Which ALTERNATE drawing that slot's glyph uses in this block
         # (render.js resolveGlyph); empty puts it back on its usual form.

@@ -97,7 +97,15 @@ function serializeGlyph(g) {
   let cls = "av-glyph " + stem + " " + height;
   if (g._c.has("avatarian-4row")) cls += " av-4row";
   if (g._c.has("avatarian-flipped")) cls += " av-flipped";
-  const rail = g.dataset.rail ? '<span class="av-rail av-rail-' + g.dataset.rail + '"></span>' : "";
+  // A rail that stops at the ink (`rail: first`) carries its two ends as
+  // displayed; the seam end gains the mask stroke's half width, as in the Lua.
+  let railStyle = "";
+  if (g.dataset.railspan) {
+    const [a, b] = g.dataset.railspan.split(",").map(Number), D = b > a ? 1 : -1;
+    const lo = Math.min(a - D * 6.5, b), hi = Math.max(a - D * 6.5, b);
+    railStyle = ' style="top:' + em(lo) + 'em;height:' + em(hi - lo) + 'em"';
+  }
+  const rail = g.dataset.rail ? '<span class="av-rail av-rail-' + g.dataset.rail + '"' + railStyle + '></span>' : "";
   return '<span class="' + cls + '"></span>' + rail + joinSpans(g.dataset.join);
 }
 

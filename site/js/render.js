@@ -324,6 +324,11 @@ function orientationOf(sym, entry, slot, partner) {
  *          `ŋ|k` bottom: /k/ with its square dropped, `rethink`). Drawn as
  *          the block shows it: never flipped, no rail; its joins come from
  *          its own `connect` marks.
+ *   rail   the approximant's line through its partner (below): none | full |
+ *          first. `first` stops it at the partner's first ink in that column
+ *          instead of running the full height — into the side of /m/'s ring
+ *          (`ɹ|m`). `full` and `first` also ask for a rail where the default
+ *          draws none, beside /w/ and /j/ (`m|j`, `n|j`).
  *
  * THE APPROXIMANT'S LINE RUNS THE FULL BLOCK. In a C-C block /l/ (left)
  * and /ɹ/ (right) draw a cluster form whose long side stops at the seam;
@@ -333,6 +338,7 @@ function orientationOf(sym, entry, slot, partner) {
  */
 const BLOCK_TWEAKS = window.AVATARIAN_BLOCK_TWEAKS || {};
 const RAIL_SIDE = { "l": 18, "ɹ": 82 };   // not /w/ or /j/: their lines stay at the seam
+const RAIL_ASK = { "l": 18, "ɹ": 82, "w": 18, "j": 82 };   // ... unless a block's `rail` asks
 
 function blockTweak(sym, slot, partner) {
   if (partner == null) return {};
@@ -357,10 +363,58 @@ function usesClusterForm(sym, slot, partner) {
  */
 function railFor(sym, slot, partner) {
   if (!isClusterPartner(partner) || isVowelSymbol(sym)) return null;
+  const mode = blockTweak(sym, slot, partner).rail;
+  if (mode === "none") return null;
   const p = parseSymbol(partner).sym;
   const other = slot === "top" ? "bottom" : "top";
-  if (!(p in RAIL_SIDE) || !usesClusterForm(p, other, sym)) return null;
-  return RAIL_SIDE[p];
+  const side = mode === "full" || mode === "first" ? RAIL_ASK : RAIL_SIDE;
+  if (!(p in side) || !usesClusterForm(p, other, sym)) return null;
+  return side[p];
+}
+
+/**
+ * How far a rail on column `x` runs when its block says `rail: first`: from
+ * the seam end to the first ink this glyph has in that column, as [from, to]
+ * in the glyph's own viewBox. Null when it runs the full height — the block
+ * does not ask, or there is no ink to stop at.
+ */
+/**
+ * A stroke that ends in the corner a full rail occupies — /s/'s leg at
+ * (82, 82) under /ɹ/ — would lay its slanted square cap over the rail's own
+ * square corner and poke out past it. Pull that end back half a stroke along
+ * its line: the cap then sits wholly inside the rail and the corner is the
+ * rail's, clean. Only straight, non-vertical runs into the corner are touched.
+ */
+function tuckUnderRail(svg, x) {
+  const n = "(-?[\\d.]+)";
+  const back = (ex, ey, px, py) => {
+    const dx = ex - px, dy = ey - py, len = Math.hypot(dx, dy);
+    if (!dx || !len) return null;                     // lies along the rail
+    const r = (v) => Math.round(v * 100) / 100;
+    return [r(ex - dx / len * HALF_STROKE), r(ey - dy / len * HALF_STROKE)];
+  };
+  return svg
+    .replace(new RegExp(`([ML]) ${n} ${n} L ${x} (18|82)"`, "g"), (m, c, px, py, ey) => {
+      const p = back(x, +ey, +px, +py);
+      return p ? `${c} ${px} ${py} L ${p[0]} ${p[1]}"` : m;
+    })
+    .replace(new RegExp(`d="M ${x} (18|82) L ${n} ${n}`, "g"), (m, ey, px, py) => {
+      const p = back(x, +ey, +px, +py);
+      return p ? `d="M ${p[0]} ${p[1]} L ${px} ${py}` : m;
+    });
+}
+
+function railReach(sym, slot, partner, x, form, flipped) {
+  if (blockTweak(sym, slot, partner).rail !== "first") return null;
+  const seam = slot === "top" ? 82 : 18;            // as displayed
+  const from = flipped ? 100 - seam : seam;         // in the glyph's own box
+  const d = from < 50 ? 1 : -1;
+  let best = null;
+  for (const [p, q] of (form.ink || {})[x] || []) {
+    const dist = ((d > 0 ? p : q) - from) * d;
+    if (dist >= 0 && (best == null || dist < best)) best = dist;
+  }
+  return best == null ? null : [from, from + d * best];
 }
 
 /**
@@ -449,6 +503,7 @@ function resolveGlyph(token, slot, partner) {
  * boxes overlap exactly as blocks.css stacks them.
  */
 const JOIN_REACH = new Set(["none", "open", "first", "second"]);
+const HALF_STROKE = 4.5;   // half the glyphs' stroke-width, what a square cap adds
 const JOIN_MAX = 40;   // 2.5 rows — the longest join the sources show
 // Where the ink is further off than that, the stem RISES this far into the
 // opening and stops, touching nothing. The end is cut butt, so 20 puts the
@@ -522,7 +577,7 @@ function joinsFor(token, slot, partner) {
     }
     for (const [gy, x0, x1] of (them.form.gaps || {})[x] || []) {
       const d = (theirs.y0 + toSlot(theirs, gy) - Y) * D;
-      if (d > 0) hits.push({ len: d, bar: [x0, x1] });
+      if (d > 0) hits.push({ len: d, bar: [x0, x1, gy] });
     }
     for (const [p, q] of (them.form.dots || {})[x] || []) {
       const u = (theirs.y0 + toSlot(theirs, p) - Y) * D, v = (theirs.y0 + toSlot(theirs, q) - Y) * D;
@@ -620,8 +675,20 @@ function makeGlyph(token, slot, partner) {
     // side. It is symmetric top to bottom, so a flipped glyph needs no care.
     const rail = alt ? null : railFor(sym, slot, partner);
     if (rail != null) {
-      svg = svg.replace("</svg>", `<path d="M ${rail} 18 L ${rail} 82"/></svg>`);
-      span.dataset.rail = rail < 50 ? "l" : "r";
+      const part = railReach(sym, slot, partner, rail, drawForm, flipped);
+      if (!part) {
+        svg = tuckUnderRail(svg, rail).replace("</svg>", `<path d="M ${rail} 18 L ${rail} 82"/></svg>`);
+        span.dataset.rail = rail < 50 ? "l" : "r";
+      } else if (part[0] !== part[1]) {
+        // Stops at the ink: cut square there, with the usual cap's reach at
+        // the seam end so it meets the approximant's own line.
+        const [from, to] = part, d = Math.sign(to - from);
+        svg = svg.replace("</svg>",
+          `<path stroke-linecap="butt" d="M ${rail} ${from - d * HALF_STROKE} L ${rail} ${to}"/></svg>`);
+        span.dataset.rail = rail < 50 ? "l" : "r";
+        const shown = (y) => (flipped ? 100 - y : y);
+        span.dataset.railspan = shown(from) + "," + shown(to);
+      }
     }
     // Both drawings ride along and CSS shows one. The flat copy is the
     // same glyph re-laid-out at 4/5 height rather than a squashed copy
@@ -642,17 +709,45 @@ function makeGlyph(token, slot, partner) {
     let flat = drawForm.flat || "";
     const joins = joinsFor(token, slot, partner);
     if (joins.length) {
-      // A join that closes a mouth (/g/'s foot) also draws the bar across it.
-      const strokes = joins.map((j) =>
-        `<path stroke-linecap="butt" d="M ${j.x} ${j.y} L ${j.x} ${j.y + j.dir * j.len}"/>`
-        + (j.bar ? `<path stroke-linecap="butt" d="M ${j.bar[0]} ${j.y + j.dir * j.len} L ${j.bar[1]} ${j.y + j.dir * j.len}"/>` : "")).join("");
-      if (flat) flat = flat.replace("</svg>", strokes + "</svg>");
-      else svg = svg.replace("</svg>", strokes + "</svg>");
-      span.dataset.join = joins.map((j) => [j.x, j.a, j.b, ...(j.bar || [])].join(",")).join(";");
+      // Where the emitter is the loose end of a vertical stroke (every stem
+      // is), the join is made by MOVING that end: one stroke, one outline. A
+      // second stroke laid over the stem's cap is the same shape on paper,
+      // but its edges are anti-aliased twice where the two overlap and show
+      // as a notch at some sizes. The glyphs' square cap adds half a stroke,
+      // so the end stops that much short and lands cut square on the
+      // partner's centreline, as above. Anything else gets its own stroke.
+      const grow = (src) => {
+        for (const j of joins) {
+          const to = j.y + j.dir * (j.len - HALF_STROKE);
+          const head = new RegExp(`d="M ${j.x} ${j.y} L ${j.x} `, "g");
+          const tail = new RegExp(`( ${j.x} [\\d.]+ L ${j.x} )${j.y}"`, "g");
+          if (j.len >= HALF_STROKE && (head.test(src) || tail.test(src))) {
+            src = src.replace(head, `d="M ${j.x} ${to} L ${j.x} `).replace(tail, `$1${to}"`);
+          } else {
+            src = src.replace("</svg>",
+              `<path stroke-linecap="butt" d="M ${j.x} ${j.y} L ${j.x} ${j.y + j.dir * j.len}"/></svg>`);
+          }
+        }
+        return src;
+      };
+      if (flat) flat = grow(flat);
+      else svg = grow(svg);
+      span.dataset.join = joins.map((j) => [j.x, j.a, j.b, ...(j.bar || []).slice(0, 2)].join(",")).join(";");
     }
     // The other half of a join into a dot: the partner's stem replaces it,
     // so this glyph leaves that dot out (/b/ over a stem).
     for (const j of joinsFor(partner, slot === "top" ? "bottom" : "top", token)) {
+      if (j.bar) {
+        // ... and of a join into a mouth: this glyph closes it. Where the
+        // mouth is the two ends of one stroke (/g/'s foot), closing the path
+        // does it with a clean corner each side; otherwise a bar across.
+        const [x0, x1, gy] = j.bar;
+        const loop = new RegExp(`(d="M (?:${x0}|${x1}) ${gy} [^"]* (?:${x0}|${x1}) ${gy})"`);
+        const close = (src) => loop.test(src) ? src.replace(loop, '$1 Z"')
+          : src.replace("</svg>", `<path stroke-linecap="butt" d="M ${x0} ${gy} L ${x1} ${gy}"/></svg>`);
+        svg = close(svg);
+        if (flat) flat = close(flat);
+      }
       if (!j.dot) continue;
       const gone = new RegExp(`<circle cx="${j.x}" cy="${(j.dot[0] + j.dot[1]) / 2}"[^>]*>`);
       svg = svg.replace(gone, "");
@@ -862,7 +957,7 @@ function makeMark(sym) {
 if (typeof module !== "undefined") {
   module.exports = {
     renderAvatarian, renderGlyph, pairUp, resolveBlocks, slotRows, glyphSVG, VOWELS,
-    resolveGlyph, joinsFor,
+    resolveGlyph, joinsFor, railFor, railReach,
     NULL_IPA, NULL_C_IPA, NULLS, nullFor, isVowelSymbol, parseSymbol,
     PUNCTUATION, NUMERALS, WORD_MARKS, isMark,
   };

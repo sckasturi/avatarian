@@ -146,7 +146,7 @@ def main():
     # drawing per pair (tools/inkprofile.py). Marks never share a block.
     cols = sorted({e[0] for g in out.values()
                    for f in [g, *(g.get("variants") or {}).values()]
-                   for e in f.get("emit", [])})
+                   for e in f.get("emit", [])} | {18, 82})   # + the rail columns
     def profile(form):
         svg = form.get("flat") or form["svg"]
         form["ink"] = {str(x): inkprofile.column_hits(svg, x) for x in cols}

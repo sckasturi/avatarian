@@ -591,6 +591,12 @@ Both renderers draw the same joins from the same numbers: the site as a
 stroke inside the emitter's own SVG, the wiki as an `av-join` span sized by
 Module:Avatarian (`tests/joins.test.js`, `tests/lua_golden.test.js`).
 
+**Rails** (§6) take a per-block `rail` the same way: `none`, `full`, or
+`first`, which stops the approximant's line at the partner's first ink in
+that column instead of running the full height — into the side of /m/'s ring
+(`ɹ|m`). `full` and `first` also draw a rail where the default has none,
+beside /w/ and /j/ (`m|j`, `n|j`).
+
 **Alternate drawings** cover what no stroke-growing rule can: a glyph that
 is simply drawn differently in some block. An alternate is one more design of
 that one glyph — `designs/<name>_alt_<label>.json`, started with the glyph

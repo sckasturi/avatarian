@@ -357,6 +357,9 @@
   function showTweaks(top, bottom) {
     const t = tweaks[keyOf(top, bottom)] || {};
     $("#reach").value = t.reach || "";
+    // A rail only exists beside an approximant's cluster form.
+    $("#tweak-rail").hidden = ![top, bottom].some((s) => ((GLYPHS[s] || {}).variants || {}).cluster);
+    $("#rail").value = t.rail || "";
     // A glyph with alternate drawings (render.js resolveGlyph) offers them
     // for its slot; one with none shows no menu.
     for (const [slot, sym] of [["top", top], ["bottom", bottom]]) {
@@ -415,6 +418,12 @@
     const reach = $("#reach").value;
     setTweak(key, "reach", reach);
     putTweak({ key, reach });
+  });
+  on("#rail", "change", () => {
+    const key = currentKey();
+    const rail = $("#rail").value;
+    setTweak(key, "rail", rail);
+    putTweak({ key, rail });
   });
   // Which alternate drawing a slot's glyph uses in this block.
   for (const slot of ["top", "bottom"]) {

@@ -217,7 +217,7 @@ CONSONANTS = {
     "b": path("M 18 82 A 54.67 54.67 0 0 1 82 18 L 82 82") + dot(50, 74),
     "t": path("M 18 18 L 82 18 L 82 82")
          + path("M 18 50 L 18 82 L 50 82 L 50 50 L 18 50 Z"),
-    "d": path("M 18 58 L 18 18 A 54.67 54.67 0 0 1 82 82 L 18 82"),
+    "d": path("M 18 50 L 18 18 A 54.67 54.67 0 0 1 82 82 L 18 82"),
     "k": path("M 18 18 L 18 82 L 82 82")
          + path("M 50 18 L 50 50 L 82 50 L 82 18 L 50 18 Z"),
     "g": dot(50, 50) + path("M 34 82 L 18 82 L 18 18 L 82 18 L 82 82 L 66 82"),
@@ -230,8 +230,8 @@ CONSONANTS = {
     "ng": path("M 34 82 A 34 34 0 1 1 66 82"),
     # bowed saltire, crossing high (about a third down): short shallow arms out
     # to the top corners, long legs bowing outward and finishing near-vertical
-    "f": path("M 18 18 A 51.6 51.6 0 0 1 50 34 A 61.38 61.38 0 0 1 82 82")
-         + path("M 82 18 A 51.6 51.6 0 0 0 50 34 A 61.38 61.38 0 0 0 18 82"),
+    "f": path("M 18 18 A 66.6 66.6 0 0 1 58 26 A 68.04 68.04 0 0 1 82 82")
+         + path("M 82 18 A 44.1 44.1 0 0 0 50 26 A 75.82 75.82 0 0 0 18 82"),
     "v": path("M 18 18 L 82 18 A 36.22 36.22 0 0 1 50 58 A 52 52 0 0 0 18 82")
          + dot(74, 74),
     "th": path("M 18 18 L 82 18")
@@ -241,7 +241,8 @@ CONSONANTS = {
     # Orientation is NOT by slot: /s/ appears both ways in the same slot, which
     # no flip rule can produce. It mirrors above another consonant (11 of 12
     # attested) and nowhere else (0 of 20). See render.js TURNS_ABOVE_CLUSTER.
-    "s": path("M 18 82 L 50 18 L 82 82") + dot(50, 66),
+    # TODO item 30.
+    "s": path("M 18 82 L 50 18 L 82 82") + dot(50, 74),
     # Traced from the reference (z.svg): the stem bends into each leg on a
     # 1-unit radius (smooth outside shoulders, sharp crotch), the legs run at
     # 45 degrees, turn on a 1.5-unit radius and drop straight. The dots stay at
@@ -250,8 +251,8 @@ CONSONANTS = {
               "A 23.86 23.86 0 0 1 82 75.94 L 82 82")
          + path("M 50 18 L 50 27.37 A 16 16 0 0 1 45.31 38.69 L 25.03 59.03 "
                 "A 23.86 23.86 0 0 0 18 75.94 L 18 82")
-         + dot(26, 26)
-         + dot(74, 26),
+         + dot(18, 26)
+         + dot(82, 26),
     "h": path("M 18 18 L 82 18")
          + path("M 18 82 L 82 82")
          + path("M 50 26 A 24 24 0 0 1 74 50 A 24 24 0 0 1 50 74 "
@@ -302,7 +303,7 @@ VOWELS = {
           + path("M 18 20 L 82 20"),
     "eh": path("M 18 40 A 42 52.5 0 0 1 50 60 A 42 52.5 0 0 0 82 80")
           + path("M 82 40 A 42 52.5 0 0 0 50 60 A 42 52.5 0 0 1 18 80"),
-    "ae": path("M 18 40 L 18 40 A 32 40 0 0 0 82 40 L 82 40") + dot(50, 50),
+    "ae": path("M 18 40 L 18 40 A 32 40 0 0 0 82 40 L 82 40") + dot(50, 40),
     "ai": dot(18, 80) + path("M 82 40 L 18 40") + dot(82, 80),
     "uh": path("M 18 80 L 34 80")
           + path("M 18 40 L 34 40")
@@ -319,12 +320,12 @@ VOWELS = {
           + path("M 50 20 L 50 80")
           + path("M 82 40 L 82 80"),
     "ow": path("M 18 40 L 18 80 L 50 80 L 50 40 L 18 40 Z")
-          + dot(74, 40)
-          + dot(74, 80),
+          + dot(82, 40)
+          + dot(82, 80),
     "au": path("M 82 50 A 20 25 0 0 0 42 50 A 20 25 0 0 0 82 50")
-          + dot(26, 30)
-          + dot(26, 70),
-    "aw": path("M 82 40 A 32 40 0 0 1 50 80 L 18 80") + dot(26, 40),
+          + dot(18, 30)
+          + dot(18, 70),
+    "aw": path("M 82 40 A 32 40 0 0 1 50 80 L 18 80") + dot(18, 40),
     "ah": path("M 50 80 L 50 50")
           + path("M 18 20 L 50 50")
           + path("M 82 20 L 50 50"),
