@@ -61,6 +61,7 @@ python3 tools/build_glyphs.py && python3 tools/build_manifest.py   # glyph SVGs 
 python3 tools/build_corpus.py                                      # attested.json -> site/js/corpus.js
 python3 tools/build_lua_module.py                                  # -> wiki/Module_Avatarian.lua
 python3 tools/build_css_only.py                                    # -> wiki/Avatarian-css-only.css
+python3 tools/build_blocks_page.py                                 # -> wiki/Avatarian_blocks.wiki (only when glyphs are added)
 ```
 
 The pronunciation dictionary (`site/js/lexicon.js`) is generated too, but

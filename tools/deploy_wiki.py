@@ -2,10 +2,11 @@
 """
 Push the generated wiki files to the Fandom wiki, so you stop copy-pasting.
 
-Two pages are kept in sync, each from a generated file in wiki/:
+Three pages are kept in sync, each from a generated file in wiki/:
 
-    Module:Avatarian            <- wiki/Module_Avatarian.lua
-    User:TechFilmer/Avatarian.css <- wiki/Avatarian-css-only.css
+    Module:Avatarian                  <- wiki/Module_Avatarian.lua
+    User:TechFilmer/Avatarian.css     <- wiki/Avatarian-css-only.css
+    User:TechFilmer/Avatarian blocks  <- wiki/Avatarian_blocks.wiki
 
 It logs in as you over the MediaWiki Action API using a BOT PASSWORD (not
 your real password), compares each page to the file, and edits ONLY the ones
@@ -60,6 +61,8 @@ API_URL_DEFAULT = ""
 PAGES = {
     "Module:Avatarian": "wiki/Module_Avatarian.lua",
     "User:TechFilmer/Avatarian.css": "wiki/Avatarian-css-only.css",
+    # every block on one page, for looking at (tools/build_blocks_page.py)
+    "User:TechFilmer/Avatarian blocks": "wiki/Avatarian_blocks.wiki",
 }
 
 SUMMARY = "updating"
