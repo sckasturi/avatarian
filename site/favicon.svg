@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <!-- "Aang" (e ŋ) in Avatarian — his own attested signature spelling.
+  <!-- "Aang" (e ŋ) in Avatarian — his own attested signature spelling,
+       with the stem fused onto the arc below as the site draws it.
        Terracotta ground (the site accent) so the mark reads in any tab strip;
        dark ink glyphs for contrast. Geometry taken verbatim from the site's
        exportSVG() output. -->
@@ -8,7 +9,7 @@
        fill="none" stroke="#2a211b" stroke-width="9"
        stroke-linecap="square" stroke-linejoin="miter">
     <svg viewBox="0 0 100 80.0" x="10" y="10" width="52" height="41.59" overflow="visible">
-      <path d="M 50 64 L 50 16"/>
+      <path d="M 50 75.5 L 50 16"/>
       <path d="M 18 48 L 82 48"/>
       <path d="M 18 16 L 82 16"/>
     </svg>

@@ -384,7 +384,17 @@ function railFor(sym, slot, partner) {
  * square corner and poke out past it. Pull that end back half a stroke along
  * its line: the cap then sits wholly inside the rail and the corner is the
  * rail's, clean. Only straight, non-vertical runs into the corner are touched.
+ *
+ * A corner that POINTS into the rail part-way down — /p/'s diamond, whose side
+ * vertex sits on the rail's column (`p|ɹ`, `p|l`) — pokes its miter tip out
+ * through the far side of the rail. Split that vertex into a short run along
+ * the column (RAIL_CUT either side): both new joins then put their miter on
+ * the rail's outer edge, and the run itself lies under the rail.
+ *
+ * build_css_only.py ports this (inkprofile.tuck_under_rail) for the wiki's
+ * masks; keep the two in step.
  */
+const RAIL_CUT = 1;
 function tuckUnderRail(svg, x) {
   const n = "(-?[\\d.]+)";
   const back = (ex, ey, px, py) => {
@@ -401,6 +411,14 @@ function tuckUnderRail(svg, x) {
     .replace(new RegExp(`d="M ${x} (18|82) L ${n} ${n}`, "g"), (m, ey, px, py) => {
       const p = back(x, +ey, +px, +py);
       return p ? `d="M ${p[0]} ${p[1]} L ${px} ${py}` : m;
+    })
+    .replace(new RegExp(`${n} ${n} L ${x} ${n} L ${n} ${n}`, "g"), (m, px, py, vy, nx, ny) => {
+      const v = +vy;
+      if (!(v > 18 && v < 82)) return m;                        // the corners are above
+      if ((px - x) * (nx - x) <= 0) return m;                   // not pointing at the rail
+      if ((py - v) * (ny - v) >= 0) return m;                   // not a point either
+      const a = v + Math.sign(py - v) * RAIL_CUT, b = v + Math.sign(ny - v) * RAIL_CUT;
+      return `${px} ${py} L ${x} ${a} L ${x} ${b} L ${nx} ${ny}`;
     });
 }
 
@@ -680,7 +698,10 @@ function makeGlyph(token, slot, partner) {
     if (rail != null) {
       const part = railReach(sym, slot, partner, rail, drawForm, flipped);
       if (!part) {
-        svg = tuckUnderRail(svg, rail).replace("</svg>", `<path d="M ${rail} 18 L ${rail} 82"/></svg>`);
+        const tucked = tuckUnderRail(svg, rail);
+        // The wiki draws the tucked shape as its own mask (`_t<x>`).
+        if (tucked !== svg) span.dataset.tuck = String(rail);
+        svg = tucked.replace("</svg>", `<path d="M ${rail} 18 L ${rail} 82"/></svg>`);
         span.dataset.rail = rail < 50 ? "l" : "r";
       } else if (part[0] !== part[1]) {
         // Stops at the ink: cut square there, with the usual cap's reach at

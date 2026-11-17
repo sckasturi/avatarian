@@ -249,3 +249,50 @@ def stem_cut(svg, x, y):
     if not roots or len(set(roots)) != 1:
         return None
     return roots[0], out
+
+
+HALF_STROKE = 4.5   # render.js HALF_STROKE
+RAIL_CUT = 1        # render.js RAIL_CUT
+
+
+def _js_num(v):
+    """A number as JavaScript's template literal prints it."""
+    return f"{v:.10g}" if v != int(v) else str(int(v))
+
+
+def tuck_under_rail(svg, x):
+    """render.js tuckUnderRail, for the wiki's masks: the same SVG text the
+    site draws beside a full rail on column `x`. Keep the two in step."""
+    n = r"(-?[\d.]+)"
+    xs = _js_num(x)
+
+    def back(ex, ey, px, py):
+        dx, dy = ex - px, ey - py
+        ln = math.hypot(dx, dy)
+        if not dx or not ln:
+            return None
+        r = lambda v: math.floor(v * 100 + 0.5) / 100     # Math.round
+        return _js_num(r(ex - dx / ln * HALF_STROKE)), _js_num(r(ey - dy / ln * HALF_STROKE))
+
+    def end(m):
+        c, px, py, ey = m.groups()
+        p = back(x, float(ey), float(px), float(py))
+        return f'{c} {px} {py} L {p[0]} {p[1]}"' if p else m.group(0)
+
+    def start(m):
+        ey, px, py = m.groups()
+        p = back(x, float(ey), float(px), float(py))
+        return f'd="M {p[0]} {p[1]} L {px} {py}' if p else m.group(0)
+
+    def point(m):
+        px, py, vy, nx, ny = m.groups()
+        v = float(vy)
+        if not (18 < v < 82) or (float(px) - x) * (float(nx) - x) <= 0 or (float(py) - v) * (float(ny) - v) >= 0:
+            return m.group(0)
+        sign = lambda d: (d > 0) - (d < 0)
+        a, b = v + sign(float(py) - v) * RAIL_CUT, v + sign(float(ny) - v) * RAIL_CUT
+        return f"{px} {py} L {xs} {_js_num(a)} L {xs} {_js_num(b)} L {nx} {ny}"
+
+    svg = re.sub(rf'([ML]) {n} {n} L {xs} (18|82)"', end, svg)
+    svg = re.sub(rf'd="M {xs} (18|82) L {n} {n}', start, svg)
+    return re.sub(rf"{n} {n} L {xs} {n} L {n} {n}", point, svg)

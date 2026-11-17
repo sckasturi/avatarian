@@ -169,9 +169,33 @@ def toc_rules():
     return out
 
 
-def main(out=None):
-    """Write the file. `out` overrides the default path under wiki/."""
-    out = pathlib.Path(out) if out else OUT
+RULE = re.compile(r'\.g-([a-z0-9_]+)\{-webkit-mask-image:url\("data:image/svg\+xml,([^"]*)"\)\}$')
+
+
+def tucks(rules):
+    """Beside a full rail, render.js tucks what would poke out through it
+    (tuckUnderRail): one `<class>_t<x>` twin per mask the tuck changes, for
+    the Lua to pick. Returns {class: [rule, ...]}."""
+    out = {}
+    for rule in rules:
+        m = RULE.match(rule)
+        if not m:
+            continue
+        svg = urllib.parse.unquote(m.group(2))
+        for x in (18, 82):
+            t = inkprofile.tuck_under_rail(svg, x)
+            if t != svg:
+                out[f"{m.group(1)}_t{x}"] = f'.g-{m.group(1)}_t{x}{{-webkit-mask-image:url("data:image/svg+xml,{urllib.parse.quote(t, safe="")}")}}'
+    return out
+
+
+def tuck_classes():
+    """The `_t<x>` classes the stylesheet has — Module:Avatarian's TUCK set."""
+    return sorted(tucks(glyph_rules()))
+
+
+def glyph_rules():
+    """Every glyph's masks, before the tucked and stemless twins."""
     rules = []
     for g in glyphs().values():
         if g.get("status") == "PLACEHOLDER":
@@ -213,6 +237,14 @@ def main(out=None):
             for dy in sorted({t["dots"] for t in block_tweaks().values() if t.get("dots")}):
                 moved = re.sub(r'(<circle [^>]*cy=")([\d.]+)', lambda m: f"{m.group(1)}{float(m.group(2)) + dy:g}", base)
                 rules.append(f'.g-z_d{dy:g}{{-webkit-mask-image:url("{mask_uri(moved)}")}}')
+    return rules
+
+
+def main(out=None):
+    """Write the file. `out` overrides the default path under wiki/."""
+    out = pathlib.Path(out) if out else OUT
+    rules = glyph_rules()
+    rules += tucks(rules).values()
     # A joined stem is one strip (.av-jx) over the glyph WITHOUT its own stem,
     # so the stem has a single anti-aliased edge all the way down. Every mask
     # of a form that emits gets a stemless `_j` twin (inkprofile.stem_cut).

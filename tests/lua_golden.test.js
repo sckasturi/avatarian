@@ -91,6 +91,7 @@ function serializeGlyph(g) {
     }
   }
   if (g.dataset.nodot) name += "_nodot";   // a partner's stem replaced its dot
+  if (g.dataset.tuck) name += "_t" + g.dataset.tuck;   // tucked under a full rail
   if (g.dataset.stem) name += "_j";        // its joined stem is the join's strip
   const stem = "g-" + name;
   let height = "";

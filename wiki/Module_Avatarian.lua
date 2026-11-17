@@ -13,6 +13,7 @@ local MARK_WIDE = {[":"]="av-wide", ["?"]="av-wide", ["--"]="av-wide3", ["0"]="a
 local BLOCK_DOTS = {["m|z"]=6}
 local BLOCK_REACH = {["l|z"]="none", ["v|e"]="open", ["w|ʊ"]="first", ["ɹ|z"]="none", ["ʃ|u"]="first", ["ʃ|ɪ"]="first"}
 local BLOCK_ALT = {["ŋ|k"]={bottom="low"}}
+local TUCK = {["ch_t18"]=true, ["dh_nodot_t18"]=true, ["dh_t18"]=true, ["h_t18"]=true, ["h_t82"]=true, ["hyphen_t18"]=true, ["k_alt_low_t82"]=true, ["k_t82"]=true, ["n_nodot_t18"]=true, ["n_t18"]=true, ["one_t18"]=true, ["p_t18"]=true, ["p_t82"]=true, ["s_inset_t18"]=true, ["s_inset_t82"]=true, ["s_nodot_t18"]=true, ["s_nodot_t82"]=true, ["s_t18"]=true, ["s_t82"]=true, ["seven_t18"]=true, ["sh_t18"]=true, ["sh_t82"]=true, ["t_t18"]=true, ["th_t18"]=true, ["th_t82"]=true, ["v_nodot_t18"]=true, ["v_t18"]=true, ["w_t82"]=true, ["y_t18"]=true}
 local BLOCK_RAIL = {["m|j"]="first", ["n|j"]="first", ["ɹ|m"]="first"}
 local GLYPH = {
   ["p"]={name="p", type="consonant", ink={[18]={{50,50}},[50]={{18,18},{82,82}},[82]={{50,50}}}},
@@ -206,7 +207,9 @@ end
 -- av-4row, av-flipped. The cluster/flip choice mirrors makeGlyph in render.js.
 -- SVG-level tweaks it makes (/s/'s inset vertex, /z/'s dropped dots) have no
 -- CSS-only class and are intentionally not reproduced — the mask path has none.
+local RAIL_X = { l=18, r=82 }
 local joinSpans   -- defined below; glyphSpan asks it whether a dot is replaced
+local railSpan    -- ... and whether a full rail runs beside it
 
 local function glyphSpan(token, slot, partner)
   local sym, forced, variant = parseSymbol(token)
@@ -246,6 +249,13 @@ local function glyphSpan(token, slot, partner)
   if partner ~= nil then
     local _, dot = joinSpans(partner, slot == "top" and "bottom" or "top", token)
     if dot then stem = stem .. "_nodot" end
+    -- Beside a full rail, what would poke out through it is tucked under
+    -- (render.js tuckUnderRail): its own mask, where the tuck changes one.
+    if not alt then
+      local side = railSpan(token, slot, partner):match('^<span class="av%-rail av%-rail%-(%a)"></span>$')
+      local tucked = side and (stem .. "_t" .. RAIL_X[side])
+      if tucked and TUCK[tucked] then stem = tucked end
+    end
     -- Its own stem, joined, is drawn by the join's strip: the mask without it.
     local _, _, cut = joinSpans(token, slot, partner)
     if cut then stem = stem .. "_j" end
@@ -284,10 +294,9 @@ end
 -- its own span over the glyph.
 local RAIL_SIDE = { ["l"]="l", ["ɹ"]="r" }   -- not /w/ or /j/, as in render.js
 local RAIL_ASK = { ["l"]="l", ["ɹ"]="r", ["w"]="l", ["j"]="r" }   -- render.js RAIL_ASK
-local RAIL_X = { l=18, r=82 }
 local em   -- defined below, with the joins
 
-local function railSpan(token, slot, partner)
+function railSpan(token, slot, partner)
   local sym, forced, variant = parseSymbol(token)
   local pSym = parseSymbol(partner)
   if sym == UNREADABLE then return "" end   -- `*` draws no rail, as in render.js
